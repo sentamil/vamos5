@@ -10,9 +10,9 @@
         Route::get ( '/live', function () {
                 return View::make ( 'maps.eldemo2.index' );
         } );
-        Route::get ( '/getVehicleLocations', function () {
+    Route::get ( '/getVehicleLocations', function () {
                 return View::make ( 'vls.getVehicleLocations' );
-        } );
+    } );
 
 	Route::get ( '/admin', function () {
 		return View::make ( 'admin' );
@@ -69,30 +69,54 @@
 	Route::get ( 'login', array (
 			'uses' => 'HomeController@showLogin' 
 	) );
-	
-	Route::get ( 'login2', array (
-	'uses' => 'HomeController@showLogin2'
-			) );
+
 	
 	Route::get ( 'livelogin', array (
 	'uses' => 'HomeController@livelogin'
 			) );
 	
 	
+	Route::get('password/reset', array(
+	'uses' => 'RemindersController@getRemind',
+	'as' => 'password.remind'
+	));
+	
+	Route::post('password/reset', array(
+	'uses' => 'RemindersController@request',
+	'as' => 'password.request'
+	));
+	
+	
+	Route::get('password/reset/{token}', array(
+	'uses' => 'RemindersController@reset',
+	'as' => 'password.reset'
+	));
+	
+	Route::post('password/reset/{token}', array(
+	'uses' => 'RemindersController@update',
+	'as' => 'password.update'
+	));
+	
+	Route::get('passwordremind',array(
+		'uses' => 'RemindersController@getRemind'
+	));
+	
+
 	// route to process the form
 	Route::post ( 'login', array (
 			'before' => 'csrf',
 			'uses' => 'HomeController@doLogin' 
 	) );
 
-        Route::post ( 'login3', array (
-                        'before' => 'csrf',
-                        'uses' => 'HomeController@doLogin3'
-        ) );
+
 	
 	Route::get ( 'logout', array (
 			'uses' => 'HomeController@doLogout' 
 	) );
+	
+	Route::get ( 'admin', array (
+	'uses' => 'HomeController@admin'
+			) );
 	
 
 	
@@ -103,4 +127,6 @@
 	Route::resource('vdmUsers', 'VdmUserController');
 	
 	Route::resource('vdmPOI', 'VdmPOIController');
+	
+	Route::resource('vdmFranchises', 'VdmFranchiseController');
 	

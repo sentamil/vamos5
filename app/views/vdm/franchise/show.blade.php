@@ -14,23 +14,20 @@
 		<a class="navbar-brand" href="{{ URL::to('vdmUsers') }}">Data Management</a>
 	</div>
 	<ul class="nav navbar-nav">
-		<li><a href="{{ URL::to('vdmVehicles') }}">View All Vehicles</a></li>
-		<li><a href="{{ URL::to('vdmVehicles/create') }}">Add a Vehicle</a>
-		<li><a href="{{ URL::to('vdmGroups') }}">View All Groups</a></li>
-		<li><a href="{{ URL::to('vdmGroups/create') }}">Create a Group</a>
-		<li><a href="{{ URL::to('vdmUsers') }}">View All Users</a></li>
-		<li><a href="{{ URL::to('vdmUsers/create') }}">Create a User</a>
+		<li><a href="{{ URL::to('vdmFranchises') }}">View All Franchises</a></li>
+		<li><a href="{{ URL::to('vdmFranchises/create') }}">Add a Franchise</a>
 			<li><a href="{{ URL::to('logout/') }}">Logout</a></li>
 	</ul>
 </nav>
 
-<h1>Showing Vehicle</h1>
+<h1>Showing Franchise</h1>
 
 	<div class="jumbotron text-center">
 		
 		<p>
-			<br/><h2>{{ 'Vehicle Id : ' . $vehicleId }}</h2>
-			<br/><strong>Other Details: </strong><br/><br/> {{ $deviceRefData }}<br>
+			<br/><h2>{{ 'Franchise Name : ' . $fname }}</h2>
+			<br/><h2>{{ 'Franchise Id : ' . $fcode }}</h2>
+			<br/><strong>Other Details: </strong><br/><br/> {{ $franchiseDetails }}<br>
 		
 		</p>
 	</div>

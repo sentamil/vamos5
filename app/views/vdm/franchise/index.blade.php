@@ -13,15 +13,11 @@
 <div>
 <nav class="navbar navbar-inverse">
 	<div class="navbar-header">
-		<a class="navbar-brand" href="{{ URL::to('vdmVehicles') }}">VAMO SYSTEMS</a>
+		<a class="navbar-brand" href="{{ URL::to('vdmFranchises') }}">VAMO SYSTEMS</a>
 	</div>
 	<ul class="nav navbar-nav">
-		<li><a href="{{ URL::to('vdmVehicles') }}">View All Vehicles</a></li>
-		<li><a href="{{ URL::to('vdmVehicles/create') }}">Add a Vehicle</a>
-		<li><a href="{{ URL::to('vdmGroups') }}">View All Groups</a></li>
-		<li><a href="{{ URL::to('vdmGroups/create') }}">Create a Group</a>
-		<li><a href="{{ URL::to('vdmUsers') }}">View All Users</a></li>
-		<li><a href="{{ URL::to('vdmUsers/create') }}">Create a User</a>
+		<li><a href="{{ URL::to('vdmFranchises') }}">View All Franchises</a></li>
+		<li><a href="{{ URL::to('vdmFranchises/create') }}">Add a Franchise</a>
 		<li><a href="{{ URL::to('logout/') }}">Logout</a></li>	
 	</ul>
 
@@ -29,7 +25,7 @@
 </div>
 
 
-<h1>Vehicles Management</h1>
+<h1>Franchises Management</h1>
 
 <!-- will be used to show any messages -->
 @if (Session::has('message'))
@@ -40,33 +36,32 @@
 	<thead>
 		<tr>
 			<td>ID</td>
-			<td>Vehicle Id</td>
-			<td>Device Id</td>
+			<td>Franchise Name</td>
+			<td>Franchise Code</td>
 			<td>Actions</td>
 
 		</tr>
 	</thead>
 	<tbody>
-	@foreach($vehicleList as $key => $value)
+	@foreach($fcodeArray as $key => $value)
 		<tr>
 			<td>{{ $key }}</td>
+			<td>{{ array_get($fnameArray, $value)}}</td>	
 			<td>{{ $value }}</td>
-			<td>{{ array_get($deviceList, $value)}}</td>	
-	
 				 
 			<!-- we will also add show, edit, and delete buttons -->
 			<td>
 		
 				
-				{{ Form::open(array('url' => 'vdmVehicles/' . $value, 'class' => 'pull-right')) }}
+				{{ Form::open(array('url' => 'vdmFranchises/' . $value, 'class' => 'pull-right')) }}
 					{{ Form::hidden('_method', 'DELETE') }}
-					{{ Form::submit('Remove this Vehicle', array('class' => 'btn btn-warning')) }}
+					{{ Form::submit('Remove this Franchise', array('class' => 'btn btn-warning')) }}
 				{{ Form::close() }}
 
-				<a class="btn btn-small btn-success" href="{{ URL::to('vdmVehicles/' . $value) }}">Show this Vehicle</a>
+				<a class="btn btn-small btn-success" href="{{ URL::to('vdmFranchises/' . $value) }}">Show this Franchise</a>
 
 		
-				<a class="btn btn-small btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Amend this  Vehicle</a>
+				<a class="btn btn-small btn-info" href="{{ URL::to('vdmFranchises/' . $value . '/edit') }}">Amend this  Franchise</a>
 
 			
 				

@@ -1,5 +1,5 @@
 <?php
-class VdmVehicleController extends \BaseController {
+class VdmDeviceController extends \BaseController {
 	
 	/**
 	 * Display a listing of the resource.
@@ -19,27 +19,30 @@ class VdmVehicleController extends \BaseController {
 		
 		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
 		
-		$vehicleListId = 'S_Vehicles_' . $cpyCode;
-
-		$vehicleList = $redis->smembers ( $vehicleListId);
+		$deviceListId = 'L_Device_' . $cpyCode;
 		
-		$deviceList = null;
-		$deviceId = null;
-
-		foreach ( $vehicleList as $vehicle ) {
-			
+		$size = $redis->llen ( $deviceListId );
 		
-			$vehicleRefData = $redis->hget ( 'H_RefData_' . $cpyCode, $vehicle );
+		$deviceList = $redis->lrange ( $deviceListId, 0, $size );
+		
+		
+		
+		$vehicleList = null;
+		
+		$deviceRefArr = null;
+		
+		foreach ( $deviceList as $device ) {
 			
-			$vehicleRefData=json_decode($vehicleRefData);
-	
-			$deviceId = $vehicleRefData->deviceId;
-
-		//	$deviceId = array_get($vehicleRefData, 'deviceId');
-			$deviceList = array_add ( $deviceList, $vehicle,$deviceId );
+			$deviceRefData = $redis->hget ( 'H_RefData', $device );
+			echo $deviceRefData['deviceModel'];
+			echo $deviceRefData['deviceId'];
+			
+			// $deviceRefArr = array_add($deviceRefArr, $device, $deviceRefData);
+			$vehicleId = $redis->hget ( 'H_Vehicle_Device_Map', $device );
+			$vehicleList = array_add ( $vehicleList, $device, $vehicleId );
 		}
 		
-		return View::make ( 'vdm.vehicles.index', array (
+		return View::make ( 'vdm.devices.index', array (
 				'vehicleList' => $vehicleList 
 		) )->with ( 'deviceList', $deviceList );
 	}
@@ -53,7 +56,7 @@ class VdmVehicleController extends \BaseController {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
-		return View::make ( 'vdm.vehicles.create' );
+		return View::make ( 'vdm.devices.create' );
 	}
 	
 	/**
@@ -69,7 +72,6 @@ class VdmVehicleController extends \BaseController {
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
-		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $cpyCode;
 		
 		$rules = array (
 				'deviceId' => 'required',
@@ -86,7 +88,7 @@ class VdmVehicleController extends \BaseController {
 		);
 		$validator = Validator::make ( Input::all (), $rules );
 		if ($validator->fails ()) {
-			return Redirect::to ( 'vdmVehicles/create' )->withErrors ( $validator );
+			return Redirect::to ( 'vdmDevices/create' )->withErrors ( $validator );
 		} else {
 			// store
 			
@@ -108,7 +110,6 @@ class VdmVehicleController extends \BaseController {
 			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'deviceModel'=>$deviceModel);
 			
 			$refDataArr = array (
-					'deviceId' => $deviceId,
 					'shortName' => $shortName,
 					'deviceModel' => $deviceModel,
 					'regNo' => $regNo,
@@ -122,24 +123,21 @@ class VdmVehicleController extends \BaseController {
 			
 			$refDataJson = json_encode ( $refDataArr );
 			// H_RefData
-
 			
-			$redis->hset ( 'H_RefData_' . $cpyCode, $vehicleId, $refDataJson );
+			$redis->hmset ( 'H_RefData', $deviceId, $refDataJson );
 			
-			$cpyDeviceSet = 'S_Device_' . $cpyCode;
+			$cpyDeviceList = 'L_Device_' . $cpyCode;
 			
-			$redis->sadd ( $cpyDeviceSet, $deviceId );
+			$redis->rpush ( $cpyDeviceList, $deviceId );
 			
-			$redis->hmset ( $vehicleDeviceMapId, $vehicleId , $deviceId, $deviceId, $vehicleId );
+			$redis->hmset ( 'H_Vehicle_Device_Map', $vehicleId, $deviceId, $deviceId, $vehicleId );
 			
            //this is for security check			
 			$redis->sadd ( 'S_Vehicles_' . $cpyCode, $vehicleId );
 			
-			$redis->hset('H_Device_Cpy_Map',$deviceId,$cpyCode);
-			
 			// redirect
-			Session::flash ( 'message', 'Successfully created ' . $vehicleId . '!' );
-			return Redirect::to ( 'vdmVehicles' );
+			Session::flash ( 'message', 'Successfully created ' . $deviceId . '!' );
+			return Redirect::to ( 'vdmDevices' );
 		}
 	}
 	
@@ -158,9 +156,8 @@ class VdmVehicleController extends \BaseController {
 		
 		$redis = Redis::connection ();
 		$deviceId = $id;
-		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
-		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $cpyCode;
-		$deviceRefData = $redis->hget ( 'H_RefData_'.$cpyCode , $deviceId );
+		$deviceRefData = $redis->hget ( 'H_RefData', $deviceId );
+		
 		$refDataArr = json_decode ( $deviceRefData, true );
 		$deviceRefData = null;
 		if (is_array ( $refDataArr )) {
@@ -172,9 +169,9 @@ class VdmVehicleController extends \BaseController {
 			echo 'JSON decode failed';
 			var_dump ( $refDataArr );
 		}
-		$vehicleId = $redis->hget ( $vehicleDeviceMapId, $deviceId );
+		$vehicleId = $redis->hget ( 'H_Vehicle_Device_Map', $deviceId );
 		
-		return View::make ( 'vdm.vehicles.show', array (
+		return View::make ( 'vdm.devices.show', array (
 				'deviceId' => $deviceId 
 		) )->with ( 'deviceRefData', $deviceRefData )->with ( 'vehicleId', $vehicleId );
 	}
@@ -192,18 +189,30 @@ class VdmVehicleController extends \BaseController {
 		$username = Auth::user ()->username;
 		
 		$redis = Redis::connection ();
-		$vehicleId = $id;
-		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
-		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $cpyCode;
-		$deviceId = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
-
-		$details = $redis->hget ( 'H_RefData_' . $cpyCode, $vehicleId );
+		$deviceId = $id;
+		
+		$vehicleId = $redis->hget ( 'H_Vehicle_Device_Map', $deviceId );
+		
+		$details = $redis->hget ( 'H_RefData', $deviceId );
 		
 		$refData = json_decode ( $details, true );
+		$result = array_key_exists('odoDistance', $refData);
 
+		if($result == false){
+			
+			$refData = array_add($refData, 'odoDistance', '0.0');
+			
+		}
+		$result = array_key_exists('shortName', $refData);
 
-		return View::make ( 'vdm.vehicles.edit', array (
-				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData );
+		
+		if($result == false){
+					$refData = array_add($refData, 'shortName', '');
+		}
+
+		return View::make ( 'vdm.devices.edit', array (
+				'deviceId' => $deviceId 
+		) )->with ( 'refData', $refData )->with ( 'vehicleId', $vehicleId );
 	}
 	
 	/**
@@ -216,14 +225,13 @@ class VdmVehicleController extends \BaseController {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
-		$vehicleId = $id;
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
-		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $cpyCode;
+		
 		$rules = array (
 				
-				'deviceId' => 'required',
+				'vehicleId' => 'required',
 				'shortName' => 'required',
 				'regNo' => 'required',
 				'vehicleMake' => 'required',
@@ -239,11 +247,11 @@ class VdmVehicleController extends \BaseController {
 		if ($validator->fails ()) {
 			Log::error(" VdmDeviceConrtoller update validation failed :");
 			dd(Input::all ());
-			return Redirect::to ( 'vdmVehicles/update' )->withErrors ( $validator );
+			return Redirect::to ( 'vdmDevices/update' )->withErrors ( $validator );
 		} else {
 			// store
 			
-			$deviceId = Input::get ( 'deviceId' );
+			$vehicleId = Input::get ( 'vehicleId' );
 			$shortName = Input::get ( 'shortName' );
 			$regNo = Input::get ( 'regNo' );
 			$vehicleMake = Input::get ( 'vehicleMake' );
@@ -255,9 +263,12 @@ class VdmVehicleController extends \BaseController {
 			$odoDistance = Input::get ( 'odoDistance' );
 		
 			$redis = Redis::connection ();
-
+			
+			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
+			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'vehicleType'=>$vehicleType);
+			//
+			
 			$refDataArr = array (
-					'deviceId' => $deviceId,
 					'shortName' => $shortName,
 					'deviceModel' => $deviceModel,
 					'regNo' => $regNo,
@@ -272,15 +283,23 @@ class VdmVehicleController extends \BaseController {
 			$refDataJson = json_encode ( $refDataArr );
 			// H_RefData
 			
-
-			$redis->hset ( 'H_RefData_' . $cpyCode, $vehicleId, $refDataJson );
+			$deviceId = $id;
+			$redis->hmset ( 'H_RefData', $deviceId, $refDataJson );
 			
-			$redis->hmset ( $vehicleDeviceMapId, $vehicleId, $deviceId, $deviceId, $vehicleId );
+			$cpyDeviceList = 'L_Device_' . $cpyCode;
+			
+			//TODO  - This will not be fixed - https://github.com/prkothan/VAMOS/issues/1
+			//Identify previous vehicle ID - remove it from S_Vehicles_$cpy
+			//update the H_Vehicle_Device_Map
+			//remove unncessary keys
+			//scan the groups, remove old and update it with new one
+			
+			$redis->hmset ( 'H_Vehicle_Device_Map', $vehicleId, $deviceId, $deviceId, $vehicleId );
 			$redis->sadd ( 'S_Vehicles_' . $cpyCode, $vehicleId );
 			
 			// redirect
 			Session::flash ( 'message', 'Successfully updated ' . $deviceId . '!' );
-			return Redirect::to ( 'vdmVehicles' );
+			return Redirect::to ( 'vdmDevices' );
 		}
 	}
 	
@@ -297,23 +316,20 @@ class VdmVehicleController extends \BaseController {
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		
-		$vehicleId = $id;
+		$deviceId = $id;
 		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
-		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $cpyCode;
-		$cpyDeviceSet = 'S_Device_' . $cpyCode;
 		
-		$deviceId = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
+		$cpyDeviceList = 'L_Device_' . $cpyCode;
 		
-		$redis->srem ( $cpyDeviceSet, $deviceId );
+		$redis->lrem ( $cpyDeviceList, 1, $deviceId );
 		
-		$redis->hdel ( 'H_RefData_' . $cpyCode, $vehicleId );
-		$redis->hdel('H_Device_Cpy_Map',$deviceId);
+		$redis->hdel ( 'H_RefData', $deviceId );
 		
-		$redisVehicleId = $redis->hget ( $vehicleDeviceMapId, $deviceId );
+		$redisVehicleId = $redis->hget ( 'H_Vehicle_Device_Map', $deviceId );
 		
-		$redis->hdel ( $vehicleDeviceMapId, $redisVehicleId );
+		$redis->hdel ( 'H_Vehicle_Device_Map', $redisVehicleId );
 		
-		$redis->hdel ( $vehicleDeviceMapId, $deviceId );
+		$redis->hdel ( 'H_Vehicle_Device_Map', $deviceId );
 		
 		$redis->srem ( 'S_Vehicles_' . $cpyCode, $redisVehicleId );
 		
@@ -328,6 +344,6 @@ class VdmVehicleController extends \BaseController {
 		}
 		
 		Session::flash ( 'message', 'Successfully deleted ' . $deviceId . '!' );
-		return Redirect::to ( 'vdmVehicles' );
+		return Redirect::to ( 'vdmDevices' );
 	}
 }
