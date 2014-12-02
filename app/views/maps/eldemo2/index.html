@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Easy Locator</title>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/simple-sidebar.css" rel="stylesheet">
+<link href="font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+	#map_canvas{ width:100%; height:100%;}
+</style>
+</head>
+<body  ng-app="mapApp">
+	<div id="wrapper" ng-controller="mainCtrl">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="javascript:void(0);"><img src="imgs/logo.png"/></i></a></li>
+                <li class="track"><a href="javascript:void(0);" class="active"><div></div><label>Track</label></a></li>
+                <li class="history"><a href="javascript:void(0);"><div></div><label>History</label></a></li>
+                <li class="alert01"><a href="javascript:void(0);"><div></div><label>Alerts</label></a></li>
+                <li class="sidebar-bottom"><a href="javascript:void(0);"><img src="imgs/profile.png"/></a></li>
+                <li><a href="http://128.199.175.189:8080/vamo/public/logout"><img src="imgs/logout.png"/></a></li>         
+            </ul>
+            <ul class="sidebar-subnav ">
+                <li style="padding-left:25px;">
+                	<div class="right-inner-addon" align="center"> 
+                    <i class="fa fa-search"></i>
+                    <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
+                    </div>
+                </li>
+                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.groupid)">{{location.group}}</a>
+                    <ul class="nav nav-second-level">
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="javascript:void(0);" ng-click="genericFunction(loc.vehicleId)">{{loc.vehicleId}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                    	<div class="topContent">
+                        	<a href="javascript:void(0);" class="contentClose"><img src="imgs/close.png"/></a>
+                        	<div class="row">
+                    			<div class="col col-lg-3" align="center" id="totalvehicles">
+                                	<h6>Total Vehicles</h6>
+                                    <h3>{{livetrack}}</h3>
+                                </div>
+                                <div class="col col-lg-2">
+                                	<h6>Vehicles Online</h6>
+                                    <h3>{{livetrack}}</h3>
+                                </div>
+                                <div class="col col-lg-2" id="totalalerts">
+                                	<h6>Alerts</h6>
+                                    <h3>{{alertstrack}}</h3>
+                                </div>
+                                <div class="col col-lg-2" id="totalAttention">
+                                	<h6>Attention</h6>
+                                    <h3>{{alertstrack}}</h3>
+                                </div>
+                                <div class="col-lg-3">
+                                	<h6>Distance Today</h6>
+                                    <h3>{{distanceCovered}} <sup>Km</sup></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0);" class="contentexpand"><img src="imgs/add.png"/></a>
+                        
+                        <a href="#menu-toggle" id="menu-toggle"><img src="imgs/drag.png"/></a>
+                        <div ng-show="currentTab=='map'">
+                        	<map id="map_canvas" style="height:100vh; width:100%;"></map>
+                        </div>
+                        <div ng-show="currentTab=='history'"> 
+                        	<map2 id="alertsTab" style="height:100vh; width:100%;"></map2>
+                        </div>
+                        <div ng-show="currentTab=='alert'">
+                        	<map id="map_canvas01" style="height:100vh; width:100%;"></map>	
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+
+
+
+<script src="js/jquery-1.11.0.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script> 
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script src="js/custom.js"></script>
+<script>
+$("#menu-toggle").click(function(e) {
+	e.preventDefault();
+	$("#wrapper").toggleClass("toggled");
+});
+</script>
+</body>
+
+</html>

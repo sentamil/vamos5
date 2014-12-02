@@ -1,28 +1,5 @@
-<!-- app/views/nerds/create.blade.php -->
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>VAMO Systems</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-</head>
-<body>
-<div class="container"><div>
-<nav class="navbar navbar-inverse">
-	<div class="navbar-header">
-		<a class="navbar-brand" href="{{ URL::to('vdmFranchises') }}">VAMO Systems</a>
-	
-	</div>
-	<ul class="nav navbar-nav">
-		<li><a href="{{ URL::to('vdmFranchises') }}">View All Vehicles</a></li>
-		<li><a href="{{ URL::to('vdmFranchises/create') }}">Add a Vehicle</a>
-		<li><a href="{{ URL::to('logout/') }}">Logout</a></li>	
-	</ul>
-</nav>
-
-
-</div>
-
+@extends('includes.adminheader')
+@section('mainContent')
 <h1>Add a Franchise</h1>
 
 <!-- if there are creation errors, they will show here -->
@@ -87,10 +64,4 @@
 	{{ Form::submit('Add the Franchise!', array('class' => 'btn btn-primary')) }}
 
 	{{ Form::close() }}
-
-	<footer class="row">
-		@include('includes.footer')
-	</footer>
-</div>
-</body>
-</html>
+@stop

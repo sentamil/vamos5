@@ -1,30 +1,26 @@
 @extends('includes.vdmheader')
 @section('mainContent')
-<h1>Amend Vehicles</h1>
+<h1>Edit Devices</h1>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
 
-{{ Form::model($vehicleId, array('route' => array('vdmVehicles.update', $vehicleId), 'method' => 'PUT')) }}
+{{ Form::model($deviceId, array('route' => array('vdmVehicles.update', $deviceId), 'method' => 'PUT')) }}
 
 	<div class="form-group">
-		{{ Form::label('vehicleId', 'Vehicle Id :')  }}
+		{{ Form::label('deviceId', 'Device Id :')  }}
 				<br/>
-		{{ Form::label('vehicleId' , $vehicleId) }}
+		{{ Form::label('deviceId' , $deviceId) }}
 	</div>
-	<div class="form-group">
-		{{ Form::label('deviceId', 'Device Id') }}
-		<br/>
-		{{ Form::text('deviceId', $refData['deviceId'], array('class' => 'form-control')) }}
-
-	</div>
-	<div class="form-group">
-		{{ Form::label('shortName', 'Short Name') }}
-		{{ Form::text('shortName', $refData['shortName'], array('class' => 'form-control')) }}
+		<div class="form-group">
+		{{ Form::label('vehicleId', 'Vehicle Id') }}
+		{{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control')) }}
 	</div>
 	
+
+	
 	<div class="form-group">
-		{{ Form::label('deviceModel', 'Vehicle Model') }}
+		{{ Form::label('deviceModel', 'Device Model') }}
 		{{ Form::text('deviceModel', $refData['deviceModel'], array('class' => 'form-control')) }}
 	</div>
 	
@@ -63,7 +59,7 @@
 	</div>
 	
 	
-	{{ Form::submit('Update the Vehicle!', array('class' => 'btn btn-primary')) }}
+	{{ Form::submit('Update the Device!', array('class' => 'btn btn-primary')) }}
 
 {{ Form::close() }}
 @stop

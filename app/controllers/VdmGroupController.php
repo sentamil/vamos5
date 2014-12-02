@@ -141,18 +141,18 @@ class VdmGroupController extends \BaseController {
 		$groupId=$id;
 		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
 		
-		$size = $redis->llen($groupId);
-		$vehicleList = $redis->lrange($groupId, 0,$size);
+		
+		$vehicleList = $redis->smembers($groupId);
 		
 		//S_Vehicles_
 		foreach($vehicleList as $vehicle) {
 			$result = $redis->sismember("S_Vehicles_" . $cpyCode,$vehicle);
 			if($result == 0) {
-				$redis->lrem($groupId,$vehicle);
+				$redis->srem($groupId,$vehicle);
 			}
 		}
 		//query again to get the fresh list
-		$vehicleList = $redis->lrange($groupId, 0,$size);
+		$vehicleList = $redis->smembers($groupId);
 		$vehicleList = implode('<br/>',$vehicleList);
 			
 		return View::make('vdm.groups.show',array('groupId'=>$groupId))->with('vehicleList', $vehicleList);
@@ -238,16 +238,16 @@ class VdmGroupController extends \BaseController {
 		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
 		
 		
-		$redis->lrem('L_Groups_' . $cpyCode, 1,$groupId);
+		$redis->srem('S_Groups_' . $cpyCode,$groupId);
 		
 		$redis->del($groupId);
 		
-		$size = $redis->llen('L_Users_' . $cpyCode);
 		
-		$userList = $redis->lrange('L_Users_' . $cpyCode,0,$size);
+		
+		$userList = $redis->smembers('S_Users_' . $cpyCode);
 		
 		foreach ( $userList as $user ) {
-			$redis->lrem($user,-1,$groupId);
+			$redis->srem($user,$groupId);
 		}
 			
 		Session::flash('message', 'Successfully deleted ' . $groupId . '!');

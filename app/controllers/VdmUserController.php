@@ -135,10 +135,9 @@ class VdmUserController extends \BaseController {
 		
 		$redis = Redis::connection ();
 		$userId = $id;
-		$size = $redis->llen ( $userId );
 		$mobileNo = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':mobileNo' );
 		$email = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':email' );
-		$vehicleGroups = $redis->lrange ( $userId, 0, $size );
+		$vehicleGroups = $redis->smembers ( $userId );
 		
 		$vehicleGroups = implode ( '<br/>', $vehicleGroups );
 		
@@ -167,9 +166,9 @@ class VdmUserController extends \BaseController {
 		$email = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':email' );
 		
 		
-		$redisGrpId = 'L_Groups_' . $cpyCode;
-		$size = $redis->llen ( $redisGrpId );
-		$groupList = $redis->lrange ( $redisGrpId, 0, $size );
+		$redisGrpId = 'S_Groups_' . $cpyCode;
+	
+		$groupList = $redis->smembers ( $redisGrpId);
 		
 		$vehicleGroups = null;
 		

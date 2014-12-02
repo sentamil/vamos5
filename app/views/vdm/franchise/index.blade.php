@@ -1,29 +1,5 @@
-<!-- app/views/nerds/index.blade.php -->
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>VAMO Systems</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-	
-</head>
-<body>
-	
-<div class="container">
-<div>
-<nav class="navbar navbar-inverse">
-	<div class="navbar-header">
-		<a class="navbar-brand" href="{{ URL::to('vdmFranchises') }}">VAMO SYSTEMS</a>
-	</div>
-	<ul class="nav navbar-nav">
-		<li><a href="{{ URL::to('vdmFranchises') }}">View All Franchises</a></li>
-		<li><a href="{{ URL::to('vdmFranchises/create') }}">Add a Franchise</a>
-		<li><a href="{{ URL::to('logout/') }}">Logout</a></li>	
-	</ul>
-
-</nav>
-</div>
-
+@extends('includes.adminheader')
+@section('mainContent')
 
 <h1>Franchises Management</h1>
 
@@ -51,8 +27,6 @@
 				 
 			<!-- we will also add show, edit, and delete buttons -->
 			<td>
-		
-				
 				{{ Form::open(array('url' => 'vdmFranchises/' . $value, 'class' => 'pull-right')) }}
 					{{ Form::hidden('_method', 'DELETE') }}
 					{{ Form::submit('Remove this Franchise', array('class' => 'btn btn-warning')) }}
@@ -62,18 +36,10 @@
 
 		
 				<a class="btn btn-small btn-info" href="{{ URL::to('vdmFranchises/' . $value . '/edit') }}">Amend this  Franchise</a>
-
-			
-				
-				
+	
 			</td>
 		</tr>
 	@endforeach
 	</tbody>
 </table>
-<footer class="row">
-		@include('includes.footer')
-	</footer>
-</div>
-</body>
-</html>
+@stop
