@@ -14,14 +14,21 @@
 <nav class="navbar navbar-inverse">
 	<div class="navbar-header">
 		<a class="navbar-brand" href="{{ URL::to('vdmFranchises') }}">VAMO SYSTEMS</a>
+		
+
 	</div>
 	<ul class="nav navbar-nav">
 		<li><a href="{{ URL::to('vdmFranchises') }}">View All Franchises</a></li>
 		<li><a href="{{ URL::to('vdmFranchises/create') }}">Add a Franchise</a>
-		<li><a href="{{ URL::to('logout/') }}">Logout</a></li>	
+		<li><a href="{{ URL::to('ipAddressManager') }}">IPAddressManager</a>
+		<li><a href="{{ URL::to('logout/') }}">Logout User: {{Auth::user ()->username }}</a></li>	
+
 	</ul>
 
 </nav>
+@if (Session::has('message'))
+	<div class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
 </div>
 
 

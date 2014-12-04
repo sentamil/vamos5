@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>VAMO Data Management</title>
+	<title>VAMO Systems Fleet Management</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 
 	
@@ -13,7 +13,7 @@
 <nav class="navbar navbar-inverse">
 
 <div class="navbar-header">
-		<a class="navbar-brand" ><h2><strong> VAMOS Vehicle Management <strong></h2></a>
+		<a class="navbar-brand" ><h2> VAMO Systems Fleet Management </h2></a>
 	</div>
 	
 </nav>

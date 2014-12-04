@@ -2,18 +2,7 @@
 
 class HomeController extends BaseController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller free
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|	Route::get('/', 'HomeController@showWelcome');
-	|
-	*/
+	
 
 	
 
@@ -25,16 +14,84 @@ class HomeController extends BaseController {
 	
 	public function admin()
 	{
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
 		
 		$username = Auth::user ()->username;
 		if($username !='vamos') {
 			return Redirect::to('login')->with('flash_notice', 'Unauthorized user. Futher attempts will be
 					treated as hacking, will be prosecuted under Cyber laws.');
-		;
+		
 		}
 		else {
 			return View::make('admin');
 		}
+	}
+	
+	
+	public function ipAddressManager()
+	{
+		
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		
+		$username = Auth::user ()->username;
+		if($username !='vamos') {
+			return Redirect::to('login')->with('flash_notice', 'Unauthorized user. Futher attempts will be
+					treated as hacking, will be prosecuted under Cyber laws.');
+		
+		}
+
+		$redis = Redis::connection ();
+		$ipAddress = $redis->hget('H_IP_Address','ipAddress');
+		$deviceHandler = $redis->hget('H_IP_Address','deviceHandler:GT06N');
+		$port = $redis->hget('H_IP_Address','portNo:GT06N');
+		$range = $redis->hget('H_IP_Address','range:GT06N');
+		
+		
+		return View::make ( 'IPAddress', array (
+				'ipAddress' => $ipAddress ) )->with ( 'deviceHandler_gt06n', $deviceHandler )->with('portNo_gt06n',$port)->with('range_gt06n',$range);
+		
+		
+	}
+	
+	public function saveIpAddress() {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		
+		$username = Auth::user ()->username;
+		if($username !='vamos') {
+			return Redirect::to('login')->with('flash_notice', 'Unauthorized user. Futher attempts will be
+					treated as hacking, will be prosecuted under Cyber laws.');
+		
+		}
+		
+		$rules = array (
+				'ipAddress' => 'required',
+				'deviceHandler_gt06n' => 'required',
+				'portNo_gt06n' => 'required',
+				'range_gt06n' => 'required'
+		
+		);
+		$validator = Validator::make ( Input::all (), $rules );
+		if ($validator->fails ()) {
+			return Redirect::to ( 'ipAddressManager' )->withErrors ( $validator );
+		} else {
+			$redis = Redis::connection ();
+			$ipAddress= Input::get ( 'ipAddress' );
+			$deviceHandler= Input::get ( 'deviceHandler_gt06n' );
+			$port= Input::get ( 'portNo_gt06n' );
+			$range= Input::get ( 'range_gt06n' );
+			$redis->hmset('H_IP_Address','ipAddress',$ipAddress,'deviceHandler:GT06N',$deviceHandler,
+				'portNo:GT06N',$port,'range:GT06N',$range);
+		}
+		Session::flash ( 'message', 'Successfully added ipAddress details'. '!' );
+		
+		return Redirect::to ( 'admin' );
+		
 	}
 	
 	public function livelogin()

@@ -1,11 +1,10 @@
 
 <h1>Hi, {{ $fname}}!</h1>
  
-<p>We'd like to personally welcome you to VAMO Systems family. Thank you for registering!</p>
+<p>The following id is removed.</p>
 
-<p> Your user id is {{$userId}}</p>
-<p> Your password is {{$password}}. Please change the password after first login using Reset link. </p>
+<p> {{$userId}}</p>
 
 <p> Thanks,
-   Prasanna K
+  VAMO Systems
  </p>

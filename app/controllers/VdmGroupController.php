@@ -202,7 +202,7 @@ class VdmGroupController extends \BaseController {
 		}
 		//TODO Add validation
 		
-		$username = Auth::user()->username;
+			$username = Auth::user()->username;
 			$groupId       = Input::get('groupId');
 			$vehicleList      = Input::get('vehicleList');
 			$redis = Redis::connection();

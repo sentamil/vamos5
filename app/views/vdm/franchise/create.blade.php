@@ -7,6 +7,8 @@
 
 {{ Form::open(array('url' => 'vdmFranchises')) }}
 
+
+
 	<div class="form-group">
 		{{ Form::label('fname', 'Franchise Name') }}
 		{{ Form::text('fname', Input::old('fname'), array('class' => 'form-control')) }}

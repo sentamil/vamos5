@@ -13,7 +13,7 @@ class VdmUserController extends \BaseController {
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
-		
+		Log::info('username:' . $username . '  :: cpyCode' . $cpyCode);
 		$redisUserCacheId = 'S_Users_' . $cpyCode;
 	
 		$userList = $redis->smembers ( $redisUserCacheId);
@@ -75,6 +75,8 @@ class VdmUserController extends \BaseController {
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
+		$userId = Input::get ( 'userId' );
+		$val1= $redis->sismember ( 'S_Users_' . $cpyCode, $userId );
 		
 		$rules = array (
 				'userId' => 'required',
@@ -84,7 +86,12 @@ class VdmUserController extends \BaseController {
 		$validator = Validator::make ( Input::all (), $rules );
 		if ($validator->fails ()) {
 			return Redirect::to ( 'vdmUsers/create' )->withErrors ( $validator );
-		} else {
+		}
+		else if($val1==1) {
+			Session::flash ( 'message', $userId . ' already exist. Please use different id ' . '!' );
+			return Redirect::to ( 'vdmUsers/create' );
+		}
+		else {
 			// store
 			
 			$userId = Input::get ( 'userId' );
@@ -99,20 +106,17 @@ class VdmUserController extends \BaseController {
 			$redis->sadd ( 'S_Users_' . $cpyCode, $userId );
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':cpyCode', $cpyCode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
 			$password='awsome';
-			User::create(array(
-			'name'     => $userId,
-			'username' => $userId,
-			'email'    => $email,
-			'password' => Hash::make($password),
-			));
+			$user = new User;
 			
-			$data= array('fname'=>$userId,'userId'=>$userId,'password'=>$password);
-				
-			Mail::send('emails.welcome', $data, function($message)
+			$user->name = $userId;
+			$user->username=$userId;
+			$user->email=$email;
+			$user->password=Hash::make($password);
+			$user->save();
+			
+			Mail::queue('emails.welcome', array('fname'=>$userId,'userId'=>$userId,'password'=>$password), function($message)
 			{
-				$message->to('prkothan@gmail.com')->cc('pkgopalpillai@gmail.com');
-					
-					
+				$message->to(Input::get ( 'email' ))->subject('Welcome to VAMO Systems');	
 			});
 			
 			// redirect
@@ -188,9 +192,7 @@ class VdmUserController extends \BaseController {
 	 * @return Response
 	 */
 	public function update($id) {
-		
-
-
+	
 		$userId = $id;
 		
 		if (! Auth::check ()) {
@@ -202,13 +204,14 @@ class VdmUserController extends \BaseController {
 		
 		$rules = array (
 				'mobileNo' => 'required',
+				'email' => 'required',
 				'vehicleGroups' => 'required' 
 		);
 		$validator = Validator::make ( Input::all(), $rules );
 		if ($validator->fails ()) {
 			Log::error('VDM User Controller update validation failed');
+			Session::flash ( 'message', 'Update failed. Please check logs for more details' . '!' );
 			return Redirect::to ( 'vdmUsers/update' )->withErrors ( $validator );
-			//return Redirect::to ( 'vdmUsers/edit' )->withErrors ( $validator );
 		} else {
 			// store
 			
@@ -216,6 +219,7 @@ class VdmUserController extends \BaseController {
 			$vehicleGroups = Input::get ( 'vehicleGroups' );
 			
 			$mobileNo = Input::get ( 'mobileNo' );
+			$email = Input::get ( 'mobileNo' );
 			$redis->del ( $userId );
 			foreach ( $vehicleGroups as $grp ) {
 				$redis->sadd ( $userId, $grp );
@@ -245,8 +249,25 @@ class VdmUserController extends \BaseController {
 		
 		$redis->srem ( 'S_Users_' . $cpyCode, $userId );
 		$redis->del ( $userId );
-		$redis->hdel ( 'H_UserId_Cust_Map', $userId );
-		$redis->del ( 'K_' . $userId );
+
+		$email=$redis->hget('H_UserId_Cust_Map',$userId.':email');
+		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':cpyCode', $userId . ':mobileNo', $userId.':email');
+		
+		Log::info(" about to delete user" .$userId);
+		
+		DB::table('users')->where('username', $userId)->delete();
+		
+		
+		Session::put('email',$email);
+		Log::info("Email Id :" . Session::get ( 'email1' ));
+	/*	
+		Mail::queue('emails.welcome', array('fname'=>$cpyCode,'userId'=>$userId), function($message)
+		{
+			Log::info("Inside email :" . Session::get ( 'email' ));
+		
+			$message->to(Session::pull ( 'email' ))->subject('User Id deleted');
+		});
+*/
 		Session::flash ( 'message', 'Successfully deleted ' . $userId . '!' );
 		return Redirect::to ( 'vdmUsers' );
 	}

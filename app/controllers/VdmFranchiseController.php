@@ -69,7 +69,7 @@ class VdmFranchiseController extends \BaseController {
 			return Redirect::to ( 'login' );
 		}
 		$username = Auth::user ()->username;
-		
+		$redis = Redis::connection ();
 		$rules = array (
 				'fname' => 'required',
 				'fcode' => 'required',
@@ -84,9 +84,23 @@ class VdmFranchiseController extends \BaseController {
 				'otherDetails' => 'required' 
 		);
 		$validator = Validator::make ( Input::all (), $rules );
+		$userId = Input::get ('userId');
+		$fcode = Input::get ( 'fcode' );
+		$val = $redis->sismember('S_Customers',$fcode);
+		$val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
+
+			
 		if ($validator->fails ()) {
 			return Redirect::to ( 'vdmFranchises/create' )->withErrors ( $validator );
-		} else {
+		}else if($val==1 ) {
+			Session::flash ( 'message', $fcode . 'Franchise already exist ' . '!' );
+			return Redirect::to ( 'vdmFranchises/create' );
+		}
+		else if($val1==1) {
+			Session::flash ( 'message', $userId . ' already exist. Please use different id ' . '!' );
+			return Redirect::to ( 'vdmFranchises/create' );
+		}
+		else {
 			// store
 			
 			$fname = Input::get ( 'fname' );
@@ -101,26 +115,17 @@ class VdmFranchiseController extends \BaseController {
 			$userId = Input::get ('userId');
 			$otherDetails = Input::get ('otherDetails');
 			
-			$redis = Redis::connection ();
+	
 			
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
 			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'deviceModel'=>$deviceModel);
 			
 
-			$val = $redis->sadd('S_Customers',$fcode);
+			$redis->sadd('S_Customers',$fcode);
 			
-			log::info(" redis return code :"+$val);
-			//TODO
-			/**
-			 * If code is not unique this method fail and return - suggesting 
-			 * that the ID should be unique. 
-			 * 
-			 * Possible improvement..implement ajax call - verify the code while typing itself
-			 * 
-			 */
 			
 	
-			$redis->hmset ( 'H_Franchise', $fcode.':fname',$fname,$fcode.':description:',$description,
+			$redis->hmset ( 'H_Franchise', $fcode.':fname',$fname,$fcode.':description',$description,
 					$fcode.':landline',$landline,$fcode.':mobileNo1',$mobileNo1,$fcode.':mobileNo2',$mobileNo2,
 					$fcode.':email1',$email1,$fcode.':email2',$email2,$fcode.':userId',$userId);
 			
@@ -129,7 +134,7 @@ class VdmFranchiseController extends \BaseController {
 			$redis->sadd ( 'S_Users_' . $cpyCode, $userId );
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':cpyCode', $cpyCode, $userId . ':mobileNo', $mobileNo1,$userId.':email',$email1 );
 			
-			Log::info("going to email");
+
 			
 			$password='awesome';
 			
@@ -141,13 +146,29 @@ class VdmFranchiseController extends \BaseController {
 			$user->password=Hash::make($password);
 			$user->save();
 
-			/*
+			Log::info("going to email..");
 			
+			/** 
+			 * Add vamos admin user for each franchise
+			 * 
+			 */
+			$user = new User;
+			$vamosid='vamos'.$fcode;	
+			$user->name = 'vamos'.$fname;
+			$user->username=$vamosid;
+			$user->email='support@vaomsys.com';
+			$user->password=Hash::make($password);
+			$user->save();
+			$redis->sadd ( 'S_Users_' . $cpyCode, $vamosid );
+			$redis->hmset ( 'H_UserId_Cust_Map', $vamosid . ':cpyCode', $cpyCode);
+						
 			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
 			{
-				$message->to($email)->subject('Welcome to VAMO Systems');
+				Log::info("Inside email :" . Input::get ( 'email1' ));
+				
+				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
 			});
-			*/
+			
 			
 			// redirect
 			Session::flash ( 'message', 'Successfully created ' . $fname . '!' );
@@ -198,15 +219,24 @@ class VdmFranchiseController extends \BaseController {
 		$redis = Redis::connection ();
 		$fcode = $id;
 		
-		$franchiseDetails = $redis->hmget ( 'H_Franchise', $fcode.':fname',$fcode.':descrption:',
+		$franchiseDetails = $redis->hmget ( 'H_Franchise', $fcode.':fname',$fcode.':description',
 				$fcode.':landline',$fcode.':mobileNo1',$fcode.':mobileNo2',
-				$fcode.':email1',$fcode.':email2',$fcode.':userId');
+				$fcode.':email1',$fcode.':email2',$fcode.':userId',$fcode.':fullAddress',$fcode.':otherDetails');
 			
 		
 		
 		return View::make ( 'vdm.franchise.edit', array (
 				'fname' => $franchiseDetails[0] 
-		) )->with ( 'fcode', $fcode )->with ( 'franchiseDetails', $franchiseDetails )->with('userId',$franchiseDetails[7]);
+		) )->with ( 'fcode', $fcode )->with ( 'franchiseDetails', $franchiseDetails )
+		->with('description',$franchiseDetails[1])
+		->with('landline',$franchiseDetails[2])
+		->with('mobileNo1',$franchiseDetails[3])
+		->with('mobileNo2',$franchiseDetails[4])
+		->with('email1',$franchiseDetails[5])
+		->with('email2',$franchiseDetails[6])
+		->with('userId',$franchiseDetails[7])
+		->with('fullAddress',$franchiseDetails[8])
+		->with('otherDetails',$franchiseDetails[9]);
 	
 
 	}
@@ -224,13 +254,12 @@ class VdmFranchiseController extends \BaseController {
 		$fcode = $id;
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
-		var_dump( Input::all ());
-		var_dump($id);
+
 		$rules = array (
 
 				'description' => 'required',
 				'fullAddress' => 'required',
-				'landline' => 'required|numeric',
+				'landline' => 'required',
 				'mobileNo1' => 'required|numeric',
 				'mobileNo2' => 'numeric',
 				'email1' => 'required|email',
@@ -238,11 +267,17 @@ class VdmFranchiseController extends \BaseController {
 				'otherDetails' => 'required'
 		);
 		$validator = Validator::make ( Input::all (), $rules );
+
+		
 		if ($validator->fails ()) {
 			Log::info(" failed ");
-		
+			Session::flash ( 'message', 'Update failed. Please check logs for more details' . '!' );
+				
+		//	return Redirect::to ( 'vdmFranchises' )->withErrors ( $validator );
+
 			return Redirect::to ( 'vdmFranchises/update' )->withErrors ( $validator );
-		} else {
+		} 
+		else {
 			// store
 				
 
@@ -277,7 +312,7 @@ class VdmFranchiseController extends \BaseController {
 			$userId = $redis->hget('H_Franchise',$fcode.':userId');
 			$fname =$redis->hget('H_Franchise',$fcode.':fname');
 			
-			$redis->hmset ( 'H_Franchise', $fcode.':description:',$description,
+			$redis->hmset ( 'H_Franchise', $fcode.':description',$description,
 					$fcode.':landline',$landline,$fcode.':mobileNo1',$mobileNo1,$fcode.':mobileNo2',$mobileNo2,
 					$fcode.':email1',$email1,$fcode.':email2',$email2);
 			
@@ -297,15 +332,17 @@ class VdmFranchiseController extends \BaseController {
 			->where('username', $userId)
 			->update(array('email' => $email1));
 			
+			$password='awesome';
 			
 			Log::info(" about to send mail");
-			/*	
-			Mail::send('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
+						
+			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
 			{
-				$message->to($email1)->subject('Welcome to VAMO Systems');
-			});
+				Log::info("Inside email :" . Input::get ( 'email1' ));
 				
-			*/
+				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
+			});
+
 		}
 					
 		// redirect
@@ -328,17 +365,42 @@ class VdmFranchiseController extends \BaseController {
 		$redis = Redis::connection ();
 		
 		$fcode = $id;
-
+		
 		$userId = $redis->hget('H_Franchise',$fcode.':userId');
-		$redis->hdel ( 'H_Franchise', $fcode.':fname',$fcode.':descrption:',
+		$fname = $redis->hget('H_Franchise',$fcode.':fname');
+		
+		$email1 = $redis->hget('H_Franchise', $fcode.':email1');
+		
+		$redis->hdel ( 'H_Franchise', $fcode.':fname',$fcode.':description',
 				$fcode.':landline',$fcode.':mobileNo1',$fcode.':mobileNo2',
 				$fcode.':email1',$fcode.':email2',$fcode.':userId');
 		
 		$redis->srem('S_Customers',$fcode);
-		$cpyCode=$fcode;
-		$redis->srem ( 'S_Users_' . $cpyCode, $userId );
+
+		$redis->srem ( 'S_Users_' . $fcode, $userId );
 		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':cpyCode', $userId . ':mobileNo', $userId.':email');
 		
+		Log::info(" about to delete user" .$userId);
+		
+		DB::table('users')->where('username', $userId)->delete();
+		
+		$vamosid = 'vamos'.$fcode;
+		
+		
+		$redis->srem ( 'S_Users_' . $cpyCode, $vamosid );
+		$redis->hdel ( 'H_UserId_Cust_Map', $vamosid . ':cpyCode');
+		
+		
+		Session::put('email1',$email1);
+		Log::info("Email Id :" . Session::get ( 'email1' ));
+		
+		Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId), function($message)
+		{
+			Log::info("Inside email :" . Session::get ( 'email1' ));
+		
+			$message->to(Session::pull ( 'email1' ))->subject('User Id deleted');
+		});
+	
 		
 		Session::flash ( 'message', 'Successfully deleted ' . 'fname:'.$fcode . '!' );
 		return Redirect::to ( 'vdmFranchises' );

@@ -238,7 +238,6 @@ class VdmVehicleController extends \BaseController {
 		$validator = Validator::make ( Input::all (), $rules );
 		if ($validator->fails ()) {
 			Log::error(" VdmDeviceConrtoller update validation failed :");
-			dd(Input::all ());
 			return Redirect::to ( 'vdmVehicles/update' )->withErrors ( $validator );
 		} else {
 			// store
@@ -317,13 +316,11 @@ class VdmVehicleController extends \BaseController {
 		
 		$redis->srem ( 'S_Vehicles_' . $cpyCode, $redisVehicleId );
 		
-		$size = $redis->llen('L_Groups_' . $cpyCode);
-		
-		$groupList = $redis->lrange('L_Groups_' . $cpyCode,0,$size);
+		$groupList = $redis->smembers('S_Groups_' . $cpyCode);
 		
 		foreach ( $groupList as $group ) {
 			
-			$result = $redis->lrem($group,-1, $redisVehicleId);
+			$result = $redis->srem($group,$redisVehicleId);
 		//	Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
 		}
 		

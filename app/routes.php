@@ -3,9 +3,7 @@
 	/*
 	 * |-------------------------------------------------------------------------- | Application Routes |-------------------------------------------------------------------------- | | Here is where you can register all of the routes for an application. | It's a breeze. Simply tell Laravel the URIs it should respond to | and give it the Closure to execute when that URI is requested. |
 	 */
-	Route::get ( '/hello', function () {
-		return View::make ( 'test.hello' );
-	} );
+
 	View::addExtension('html', 'php');
         Route::get ( '/live', function () {
                 return View::make ( 'maps.eldemo2.index' );
@@ -18,62 +16,17 @@
 		return View::make ( 'admin' );
 	} );
 	
-	Route::get ( '/maps1', function () {
-			return View::make ( 'maps.el.index' );
-		} );
-	
-	Route::get ( '/page2', function () {
-		return View::make ( 'page2' );
-	} );
-	
-	Route::get ( '/admin_blade', function () {
-		return View::make ( 'admin_blade' );
-	} );
-	
-	Route::get ( '/', function () {
-		return View::make ( 'pages.home' );
-	} );
+	Route::get ( '/', array (
+			'uses' => 'HomeController@showLogin' 
+	) );
 	Route::get ( 'about', function () {
 		return View::make ( 'pages.about' );
 	} );
-	Route::get ( 'projects', function () {
-		return View::make ( 'pages.projects' );
-	} );
-	Route::get ( 'contact', function () {
-		return View::make ( 'pages.contact' );
-	} );
-	
-	
-	
-	Route::get ( 'form', function () {
-		// render app/views/form.blade.php
-		return View::make ( 'form' );
-	} );
-	Route::post ( 'form-submit', array (
-			'before' => 'csrf',
-			function () {
-				// form validation come here
-				echo "its working";
-				$var = Input::all ();
-				var_dump ( $var );
-				
-				// echo $var['username'];
-				
-				$value = Cookie::get ( 'name' );
-				
-				// echo $value;
-			} 
-	) );
 	
 	// route to show the login form
 	Route::get ( 'login', array (
 			'uses' => 'HomeController@showLogin' 
 	) );
-
-	
-	Route::get ( 'livelogin', array (
-	'uses' => 'HomeController@livelogin'
-			) );
 	
 	
 	Route::get('password/reset', array(
@@ -82,6 +35,7 @@
 	));
 	
 	Route::post('password/reset', array(
+	'before' => 'csrf',
 	'uses' => 'RemindersController@request',
 	'as' => 'password.request'
 	));
@@ -93,6 +47,7 @@
 	));
 	
 	Route::post('password/reset/{token}', array(
+	'before' => 'csrf',
 	'uses' => 'RemindersController@update',
 	'as' => 'password.update'
 	));
@@ -118,7 +73,19 @@
 	'uses' => 'HomeController@admin'
 			) );
 	
+	Route::get ( 'liveReport', array (
+	'uses' => 'ReportsController@liveReport'
+			) );
 
+	Route::get ( 'ipAddressManager', array (
+	'uses' => 'HomeController@ipAddressManager'
+			) );
+	
+	
+	Route::post ( 'ipAddressManager', array (
+	'before' => 'csrf',
+	'uses' => 'HomeController@saveIpAddress'
+			) );
 	
 	Route::resource('vdmGroups', 'VdmGroupController');
 	
@@ -130,3 +97,19 @@
 	
 	Route::resource('vdmFranchises', 'VdmFranchiseController');
 	
+	
+	
+	Route::get('file/download', function()
+	{
+		$file = 'path_to_my_file.pdf';
+		return Response::download($file);
+	});
+	
+	Route::get('/download', function (){
+		//PDF file is stored under project/public/download/info.pdf
+		$file= public_path(). "/reports/sample.txt.gz";
+		$headers = array(
+				'Content-Type: application/zip',
+		);
+		return Response::download($file, 'sample.txt.gz', $headers);
+	});

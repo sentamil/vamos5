@@ -14,20 +14,13 @@ foreach ($input as $key => $value) {
 }
  log::info( ' parameters :' . $parameters);
 
-
- log::info( ' parameters :' . $parameters);
-
 		$url = "http://128.199.175.189:20141/getVehicleLocations" . $parameters;
 		$url=htmlspecialchars_decode($url);
 		 log::info( 'Routing to backed  :' . $url );
 
 
-//$response = file_get_contents($url);
-
-
     $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
-
     // Include header in result? (0 = yes, 1 = no)
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($ch, CURLOPT_TIMEOUT, 3);
