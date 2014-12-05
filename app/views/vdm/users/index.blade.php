@@ -24,7 +24,7 @@
 			<td>{{ $key }}</td>
 			<td>{{ $value }}</td>
 			<td>{{ array_get($userGroupsArr, $value)}}</td>	
-			<td>{{ $cpyCode }}</td>
+			<td>{{ $fcode }}</td>
 				 
 				 
 			<!-- we will also add show, edit, and delete buttons -->

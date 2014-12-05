@@ -18,9 +18,9 @@ class VdmGroupController extends \BaseController {
 		$redis = Redis::connection();
 		
 		$vehicleListArr = null;
-		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 		
-		$redisGrpId = 'S_Groups_' . $cpyCode ;
+		$redisGrpId = 'S_Groups_' . $fcode ;
 		
 		
 		
@@ -59,9 +59,9 @@ class VdmGroupController extends \BaseController {
 		$username = Auth::user()->username;
 		$redis = Redis::connection();
 		
-		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 		
-		$vehicleList = $redis->smembers('S_Vehicles_' . $cpyCode);
+		$vehicleList = $redis->smembers('S_Vehicles_' . $fcode);
 		
 		$userVehicles=null;
 		
@@ -104,8 +104,8 @@ class VdmGroupController extends \BaseController {
 			$vehicleList      = Input::get('vehicleList');
 			
 			$redis = Redis::connection();
-			$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
-			$redis->sadd('S_Groups_' . $cpyCode, $groupId);
+			$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+			$redis->sadd('S_Groups_' . $fcode, $groupId);
 			foreach($vehicleList as $vehicle) {
 				$redis->sadd($groupId,$vehicle);
 			}
@@ -139,14 +139,14 @@ class VdmGroupController extends \BaseController {
 					
 		$redis = Redis::connection();
 		$groupId=$id;
-		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 		
 		
 		$vehicleList = $redis->smembers($groupId);
 		
 		//S_Vehicles_
 		foreach($vehicleList as $vehicle) {
-			$result = $redis->sismember("S_Vehicles_" . $cpyCode,$vehicle);
+			$result = $redis->sismember("S_Vehicles_" . $fcode,$vehicle);
 			if($result == 0) {
 				$redis->srem($groupId,$vehicle);
 			}
@@ -175,9 +175,9 @@ class VdmGroupController extends \BaseController {
 		$redis = Redis::connection();
 		$groupId=$id;
 		
-		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
-		$vehicles = $redis->smembers('S_Vehicles_' . $cpyCode);
+		$vehicles = $redis->smembers('S_Vehicles_' . $fcode);
 		
 		$vehicleList=null;
 		foreach($vehicles as $key=>$value) {
@@ -235,16 +235,16 @@ class VdmGroupController extends \BaseController {
 		$redis = Redis::connection();
 		
 		$groupId = 	$id;
-		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 		
 		
-		$redis->srem('S_Groups_' . $cpyCode,$groupId);
+		$redis->srem('S_Groups_' . $fcode,$groupId);
 		
 		$redis->del($groupId);
 		
 		
 		
-		$userList = $redis->smembers('S_Users_' . $cpyCode);
+		$userList = $redis->smembers('S_Users_' . $fcode);
 		
 		foreach ( $userList as $user ) {
 			$redis->srem($user,$groupId);

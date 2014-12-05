@@ -12,9 +12,9 @@ class VdmUserController extends \BaseController {
 		}
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
-		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
-		Log::info('username:' . $username . '  :: cpyCode' . $cpyCode);
-		$redisUserCacheId = 'S_Users_' . $cpyCode;
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		Log::info('username:' . $username . '  :: fcode' . $fcode);
+		$redisUserCacheId = 'S_Users_' . $fcode;
 	
 		$userList = $redis->smembers ( $redisUserCacheId);
 		
@@ -30,7 +30,7 @@ class VdmUserController extends \BaseController {
 			$userGroupsArr = array_add ( $userGroupsArr, $value, $userGroups );
 		}
 		
-		return View::make ( 'vdm.users.index' )->with ( 'cpyCode', $cpyCode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'userList', $userList );
+		return View::make ( 'vdm.users.index' )->with ( 'fcode', $fcode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'userList', $userList );
 	}
 	
 	/**
@@ -44,9 +44,9 @@ class VdmUserController extends \BaseController {
 		}
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
-		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		
-		$redisGrpId = 'S_Groups_' . $cpyCode;
+		$redisGrpId = 'S_Groups_' . $fcode;
 		// $vehicleGroups=array("No groups found");
 		$vehicleGroups = null;
 		$size = $redis->scard ( $redisGrpId );
@@ -74,9 +74,9 @@ class VdmUserController extends \BaseController {
 		}
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
-		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		$userId = Input::get ( 'userId' );
-		$val1= $redis->sismember ( 'S_Users_' . $cpyCode, $userId );
+		$val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
 		
 		$rules = array (
 				'userId' => 'required',
@@ -103,8 +103,8 @@ class VdmUserController extends \BaseController {
 				$redis->sadd ( $userId, $grp );
 			}
 			
-			$redis->sadd ( 'S_Users_' . $cpyCode, $userId );
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':cpyCode', $cpyCode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
+			$redis->sadd ( 'S_Users_' . $fcode, $userId );
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
 			$password='awsome';
 			$user = new User;
 			
@@ -164,13 +164,13 @@ class VdmUserController extends \BaseController {
 		
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
-		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		
 		$mobileNo = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':mobileNo' );
 		$email = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':email' );
 		
 		
-		$redisGrpId = 'S_Groups_' . $cpyCode;
+		$redisGrpId = 'S_Groups_' . $fcode;
 	
 		$groupList = $redis->smembers ( $redisGrpId);
 		
@@ -200,7 +200,7 @@ class VdmUserController extends \BaseController {
 		}
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
-		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		
 		$rules = array (
 				'mobileNo' => 'required',
@@ -224,7 +224,7 @@ class VdmUserController extends \BaseController {
 			foreach ( $vehicleGroups as $grp ) {
 				$redis->sadd ( $userId, $grp );
 			}
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':cpyCode', $cpyCode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
 			
 			// redirect
 			Session::flash ( 'message', 'Successfully updated ' . $userId . '!' );
@@ -245,13 +245,13 @@ class VdmUserController extends \BaseController {
 		$username = Auth::user ()->username;
 		$userId = $id;
 		$redis = Redis::connection ();
-		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		
-		$redis->srem ( 'S_Users_' . $cpyCode, $userId );
+		$redis->srem ( 'S_Users_' . $fcode, $userId );
 		$redis->del ( $userId );
 
 		$email=$redis->hget('H_UserId_Cust_Map',$userId.':email');
-		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':cpyCode', $userId . ':mobileNo', $userId.':email');
+		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email');
 		
 		Log::info(" about to delete user" .$userId);
 		
@@ -261,7 +261,7 @@ class VdmUserController extends \BaseController {
 		Session::put('email',$email);
 		Log::info("Email Id :" . Session::get ( 'email1' ));
 	/*	
-		Mail::queue('emails.welcome', array('fname'=>$cpyCode,'userId'=>$userId), function($message)
+		Mail::queue('emails.welcome', array('fname'=>$fcode,'userId'=>$userId), function($message)
 		{
 			Log::info("Inside email :" . Session::get ( 'email' ));
 		

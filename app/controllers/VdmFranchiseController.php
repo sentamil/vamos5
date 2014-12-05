@@ -16,7 +16,7 @@ class VdmFranchiseController extends \BaseController {
 		
 		$redis = Redis::connection ();
 		
-		$fcodeArray = $redis->smembers('S_Customers');
+		$fcodeArray = $redis->smembers('S_Franchises');
 		
 		$fnameArray=null;
 		
@@ -86,7 +86,7 @@ class VdmFranchiseController extends \BaseController {
 		$validator = Validator::make ( Input::all (), $rules );
 		$userId = Input::get ('userId');
 		$fcode = Input::get ( 'fcode' );
-		$val = $redis->sismember('S_Customers',$fcode);
+		$val = $redis->sismember('S_Franchises',$fcode);
 		$val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
 
 			
@@ -121,7 +121,7 @@ class VdmFranchiseController extends \BaseController {
 			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'deviceModel'=>$deviceModel);
 			
 
-			$redis->sadd('S_Customers',$fcode);
+			$redis->sadd('S_Franchises',$fcode);
 			
 			
 	
@@ -129,10 +129,10 @@ class VdmFranchiseController extends \BaseController {
 					$fcode.':landline',$landline,$fcode.':mobileNo1',$mobileNo1,$fcode.':mobileNo2',$mobileNo2,
 					$fcode.':email1',$email1,$fcode.':email2',$email2,$fcode.':userId',$userId);
 			
-			$cpyCode=$fcode;
+
 			
-			$redis->sadd ( 'S_Users_' . $cpyCode, $userId );
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':cpyCode', $cpyCode, $userId . ':mobileNo', $mobileNo1,$userId.':email',$email1 );
+			$redis->sadd ( 'S_Users_' . $fcode, $userId );
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo1,$userId.':email',$email1 );
 			
 
 			
@@ -159,8 +159,8 @@ class VdmFranchiseController extends \BaseController {
 			$user->email='support@vaomsys.com';
 			$user->password=Hash::make($password);
 			$user->save();
-			$redis->sadd ( 'S_Users_' . $cpyCode, $vamosid );
-			$redis->hmset ( 'H_UserId_Cust_Map', $vamosid . ':cpyCode', $cpyCode);
+			$redis->sadd ( 'S_Users_' . $fcode, $vamosid );
+			$redis->hmset ( 'H_UserId_Cust_Map', $vamosid . ':fcode', $fcode);
 						
 			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
 			{
@@ -297,7 +297,7 @@ class VdmFranchiseController extends \BaseController {
 			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'deviceModel'=>$deviceModel);
 				
 		
-			$val = $redis->sadd('S_Customers',$fcode);
+			$val = $redis->sadd('S_Franchises',$fcode);
 				
 			log::info(" redis return code :"+$val);
 			//TODO
@@ -316,10 +316,9 @@ class VdmFranchiseController extends \BaseController {
 					$fcode.':landline',$landline,$fcode.':mobileNo1',$mobileNo1,$fcode.':mobileNo2',$mobileNo2,
 					$fcode.':email1',$email1,$fcode.':email2',$email2);
 			
-			$cpyCode = $fcode;
 			
-			$redis->sadd ( 'S_Users_' . $cpyCode, $userId );
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':cpyCode', $cpyCode, $userId . ':mobileNo',
+			$redis->sadd ( 'S_Users_' . $fcode, $userId );
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo',
 					 $mobileNo1,$userId.':email',$email1 );
 		
 /*
@@ -375,10 +374,10 @@ class VdmFranchiseController extends \BaseController {
 				$fcode.':landline',$fcode.':mobileNo1',$fcode.':mobileNo2',
 				$fcode.':email1',$fcode.':email2',$fcode.':userId');
 		
-		$redis->srem('S_Customers',$fcode);
+		$redis->srem('S_Franchises',$fcode);
 
 		$redis->srem ( 'S_Users_' . $fcode, $userId );
-		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':cpyCode', $userId . ':mobileNo', $userId.':email');
+		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email');
 		
 		Log::info(" about to delete user" .$userId);
 		
@@ -387,8 +386,8 @@ class VdmFranchiseController extends \BaseController {
 		$vamosid = 'vamos'.$fcode;
 		
 		
-		$redis->srem ( 'S_Users_' . $cpyCode, $vamosid );
-		$redis->hdel ( 'H_UserId_Cust_Map', $vamosid . ':cpyCode');
+		$redis->srem ( 'S_Users_' . $fcode, $vamosid );
+		$redis->hdel ( 'H_UserId_Cust_Map', $vamosid . ':fcode');
 		
 		
 		Session::put('email1',$email1);

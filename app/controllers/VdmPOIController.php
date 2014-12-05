@@ -18,8 +18,8 @@ class VdmPOIController extends \BaseController {
 		}
 		$username = Auth::user()->username;
 		$redis = Redis::connection();
-		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
-		$vehicleList = $redis->smembers('S_Vehicles_' . $cpyCode);
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		$vehicleList = $redis->smembers('S_Vehicles_' . $fcode);
 		//H_Vehicle_Device_Map
 		$i=0;
 		$proximityArr=null;
@@ -45,9 +45,9 @@ class VdmPOIController extends \BaseController {
 		$username = Auth::user()->username;
 		$redis = Redis::connection();
 		
-		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 		
-		$vehicleList = $redis->smembers('S_Vehicles_' . $cpyCode);
+		$vehicleList = $redis->smembers('S_Vehicles_' . $fcode);
 		
 		$userVehicles=null;
 		
@@ -74,8 +74,8 @@ class VdmPOIController extends \BaseController {
 		}
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
-		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
-		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $cpyCode;
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 		$rules = array (
 				'vehicleId' => 'required',
 				'proximityLevel1' => 'required',
@@ -258,8 +258,8 @@ class VdmPOIController extends \BaseController {
 		$proximityArr=null;
 		$geoAddres=null;
 		$geoCoordinates =null;
-		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
-		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $cpyCode;
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 		
 		while($i<=6) {
 			$proxLevel = $redis->hget($vehicleDeviceMapId,$vehicleId . ':loc' . $i .':proxLevel' );
@@ -306,10 +306,10 @@ class VdmPOIController extends \BaseController {
 		}
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
-	//	$cpyCode = $redis->hget ( $vehicleDeviceMapId, $username . ':cpyCode' );
-		$cpyCode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':cpyCode' );
+	//	$fcode = $redis->hget ( $vehicleDeviceMapId, $username . ':fcode' );
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 	
-		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $cpyCode;
+		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 		$rules = array (
 				'vehicleId' => 'required',
 				'proximityLevel1' => 'required',
@@ -426,8 +426,8 @@ class VdmPOIController extends \BaseController {
 		}
 		$username = Auth::user()->username;
 		$redis = Redis::connection();
-		$cpyCode = $redis->hget('H_UserId_Cust_Map', $username . ':cpyCode');
-		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $cpyCode;
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 		$vehicleId = 	$id;
 		$i=1;
 		while($i<6) {
