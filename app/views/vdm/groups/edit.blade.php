@@ -14,13 +14,26 @@
 		{{ Form::label('groupId' , $groupId) }}
 	</div>
 	
-
+<!-- 
 	
 	<div class="form-group">
 		{{ Form::label('vehicleList', 'Vehicle List (press shift to select multiple vehicles)') }}
 		{{ Form::select('vehicleList[]', $vehicleList, Input::old('vehicleList'),  array('multiple' => true,'class' => 'form-control')) }}
 
 	</div>
+	 -->
+		 <div class="form-group">
+	 {{ Form::label('vehicleList', 'Select the vehicles:') }}
+	 </div>
+	 
+		@foreach($vehicleList as $key => $value)
+			 
+			{{ Form::checkbox('vehicleList[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field']) }}
+			{{ Form::label($value) }}
+			<br/>
+		@endforeach
+		</br/>
+		</br/>
 
 	{{ Form::submit('Update the Group!', array('class' => 'btn btn-primary')) }}
 

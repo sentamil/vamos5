@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="tableExport.js"></script>
+	<script type="text/javascript" src="jquery.base64.js"></script>
+	<script type="text/javascript" src="sprintf.js"></script>
+	<script type="text/javascript" src="jspdf.js"></script>
+	<script type="text/javascript" src="base64.js"></script>
+<script>
+$( document ).ready(function() {
+    console.log( "ready!" );
+    $("#export").click(function() {
+    	
+		// $('#tableID1').tableExport({type:'pdf',escape:'false'});
+		$('#tableID').tableExport({type:'pdf',pdfFontSize:'8',escape:'false'});
+
+	});
+});	
+</script>
+</head>
+<body ng-app="main">
+<div ng-controller="DemoCtrl">
+	<input type="button" id="export" value="Export"></input>
+			<table class="table table-bordered" id="tableID" style="background-color: rgb(247, 247, 247);">
+		   	<tr style="text-align:center; font-weight: bold;">
+			  	<td colspan="4"> Vehical Group</td>
+			  	<td >{{data[0].group}}</td>
+			  	<td colspan="2">Total Vehicle</td>
+			  	<td >{{data[0].totalVehicles}}</td>
+			  	<td colspan="3">Total Km - today</td>
+			  	<td>{{data[0].distance}}</td>
+
+		  	</tr>
+		  	<tr style="text-align:center;font-weight: bold;">
+			  	<td colspan="4">Alarms/Atentions</td>
+		       	<td>{{data[0].alerts}}</td>
+		      	<td colspan="2">Vehicles Online</td>
+		      	<td>{{data[0].online}}</td>
+		      	<td colspan="3">Report Date</td>
+		      	<td></td>
+		    </tr>
+			<tr style="background-color: rgb(236, 183, 247); text-align:center" >
+				<td>Vehicle ID</td>
+				<td>Vehicle Name</td>
+				<td>Reg No</td>
+				<td>Driver Name</td>
+				<td>Mobile Number</td>
+				<td>Last Seen</td>
+				<td>km today</td>
+				<td>Current Speed</td>
+				<td>Current Position</td>
+				<td>Ignition Status</td>
+				<td>Current Location</td>
+				<td>Google Map Link</td>
+			</tr>
+			<tr ng-repeat="user in data[0].vehicleLocations" style="text-align:center">
+				<td>{{user.vehicleId}}</td>
+				<td></td>
+				<td>{{user.regNo}}</td>
+				<td>{{user.driverName}}</td>
+				<td>{{user.mobileNo}}</td>
+				<td>{{user.lastSeen}}</td>
+				<td>{{user.distanceCovered}}</td>
+				<td>{{user.speed}}</td>
+				<td>{{user.position}}</td>
+				<td>{{user.status}}</td>
+				<td></td>
+				<td></td>
+
+			</tr>
+		</table>
+</div>
+</body>
+<script type="text/javascript">
+var app = angular.module('main', []).
+controller('DemoCtrl', function($scope,$http) {
+    $http.get("http://128.199.175.189/vamo/public/getVehicleLocations").success(function(loc) {
+   $scope.data=JSON.parse(loc[0]);	
+	}            
+});
+</script>
+<style type="text/css">
+body {
+    padding: 10px !important;   
+}</style>
+</html>

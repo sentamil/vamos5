@@ -176,13 +176,16 @@ class VdmUserController extends \BaseController {
 		
 		$vehicleGroups = null;
 		
+		$selectedGroups = $redis->smembers($userId); 
+		
+		
 		foreach ( $groupList as $key => $value ) {
 			$vehicleGroups = array_add ( $vehicleGroups, $value, $value );
 		}
 		
 		return View::make ( 'vdm.users.edit', array (
 				'userId' => $userId 
-		) )->with ( 'vehicleGroups', $vehicleGroups )->with ( 'mobileNo', $mobileNo )->with('email',$email);
+		) )->with ( 'vehicleGroups', $vehicleGroups )->with ( 'mobileNo', $mobileNo )->with('email',$email)->with('selectedGroups',$selectedGroups);
 	}
 	
 	/**

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="Satheesh">
+<title>Easy Locator</title>
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="../app/views/reports/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="assets/css/simple-sidebar.css" rel="stylesheet">
+<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css">
+<link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
+
+</head>
+<body ng-app="hist">
+	<div ng-controller="histCtrl">
+       
+	       	<div class="box">
+		        
+		       
+		        <div class="box-body">
+		        	
+					 		 <center><h3><b>{{tableTitle}}</b></h3></center>
+			   				 <div ng-show='overspeedreport'>
+			   				 <table class="table table-bordered">
+			   				 	<thead>
+								   	<tr style="text-align:center; font-weight: bold;" >
+									  	<td colspan="3"><b>Vehical Group</b></td>
+									  	<td >{{id}}</td>
+									  	<td colspan="2"><b>Vehicle ID</b></td>
+									  	<td colspan="2">{{hist.vehicleId}}</td>	
+								  	</tr>
+								  	<tr style="text-align:center; font-weight: bold;">
+									  	<td colspan="3"><b>Register No</b></td>
+								       	<td>{{hist.regNo}}</td>
+								      	<td colspan="2"><b>Speed Limit</b></td>
+								      	<td colspan="2">{{hist.overSpeedLimit}}</td>
+								    </tr>
+									<tr>
+										<th class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Last Seen</th>
+										<th class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed</th>
+										<th class="id" custom-sort order="''" sort="sort" style="text-align:center;">Location</th>
+										<th class="id" custom-sort order="'isOverSpeed'" sort="sort" style="text-align:center;">Over Speed</th>
+										<th class="id" custom-sort order="'odoDistance'" sort="sort" style="text-align:center;">Odo (DS)</th>
+										<th class="id" custom-sort order="'tripDistance'"sort="sort" style="text-align:center;">Trip (DS)</th>
+										<th colspan="2" class="id" custom-sort order="''" sort="sort" style="text-align:center;">Google Map Link</th>
+									</tr></thead>
+									<tr ng-repeat="user in overspeeddata.slice().reverse() | orderBy:sort.sortingOrder:sort.reverse " class="active" style="text-align:center">
+										<td>{{user.lastSeen}}</td>
+										<td>{{user.speed}}</td>
+										<td>{{user.latitude}},{{user.longitude}}</td>
+										<td>{{user.isOverSpeed}}</td>
+										<td>{{user.odoDistance}}</td>
+										<td>{{user.tripDistance}}</td>
+										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>						
+									</tr>
+							</table>
+							</div>
+			   			
+			   				 <div ng-show='movementreport'>
+			   				 <table class="table table-bordered table-condensed table-hover">
+			   				 	<thead>
+								   	<tr style="text-align:center; font-weight: bold;">
+									  	<td colspan="2">Vehical Group</td>
+									  	<td >{{id}}</td>
+									  	<td colspan="1">Vehicle ID</td>
+									  	<td >{{hist.vehicleId}}</td>					
+								  	</tr>
+								  	<tr style="text-align:center;font-weight: bold;">
+									  	<td colspan="2">Register No</td>
+								       	<td>{{hist.regNo}}</td>
+								      	<td colspan="1">Speed Limit</td>
+								      	<td>{{hist.overSpeedLimit}}</td>
+								    </tr>
+									<tr style="text-align:center" >
+										<th class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Last Seen</th>
+										<th class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed</th>
+										<th class="id" custom-sort order="''" sort="sort" style="text-align:center;">Location</th>
+										<th class="id" custom-sort order="'isOverSpeed'" sort="sort" style="text-align:center;">Is Over Speed</th>
+										<th class="id" custom-sort order="'insideGeoFence'" sort="sort" style="text-align:center;">Is GeoFence Breached</th>
+									</tr></thead>
+					                <tbody>
+									<tr ng-repeat="user in movementdata | orderBy:sort.sortingOrder:sort.reverse " class="active" style="text-align:center">
+										<td>{{user.lastSeen}}</td>
+										<td>{{user.speed}}</td>
+										<td>{{user.latitude}},{{user.longitude}}</td>
+										<td>{{user.isOverSpeed}}</td>
+										<td>{{user.insideGeoFence}}</td>
+									</tr>
+									</tbody>
+							</table>
+							</div>
+			   			 
+			   				  <div ng-show='stoppedparkingreport'>
+			   				 <table class="table table-bordered table-condensed table-hover">
+			   				 	<thead>
+								   	<tr style="text-align:center; font-weight: bold;">
+									  	<td colspan="1"><b>Vehical Group</b></td>
+									  	<td>{{id}}</td>
+									  	<td colspan="1"><b>Vehicle ID</b></td>
+									  	<td>{{hist.vehicleId}}</td>
+									  	<td colspan="1"><b>Register No</b></td>
+								       	<td>{{hist.regNo}}</td>				
+								  	</tr>
+								  	
+									<tr style="text-align:center;font-weight: bold;">
+										<th class="id" custom-sort order="''" sort="sort" style="text-align:center;">Location</th>
+										<th class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Last Seen</th>
+										<th colspan="2" class="id" custom-sort order="'parkedTime'" sort="sort" style="text-align:center;">Parked Time</th>
+										<th colspan="2" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Total Parked Time</th>
+									</tr></thead>
+									<tbody>
+									<tr ng-repeat="user in parkeddata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+										<td>{{user.latitude}},{{user.longitude}}</td>
+										<td>{{user.lastSeen}}</td>
+										<td colspan="2">{{user.parkedTime}}</td>
+										<td colspan="2">{{user.totalParkedTime}}</td>
+									</tr>
+									</tbody>
+							</table>
+							</div>
+			   			 
+			   				  <div ng-show='geofencereport'>
+			   				 <table class="table table-bordered table-condensed table-hover">
+			   				 	<thead>
+								   	<tr style="text-align:center; font-weight: bold;">
+									  	<td colspan="1">Vehical Group</td>
+									  	<td >{{}}</td>
+									  	<td colspan="1">Vehicle ID</td>
+									  	<td >{{hist.vehicleId}}</td>					
+								  	</tr>
+								  	<tr style="text-align:center; font-weight: bold;">
+									  	<td colspan="1">Register No</td>
+								       	<td>{{hist.regNo}}</td>
+								      	<td colspan="1">Speed Limit</td>
+								      	<td>{{hist.overSpeedLimit}}</td>
+								    </tr>
+									<tr style="text-align:center" >
+										<th class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Last Seen</th>
+										<th class="id" custom-sort order="''" sort="sort" style="text-align:center;">Location</th>
+										<th class="id" custom-sort order="'isOverSpeed'" sort="sort" style="text-align:center;">Parking Time</th>
+										<th class="id" custom-sort order="'insideGeoFence'" sort="sort" style="text-align:center;">Duration</th>
+									</tr></thead>
+									<tr ng-repeat="user in hist.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+										<td>{{user.lastSeen}}</td>
+										<td>{{user.latitude}},{{user.longitude}}</td>
+										<td>{{user.isOverSpeed}}</td>
+										<td>{{user.insideGeoFence}}</td>
+									</tr>							
+							</table>
+							</div>
+			   		
+    		 		
+    		 		      		
+		        </div><!-- /.box-body -->
+		       
+		    </div>	
+
+       
+                 
+	<script src="assets/js/jquery-1.11.0.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
+    <script src="../app/views/reports/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="../app/views/reports/moment.js"></script>
+    <script src="../app/views/reports/bootstrap-datetimepicker.js"></script>
+    <script src="assets/js/static.js"></script>
+	<script src="../app/views/reports/history.js"></script>
+	<script>
+	    
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+		
+        $(function () {
+                $('#dateFrom, #dateTo').datetimepicker({
+					format:'YYYY-MM-DD',
+					useCurrent:true,
+					pickTime: false
+				});
+				$('#timeFrom').datetimepicker({
+					pickDate: false
+				});
+				$('#timeTo').datetimepicker({
+					useCurrent:true,
+					pickDate: false
+				});
+        });
+        
+       
+        
+    </script>
+</body>
+</html>
+

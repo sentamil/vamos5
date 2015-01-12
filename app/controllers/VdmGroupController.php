@@ -81,8 +81,13 @@ class VdmGroupController extends \BaseController {
 	public function store()
 	{
 		
-	
+	/*
+		$all = Input::get('tags');
 
+		foreach($all as $vehicle) {
+			log::info(' vehicle ' . $vehicle);
+		}
+*/
 		
 		if(!Auth::check()) {
 			return Redirect::to('login');
@@ -179,13 +184,13 @@ class VdmGroupController extends \BaseController {
 
 		$vehicles = $redis->smembers('S_Vehicles_' . $fcode);
 		
+		$selectedVehicles =  $redis->smembers($groupId);
+		
 		$vehicleList=null;
 		foreach($vehicles as $key=>$value) {
 			$vehicleList=array_add($vehicleList, $value, $value);
 		}
-		
-	
-		return View::make('vdm.groups.edit',array('groupId'=>$groupId))->with('vehicleList', $vehicleList);
+		return View::make('vdm.groups.edit',array('groupId'=>$groupId))->with('vehicleList', $vehicleList)->with('selectedVehicles',$selectedVehicles);
 	}
 
 

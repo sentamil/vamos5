@@ -1,11 +1,27 @@
 <?php
+Log::info("Get Vehicle Locations....");
 
 $input = Input::all();
+
+$redis = Redis::connection ();
+$ipaddress = $redis->get('ipaddress');
+
+
 if (! Auth::check ()) {
 	return Redirect::to ( 'login' );
 }
+
 $username = Auth::user ()->username;
 
+//TODO - this hardcoding should be removed
+//$username='demouser1';
+/*
+$vehicelId=Input::get('vehicleId');
+$groupId=Input::get('groupId');
+Session::put('vehicleIdParams','vehicleId='.$vehicelId.'&groupId='.$groupId);
+$value = Session::get('vehicleIdParams');
+log::info(" value from session=" . $value);
+*/
 $parameters='?userId='. $username;
 foreach ($input as $key => $value) {
    
@@ -14,7 +30,7 @@ foreach ($input as $key => $value) {
 }
  log::info( ' parameters :' . $parameters);
 
-		$url = "http://128.199.175.189:20141/getVehicleLocations" . $parameters;
+		 $url = 'http://' .$ipaddress .':9000/getVehicleLocations' . $parameters;
 		$url=htmlspecialchars_decode($url);
 		 log::info( 'Routing to backed  :' . $url );
 
@@ -32,4 +48,5 @@ log::info( 'curl status  :' .$httpCode  );
 
 echo $response;
 ?>
+
 

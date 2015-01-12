@@ -1,6 +1,6 @@
 @extends('includes.vdmheader')
 @section('mainContent')
-<h1>Amend Vehicles</h1>
+<h1>Edit Vehicle</h1>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
@@ -51,17 +51,32 @@
 		{{ Form::text('mobileNo', $refData['mobileNo'], array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
-		{{ Form::label('vehicleCap', 'Vehicle Capacity') }}
-		{{ Form::text('vehicleCap', $refData['vehicleCap'], array('class' => 'form-control')) }}
+		{{ Form::label('overSpeedLimit', 'OverSpeed Limit') }}
+		{{ Form::text('overSpeedLimit', $refData['overSpeedLimit'], array('class' => 'form-control')) }}
 	</div>
 	
     <div class="form-group">
-		{{ Form::label('odoDistance', 'Odometer Reading') }}
-		
+		{{ Form::label('odoDistance', 'Odometer Reading') }}	
 		{{ Form::text('odoDistance', $refData['odoDistance'], array('class' => 'form-control')) }}
 		
 	</div>
 	
+		
+    <div class="form-group">
+		{{ Form::label('driverName', 'Driver Name') }}
+		{{ Form::text('driverName', $refData['driverName'], array('class' => 'form-control')) }}
+		
+	</div>
+	
+	<div class="form-group">
+		{{ Form::label('gpsSimNo', 'GPS Sim Number') }}
+		{{ Form::text('gpsSimNo', $refData['gpsSimNo'], array('class' => 'form-control')) }}
+	</div>
+	
+	<div class="form-group">
+		{{ Form::label('email', 'Email for Notification') }}
+		{{ Form::text('email', $refData['email'], array('class' => 'form-control')) }}
+	</div>
 	
 	{{ Form::submit('Update the Vehicle!', array('class' => 'btn btn-primary')) }}
 

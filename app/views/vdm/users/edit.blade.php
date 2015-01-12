@@ -25,12 +25,19 @@
 		{{ Form::text('email', $email, array('class' => 'form-control')) }}
 	</div>
 
-	<div class="form-group">
-		{{ Form::label('vehicleGroups', 'Vehicle Groups') }}
-		{{ Form::select('vehicleGroups[]', $vehicleGroups, Input::old('vehicleGroups'),  array('multiple' => true,'class' => 'form-control')) }}
-		
-	</div>
-
+		 <div class="form-group">
+	 {{ Form::label('vehicleList', 'Select the groups:') }}
+	 </div>
+	 
+		@foreach($vehicleGroups as $key => $value)
+			 
+			{{ Form::checkbox('vehicleGroups[]', $key,  in_array($value,$selectedGroups), ['class' => 'field']) }}
+			{{ Form::label($value) }}
+			<br/>
+		@endforeach
+		</br/>
+		</br/>
+	
 	{{ Form::submit('Update the User!', array('class' => 'btn btn-primary')) }}
 
 {{ Form::close() }}

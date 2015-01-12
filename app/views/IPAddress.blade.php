@@ -16,18 +16,18 @@
 	</div>
 	
 	<div class="form-group">
-		{{ Form::label('deviceHandler_gt06n', 'Device Handler GT06N') }}
-		{{ Form::text('deviceHandler_gt06n', $deviceHandler_gt06n, array('class' => 'form-control')) }}
+		{{ Form::label('gt06nCount', 'GT06N Count') }}
+		{{ Form::text('gt06nCount', $gt06nCount, array('class' => 'form-control')) }}
 	</div>
 	
 	<div class="form-group">
-		{{ Form::label('portNo_gt06n', 'Port No GT06N') }}
-		{{ Form::text('portNo_gt06n', $portNo_gt06n, array('class' => 'form-control')) }}
+		{{ Form::label('tr02Count', 'TR02 Count') }}
+		{{ Form::text('tr02Count', $tr02Count, array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('range_gt06n', 'range GT06N') }}
-		{{ Form::text('range_gt06n', $range_gt06n, array('class' => 'form-control')) }}
+		{{ Form::label('gt03aCount', 'GT03A Count') }}
+		{{ Form::text('gt03aCount', $gt03aCount, array('class' => 'form-control')) }}
 	</div>
 	
 	

@@ -46,13 +46,13 @@ class HomeController extends BaseController {
 
 		$redis = Redis::connection ();
 		$ipAddress = $redis->hget('H_IP_Address','ipAddress');
-		$deviceHandler = $redis->hget('H_IP_Address','deviceHandler:GT06N');
-		$port = $redis->hget('H_IP_Address','portNo:GT06N');
-		$range = $redis->hget('H_IP_Address','range:GT06N');
+		$gt06nCount = $redis->hget('H_IP_Address','gt06nCount');
+		$tr02Count = $redis->hget('H_IP_Address','tr02Count');
+		$gt03aCount = $redis->hget('H_IP_Address','gt03aCount');
 		
 		
 		return View::make ( 'IPAddress', array (
-				'ipAddress' => $ipAddress ) )->with ( 'deviceHandler_gt06n', $deviceHandler )->with('portNo_gt06n',$port)->with('range_gt06n',$range);
+				'ipAddress' => $ipAddress ) )->with ( 'gt06nCount', $gt06nCount )->with('tr02Count',$tr02Count)->with('gt03aCount',$gt03aCount);
 		
 		
 	}
@@ -71,9 +71,9 @@ class HomeController extends BaseController {
 		
 		$rules = array (
 				'ipAddress' => 'required',
-				'deviceHandler_gt06n' => 'required',
-				'portNo_gt06n' => 'required',
-				'range_gt06n' => 'required'
+				'gt06nCount' => 'numeric',
+				'tr02Count' => 'numeric',
+				'gt03aCount' => 'numeric'
 		
 		);
 		$validator = Validator::make ( Input::all (), $rules );
@@ -82,15 +82,39 @@ class HomeController extends BaseController {
 		} else {
 			$redis = Redis::connection ();
 			$ipAddress= Input::get ( 'ipAddress' );
-			$deviceHandler= Input::get ( 'deviceHandler_gt06n' );
-			$port= Input::get ( 'portNo_gt06n' );
-			$range= Input::get ( 'range_gt06n' );
-			$redis->hmset('H_IP_Address','ipAddress',$ipAddress,'deviceHandler:GT06N',$deviceHandler,
-				'portNo:GT06N',$port,'range:GT06N',$range);
+			$gt06nCount= Input::get ( 'gt06nCount' );
+			$tr02Count= Input::get ( 'tr02Count' );
+			$gt03aCount= Input::get ( 'gt03aCount' );
+			$redis->hmset('H_IP_Address','ipAddress',$ipAddress,'gt06nCount',$gt06nCount,
+				'tr02Count',$tr02Count,'gt03aCount',$gt03aCount);
 		}
 		Session::flash ( 'message', 'Successfully added ipAddress details'. '!' );
 		
 		return Redirect::to ( 'admin' );
+		
+	}
+	
+	public function reverseGeoLocation()
+	{
+		
+		Log::info("Into reverse Geo Location");
+		$lat = Input::get('lat');
+		$lng=Input::get('lng');
+		
+		Log::info("lat" . $lat . 'lng : ' . $lng);
+		//https://maps.google.com/maps/api/geocode/json?latlng
+		
+		$url = "https://maps.google.com/maps/api/geocode/json?latlng=".$lat.",".$lng."&key=AIzaSyBQFgD9_Pm59zGz0ZfLYCUiH_7zbuZ_bFM";
+		$data = @file_get_contents($url);
+		$jsondata = json_decode($data,true);
+		if(is_array($jsondata) && $jsondata['status'] == "OK")
+		{
+			Log::info("address:" . $jsondata['results']['1']['formatted_address']);
+			echo $jsondata['results']['1']['formatted_address'];
+		}
+		else {
+			Log::info("empty");
+		}
 		
 	}
 	
@@ -129,7 +153,9 @@ class HomeController extends BaseController {
 
 				// validation successful!
 				
-				return  Redirect::to('vdmVehicles');
+				//return  Redirect::to('vdmVehicles');
+				
+				return  Redirect::to('live');
 			//	return  Redirect::to('http://128.199.175.189:8080/maps/eldemo2/');
 				
 
@@ -143,6 +169,11 @@ class HomeController extends BaseController {
 			}
 
 		}
+	}
+	
+	public function track(){
+		
+		return View::make('track');
 	}
 
 	

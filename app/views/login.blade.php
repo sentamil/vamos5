@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>VAMO Systems Fleet Management</title>
+	<title>VAMOS</title>
+	
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 
 	
@@ -13,15 +14,21 @@
 <nav class="navbar navbar-inverse">
 
 <div class="navbar-header">
-		<a class="navbar-brand" ><h2> VAMO Systems Fleet Management </h2></a>
+
+		 <h1 class="logo"><a class="navbar-brand" ><img src="assets/imgs/logo.png"/>VAMO Systems Fleet Management</a></h1>
+		
+		<!-- 
+		<a class="navbar-brand" ><img src="assets/imgs/logo.png"/><h2> VAMO Systems Fleet Management </h2></a>
+		 -->
 	</div>
 	
 </nav>
+<br/>
 	{{ Form::open(array('url' => 'login')) }}
-		<h3><br/>Login</h3>
+		<h4>Login :</h4>
 
 		<!-- if there are login errors, show them here -->
-		<br/>
+	
 		<!-- 
 		<p>
 			{{ $errors->first('userName') }}
@@ -51,8 +58,8 @@
 				<br/>
 		<p>{{ Form::submit('Submit!') }}</p>
 			{{ Form::close() }}
-			
-	<h3>Password Reset</h3>
+					<br/>
+	<h4>Password Reset :</h4>
 
     <div>
       To reset your password, complete this form:
@@ -61,6 +68,24 @@
       
     </div>
 
+    <div>
+    
+    <br/>
+
+    
+   <h4> Browser Requirements :</h4>
+   VAMOS is built on the nifty features found in modern browsers. You'll need to one of the browsers below to use VAMOS effectively.
+  	
+<br/>
+<br/>
+   <p><a href="http://www.mozilla.org/en-US/firefox/new/">Mozilla Firefox - latest version</a></p>
+   <p><a href="https://www.google.com/chrome">Google Chrome - latest version</a></p>
+	<p><a href="http://www.apple.com/safari/">Apple Safari 8+</a></p>
+
+<p>Apple iOS 8+</p>
+
+<p>Android Version 4+</p>
+    </div>
 	
 </div>
 

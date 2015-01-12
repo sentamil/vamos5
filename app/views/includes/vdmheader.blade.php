@@ -17,8 +17,8 @@
 		<li><a href="{{ URL::to('vdmGroups/create') }}">Create a Group</a>
 		<li><a href="{{ URL::to('vdmUsers') }}">View All Users</a></li>
 		<li><a href="{{ URL::to('vdmUsers/create') }}">Create a User</a>
-		<li><a href="{{ URL::to('vdmPOI') }}">View All POI</a></li>
-		<li><a href="{{ URL::to('vdmPOI/create') }}">Add a POI</a>
+		<li><a href="{{ URL::to('vdmGF') }}">View All GeoFencing</a></li>
+		<li><a href="{{ URL::to('vdmGF/create') }}">Add a GeoFencing</a>
 		<li><a  href="{{ URL::to('logout/') }}">Logout User: {{Auth::user ()->username }}</a></li>	
 			
 	</ul>

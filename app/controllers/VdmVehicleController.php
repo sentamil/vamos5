@@ -83,10 +83,11 @@ class VdmVehicleController extends \BaseController {
 				'vehicleMake' => 'required',
 				'vehicleType' => 'required',
 				'oprName' => 'required',
-				'mobileNo' => 'required|numeric',
-				'vehicleCap' => 'required',
+				'overSpeedLimit' => 'required',
 				'deviceModel' => 'required', 
-				'odoDistance' => 'required' 
+				'odoDistance' => 'required',
+				'driverName' => 'required' ,
+				'gpsSimNo' => 'required'
 		);
 		$validator = Validator::make ( Input::all (), $rules );
 		if ($validator->fails ()) {
@@ -102,9 +103,12 @@ class VdmVehicleController extends \BaseController {
 			$vehicleType = Input::get ( 'vehicleType' );
 			$oprName = Input::get ( 'oprName' );
 			$mobileNo = Input::get ( 'mobileNo' );
-			$vehicleCap = Input::get ( 'vehicleCap' );
+			$overSpeedLimit = Input::get ( 'overSpeedLimit' );
 			$deviceModel = Input::get ( 'deviceModel' );
 			$odoDistance = Input::get ('odoDistance');
+			$driverName = Input::get ('driverName');
+			$gpsSimNo = Input::get ('gpsSimNo');
+			$email = Input::get ('email');
 			
 			$redis = Redis::connection ();
 			
@@ -120,8 +124,11 @@ class VdmVehicleController extends \BaseController {
 					'vehicleType' => $vehicleType,
 					'oprName' => $oprName,
 					'mobileNo' => $mobileNo,
-					'vehicleCap' => $vehicleCap,
-					'odoDistance' => $odoDistance
+					'overSpeedLimit' => $overSpeedLimit,
+					'odoDistance' => $odoDistance,
+					'driverName' => $driverName,
+					'gpsSimNo' => $gpsSimNo,
+					'email' => $email
 			);
 			
 			$refDataJson = json_encode ( $refDataArr );
@@ -135,6 +142,8 @@ class VdmVehicleController extends \BaseController {
 			$redis->sadd ( $cpyDeviceSet, $deviceId );
 			
 			$redis->hmset ( $vehicleDeviceMapId, $vehicleId , $deviceId, $deviceId, $vehicleId );
+			
+			
 			
            //this is for security check			
 			$redis->sadd ( 'S_Vehicles_' . $fcode, $vehicleId );
@@ -204,8 +213,12 @@ class VdmVehicleController extends \BaseController {
 		$details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
 		
 		$refData = json_decode ( $details, true );
-
-
+	    $refData = array_add($refData, 'overSpeedLimit', '50');
+	    $refData = array_add($refData, 'driverName', '');
+	    $refData = array_add($refData, 'gpsSimNo', '');
+	    $refData = array_add($refData, 'email', ' ');
+	   
+	   	   
 		return View::make ( 'vdm.vehicles.edit', array (
 				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData );
 	}
@@ -234,9 +247,11 @@ class VdmVehicleController extends \BaseController {
 				'vehicleType' => 'required',
 				'oprName' => 'required',
 				'mobileNo' => 'required|numeric',
-				'vehicleCap' => 'required',
+				'overSpeedLimit' => 'required',
 				'deviceModel' => 'required',
-				'odoDistance' => 'required'
+				'odoDistance' => 'required',
+				'driverName' => 'required',
+				'gpsSimNo' => 'required'
 		)
 		;
 		$validator = Validator::make ( Input::all (), $rules );
@@ -253,9 +268,12 @@ class VdmVehicleController extends \BaseController {
 			$vehicleType = Input::get ( 'vehicleType' );
 			$oprName = Input::get ( 'oprName' );
 			$mobileNo = Input::get ( 'mobileNo' );
-			$vehicleCap = Input::get ( 'vehicleCap' );
+			$overSpeedLimit = Input::get ( 'overSpeedLimit' );
 			$deviceModel = Input::get ( 'deviceModel' );
 			$odoDistance = Input::get ( 'odoDistance' );
+			$driverName = Input::get ( 'driverName' );
+			$gpsSimNo = Input::get ( 'gpsSimNo' );
+			$email = Input::get ( 'email' );
 		
 			$redis = Redis::connection ();
 
@@ -268,8 +286,11 @@ class VdmVehicleController extends \BaseController {
 					'vehicleType' => $vehicleType,
 					'oprName' => $oprName,
 					'mobileNo' => $mobileNo,
-					'vehicleCap' => $vehicleCap,
-					'odoDistance' => $odoDistance
+					'overSpeedLimit' => $overSpeedLimit,
+					'odoDistance' => $odoDistance,
+					'driverName' => $driverName,
+					'gpsSimNo' => $gpsSimNo,
+					'email' => $email
 			);
 			
 			$refDataJson = json_encode ( $refDataArr );
