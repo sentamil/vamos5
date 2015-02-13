@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="Satheesh">
+<title>VAMOS</title>
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="assets/css/simple-sidebar.css" rel="stylesheet">
+<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css">
+<link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+
+<style type="text/css">
+	#map_canvas{ width:100%; height:100%;}
+	.drop-menu {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: left;
+    padding: 10px 10px;
+    *font-size: 22px;
+    height: 25px;
+    max-height: 25px;
+    *width: 400px;
+    background: rgba(51, 51, 51, 0);
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+.box > .loading-img {
+z-index: 1020;
+background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
+}
+
+.table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+background-color: #ffffff;
+}
+	  
+</style>
+</head>
+<body ng-app="mapApp">
+	<div  ng-controller="mainCtrl">
+		
+		 	<div class="box">
+		        
+		       
+		        <div class="box-body">
+       
+       		<center><h4>Status Report</h4></center>
+       		
+       		<table class="table">
+					   	<tr style="font-weight: bold;">
+						  	<td>Vehicle Group : {{data1.group}}</td>					  
+						  	<td style="text-align: right;">Report Date : {{today}}</td>				
+					  	</tr>				  	
+		        	</table>
+    
+	       	 <table class="table table-bordered table-condensed table-hover">
+								   	<tr ng-hide ="true" style="text-align:center; font-weight: bold;">
+									  	<td colspan="4"> Vehical Group</td>
+									  	<td >{{data1.group}}</td>
+									  	<td colspan="2">Total Vehicle</td>
+									  	<td >{{data1.totalVehicles}}</td>
+									  	<td colspan="3">Total Km - today</td>
+									  	<td>{{data1.distance}}</td>						
+								  	</tr>
+								  	<tr ng-hide ="true" style="text-align:center;font-weight: bold;">
+									  	<td colspan="4">Alarms/Atentions</td>
+								       	<td>{{data1.alerts}}</td>
+								      	<td colspan="2">Vehicles Online</td>
+								      	<td>{{data1.online}}</td>
+								      	<td colspan="3">Report Date</td>
+								      	<td></td>
+								    </tr>
+									<tr style="text-align:center" >
+										<td width="5%">Vehicle ID</td>
+										<td ng-hide="true">Vehicle Name</td>
+										<td width="5%">Regn No</td>
+										<td width="5%">Driver Name</td>
+										<td ng-hide="true">Mobile Number</td>
+										<td width="5%">Last Seen</td>
+										<td width="5%">KM today</td>
+										<td width="5%">Current Speed</td>
+										<td width="5%">Current Position</td>
+										<td width="5%">Ignition Status</td>
+										<td width="5%">Current Location</td>
+										<td width="50%">Address</td>
+										<td width="5%">G-Map</td>
+									</tr>
+									<tr ng-repeat="user in data1.vehicleLocations" class="active" style="text-align:center">
+										<td>{{user.vehicleId}}</td>
+										<td ng-hide="true"></td>
+										<td>{{user.regNo}}</td>
+										<td>{{user.driverName}}</td>
+										<td ng-hide="true">{{user.mobileNo}}</td>
+										<td>{{user.lastSeen}}</td>
+										<td>{{user.distanceCovered}}</td>
+										<td>{{user.speed}}</td>
+										<td>{{user.position}}</td>
+										<td>{{user.status}}</td>
+										<td>{{user.latitude}}, {{user.longitude}}</td>
+										<td ng-if="user.address!=null">{{user.address}}</td>
+										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
+										<td get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
+										<td>Link</td>						
+									</tr>
+								</table>
+       </div>
+       <div ng-show="loading" class="overlay"></div>
+	   <div ng-show="loading" class="loading-img"></div>
+      </div>
+      </div>                   
+	<script src="assets/js/jquery-1.11.0.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
+    <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    <script src="assets/js/static.js"></script>
+	<script src="../app/views/reports/customjs/reports.js"></script>
+	
+    <!-- script src="assets/js/custom.js"></script -->   
+ 
+   
+</body>
+</html>
+

@@ -5,15 +5,14 @@ $input = Input::all();
 $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
 
-/*
+
 if (! Auth::check ()) {
 	return Redirect::to ( 'login' );
 }
 
 $username = Auth::user ()->username;
-*/
 //TODO - this hardcoding should be removed
-$username='demouser1';
+//$username='demouser1';
 
 $parameters='?userId='. $username;
 foreach ($input as $key => $value) {
@@ -23,7 +22,7 @@ foreach ($input as $key => $value) {
 }
  log::info( ' parameters :' . $parameters);
 
-		 $url = 'http://' .$ipaddress .':20141/getSelectedVehicleLocation' . $parameters;
+		 $url = 'http://' .$ipaddress .':9000/getSelectedVehicleLocation' . $parameters;
 		$url=htmlspecialchars_decode($url);
 		 log::info( 'Routing to backed  :' . $url );
 

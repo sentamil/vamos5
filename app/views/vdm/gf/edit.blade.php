@@ -31,8 +31,8 @@
 	
 	<div class="form-group">
 		{{ Form::label('proximityLevel1', 'Proximity Level') }}
-		{{ Form::select('proximityLevel1',  array('0' => 'Select a Level', '10m' => '10 m', '100m' => '100 m', '1km' => '1 km', '5km' => '5 km', '10km' => '10 km', '25km' => '25 km'),$gfDataArr['proximityLevel1'],array('class' => 'form-control')) }}
-		
+		{{ Form::select('proximityLevel1', array('0' => 'Select a Level', '10' => '10 m', '100' => '100 m', '1000' => '1 km', '5000' => '5 km', '10000' => '10 km', '25000' => '25 km'), $gfDataArr['proximityLevel1'], array('class' => 'form-control')) }}
+				
 	</div>
 	
 	
@@ -54,8 +54,8 @@
 	</div>
 	<div class="form-group">
 		{{ Form::label('proximityLevel2', 'Proximity Level') }}
-		{{ Form::select('proximityLevel2',  array('0' => 'Select a Level', '10m' => '10 m', '100m' => '100 m', '1km' => '1 km', '5km' => '5 km', '10km' => '10 km', '25km' => '25 km'), $gfDataArr['proximityLevel2'], array('class' => 'form-control')) }}
-		
+		{{ Form::select('proximityLevel2', array('0' => 'Select a Level', '10' => '10 m', '100' => '100 m', '1000' => '1 km', '5000' => '5 km', '10000' => '10 km', '25000' => '25 km'), $gfDataArr['proximityLevel2'], array('class' => 'form-control')) }}
+				
 	</div>
 
 	
@@ -77,8 +77,8 @@
 	
 	<div class="form-group">
 		{{ Form::label('proximityLevel3', 'Proximity Level') }}
-		{{ Form::select('proximityLevel3',  array('0' => 'Select a Level', '10m' => '10 m', '100m' => '100 m', '1km' => '1 km', '5km' => '5 km', '10km' => '10 km', '25km' => '25 km'), $gfDataArr['proximityLevel3'], array('class' => 'form-control')) }}
-				
+		{{ Form::select('proximityLevel3', array('0' => 'Select a Level', '10' => '10 m', '100' => '100 m', '1000' => '1 km', '5000' => '5 km', '10000' => '10 km', '25000' => '25 km'), $gfDataArr['proximityLevel3'], array('class' => 'form-control')) }}
+						
 	</div>
 	
 
@@ -102,8 +102,8 @@
 	
 	<div class="form-group">
 		{{ Form::label('proximityLevel4', 'Proximity Level') }}
-		{{ Form::select('proximityLevel4',  array('0' => 'Select a Level', '10m' => '10 m', '100m' => '100 m', '1km' => '1 km', '5km' => '5 km', '10km' => '10 km', '25km' => '25 km'), $gfDataArr['proximityLevel4'], array('class' => 'form-control')) }}
-				
+		{{ Form::select('proximityLevel4', array('0' => 'Select a Level', '10' => '10 m', '100' => '100 m', '1000' => '1 km', '5000' => '5 km', '10000' => '10 km', '25000' => '25 km'), $gfDataArr['proximityLevel4'], array('class' => 'form-control')) }}
+						
 	</div>
 	
 	<div class="form-group">
@@ -124,8 +124,8 @@
 	</div>
 	<div class="form-group">
 		{{ Form::label('proximityLevel5', 'Proximity Level') }}
-		{{ Form::select('proximityLevel5',  array('0' => 'Select a Level', '10m' => '10 m', '100m' => '100 m', '1km' => '1 km', '5km' => '5 km', '10km' => '10 km', '25km' => '25 km'), $gfDataArr['proximityLevel5'], array('class' => 'form-control')) }}
-				
+		{{ Form::select('proximityLevel5', array('0' => 'Select a Level', '10' => '10 m', '100' => '100 m', '1000' => '1 km', '5000' => '5 km', '10000' => '10 km', '25000' => '25 km'), $gfDataArr['proximityLevel5'], array('class' => 'form-control')) }}
+						
 	</div>
 	
 	<div class="form-group">

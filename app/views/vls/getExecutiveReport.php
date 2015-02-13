@@ -7,6 +7,8 @@ $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
 
 
+
+
 if (! Auth::check ()) {
 	return Redirect::to ( 'login' );
 }

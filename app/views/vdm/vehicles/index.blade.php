@@ -31,9 +31,11 @@
 				{{ Form::close() }}
 
 				<a class="btn btn-small btn-success" href="{{ URL::to('vdmVehicles/' . $value) }}">Show this Vehicle</a>
-
-		
-				<a class="btn btn-small btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Amend this  Vehicle</a>
+				
+				<a class="btn btn-small btn-success" href="{{ URL::to('vdmGeoFence/' . $value) }}">Show GeoFencing</a>
+				
+					
+				<a class="btn btn-small btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Modify this  Vehicle</a>
 
 			
 				

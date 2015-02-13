@@ -33,8 +33,7 @@
 		{{ Form::label('regNo', 'Vehicle Registration Number') }}
 		{{ Form::text('regNo', Input::old('regNo'), array('class' => 'form-control')) }}
 	</div>
-	</div>
-	<div class="col-md-4">
+	
 	<div class="form-group">
 		{{ Form::label('vehicleMake', 'Vehicle Make') }}
 		{{ Form::text('vehicleMake', Input::old('vehicleMake'), array('class' => 'form-control')) }}
@@ -42,23 +41,34 @@
 
 	<div class="form-group">
 		{{ Form::label('vehicleType', 'Vehicle Type') }}
-		{{ Form::text('vehicleType', Input::old('vehicleMake'), array('class' => 'form-control')) }}
+	  {{ Form::select('vehicleType', array( 'Car' => 'Car', 'Truck' => 'Truck','Bus' => 'Bus'), Input::old('vehicleType'), array('class' => 'form-control')) }}             
+
 	</div>
 	
+	<div class="form-group">
+		{{ Form::label('useSOS4Conf', 'Use SOS Button for POI configuration') }}
+		  {{ Form::select('useSOS4Conf', array( '0' => '0 H', '24' => '24 H','48' => '48 H','72'=>'72 H','96'=>'96 H'), Input::old('useSOS4Conf'), array('class' => 'form-control')) }}             
+<!--
+		{{ Form::text('useSOS4Conf', Input::old('useSOS4Conf'), array('class' => 'form-control')) }}
+-->
+	</div>
+	
+	</div>
+	<div class="col-md-4">
 	<div class="form-group">
 		{{ Form::label('oprName', 'Operator Name') }}
 		{{ Form::text('oprName', Input::old('oprName'), array('class' => 'form-control')) }}
 	</div>
+	
 	<div class="form-group">
-		{{ Form::label('mobileNo', 'Mobile Number') }}
+		{{ Form::label('mobileNo', 'Mobile Number for Alerts') }}
 		{{ Form::text('mobileNo', Input::old('mobileNo'), array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
 		{{ Form::label('overSpeedLimit', 'OverSpeed Limit') }}
 		{{ Form::text('overSpeedLimit', Input::old('overSpeedLimit'), array('class' => 'form-control')) }}
 	</div>
-	</div>
-	<div class="col-md-4">
+	
     <div class="form-group">
 		{{ Form::label('odoDistance', 'Odometer Reading') }}
 		{{ Form::text('odoDistance', Input::old('odoDistance'), array('class' => 'form-control')) }}
@@ -78,6 +88,12 @@
 		{{ Form::label('email', 'Email for Notification') }}
 		{{ Form::text('email', Input::old('email'), array('class' => 'form-control')) }}
 	</div>
+	
+	   <div class="form-group">
+	   {{ Form::label('sendGeoFenceSMS', 'Send GeoFence SMS') }}
+      {{ Form::select('sendGeoFenceSMS', array( 'no' => 'No','yes' => 'Yes' ), Input::old('vehicleType'), array('class' => 'form-control')) }}             
+
+	   </div>
 	</div>
 	</div>
 	{{ Form::submit('Add the Vehicle!', array('class' => 'btn btn-primary')) }}

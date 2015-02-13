@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="Satheesh">
+<title>VAMOS</title>
+<link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="../app/views/reports/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="assets/css/simple-sidebar.css" rel="stylesheet">
+<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css">
+
+<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
+</head>
+<style>
+	.box > .loading-img {
+z-index: 1020;
+background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
+}
+
+.table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+background-color: #ffffff;
+}
+</style>
+<body ng-app="mapApp">
+	<div  ng-controller="mainCtrl">
+        
+        
+    <!-- AdminLTE css box-->
+   
+      
+	       	<div class="box">
+	       		
+		       
+		       
+		        <div class="box-body">
+		        	
+					 
+			   				 <center ng-show="rid=='executive'"><h4>Executive Summary Report</h4></center>
+			   				 <h4  ng-show="rid=='executive'" class="pull-right">From : {{fd}} {{ft}} To : {{td}} {{tt}}</h4>
+			   				 <div id='executive' ng-show="rid=='executive'">
+			   				  <table class="table table-bordered table-condensed table-hover">								   								   
+									<tr style="text-align:center">
+										<td width="6%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">Vehicle ID</td>
+										<td width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date</td>
+										<td width="8%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">Distance Today</td>
+										<td width="8%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">Parking Count</td>
+										<td width="10%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">Overspeed Instances</td>
+										<td width="10%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Open Reading</td>
+										<td width="10%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo Close Reading</td>
+										<td width="7%" class="id" custom-sort order="'topSpeed'" sort="sort" style="text-align:center;">Top Speed</td>	
+										<td width="10%" class="id" custom-sort order="'topSpeedTime'" sort="sort" style="text-align:center;">Top Speed Time</td>
+										<td width="10%" class="id" custom-sort order="'topSpeedGeoLocation'" sort="sort" style="text-align:center;">Top Location</td>
+										<td width="11%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Address</td>
+									</tr>
+									<tr ng-repeat="user in execGroupReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+										<!-- <td><a href="history?vid={{user.vehicleId}}">{{user.vehicleId}}</a></td> -->										
+										<td>{{user.vehicleId}}</td>
+										<td>{{user.date}}</td>
+										<td>{{user.distanceToday}}</td>
+										<td>{{user.parkingCount}}</td>
+										<td>{{user.overSpeedInstances}}</td>
+										<td>{{user.odoOpeningReading}}</td>
+										<td>{{user.odoClosingReading}}</td>
+										<td>{{user.topSpeed}}</td>	
+										<td>{{user.topSpeedTime}}</td>
+										<td get-geo geo={{user.topSpeedGeoLocation}} title="{{geoname}}">{{user.topSpeedGeoLocation}}</td>
+										<td ng-if="user.address!=null">{{user.address}}</td>
+										<td style="cursor: pointer;" get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && maddress[$index]==null">Click Me</td>
+										<td get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && maddress[$index]!=null">{{maddress[$index]}}</td>
+										<!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} title="{{locationname}}">{{user.latitude}},{{user.longitude}}</td>
+										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>						
+									 --></tr>
+								</table>
+							</div>
+			   			 	
+			   			 	 <center ng-show="rid=='geofencereport'"><h4>Geo Fence Report</h4></center>
+			   				 <h4  ng-show="rid=='geofencereport'" class="pull-right">From : {{fd}} {{ft}} To : {{td}} {{tt}}</h4>
+			   				 <div id='geofencereport' ng-show="rid=='geofencereport'">
+			   				 <table class="table table-bordered table-striped table-condensed table-hover">
+			   				 	<thead>
+								   	<!-- <tr style="text-align:center; font-weight: bold;">
+									  	<td colspan="2">Regn No</td>
+									  	<td colspan="2">{{hist.regNo}}</td>
+									  	<td colspan="2">Vehicle ID</td>
+									  	<td colspan="2">{{hist.vehicleId}}</td>					
+								  	</tr> -->
+								  	<!-- <tr style="text-align:center; font-weight: bold;">
+									  	<td colspan="1">GeoFenceId</td>
+								       	<td>{{geofencedata[0].geoFenceId}}</td>
+								      	<td colspan="1">GeoFenceType</td>
+								      	<td>{{geofencedata[0].geoFenceType}}</td>
+								    </tr> -->
+									<tr style="text-align:center" >
+										<th class="id" custom-sort order="'geoFenceId'" sort="sort" style="text-align:center;">GeoFenceId</th>
+										<th class="id" custom-sort order="'geoFenceType'" sort="sort" style="text-align:center;">GeoFenceType</th>
+										<th class="id" custom-sort order="'inTime'" sort="sort" style="text-align:center;">In Time</th>
+										<th class="id" custom-sort order="'outTime'" sort="sort" style="text-align:center;">Out Time</th>
+										<th class="id" custom-sort order="'odoInReading'" sort="sort" style="text-align:center;">Odo InReading</th>
+										<th class="id" custom-sort order="'odoOutReading'" sort="sort" style="text-align:center;">Odo OutReading</th>
+										<!-- <th class="id" custom-sort order="'geoLocation'" sort="sort" style="text-align:center;">Location</th> -->
+										<th class="id" custom-sort order="'proximity'" sort="sort" style="text-align:center;">Proximity</th>
+										<th class="id" custom-sort order="'dangling'" sort="sort" style="text-align:center;">Dangling</th>
+									</tr></thead>
+									<tr ng-repeat="user in geofencedata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+										<td>{{user.geoFenceId}}</td>
+										<td>{{user.geoFenceType}}</td>
+										<td>{{user.inTime}}</td>
+										<td>{{user.outTime}}</td>
+										<td>{{user.odoInReading}}</td>
+										<td>{{user.odoOutReadin}}</td>
+										<!-- <td>{{user.geoLocation}}</td> -->
+										<td>{{user.proximity}}</td>
+										<td>{{user.dangling}}</td>
+									</tr>
+														
+							</table>
+							
+							</div>
+			   			
+    		 		 
+		        </div><!-- /.box-body -->
+		        
+		         <div ng-show="loading" class="overlay"></div>
+	   <div ng-show="loading" class="loading-img"></div>
+ </div>	
+
+        
+                 
+	<script src="assets/js/jquery-1.11.0.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
+    <script data-require="angular-ui-bootstrap@0.11.0" data-semver="0.11.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    <script src="../app/views/reports/customjs/moment.js"></script>
+    <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
+    <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
+    <script src="../app/views/reports/customjs/html5csv.js"></script>
+    <script src="assets/js/static.js"></script>
+    	<script src="../app/views/reports/customjs/history.js"></script>
+	<script src="../app/views/reports/customjs/statistics.js"></script>
+
+    <!-- script src="assets/js/custom.js"></script -->   
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    
+    
+ 
+    </script>
+   
+</body>
+</html>
+

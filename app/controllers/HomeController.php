@@ -131,7 +131,7 @@ class HomeController extends BaseController {
 			'userName'    => 'required', // make sure the email is an actual email
 			'password' => 'required|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
 		);
-
+    Log::info('do Login');
 		// run the validation rules on the inputs from the form
 		$validator = Validator::make(Input::all(), $rules);
 		$remember = (Input::has('remember')) ? true : false;
@@ -147,7 +147,7 @@ class HomeController extends BaseController {
 				'userName' 	=> Input::get('userName'),
 				'password' 	=> Input::get('password')
 			);
-
+            Log::info('Login details ' . Input::get('userName') .' '. Input::get('password') );
 			// attempt to do the login
 			if (Auth::attempt($userdata,$remember)) {
 
@@ -156,7 +156,6 @@ class HomeController extends BaseController {
 				//return  Redirect::to('vdmVehicles');
 				
 				return  Redirect::to('live');
-			//	return  Redirect::to('http://128.199.175.189:8080/maps/eldemo2/');
 				
 
 			} else {	 	

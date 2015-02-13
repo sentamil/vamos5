@@ -156,7 +156,7 @@ class VdmFranchiseController extends \BaseController {
 			$vamosid='vamos'.$fcode;	
 			$user->name = 'vamos'.$fname;
 			$user->username=$vamosid;
-			$user->email='support@vaomsys.com';
+			$user->email='support@vamosys.com';
 			$user->password=Hash::make($password);
 			$user->save();
 			$redis->sadd ( 'S_Users_' . $fcode, $vamosid );

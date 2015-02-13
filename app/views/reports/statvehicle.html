@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="Satheesh">
+<title>Easy Locator</title>
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="assets/css/simple-sidebar.css" rel="stylesheet">
+<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css">
+<link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
+<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
+
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+
+<style type="text/css">
+	#map_canvas{ width:100%; height:100%;}
+	.drop-menu {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: left;
+    padding: 10px 10px;
+    *font-size: 22px;
+    height: 25px;
+    max-height: 25px;
+    *width: 400px;
+    background: rgba(51, 51, 51, 0);
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+	  
+</style>
+</head>
+<body ng-app="mapApp">
+	<div id="wrapper" ng-controller="mainCtrl">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="javascript:void(0);"><img src="assets/imgs/logo.png"/></i></a></li>
+                <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
+                <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
+		<li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
+		<li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
+                <li class="settings"><a href="../public/settings"><div></div><label>Settings</label></a></li>
+                <li class="sidebar-bottom"><a href="javascript:void(0);"><img src="assets/imgs/profile.png"/></a></li>
+                <li><a href="http://128.199.217.144/vamo/public/logout"><img src="assets/imgs/logout.png"/></a></li>         
+            </ul>
+            <ul class="sidebar-subnav ">
+                <li style="padding-left:25px;">
+                	<div class="right-inner-addon" align="center"> 
+                    <i class="fa fa-search"></i>
+                    <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
+                    </div>
+                </li>
+                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
+                    <ul class="nav nav-second-level">
+                    <li style="cursor: pointer;" ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(location.group, loc.vehicleId, $index)">{{loc.vehicleId}} ({{loc.shortName}})</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+        		<div class="panel panel-default">
+				  <!-- <div class="panel-heading">
+				  	<span style="font-size: 18px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;">Current Status Report</span>
+				  	<select class="pull-right drop-menu" ng-change="downloadType('statusreport')" ng-model="dtype">
+					  <option value=''>Download as</option>
+					  <option>CSV</option>
+					  <option>PDF</option>
+					</select>
+				  </div> -->
+				  <!-- <div class="panel-body">
+				  	<tabset justified="true">
+					    <tab heading="Status Report"><br>
+					    	<div id="statusreport">
+		                  		<table class="table table-bordered table-condensed table-hover"  id="tab_customers" style="background-color: rgb(247, 247, 247);">
+								   	<tr style="text-align:center; font-weight: bold;">
+									  	<td colspan="4"> Vehical Group</td>
+									  	<td >{{data1[0].group}}</td>
+									  	<td colspan="2">Total Vehicle</td>
+									  	<td >{{data1[0].totalVehicles}}</td>
+									  	<td colspan="3">Total Km - today</td>
+									  	<td>{{data1[0].distance}}</td>						
+								  	</tr>
+								  	<tr style="text-align:center;font-weight: bold;">
+									  	<td colspan="4">Alarms/Atentions</td>
+								       	<td>{{data1[0].alerts}}</td>
+								      	<td colspan="2">Vehicles Online</td>
+								      	<td>{{data1[0].online}}</td>
+								      	<td colspan="3">Report Date</td>
+								      	<td></td>
+								    </tr>
+									<tr style="text-align:center" >
+										<td>Vehicle ID</td>
+										<td>Vehicle Name</td>
+										<td>Reg No</td>
+										<td>Driver Name</td>
+										<td>Mobile Number</td>
+										<td>Last Seen</td>
+										<td>km today</td>
+										<td>Current Speed</td>
+										<td>Current Position</td>
+										<td>Ignition Status</td>
+										<td>Current Location</td>
+										<td>Google Map Link</td>
+									</tr>
+									<tr ng-repeat="user in data1[0].vehicleLocations" class="active" style="text-align:center">
+										<td>{{user.vehicleId}}</td>
+										<td></td>
+										<td>{{user.regNo}}</td>
+										<td>{{user.driverName}}</td>
+										<td>{{user.mobileNo}}</td>
+										<td>{{user.lastSeen}}</td>
+										<td>{{user.distanceCovered}}</td>
+										<td>{{user.speed}}</td>
+										<td>{{user.position}}</td>
+										<td>{{user.status}}</td>
+										<td></td>
+										<td></td>						
+									</tr>
+								</table>						
+         			 		</div>
+					    </tab>
+					    <tab heading="Executive Report">
+					    	<br>Work in Progress</tab>
+				    </tabset>
+				  </div> -->
+				</div>   
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+ 
+    <!-- AdminLTE css box-->
+   
+       <div class="col-md-12">
+	       	<div class="box box-primary">
+		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
+		            <h3 class="box-title">Executive Status Report</h3>
+		            <div class="box-tools pull-right">
+		                <img ng-hide="true" src="../app/views/reports/image/Adobe.png" />
+		                <img style="cursor: pointer;" ng-click="exportData('vehiclestatistics')"  src="../app/views/reports/image/xls.png" />
+		            </div>
+		        </div>
+		        <hr>
+		        <div class="box-body">
+		        	<table ng-show="execVechReportData!=null" class="table">
+					   	<!-- <tr style="font-weight: bold;">
+						  	<td>Vehical Group : {{data1.group}}</td>					  
+						  	<td style="text-align: right;">Report Date : {{fromdate}} to {{todate}}</td>				
+					  	</tr> -->
+					  	<div class="row">
+		        				<div class="col-md-1" align="center"></div>
+                    			<div class="col-md-2" align="center">
+                                	<div class="form-group">
+                                    	<div class="input-group datecomp">
+                                            <input type="text" ng-model="fromdate" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                    	</div>
+                                  	</div>
+                                </div>
+                                <!-- <div class="col-md-2" align="center">
+                                	<div class="form-group">
+                                    	<div class="input-group datecomp">
+                                            <input type="text" ng-model="fromtime" class="form-control placholdercolor" id="timeFrom" placeholder="From time">
+                                            <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                                    	</div>
+                                  	</div>
+                                </div> -->
+                                <div class="col-md-2" align="center">
+                                	<div class="form-group">
+                                    	<div class="input-group datecomp">
+                                          	<input type="text" min-date="fromdate" ng-model="todate" class="form-control placholdercolor" id="dateTo" placeholder="To date">
+                                          	<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                    	</div>
+                                  	</div>
+                                </div>
+                                <!-- <div class="col-md-2" align="center">
+                                	<div class="form-group">
+                                    	<div class="input-group datecomp">
+                                          	<input type="text" ng-model="totime" class="form-control placholdercolor" id="timeTo" placeholder="To time">
+                                          	<div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                                    	</div>
+                                  	</div>
+                                </div> -->
+                                <div class="col-md-2" align="center">
+                                    <button ng-click="plotHist()">Plot History</button>
+                                </div>
+                               <div class="col-md-1" align="center"></div>
+                            </div>
+                            <p style="margin:0" class="page-header">Vehical Group : {{data1.group}} <span style="float: right;">Report Date : {{fromdate}} to {{todate}}</span></p>
+		        	</table>
+		        
+		        	<!-- <div class="col-md-3">
+			        	<div class="small-box bg-aqua">
+	                        <div class="inner">
+	                            <h3>{{data1.distance}}</h3>
+	                            <p><b>Total Km Today</b></p>                                   
+	                        </div>
+	                        <div class="icon">
+	                            <i class="fa fa-tachometer"></i>
+	                        </div>
+	                     </div>
+	                </div>
+	                
+	                <div class="col-md-3">
+			        	<div class="small-box bg-green">
+	                        <div class="inner">
+	                            <h3>{{data1.online}}</h3>
+	                            <p><b>Vehicles Online</b></p>                                   
+	                        </div>
+	                        <div class="icon">
+	                            <i class="fa fa-taxi"></i>
+	                        </div>
+	                     </div>
+	                </div>
+	                
+	                <div class="col-md-3">
+			        	<div class="small-box bg-yellow">
+	                        <div class="inner">
+	                            <h3>{{data1.alerts}}</h3>
+	                            <p><b>Alarms/Atentions</b></p>                                   
+	                        </div>
+	                        <div class="icon">
+	                            <i class="fa fa-bell"></i>
+	                        </div>
+	                     </div>
+	                </div>
+	                
+	                <div class="col-md-3">
+			        	<div class="small-box bg-red">
+	                        <div class="inner">
+	                            <h3>{{data1.totalVehicles}}</h3>
+	                            <p><b>Total Vehicle</b></p>                                   
+	                        </div>
+	                        <div class="icon">
+	                            <i class="fa fa-taxi"></i>
+	                        </div>
+	                     </div>
+	                </div> -->
+		        </div>
+		        
+		        <div ng-show="execVechReportData!=null" class="box-body" id="vehiclestatistics">
+		           <table class="table table-bordered table-condensed table-hover">
+								   	<!-- <tr ng-hide ="true" style="text-align:center; font-weight: bold;">
+									  	<td colspan="4"> Vehical Group</td>
+									  	<td >{{data1.group}}</td>
+									  	<td colspan="2">Total Vehicle</td>
+									  	<td >{{data1.totalVehicles}}</td>
+									  	<td colspan="3">Total Km - today</td>
+									  	<td>{{data1.distance}}</td>						
+								  	</tr>
+								  	<tr ng-hide ="true" style="text-align:center;font-weight: bold;">
+									  	<td colspan="4">Alarms/Atentions</td>
+								       	<td>{{data1.alerts}}</td>
+								      	<td colspan="2">Vehicles Online</td>
+								      	<td>{{data1.online}}</td>
+								      	<td colspan="3">Report Date</td>
+								      	<td></td>
+								    </tr> -->
+									
+									<tr style="text-align:center" >
+										<td class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">Vehicle ID</td>
+										<td class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date</td>
+										<td class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">DistanceToday</td>
+										<td class="id" custom-sort order="'topSpeed'" sort="sort" style="text-align:center;">Top Speed</td>	
+										<td class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">ParkingCount</td>
+										<td class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Parking</td>
+										<td class="id" custom-sort order="'totalRunningTime'" sort="sort" style="text-align:center;">Running</td>
+										<td class="id" custom-sort order="'totalIdleTime'" sort="sort" style="text-align:center;">Idle</td>
+										<td class="id" custom-sort order="'totalNoDataTime'" sort="sort" style="text-align:center;">NoData</td>
+										<td class="id" custom-sort order="'topSpeedGeoLocation'" sort="sort" style="text-align:center;">Location</td>
+									</tr>
+									<tr ng-repeat="user in execVechReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+										<!-- <td><a href="history?vid={{user.vehicleId}}">{{user.vehicleId}}</a></td> -->
+										
+										<td>{{user.vehicleId}}</td>
+										<td>{{user.date}}</td>
+										<td>{{user.distanceToday}}</td>
+										<td>{{user.topSpeed}}</td>	
+										<td>{{user.parkingCount}}</td>
+										<td>{{user.totalParkedTime}}</td>
+										<td>{{user.totalRunningTime}}</td>
+										<td>{{user.totalIdleTime}}</td>
+										<td>{{user.totalNoDataTime}}</td>
+										<td get-geo geo={{user.topSpeedGeoLocation}} title="{{geoname}}">{{user.topSpeedGeoLocation}}</td>
+										<!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} title="{{locationname}}">{{user.latitude}},{{user.longitude}}</td>
+										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>						
+									 --></tr>
+								</table>		
+		        </div><!-- /.box-body -->
+		        
+		    </div>	
+        </div>
+       
+                 
+	<script src="assets/js/jquery-1.11.0.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
+    <script data-require="angular-ui-bootstrap@0.11.0" data-semver="0.11.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script> 
+    <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    <script src="../app/views/reports/customjs/moment.js"></script>
+    <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
+    <script src="assets/js/static.js"></script>
+	<script src="../app/views/reports/customjs/statvehicle.js"></script>
+	
+    <!-- script src="assets/js/custom.js"></script -->   
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    
+    
+    $(function () {
+                $('#dateFrom, #dateTo').datetimepicker({
+					format:'YYYY-MM-DD',
+					useCurrent:true,
+					pickTime: false
+				});
+				$('#timeFrom').datetimepicker({
+					pickDate: false
+				});
+				$('#timeTo').datetimepicker({
+					useCurrent:true,
+					pickDate: false
+				});
+        });  
+    
+    $( document ).ready(function() {
+    console.log( "ready!" );
+    $("#export").click(function() {
+    	var pdf = new jsPDF('p', 'pt', 'b0');
+    
+    pdf.cellInitialize();
+    pdf.setFontSize(10);
+    $.each( $('#customers tr'), function (i, row){
+        $.each( $(row).find("td, th"), function(j, cell){
+            var txt = $(cell).text().trim() || " ";
+            var width = (j==4) ? 60 : 90; //make with column smaller
+            pdf.cell(10, 50, width, 30, txt, i);
+        });
+    });
+    
+    pdf.save('sample-file.pdf');
+	});
+});	
+    </script>
+   
+</body>
+</html>
+

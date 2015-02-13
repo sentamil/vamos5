@@ -296,6 +296,7 @@ class VdmGFController extends \BaseController {
 			
 		$redis = Redis::connection();
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		Log::info('fcode ' . $fcode);
 		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 		$vehicleId=$id;
 		$i=1;
@@ -353,9 +354,11 @@ class VdmGFController extends \BaseController {
 		$rules = array (
 				
 				'proximityLevel1' => 'required',
-				'gfLocation1' => 'required'
+				'gfLocation1' => 'required',
+				'proximityLevel1' => 'required'
 	
 		);
+
 		$validator = Validator::make ( Input::all (), $rules );
 		if ($validator->fails ()) {
 			return Redirect::to ( 'vdmGF/create' )->withErrors ( $validator );
@@ -373,6 +376,8 @@ class VdmGFController extends \BaseController {
 			$gfLocation1 = Input::get ( 'gfLocation1' );
 			$gfType1 = Input::get ( 'gfType1' );
 			$geoFenceId1 = Input::get ( 'geoFenceId1' );
+			
+			Log::info('proximityLevel1..' . $proximityLevel1);
 			
 			$proximityLevel2 = Input::get ( 'proximityLevel2' );
 			$gfLocation2 = Input::get ( 'gfLocation2' );

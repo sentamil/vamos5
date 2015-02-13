@@ -105,7 +105,7 @@ class VdmUserController extends \BaseController {
 			
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
-			$password='awsome';
+			$password='awesome';
 			$user = new User;
 			
 			$user->name = $userId;

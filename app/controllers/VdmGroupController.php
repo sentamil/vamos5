@@ -22,20 +22,13 @@ class VdmGroupController extends \BaseController {
 		
 		$redisGrpId = 'S_Groups_' . $fcode ;
 		
-		
-		
-	//	$size = $redis->llen($redisGrpId);
-	//	$groupList = $redis->lrange($redisGrpId,0,$size);
 	
 		$groupList = $redis->smembers($redisGrpId);
 		
 		foreach($groupList as $key=>$group) {
-			//$size = $redis->llen($group);
-		//	$vehicleList = $redis->lrange($group,0,$size);
 		
 			$vehicleList = $redis->smembers($group);
 			$vehicleList =implode('<br/>',$vehicleList);
-
 			$vehicleListArr = array_add($vehicleListArr,$group,$vehicleList);
 	
 		
@@ -81,13 +74,7 @@ class VdmGroupController extends \BaseController {
 	public function store()
 	{
 		
-	/*
-		$all = Input::get('tags');
-
-		foreach($all as $vehicle) {
-			log::info(' vehicle ' . $vehicle);
-		}
-*/
+	
 		
 		if(!Auth::check()) {
 			return Redirect::to('login');
@@ -110,9 +97,9 @@ class VdmGroupController extends \BaseController {
 			
 			$redis = Redis::connection();
 			$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-			$redis->sadd('S_Groups_' . $fcode, $groupId);
+			$redis->sadd('S_Groups_' . $fcode, $groupId . ':' . $fcode);
 			foreach($vehicleList as $vehicle) {
-				$redis->sadd($groupId,$vehicle);
+				$redis->sadd($groupId . ':' . $fcode,$vehicle);
 			}
 
  			// redirect
@@ -147,20 +134,20 @@ class VdmGroupController extends \BaseController {
 		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 		
 		
-		$vehicleList = $redis->smembers($groupId);
+		$vehicleList = $redis->smembers($groupId . ':' . $fcode);
 		
 		//S_Vehicles_
 		foreach($vehicleList as $vehicle) {
 			$result = $redis->sismember("S_Vehicles_" . $fcode,$vehicle);
 			if($result == 0) {
-				$redis->srem($groupId,$vehicle);
+				$redis->srem($groupId. ':' . $fcode,$vehicle);
 			}
 		}
 		//query again to get the fresh list
-		$vehicleList = $redis->smembers($groupId);
+		$vehicleList = $redis->smembers($groupId. ':' . $fcode);
 		$vehicleList = implode('<br/>',$vehicleList);
 			
-		return View::make('vdm.groups.show',array('groupId'=>$groupId))->with('vehicleList', $vehicleList);
+		return View::make('vdm.groups.show',array('groupId'=>$groupId. ':' . $fcode))->with('vehicleList', $vehicleList);
 	}
 
 
@@ -184,13 +171,13 @@ class VdmGroupController extends \BaseController {
 
 		$vehicles = $redis->smembers('S_Vehicles_' . $fcode);
 		
-		$selectedVehicles =  $redis->smembers($groupId);
+		$selectedVehicles =  $redis->smembers($groupId. ':' . $fcode);
 		
 		$vehicleList=null;
 		foreach($vehicles as $key=>$value) {
 			$vehicleList=array_add($vehicleList, $value, $value);
 		}
-		return View::make('vdm.groups.edit',array('groupId'=>$groupId))->with('vehicleList', $vehicleList)->with('selectedVehicles',$selectedVehicles);
+		return View::make('vdm.groups.edit',array('groupId'=>$groupId. ':' . $fcode))->with('vehicleList', $vehicleList)->with('selectedVehicles',$selectedVehicles);
 	}
 
 

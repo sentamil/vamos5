@@ -21,7 +21,7 @@ class RemindersController extends Controller {
 	{
 		log::info(" postRemind ");
 		 $data = Input::all();
-		var_dump($data);
+		//var_dump($data);
 		
 		$response = Password::remind(Input::only('email'), function($message)
 		{

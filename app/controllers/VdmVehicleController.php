@@ -109,12 +109,12 @@ class VdmVehicleController extends \BaseController {
 			$driverName = Input::get ('driverName');
 			$gpsSimNo = Input::get ('gpsSimNo');
 			$email = Input::get ('email');
+			$useSOS4Conf = Input::get ('useSOS4Conf');
+            $sendGeoFenceSMS = Input::get ('sendGeoFenceSMS');
 			
 			$redis = Redis::connection ();
 			
-			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
-			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'deviceModel'=>$deviceModel);
-			
+		
 			$refDataArr = array (
 					'deviceId' => $deviceId,
 					'shortName' => $shortName,
@@ -128,10 +128,13 @@ class VdmVehicleController extends \BaseController {
 					'odoDistance' => $odoDistance,
 					'driverName' => $driverName,
 					'gpsSimNo' => $gpsSimNo,
-					'email' => $email
+					'email' => $email,
+					'useSOS4Conf' => $useSOS4Conf,
+					'sendGeoFenceSMS' => $sendGeoFenceSMS
 			);
 			
 			$refDataJson = json_encode ( $refDataArr );
+            
 			// H_RefData
 
 			
@@ -143,13 +146,22 @@ class VdmVehicleController extends \BaseController {
 			
 			$redis->hmset ( $vehicleDeviceMapId, $vehicleId , $deviceId, $deviceId, $vehicleId );
 			
-			
+			$redis->set('SOSConf'.':' .$vehicleId.':'.$fcode, $useSOS4Conf);
+            $redis->expire('SOSConf'.':' .$vehicleId.':'.$fcode,$useSOS4Conf*60*60);
 			
            //this is for security check			
 			$redis->sadd ( 'S_Vehicles_' . $fcode, $vehicleId );
 			
 			$redis->hset('H_Device_Cpy_Map',$deviceId,$fcode);
-			
+            
+            $time =microtime(true);
+            /*latitude,longitude,speed,alert,date,distanceCovered,direction,position,status,odoDistance,msgType,insideGeoFence
+             13.104870,80.303138,0,N,$time,0.0,N,P,ON,$odoDistance,S,N
+              13.04523,80.200222,0,N,0,0.0,null,null,null,0.0,null,N vehicleId=Prasanna_Amaze
+             * 
+			*/
+			$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+            $redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
 			// redirect
 			Session::flash ( 'message', 'Successfully created ' . $vehicleId . '!' );
 			return Redirect::to ( 'vdmVehicles' );
@@ -199,6 +211,8 @@ class VdmVehicleController extends \BaseController {
 	 * @return Response
 	 */
 	public function edit($id) {
+		
+		Log::info('entering edit');
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
@@ -211,14 +225,30 @@ class VdmVehicleController extends \BaseController {
 		$deviceId = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
 
 		$details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
-		
-		$refData = json_decode ( $details, true );
+		 $refData=null;
+	//    $refData = json_decode ( $details, true );
+       
 	    $refData = array_add($refData, 'overSpeedLimit', '50');
 	    $refData = array_add($refData, 'driverName', '');
 	    $refData = array_add($refData, 'gpsSimNo', '');
 	    $refData = array_add($refData, 'email', ' ');
-	   
-	   	   
+	    $refData = array_add($refData, 'useSOS4Conf', '0');
+        $refData = array_add($refData, 'odoDistance', '0');
+         $refData = array_add($refData, 'sendGeoFenceSMS', 'no');
+     
+   /*  if(isset($refData['odoDistance'])) {
+         //do nothing
+     }else {
+         $refData = array_add($refData, 'odoDistance', '0');
+     }
+    */
+  
+       $refData1 = json_decode ( $details, true );
+	
+        $refData2 = array_merge($refData,$refData1);
+        $refData=$refData2;
+ 
+	   // Log::info('update vehicles' . $refData);
 		return View::make ( 'vdm.vehicles.edit', array (
 				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData );
 	}
@@ -240,28 +270,28 @@ class VdmVehicleController extends \BaseController {
 		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 		$rules = array (
 				
-				'deviceId' => 'required',
+			
 				'shortName' => 'required',
 				'regNo' => 'required',
 				'vehicleMake' => 'required',
 				'vehicleType' => 'required',
 				'oprName' => 'required',
-				'mobileNo' => 'required|numeric',
+				'mobileNo' => 'required',
 				'overSpeedLimit' => 'required',
 				'deviceModel' => 'required',
-				'odoDistance' => 'required',
 				'driverName' => 'required',
-				'gpsSimNo' => 'required'
-		)
-		;
+			
+		);
+		
 		$validator = Validator::make ( Input::all (), $rules );
 		if ($validator->fails ()) {
-			Log::error(" VdmDeviceConrtoller update validation failed :");
+			Log::error(' VdmDeviceConrtoller update validation failed ....:' );
+			
 			return Redirect::to ( 'vdmVehicles/update' )->withErrors ( $validator );
 		} else {
 			// store
 			
-			$deviceId = Input::get ( 'deviceId' );
+			
 			$shortName = Input::get ( 'shortName' );
 			$regNo = Input::get ( 'regNo' );
 			$vehicleMake = Input::get ( 'vehicleMake' );
@@ -270,13 +300,21 @@ class VdmVehicleController extends \BaseController {
 			$mobileNo = Input::get ( 'mobileNo' );
 			$overSpeedLimit = Input::get ( 'overSpeedLimit' );
 			$deviceModel = Input::get ( 'deviceModel' );
-			$odoDistance = Input::get ( 'odoDistance' );
 			$driverName = Input::get ( 'driverName' );
-			$gpsSimNo = Input::get ( 'gpsSimNo' );
 			$email = Input::get ( 'email' );
+			$useSOS4Conf = Input::get ( 'useSOS4Conf' );
+            $sendGeoFenceSMS = Input::get ( 'sendGeoFenceSMS' );
+            $gpsSimNo = Input::get ('gpsSimNo');
+            
+            $redis = Redis::connection ();
+            $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
+            
+            $vehicleRefData=json_decode($vehicleRefData,true);
 		
-			$redis = Redis::connection ();
-
+			$deviceId=$vehicleRefData['deviceId'];
+            $odoDistance=$vehicleRefData['odoDistance'];
+            //gpsSimNo
+          //    $gpsSimNo=$vehicleRefData['gpsSimNo'];
 			$refDataArr = array (
 					'deviceId' => $deviceId,
 					'shortName' => $shortName,
@@ -290,7 +328,9 @@ class VdmVehicleController extends \BaseController {
 					'odoDistance' => $odoDistance,
 					'driverName' => $driverName,
 					'gpsSimNo' => $gpsSimNo,
-					'email' => $email
+					'email' => $email,
+					'useSOS4Conf' => $useSOS4Conf,
+					'sendGeoFenceSMS' => $sendGeoFenceSMS
 			);
 			
 			$refDataJson = json_encode ( $refDataArr );
@@ -301,10 +341,11 @@ class VdmVehicleController extends \BaseController {
 			
 			$redis->hmset ( $vehicleDeviceMapId, $vehicleId, $deviceId, $deviceId, $vehicleId );
 			$redis->sadd ( 'S_Vehicles_' . $fcode, $vehicleId );
-			
+			$redis->hset('H_Device_Cpy_Map',$deviceId,$fcode);
 			// redirect
-			Session::flash ( 'message', 'Successfully updated ' . $deviceId . '!' );
-			return Redirect::to ( 'vdmVehicles' );
+			Session::flash ( 'message', 'Successfully updated ' . $vehicleId . '!' );
+	//		return Redirect::to ( 'vdmVehicles' );
+			return VdmVehicleController::edit($vehicleId);
 		}
 	}
 	
