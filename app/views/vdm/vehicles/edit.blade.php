@@ -33,26 +33,29 @@
 		{{ Form::text('regNo', $refData['regNo'], array('class' => 'form-control')) }}
 	</div>
 	
-	<div class="form-group">
-		{{ Form::label('vehicleMake', 'Vehicle Make') }}
-		{{ Form::text('vehicleMake', $refData['vehicleMake'], array('class' => 'form-control')) }}
-	</div>
-
-	<div class="form-group">
-		{{ Form::label('vehicleType', 'Vehicle Type') }}
+	 <div class="form-group">
+        {{ Form::label('vehicleType', 'Vehicle Type') }}
       {{ Form::select('vehicleType', array( 'Car' => 'Car', 'Truck' => 'Truck','Bus'=>'Bus'), $refData['vehicleType'], array('class' => 'form-control')) }}            
-
-	</div>
-	   <div class="form-group">
-        {{ Form::label('useSOS4Conf', 'Use SOS Button for POI configuration') }}
-        {{ Form::select('useSOS4Conf', array('0' => '0 H', '24' => '24 H','48' => '48 H','72'=>'72 H','96'=>'96 H'), $refData['useSOS4Conf'],array('class' => 'form-control')) }}             
-
     </div>
+    
+	<div class="form-group">
+		{{ Form::label('morningTripStartTime', 'Morning Trip Start Time') }}
+		{{ Form::text('morningTripStartTime', $refData['morningTripStartTime'], array('class' => 'form-control')) }}
 	</div>
+
+	<div class="form-group">
+        {{ Form::label('eveningTripStartTime', 'Evening Trip Start Time') }}
+        {{ Form::text('eveningTripStartTime',$refData['eveningTripStartTime'], array('class' => 'form-control'))}}             
+	</div>
+    
+     </div>
+
 	<div class="col-md-4">
 	<div class="form-group">
-		{{ Form::label('oprName', 'Operator Name') }}
-		{{ Form::text('oprName', $refData['oprName'], array('class' => 'form-control')) }}
+		{{ Form::label('oprName', 'Telecom Operator Name') }}    
+        {{ Form::select('oprName', array( 'airtel' => 'airtel', 'reliance' => 'reliance','idea' => 'idea'), $refData['oprName'],array('class' => 'form-control')) }}             
+
+
 	</div>
 	<div class="form-group">
 		{{ Form::label('mobileNo', 'Mobile Number for Alerts') }}
@@ -65,7 +68,7 @@
 	
     <div class="form-group">
 		{{ Form::label('odoDistance', 'Odometer Reading') }}	
-		{{ Form::text('odoDistance', $refData['odoDistance'], array('class' => 'form-control','disabled' => 'disabled')) }}
+		{{ Form::text('odoDistance', $refData['odoDistance'], array('class' => 'form-control')) }}
  
 	</div>
 	
@@ -78,7 +81,7 @@
 	
 	<div class="form-group">
 		{{ Form::label('gpsSimNo', 'GPS Sim Number') }}
-		{{ Form::text('gpsSimNo', $refData['gpsSimNo'], array('class' => 'form-control','disabled' => 'disabled')) }}
+		{{ Form::text('gpsSimNo', $refData['gpsSimNo'], array('class' => 'form-control')) }}
 	</div>
 	
 	<div class="form-group">

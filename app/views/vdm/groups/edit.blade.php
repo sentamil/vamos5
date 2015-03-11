@@ -30,6 +30,7 @@
 			 
 			{{ Form::checkbox('vehicleList[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field']) }}
 			{{ Form::label($value) }}
+			 {{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
 			<br/>
 		@endforeach
 		</br/>

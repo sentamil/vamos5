@@ -28,7 +28,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
+                    	<div id="maploc">
+                        	<div id="pac-input01">
+                                   
+                                <div>
+                                	<input type="button" id="traffic" ng-click="check()" value="Traffic" />
+                                </div> 
+                                </div>
                         <map id="map_canvas"></map>
+                        </div>
                         <div class="nearbyTable01">
                             	<h3>Vehicle Status</h3>
                                 <div>
@@ -62,6 +70,7 @@
                                 </div>
                             </div>
                     </div>
+                    <div id="lastseentrack">&nbsp;</div>
                          <div class="bottomContent">
                         	<!--<a href="javascript:void(0);" class="contentbClose"><img src="assets/imgs/close.png"/></a>-->
                         	<div class="row">
@@ -71,7 +80,6 @@
                                 </div>
                                 <div class="col-md-2" align="center" id="vehdevtype">
                                 	<h6>odoDistance - <span></span></h6>
-                                    
                                 </div>
                                  <div class="col-md-2" align="center" id="mobno">
                                 	<h6>Speed Limit - <span></span></h6>
@@ -90,7 +98,7 @@
                                     
                                 </div-->
                                 <div class="col-md-2" align="center" id="regno">
-                                	<h6>Position Time - <span></span></h6>
+                                	<h6><p id="positiontime" style="display: inline; padding: 0; margin: 0;">Position</p> Time - <span></span></h6>
                                     
                                 </div>
                             </div>

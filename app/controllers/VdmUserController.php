@@ -185,7 +185,8 @@ class VdmUserController extends \BaseController {
 		
 		return View::make ( 'vdm.users.edit', array (
 				'userId' => $userId 
-		) )->with ( 'vehicleGroups', $vehicleGroups )->with ( 'mobileNo', $mobileNo )->with('email',$email)->with('selectedGroups',$selectedGroups);
+		) )->with ( 'vehicleGroups', $vehicleGroups )->with ( 'mobileNo', $mobileNo )->
+		with('email',$email)->with('selectedGroups',$selectedGroups);
 	}
 	
 	/**

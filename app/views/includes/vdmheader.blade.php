@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>VAMO Systems</title>
+	<title>VAMOS</title>
 <!--
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 -->
@@ -26,10 +26,10 @@
 		<li><a href="{{ URL::to('vdmVehicles/create') }}">Add a Vehicle</a>
 		<li><a href="{{ URL::to('vdmGroups') }}">View All Groups</a></li>
 		<li><a href="{{ URL::to('vdmGroups/create') }}">Create a Group</a>
+	   <li><a href="{{ URL::to('vdmSchool/create') }}">Add a School</a>
 		<li><a href="{{ URL::to('vdmUsers') }}">View All Users</a></li>
 		<li><a href="{{ URL::to('vdmUsers/create') }}">Create a User</a>
 		<li><a href="{{ URL::to('vdmGeoFence/create') }}">Add a GeoFencing</a>
-		
 		<li><a  href="{{ URL::to('logout/') }}">Logout User: {{Auth::user ()->username }}</a></li>	
 		
 			

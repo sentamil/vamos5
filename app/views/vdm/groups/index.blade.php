@@ -9,6 +9,7 @@
 			<td>ID</td>
 			<td>GroupId</td>
 			<td>Vehicles</td>
+			<td>ShortName</td>
 			<td>Actions</td>
 
 		</tr>
@@ -19,6 +20,7 @@
 			<td>{{ $key }}</td>
 			<td>{{ $value }}</td>
 			<td>{{ array_get($vehicleListArr,$value)}}</td>	
+			<td>{{ array_get($shortNameListArr,$value)}}</td>  
 
 				 
 			<!-- we will also add show, edit, and delete buttons -->

@@ -47,7 +47,7 @@
     </div>
      <div class="form-group">
         {{ Form::label('proximityLevel', 'Proximity Level') }}
-        {{ Form::select('proximityLevel',array( '10' => '10 m','10' => '20 m','50' => '50 m', '100' => '100 m', '1000' => '1 km', '5000' => '5 km', '10000' => '10 km', '25000' => '25 km','50000' => '50 km','100000' => '100 km'), $proximityLevel, array('class' => 'form-control')) }}
+        {{ Form::select('proximityLevel',array( '10' => '10 m','10' => '20 m','50' => '50 m', '100' => '100 m','200' => '200 m','300' => '300 m',  '1000' => '1 km', '5000' => '5 km', '10000' => '10 km', '25000' => '25 km','50000' => '50 km','100000' => '100 km'), $proximityLevel, array('class' => 'form-control')) }}
              
     </div>
     <div class="form-group">

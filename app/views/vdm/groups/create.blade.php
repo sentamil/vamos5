@@ -19,6 +19,8 @@
 		@foreach($userVehicles as $key => $value)
 			{{ Form::checkbox('vehicleList[]', $key, null, ['class' => 'field']) }}
 			{{ Form::label($value) }}
+			 {{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
+			 
 			<br/>
 		@endforeach
 		</br/>

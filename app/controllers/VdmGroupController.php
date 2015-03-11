@@ -22,19 +22,32 @@ class VdmGroupController extends \BaseController {
 		
 		$redisGrpId = 'S_Groups_' . $fcode ;
 		
-	
+	    $shortName =null;
+        $shortNameList = null;
+        $shortNameListArr =null;
 		$groupList = $redis->smembers($redisGrpId);
 		
 		foreach($groupList as $key=>$group) {
 		
 			$vehicleList = $redis->smembers($group);
-			$vehicleList =implode('<br/>',$vehicleList);
-			$vehicleListArr = array_add($vehicleListArr,$group,$vehicleList);
-	
+               $shortNameList=null;   
+            foreach ( $vehicleList as $vehicle ) {
+                $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicle );
+                $vehicleRefData=json_decode($vehicleRefData);
+                $shortName = $vehicleRefData->shortName; 
+                $shortNameList [] = $shortName;
+            }
+            $vehicleList =implode('<br/>',$vehicleList);
+            $vehicleListArr = array_add($vehicleListArr,$group,$vehicleList);
+            if(isset($shortNameList)) {
+	          $shortNameList =implode('<br/>',$shortNameList);
+            }
+            $shortNameListArr = array_add($shortNameListArr,$group,$shortNameList);
+         
 		
 		}
 	
-		return View::make('vdm.groups.index', array('groupList'=> $groupList))->with('vehicleListArr',$vehicleListArr);
+		return View::make('vdm.groups.index', array('groupList'=> $groupList))->with('vehicleListArr',$vehicleListArr)->with('shortNameListArr',$shortNameListArr);
 
 	}
 
@@ -57,12 +70,19 @@ class VdmGroupController extends \BaseController {
 		$vehicleList = $redis->smembers('S_Vehicles_' . $fcode);
 		
 		$userVehicles=null;
-		
+		$shortName =null;
+        $shortNameList = null;
+        
 		foreach ($vehicleList as $key=>$value) {
 			$userVehicles=array_add($userVehicles, $value, $value);
+            $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
+            $vehicleRefData=json_decode($vehicleRefData);
+             $shortName = $vehicleRefData->shortName; 
+            $shortNameList = array_add($shortNameList,$value,$shortName);
+            
 		}
 		
-			return View::make('vdm.groups.create')->with('userVehicles',$userVehicles);
+			return View::make('vdm.groups.create')->with('userVehicles',$userVehicles)->with('shortNameList',$shortNameList);;
 	}
 
 
@@ -166,18 +186,24 @@ class VdmGroupController extends \BaseController {
 		$username = Auth::user()->username;
 		$redis = Redis::connection();
 		$groupId=$id;
-		
+		Log::info(' $groupId ' . $groupId);
 		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
 		$vehicles = $redis->smembers('S_Vehicles_' . $fcode);
 		
-		$selectedVehicles =  $redis->smembers($groupId. ':' . $fcode);
-		
+		$selectedVehicles =  $redis->smembers($groupId);
+		      $shortName =null;
+        $shortNameList = null;
 		$vehicleList=null;
 		foreach($vehicles as $key=>$value) {
+		     $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
+            $vehicleRefData=json_decode($vehicleRefData);
+             $shortName = $vehicleRefData->shortName; 
+            $shortNameList = array_add($shortNameList,$value,$shortName);
 			$vehicleList=array_add($vehicleList, $value, $value);
 		}
-		return View::make('vdm.groups.edit',array('groupId'=>$groupId. ':' . $fcode))->with('vehicleList', $vehicleList)->with('selectedVehicles',$selectedVehicles);
+		return View::make('vdm.groups.edit',array('groupId'=>$groupId))->with('vehicleList', $vehicleList)->
+		with('selectedVehicles',$selectedVehicles)->with('shortNameList',$shortNameList);
 	}
 
 

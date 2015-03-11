@@ -87,6 +87,15 @@ class HomeController extends BaseController {
 			$gt03aCount= Input::get ( 'gt03aCount' );
 			$redis->hmset('H_IP_Address','ipAddress',$ipAddress,'gt06nCount',$gt06nCount,
 				'tr02Count',$tr02Count,'gt03aCount',$gt03aCount);
+             
+             $init=$redis->lindex('L_GT06N_AVBL_PORTS',0);
+             $currentCount   = isset($init)?$init:10000;
+             
+             $endCount = $currentCount+$gt06nCount;
+             
+             for($count=$currentCount;$count<=$endCount;$count++) {
+                   $redis->rpush('L_GT06N_AVBL_PORTS',$count);
+             }   
 		}
 		Session::flash ( 'message', 'Successfully added ipAddress details'. '!' );
 		
@@ -151,11 +160,21 @@ class HomeController extends BaseController {
 			// attempt to do the login
 			if (Auth::attempt($userdata,$remember)) {
 
+                $username = Auth::user()->username;
+                  $redis = Redis::connection();
+                  $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+                  $url = Request::url();
+                   Log::info('Login details $url ' . $url);
+                 /* if($redis->sismember('S_Users_' . $fcode,$username)) {
+                       Log::info('Login details ' . $fcode);
+                      return  Redirect::to('live');
+                  }
+            */
 				// validation successful!
 				
 				//return  Redirect::to('vdmVehicles');
 				
-				return  Redirect::to('live');
+				 return  Redirect::to('live');
 				
 
 			} else {	 	

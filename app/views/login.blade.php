@@ -15,10 +15,10 @@
 
 <div class="navbar-header">
 
-		 <h1 class="logo"><a class="navbar-brand" ><img src="assets/imgs/logo.png"/>VAMO Systems Fleet Management</a></h1>
+		 <h1 class="logo"><a class="navbar-brand" ><img src="assets/imgs/logo.png"/>Vehicle Advanced Monitoring System</a></h1>
 		
 		<!-- 
-		<a class="navbar-brand" ><img src="assets/imgs/logo.png"/><h2> VAMO Systems Fleet Management </h2></a>
+		<a class="navbar-brand" ><img src="assets/imgs/logo.png"/><h2> Vehicle Advanced Monitoring System </h2></a>
 		 -->
 	</div>
 	

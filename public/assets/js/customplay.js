@@ -27,10 +27,10 @@ app.directive('map', function($http) {
 						$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
 					}else{
 						$('.alert-danger').hide();
-						
 						if(data.error==null){
 							var fromNow =new Date(data.fromDateTime.replace('IST',''));
 							var toNow 	= new Date(data.toDateTime.replace('IST',''));
+							
 							scope.fromNowTS		    =	fromNow.getTime();
 							scope.toNowTS			=	toNow.getTime();	
 							function formatAMPM(date) {
@@ -69,16 +69,23 @@ app.directive('map', function($http) {
 							
 						    for(var i=0;i<locs.vehicleLocations.length;i++){
 						   		scope.path.push(new google.maps.LatLng(locs.vehicleLocations[i].latitude, locs.vehicleLocations[i].longitude));
+						   		
 						   	    scope.pointMarker(locs.vehicleLocations[i].latitude, locs.vehicleLocations[i].longitude);
-						   	   
+						   	  if(locs.vehicleLocations[i].isOverSpeed=='Y'){
+								   	    	var pscolorval = '#ff0000';
+								   	   }else{
+								   	   		var pscolorval = '#068b03';
+								   	   }
+						   	  scope.polylinearr.push(pscolorval);
 						        scope.pointinfowindow(scope.map, gsmarker[i], locs.vehicleLocations[i]);
 					   		}
+					   		
 		  	  				var latLngBounds = new google.maps.LatLngBounds();
 			  				var j=0;
 			  				scope.addMarkerstart({ lat: locs.vehicleLocations[0].latitude, lng: locs.vehicleLocations[0].longitude , data: locs.vehicleLocations[0], path:scope.path[0]});
 					  		for(var i = 0; i < scope.path.length; i++) {
 								latLngBounds.extend(scope.path[i]);
-								if(locs.vehicleLocations[i].position=='P' || locs.vehicleLocations[i].position=='S' || locs.vehicleLocations[i].insideGeoFence=='Y' ){
+								if(locs.vehicleLocations[i].position=='P' /*|| locs.vehicleLocations[i].position=='S'*/ || locs.vehicleLocations[i].insideGeoFence=='Y' ){
 									scope.addMarker({ lat: locs.vehicleLocations[i].latitude, lng: locs.vehicleLocations[i].longitude , data: locs.vehicleLocations[i], path:scope.path[i]});
 									scope.infoBox(scope.map, gmarkers[j], locs.vehicleLocations[i]);
 									j++;
@@ -101,13 +108,27 @@ app.directive('map', function($http) {
 								path: scope.path,
 								strokeColor: '#068b03',
 								strokeOpacity: 0.7,
-								strokeWeight: 2,
+								strokeWeight: 0,
 								icons: [{
 						            icon: lineSymbol,
 						            offset: '100%'
 						        }],
 								clickable: true
 						  	});
+						  	
+						  	if(scope.path.length>1){
+					   			for(var i=0;i<scope.path.length-1;i++){
+					   				scope.polyline1[i] = new google.maps.Polyline({
+										map: scope.map,
+										path: [scope.path[i], scope.path[i+1]],
+										strokeColor: scope.polylinearr[i],
+										strokeOpacity: 0.7,
+										strokeWeight: 2,
+										
+								  	});
+					   			}
+					   		}
+						  	
 						  	scope.pointDistances=[];
 						  	var sphericalLib = google.maps.geometry.spherical;
 						  	var pointZero = scope.path[0];
@@ -138,7 +159,8 @@ app.directive('map', function($http) {
 app.controller('mainCtrl',function($scope, $http){ 
 	$scope.locations = [];
 	$scope.path = [];
-	
+	$scope.polylinearr=[];
+	$scope.polyline1=[];
 	$scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations';
 	$scope.getTodayDate  =	function(date) {
 		var date = new Date(date);
@@ -264,10 +286,15 @@ app.controller('mainCtrl',function($scope, $http){
 			for(var i=0; i<gmarkers.length; i++){
 				gmarkers[i].setMap(null);
 			}
+			for(var i=0; i<$scope.polyline1.length; i++){
+				$scope.polyline1[i].setMap(null);
+			}
+			
 			$scope.polyline.setMap(null);
 			$scope.markerstart.setMap(null);
 			$scope.markerend.setMap(null);
 			$scope.path = [];
+			$scope.polylinearr = [];
 			gmarkers=[];
 			ginfowindow=[];
 			contentString = [];
@@ -397,6 +424,10 @@ app.controller('mainCtrl',function($scope, $http){
 	}
 	$scope.infoBox = function(map, marker, data){
 		var t = $scope.getLocation(data.latitude, data.longitude, function(count){ 
+			//var geourl = 'http://128.199.217.144/geocode/public/store?geoLocation='+data.latitude+','+data.longitude+'&geoAddress='+count
+			//$http.get(geourl).success(function(data){
+				
+			//});
 			$scope.printadd(data.lastSeen, data.timeConsumed, data.tripDistance, count, marker, map, data); 
 		});
 	};
@@ -406,10 +437,12 @@ app.controller('mainCtrl',function($scope, $http){
 	    var count = 0;
 	    var offset;
 	    var sentiel = -1;
+	    var i = 0;
 	     window.clearInterval(id);
 	     var tempint=$scope.speedval;
+	  //  var infoWindow = new google.maps.InfoWindow();
 	    id = window.setInterval(function () {
-	    	
+	    //	infoWindow.close();
 	        count = (count + 1) % 200;
 	        offset = count /2;
 	        $scope.gcount = count;
@@ -422,7 +455,9 @@ app.controller('mainCtrl',function($scope, $http){
 	            $scope.polyline.set('icons', icons);
 	            window.clearInterval(id);
 	        }
-	        
+	      //  infoWindow.setPosition($scope.path[i])
+	        //infoWindow.open($scope.map);
+	      //  i++
 	    }, tempint);
 	}
 	$scope.pausehis= function(){
@@ -468,6 +503,7 @@ app.controller('mainCtrl',function($scope, $http){
 		var count = 0;
 	    var offset;
 	    var sentiel = -1;
+	    
 	     window.clearInterval(id);
 	     var tempint=$scope.speedval;
 	    

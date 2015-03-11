@@ -4,6 +4,8 @@ var chart = null;
 
 var gmarkers=[];
 var ginfowindow=[];
+var geomarker=[];
+var geoinfo=[];
 var app = angular.module('mapApp',[])
 .controller('mainCtrl',['$scope', '$http', function($scope, $http){
 	$scope.locations = [];
@@ -17,8 +19,12 @@ var app = angular.module('mapApp',[])
 	$scope.attention= 0;
 	$scope.vehicleno='';
 	$scope.cityCircle=[];
+	$scope.polylinelive=new google.maps.Polyline();
+	$scope.polylinelivearr=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
+	$scope.endlatlong = new google.maps.LatLng();
+	$scope.startlatlong = new google.maps.LatLng();
 	$scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations';
 	$scope.historyfor='';
 	
@@ -57,7 +63,6 @@ var app = angular.module('mapApp',[])
 	
 	$scope.genericFunction = function(vehicleno, index){
 		$scope.selected = index;
-		
 		$scope.removeTask(vehicleno);
 	}
 	
@@ -94,10 +99,10 @@ var app = angular.module('mapApp',[])
 			  if (results[1]) {
 				if(typeof callback === "function") callback(results[1].formatted_address)
 			  } else {
-				alert('No results found');
+				//alert('No results found');
 			  }
 			} else {
-			  alert('Geocoder failed due to: ' + status);
+			 // alert('Geocoder failed due to: ' + status);
 			}
 		  });
     };
@@ -116,18 +121,17 @@ var app = angular.module('mapApp',[])
 		}
 	}
 	
-	
 	$scope.groupSelection = function(groupname, groupid){
 		 $scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
-		 $scope.selected=undefined; 
+		 $scope.selected=0; //undefined; 
 		 gmarkers=[];
 		 ginfowindow=[];
 	}
 	
 	$scope.infoBoxed = function(map, marker, vehicleID){
 		//var url = 'http://'+globalIP+'/vamo/public/getGeoFenceView?vehicleId='+$scope.vehicleno;
-		var contentString = '<div style="padding:10px; width:130px; height:40px;"><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track '+vehicleID+'</a>&nbsp;&nbsp;</div>';
+		var contentString = '<div style="padding:10px; width:150px; height:40px;"><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track '+vehicleID+'</a>&nbsp;&nbsp;</div>';
 		var infowindow = new google.maps.InfoWindow({
 		 content: contentString
 		});
@@ -177,21 +181,36 @@ var app = angular.module('mapApp',[])
 			$('#vehstat span').text(pos.data.position);
 			total = parseInt(pos.data.speed);
 			$('#vehdevtype span').text(pos.data.odoDistance);
-			$('#mobno span').text(pos.data.mobileNumber);
+			$('#mobno span').text(pos.data.overSpeedLimit);
 			
 			if(pos.data.parkedTime!=0){
 				var temptime = $scope.timeCalculate(pos.data.parkedTime);
+				var tempcaption = 'Parked';
 			}else if(pos.data.movingTime!=0){
 				var temptime = $scope.timeCalculate(pos.data.movingTime);
+				var tempcaption = 'Moving';
 			}else if(pos.data.idleTime!=0){
 				var temptime = $scope.timeCalculate(pos.data.idleTime);
+				var tempcaption = 'Idle';
 			}else if(pos.data.noDataTime!=0){
 				var temptime = $scope.timeCalculate(pos.data.noDataTime);
+				var tempcaption = 'No data';
 			}else{
+				var tempcaption = 'Position';
 				var temptime =0;
 			}
-			
-			$('#regno span').text(temptime);			
+			$('#positiontime').text(tempcaption);
+			$('#regno span').text(temptime);	
+			$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
+				$('#lastseen').text(count); 
+			/*	try { 
+							var reversegeourl = 'http://'+globalIP+'/geocode/public/store?geoLocation='+locs.latitude+','+locs.longitude+'6&geoAddress='+count;
+					       $http.get(reversegeourl).success(function(data){});
+					    }
+					    catch(err) {
+					       console.log(err);
+					    }*/
+			});		
 		}
 		gmarkers.push($scope.marker);
 		google.maps.event.addListener(gmarkers[gmarkers.length-1], "click", function(e){	
@@ -204,29 +223,52 @@ var app = angular.module('mapApp',[])
 				$('#vehdevtype span').text(pos.data.odoDistance);
 				$('#mobno span').text(pos.data.overSpeedLimit);
 				if(pos.data.parkedTime!=0){
-					var temptime = $scope.timeCalculate(pos.data.parkedTime);
-				}else if(pos.data.movingTime!=0){
-					var temptime = $scope.timeCalculate(pos.data.movingTime);
-				}else if(pos.data.idleTime!=0){
-					var temptime = $scope.timeCalculate(pos.data.idleTime);
-				}else if(pos.data.noDataTime!=0){
-					var temptime = $scope.timeCalculate(pos.data.noDataTime);
-				}else{
-					var temptime =0;
-				}
-					
-				$('#regno span').text(temptime);
-				$('#lstseendate').html('<strong>Last Seen Date & time :</strong> '+ pos.data.lastSeen);
-				$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
-					$('#lastseen').text(count); 
-				});
+				var temptime = $scope.timeCalculate(pos.data.parkedTime);
+				var tempcaption = 'Parked';
+			}else if(pos.data.movingTime!=0){
+				var temptime = $scope.timeCalculate(pos.data.movingTime);
+				var tempcaption = 'Moving';
+			}else if(pos.data.idleTime!=0){
+				var temptime = $scope.timeCalculate(pos.data.idleTime);
+				var tempcaption = 'Idle';
+			}else if(pos.data.noDataTime!=0){
+				var temptime = $scope.timeCalculate(pos.data.noDataTime);
+				var tempcaption = 'No data';
+			}else{
+				var tempcaption = 'Position';
+				var temptime =0;
+			}
+			$('#positiontime').text(tempcaption);
+			$('#regno span').text(temptime);
+			$('#lstseendate').html('<strong>Last Seen Date & time :</strong> '+ pos.data.lastSeen);
+			$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
+				$('#lastseen').text(count); 
+				try { 
+							var reversegeourl = 'http://'+globalIP+'/geocode/public/store?geoLocation='+locs.latitude+','+locs.longitude+'6&geoAddress='+count;
+					       $http.get(reversegeourl).success(function(data){});
+					    }
+					    catch(err) {
+					       console.log(err);
+					    }
+			});
 				
-				if($scope.selected!=undefined){
-					$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
-				}
-				
-				
+			if($scope.selected!=undefined){
+				$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
+			}
         });
+	}
+	$scope.enterkeypress = function(){
+		var url = 'http://'+globalIP+'/vamo/public/setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){
+			
+			
+		}else{
+			
+			 $http.get(url).success(function(data){
+			 	document.getElementById('poival').value='';
+			 	console.log("enter pressed");
+			 });
+		}
 	}
 	$scope.timeCalculate = function(duration){
 		var milliseconds = parseInt((duration%1000)/100), seconds = parseInt((duration/1000)%60);
@@ -253,16 +295,21 @@ var app = angular.module('mapApp',[])
 		
 		if($scope.cityCirclecheck==false){
 			$scope.cityCirclecheck=true;
+			
 		}
 		if($scope.cityCirclecheck==true){
 			for(var i=0; i<$scope.cityCircle.length; i++){
 				$scope.cityCircle[i].setMap(null);
+				
+			}
+			for(var i=0; i<geomarker.length; i++){
+				geomarker[i].setMap(null);
+				geoinfo[i].setMap(null);
 			}
 		}
 		$http.get(url).success(function(data){
 			$scope.geoloc = data;
 			if (typeof(data.geoFence) !== 'undefined' && data.geoFence.length) {	
-				//alert(data.geoFence[0].proximityLevel);
 				for(var i=0; i<data.geoFence.length; i++){
 					var populationOptions = {
 							  strokeColor: '#FF0000',
@@ -284,6 +331,7 @@ var app = angular.module('mapApp',[])
 				      map: $scope.map,
 				      icon: image
 				  	});
+				  	geomarker.push(beachMarker);
 					var myOptions = {
 						content: labelText,
 						boxStyle: {textAlign: "center", fontSize: "9pt", fontColor: "#ff0000", width: "100px"
@@ -299,18 +347,32 @@ var app = angular.module('mapApp',[])
 					var labelinfo = new InfoBox(myOptions);
 					labelinfo.open($scope.map);
 					labelinfo.setPosition($scope.cityCircle[i].getCenter());
+					geoinfo.push(labelinfo);
 				}
 			}
 		}).error(function(){});
 	}
+	$scope.drawpolyline = function(lat, lng){
+		
+		
+	}
 	$scope.removeTask=function(vehicleno){
 		var temp = $scope.locations[$scope.gIndex].vehicleLocations;
 		$scope.vehicleno = vehicleno;
+		$scope.map.setZoom(13);
+				
+				$scope.endlatlong = new google.maps.LatLng();
+				$scope.startlatlong = new google.maps.LatLng();
+		for(var i=0; i<$scope.polylinelivearr.length;i++){		
+				 $scope.polylinelivearr[i].setMap(null);
+		}
+				
 		for(var i=0; i<temp.length;i++){
+			$scope.polylinelive.setMap(null);
 			if(temp[i].vehicleId==$scope.vehicleno){
 				$scope.map.setCenter(gmarkers[i].getPosition());
 				//$scope.setzomlevel($scope.locations[$scope.gIndex].zoomLevel);
-				$scope.map.setZoom(13);
+				
 				$('#vehiid span').text(temp[i].vehicleId + " (" +temp[i].shortName+")");
 				$('#toddist span span').text(temp[i].distanceCovered);
 				$('#vehstat span').text(temp[i].position);
@@ -319,29 +381,54 @@ var app = angular.module('mapApp',[])
 				$('#mobno span').text(temp[i].overSpeedLimit);
 				if(temp[i].parkedTime!=0){
 					var temptime = $scope.timeCalculate(temp[i].parkedTime);
+					var tempcaption = 'Parked';
 				}else if(temp[i].movingTime!=0){
 					var temptime = $scope.timeCalculate(temp[i].movingTime);
+					var tempcaption = 'Moving';
 				}else if(temp[i].idleTime!=0){
 					var temptime = $scope.timeCalculate(temp[i].idleTime);
+					var tempcaption = 'Idle';
 				}else if(temp[i].noDataTime!=0){
 					var temptime = $scope.timeCalculate(temp[i].noDataTime);
+					var tempcaption = 'No data';
 				}else{
+					var tempcaption = 'Position';
 					var temptime =0;
 				}
 				
+				$('#positiontime').text(tempcaption);
 				$('#regno span').text(temptime);
 				$('#lstseendate').html('<strong>Last Seen Date & time :</strong> '+ temp[i].lastSeen);		
 				$scope.getLocation(temp[i].latitude, temp[i].longitude, function(count){ 
 					$('#lastseen').text(count); 
+					/*try { 
+							var reversegeourl = 'http://'+globalIP+'/geocode/public/store?geoLocation='+temp[i].latitude+','+temp[i].longitude+'6&geoAddress='+count;
+					       $http.get(reversegeourl).success(function(data){});
+					    }
+					    catch(err) {
+					       console.log(err);
+					    }*/
 				});
 				
 				var url = 'http://'+globalIP+'/vamo/public/getGeoFenceView?vehicleId='+$scope.vehicleno;
-				$scope.createGeofence(url)
-				
+				$scope.createGeofence(url);
 			}
 		}
+		
 	};
-}])
+}]).directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+})
  .directive('map', function($http) {
     return {
         restrict: 'E',
@@ -359,7 +446,7 @@ var app = angular.module('mapApp',[])
 					}
 		
 					scope.locations = data;
-					
+					scope.polylinelive.setMap(null);
 					scope.distanceCovered =locs[scope.gIndex].distance;
 					scope.alertstrack = locs[scope.gIndex].alerts;
 					scope.totalVehicles  =locs[scope.gIndex].totalVehicles;
@@ -400,20 +487,18 @@ var app = angular.module('mapApp',[])
 								scope.firstLoc = event.latLng;
 							}
 						}else if(scope.nearbyflag==true){
-							$('#status02').show(); // will first fade out the loading animation
-							$('#preloader02').show(); // will fade out the white DIV that covers the website.
+							$('#status02').show(); 
+							$('#preloader02').show(); 
 							var tempurl = 'http://'+globalIP+'/vamo/public/getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
 							$http.get(tempurl).success(function(data){
 								scope.nearbyLocs = data;
-								$('#status02').fadeOut(); // will first fade out the loading animation
-								$('#preloader02').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
+								$('#status02').fadeOut(); 
+								$('#preloader02').delay(350).fadeOut('slow');
 									
-								if(scope.nearbyLocs.fromAddress==''){
-									
-								}else{
+								if(scope.nearbyLocs.fromAddress==''){}else{
 									$('.nearbyTable').delay(350).show();
 								}
-							}).error(function(){ /*alert('error'); */});
+							});
 						}
 					});
 					google.maps.event.addListener(scope.map, 'bounds_changed', function() {
@@ -428,17 +513,29 @@ var app = angular.module('mapApp',[])
 						var lng =  locs[scope.gIndex].vehicleLocations[i].longitude;
 						scope.addMarker({ lat: lat, lng: lng , data: locs[scope.gIndex].vehicleLocations[i]});
 						scope.infoBoxed(scope.map,gmarkers[i], locs[scope.gIndex].vehicleLocations[i].vehicleId);
-					}
-					
-					if(scope.selected!=undefined){
-							scope.map.setCenter(gmarkers[scope.selected].getPosition()); 	
+						if(locs[scope.gIndex].vehicleLocations[i].vehicleId==scope.vehicleno){
+							scope.endlatlong = new google.maps.LatLng(lat, lng);
+							scope.startlatlong = new google.maps.LatLng(lat, lng);
+							if(locs[scope.gIndex].vehicleLocations[i].isOverSpeed=='N'){
+								var strokeColorvar = '#00b3fd';
+							}else{
+								var strokeColorvar = '#ff0000';
+							}
+							scope.polylinelive = new google.maps.Polyline({
+					            map: scope.map,
+					            path: [scope.startlatlong, scope.endlatlong],
+					            strokeColor: strokeColorvar,
+					            strokeOpacity: 0.7,
+					            strokeWeight: 5
+					        });
+					    	scope.startlatlong = scope.endlatlong;
 						}
-				}).error(function(){});
+					}
+				});
 				
 				$(document).on('pageshow', '#maploc', function(e, data){       
                 	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
            		 });
-					
 			});
 			scope.$watch("url", function(val) {
 				setInterval(function() {
@@ -450,38 +547,47 @@ var app = angular.module('mapApp',[])
 						scope.totalVehicles  =locs[scope.gIndex].totalVehicles;
 						scope.attention  =locs[scope.gIndex].attention;
 						scope.vehicleOnline =locs[scope.gIndex].online;
+						
 						var length = locs[scope.gIndex].vehicleLocations.length;
 						for (var i = 0; i < gmarkers.length; i++) {
 							gmarkers[i].setMap(null);
 						}
 						gmarkers=[];
 						ginfowindow=[];
-					
-					
 						for (var i = 0; i < length; i++) {
 							var lat = locs[scope.gIndex].vehicleLocations[i].latitude;
 							var lng =  locs[scope.gIndex].vehicleLocations[i].longitude;
 							
 							scope.addMarker({ lat: lat, lng: lng , data: locs[scope.gIndex].vehicleLocations[i]});
 							scope.infoBoxed(scope.map,gmarkers[i], locs[scope.gIndex].vehicleLocations[i].vehicleId);
+							
+							if(locs[scope.gIndex].vehicleLocations[i].vehicleId==scope.vehicleno){
+								scope.endlatlong = new google.maps.LatLng(lat, lng);
+								if(locs[scope.gIndex].vehicleLocations[i].isOverSpeed=='N'){
+									var strokeColorvar = '#00b3fd';
+								}else{
+									var strokeColorvar = '#ff0000';
+								}
+								scope.polylinelive = new google.maps.Polyline({
+						            map: scope.map,
+						            path: [scope.startlatlong, scope.endlatlong],
+						            strokeColor: strokeColorvar,
+						            strokeOpacity: 0.7,
+						            strokeWeight: 5
+						        });
+						        scope.polylinelivearr.push(scope.polylinelive);
+						    	scope.startlatlong = scope.endlatlong;		
+							}
 						}
-						if(scope.selected!=undefined){
-							//scope.map.setCenter(locs[scope.gIndex].vehicleLocations[scope.selected].latitude,  locs[scope.gIndex].vehicleLocations[scope.selected].longitude); 	
-						}
-					}).error(function(){ });
-					if(scope.selected!=undefined){
-							scope.map.setCenter(gmarkers[scope.selected].getPosition()); 	
-						}
+					});					
 				}, 10000);
     		});
 	    }
-    
 	};
-	
 });
-$(window).load(function() { // makes sure the whole site is loaded
-		$('#status').fadeOut(); // will first fade out the loading animation
-		$('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
+$(window).load(function() {
+		$('#status').fadeOut(); 
+		$('#preloader').delay(350).fadeOut('slow');
 		$('body').delay(350).css({'overflow':'visible'});
 	})
 $(document).ready(function(e) {
@@ -495,139 +601,102 @@ $(document).ready(function(e) {
 	});
 	//$('.bottomContent').hide();
 	$('.contentbClose').click(function(){ $('.bottomContent').fadeOut(100); });
-	chart =	$('.container01').highcharts({
-				chart: {
-						type: 'gauge',
-						plotBackgroundColor: null,
-						plotBackgroundImage: null,
-						plotBorderWidth: 0,
-						plotShadow: false,
-						backgroundColor:'transparent'
-				},
-				title: {
-					text: ''
-				},
-				pane: {
+	
+
+    var gaugeOptions = {
+
+        chart: {
+            type: 'solidgauge',
+            backgroundColor:'rgba(255, 255, 255, 0)'
+        },
+
+        title: null,
+
+        pane: {
+            center: ['50%', '85%'],
+            size: '200%',
             startAngle: -90,
             endAngle: 90,
-            size: [20],
-             center: ['50%', '100%'],
-            background: [{
-                backgroundColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                    stops: [
-                        [0, '#FFF'],
-                        [1, '#333']
-                    ]
-                },
-                borderWidth: 0,
-                outerRadius: '109%'
-            }, {
-                backgroundColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                    stops: [
-                        [0, '#333'],
-                        [1, '#FFF']
-                    ]
-                },
-                borderWidth: 1,
-                outerRadius: '107%'
-            }, {
-                backgroundColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                    stops: [
-                        [0, '#666'],
-                        [1, '#0c0c0c']
-                    ]
-                },
-                borderWidth: 1,
-                outerRadius: '107%'
-            }, {
-                backgroundColor: '#DDD',
-                borderWidth: 1,
-                outerRadius: '105%',
-                innerRadius: '104%'
-            }]
-        },            
-        plotOptions: {
-			gauge: {
-				dial: {
-					baseWidth: 4,
-					backgroundColor: '#C33',
-					borderColor: '#900',
-					borderWidth: 1,
-					rearLength: 20,
-					baseLength: 10,
-					radius: 80
-				}                
-			}
+            background: {
+            	
+                innerRadius: '60%',
+                outerRadius: '100%',
+                shape: 'arc'
+            }
         },
-        yAxis: [{
-            min: 0,
-            max: 200,
-            lineColor: '#fff',
-            tickColor: '#fff',
-            minorTickColor: '#fff',
-            minorTickPosition: 'inside',
-            tickLength: 10,
-            tickWidth: 4,
-            minorTickLength: 5,
-            offset: -2,
-            lineWidth: 2,
-            labels: {
-                distance: -25,
-                rotation: 0,
-                style: {
-                    color: '#fff',
-                    size: '120%',
-                    fontWeight: 'bold'
-                }
+
+        tooltip: {
+            enabled: false
+        },
+
+        // the value axis
+        yAxis: {
+            stops: [
+                [0.1, '#55BF3B'], // green
+                [0.5, '#DDDF0D'], // yellow
+                [0.9, '#DF5353'] // red
+            ],
+            lineWidth: 0,
+            minorTickInterval: null,
+            tickPixelInterval: 400,
+            tickWidth: 0,
+            title: {
+                y: -50
             },
-            endOnTick: false,
-            plotBands: [{
-                from: 0,
-                to: 100,
-                innerRadius: '40%',
-                outerRadius: '65%',
-                color: {linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                    stops: [
-                        [0, '#fff'],
-                        [1, '#fff']
-                    ]} // green
-            }, {
-                from: 0,
-                to: 50,
-                innerRadius: '45%',
-                outerRadius: '60%',
-                color: '#000' 
-            }]
-        }],    
+            labels: {
+                y: -100
+            }
+        },
+
+        plotOptions: {
+            solidgauge: {
+                dataLabels: {
+                    y: 5,
+                    borderWidth: 0,
+                    useHTML: true
+                }
+            }
+        }
+    };
+
+    // The speed gauge
+    $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 100,
+            title: {
+                text: ''
+            }
+        },
+
+        credits: {
+            enabled: false
+        },
+
         series: [{
-			data: [10],
             name: 'Speed',
+            data: [total],
             dataLabels: {
-                backgroundColor: {
-                    linearGradient: {
-                        x1: 0,
-                        y1: 0,
-                        x2: 0,
-                        y2: 1
-                    },
-                    stops: [
-                        [0, '#DDD'],
-                        [1, '#FFF']
-                    ]
-                },
-                offset: 10
+                format: '<div style="text-align:center"><span style="font-size:12px; font-weight:normal;color: #196481'+ '">Speed - {y} km</span><br/>',
+                 y: 25
             },
             tooltip: {
-                valueSuffix:'kmh'
+                valueSuffix: ' km/h'
             }
-        }]    
-    },
-	function (chart) {
-		setInterval(function () {
-			chart.series[0].setData([total]);
-		},1000);
-	});	
+        }]
+
+    }));
+  // Bring life to the dials
+    setInterval(function () {
+        // Speed
+        var chart = $('#container-speed').highcharts(), point;
+
+        if (chart) {
+            point = chart.series[0].points[0];
+            point.update(total);
+        }
+
+        
+    }, 1000);
+
 });

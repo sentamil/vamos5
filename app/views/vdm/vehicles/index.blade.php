@@ -8,7 +8,10 @@
 		<tr>
 			<td>ID</td>
 			<td>Vehicle Id</td>
+			<td>Short Name</td>
 			<td>Device Id</td>
+			<td>Port No</td>
+			<td>mobile No</td>
 			<td>Actions</td>
 
 		</tr>
@@ -18,8 +21,10 @@
 		<tr>
 			<td>{{ $key }}</td>
 			<td>{{ $value }}</td>
-			<td>{{ array_get($deviceList, $value)}}</td>	
-	
+			<td>{{ array_get($shortNameList, $value)}}</td>
+			<td>{{ array_get($deviceList, $value)}}</td>
+			<td>{{ array_get($portNoList, $value)}}</td>	
+	       <td>{{ array_get($mobileNoList, $value)}}</td>    
 				 
 			<!-- we will also add show, edit, and delete buttons -->
 			<td>

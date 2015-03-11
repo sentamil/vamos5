@@ -35,29 +35,29 @@
 	</div>
 	
 	<div class="form-group">
-		{{ Form::label('vehicleMake', 'Vehicle Make') }}
-		{{ Form::text('vehicleMake', Input::old('vehicleMake'), array('class' => 'form-control')) }}
+        {{ Form::label('vehicleType', 'Vehicle Type') }}
+      {{ Form::select('vehicleType', array( 'Car' => 'Car', 'Truck' => 'Truck','Bus' => 'Bus'), Input::old('vehicleType'), array('class' => 'form-control')) }}             
+
+    </div>
+	
+	<div class="form-group">
+		{{ Form::label('morningTripStartTime', 'Morning Trip Start Time') }}
+		{{ Form::text('morningTripStartTime', Input::old('morningTripStartTime'), array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('vehicleType', 'Vehicle Type') }}
-	  {{ Form::select('vehicleType', array( 'Car' => 'Car', 'Truck' => 'Truck','Bus' => 'Bus'), Input::old('vehicleType'), array('class' => 'form-control')) }}             
+        {{ Form::label('eveningTripStartTime', 'Evening Trip Start Time') }}
+        {{ Form::text('eveningTripStartTime', Input::old('eveningTripStartTime'), array('class' => 'form-control')) }}
+    </div>
 
-	</div>
 	
-	<div class="form-group">
-		{{ Form::label('useSOS4Conf', 'Use SOS Button for POI configuration') }}
-		  {{ Form::select('useSOS4Conf', array( '0' => '0 H', '24' => '24 H','48' => '48 H','72'=>'72 H','96'=>'96 H'), Input::old('useSOS4Conf'), array('class' => 'form-control')) }}             
-<!--
-		{{ Form::text('useSOS4Conf', Input::old('useSOS4Conf'), array('class' => 'form-control')) }}
--->
-	</div>
-	
+
 	</div>
 	<div class="col-md-4">
 	<div class="form-group">
-		{{ Form::label('oprName', 'Operator Name') }}
-		{{ Form::text('oprName', Input::old('oprName'), array('class' => 'form-control')) }}
+		{{ Form::label('oprName', 'Telecom Operator Name') }}
+	  {{ Form::select('oprName', array( 'airtel' => 'airtel', 'reliance' => 'reliance','idea' => 'idea'), Input::old('oprName'), array('class' => 'form-control')) }}             
+
 	</div>
 	
 	<div class="form-group">

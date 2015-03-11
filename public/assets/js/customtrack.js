@@ -9,7 +9,7 @@ app.directive('map', function($http) {
         link: function(scope, element, attrs) {
            $http.get(scope.url).success(function(data){
 		   		var locs = data;
-				var myOptions = {
+		   		var myOptions = {
 					zoom: 13,
 					center: new google.maps.LatLng(locs.latitude, locs.longitude),
 					mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -18,25 +18,31 @@ app.directive('map', function($http) {
 				
 				$('#vehiid span').text(locs.vehicleId + " (" +locs.shortName+")");
 				$('#toddist span span').text(locs.distanceCovered);
-				//$('#vehstat span').text(locs.position);
 				total = parseInt(locs.speed);
 				$('#vehdevtype span').text(locs.odoDistance);
-				$('#mobno span').text(locs.mobileNumber);
+				$('#mobno span').text(locs.overSpeedLimit);
+				
+				scope.getLocation(locs.latitude, locs.longitude, function(count){
+					$('#lastseentrack').text(count); 
+				});
+				
 				if(locs.parkedTime!=0){
-					var temptime = scope.timeCalculate(locs.parkedTime);
+					$('#regno span').text(scope.timeCalculate(locs.parkedTime));
+					$('#positiontime').text('Parked');
 				}else if(locs.movingTime!=0){
-					var temptime = scope.timeCalculate(locs.movingTime);
+					$('#regno span').text(scope.timeCalculate(locs.movingTime));
+					$('#positiontime').text('Moving');
 				}else if(locs.idleTime!=0){
-					var temptime = scope.timeCalculate(locs.idleTime);
+					$('#regno span').text(scope.timeCalculate(locs.idleTime));
+					$('#positiontime').text('Idle');
 				}else if(locs.noDataTime!=0){
-					var temptime = scope.timeCalculate(locs.noDataTime);
+					$('#regno span').text(scope.timeCalculate(locs.noDataTime));
+					$('#positiontime').text('No data');
 				}else{
-					var temptime =0;
+					$('#positiontime').text('Position');
+					$('#regno span').text(0);
 				}
 				
-				$('#regno span').text(temptime);
-			   	
-			   	
 			   	scope.speedval.push(data.speed);
            		scope.path.push(new google.maps.LatLng(data.latitude, data.longitude));
 				var labelAnchorpos = new google.maps.Point(12, 50);
@@ -58,7 +64,6 @@ app.directive('map', function($http) {
 					}
 				}else{
 					pinImage = 'assets/imgs/'+data.color+'_'+data.direction+'.png';
-					//var labelAnchorpos = new google.maps.Point(12, 50);
 				}
 				scope.marker = new MarkerWithLabel({
 			   		position: myLatlng, 
@@ -68,60 +73,32 @@ app.directive('map', function($http) {
 				   labelAnchor: labelAnchorpos,
 				   labelClass: "labels", 
 				   labelInBackground: false
-				 });
+				});
 		 		if(scope.path.length>1){
 			 		var latLngBounds = new google.maps.LatLngBounds();
 					latLngBounds.extend(scope.path[scope.path.length-1]);
 				}
 				
 				if(data.isOverSpeed=='N'){
-					var strokeColorvar = '#068b03';
+					var strokeColorvar = '#00b3fd';
 				}else{
 					var strokeColorvar = '#ff0000';
 				}
 				
-				/*if(data.speed>-1 && data.speed<40){
-			         	var strokeColorvar = '#068b03';
-			         }else if(data.speed>39 && data.speed<60){
-			         	var strokeColorvar = '#e5e203';
-			         }else if(data.speed>59 && data.speed<90){
-			         	var strokeColorvar = '#e58203';
-			         }else if(data.speed<89){
-			         	var strokeColorvar = '#ff0000';
-			         }
-         */
-				  	var polyline = new google.maps.Polyline({
+				var polyline = new google.maps.Polyline({
 			            map: scope.map,
 			            path: [scope.startlatlong, scope.endlatlong],
 			            strokeColor: strokeColorvar,
 			            strokeOpacity: 0.7,
-			            strokeWeight: 2
-			        });
-			        scope.startlatlong = scope.endlatlong;
-			         
-			        /*for (var i = 0; i < scope.path.length-1; i++) {
-			        	
-			        if(scope.speedval[i]>-1 && scope.speedval[i]<40){
-			         	scope.strokeColorvar = '#068b03';
-			         }else if(scope.speedval[i]>39 && scope.speedval[i]<60){
-			         	scope.strokeColorvar = '#57ff04';
-			         }else if(scope.speedval[i]>59 && scope.speedval[i]<90){
-			         	scope.strokeColorvar = '#e58203';
-			         	alert('')
-			         }else if(scope.speedval[i]<89){
-			         	scope.strokeColorvar = '#ff0000';
-			         }
-					 var polyline = new google.maps.Polyline({
-					    path: [scope.path[i], scope.path[i+1]],
-					    strokeColor: scope.strokeColorvar,
-					    strokeOpacity: 0.7,
-					    strokeWeight: 2,
-					    map: scope.map
-					  });
-					}*/
-			        
-		  	}).error(function(){ });
-		  	setInterval(function() {
+			            strokeWeight: 5
+			    });
+			    scope.startlatlong = scope.endlatlong;
+		  });
+		  $(document).on('pageshow', '#maploc', function(e, data){       
+                	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
+           		 });
+		  	
+		  setInterval(function() {
 		   		$http.get(scope.url).success(function(data){
 		   			var locs = data;
 					var myOptions = {
@@ -129,26 +106,36 @@ app.directive('map', function($http) {
 						center: new google.maps.LatLng(locs.latitude, locs.longitude),
 						mapTypeId: google.maps.MapTypeId.ROADMAP
 	            	};
+            		
             		$('#vehiid span').text(locs.vehicleId + " (" +locs.shortName+")");
 					$('#toddist span span').text(locs.distanceCovered);
 					$('#vehstat span').text(locs.position);
 					total = parseInt(locs.speed);
 					$('#vehdevtype span').text(locs.odoDistance);
-					$('#mobno span').text(locs.mobileNumber);
-					if(locs.parkedTime!=0){
-						var temptime = scope.timeCalculate(locs.parkedTime);
-					}else if(locs.movingTime!=0){
-						var temptime = scope.timeCalculate(locs.movingTime);
-					}else if(locs.idleTime!=0){
-						var temptime = scope.timeCalculate(locs.idleTime);
-					}else if(locs.noDataTime!=0){
-						var temptime = scope.timeCalculate(locs.noDataTime);
-					}else{
-						var temptime =0;
-					}
+					$('#mobno span').text(locs.overSpeedLimit);
 					
-					$('#regno span').text(temptime);
+					if(locs.parkedTime!=0){
+						$('#regno span').text(scope.timeCalculate(locs.parkedTime));
+						$('#positiontime').text('Parked');
+					}else if(locs.movingTime!=0){
+						$('#regno span').text(scope.timeCalculate(locs.movingTime));
+						$('#positiontime').text('Moving');
+					}else if(locs.idleTime!=0){
+						$('#regno span').text(scope.timeCalculate(locs.idleTime));
+						$('#positiontime').text('Idle');
+					}else if(locs.noDataTime!=0){
+						$('#regno span').text(scope.timeCalculate(locs.noDataTime));
+						$('#positiontime').text('No data');
+					}else{
+						$('#positiontime').text('Position');
+						$('#regno span').text(0);
+					}
+					scope.getLocation(locs.latitude, locs.longitude, function(count){
+						$('#lastseentrack').text(count); 
+					});
+           			
            			scope.path.push(new google.maps.LatLng(data.latitude, data.longitude));
+					
 					if(scope.path.length>1){
 					 	var latLngBounds = new google.maps.LatLngBounds();
 						latLngBounds.extend(scope.path[scope.path.length-1]);
@@ -156,22 +143,19 @@ app.directive('map', function($http) {
 					var labelAnchorpos = new google.maps.Point(12, 50);
 					var pinImage;
 					if(data.color =='P' || data.color =='N' || data.color =='A'){
-						pinImage = 'assets/imgs/'+data.color+'.png';
-						//var labelAnchorpos = new google.maps.Point(2, 58);
-						if(data.color =='N'){
-							//var labelAnchorpos = new google.maps.Point(12, 50);
-						}
 						if(data.color =='A'){
 							pinImage = 'assets/imgs/orangeB.png';
-							//var labelAnchorpos = new google.maps.Point(12, 50);
+						}else{
+							pinImage = 'assets/imgs/'+data.color+'.png';
 						}
 					}else{
 						pinImage = 'assets/imgs/'+data.color+'_'+data.direction+'.png';
-						//var labelAnchorpos = new google.maps.Point(12, 50);
 					}
+					
 					var myLatlng = new google.maps.LatLng(data.latitude, data.longitude);
 					scope.marker.setMap(null);
 					scope.map.setCenter(scope.marker.getPosition());
+					
 					scope.marker = new MarkerWithLabel({
 					   position: myLatlng, 
 					   map: scope.map,
@@ -183,21 +167,24 @@ app.directive('map', function($http) {
 					});
 					
 					scope.endlatlong = new google.maps.LatLng(data.latitude, data.longitude);
-			        if(data.isOverSpeed=='N'){
-						var strokeColorvar = '#068b03';
+					
+				  	if(data.isOverSpeed=='N'){
+						var strokeColorvar = '#00b3fd';
 					}else{
 						var strokeColorvar = '#ff0000';
 					}
-         
          			
 				  	var polyline = new google.maps.Polyline({
 			            map: scope.map,
 			            path: [scope.startlatlong, scope.endlatlong],
 			            strokeColor: strokeColorvar,
 			            strokeOpacity: 0.7,
-			            strokeWeight: 4
+			            strokeWeight: 5
 			        });
+			        
 			        scope.startlatlong = scope.endlatlong;
+			        google.maps.event.trigger(document.getElementById('maploc'), "resize");
+		   		
 		   		}).error(function(){ });
 		   }, 10000);
         }
@@ -223,6 +210,21 @@ app.controller('mainCtrl',function($scope, $http){
 			map: $scope.map
 		});
 	}   
+	$scope.getLocation = function(lat,lon, callback){
+		geocoder = new google.maps.Geocoder();
+		var latlng = new google.maps.LatLng(lat, lon);
+		geocoder.geocode({'latLng': latlng}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+			  if (results[1]) {
+				if(typeof callback === "function") callback(results[1].formatted_address)
+			  } else {
+				//alert('No results found');
+			  }
+			} else {
+			//  alert('Geocoder failed due to: ' + status);
+			}
+		  });
+    };
 	$scope.timeCalculate = function(duration){
 		var milliseconds = parseInt((duration%1000)/100), seconds = parseInt((duration/1000)%60);
 		var minutes = parseInt((duration/(1000*60))%60), hours = parseInt((duration/(1000*60*60))%24);
@@ -231,6 +233,18 @@ app.controller('mainCtrl',function($scope, $http){
 		seconds = (seconds < 10) ? "0" + seconds : seconds;
 		temptime = hours + " H : " + minutes +' M';
 		return temptime;
+	}
+	$scope.trafficLayer = new google.maps.TrafficLayer();
+	$scope.checkVal=false;
+	$scope.clickflagVal =0;
+	$scope.check = function(){
+		if($scope.checkVal==false){
+			$scope.trafficLayer.setMap($scope.map);
+			$scope.checkVal = true;
+		}else{
+			$scope.trafficLayer.setMap(null);
+			$scope.checkVal = false;
+		}
 	}
 	$scope.createGeofence=function(url){
 		
@@ -261,6 +275,8 @@ app.controller('mainCtrl',function($scope, $http){
 					var centerPosition = new google.maps.LatLng(data.geoFence[i].latitude, data.geoFence[i].longitude);
 					var labelText = data.geoFence[i].poiName;
 					var image = 'assets/imgs/bus.png';
+				  
+				  	
 				  
 				  	var beachMarker = new google.maps.Marker({
 				      position: centerPosition,

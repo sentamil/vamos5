@@ -61,70 +61,55 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="topContent topContent01">
-                        	<!--<a href="javascript:void(0);" class="contentClose"><img src="assets/imgs/close.png"/></a>-->
                         	<div class="row">
-                    			<div class="col-md-3" align="center">
-                                	<div class="form-group">
+                    			<div class="col-md-12" align="center">
+                                	<div class="form-group" style="width:140px; margin-right:10px; float:left;">
                                     	<div class="input-group datecomp" id="dateFromh">
-                                            <input type="text" class="form-control placholdercolor" ng-model="fromdate" id="dateFrom" placeholder="From date" >
+                                            <input type="text" class="form-control placholdercolor" ng-model="fromdate" id="dateFrom" placeholder="From date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                     	</div>
                                   	</div>
-                                </div>
-                                <div class="col-md-2" align="center">
-                                	<div class="form-group">
+                                
+                                	<div class="form-group" style="width:130px; margin-right:10px; float:left;">
                                     	<div class="input-group datecomp" id="timeFromh">
-                                            <input type="text" class="form-control placholdercolor" ng-model="fromtime" id="timeFrom" placeholder="From time" >
+                                            <input type="text" class="form-control placholdercolor" ng-model="fromtime" id="timeFrom" placeholder="From time">
                                             <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
                                     	</div>
                                   	</div>
-                                </div>
-                                <div class="col-md-3" align="center">
-                                	<div class="form-group">
+                               
+                                	<div class="form-group" style="width:140px; margin-right:10px; float:left;">
                                     	<div class="input-group datecomp" id="dateToh">
-                                          	<input type="text" class="form-control placholdercolor" ng-model="todate" id="dateTo" placeholder="To date" >
+                                          	<input type="text" class="form-control placholdercolor" ng-model="todate" id="dateTo" placeholder="To date">
                                           	<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                     	</div>
                                   	</div>
-                                </div>
-                                <div class="col-md-2" align="center">
-                                	<div class="form-group">
+                               
+                                	<div class="form-group" style="width:130px; margin-right:10px; float:left;">
                                     	<div class="input-group datecomp" id="timeToh">
                                           	<input type="text" class="form-control placholdercolor" ng-model="totime" id="timeTo" placeholder="To time" >
                                           	<div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
                                     	</div>
                                   	</div>
-                                </div>
-                                <div class="col-md-2" align="center">
-                                	<div class="form-group">
-                                 <button ng-click="plotting()">Plot History</button>
+                                	<div class="form-group" style="width:30px; margin-top: 5px; margin-right:10px; float:left;">
+                                 <button ng-click="plotting()">Plot</button>
                                  </div>
-                               </div>
-                            </div>
-                            <div class="row" id="animatecontrols">
-                            	<div class="col-md-3 speedbutt" align="left" style="padding-bottom: 10px;" ng-init="speedval=100">
+                                 <div class=" speedbutt" id="animatecontrols" style="padding-top: 5px; float: left; margin-left: 40px;" ng-init="speedval=100">
                             		<label>Speed :</label>
                             		<input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="speedval" value="200" type="radio" /><span>Slow</span>
                             		<input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="100" /><span>Normal</span>
                             		<input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="20" /><span>Fast</span>
                             	</div>
-                            	 <div class="col-md-4" align="left" style="padding-bottom: 15px;">
+                            	<div class=""  style="padding-top: 5px;">
                                     <button ng-click="playhis()" id="playButton" style="display: none;"><i class="glyphicon glyphicon-play"></i></button>
                                     <button ng-click="pausehis()" id="pauseButton"><i class="glyphicon glyphicon-pause"></i></button>
                                     <button ng-click="animated()" id="replaybutton" disabled><i class="glyphicon glyphicon-repeat"></i></button>
                                     <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
                                 </div>
-                            	
+                               </div>
+                               
                             </div>
+                            
                         </div>
-                        <!--<div class="alert alert-danger alert-dismissible fade in" role="alert" style="position:absolute; top:200px; left:200px; display:none; width:500px; z-index:999999">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-      <h4>You got an error!</h4>
-      <p>{{hisloc.error}}</p>
-      
-        <button type="button" class="btn btn-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">Close</span></button>
-      
-    </div>-->
                             <map id="map_canvas"></map>
                             <div class="error" style="position:absolute; height:100%; background:#fff; top:0; left:0;  width:100%;" align="center">
                             	<p style="padding:10px; background:#fff; margin-top:200px; display:inline-block;">No Data Found. Please select another date range</p>
