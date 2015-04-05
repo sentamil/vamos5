@@ -46,7 +46,7 @@ background-color: #ffffff;
                     </div>
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
-                    <ul class="nav nav-second-level">
+                    <ul class="nav nav-second-level" style="max-height: 250px; overflow-y: auto;">
                     <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)">{{loc.vehicleId}} ({{loc.shortName}})</a></li>
                     </ul>
                 </li>
@@ -110,9 +110,25 @@ background-color: #ffffff;
                                   	</div>
                                 </div>
                                 <div class="col-md-2" align="center">
-                                    <button ng-click="plotHist()">Submit</button>
+                                	<div class="form-group">
+                                    	<div class="input-group datecomp">
+                                          	<select ng-change="intervalChange()" class="input-sm form-control" ng-model="interval">
+						                   		 <option value="">Interval</option>
+						                   		 <option>1</option>
+						                   		 <option>5</option>
+						                   		 <option>10</option>
+						                   		 <option>15</option>
+						                   		 <option>30</option>
+						                   		 <option>60</option>
+						                   		 <option>120</option>
+						                   </select>
+                                    	</div>
+                                  	</div>
                                 </div>
-                               <div class="col-md-1" align="center"></div>
+                                <div class="col-md-1" align="center">
+                                    <button ng-click="plotHist()" style="margin-left: -100%;">Submit</button>
+                                </div>
+                               
                             </div>
 		        <div class="box-body" ng-class="overallEnable?'col-md-9':'col-md-12'"id="statusreport">
 		        	 <!-- // print '	<!-- Tabset -->
@@ -364,7 +380,7 @@ background-color: #ffffff;
 							</div>
 			   			 </tab>
 			   			 <div class="pull-right">
-		                <a href="downloadhistory?vvid={{id}}&rid={{downloadid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}&dvg={{vgroup}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
+		                <a href="downloadhistory?vvid={{id}}&rid={{downloadid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}&dvg={{vgroup}}&interval={{interval}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
 		                <img style="cursor: pointer;" ng-click="exportData(downloadid)"  src="../app/views/reports/image/xls.png" />
 		                <img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV(downloadid)"  src="../app/views/reports/image/csv.jpeg" />
 		            </div>

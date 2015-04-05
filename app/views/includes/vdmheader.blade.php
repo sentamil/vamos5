@@ -24,9 +24,13 @@
 	<ul class="nav navbar-nav">
 		<li><a href="{{ URL::to('vdmVehicles') }}">View All Vehicles</a></li>
 		<li><a href="{{ URL::to('vdmVehicles/create') }}">Add a Vehicle</a>
+		<li><a href="{{ URL::to('vdmVehicles/multi') }}">Add Multiple Vehicles</a>    
 		<li><a href="{{ URL::to('vdmGroups') }}">View All Groups</a></li>
 		<li><a href="{{ URL::to('vdmGroups/create') }}">Create a Group</a>
-	   <li><a href="{{ URL::to('vdmSchool/create') }}">Add a School</a>
+	   <li><a href="{{ URL::to('vdmSchools') }}">View All Schools</a>
+	   <li><a href="{{ URL::to('vdmSchools/create') }}">Add a School</a>
+	    <li><a href="{{ URL::to('vdmBusRoutes') }}">View All Bus Routes</a></li>
+        <li><a href="{{ URL::to('vdmBusRoutes/create') }}">Create a Bus Route with stops</a>
 		<li><a href="{{ URL::to('vdmUsers') }}">View All Users</a></li>
 		<li><a href="{{ URL::to('vdmUsers/create') }}">Create a User</a>
 		<li><a href="{{ URL::to('vdmGeoFence/create') }}">Add a GeoFencing</a>

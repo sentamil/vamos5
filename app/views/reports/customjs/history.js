@@ -10,7 +10,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	$scope.maddress	=	[];
 	$scope.saddress	=	[];
 	$scope.location	=	[];
-	
+	$scope.interval	=	getParameterByName('interval')?getParameterByName('interval'):10;
 	$scope.sort = {       
                 sortingOrder : 'id',
                 reverse : false
@@ -115,13 +115,38 @@ app.controller('histCtrl',function($scope, $http, $filter){
    		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
-		// $scope.figureOutTodosToDisplay();
+		//console.log($scope.overspeeddata);
+		$scope.recursive($scope.overspeeddata,0);
    	};
+   	
+   	$scope.recursive   = function(location,index){
+		if(location.length<=index){
+			return;
+		}else{
+			var lat		 =	location[index].latitude;
+			var lon		 =	location[index].longitude;
+			if(!lat || !lon)
+				$scope.recursive(location, ++index);
+			var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
+			$http.get(tempurl).success(function(data){
+				console.log(data.status);
+				$scope.locationname = data.results[0].formatted_address;
+				if($scope.downloadid=='overspeedreport')
+					$scope.oaddress[index]	= data.results[0].formatted_address;
+				else if($scope.downloadid=='movementreport')
+					$scope.maddress[index]	= data.results[0].formatted_address;
+				else if($scope.downloadid=='stoppedparkingreport')
+					$scope.saddress[index]	= data.results[0].formatted_address;
+				setTimeout(function() {
+				      $scope.recursive(location, ++index);
+				}, 2000);
+			}).error(function(){ /*alert('error'); */});
+		}
+	}
 	
 	/*$scope.dataGeofence 		= 		function(data) {
 		$scope.geofencedata		=   	data;		
-		 // console.log($scope.geofencedata);
-		
+		 // console.log($scope.geofencedata);	
 	}*/
 	
 	$scope.getParkedCorrectHours	=	function(data) {
@@ -142,7 +167,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
  		var str		=	time_str.split(' ');
  		var stradd	=	str[0].concat(":00");
  		var strAMPM	=	stradd.concat(' '+str[1]);
- 		
+
     	// Convert a string like 10:05:23 PM to 24h format, returns like [22,5,23]
 	    var time = strAMPM.match(/(\d+):(\d+):(\d+) (\w)/);
 	    var hours = Number(time[1]);
@@ -181,7 +206,21 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	};
 	
 	$scope.getLocation	=	function(lat,lon,ind) {	
-		$scope.loading	=	true;
+		//alert(ind);
+		switch($scope.downloadid) {
+			case 'overspeedreport':
+				$scope.recursive($scope.overspeeddata,ind);
+				break;
+			case 'movementreport':
+				$scope.recursive($scope.movementdata,ind);
+				break;
+			case 'stoppedparkingreport':
+				$scope.recursive($scope.parkeddata,ind);
+				break;
+			default:
+				break;
+		}
+		/*$scope.loading	=	true;
 		var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
 		console.log(tempurl);
 		$http.get(tempurl).success(function(data){	
@@ -193,8 +232,10 @@ app.controller('histCtrl',function($scope, $http, $filter){
 			else if($scope.downloadid=='stoppedparkingreport')
 				$scope.saddress[ind]	= data.results[0].formatted_address;
 			$scope.loading	=	false;	
-		});
+		});*/
 	};
+	
+	
 	
 	$scope.alertMe		=	function(data) {	
 		//console.log(data);
@@ -206,10 +247,12 @@ app.controller('histCtrl',function($scope, $http, $filter){
 			case 'Movement':
 				$scope.downloadid	 =	'movementreport';
 				$scope.overallEnable =	true;
+				$scope.recursive($scope.movementdata,0);
 				break;
 			case 'Stopped/Parked':
 				$scope.downloadid	 =	'stoppedparkingreport';
 				$scope.overallEnable =	true;
+				$scope.recursive($scope.parkeddata,0);
 				break;
 			case 'Geo Fence':
 				$scope.downloadid	 =	'geofencereport';
@@ -277,7 +320,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 		console.log($scope.tempgeo);	*/
 		//console.log($scope.fromdate);
 		$scope.loading	=	true;
-		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime);
+		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
 		//var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"$&fromTime="+convert_to_24h($scope.fromtime)+"&toDate=2015-12-01&toTime="+convert_to_24h($scope.totime);		
 		console.log(histurl);		
 		$http.get(histurl).success(function(data){
@@ -292,12 +335,24 @@ app.controller('histCtrl',function($scope, $http, $filter){
      
      
      $scope.pdfHist			=		function() {  	
-		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt);			
+		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;			
 		console.log(histurl);		
 		$http.get(histurl).success(function(data){
 			$scope.hist				=	data;
-			$scope.dataArray(data.vehicleLocations);				
-		}); 
+			$scope.dataArray(data.vehicleLocations);
+			switch($scope.repId) {
+			case 'movementreport':
+				$scope.recursive($scope.movementdata,0);
+				break;
+			case 'stoppedparkingreport':
+				$scope.recursive($scope.parkeddata,0);
+				break;
+			default:
+				break;
+			}			
+		});
+		
+		
      }
      
      
@@ -311,10 +366,8 @@ app.controller('histCtrl',function($scope, $http, $filter){
 		 return new Date(ds).getTime();
  	}
  	
- 	
- 
-	  
-	 	 $scope.figureOutTodosToDisplay = function() {
+
+	 $scope.figureOutTodosToDisplay = function() {
 	    var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
 	    var end = begin + $scope.itemsPerPage;
 	    $scope.filteredTodos = $scope.movementdata.slice(begin, end);

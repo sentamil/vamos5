@@ -58,11 +58,11 @@
             </div>
         </div>
     </div>
-        <script src="assets/js/static.js"></script>
+    <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-    <script src="assets/js/customsettings.js"></script>
+    <script src="../app/views/reports/customjs/settings.js"></script>
     <script>
 		$("#menu-toggle").click(function(e) {
 			e.preventDefault();

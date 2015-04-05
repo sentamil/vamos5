@@ -24,6 +24,7 @@
   		display: none !important;
 	 }
 	.gm-style-cc{ position:absolute !important; bottom:60px !important; z-index:99999999 !important;}
+	
 </style>
 </head>
 <div id="preloader02" >
@@ -42,7 +43,7 @@
                 <li class="sidebar-bottom"><a href="javascript:void(0);"><img src="assets/imgs/profile.png"/></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
-            <ul class="sidebar-subnav ">
+            <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;">
                 <li style="padding-left:25px;">
                         <div class="right-inner-addon" align="center">
                     <i class="fa fa-search"></i>
@@ -50,7 +51,7 @@
                     </div>
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak>{{location.group}}</a>
-                    <ul class="nav nav-second-level">
+                    <ul class="nav nav-second-level" style="max-height: 250px; overflow-y: auto;">
                     <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak>{{loc.vehicleId}} ({{loc.shortName}}) <img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="20" height="20"/></a></li>
                     </ul>
                 </li>
@@ -174,15 +175,19 @@
                                     <h3><span>-</span>&nbsp;km</h3>
                                 </div>
                             </div>
-                        </div>
+                        </div><div ng-show="loading" class="overlay"></div>
+	<div ng-show="loading" class="loading-img"></div>
                     </div>
+                    
                 </div>
                 
 
             </div>
+            
         </div>
         <!-- /#page-content-wrapper -->
     </div>
+     
     <div class="modal fade" id="myModal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -207,6 +212,7 @@
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/moment.js" type="text/javascript"></script>
     <script src="assets/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    
     <script src="assets/js/customplay.js"></script>
     <script>
 		$("#menu-toggle").click(function(e) {

@@ -19,6 +19,7 @@
             width:100%;
             height: 100vh; 
         }
+         #container-speed{ position:absolute; top:-67px; left:-50px;width: 300px; height: 100px; float: left} 
     </style>
 </head>
 <body ng-app="mapApp">
@@ -87,16 +88,13 @@
                                 </div>
                                 
                                 <div class="col-md-4 col-lg-2" align="center">
-                          			<div class="container01" align="center"></div>
+                          			<div id="container-speed"></div>
                                 </div>
                                 <div class="col-md-4 col-lg-2" align="right" id="toddist">
                                 	<h6 align="right" style="text-align:right;">&nbsp;Today Distance - <span><span></span>&nbsp;Km</span></h6>
                                    
                                 </div>
-                               <!--div class="col-md-1" align="center" id="vehstat">
-                                	<h6>Position - <span></span></h6>
-                                    
-                                </div-->
+                               
                                 <div class="col-md-2" align="center" id="regno">
                                 	<h6><p id="positiontime" style="display: inline; padding: 0; margin: 0;">Position</p> Time - <span></span></h6>
                                     
@@ -113,10 +111,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/highcharts-more.js"></script>
+	<script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
     
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
+    <script src="assets/js/vamoApp.js"></script>
+    <script src="assets/js/services.js"></script>
     <script src="assets/js/customtrack.js"></script>
     <script>
 		$("#menu-toggle").click(function(e) {

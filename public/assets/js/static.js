@@ -1,1 +1,1 @@
-var globalIP = "128.199.201.242";
+var globalIP = "localhost";

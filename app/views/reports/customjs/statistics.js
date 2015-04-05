@@ -46,7 +46,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	}
 	
 	
-	$scope.$watch($scope.sid, function() {
+	$scope.$watch('sid', function() {
 		 //alert(1);
    		 if($scope.rid=='executive') {
 		 	$scope.loading			=	true;
@@ -55,7 +55,8 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 				$scope.loading			=	false;
 				$scope.execGroupReportData	=	gdata.execReportData;
 				if($scope.vvid)
-					$scope.execGroupReportData	=	($filter('filter')($scope.execGroupReportData, {'vehicleId':$scope.vvid}));		
+					$scope.execGroupReportData	=	($filter('filter')($scope.execGroupReportData, {'vehicleId':$scope.vvid}));
+				$scope.recursive($scope.execGroupReportData,0);	
 			});
    		 }
    		 else { 
@@ -72,8 +73,25 @@ app.controller('mainCtrl',function($scope, $http, $filter){
    		 }   		 
    	});
    	
+   	$scope.recursive   = function(location,index,$timeout){
+   		//console.log(location);
+		if(location.length<=index){
+			return;
+		}else{
+			var geo		 =	location[index].topSpeedGeoLocation;
+			if(!geo)
+				$scope.recursive(location, ++index);
+			var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+geo+"&sensor=true";
+			$http.get(tempurl).success(function(data){	
+				$scope.locationname		=	data.results[0].formatted_address;
+				$scope.maddress[index]	=	data.results[0].formatted_address;
+				setTimeout(function() {
+				      $scope.recursive(location, ++index);
+				}, 2000);					
+			});
+		}
+	}
    	
-       
 	$scope.$watch("url", function (val) {
 		$scope.loading	=	true;
 	 	$http.get($scope.url).success(function(data){
@@ -126,6 +144,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	
 	$scope.plotHist			=		function() {
 		if($scope.whichdata) {
+			
 			var gurl		=	'http://'+getIP+'/vamo/public/getExecutiveReport?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 			//console.log(gurl);
 			$scope.loading			=	true;
@@ -133,10 +152,11 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 				$scope.execGroupReportData	=	gdata.execReportData; 
 				if($scope.vid)
 					$scope.execGroupReportData	=	($filter('filter')($scope.execGroupReportData, {'vehicleId':$scope.vid}));
-				$scope.texecGroupReportData	=	$scope.execGroupReportData
+				$scope.texecGroupReportData		=	$scope.execGroupReportData;				
 				$scope.donutLoad(gdata);
 				$scope.barLoad($scope.vid);
 				$scope.loading			=	false;
+				$scope.recursive($scope.execGroupReportData,0);	
 			});
 		}
 		else {			

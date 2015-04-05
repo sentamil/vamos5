@@ -17,7 +17,7 @@ class VdmGeoFenceController extends \BaseController {
 	public function index($id)
     {
         
-        Log::info(" inside VDM index " .$id);
+        Log::info(" inside VDM index++ " .$id);
         if (! Auth::check ()) {
             return Redirect::to ( 'login' );
         }

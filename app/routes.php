@@ -145,14 +145,6 @@ Route::get('/getVehicleHistory', function() {
     return View::make('vls.getVehicleHistory');
 });
 
-Route::get('/getVehicleHistoryNew', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    Log::info('get Vehicle Locations');
-    return View::make('vls.getVehicleHistoryNew');
-});
-
 Route::get('/admin', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -185,6 +177,10 @@ Route::post('login', array('before' => 'csrf', 'uses' => 'HomeController@doLogin
 Route::get('logout', array('uses' => 'HomeController@doLogout'));
 
 Route::get('admin', array('uses' => 'HomeController@admin'));
+
+Route::get('adhocMail', array('uses' => 'HomeController@adhocMail'));
+
+Route::post('sendAdhocMail', array('before' => 'csrf', 'uses' => 'HomeController@sendAdhocMail'));
 
 Route::get('liveReport', array('uses' => 'ReportsController@liveReport'));
 /*
@@ -223,17 +219,26 @@ Route::get('/vdmReports/mileageReport', function() {
 
 Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeController@saveIpAddress'));
 
+Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
+
+Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
+
 Route::resource('vdmGroups', 'VdmGroupController');
 
 Route::resource('vdmVehicles', 'VdmVehicleController');
 
 Route::resource('vdmUsers', 'VdmUserController');
 
-//vdmSchool
+Route::resource('vdmSchools', 'VdmSchoolController');
 
-Route::resource('vdmSchool', 'VdmSchoolController');
+Route::resource('vdmBusRoutes', 'VdmBusRoutesController');
+
+Route::resource('vdmBusStops', 'VdmBusStopsController');
 
 Route::resource('vdmGeoFence', 'VdmGeoFenceController');
+
+
+
 
 Route::get('vdmGeoFence/{token}', array('uses' => 'VdmGeoFenceController@show'));
 
@@ -249,15 +254,14 @@ Route::get('/setPOIName', function() {
     return View::make('vls.setPOIName');
 });
 
-
 Route::get('file/download', function() {
     $file = 'path_to_my_file.pdf';
     return Response::download($file);
 });
 
-Route::get ( '/store', function () {
-        return View::make ( 'vls.geoCode' );
-} );
+Route::get('/store', function() {
+    return View::make('vls.geoCode');
+});
 
 Route::get('/download', function() {
     // PDF file is stored under project/public/download/info.pdf

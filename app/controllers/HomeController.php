@@ -195,6 +195,29 @@ class HomeController extends BaseController {
 	}
 
 	
+    public function adhocMail() {
+        return View::make('vls.adhocmail');
+    }
+
+    public function sendAdhocMail() {
+        
+        
+        Log::info(" inside send adhoc mail");
+        $userId  = Input::get('toAddress');
+        $ccAddress  = Input::get('ccAddress');
+        $subject  = Input::get('subject');
+        $body  = Input::get('body');
+        
+         Mail::queue('emails.welcome', array('fname'=>$userId,'userId'=>$userId,'password'=>$password), function($message)
+            {
+                $message->to(Input::get('toAddress'))->subject(Input::get('subject')) ;
+            });
+            
+        
+        Session::flash ( 'message', 'Mail sent ' . $to . '!' );    
+        return View::make('vls.adhocmail');
+    }
+
 
 
 	public function doLogout()

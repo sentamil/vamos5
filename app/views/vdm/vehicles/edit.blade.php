@@ -38,6 +38,12 @@
       {{ Form::select('vehicleType', array( 'Car' => 'Car', 'Truck' => 'Truck','Bus'=>'Bus'), $refData['vehicleType'], array('class' => 'form-control')) }}            
     </div>
     
+    <div class="form-group">
+        {{ Form::label('overSpeedLimit', 'OverSpeed Limit') }}
+        {{ Form::text('overSpeedLimit', $refData['overSpeedLimit'], array('class' => 'form-control')) }}
+    </div>
+    
+    
 	<div class="form-group">
 		{{ Form::label('morningTripStartTime', 'Morning Trip Start Time') }}
 		{{ Form::text('morningTripStartTime', $refData['morningTripStartTime'], array('class' => 'form-control')) }}
@@ -51,19 +57,26 @@
      </div>
 
 	<div class="col-md-4">
+    
+     <div class="form-group">
+        {{ Form::label('schoolName', 'School/College Name') }}
+        {{ Form::text('schoolName', $refData['schoolName'], array('class' => 'form-control','disabled' => 'disabled')) }}
+    </div>
+    
+     <div class="form-group">
+        {{ Form::label('routeList', 'Routes') }}
+        {{ Form::select('routeNo',array($routeList), $refData['routeNo'], array('class' => 'form-control')) }}
+    </div>
+    
+	    
 	<div class="form-group">
 		{{ Form::label('oprName', 'Telecom Operator Name') }}    
         {{ Form::select('oprName', array( 'airtel' => 'airtel', 'reliance' => 'reliance','idea' => 'idea'), $refData['oprName'],array('class' => 'form-control')) }}             
-
-
 	</div>
+	
 	<div class="form-group">
 		{{ Form::label('mobileNo', 'Mobile Number for Alerts') }}
 		{{ Form::text('mobileNo', $refData['mobileNo'], array('class' => 'form-control')) }}
-	</div>
-	<div class="form-group">
-		{{ Form::label('overSpeedLimit', 'OverSpeed Limit') }}
-		{{ Form::text('overSpeedLimit', $refData['overSpeedLimit'], array('class' => 'form-control')) }}
 	</div>
 	
     <div class="form-group">

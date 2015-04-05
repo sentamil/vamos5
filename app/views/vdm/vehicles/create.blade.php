@@ -39,6 +39,12 @@
       {{ Form::select('vehicleType', array( 'Car' => 'Car', 'Truck' => 'Truck','Bus' => 'Bus'), Input::old('vehicleType'), array('class' => 'form-control')) }}             
 
     </div>
+    
+    <div class="form-group">
+        {{ Form::label('overSpeedLimit', 'OverSpeed Limit') }}
+        {{ Form::text('overSpeedLimit', Input::old('overSpeedLimit'), array('class' => 'form-control')) }}
+    </div>
+    
 	
 	<div class="form-group">
 		{{ Form::label('morningTripStartTime', 'Morning Trip Start Time') }}
@@ -54,6 +60,18 @@
 
 	</div>
 	<div class="col-md-4">
+
+    <div class="form-group">
+        {{ Form::label('schoolName', 'School/College/Company Name') }}
+      {{ Form::select('schoolName', array($schoolList), Input::old('schoolName'), array('class' => 'form-control')) }}             
+
+    </div>
+
+    <div class="form-group">
+        {{ Form::label('routeNo', 'Route Number') }}
+        {{ Form::text('routeNo', Input::old('routeNo'), array('class' => 'form-control')) }}
+    </div>
+	    
 	<div class="form-group">
 		{{ Form::label('oprName', 'Telecom Operator Name') }}
 	  {{ Form::select('oprName', array( 'airtel' => 'airtel', 'reliance' => 'reliance','idea' => 'idea'), Input::old('oprName'), array('class' => 'form-control')) }}             
@@ -63,10 +81,6 @@
 	<div class="form-group">
 		{{ Form::label('mobileNo', 'Mobile Number for Alerts') }}
 		{{ Form::text('mobileNo', Input::old('mobileNo'), array('class' => 'form-control')) }}
-	</div>
-	<div class="form-group">
-		{{ Form::label('overSpeedLimit', 'OverSpeed Limit') }}
-		{{ Form::text('overSpeedLimit', Input::old('overSpeedLimit'), array('class' => 'form-control')) }}
 	</div>
 	
     <div class="form-group">
