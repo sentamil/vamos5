@@ -1,6 +1,6 @@
 var app = angular.module('mapApp', []);
 app.controller('mainCtrl',function($scope, $http){ 
-	 $scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations';
+	$scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations';
 	$scope.path = [];
 	$scope.inter = 0;
 	$http.get($scope.url).success(function(data){

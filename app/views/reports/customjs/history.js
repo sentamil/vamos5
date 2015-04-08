@@ -190,6 +190,8 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
 			console.log($scope.locations);
+			if(data.length)
+				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {
 				  // console.log(value.totalVehicles, key);				  
 				  if(value.totalVehicles) {

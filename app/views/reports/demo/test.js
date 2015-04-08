@@ -1,6 +1,13 @@
 var app = angular.module('testApp', []);
-app.controller('testCtrl',function($scope, $http){ 
+app.controller('testCtrl',function($scope, $http, $location){ 
 	//alert(globalIP);
+	$scope.myVar = 1;
+
+   $scope.$watch('myVar', function() {
+       //alert('hey, myVar has changed!');
+       $scope.globalIP	=	globalIP;
+   });
+	
 	$scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations';
 	$scope.path = [];
 	$scope.inter = 0;
@@ -8,13 +15,15 @@ app.controller('testCtrl',function($scope, $http){
 	$scope.demo	= "test";
 	$http.get($scope.url).success(function(data){
 		$scope.locations = data;
+		console.log(data);
 		$scope.trackVehID =$scope.locations[0].vehicleLocations[0].vehicleId;
 		$scope.iframeurl='http://'+globalIP+'/vamo/public/vdmVehicles';
 	}).error(function(){ /*alert('error'); */});
 	
 	$scope.genericFunction = function(vehicleno, index){
 		$scope.selected = index;
-		$scope.iframeurl='http://'+globalIP+'/vamo/public/vdmVehicles/'+vehicleno+'/edit'
+		//$scope.iframeurl='http://'+globalIP+'/vamo/public/vdmVehicles/'+vehicleno+'/edit'
+		window.location.href = 'http://'+globalIP+'/vamo/public/vdmVehicles/'+vehicleno+'/edit';
 	}
 });
 

@@ -17,7 +17,6 @@ app.directive('map', function($http) {
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
 					scope.hisloc = locs;
-					//alert(scope.hisurl);
 					if(data.fromDateTime=='' || data.fromDateTime==undefined || data.fromDateTime=='NaN-aN-aN'){ 
 						if(data.error==null){}else{
 							$('.alert-danger').show();
@@ -30,7 +29,6 @@ app.directive('map', function($http) {
 						if(data.error==null){
 							var fromNow =new Date(data.fromDateTime.replace('IST',''));
 							var toNow 	= new Date(data.toDateTime.replace('IST',''));
-							
 							scope.fromNowTS		    =	fromNow.getTime();
 							scope.toNowTS			=	toNow.getTime();	
 							function formatAMPM(date) {
@@ -138,7 +136,6 @@ app.directive('map', function($http) {
     						var wholeDist = sphericalLib.computeDistanceBetween(pointZero, scope.path[scope.path.length - 1]);
 						  	for (var i = 0; i < scope.path.length; i++) {
 						        scope.pointDistances[i] = 100 * sphericalLib.computeDistanceBetween(scope.path[i], pointZero) / wholeDist;
-						    
 						    }
 						    
 						    window.setTimeout(function () {
@@ -196,6 +193,8 @@ app.controller('mainCtrl',function($scope, $http){
 		 $scope.loading	=	true;
 		 $http.get($scope.url).success(function(data){
 			$scope.locations = data;
+			if(data.length)
+				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
 			$scope.trackVehID =$scope.locations[$scope.gIndex].vehicleLocations[$scope.selected].vehicleId;
 			$scope.hisurl = 'http://'+globalIP+'/vamo/public/getVehicleHistory?vehicleId='+$scope.trackVehID;
 			$('.nav-second-level li').eq(0).children('a').addClass('active');
@@ -250,9 +249,7 @@ app.controller('mainCtrl',function($scope, $http){
 			dataType:"json",
 			url: tempurl01,
 			success:function(data){
-				
 				if(data.results[0].formatted_address==undefined){
-					
 					if(typeof callback === "function") callback('Not found');
 				}else{
 					if(typeof callback === "function") callback(data.results[0].formatted_address);
@@ -329,8 +326,8 @@ app.controller('mainCtrl',function($scope, $http){
 			contentString = [];
 			gsmarker=[];
 			gsinfoWindow=[];
-			 window.clearInterval(id);
-			 $('#replaybutton').attr('disabled','disabled');
+			window.clearInterval(id);
+			$('#replaybutton').attr('disabled','disabled');
 			$('#lastseen').html('<strong>From Date & time :</strong> -');
 			$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
 		}else{
@@ -344,14 +341,11 @@ app.controller('mainCtrl',function($scope, $http){
 		var labelAnchorpos = new google.maps.Point(12, 50);
 		if(pos.data.insideGeoFence =='Y'){
 			pinImage = 'assets/imgs/F_'+pos.data.direction+'.png';
-			//var labelAnchorpos = new google.maps.Point(12, 50);
 		}else{	
 			if(pos.data.position =='P'){
 				pinImage = 'assets/imgs/'+pos.data.position+'.png';
-				//var labelAnchorpos = new google.maps.Point(2, 58);
 			}else{
 				pinImage = 'assets/imgs/A_'+pos.data.direction+'.png';
-				//var labelAnchorpos = new google.maps.Point(12, 50);
 			}
 		}
 		$scope.marker = new MarkerWithLabel({
@@ -406,9 +400,6 @@ app.controller('mainCtrl',function($scope, $http){
 			infoWindow.open($scope.map, marker);
 		  });	
 		})($scope.markerstart, pos.data);
-		
-		//scope.infoBox(scope.map, gmarkers[j], locs.vehicleLocations[i]);
-		
 	}
 	$scope.addMarkerend= function(pos){
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
@@ -462,11 +453,6 @@ app.controller('mainCtrl',function($scope, $http){
 	}
 	$scope.infoBox = function(map, marker, data){
 		var t = $scope.getLocation(data.latitude, data.longitude, function(count){ 
-			//var geourl = 'http://128.199.217.144/geocode/public/store?geoLocation='+data.latitude+','+data.longitude+'&geoAddress='+count
-			//$http.get(geourl).success(function(data){
-				
-			//});
-			
 			$scope.printadd(data.lastSeen, data.timeConsumed, data.tripDistance, count, marker, map, data); 
 		});
 	};
@@ -477,45 +463,39 @@ app.controller('mainCtrl',function($scope, $http){
 	    var offset;
 	    var sentiel = -1;
 	    var i = 0;
-	     window.clearInterval(id);
-	     var tempint=$scope.speedval;
-	  //  var infoWindow = new google.maps.InfoWindow();
+	    window.clearInterval(id);
+	    var tempint=$scope.speedval;
 	    id = window.setInterval(function () {
-	    //	infoWindow.close();
 	        count = (count + 1) % 200;
 	        offset = count /2;
 	        $scope.gcount = count;
 	        var icons = $scope.polyline.get('icons');
 	        icons[0].offset = (offset) + '%';
-	        $scope.polyline.set('icons', icons);
-	        
+	        $scope.polyline.set('icons', icons);    
 	        if ($scope.polyline.get('icons')[0].offset == "99.5%") {
 	            icons[0].offset = '100%';
 	            $scope.polyline.set('icons', icons);
 	            window.clearInterval(id);
 	        }
-	      //  infoWindow.setPosition($scope.path[i])
-	        //infoWindow.open($scope.map);
-	      //  i++
 	    }, tempint);
 	}
+	
 	$scope.pausehis= function(){
 		$('#pauseButton').hide();
-		$('#playButton').show();
-		
+		$('#playButton').show();	
 		 window.clearInterval(id);
 		 $scope.gscount = $scope.gcount;
-		 
 	}
+	
 	$scope.speedchange=function(){
 		window.clearInterval(id);
 		 $scope.gscount = $scope.gcount;
 		 $scope.playhis();
 	}
+	
 	$scope.playhis=function(){
 		$('#playButton').hide();
-		$('#pauseButton').show();
-		
+		$('#pauseButton').show();	
 		var count = $scope.gscount;
 	    var offset;
 	    var sentiel = -1;
@@ -538,208 +518,24 @@ app.controller('mainCtrl',function($scope, $http){
 	        tempint=$scope.speedval;
 	    }, tempint);
 	}
+	
 	$scope.stophis=function(){
 		var count = 0;
 	    var offset;
 	    var sentiel = -1;
 	    
-	     window.clearInterval(id);
-	     var tempint=$scope.speedval;
-	    
-	    	
-	        count = (count + 1) % 200;
-	        offset = count /2;
+	    window.clearInterval(id);
+	    var tempint=$scope.speedval;
+	    count = (count + 1) % 200;
+	    offset = count /2;
+	    var icons = $scope.polyline.get('icons');
+	    icons[0].offset = (offset) + '%';
+	    $scope.polyline.set('icons', icons);
 	        
-	        var icons = $scope.polyline.get('icons');
-	        icons[0].offset = (offset) + '%';
-	        $scope.polyline.set('icons', icons);
-	        
-	        if ($scope.polyline.get('icons')[0].offset == "99.5%") {
-	            icons[0].offset = '100%';
-	            $scope.polyline.set('icons', icons);
-	            window.clearInterval(id);
-	        }
-	        
-	   
+        if ($scope.polyline.get('icons')[0].offset == "99.5%") {
+            icons[0].offset = '100%';
+            $scope.polyline.set('icons', icons);
+            window.clearInterval(id);
+        }   
 	}
 });
-
-/**
- * JavaScript Client Detection
- * (C) viazenetti GmbH (Christian Ludwig)
- */
-(function (window) {
-    {
-        var unknown = '-';
-
-        // screen
-        var screenSize = '';
-        if (screen.width) {
-            width = (screen.width) ? screen.width : '';
-            height = (screen.height) ? screen.height : '';
-            screenSize += '' + width + " x " + height;
-        }
-
-        //browser
-        var nVer = navigator.appVersion;
-        var nAgt = navigator.userAgent;
-        var browser = navigator.appName;
-        var version = '' + parseFloat(navigator.appVersion);
-        var majorVersion = parseInt(navigator.appVersion, 10);
-        var nameOffset, verOffset, ix;
-
-        // Opera
-        if ((verOffset = nAgt.indexOf('Opera')) != -1) {
-            browser = 'Opera';
-            version = nAgt.substring(verOffset + 6);
-            if ((verOffset = nAgt.indexOf('Version')) != -1) {
-                version = nAgt.substring(verOffset + 8);
-            }
-        }
-        // MSIE
-        else if ((verOffset = nAgt.indexOf('MSIE')) != -1) {
-            browser = 'Microsoft Internet Explorer';
-            version = nAgt.substring(verOffset + 5);
-        }
-        // Chrome
-        else if ((verOffset = nAgt.indexOf('Chrome')) != -1) {
-            browser = 'Chrome';
-            version = nAgt.substring(verOffset + 7);
-        }
-        // Safari
-        else if ((verOffset = nAgt.indexOf('Safari')) != -1) {
-            browser = 'Safari';
-            version = nAgt.substring(verOffset + 7);
-            if ((verOffset = nAgt.indexOf('Version')) != -1) {
-                version = nAgt.substring(verOffset + 8);
-            }
-        }
-        // Firefox
-        else if ((verOffset = nAgt.indexOf('Firefox')) != -1) {
-            browser = 'Firefox';
-            version = nAgt.substring(verOffset + 8);
-        }
-        // MSIE 11+
-        else if (nAgt.indexOf('Trident/') != -1) {
-            browser = 'Microsoft Internet Explorer';
-            version = nAgt.substring(nAgt.indexOf('rv:') + 3);
-        }
-        // Other browsers
-        else if ((nameOffset = nAgt.lastIndexOf(' ') + 1) < (verOffset = nAgt.lastIndexOf('/'))) {
-            browser = nAgt.substring(nameOffset, verOffset);
-            version = nAgt.substring(verOffset + 1);
-            if (browser.toLowerCase() == browser.toUpperCase()) {
-                browser = navigator.appName;
-            }
-        }
-        // trim the version string
-        if ((ix = version.indexOf(';')) != -1) version = version.substring(0, ix);
-        if ((ix = version.indexOf(' ')) != -1) version = version.substring(0, ix);
-        if ((ix = version.indexOf(')')) != -1) version = version.substring(0, ix);
-
-        majorVersion = parseInt('' + version, 10);
-        if (isNaN(majorVersion)) {
-            version = '' + parseFloat(navigator.appVersion);
-            majorVersion = parseInt(navigator.appVersion, 10);
-        }
-
-        // mobile version
-        var mobile = /Mobile|mini|Fennec|Android|iP(ad|od|hone)/.test(nVer);
-
-        // cookie
-        var cookieEnabled = (navigator.cookieEnabled) ? true : false;
-
-        if (typeof navigator.cookieEnabled == 'undefined' && !cookieEnabled) {
-            document.cookie = 'testcookie';
-            cookieEnabled = (document.cookie.indexOf('testcookie') != -1) ? true : false;
-        }
-
-        // system
-        var os = unknown;
-        var clientStrings = [
-            {s:'Windows 3.11', r:/Win16/},
-            {s:'Windows 95', r:/(Windows 95|Win95|Windows_95)/},
-            {s:'Windows ME', r:/(Win 9x 4.90|Windows ME)/},
-            {s:'Windows 98', r:/(Windows 98|Win98)/},
-            {s:'Windows CE', r:/Windows CE/},
-            {s:'Windows 2000', r:/(Windows NT 5.0|Windows 2000)/},
-            {s:'Windows XP', r:/(Windows NT 5.1|Windows XP)/},
-            {s:'Windows Server 2003', r:/Windows NT 5.2/},
-            {s:'Windows Vista', r:/Windows NT 6.0/},
-            {s:'Windows 7', r:/(Windows 7|Windows NT 6.1)/},
-            {s:'Windows 8.1', r:/(Windows 8.1|Windows NT 6.3)/},
-            {s:'Windows 8', r:/(Windows 8|Windows NT 6.2)/},
-            {s:'Windows NT 4.0', r:/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
-            {s:'Windows ME', r:/Windows ME/},
-            {s:'Android', r:/Android/},
-            {s:'Open BSD', r:/OpenBSD/},
-            {s:'Sun OS', r:/SunOS/},
-            {s:'Linux', r:/(Linux|X11)/},
-            {s:'iOS', r:/(iPhone|iPad|iPod)/},
-            {s:'Mac OS X', r:/Mac OS X/},
-            {s:'Mac OS', r:/(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
-            {s:'QNX', r:/QNX/},
-            {s:'UNIX', r:/UNIX/},
-            {s:'BeOS', r:/BeOS/},
-            {s:'OS/2', r:/OS\/2/},
-            {s:'Search Bot', r:/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/}
-        ];
-        for (var id in clientStrings) {
-            var cs = clientStrings[id];
-            if (cs.r.test(nAgt)) {
-                os = cs.s;
-                break;
-            }
-        }
-
-        var osVersion = unknown;
-
-        if (/Windows/.test(os)) {
-            osVersion = /Windows (.*)/.exec(os)[1];
-            os = 'Windows';
-        }
-
-        switch (os) {
-            case 'Mac OS X':
-                osVersion = /Mac OS X (10[\.\_\d]+)/.exec(nAgt)[1];
-                break;
-
-            case 'Android':
-                osVersion = /Android ([\.\_\d]+)/.exec(nAgt)[1];
-                break;
-
-            case 'iOS':
-                osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
-                osVersion = osVersion[1] + '.' + osVersion[2] + '.' + (osVersion[3] | 0);
-                break;
-        }
-        
-        // flash (you'll need to include swfobject)
-        /* script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" */
-        var flashVersion = 'no check';
-        if (typeof swfobject != 'undefined') {
-            var fv = swfobject.getFlashPlayerVersion();
-            if (fv.major > 0) {
-                flashVersion = fv.major + '.' + fv.minor + ' r' + fv.release;
-            }
-            else  {
-                flashVersion = unknown;
-            }
-        }
-    }
-
-    window.jscd = {
-        screen: screenSize,
-        browser: browser,
-        browserVersion: version,
-        mobile: mobile,
-        os: os,
-        osVersion: osVersion,
-        cookies: cookieEnabled,
-        flashVersion: flashVersion
-    };
-}(this));
-if(jscd.os=='Mac OS X'){}else{
-	//$('body').addClass('zoomMS');
-}
- 

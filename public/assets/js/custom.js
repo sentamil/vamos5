@@ -1,6 +1,26 @@
 //comment by satheesh ++...
 var setintrvl;
-app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $http, vamoservice){
+app.filter('statusfilter', function(){
+	return function(obj, param, param2){
+		 var out = [];
+	   if(param==''){
+	   		out= obj;
+	   		return out;  
+	   }else{
+		    for(var i=0; i<obj.length; i++){
+			    if(obj[i].status == param){
+			    	out.push(obj[i]);
+			    }
+		    }
+		    return out;  
+	   }
+	   if(param2){
+	   	return contains(param2);
+	   } 
+	   
+  	}
+}) 
+.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $http, vamoservice){
 	$scope.locations = [];
 	$scope.nearbyLocs =[];
 	$scope.val = 5;	
@@ -30,12 +50,13 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 	$scope.nearbyflag = false;
 	
 	var tempdistVal = 0;
-	
-	$scope.locations01 = vamoservice.getDataCall($scope.url)
-						
+	$scope.locations01 = vamoservice.getDataCall($scope.url);
+					
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
 			$scope.locations = data;
+			if(data.length)
+				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
 			$scope.zoomLevel = parseInt(data[$scope.gIndex].zoomLevel);
 		});
 	});
@@ -110,7 +131,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 	}
 	
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.selected=0;
+		 $scope.selected=undefined;
 		 $scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
 		 gmarkers=[];
@@ -119,22 +140,27 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		 }
 		 ginfowindow=[];
 		 clearInterval(setintrvl);
+		 $scope.locations01 = vamoservice.getDataCall($scope.url);
 	}
 	
-	$scope.infoBoxed = function(map, marker, vehicleID){
-		var contentString = '<div style="padding:10px; width:150px; height:40px;"><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track '+vehicleID+'</a>&nbsp;&nbsp;</div>';
-		var infowindow = new google.maps.InfoWindow({
-		 content: contentString
+	$scope.infoBoxed = function(map, marker, vehicleID, lat, lng){
+		$scope.getLocation(lat, lng, function(count){
+			
+			var contentString = '<div style="padding:10px; width:200px; height:100px;"><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track '+vehicleID+'</a><div>'+count+'</div></div>';
+			var infowindow = new google.maps.InfoWindow({
+			 content: contentString
+			});
+			ginfowindow.push(infowindow);
+			google.maps.event.addListener(marker, "click", function(e){
+				infowindow.open(map, marker);	
+			});
+			(function(marker) {
+			  google.maps.event.addListener(marker, "click", function(e) {
+				infowindow.open(map, marker);
+			  });	
+			})(marker);
 		});
-		ginfowindow.push(infowindow);
-		google.maps.event.addListener(marker, "click", function(e){
-			infowindow.open(map, marker);	
-		});
-		(function(marker) {
-		  google.maps.event.addListener(marker, "click", function(e) {
-			infowindow.open(map, marker);
-		  });	
-		})(marker);
+		
 	}
 	
 	$scope.addMarker= function(pos){
@@ -170,7 +196,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 				 $scope.polylinelive[i].setMap(null);
 			}
 			$scope.assignValue(pos.data);
-			console.log(pos.data.address);
+			
 			$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
 				$('#lastseen').text(count); 
 				var t = vamoservice.geocodeToserver(pos.data.latitude,pos.data.longitude,count);
@@ -181,19 +207,19 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			}
        });
 	}
+	
 	$scope.assignValue=function(dataVal){
-		
-			$('#vehiid span').text(dataVal.vehicleId + " (" +dataVal.shortName+")");
-				$('#toddist span span').text(dataVal.distanceCovered);
-				$('#vehstat span').text(dataVal.position);
-				total = parseInt(dataVal.speed);
-				$('#vehdevtype span').text(dataVal.odoDistance);
-				$('#mobno span').text(dataVal.overSpeedLimit);
-				
-				$('#positiontime').text(vamoservice.statusTime(dataVal).tempcaption);
-				$('#regno span').text(vamoservice.statusTime(dataVal).temptime);
-				$('#lstseendate').html('<strong>Last Seen Date & time :</strong> '+ dataVal.lastSeen);	
+		$('#vehiid span').text(dataVal.vehicleId + " (" +dataVal.shortName+")");
+		$('#toddist span span').text(dataVal.distanceCovered);
+		$('#vehstat span').text(dataVal.position);
+		total = parseInt(dataVal.speed);
+		$('#vehdevtype span').text(dataVal.odoDistance);
+		$('#mobno span').text(dataVal.overSpeedLimit);
+		$('#positiontime').text(vamoservice.statusTime(dataVal).tempcaption);
+		$('#regno span').text(vamoservice.statusTime(dataVal).temptime);
+		$('#lstseendate').html('<strong>Last Seen Date & time :</strong> '+ dataVal.lastSeen);	
 	}
+	
 	$scope.enterkeypress = function(){
 		var url = 'http://'+globalIP+'/vamo/public/setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
 		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
@@ -287,7 +313,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 					bounds.extend(place.geometry.location);
 				}
 				$scope.map.fitBounds(bounds);
-				$scope.map.setZoom(13);
+				//$scope.map.setZoom(13);
 			});
 			
 			google.maps.event.addListener($scope.map, 'click', function(event) {
@@ -324,7 +350,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 				var lat = locs[$scope.gIndex].vehicleLocations[i].latitude;
 				var lng =  locs[$scope.gIndex].vehicleLocations[i].longitude;
 				$scope.addMarker({ lat: lat, lng: lng , data: locs[$scope.gIndex].vehicleLocations[i]});
-				$scope.infoBoxed($scope.map,gmarkers[i], locs[$scope.gIndex].vehicleLocations[i].vehicleId);
+				$scope.infoBoxed($scope.map,gmarkers[i], locs[$scope.gIndex].vehicleLocations[i].vehicleId, lat, lng);
 				if(locs[$scope.gIndex].vehicleLocations[i].vehicleId==$scope.vehicleno){
 					$scope.endlatlong = new google.maps.LatLng(lat, lng);
 					$scope.startlatlong = new google.maps.LatLng(lat, lng);
@@ -353,12 +379,11 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 	}
 	
 	$scope.removeTask=function(vehicleno){
-		var temp = $scope.locations[$scope.gIndex].vehicleLocations;
 		$scope.vehicleno = vehicleno;
-		$scope.map.setZoom(13);
+		var temp = $scope.locations[$scope.gIndex].vehicleLocations;
 		$scope.endlatlong = new google.maps.LatLng();
 		$scope.startlatlong = new google.maps.LatLng();
-		
+		$scope.map.setZoom(22);
 		for(var i=0; i<$scope.polylinelivearr.length;i++){		
 			 $scope.polylinelivearr[i].setMap(null);
 		}
@@ -366,11 +391,11 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		for(var i=0; i<temp.length;i++){
 			$scope.polylinelive.setMap(null);
 			if(temp[i].vehicleId==$scope.vehicleno){
+				$scope.selected=i;
 				$scope.map.setCenter(gmarkers[i].getPosition());
 				$scope.assignValue(temp[i]);
 				$scope.getLocation(temp[i].latitude, temp[i].longitude, function(count){ 
-					$('#lastseen').text(count); 
-					
+					$('#lastseen').text(count); 	
 				});
 				var url = 'http://'+globalIP+'/vamo/public/getGeoFenceView?vehicleId='+$scope.vehicleno;
 				$scope.createGeofence(url);
@@ -408,12 +433,9 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			scope.$watch("url", function(val) {
 				setintrvl = setInterval(function() {
 					vamoservice.getDataCall(scope.url).then(function(data) {
-						
 						var locs = data;
-						
 						scope.assignHeaderVal(data);
 						ginfowindow=[];
-						console.log(gmarkers.length);
 						for (var i = 0; i < gmarkers.length; i++) {
 							var temp = locs[scope.gIndex].vehicleLocations[i];
 							var lat = temp.latitude;
@@ -421,41 +443,15 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 							var latlng = new google.maps.LatLng(lat,lng);
 							
 							gmarkers[i].icon = vamoservice.iconURL(temp);
-							//gmarkers[i].setShape();
 							gmarkers[i].setPosition(latlng);
 							gmarkers[i].setMap(scope.map);
+							
 							if(temp.vehicleId==scope.vehicleno){
 								scope.assignValue(temp);
 								scope.getLocation(lat, lng, function(count){
 									$('#lastseen').text(count);
 									var t = vamoservice.geocodeToserver(lat,lng,count);
-								});		
-							}
-							
-							google.maps.event.addListener(gmarkers[i], "click", function(e){	
-								scope.vehicleno = temp.vehicleId;
-								scope.startlatlong= new google.maps.LatLng();
-								scope.endlatlong= new google.maps.LatLng();
-								for(var i=0; i<scope.polylinelive.length;i++){		
-									 scope.polylinelive[i].setMap(null);
-								}
-								if(temp.vehicleId==scope.vehicleno){
-									scope.assignValue(temp);
-									
-									scope.getLocation(lat, lng, function(count){
-										$('#lastseen').text(count);
-										var t = vamoservice.geocodeToserver(lat,lng,count);
-									});		
-								}
-								
-								if(scope.selected!=undefined){
-									scope.map.setCenter(gmarkers[scope.selected].getPosition()); 	
-								}
-				        	});
-						}
-						var length = locs[scope.gIndex].vehicleLocations.length;
-						for (var i = 0; i < length; i++) {
-							if(locs[scope.gIndex].vehicleLocations[i].vehicleId==scope.vehicleno){
+								});	
 								scope.endlatlong = new google.maps.LatLng(lat, lng);
 								if(locs[scope.gIndex].vehicleLocations[i].isOverSpeed=='N'){
 									var strokeColorvar = '#00b3fd';
@@ -472,12 +468,13 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 						        scope.polylinelivearr.push(scope.polylinelive);
 						    	scope.startlatlong = scope.endlatlong;		
 							}
+							
 						}
-						if(scope.selected>-1 && gmarkers[scope.selected]!=undefined){
-							scope.map.setCenter(gmarkers[scope.selected].getPosition()); 	
-						}
-					});			
-				}, 10000);
+					});	
+					if(scope.selected!=undefined){
+						scope.map.setCenter(gmarkers[scope.selected].getPosition()); 	
+					}		
+				}, 60000);
     		});
 	    }
 	};
@@ -505,8 +502,8 @@ $(document).ready(function(e) {
         },
         title: null,
         pane: {
-            center: ['50%', '85%'],
-            size: '200%',
+            center: ['50%', '90%'],
+            size: '180%',
             startAngle: -90,
             endAngle: 90,
             background: {
@@ -549,7 +546,7 @@ $(document).ready(function(e) {
     $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 100,
+            max: 120,
             title: { text: '' }
         },
         credits: { enabled: false },
@@ -571,183 +568,4 @@ $(document).ready(function(e) {
         }
     }, 1000);
 });
-
-/**
- * JavaScript Client Detection
- * (C) viazenetti GmbH (Christian Ludwig)
- */
-(function (window) {
-    {
-        var unknown = '-';
-
-        // screen
-        var screenSize = '';
-        if (screen.width) {
-            width = (screen.width) ? screen.width : '';
-            height = (screen.height) ? screen.height : '';
-            screenSize += '' + width + " x " + height;
-        }
-
-        //browser
-        var nVer = navigator.appVersion;
-        var nAgt = navigator.userAgent;
-        var browser = navigator.appName;
-        var version = '' + parseFloat(navigator.appVersion);
-        var majorVersion = parseInt(navigator.appVersion, 10);
-        var nameOffset, verOffset, ix;
-
-        // Opera
-        if ((verOffset = nAgt.indexOf('Opera')) != -1) {
-            browser = 'Opera';
-            version = nAgt.substring(verOffset + 6);
-            if ((verOffset = nAgt.indexOf('Version')) != -1) {
-                version = nAgt.substring(verOffset + 8);
-            }
-        }
-        // MSIE
-        else if ((verOffset = nAgt.indexOf('MSIE')) != -1) {
-            browser = 'Microsoft Internet Explorer';
-            version = nAgt.substring(verOffset + 5);
-        }
-        // Chrome
-        else if ((verOffset = nAgt.indexOf('Chrome')) != -1) {
-            browser = 'Chrome';
-            version = nAgt.substring(verOffset + 7);
-        }
-        // Safari
-        else if ((verOffset = nAgt.indexOf('Safari')) != -1) {
-            browser = 'Safari';
-            version = nAgt.substring(verOffset + 7);
-            if ((verOffset = nAgt.indexOf('Version')) != -1) {
-                version = nAgt.substring(verOffset + 8);
-            }
-        }
-        // Firefox
-        else if ((verOffset = nAgt.indexOf('Firefox')) != -1) {
-            browser = 'Firefox';
-            version = nAgt.substring(verOffset + 8);
-        }
-        // MSIE 11+
-        else if (nAgt.indexOf('Trident/') != -1) {
-            browser = 'Microsoft Internet Explorer';
-            version = nAgt.substring(nAgt.indexOf('rv:') + 3);
-        }
-        // Other browsers
-        else if ((nameOffset = nAgt.lastIndexOf(' ') + 1) < (verOffset = nAgt.lastIndexOf('/'))) {
-            browser = nAgt.substring(nameOffset, verOffset);
-            version = nAgt.substring(verOffset + 1);
-            if (browser.toLowerCase() == browser.toUpperCase()) {
-                browser = navigator.appName;
-            }
-        }
-        // trim the version string
-        if ((ix = version.indexOf(';')) != -1) version = version.substring(0, ix);
-        if ((ix = version.indexOf(' ')) != -1) version = version.substring(0, ix);
-        if ((ix = version.indexOf(')')) != -1) version = version.substring(0, ix);
-
-        majorVersion = parseInt('' + version, 10);
-        if (isNaN(majorVersion)) {
-            version = '' + parseFloat(navigator.appVersion);
-            majorVersion = parseInt(navigator.appVersion, 10);
-        }
-
-        // mobile version
-        var mobile = /Mobile|mini|Fennec|Android|iP(ad|od|hone)/.test(nVer);
-
-        // cookie
-        var cookieEnabled = (navigator.cookieEnabled) ? true : false;
-
-        if (typeof navigator.cookieEnabled == 'undefined' && !cookieEnabled) {
-            document.cookie = 'testcookie';
-            cookieEnabled = (document.cookie.indexOf('testcookie') != -1) ? true : false;
-        }
-
-        // system
-        var os = unknown;
-        var clientStrings = [
-            {s:'Windows 3.11', r:/Win16/},
-            {s:'Windows 95', r:/(Windows 95|Win95|Windows_95)/},
-            {s:'Windows ME', r:/(Win 9x 4.90|Windows ME)/},
-            {s:'Windows 98', r:/(Windows 98|Win98)/},
-            {s:'Windows CE', r:/Windows CE/},
-            {s:'Windows 2000', r:/(Windows NT 5.0|Windows 2000)/},
-            {s:'Windows XP', r:/(Windows NT 5.1|Windows XP)/},
-            {s:'Windows Server 2003', r:/Windows NT 5.2/},
-            {s:'Windows Vista', r:/Windows NT 6.0/},
-            {s:'Windows 7', r:/(Windows 7|Windows NT 6.1)/},
-            {s:'Windows 8.1', r:/(Windows 8.1|Windows NT 6.3)/},
-            {s:'Windows 8', r:/(Windows 8|Windows NT 6.2)/},
-            {s:'Windows NT 4.0', r:/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
-            {s:'Windows ME', r:/Windows ME/},
-            {s:'Android', r:/Android/},
-            {s:'Open BSD', r:/OpenBSD/},
-            {s:'Sun OS', r:/SunOS/},
-            {s:'Linux', r:/(Linux|X11)/},
-            {s:'iOS', r:/(iPhone|iPad|iPod)/},
-            {s:'Mac OS X', r:/Mac OS X/},
-            {s:'Mac OS', r:/(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
-            {s:'QNX', r:/QNX/},
-            {s:'UNIX', r:/UNIX/},
-            {s:'BeOS', r:/BeOS/},
-            {s:'OS/2', r:/OS\/2/},
-            {s:'Search Bot', r:/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/}
-        ];
-        for (var id in clientStrings) {
-            var cs = clientStrings[id];
-            if (cs.r.test(nAgt)) {
-                os = cs.s;
-                break;
-            }
-        }
-
-        var osVersion = unknown;
-
-        if (/Windows/.test(os)) {
-            osVersion = /Windows (.*)/.exec(os)[1];
-            os = 'Windows';
-        }
-
-        switch (os) {
-            case 'Mac OS X':
-                osVersion = /Mac OS X (10[\.\_\d]+)/.exec(nAgt)[1];
-                break;
-
-            case 'Android':
-                osVersion = /Android ([\.\_\d]+)/.exec(nAgt)[1];
-                break;
-
-            case 'iOS':
-                osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
-                osVersion = osVersion[1] + '.' + osVersion[2] + '.' + (osVersion[3] | 0);
-                break;
-        }
-        
-        // flash (you'll need to include swfobject)
-        /* script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" */
-        var flashVersion = 'no check';
-        if (typeof swfobject != 'undefined') {
-            var fv = swfobject.getFlashPlayerVersion();
-            if (fv.major > 0) {
-                flashVersion = fv.major + '.' + fv.minor + ' r' + fv.release;
-            }
-            else  {
-                flashVersion = unknown;
-            }
-        }
-    }
-
-    window.jscd = {
-        screen: screenSize,
-        browser: browser,
-        browserVersion: version,
-        mobile: mobile,
-        os: os,
-        osVersion: osVersion,
-        cookies: cookieEnabled,
-        flashVersion: flashVersion
-    };
-}(this));
-if(jscd.os=='Mac OS X'){}else{
-	//$('body').addClass('zoomMS');
-}
  

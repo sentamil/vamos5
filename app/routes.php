@@ -164,6 +164,8 @@ Route::get('password/reset', array('uses' => 'RemindersController@getRemind', 'a
 
 Route::post('password/reset', array('before' => 'csrf', 'uses' => 'RemindersController@request', 'as' => 'password.request'));
 
+Route::post('sendMail', array('before' => 'csrf', 'uses' => 'HomeController@sendAdhocMail', 'as' => 'sendMail'));
+
 Route::get('password/reset/{token}', array('uses' => 'RemindersController@reset', 'as' => 'password.reset'));
 
 Route::post('password/reset/{token}', array('before' => 'csrf', 'uses' => 'RemindersController@update', 'as' => 'password.update'));

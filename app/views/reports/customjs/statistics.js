@@ -20,6 +20,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
     $scope.td 				= 	getParameterByName('td');
     $scope.tt	 			= 	getParameterByName('tt');
    
+   	
     
 	$scope.getTodayDate  =	function(date) {
      	var date = new Date(date);
@@ -96,6 +97,9 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 		$scope.loading	=	true;
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
+			console.log(data[0].vehicleLocations[0].vehicleId);
+			if(data.length)
+				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {			  
 				  if(value.totalVehicles) {
 				  		$scope.data1		=	data[key];

@@ -37,6 +37,8 @@ app.controller('mainCtrl',function($scope, $http){
 		$scope.loading	=	true;
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
+			if(data.length)
+				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {
 				  console.log(value.totalVehicles, key);				  
 				  if(value.totalVehicles) {
