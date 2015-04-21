@@ -17,9 +17,7 @@
 
 		 <h1 class="logo"><a class="navbar-brand" ><img src="assets/imgs/logo.png"/>Vehicle Advanced Monitoring System</a></h1>
 		
-		<!-- 
-		<a class="navbar-brand" ><img src="assets/imgs/logo.png"/><h2> Vehicle Advanced Monitoring System </h2></a>
-		 -->
+		
 	</div>
 	
 </nav>

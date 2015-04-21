@@ -5,12 +5,19 @@ $input = Input::all();
 
 $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
-
+$port = $redis->get('restservices:port');
 
 if (! Auth::check ()) {
 	return Redirect::to ( 'login' );
 }
-
+if (App::environment('development'))
+{
+    $ipaddress='localhost';
+    $port ='9005';
+}
+else {
+    $port ='9000';
+}
 $username = Auth::user ()->username;
 
 $parameters='?userId='. $username;
@@ -21,7 +28,7 @@ foreach ($input as $key => $value) {
 }
  log::info( ' parameters :' . $parameters);
 
-		 $url = 'http://' .$ipaddress .':9000/getGeoFenceView' . $parameters;
+		 $url = 'http://' .$ipaddress .':'.$port.'/getGeoFenceView' . $parameters;
 		$url=htmlspecialchars_decode($url);
 		 log::info( 'Routing to backed  :' . $url );
 

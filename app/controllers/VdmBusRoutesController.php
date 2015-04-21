@@ -116,10 +116,7 @@ class VdmBusRoutesController extends \BaseController {
             foreach ( $allStopsArr as $stop) {
             
                 Log::info(' stop--- ' . $stop);
-                
-                
                 $stopsDetailsArr = explode(':',$stop);
-                //dd($stopsDetailsArr);
                 $key = $routeId . ':' . $stopsDetailsArr[0];
                 $stopsData=array();
                 if(isset($stopsDetailsArr[1])) {
@@ -145,6 +142,4 @@ class VdmBusRoutesController extends \BaseController {
         
     }
     
-    
-   
 }

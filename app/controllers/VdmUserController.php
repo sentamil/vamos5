@@ -108,9 +108,13 @@ class VdmUserController extends \BaseController {
 			$password='awesome';
 			$user = new User;
 			
+            Log::info(' mobile no =' . $mobileNo);
+            var_dump($mobileNo);
+            
 			$user->name = $userId;
 			$user->username=$userId;
 			$user->email=$email;
+            $user->mobileNo=$mobileNo;
 			$user->password=Hash::make($password);
 			$user->save();
 			

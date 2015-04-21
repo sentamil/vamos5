@@ -5,7 +5,7 @@ $input = Input::all();
 
 $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
-
+$port = $redis->get('restservices:port');
 
 if (! Auth::check ()) {
 	return Redirect::to ( 'login' );
@@ -30,7 +30,7 @@ foreach ($input as $key => $value) {
 }
  log::info( ' parameters :' . $parameters);
 
-		 $url = 'http://' .$ipaddress .':9000/getGeoFenceReport' . $parameters;
+		 $url = 'http://' .$ipaddress .':'.$port.'/getGeoFenceReport' . $parameters;
 		$url=htmlspecialchars_decode($url);
 		 log::info( 'Routing to backed  :' . $url );
 

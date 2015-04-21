@@ -1,3 +1,5 @@
+<!-- ../public/settings  ../public/vdmVehicles/{{trackVehID}}/edit-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +33,7 @@
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
                 <li class="settings"><a href="../public/settings"  class="active"><div></div><label>Settings</label></a></li>
-                <li class="sidebar-bottom"><a href="javascript:void(0);"><img src="assets/imgs/profile.png"/></a></li>
+                <li class="admin"><a href="javascript:void(0);"><div></div><label>Admin</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;">
@@ -58,7 +60,7 @@
             </div>
         </div>
     </div>
-        <script src="assets/js/static.js"></script>
+      <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>

@@ -87,6 +87,14 @@ Route::get('/downloadstatistics', function() {
     return View::make('reports.downloadstatistics');
 });
 
+View::addExtension('html', 'php');
+Route::get('/vehiclemanagement', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.vehiclemanagement');
+});
+
 Route::get('/getVehicleLocations', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -152,19 +160,30 @@ Route::get('/admin', function() {
     return View::make('admin');
 });
 
-Route::get('/', array('uses' => 'HomeController@showLogin'));
+Route::get('/', array('uses' => 'HomeController@showLogin'));		// Reg
+
+//Route::get('/', array('uses' => 'RegisterController@showRegister'));
+
 Route::get('about', function() {
     return View::make('pages.about');
 });
 
+Route::get('register', function() {
+    return View::make('pages.register');
+});
+
+Route::get('example', function() {
+    return View::make('example');
+});
+
 // route to show the login form
+//Route::get('register', array('uses' => 'RegisterController@showRegister'));			//Reg
+
 Route::get('login', array('uses' => 'HomeController@showLogin'));
 
 Route::get('password/reset', array('uses' => 'RemindersController@getRemind', 'as' => 'password.remind'));
 
 Route::post('password/reset', array('before' => 'csrf', 'uses' => 'RemindersController@request', 'as' => 'password.request'));
-
-Route::post('sendMail', array('before' => 'csrf', 'uses' => 'HomeController@sendAdhocMail', 'as' => 'sendMail'));
 
 Route::get('password/reset/{token}', array('uses' => 'RemindersController@reset', 'as' => 'password.reset'));
 

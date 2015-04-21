@@ -14,7 +14,7 @@ $username = Auth::user ()->username;
 
 $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
-
+$port = $redis->get('restservices:port');
 $parameters='?userId='. $username;
 foreach ($input as $key => $value) {
    
@@ -23,7 +23,7 @@ foreach ($input as $key => $value) {
 }
  log::info( ' parameters :' . $parameters);
 
-		 $url = 'http://' .$ipaddress .':9000/getNearByVehicles' . $parameters;
+		 $url = 'http://' .$ipaddress .':'.$port.'/getNearByVehicles' . $parameters;
 		$url=htmlspecialchars_decode($url);
 		 log::info( 'Routing to backed  :' . $url );
 

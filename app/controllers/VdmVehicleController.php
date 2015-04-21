@@ -471,6 +471,17 @@ class VdmVehicleController extends \BaseController {
     
     public function storeMulti() {
         Log::info(' inside multiStore....');
+        
+        if (App::environment('development'))
+        {
+            $ipaddress='localhost';
+            $port ='9005';
+        }
+        else {
+            $port ='9000';
+        }
+        
+        
         if (! Auth::check ()) {
             return Redirect::to ( 'login' );
         }
@@ -488,8 +499,10 @@ class VdmVehicleController extends \BaseController {
    
      //   $url = 'http://localhost:9005/addMultipleVehicles?' . $parameters;
     
-        $url = 'http://' .$ipaddress . ':9000/addMultipleVehicles?' . $parameters;
-    $url=htmlspecialchars_decode($url);
+    log::info( ' ipaddress :' . $ipaddress);
+    
+        $url = 'http://' .$ipaddress . ':'.$port .'/addMultipleVehicles?' . $parameters;
+         $url=htmlspecialchars_decode($url);
  
     log::info( ' url :' . $url);
     

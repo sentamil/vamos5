@@ -1,3 +1,5 @@
+<!-- ../public/vdmVehicles/{{trackVehID}}/edit -->
+
 <!DOCTYPE html>
 <html lang="en" ng-app="mapApp">
 <head>
@@ -40,7 +42,7 @@
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
                  <li class="settings"><a href="../public/settings"><div></div><label>Settings</label></a></li>
-                <li class="sidebar-bottom"><a href="javascript:void(0);"><img src="assets/imgs/profile.png"/></a></li>
+                <li class="admin"><a href="javascript:void(0);"><div></div><label>Admin</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;">
@@ -51,7 +53,7 @@
                     </div>
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak>{{location.group}}</a>
-                    <ul class="nav nav-second-level" style="max-height: 250px; overflow-y: auto;">
+                    <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
                     <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak>{{loc.vehicleId}} ({{loc.shortName}}) <img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="20" height="20"/></a></li>
                     </ul>
                 </li>
@@ -107,9 +109,7 @@
                                     <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
                                 </div>
                                </div>
-                               
                             </div>
-                            
                         </div>
                             <map id="map_canvas"></map>
                             <div class="error" style="position:absolute; height:100%; background:#fff; top:0; left:0;  width:100%;" align="center">
@@ -121,89 +121,80 @@
                                 	<table cellpadding="0" cellspacing="0">
                                     	<tbody>
                                             <tr>
-                                            	<td>Moving</td>
-                                                <td><img src="assets/imgs/green.png"/></td>
+                                            	<td>Milestone</td>
+                                                <td><img src="assets/imgs/milestone.png"/></td>
                                             </tr>
                                              <tr>
                                             	<td>Parked</td>
                                                 <td><img src="assets/imgs/flag.png"/></td>
                                             </tr>
                                              <tr>
-                                            	<td>Overspeed</td>
-                                                <td><img src="assets/imgs/red.png"/></td>
+                                            	<td>Start</td>
+                                                <td><img src="assets/imgs/startflagico.png"/></td>
                                             </tr>
                                              <tr>
-                                            	<td>Standing</td>
-                                                <td><img src="assets/imgs/orange.png"/></td>
+                                            	<td>End</td>
+                                                <td><img src="assets/imgs/endflagico.png"/></td>
                                             </tr>
-                                             <tr>
-                                            	<td>Geo Fence</td>
-                                                <td><img src="assets/imgs/blue.png"/></td>
-                                            </tr>
-                                            <tr>
-                                            	<td>No Data</td>
-                                                <td><img src="assets/imgs/gray.png"/></td>
-                                            </tr>
+                                         </tbody> 
                                     </table>
                                 </div>
-                            </div><div id="lastseen" style="left:0; bottom:100px; position:absolute; width:auto;"></div><div id="lstseendate" style="left:0; right:auto;"></div>
-                        <div class="bottomContent">
-                        	<div class="row">
-                    			<div class="col-md-4 col-lg-2" align="center" id="vehiid">
-                                	<h6>Vehicle ID</h6>
-                                    <h3>-</h3>
-                                </div>
-                                <div class="col-md-2" align="center" id="vehdevtype">
-                                	<h6>odoDistance</h6>
-                                    <h3>-</h3>
-                                </div>
-                                <div class="col-md-2" align="center" id="vehstat">
-                                	<h6>Total Idle Time</h6>
-                                    <h3>-</h3>
-                                </div>
-                                
-                                <div class="col-md-4 col-lg-2" align="center" id="toddist">
-                                	<h6>Total Running Time</h6>
-                                    <h3>-</h3>
-                                </div>
-                                <div class="col-md-2" align="center" id="mobno">
-                                	<h6>Total Parked Time</h6>
-                                    <h3>-</h3>
-                                </div>
-                                <div class="col-md-2" align="center" id="regno">
-                                	<h6>Trip Distance</h6>
-                                    <h3><span>-</span>&nbsp;km</h3>
-                                </div>
                             </div>
-                        </div><div ng-show="loading" class="overlay"></div>
-	<div ng-show="loading" class="loading-img"></div>
+                            <div id="lastseen" style="left:0; bottom:100px; position:absolute; width:auto;"></div><div id="lstseendate" style="left:0; right:auto;"></div>
+                        	<div class="bottomContent">
+	                        	<div class="row">
+	                    			<div class="col-md-4 col-lg-2" align="center" id="vehiid">
+	                                	<h6>Vehicle ID</h6>
+	                                    <h3>-</h3>
+	                                </div>
+	                                <div class="col-md-2" align="center" id="vehdevtype">
+	                                	<h6>odoDistance</h6>
+	                                    <h3>-</h3>
+	                                </div>
+	                                <div class="col-md-2" align="center" id="vehstat">
+	                                	<h6>Total Idle Time</h6>
+	                                    <h3>-</h3>
+	                                </div>
+	                                
+	                                <div class="col-md-4 col-lg-2" align="center" id="toddist">
+	                                	<h6>Total Running Time</h6>
+	                                    <h3>-</h3>
+	                                </div>
+	                                <div class="col-md-2" align="center" id="mobno">
+	                                	<h6>Total Parked Time</h6>
+	                                    <h3>-</h3>
+	                                </div>
+	                                <div class="col-md-2" align="center" id="regno">
+	                                	<h6>Trip Distance</h6>
+	                                    <h3><span>-</span>&nbsp;km</h3>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div ng-show="loading" class="overlay"></div>
+							<div ng-show="loading" class="loading-img"></div>
                     </div>
-                    
                 </div>
-                
-
             </div>
-            
         </div>
         <!-- /#page-content-wrapper -->
     </div>
      
     <div class="modal fade" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Error</h4>
-      </div>
-      <div class="modal-body">
-        <p>{{hisloc.error}}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        		<h4 class="modal-title">Error</h4>
+	      		</div>
+			    <div class="modal-body">
+			        <p>{{hisloc.error}}</p>
+			    </div>
+			    <div class="modal-footer">
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+	      		</div>
+	    	</div><!-- /.modal-content -->
+	  	</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
     <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -212,7 +203,7 @@
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/moment.js" type="text/javascript"></script>
     <script src="assets/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
-    
+    <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/customplay.js"></script>
     <script>
 		$("#menu-toggle").click(function(e) {
@@ -237,4 +228,3 @@
         </script>
 </body>
 </html>
-    
