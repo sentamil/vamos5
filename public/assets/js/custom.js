@@ -1,25 +1,28 @@
 //comment by satheesh ++...
 var setintrvl;
 app.filter('statusfilter', function(){
-	return function(obj, param, param2){
+	return function(obj, param){
 		 var out = [];
-	   if(param==''){
+	   if(param=='ALL'){
 	   		out= obj;
 	   		return out;  
-	   }else{
+	   }else if(param=='ON' || param=='OFF'){
 		    for(var i=0; i<obj.length; i++){
 			    if(obj[i].status == param){
 			    	out.push(obj[i]);
 			    }
 		    }
 		    return out;  
+	   }else{
+		   	for(var i=0; i<obj.length; i++){
+				    if(obj[i].position == param){
+				    	out.push(obj[i]);
+				    }
+			 }
+			 return out;
 	   }
-	   if(param2){
-	   	return contains(param2);
-	   } 
-	   
   	}
-}) 
+})
 .controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $http, vamoservice){
 	$scope.locations = [];
 	$scope.nearbyLocs =[];
@@ -51,7 +54,9 @@ app.filter('statusfilter', function(){
 	
 	var tempdistVal = 0;
 	$scope.locations01 = vamoservice.getDataCall($scope.url);
-					
+	$scope.trimColon = function(textVal){
+		return textVal.split(":")[0].trim();
+	}				
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
 			$scope.locations = data;
@@ -144,42 +149,40 @@ app.filter('statusfilter', function(){
 	}
 	
 	$scope.infoBoxed = function(map, marker, vehicleID, lat, lng, data){
-		//$scope.getLocation(lat, lng, function(count){
-			var contentString = '<div style="padding:10px; width:200px; height:auto;">'
-			+'<div><b>Vehicle ID</b> : '+vehicleID+'('+data.shortName+')</div>'
-			//+'<div><b>Address</b> : '+count+'</div><br>'
+			
+			var tempoTime = vamoservice.statusTime(data);
+			if(data.ignitionStatus=='ON'){
+				var classVal = 'green';
+			}else{
+				var classVal = 'red';
+			}
+			var contentString = '<div style="padding:10px; width:240px; height:auto;">'
+			+'<div><b style="width:100px; display:inline-block;">Vehicle ID</b> - '+vehicleID+'<span style="font-weight:bold;">('+data.shortName+')</span></div>'
+			+'<div><b style="width:100px; display:inline-block;">Speed</b> - '+data.speed+' <span style="font-size:10px;font-weight:bold;">kmph</span></div>'
+			+'<div><b style="width:100px; display:inline-block;">ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
+			+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
+			+'<div><b style="width:100px; display:inline-block;">ACC Satus</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
+			+'<div><b style="width:100px; display:inline-block;">'+tempoTime.tempcaption+' Time</b> - '+tempoTime.temptime+'</div><br>'
 			+'<div><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a></div>'
 			+'</div>';
+			
 			var infowindow = new google.maps.InfoWindow({
 			 content: contentString
 			});
+						
+						
+			
 			ginfowindow.push(infowindow);
-			// google.maps.event.addListener(marker, "click", function(e){
-				// var count = '100';
-				// var contentString = '<div style="padding:10px; width:200px; height:auto;">'
-			// +'<div><b>Vehicle ID</b> : '+vehicleID+'('+data.shortName+')</div>'
-			// +'<div><b>Address</b> : '+count+'</div><br>'
-			// +'<div><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a></div>'
-			// +'</div>';
-			// infowindow.setContent(contentString);
-				// infowindow.open(map, marker);	
-			// });
 			  (function(marker) {
 			    google.maps.event.addListener(marker, "click", function(e) {
-			    	
-			    	
-			   	$scope.infowindowShow={};
-			$scope.infowindowShow['dataTempVal'] =  data;
-			$scope.infowindowShow['currinfo'] = infowindow;
-			$scope.infowindowShow['currmarker'] = marker;
-			for(var j=0; j<ginfowindow.length;j++){
-				ginfowindow[j].close();
-			}
-			$scope.infowindowshowFunc();
-				 // infowindow.open(map, marker);
+			   	
+				for(var j=0; j<ginfowindow.length;j++){
+					ginfowindow[j].close();
+				}
+				infowindow.open(map,marker);
+				
 			   });	
 			  })(marker);
-		//});
 		
 		
 	}
@@ -213,9 +216,6 @@ app.filter('statusfilter', function(){
 			$scope.startlatlong= new google.maps.LatLng();
 			$scope.endlatlong= new google.maps.LatLng();
 			
-			// for(var i=0; i<$scope.polylinelive.length;i++){		
-				 // $scope.polylinelive[i].setMap(null);
-			// }
 			$scope.assignValue(pos.data);
 			
 			$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
@@ -223,9 +223,6 @@ app.filter('statusfilter', function(){
 				var t = vamoservice.geocodeToserver(pos.data.latitude,pos.data.longitude,count);
 									
 			});
-			//console.log(gmarkers.length-1);
-			
-			
 			if($scope.selected!=undefined){
 				$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
 			}
@@ -318,7 +315,6 @@ app.filter('statusfilter', function(){
 			}
 			
 			$scope.locations = data;
-			//$scope.polylinelive.setMap(null);
 			$scope.assignHeaderVal(data);
 			
 			var lat = locs[$scope.gIndex].latitude;
@@ -354,12 +350,22 @@ app.filter('statusfilter', function(){
 			});
 			$scope.startlatlong= new google.maps.LatLng();
 			$scope.endlatlong= new google.maps.LatLng();
+			$scope.parkedCount = 0;
+			$scope.movingCount = 0;
+			$scope.idleCount = 0;
 			var length = locs[$scope.gIndex].vehicleLocations.length;
 			for (var i = 0; i < length; i++) {
 				var lat = locs[$scope.gIndex].vehicleLocations[i].latitude;
 				var lng =  locs[$scope.gIndex].vehicleLocations[i].longitude;
 				$scope.addMarker({ lat: lat, lng: lng , data: locs[$scope.gIndex].vehicleLocations[i]});
 				$scope.infoBoxed($scope.map,gmarkers[i], locs[$scope.gIndex].vehicleLocations[i].vehicleId, lat, lng, locs[$scope.gIndex].vehicleLocations[i]);
+				if(locs[$scope.gIndex].vehicleLocations[i].position=="P"){
+					$scope.parkedCount=$scope.parkedCount+1;
+				}else  if(locs[$scope.gIndex].vehicleLocations[i].position=="M"){
+					$scope.movingCount=$scope.movingCount+1;
+				}else if(locs[$scope.gIndex].vehicleLocations[i].position=="S"){
+					$scope.idleCount=$scope.idleCount+1;
+				}
 				if(locs[$scope.gIndex].vehicleLocations[i].vehicleId==$scope.vehicleno){
 					$scope.endlatlong = new google.maps.LatLng(lat, lng);
 					$scope.startlatlong = new google.maps.LatLng(lat, lng);
@@ -368,13 +374,7 @@ app.filter('statusfilter', function(){
 					}else{
 						var strokeColorvar = '#ff0000';
 					}
-					// $scope.polylinelive = new google.maps.Polyline({
-			            // map: $scope.map,
-			            // path: [$scope.startlatlong, $scope.endlatlong],
-			            // strokeColor: strokeColorvar,
-			            // strokeOpacity: 0.7,
-			            // strokeWeight: 5
-			        // });
+					
 			    	$scope.startlatlong = $scope.endlatlong;
 				}
 			}
@@ -393,13 +393,9 @@ app.filter('statusfilter', function(){
 		var temp = $scope.locations[$scope.gIndex].vehicleLocations;
 		$scope.endlatlong = new google.maps.LatLng();
 		$scope.startlatlong = new google.maps.LatLng();
-		$scope.map.setZoom(14);
-		// for(var i=0; i<$scope.polylinelivearr.length;i++){		
-			 // $scope.polylinelivearr[i].setMap(null);
-		// }
-		 
+		$scope.map.setZoom(19);
+		
 		for(var i=0; i<temp.length;i++){
-			//$scope.polylinelive.setMap(null);
 			if(temp[i].vehicleId==$scope.vehicleno){
 				
 				$scope.selected=i;
@@ -409,14 +405,11 @@ app.filter('statusfilter', function(){
 				$scope.getLocation(temp[i].latitude, temp[i].longitude, function(count){ 
 					$('#lastseen').text(count); 
 				});
-				
-				$scope.infowindowShow={};
-				
-				$scope.infowindowShow['dataTempVal'] = temp[i];
-				$scope.infowindowShow['currinfo'] = ginfowindow[i];
-				$scope.infowindowShow['currmarker'] = gmarkers[i];
-				
-				$scope.infowindowshowFunc();
+				$scope.infowindowShow={};				
+				for(var j=0; j<ginfowindow.length;j++){
+					ginfowindow[j].close();
+				}
+				ginfowindow[i].open($scope.map,gmarkers[i]);
 				var url = 'http://'+globalIP+'/vamo/public/getGeoFenceView?vehicleId='+$scope.vehicleno;
 				$scope.createGeofence(url);
 				
@@ -428,22 +421,19 @@ app.filter('statusfilter', function(){
 		for(var j=0; j<ginfowindow.length;j++){
 			ginfowindow[j].close();
 		}
-		geocoder = new google.maps.Geocoder();
-		var latlng = new google.maps.LatLng(+$scope.infowindowShow.dataTempVal.latitude, +$scope.infowindowShow.dataTempVal.longitude);
-		geocoder.geocode({'latLng': latlng}, function(results, status) {
-					if (status == google.maps.GeocoderStatus.OK) {
-					  if (results[1]) {
-					  	var contentString = '<div style="padding:10px; width:200px; height:auto;">'
-			+'<div><b>Vehicle ID</b> : '+$scope.infowindowShow.dataTempVal.vehicleId+'('+$scope.infowindowShow.dataTempVal.shortName+')</div>'
-			+'<div><b>Address</b> : '+results[1].formatted_address+'</div><br>'
+		var tempoTime = vamoservice.statusTime($scope.infowindowShow.dataTempVal);
+		var contentString = '<div style="padding:10px; width:200px; height:auto;">'
+		
+
+			+'<div><b>Vehicle ID</b> - '+$scope.infowindowShow.dataTempVal.vehicleId+'('+$scope.infowindowShow.dataTempVal.shortName+')</div>'
+			+'<div><b>Speed</b> - '+$scope.infowindowShow.dataTempVal.speed+'</div>'
+			+'<div><b>odoDistance</b> - '+$scope.infowindowShow.dataTempVal.odoDistance+'</div>'
+			+'<div><b>Distance Covered</b> - '+$scope.infowindowShow.dataTempVal.distanceCovered+'</div>'
+			+'<div><b>'+tempoTime.tempcaption+' Time</b> - '+tempoTime.temptime+'</div><br>'
 			+'<div><a href="../public/track?vehicleId='+$scope.infowindowShow.dataTempVal.vehicleId+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+$scope.infowindowShow.dataTempVal.vehicleId+'" target="_self">History</a></div>'
 			+'</div>';
 						$scope.infowindowShow.currinfo.setContent(contentString);
 						$scope.infowindowShow.currinfo.open($scope.map,$scope.infowindowShow.currmarker);
-					  }
-					  
-					}
-		});
 	}
 	$scope.assignHeaderVal = function(data){
 		$scope.locations = data;

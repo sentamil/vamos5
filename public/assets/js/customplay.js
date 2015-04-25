@@ -6,6 +6,7 @@ var gsinfoWindow=[];
 var contentString = [];
 var contentString01=[];
 var id;
+var geomarker=[], geoinfo=[];
 app.directive('map', function($http) {
     return {
         restrict: 'E',
@@ -76,19 +77,24 @@ app.directive('map', function($http) {
 								   	   }
 						   	  scope.polylinearr.push(pscolorval);
 						   	  if(locs.vehicleLocations[i].mileKal=='Y'){
-						   	  		scope.pointMarker(locs.vehicleLocations[i].latitude, locs.vehicleLocations[i].longitude);
+						   	  		scope.pointMarker(locs.vehicleLocations[i]);
 						   	    	scope.pointinfowindow(scope.map, gsmarker[i], locs.vehicleLocations[i]);
 						   	   }
 					   		}
 		  	  				var latLngBounds = new google.maps.LatLngBounds();
 			  				var j=0;
-			  				var tempFlag=false;
-			  				for(var i=0;i<locs.vehicleLocations.length;i++){
-				  				if(locs.vehicleLocations[i].position =='M' && tempFlag==false){
-					  				scope.addMarkerstart({ lat: locs.vehicleLocations[i].latitude, lng: locs.vehicleLocations[i].longitude , data: locs.vehicleLocations[i], path:scope.path[i]});
-							  		tempFlag=true;
-							  	}
-						  	}
+			  				 var tempFlag=false;
+			  				 for(var k=0;k<locs.vehicleLocations.length;k++){
+				  				 if(locs.vehicleLocations[k].position =='M' && tempFlag==false){
+				  				 	var firstval = k;
+				  				 	
+				  					 tempFlag=true;
+							  	 }
+						  	 }
+					  			if(firstval==undefined){
+					  				firstval=0;
+					  			}
+					  			
 						  		for(var i = 0; i < scope.path.length; i++) {
 									latLngBounds.extend(scope.path[i]);
 									if(locs.vehicleLocations[i].position!=undefined){
@@ -102,6 +108,8 @@ app.directive('map', function($http) {
 						  		}
 					  		
 			  				var lastval = locs.vehicleLocations.length-1;
+			  					 scope.addMarkerstart({ lat: locs.vehicleLocations[firstval].latitude, lng: locs.vehicleLocations[firstval].longitude , data: locs.vehicleLocations[firstval], path:scope.path[firstval]});
+							  	
 							scope.addMarkerend({ 
 								lat: locs.vehicleLocations[lastval].latitude, 
 								lng: locs.vehicleLocations[lastval].longitude, 
@@ -161,17 +169,21 @@ app.directive('map', function($http) {
 							$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
 						}
 					}
+					var url = 'http://'+globalIP+'/vamo/public/getGeoFenceView?vehicleId='+scope.trackVehID;
+		
+				scope.createGeofence(url);
 		   		}).error(function(){ });
 		 	});
         }
     };
 });
-app.controller('mainCtrl',function($scope, $http){ 
+app.controller('mainCtrl',function($scope, $http, $q){ 
 	$scope.locations = [];
 	$scope.path = [];
 	$scope.polylinearr=[];
 	$scope.polyline1=[];
 	$scope.tempadd01='';
+	$scope.cityCircle=[];
 	$scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations';
 	$scope.getTodayDate  =	function(date) {
 		var date = new Date(date);
@@ -183,14 +195,85 @@ app.controller('mainCtrl',function($scope, $http){
 		$scope.locations = data;
 		if(location.href.split("=")[1]==undefined || location.href.split("=")[1].trim().length==0){
 			$scope.trackVehID =$scope.locations[0].vehicleLocations[0].vehicleId;
+			$scope.selected=0;
 		}else{
 			$scope.trackVehID =location.href.split("=")[1].trim();
+			for(var i=0; i<$scope.locations[0].vehicleLocations.length;i++){
+				if($scope.locations[0].vehicleLocations[i].vehicleId==$scope.trackVehID){
+					$scope.selected=i;
+				}
+			}
 		}
 		
 		$scope.hisurl = 'http://'+globalIP+'/vamo/public/getVehicleHistory?vehicleId='+$scope.trackVehID;
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
 		$scope.loading	=	false;
 	}).error(function(){ /*alert('error'); */});
+	
+	$scope.createGeofence=function(url){
+		if($scope.cityCirclecheck==false){
+			$scope.cityCirclecheck=true;
+		}
+		if($scope.cityCirclecheck==true){
+			for(var i=0; i<$scope.cityCircle.length; i++){
+				$scope.cityCircle[i].setMap(null);
+			}
+			for(var i=0; i<geomarker.length; i++){
+				geomarker[i].setMap(null);
+				geoinfo[i].setMap(null);
+			}
+		}
+		var defdata = $q.defer();
+		$http.get(url).success(function(data){
+			
+			$scope.geoloc = defdata.resolve(data);
+			
+			if (typeof(data.geoFence) !== 'undefined' ) {	
+				
+				if(data.geoFence!=null){
+				for(var i=0; i<data.geoFence.length; i++){
+					console.log(data.geoFence[i]);
+					var populationOptions = {
+							  strokeColor: '#FF0000',
+							  strokeOpacity: 0.8,
+							  strokeWeight: 2,
+							  fillColor: '#FF0000',
+							  fillOpacity: 0.02,
+							  map: $scope.map,
+							  center: new google.maps.LatLng(data.geoFence[i].latitude,data.geoFence[i].longitude),
+							  radius: parseInt(data.geoFence[i].proximityLevel)
+					};
+					
+					$scope.cityCircle[i] = new google.maps.Circle(populationOptions);
+					var centerPosition = new google.maps.LatLng(data.geoFence[i].latitude, data.geoFence[i].longitude);
+					var labelText = data.geoFence[i].poiName;
+					var image = 'assets/imgs/busgeo.png';
+				  
+				  	var beachMarker = new google.maps.Marker({
+				      position: centerPosition,
+				      map: $scope.map,
+				      icon: image
+				  	});
+				  	geomarker.push(beachMarker);
+					var myOptions = { content: labelText, boxStyle: {textAlign: "center", fontSize: "9pt", fontColor: "#ff0000", width: "100px"},
+						disableAutoPan: true,
+						pixelOffset: new google.maps.Size(-50, 0),
+						position: centerPosition,
+						closeBoxURL: "",
+						isHidden: false,
+						pane: "mapPane",
+						enableEventPropagation: true
+					};
+					var labelinfo = new InfoBox(myOptions);
+					labelinfo.open($scope.map);
+					labelinfo.setPosition($scope.cityCircle[i].getCenter());
+					geoinfo.push(labelinfo);
+				}
+			}
+		}
+		});
+	}
+	
 	$scope.genericFunction = function(a,b){
 		$scope.path = [];
 		gmarkers=[];
@@ -199,7 +282,9 @@ app.controller('mainCtrl',function($scope, $http){
 		$scope.trackVehID = a;
 		$scope.selected = b;
 		$scope.plotting();
+		
 	}
+	
 	$scope.groupSelection = function(groupname, groupid){
 		 $scope.selected=0;
 		 $scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations?group=' + groupname;
@@ -218,61 +303,67 @@ app.controller('mainCtrl',function($scope, $http){
 		}).error(function(){ /*alert('error'); */});
 		
 	}
-	$scope.pointMarker=function(lat,lng){
+	$scope.pointMarker=function(data){
 		var line0Symbol = {
 	        path: google.maps.SymbolPath.CIRCLE,
 	        scale:3,
 	        strokeColor: '#0645AD',
 	        strokeWeight: 5
 	    };
+	    
+	    
 	    var marker = new google.maps.Marker({
             map: $scope.map,
-            position: new google.maps.LatLng(lat, lng),
+            position: new google.maps.LatLng(data.latitude, data.longitude),
             icon:line0Symbol
 	    });
 	    gsmarker.push(marker);
+	    var contentString01 = '<div class="nearbyTable02"><div><table cellpadding="0" cellspacing="0"><tbody></tbody></table></div>';
+			var infoWindow = new google.maps.InfoWindow({content: contentString01});
+			gsinfoWindow.push(infoWindow);	
+			
+			(function(marker) {
+			    google.maps.event.addListener(marker, "click", function(e) {
+			   	$scope.infowindowShow={};
+				$scope.infowindowShow['dataTempVal'] =  data;
+				$scope.infowindowShow['currinfo'] = infoWindow;
+				$scope.infowindowShow['currmarker'] = marker;
+				for(var j=0; j<gsinfoWindow.length;j++){
+					gsinfoWindow[j].close();
+				}
+				$scope.infowindowshowFunc();
+			   });	
+			  })(marker);
+			  
+	}
+	$scope.infowindowshowFunc = function(){
+		for(var j=0; j<gsinfoWindow.length;j++){
+			gsinfoWindow[j].close();
+		}
+		geocoder = new google.maps.Geocoder();
+		var latlng = new google.maps.LatLng(+$scope.infowindowShow.dataTempVal.latitude, +$scope.infowindowShow.dataTempVal.longitude);
+		geocoder.geocode({'latLng': latlng}, function(results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+					  if (results[1]) {
+					  	var contentString = '<div class="nearbyTable02"><div><table cellpadding="0" cellspacing="0"><tbody>'
+			+'<tr><td>Speed</td><td>'+$scope.infowindowShow.dataTempVal.speed+'</td></tr>'
+			+'<tr><td>date & time</td><td>'+$scope.infowindowShow.dataTempVal.lastSeen+'</td></tr>'
+			+'<tr><td>trip distance</td><td>'+$scope.infowindowShow.dataTempVal.tripDistance+'</td></tr>'
+			+'<tr><td style="width:80px">location</td><td style="width:100px">'+results[1].formatted_address+'</td></tr>'
+			+'</tbody></table></div>';
+						$scope.infowindowShow.currinfo.setContent(contentString);
+						$scope.infowindowShow.currinfo.open($scope.map,$scope.infowindowShow.currmarker);
+					  }
+					  
+					}
+		});
 	}
 	$scope.pointinfowindow=function(map, marker, data){
-		$scope.getLocation(data.latitude, data.longitude, function(count){
-			console.log(count);
-			if(count!=undefined){
-				var tempadd01 = count;
-			}else{
-				var tempadd01='';
-			}
-			contentString01 = '<div class="nearbyTable02"><div><table cellpadding="0" cellspacing="0"><tbody><tr><td>Speed</td><td>'+data.speed+'</td></tr><tr><td>date & time</td><td>'+data.lastSeen+'</td></tr><tr><td>trip distance</td><td>'+data.tripDistance+'</td></tr><tr><td style="width:80px">location</td><td style="width:100px">'+tempadd01+'</td></tr></tbody></table></div>';
-			var infoWindow = new google.maps.InfoWindow({content: contentString01});
-			gsinfoWindow.push(infoWindow);
+		
+			if(gsmarker.length>0){
 			
-			google.maps.event.addListener(marker, "click", function(e){
-				infoWindow.close();
-				infoWindow.open(map, marker);	
-			});
 			
-			(function(marker, data, contentString01) {
-				  google.maps.event.addListener(marker, "click", function(e) {
-					infoWindow.close();
-					infoWindow.open(map, marker);
-				  });
-				 	
-			})(marker, data);
-			
-			// google.maps.event.addListener(marker, "mouseover", function(e){
-				// infoWindow.open(map, marker);	
-			// });
-			// google.maps.event.addListener(marker, "mouseout", function(e){
-				// infoWindow.close(map, marker);	
-			// });
-			// (function(marker, data, contentString01) {
-				  // google.maps.event.addListener(marker, "mouseover", function(e) {
-					// infoWindow.open(map, marker);
-				  // });
-				  // google.maps.event.addListener(marker, "mouseout", function(e) {
-					// infoWindow.close(map, marker);
-				  // });	
-			// })(marker, data);
-			
-		});	
+		}
 	}
 	$scope.locationname="";
 	$scope.getLocation = function(lat,lon, callback){
@@ -373,6 +464,7 @@ app.controller('mainCtrl',function($scope, $http){
 				$('#myModal').modal();
 			}
 		}
+		
 	}
 	$scope.addMarker= function(pos){
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
