@@ -38,11 +38,11 @@ class VdmVehicleController extends \BaseController {
         
 		foreach ( $vehicleList as $vehicle ) {
 			
-		  
+		      Log::info('$vehicle ' .$vehicle);
 			$vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicle );
 			
             if(isset($vehicleRefData)) {
-         //       Log::info('$vehicle ' .$vehicleRefData);
+                Log::info('$vehicle ' .$vehicleRefData);
             }else {
                 continue;
             }
@@ -146,10 +146,7 @@ class VdmVehicleController extends \BaseController {
             $morningTripStartTime = Input::get ('morningTripStartTime');
             $eveningTripStartTime = Input::get ('eveningTripStartTime');
 			$schoolName = Input::get ('schoolName');
-            $routeNo = Input::get ('routeNo');
 			
-            $routeNo=isset($routeNo) ?$routeNo:$shortName;
-            
 			$refDataArr = array (
 					'deviceId' => $deviceId,
 					'shortName' => $shortName,
@@ -167,8 +164,7 @@ class VdmVehicleController extends \BaseController {
 					'sendGeoFenceSMS' => $sendGeoFenceSMS,
 					'morningTripStartTime' => $morningTripStartTime,
 					'eveningTripStartTime' => $eveningTripStartTime,
-					'schoolName'=>$schoolName,
-					'routeNo'=>$routeNo
+					'schoolName'=>$schoolName
 					
 			);
 			
@@ -248,6 +244,7 @@ class VdmVehicleController extends \BaseController {
 	 * @param int $id        	
 	 * @return Response
 	 */
+	
 	public function edit($id) {
 		
 		Log::info('entering edit');
@@ -284,7 +281,9 @@ class VdmVehicleController extends \BaseController {
         //TODO - 'Undefined index: schoolName'
         $schoolName =isset($refData['schoolName'])?$refData['schoolName']:0;
         
-        
+           $schoolName =isset($refData['schoolName'])?$refData['schoolName']:'NotAvailabe';
+       $refData = array_add($refData, 'schoolName', $schoolName);
+       
         $tmpRouteList = $redis->smembers('S_School_Route_' . $schoolName . '_' . $fcode);
         $routeList=array();
          foreach ( $tmpRouteList as $routeNo ) {
@@ -293,10 +292,8 @@ class VdmVehicleController extends \BaseController {
             }
         $routeNo  = isset($vehicleRefData->routeNo)?$vehicleRefData->routeNo:0; 
         $refData= array_add($refData,'routeNo',$routeNo);
-        $schoolName  = isset($vehicleRefData->schoolName)?$vehicleRefData->schoolName:0; 
-        $refData= array_add($refData,'schoolName',$schoolName);
-	    Log::info('$schoolName ' . $schoolName);
-		return View::make ( 'vdm.vehicles.edit', array (
+	   // Log::info('update vehicles' . $refData);
+		return View::make ( 'vdm.vehicles.edit1', array (
 				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with('routeList',$routeList);
 	}
 	
@@ -347,7 +344,6 @@ class VdmVehicleController extends \BaseController {
             $sendGeoFenceSMS = Input::get ( 'sendGeoFenceSMS' );
             $gpsSimNo = Input::get ('gpsSimNo');
             $odoDistance = Input::get ('odoDistance');
-            $routeNo = Input::get ('routeNo');
             $morningTripStartTime = Input::get ('morningTripStartTime');
             $eveningTripStartTime = Input::get ('eveningTripStartTime');
             
@@ -357,8 +353,6 @@ class VdmVehicleController extends \BaseController {
             $vehicleRefData=json_decode($vehicleRefData,true);
 		
 			$deviceId=$vehicleRefData['deviceId'];
-            $schoolName = $vehicleRefData['schoolName'];
-            Log::info(' route No =' .$routeNo );
         //    $odoDistance=$vehicleRefData['odoDistance'];
             //gpsSimNo
           //    $gpsSimNo=$vehicleRefData['gpsSimNo'];
@@ -378,14 +372,13 @@ class VdmVehicleController extends \BaseController {
 					'email' => $email,
 					'sendGeoFenceSMS' => $sendGeoFenceSMS,
 					'morningTripStartTime' => $morningTripStartTime,
-					'eveningTripStartTime' => $eveningTripStartTime,
-					'routeNo' => $routeNo,
-					'schoolName' => $schoolName
-					
+					'eveningTripStartTime' => $eveningTripStartTime
 			);
 			
 			$refDataJson = json_encode ( $refDataArr );
 			// H_RefData
+			
+
 			$redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
 			
 			$redis->hmset ( $vehicleDeviceMapId, $vehicleId, $deviceId, $deviceId, $vehicleId );
@@ -452,18 +445,8 @@ class VdmVehicleController extends \BaseController {
         $username = Auth::user ()->username;
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-        
-        $schoolListId = 'S_Schools_' . $fcode;
-        Log::info('schoolListId=' . $schoolListId);
-        $schools = $redis->smembers ( $schoolListId);
-        $schoolList= array();
-        foreach ($schools as $key => $value) {
-            $schoolList=array_add($schoolList, $value,$value);
-        }
-        
-        
         Log::info(' inside multi');
-        return View::make ( 'vdm.vehicles.multi' )->with('schoolList',$schoolList);        
+        return View::make ( 'vdm.vehicles.multi' );        
         
     }
 
@@ -471,38 +454,24 @@ class VdmVehicleController extends \BaseController {
     
     public function storeMulti() {
         Log::info(' inside multiStore....');
-        
-        if (App::environment('development'))
-        {
-            $ipaddress='localhost';
-            $port ='9005';
-        }
-        else {
-            $port ='9000';
-        }
-        
-        
         if (! Auth::check ()) {
             return Redirect::to ( 'login' );
         }
         $username = Auth::user ()->username;
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-       
+        Log::info(' inside multi');
         $vehicleDetails = Input::get ( 'vehicleDetails' );
-        $schoolId = Input::get ( 'schoolId' );
         $redis = Redis::connection ();
         $redis->set('MultiVehicle:'.$fcode, $vehicleDetails) ;
         
-        $parameters = 'key='.'MultiVehicle:'.$fcode . '&schoolId=' . $schoolId ;
-        $ipaddress = $redis->get('ipaddress');
-   
-     //   $url = 'http://localhost:9005/addMultipleVehicles?' . $parameters;
-    
-    log::info( ' ipaddress :' . $ipaddress);
-    
-        $url = 'http://' .$ipaddress . ':'.$port .'/addMultipleVehicles?' . $parameters;
-         $url=htmlspecialchars_decode($url);
+        $parameters = 'key='.'MultiVehicle:'.$fcode;
+        
+        //TODO - remove ..this is just for testing
+        $ipaddress = 'localhost';
+        
+        $url = 'http://' .$ipaddress . ':9000/addMultipleVehicles?' . $parameters;
+    $url=htmlspecialchars_decode($url);
  
     log::info( ' url :' . $url);
     

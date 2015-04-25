@@ -1,10 +1,10 @@
 <?php
 
 class VdmBusRoutesController extends \BaseController {
-	
-	
-	
-	public function index($id)
+    
+    
+    
+    public function index($id)
     {
         
  
@@ -20,18 +20,18 @@ class VdmBusRoutesController extends \BaseController {
         $routeList = $redis->smembers('S_School_Route_'.$id .'_'. $fcode);
         return View::make('vdm.busRoutes.index', array('routeList'=> $routeList));
     }
-	
+    
     
     /**
      * 
      * This show is invoked from vdm school controller
      * 
      */
-	public function show($id)
-	{
-		
-		Log::info(" VdmBusRoutesController @ show " .$id);
-		 if (! Auth::check ()) {
+    public function show($id)
+    {
+        
+        Log::info(" VdmBusRoutesController @ show " .$id);
+         if (! Auth::check ()) {
             return Redirect::to ( 'login' );
         }
         $username = Auth::user()->username;
@@ -41,7 +41,7 @@ class VdmBusRoutesController extends \BaseController {
 
         $routeList = $redis->smembers('S_School_Route_'.$schoolId .'_'. $fcode);
         return View::make('vdm.busRoutes.index', array('routeList'=> $routeList))->with('schoolId',$schoolId);
-	}
+    }
     
     public function create() {
         
@@ -67,7 +67,7 @@ class VdmBusRoutesController extends \BaseController {
         return View::make ( 'vdm.busRoutes.create' )->with('schoolList',$schoolList);
     }
     
-     public function store()
+    public function store()
     {
         
           Log::info(" VdmBusRoutesController @ store");
@@ -92,6 +92,7 @@ class VdmBusRoutesController extends \BaseController {
             $schoolId       = Input::get('schoolId');
             $routeId      = Input::get('routeId');
             $stops      = Input::get('stops');
+       
             
             $redis = Redis::connection();
             $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
@@ -105,35 +106,65 @@ class VdmBusRoutesController extends \BaseController {
           //  dd($allStopsArr);
             
             $stopsData=array();
-            //'L_Stops_'.$schoolId .'_'.$routeNo .'_' . $fcode
             
-            $stopList = 'L_Stops_'.$schoolId .'_'.$routeId .'_' . $fcode;
+            $morningSeqList = Input::get('morningSeq');
+            $eveningSeqList = Input::get('eveningSeq');
             
-            Log::info(' schoolId ...' . $stopList);
+             $redis->set('K_Morning_StopSeq_'.$schoolId. '_' .$routeId .'_' . $fcode,$morningSeqList);
+             $redis->set('K_Evening_StopSeq_'.$schoolId. '_' .$routeId.'_' . $fcode,$eveningSeqList);
+             
+
+           foreach ( $allStopsArr as $stop) {
+              $stopsDetailsArr = explode(':',$stop);
+              $key = $routeId  .':'. $stopsDetailsArr[0];
+              $redis->hdel('H_Bus_Stops_' . $schoolId . '_' .$fcode,$key);
+           }
             
-           
-            
+            //stop:geo:mobile:stopname
             foreach ( $allStopsArr as $stop) {
             
                 Log::info(' stop--- ' . $stop);
                 $stopsDetailsArr = explode(':',$stop);
-                $key = $routeId . ':' . $stopsDetailsArr[0];
+                $key = $routeId  .':'. $stopsDetailsArr[0];
+                $origMobileNos='';
+                Log::info(' $key '. $key);
+                $stopDetails = $redis->hget('H_Bus_Stops_' . $schoolId . '_' .$fcode,$key);
+               
+                
+                if(isset($stopDetails)) {
+                    $stopDetailsNewArr = json_decode($stopDetails);
+                   
+                    $origMobileNos = $stopDetailsNewArr->mobileNo;    
+                    Log::info( ' $origMobileNos ' . $origMobileNos);
+                }
+               
                 $stopsData=array();
-                if(isset($stopsDetailsArr[1])) {
+                if(isset($stopsDetailsArr[1])) { //geoLocation
                     $stopsData = array_add($stopsData,'geoLocation',trim($stopsDetailsArr[1]));
                     
                     Log::info('$stopsDetailsArr[1] ' . $stopsDetailsArr[1]);
                 }else {
                     continue;
                 }
-                if(isset($stopsDetailsArr[2])) {
-                    $stopsData = array_add($stopsData,'mobileNo',$stopsDetailsArr[2]);
+                if(isset($stopsDetailsArr[2])) { //mobile
+                    $cumMobileNos = $stopsDetailsArr[2] . ','.$origMobileNos;
+                    $stopsData = array_add($stopsData,'mobileNo',$cumMobileNos);
+                    
+                    Log::info( ' $cumMobileNos ' . $cumMobileNos);
+                }
+                if(isset($stopsDetailsArr[3])) {
+                    $stopsData = array_add($stopsData,'stopName',$stopsDetailsArr[3]);
                 }
                 $stopsDataJson = json_encode ( $stopsData );
                 Log::info ('$stopsDataJson ' . $stopsDataJson);
                 $redis->sadd('S_School_Route_'.$schoolId .'_'. $fcode,$routeId);
-                $redis->rpush($stopList,$stopsDetailsArr[0]);
+               // $redis->rpush($stopList,$stopsDetailsArr[0]);
+                
+                //key routeIs: stop1 -- R1:stop1
+           
+                
                 $redis->hset('H_Bus_Stops_' . $schoolId . '_' .$fcode,$key,$stopsDataJson);
+                Log::info('json data ' . $stopsDataJson);
             }
             
             Session::flash('message', 'Successfully created route with stops' . $routeId . '!');

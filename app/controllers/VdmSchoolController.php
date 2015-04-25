@@ -52,7 +52,6 @@ class VdmSchoolController extends \BaseController {
                 if(empty($route)) {
                     continue;
                 }
-                $route = strtoupper($route);
                 $redis->sadd('S_School_Route_'.$schoolId .'_'. $fcode, $route);
             }
 
@@ -100,16 +99,5 @@ class VdmSchoolController extends \BaseController {
     }
     
  
-    public function destroy($id) {
-        if (! Auth::check ()) {
-            return Redirect::to ( 'login' );
-        }
-        $username = Auth::user ()->username;
-        $redis = Redis::connection ();
-        
-        $schoolId = $id;
-        $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-        
-    }
     
 }

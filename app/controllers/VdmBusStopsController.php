@@ -13,7 +13,7 @@ class VdmBusStopsController extends \BaseController {
 	public function show($id)
 	{
 		
-		Log::info(" VdmBusStopsController @ show++ " .$id);
+		Log::info(" VdmBusStopsController @ show " .$id);
         $in = explode(":",$id);
         Log::info($in[0] . ":::" . $in[1]);
 		 if (! Auth::check ()) {
@@ -25,11 +25,17 @@ class VdmBusStopsController extends \BaseController {
         $routeNo=$in[1];
         $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
-        $stopList = $redis->lrange('L_Stops_'.$schoolId .'_'.$routeNo .'_' . $fcode,0,-1);
+        //K_Morning_StopSeq_CVSM_R1
+
+        $stopList = $redis->get('K_Morning_StopSeq_'.$schoolId .'_'.$routeNo.'_' . $fcode);
         
         
-        return View::make('vdm.busStops.index', array('stopList'=> $stopList))->with('routeNo',$routeNo)->with('schoolId',$schoolId);
+        return View::make('vdm.busStops.index', array('stopList'=> $stopList))->with('routeNo',$routeNo)
+        ->with('schoolId',$schoolId);
 	}
+    
+ 
+    
     public function edit($id)
     {
         
@@ -39,21 +45,14 @@ class VdmBusStopsController extends \BaseController {
         }
         $username = Auth::user()->username;
         $redis = Redis::connection();
-        $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-        
-        
-      
-        
          $in = explode(":",$id);
+         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
           $schoolId=$in[0];
         $routeNo=$in[1];
-        $stopNo =$in[2];
-      
-        $key = $routeNo . ':' . $stopNo;
-        $stopDetails = $redis->hget('H_Bus_Stops_' . $schoolId . '_' .$fcode,$key);
-        $stopDetails=json_decode($stopDetails);
-        return View::make('vdm.busStops.edit', array('stopDetails'=> $stopDetails));
-                
-        
+         $routeType=$in[2];
+        $stopNo =$in[3];
+        //   $key = $routeId . ':' . $routeType .':'. $stopsDetailsArr[0];
+        $stopDetails = $redis->hget('H_Bus_Stops_' . $schoolId . '_' . $fcode,$routeNo .':' . $routeType.':' .$stopNo);
+        var_dump($stopDetails);
     }
 }

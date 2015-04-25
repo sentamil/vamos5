@@ -8,8 +8,10 @@ class VdmGroupController extends \BaseController {
 	 * @return Response
 	 */
 	public function index()
+
 	{
-		
+
+		Log::info('  reached group controller ');		
 		if(!Auth::check()) {
 			return Redirect::to('login');
 		}
@@ -46,7 +48,7 @@ class VdmGroupController extends \BaseController {
          
 		
 		}
-	
+		Log::info('  reached group controller1 ');		
 		return View::make('vdm.groups.index', array('groupList'=> $groupList))->with('vehicleListArr',$vehicleListArr)->with('shortNameListArr',$shortNameListArr);
 
 	}
