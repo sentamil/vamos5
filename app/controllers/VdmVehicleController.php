@@ -7,7 +7,7 @@ class VdmVehicleController extends \BaseController {
 	 * @return Response
 	 */
 	public function index() {
-		if (! Auth::check ()) {
+		if (! Auth::check () ) {
 			return Redirect::to ( 'login' );
 		}
 		$username = Auth::user ()->username;
@@ -47,16 +47,16 @@ class VdmVehicleController extends \BaseController {
                 continue;
             }
             
-			$vehicleRefData=json_decode($vehicleRefData);
+			$vehicleRefData=json_decode($vehicleRefData,true);
 	
-			$deviceId = $vehicleRefData->deviceId;
+			$deviceId = $vehicleRefData['deviceId'];
             
 			$deviceList = array_add ( $deviceList, $vehicle,$deviceId );
-            $shortName = $vehicleRefData->shortName; 
+            $shortName = $vehicleRefData['shortName']; 
             $shortNameList = array_add($shortNameList,$vehicle,$shortName);
-            $portNo=isset($vehicleRefData->portNo)?$vehicleRefData->portNo:9964; 
+            $portNo=isset($vehicleRefData['portNo'])?$vehicleRefData['portNo']:9964; 
             $portNoList = array_add($portNoList,$vehicle,$portNo);
-             $mobileNo=isset($vehicleRefData->gpsSimNo)?$vehicleRefData->gpsSimNo:99999; 
+             $mobileNo=isset($vehicleRefData['gpsSimNo'])?$vehicleRefData['gpsSimNo']:99999; 
             $mobileNoList = array_add($mobileNoList,$vehicle,$mobileNo);
 		}
 		
@@ -77,14 +77,14 @@ class VdmVehicleController extends \BaseController {
         $username = Auth::user ()->username;
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-        //get the school list
-        $tmpSchoolList = $redis->smembers('S_Schools_' . $fcode);
-        $schoolList=null;
-        foreach ( $tmpSchoolList as $school ) {
-                $schoolList = array_add($schoolList,$school,$school);
+        //get the Org list
+        $tmpOrgList = $redis->smembers('S_Organizations_' . $fcode);
+        $orgList=null;
+        foreach ( $tmpOrgList as $org ) {
+                $orgList = array_add($orgList,$org,$org);
                 
             }
-		return View::make ( 'vdm.vehicles.create' )->with ( 'schoolList', $schoolList );
+		return View::make ( 'vdm.vehicles.create' )->with ( 'orgList', $orgList );
 	}
 	
 	/**
@@ -145,7 +145,10 @@ class VdmVehicleController extends \BaseController {
             $sendGeoFenceSMS = Input::get ('sendGeoFenceSMS');
             $morningTripStartTime = Input::get ('morningTripStartTime');
             $eveningTripStartTime = Input::get ('eveningTripStartTime');
-			$schoolName = Input::get ('schoolName');
+			
+			$orgId = Input::get ('orgId');
+            
+            $parkingAlert = Input::get('parkingAlert');
 			
 			$refDataArr = array (
 					'deviceId' => $deviceId,
@@ -164,7 +167,8 @@ class VdmVehicleController extends \BaseController {
 					'sendGeoFenceSMS' => $sendGeoFenceSMS,
 					'morningTripStartTime' => $morningTripStartTime,
 					'eveningTripStartTime' => $eveningTripStartTime,
-					'schoolName'=>$schoolName
+					'orgId'=>$orgId,
+					'parkingAlert'=>$parkingAlert,
 					
 			);
 			
@@ -190,7 +194,6 @@ class VdmVehicleController extends \BaseController {
             /*latitude,longitude,speed,alert,date,distanceCovered,direction,position,status,odoDistance,msgType,insideGeoFence
              13.104870,80.303138,0,N,$time,0.0,N,P,ON,$odoDistance,S,N
               13.04523,80.200222,0,N,0,0.0,null,null,null,0.0,null,N vehicleId=Prasanna_Amaze
-             * 
 			*/
 			$time = round($time * 1000);
 			
@@ -247,7 +250,7 @@ class VdmVehicleController extends \BaseController {
 	
 	public function edit($id) {
 		
-		Log::info('entering edit');
+		Log::info('entering edit......');
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
@@ -260,7 +263,8 @@ class VdmVehicleController extends \BaseController {
 		$deviceId = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
 
 		$details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
-		 $refData=null;
+       
+		$refData=null;
 	    $refData = array_add($refData, 'overSpeedLimit', '50');
 	    $refData = array_add($refData, 'driverName', '');
 	    $refData = array_add($refData, 'gpsSimNo', '');
@@ -271,30 +275,23 @@ class VdmVehicleController extends \BaseController {
         $refData = array_add($refData, 'eveningTripStartTime', ' ');
   
   
-       $refData1 = json_decode ( $details, true );
+       $refDataFromDB = json_decode ( $details, true );
        
 	
-        $refData2 = array_merge($refData,$refData1);
-        $refData=$refData2;
+        $refDatatmp = array_merge($refData,$refDataFromDB);
+        $refData=$refDatatmp;
         //S_Schl_Rt_CVSM_ALH
         
-        //TODO - 'Undefined index: schoolName'
-        $schoolName =isset($refData['schoolName'])?$refData['schoolName']:0;
         
-           $schoolName =isset($refData['schoolName'])?$refData['schoolName']:'NotAvailabe';
-       $refData = array_add($refData, 'schoolName', $schoolName);
        
-        $tmpRouteList = $redis->smembers('S_School_Route_' . $schoolName . '_' . $fcode);
-        $routeList=array();
-         foreach ( $tmpRouteList as $routeNo ) {
-                $routeList = array_add($routeList,$routeNo,$routeNo);
-                
-            }
-        $routeNo  = isset($vehicleRefData->routeNo)?$vehicleRefData->routeNo:0; 
-        $refData= array_add($refData,'routeNo',$routeNo);
-	   // Log::info('update vehicles' . $refData);
-		return View::make ( 'vdm.vehicles.edit1', array (
-				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with('routeList',$routeList);
+       $orgId =isset($refDataFromDB['orgId'])?$refDataFromDB['orgId']:'NotAvailabe';
+       Log::info(' orgId = ' . $orgId);
+       $refData = array_add($refData, 'orgId', $orgId);
+       $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
+       $refData= array_add($refData,'parkingAlert',$parkingAlert);
+	//  var_dump($refData);
+		return View::make ( 'vdm.vehicles.edit', array (
+				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData );
 	}
 	
 	/**
@@ -313,21 +310,20 @@ class VdmVehicleController extends \BaseController {
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
         
+        
 		$rules = array (
 				'shortName' => 'required',
 				'regNo' => 'required',
 				'vehicleType' => 'required',
-				'oprName' => 'required',
-				'mobileNo' => 'required',
-				'overSpeedLimit' => 'required',
-				'deviceModel' => 'required',
-				'driverName' => 'required'
+			//	'oprName' => 'required',
+			//	'mobileNo' => 'required',
+		//		'overSpeedLimit' => 'required',
 		);
 	
 		$validator = Validator::make ( Input::all (), $rules );
         
 		if ($validator->fails ()) {
-			Log::error(' VdmDeviceConrtoller update validation failed++' );
+			Log::error(' VdmVehicleConrtoller update validation failed++' );
 			return Redirect::to ( 'vdmVehicles/edit' )->withErrors ( $validator );
 		} else {
 			// store
@@ -341,11 +337,13 @@ class VdmVehicleController extends \BaseController {
 			$deviceModel = Input::get ( 'deviceModel' );
 			$driverName = Input::get ( 'driverName' );
 			$email = Input::get ( 'email' );
+            $orgId = Input::get ( 'orgId' );
             $sendGeoFenceSMS = Input::get ( 'sendGeoFenceSMS' );
             $gpsSimNo = Input::get ('gpsSimNo');
             $odoDistance = Input::get ('odoDistance');
             $morningTripStartTime = Input::get ('morningTripStartTime');
             $eveningTripStartTime = Input::get ('eveningTripStartTime');
+            $parkingAlert = Input::get ('parkingAlert');
             
             $redis = Redis::connection ();
             $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
@@ -370,9 +368,11 @@ class VdmVehicleController extends \BaseController {
 					'driverName' => $driverName,
 					'gpsSimNo' => $gpsSimNo,
 					'email' => $email,
+					'orgId' =>$orgId,
 					'sendGeoFenceSMS' => $sendGeoFenceSMS,
 					'morningTripStartTime' => $morningTripStartTime,
-					'eveningTripStartTime' => $eveningTripStartTime
+					'eveningTripStartTime' => $eveningTripStartTime,
+					'parkingAlert' => $parkingAlert,
 			);
 			
 			$refDataJson = json_encode ( $refDataArr );
@@ -445,8 +445,19 @@ class VdmVehicleController extends \BaseController {
         $username = Auth::user ()->username;
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-        Log::info(' inside multi');
-        return View::make ( 'vdm.vehicles.multi' );        
+        Log::info(' inside multi ' );
+        
+        $orgList = $redis->smembers('S_Organizations_'. $fcode);
+        
+      
+        
+        $orgArr = array();
+        foreach($orgList as $org) {
+            $orgArr = array_add($orgArr, $org,$org);
+        }
+        $orgList = $orgArr;
+      
+        return View::make ( 'vdm.vehicles.multi' )->with('orgList',$orgList);        
         
     }
 
@@ -460,12 +471,17 @@ class VdmVehicleController extends \BaseController {
         $username = Auth::user ()->username;
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-        Log::info(' inside multi');
+     
         $vehicleDetails = Input::get ( 'vehicleDetails' );
+        
+        $orgId = Input::get('orgId');
+     
+        Log::info(' inside multi ' . $orgId); 
+        
         $redis = Redis::connection ();
         $redis->set('MultiVehicle:'.$fcode, $vehicleDetails) ;
-        
-        $parameters = 'key='.'MultiVehicle:'.$fcode;
+            
+        $parameters = 'key='.'MultiVehicle:'.$fcode . '&orgId='.$orgId;
         
         //TODO - remove ..this is just for testing
         $ipaddress = 'localhost';

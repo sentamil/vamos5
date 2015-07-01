@@ -59,16 +59,10 @@
 	<div class="col-md-4">
     
      <div class="form-group">
-        {{ Form::label('schoolName', 'School/College Name') }}
-        {{ Form::text('schoolName', $refData['schoolName'], array('class' => 'form-control','disabled' => 'disabled')) }}
+        {{ Form::label('orgId', 'Org/College Name') }}
+        {{ Form::text('orgId', isset($refData['orgId'])?$refData['orgId']:' ', array('class' => 'form-control')) }}
     </div>
-    
-     <div class="form-group">
-        {{ Form::label('routeList', 'Routes') }}
-        {{ Form::select('routeNo',array($routeList), $refData['routeNo'], array('class' => 'form-control')) }}
-    </div>
-    
-	    
+        
 	<div class="form-group">
 		{{ Form::label('oprName', 'Telecom Operator Name') }}    
         {{ Form::select('oprName', array( 'airtel' => 'airtel', 'reliance' => 'reliance','idea' => 'idea'), $refData['oprName'],array('class' => 'form-control')) }}             
@@ -101,6 +95,13 @@
 		{{ Form::label('email', 'Email for Notification') }}
 		{{ Form::text('email', $refData['email'], array('class' => 'form-control')) }}
 	</div>
+	
+	
+	<div class="form-group">
+        {{ Form::label('parkingAlert', 'Parking Alert') }}
+      {{ Form::select('parkingAlert', array('no' => 'No','yes' => 'Yes'), $refData['parkingAlert'], array('class' => 'form-control')) }}            
+
+    </div>
 	
 	
     <div class="form-group">

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Satheesh">
-    <title>VAMOS</title>
+    <title>VAMOSGPS</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
@@ -71,7 +71,8 @@
                                 </div>
                             </div>
                     </div>
-                    <div id="lastseentrack">&nbsp;</div>
+                    <div id="lastseentrack" style="top:0; height: auto; bottom:auto">&nbsp;</div>
+                    <div class="latlong"><label><input type="text"  style="width:265px" value="0.0" id="latinput" readonly/> POI : <input type="text" style="width:300px;" id="poival" placeholder="Enter Point of Interest" ng-enter="enterkeypress()" /> <button ng-click="enterkeypress()">Save</button></label><!--<label>Longitude : <input type="text" value="0.0" id="lnginput" readonly/></label>--></div>
                          <div class="bottomContent">
                         	<!--<a href="javascript:void(0);" class="contentbClose"><img src="assets/imgs/close.png"/></a>-->
                         	<div class="row">

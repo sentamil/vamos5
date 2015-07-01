@@ -331,7 +331,7 @@ class VdmFranchiseController extends \BaseController {
 			->where('username', $userId)
 			->update(array('email' => $email1));
 			
-			$password='awesome';
+		/*	$password='awesome';
 			
 			Log::info(" about to send mail");
 						
@@ -341,6 +341,7 @@ class VdmFranchiseController extends \BaseController {
 				
 				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
 			});
+         * /
 
 		}
 					

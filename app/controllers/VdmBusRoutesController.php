@@ -14,17 +14,17 @@ class VdmBusRoutesController extends \BaseController {
         }
         $username = Auth::user()->username;
         $redis = Redis::connection();
-        $school=$id;
+        $org=$id;
         $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
-        $routeList = $redis->smembers('S_School_Route_'.$id .'_'. $fcode);
+        $routeList = $redis->smembers('S_Organization_Route_'.$id .'_'. $fcode);
         return View::make('vdm.busRoutes.index', array('routeList'=> $routeList));
     }
     
     
     /**
      * 
-     * This show is invoked from vdm school controller
+     * This show is invoked from vdm org controller
      * 
      */
     public function show($id)
@@ -36,11 +36,11 @@ class VdmBusRoutesController extends \BaseController {
         }
         $username = Auth::user()->username;
         $redis = Redis::connection();
-        $schoolId=$id;
+        $orgId=$id;
         $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
-        $routeList = $redis->smembers('S_School_Route_'.$schoolId .'_'. $fcode);
-        return View::make('vdm.busRoutes.index', array('routeList'=> $routeList))->with('schoolId',$schoolId);
+        $routeList = $redis->smembers('S_Organization_Route_'.$orgId .'_'. $fcode);
+        return View::make('vdm.busRoutes.index', array('routeList'=> $routeList))->with('orgId',$orgId);
     }
     
     public function create() {
@@ -53,18 +53,18 @@ class VdmBusRoutesController extends \BaseController {
         $username = Auth::user ()->username;
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-         $schoolListId = 'S_Schools_' . $fcode;
+         $orgListId = 'S_Organizations_' . $fcode;
         
-        Log::info('schoolListId=' . $schoolListId);
+        Log::info('orgListId=' . $orgListId);
 
-        $schools = $redis->smembers ( $schoolListId);
+        $orgArr = $redis->smembers ( $orgListId);
         
-        $schoolList= array();
-        foreach ($schools as $key => $value) {
-            $schoolList=array_add($schoolList, $value,$value);
+        $orgList= array();
+        foreach ($orgArr as $key => $value) {
+            $orgList=array_add($orgList, $value,$value);
         }
         
-        return View::make ( 'vdm.busRoutes.create' )->with('schoolList',$schoolList);
+        return View::make ( 'vdm.busRoutes.create' )->with('orgList',$orgList);
     }
     
     public function store()
@@ -77,7 +77,7 @@ class VdmBusRoutesController extends \BaseController {
         }
         $username = Auth::user()->username;
         $rules = array(
-                'schoolId'       => 'required',
+                'orgId'       => 'required',
                 'routeId' => 'required',
                 'stops'=>'required'
         );
@@ -89,7 +89,7 @@ class VdmBusRoutesController extends \BaseController {
         } else {
             // store
             
-            $schoolId       = Input::get('schoolId');
+            $orgId       = Input::get('orgId');
             $routeId      = Input::get('routeId');
             $stops      = Input::get('stops');
        
@@ -110,14 +110,14 @@ class VdmBusRoutesController extends \BaseController {
             $morningSeqList = Input::get('morningSeq');
             $eveningSeqList = Input::get('eveningSeq');
             
-             $redis->set('K_Morning_StopSeq_'.$schoolId. '_' .$routeId .'_' . $fcode,$morningSeqList);
-             $redis->set('K_Evening_StopSeq_'.$schoolId. '_' .$routeId.'_' . $fcode,$eveningSeqList);
+             $redis->set('K_Morning_StopSeq_'.$orgId. '_' .$routeId .'_' . $fcode,$morningSeqList);
+             $redis->set('K_Evening_StopSeq_'.$orgId. '_' .$routeId.'_' . $fcode,$eveningSeqList);
              
 
            foreach ( $allStopsArr as $stop) {
               $stopsDetailsArr = explode(':',$stop);
               $key = $routeId  .':'. $stopsDetailsArr[0];
-              $redis->hdel('H_Bus_Stops_' . $schoolId . '_' .$fcode,$key);
+              $redis->hdel('H_Bus_Stops_' . $orgId . '_' .$fcode,$key);
            }
             
             //stop:geo:mobile:stopname
@@ -128,13 +128,13 @@ class VdmBusRoutesController extends \BaseController {
                 $key = $routeId  .':'. $stopsDetailsArr[0];
                 $origMobileNos='';
                 Log::info(' $key '. $key);
-                $stopDetails = $redis->hget('H_Bus_Stops_' . $schoolId . '_' .$fcode,$key);
+                $stopDetails = $redis->hget('H_Bus_Stops_' . $orgId . '_' .$fcode,$key);
                
                 
                 if(isset($stopDetails)) {
-                    $stopDetailsNewArr = json_decode($stopDetails);
+                    $stopDetailsNewArr = json_decode($stopDetails,true);
                    
-                    $origMobileNos = $stopDetailsNewArr->mobileNo;    
+                    $origMobileNos = $stopDetailsNewArr['mobileNo'];    
                     Log::info( ' $origMobileNos ' . $origMobileNos);
                 }
                
@@ -157,18 +157,18 @@ class VdmBusRoutesController extends \BaseController {
                 }
                 $stopsDataJson = json_encode ( $stopsData );
                 Log::info ('$stopsDataJson ' . $stopsDataJson);
-                $redis->sadd('S_School_Route_'.$schoolId .'_'. $fcode,$routeId);
+                $redis->sadd('S_Organization_Route_'.$orgId .'_'. $fcode,$routeId);
                // $redis->rpush($stopList,$stopsDetailsArr[0]);
                 
                 //key routeIs: stop1 -- R1:stop1
            
                 
-                $redis->hset('H_Bus_Stops_' . $schoolId . '_' .$fcode,$key,$stopsDataJson);
+                $redis->hset('H_Bus_Stops_' . $orgId . '_' .$fcode,$key,$stopsDataJson);
                 Log::info('json data ' . $stopsDataJson);
             }
             
             Session::flash('message', 'Successfully created route with stops' . $routeId . '!');
-            return Redirect::to('vdmBusRoutes/' . $schoolId);
+            return Redirect::to('vdmBusRoutes/' . $orgId);
         }
         
     }

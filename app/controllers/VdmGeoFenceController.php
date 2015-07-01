@@ -13,7 +13,8 @@ class VdmGeoFenceController extends \BaseController {
 	 * @param unknown $id
 	 */
 	
-	
+	//Guess this is not use...need to remove it
+	/*
 	public function index($id)
     {
         
@@ -43,13 +44,15 @@ class VdmGeoFenceController extends \BaseController {
        
         return View::make('vdm.geoFence.index', array('poiList'=> $poiList));
     }
-	
+	*/
     
     /**
      * 
      * This show is invoked from vdmVehicles
      * 
      */
+     
+     /*
 	public function show($id)
 	{
 		
@@ -77,6 +80,7 @@ class VdmGeoFenceController extends \BaseController {
 		
 		return View::make('vdm.geoFence.index', array('poiList'=> $poiList));
 	}
+    */
     
     public function view($id)
     {

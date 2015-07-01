@@ -58,8 +58,17 @@ class VdmUserController extends \BaseController {
 				$vehicleGroups = array_add ( $vehicleGroups, $value, $value );
 			}
 		}
-		
-		return View::make ( 'vdm.users.create' )->with ( 'vehicleGroups', $vehicleGroups );
+        
+        $size = $redis->scard('S_Organizations_'.$fcode);
+        $orgsList=array();
+        if ($size > 0) {
+            $orgs = $redis->smembers('S_Organizations_'.$fcode);
+            foreach ( $orgs as $key => $value ) {
+                $orgsList = array_add ( $orgsList, $value, $value );
+            }
+        }
+        
+		return View::make ( 'vdm.users.create' )->with ( 'vehicleGroups', $vehicleGroups )->with('orgsList',$orgsList);
 	}
 	
 	/**
@@ -75,19 +84,26 @@ class VdmUserController extends \BaseController {
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-		$userId = Input::get ( 'userId' );
-		$val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
+		
 		
 		$rules = array (
 				'userId' => 'required',
 				'email' => 'required|email',
-				'vehicleGroups' => 'required'  // TODO need to fix illegal groups
+				'vehicleGroups' => 'required'  
 				);
+                
+                
 		$validator = Validator::make ( Input::all (), $rules );
+       
 		if ($validator->fails ()) {
 			return Redirect::to ( 'vdmUsers/create' )->withErrors ( $validator );
+		}else {
+		      $userId = Input::get ( 'userId' );
+              $val = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
+              $val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
 		}
-		else if($val1==1) {
+		
+		if($val1==1 || isset($val)) {
 			Session::flash ( 'message', $userId . ' already exist. Please use different id ' . '!' );
 			return Redirect::to ( 'vdmUsers/create' );
 		}
@@ -98,10 +114,22 @@ class VdmUserController extends \BaseController {
 			$email = Input::get ( 'email' );
 			$vehicleGroups = Input::get ( 'vehicleGroups' );
 			$mobileNo = Input::get ( 'mobileNo' );
+            
+            $orgsList = Input::get ( 'orgsList' );
+            
 			
 			foreach ( $vehicleGroups as $grp ) {
 				$redis->sadd ( $userId, $grp );
 			}
+            
+            
+            if(isset($orgsList)) {
+                foreach ( $orgsList as $org ) {
+                    $redis->sadd ( 'S_Orgs_' .$userId . '_' . $fcode, $org );
+                    
+                     
+                }
+            }
 			
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
@@ -183,11 +211,33 @@ class VdmUserController extends \BaseController {
 		foreach ( $groupList as $key => $value ) {
 			$vehicleGroups = array_add ( $vehicleGroups, $value, $value );
 		}
+        
+        $size = $redis->scard('S_Organizations_'.$fcode);
+       
+        $orgsList=array();
+        if ($size > 0) {
+            $orgs = $redis->smembers('S_Organizations_'.$fcode);
+            foreach ( $orgs as $key => $value ) {
+                $orgsList = array_add ( $orgsList, $value, $value );
+            }
+        }
+        
+        $size = $redis->scard('S_Orgs_' .$userId . '_' . $fcode);
+        
+        $selectedOrgsList=array();
+        if($size >0) {
+             $orgs = $redis->smembers('S_Orgs_' .$userId . '_' . $fcode);
+            foreach ( $orgs as $key => $value ) {
+                $selectedOrgsList = array_add ( $selectedOrgsList, $value, $value );
+            }
+            
+        }
+  
 		
 		return View::make ( 'vdm.users.edit', array (
 				'userId' => $userId 
 		) )->with ( 'vehicleGroups', $vehicleGroups )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email)->with('selectedGroups',$selectedGroups);
+		with('email',$email)->with('selectedGroups',$selectedGroups)->with('orgsList',$orgsList)->with('selectedOrgsList',$selectedOrgsList);
 	}
 	
 	/**
@@ -231,6 +281,21 @@ class VdmUserController extends \BaseController {
 			}
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
 			
+            
+            $orgsList = Input::get ( 'orgsList' );
+            // $orgs = $redis->smembers('S_Orgs_' .$userId . '_' . $fcode);
+            $redis->del('S_Orgs_' .$userId . '_' . $fcode);
+            
+           if(empty($orgsList)) {
+               
+           }
+           else {
+               foreach ( $orgsList as $org ) {
+                    $redis->sadd ( 'S_Orgs_' .$userId . '_' . $fcode, $org );
+                }
+            }
+                
+                
 			// redirect
 			Session::flash ( 'message', 'Successfully updated ' . $userId . '!' );
 			return Redirect::to ( 'vdmUsers' );
@@ -254,6 +319,7 @@ class VdmUserController extends \BaseController {
 		
 		$redis->srem ( 'S_Users_' . $fcode, $userId );
 		$redis->del ( $userId );
+         $redis->del('S_Orgs_' .$userId . '_' . $fcode);
 
 		$email=$redis->hget('H_UserId_Cust_Map',$userId.':email');
 		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email');

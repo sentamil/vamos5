@@ -21,17 +21,40 @@ class VdmBusStopsController extends \BaseController {
         }
         $username = Auth::user()->username;
         $redis = Redis::connection();
-        $schoolId=$in[0];
+        $orgId=$in[0];
         $routeNo=$in[1];
         $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
-        //K_Morning_StopSeq_CVSM_R1
-
-        $stopList = $redis->get('K_Morning_StopSeq_'.$schoolId .'_'.$routeNo.'_' . $fcode);
+         //K_Morning_StopSeq_PONV_R5_SMO
+         //K_Evening_StopSeq_CVSM_R3_ALH
+         
+         $morningList = $redis->get('K_Morning_StopSeq_' . $orgId .'_' .  $routeNo . '_' . $fcode);
+         
+         $eveningList = $redis->get('K_Evening_StopSeq_' . $orgId .'_' .  $routeNo . '_' . $fcode);
         
+          $stopList = explode(',',$morningList);
+          
+          $mobileNosList = array();
+          $stopNameList = array();
+          
+          foreach($stopList as $stop) {
+              $stopData = $redis->hget('H_Bus_Stops_' . $orgId . '_' . $fcode, $routeNo . ':stop' . $stop);
+       
+              //H_Bus_Stops_PONV1_SMO -- R1:1
+              $stopJson = json_decode($stopData,true);
+               Log::info('stopNo' . $stop);
+              $mobileNosList = array_add($mobileNosList, 'stopName:'.$stop,  $stopJson['mobileNo']);
+              $stopNameList = array_add($stopNameList, 'stopName:'.$stop,  $stopJson['stopName']);
+              
+          }
         
-        return View::make('vdm.busStops.index', array('stopList'=> $stopList))->with('routeNo',$routeNo)
-        ->with('schoolId',$schoolId);
+         
+         //PONV1:R3
+         //L_Stops_orgId_rouetNo_fcode
+         
+                
+        return View::make('vdm.busStops.index', array('stopNameList'=> $stopNameList))->with('routeNo',$routeNo)
+        ->with('orgId',$orgId)->with('morningList',$morningList)->with('eveningList',$eveningList)->with('mobileNosList',$mobileNosList);
 	}
     
  

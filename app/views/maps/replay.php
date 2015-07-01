@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
-<title>VAMOS</title>
+<title>VAMOSGPS</title>
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
@@ -52,9 +52,9 @@
                     <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
                     </div>
                 </li>
-                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak>{{location.group}}</a>
+                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak>{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak>{{loc.vehicleId}} ({{loc.shortName}}) <img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="20" height="20"/></a></li>
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="20" height="20"/> {{loc.vehicleId}} ({{loc.shortName}}) </a></li>
                     </ul>
                 </li>
             </ul>
@@ -111,7 +111,9 @@
                                </div>
                             </div>
                         </div>
+                        
                             <map id="map_canvas"></map>
+                            <input id="pac-input" class="controls" type="text" placeholder="Location Search"/>
                             <div class="error" style="position:absolute; height:100%; background:#fff; top:0; left:0;  width:100%;" align="center">
                             	<p style="padding:10px; background:#fff; margin-top:200px; display:inline-block;">No Data Found. Please select another date range</p>
                             </div>
@@ -140,6 +142,7 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="latlong" style="bottom: 130px;width:275px"><label><input type="text" value="0.0" id="latinput" style="width:265px"  readonly /></label></div>
                             <div id="lastseen" style="left:0; bottom:100px; position:absolute; width:auto;"></div><div id="lstseendate" style="left:0; right:auto;"></div>
                         	<div class="bottomContent">
 	                        	<div class="row">
@@ -199,8 +202,9 @@
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&libraries=geometry" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,places&sensor=false" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
+    <script src="assets/js/infobubble.js"  type="text/javascript"></script>
     <script src="assets/js/moment.js" type="text/javascript"></script>
     <script src="assets/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
     <script src="assets/js/infobox.js"  type="text/javascript"></script>

@@ -5,7 +5,7 @@
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
 
-{{ Form::open(array('url' => 'vdmSchools')) }}
+{{ Form::open(array('url' => 'vdmSchool')) }}
 <div class="row">
     <div class="col-md-4">   
     
@@ -17,7 +17,7 @@
     </div>
    <div class="form-group">
         {{ Form::label('description', 'Description') }}
-        {{ Form::text('description', Input::old('[description'), array('class' => 'form-control')) }}
+        {{ Form::text('description', Input::old('description'), array('class' => 'form-control')) }}
 
     </div>
     <div class="form-group">

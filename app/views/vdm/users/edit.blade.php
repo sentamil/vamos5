@@ -37,6 +37,17 @@
 		@endforeach
 		</br/>
 		</br/>
+		 {{ Form::label('vehicleList', 'Select the Organization:') }}
+		 
+		@foreach($orgsList as $key => $value)
+             
+            {{ Form::checkbox('orgsList[]', $key,  in_array($value,$selectedOrgsList), ['class' => 'field']) }}
+            {{ Form::label($value) }}
+            <br/>
+        @endforeach
+        
+        </br/>
+        </br/>
 	
 	{{ Form::submit('Update the User!', array('class' => 'btn btn-primary')) }}
 

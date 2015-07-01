@@ -8,7 +8,7 @@ app.controller('testCtrl',function($scope, $http, $location){
        $scope.globalIP	=	globalIP;
    });
 	
-	$scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations';
+	$scope.url = 'http://'+globalIP+':8087/vamosgps/public//getVehicleLocations';
 	$scope.path = [];
 	$scope.inter = 0;
 	//alert($scope.url)
@@ -17,13 +17,13 @@ app.controller('testCtrl',function($scope, $http, $location){
 		$scope.locations = data;
 		console.log(data);
 		$scope.trackVehID =$scope.locations[0].vehicleLocations[0].vehicleId;
-		$scope.iframeurl='http://'+globalIP+'/vamo/public/vdmVehicles';
+		$scope.iframeurl='http://'+globalIP+':8087/vamosgps/public//vdmVehicles';
 	}).error(function(){ /*alert('error'); */});
 	
 	$scope.genericFunction = function(vehicleno, index){
 		$scope.selected = index;
-		//$scope.iframeurl='http://'+globalIP+'/vamo/public/vdmVehicles/'+vehicleno+'/edit'
-		window.location.href = 'http://'+globalIP+'/vamo/public/vdmVehicles/'+vehicleno+'/edit';
+		//$scope.iframeurl='http://'+globalIP+':8087/vamosgps/public//vdmVehicles/'+vehicleno+'/edit'
+		window.location.href = 'http://'+globalIP+':8087/vamosgps/public//vdmVehicles/'+vehicleno+'/edit';
 	}
 });
 

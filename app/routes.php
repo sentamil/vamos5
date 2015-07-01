@@ -103,6 +103,20 @@ Route::get('/getVehicleLocations', function() {
     return View::make('vls.getVehicleLocations');
 });
 
+
+Route::get('/publicTrack', function() {
+        Log::info('get publicTracking Vehicle Locations');
+         return View::make('maps.publictrack');
+});
+
+
+Route::get('/publicTracking', function() {
+        Log::info('get publicTracking Vehicle Locations');
+         return View::make('vls.publicTracking');
+});
+
+
+
 Route::get('/playBack', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -160,9 +174,8 @@ Route::get('/admin', function() {
     return View::make('admin');
 });
 
-Route::get('/', array('uses' => 'HomeController@showLogin'));		// Reg
+Route::get('/', array('uses' => 'HomeController@showLogin'));// Reg
 
-//Route::get('/', array('uses' => 'RegisterController@showRegister'));
 
 Route::get('about', function() {
     return View::make('pages.about');
@@ -183,12 +196,15 @@ Route::get('login', array('uses' => 'HomeController@showLogin'));
 
 Route::get('password/reset', array('uses' => 'RemindersController@getRemind', 'as' => 'password.remind'));
 
-Route::post('password/reset', array('before' => 'csrf', 'uses' => 'RemindersController@request', 'as' => 'password.request'));
+Route::post('password/reset', array('uses' => 'RemindersController@postRemind' , 'as' => 'password.postremind'));
 
 Route::get('password/reset/{token}', array('uses' => 'RemindersController@reset', 'as' => 'password.reset'));
 
 Route::post('password/reset/{token}', array('before' => 'csrf', 'uses' => 'RemindersController@update', 'as' => 'password.update'));
-//vdmGeoFence
+
+
+
+  //vdmGeoFence
 
 Route::get('passwordremind', array('uses' => 'RemindersController@getRemind'));
 
@@ -204,11 +220,12 @@ Route::get('adhocMail', array('uses' => 'HomeController@adhocMail'));
 Route::post('sendAdhocMail', array('before' => 'csrf', 'uses' => 'HomeController@sendAdhocMail'));
 
 Route::get('liveReport', array('uses' => 'ReportsController@liveReport'));
-/*
+
+ 
  Route::get ( 'playBack', array (
  'uses' => 'PlayBackController@replay'
  ) );
- */
+
 Route::get('ipAddressManager', array('uses' => 'HomeController@ipAddressManager'));
 
 Route::get('reverseGeoLocation', array('uses' => 'HomeController@reverseGeoLocation'));
@@ -240,6 +257,11 @@ Route::get('/vdmReports/mileageReport', function() {
 
 Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeController@saveIpAddress'));
 
+//adminauth
+
+Route::group(array('before' => 'adminauth'), function(){   //admin auth starts here
+    
+
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
 
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
@@ -258,6 +280,14 @@ Route::resource('vdmBusStops', 'VdmBusStopsController');
 
 Route::resource('vdmGeoFence', 'VdmGeoFenceController');
 
+Route::resource('vdmOrganization', 'VdmOrganizationController');
+
+
+});   //admin auth ends here
+
+Route::get('vdmSmsReportFilter', array('uses' => 'VdmSmsController@filter'));
+
+Route::post('vdmSmsReport', array('uses' => 'VdmSmsController@show'));
 
 
 
@@ -265,7 +295,12 @@ Route::get('vdmGeoFence/{token}', array('uses' => 'VdmGeoFenceController@show'))
 
 Route::get('vdmGeoFence/{token}/view', array('uses' => 'VdmGeoFenceController@view'));
 
+Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
 Route::resource('vdmFranchises', 'VdmFranchiseController');
+
+
+
+
 
 Route::get('/setPOIName', function() {
     if (!Auth::check()) {
@@ -290,3 +325,19 @@ Route::get('/download', function() {
     $headers = array('Content-Type: application/zip');
     return Response::download($file, 'sample.txt.gz', $headers);
 });
+
+//Route::get('/json', array('uses' =>'ManiController@testMani'));
+//Route::post('/meena', array('uses' => 'MeenaController@loginMeena'));
+//Route::get('/lmeena', array('uses' => 'MeenaController@testMeena'));
+//Route::get('/Meena1',array('uses'=>'Meena1Controller@testmeena'));
+//Route::get('/Meena2',array('uses'=>'Meena2Controller@testMeena2'));
+//Route::get('/Meena3',array('uses'=>'Meena3Controller@testMeena3'));
+//Route::get('/Fish',array('uses'=>'FishController@testFish'));
+//Route::get('/Array',array('uses'=>'ArrayController@testArray'));
+//Route::get('/Correction',array('uses'=>'CorrectionController@testCorrection'));
+Route::get('/SmsReport',array('uses'=>'SmsReportController@testSmsReport'));
+Route::post('/SmsReport',array('uses'=>'SmsReportController@testSmsReport'));
+Route::get('/Test',array('uses'=>'TestController@postAuth'));
+Route::get('/Example',array('uses'=>'ExampleController@testExample'));
+Route::get('/Hello',array('uses'=>'HelloController@testHello'));
+Route::post('/meenatest',array('uses'=>'HelloController@meenatest'));

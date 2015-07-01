@@ -6,7 +6,7 @@ $input = Input::all();
 $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
 
-$port = $redis->get('restservices:port');
+
 
 
 if (! Auth::check ()) {
@@ -30,9 +30,12 @@ foreach ($input as $key => $value) {
         $parameters="{$parameters}&{$key}={$value}";
    
 }
+$web="web";
+ $val="y";
+ $parameters="{$parameters}&{$web}={$val}";
  log::info( ' parameters :' . $parameters);
 
-		 $url = 'http://' .$ipaddress .':'.$port.'/getExecutiveReport' . $parameters;
+		 $url = 'http://' .$ipaddress .':9000/getExecutiveReport' . $parameters;
 		$url=htmlspecialchars_decode($url);
 		 log::info( 'Routing to backed  :' . $url );
 

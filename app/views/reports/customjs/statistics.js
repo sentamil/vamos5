@@ -9,7 +9,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
         reverse : false
     };
 	
-    $scope.url 				= 	'http://'+getIP+'/vamo/public/getVehicleLocations';
+    $scope.url 				= 	'http://'+getIP+':8087/vamosgps/public//getVehicleLocations';
     $scope.sid 				= 	getParameterByName('sid');
     
     $scope.rid 				= 	getParameterByName('rid');
@@ -51,7 +51,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 		 //alert(1);
    		 if($scope.rid=='executive') {
 		 	$scope.loading			=	true;
-   		 	var gurl				=	'http://'+getIP+'/vamo/public/getExecutiveReport?groupId='+$scope.sid+'&fromDate='+$scope.fd+'&toDate='+$scope.td;
+   		 	var gurl				=	'http://'+getIP+':8087/vamosgps/public//getExecutiveReport?groupId='+$scope.sid+'&fromDate='+$scope.fd+'&toDate='+$scope.td;
 			$http.get(gurl).success(function(gdata){
 				$scope.loading			=	false;
 				$scope.execGroupReportData	=	gdata.execReportData;
@@ -62,7 +62,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
    		 }
    		 else { 
    		 	if($scope.vvid) {
-	   		 	var gurl		=	'http://'+getIP+'/vamo/public/getGeoFenceReport?vehicleId='+$scope.vvid+'&fromDate='+$scope.fd+'&fromTime='+convert_to_24h($scope.ft)+'&toDate='+$scope.td+'&toTime='+convert_to_24h($scope.tt);
+	   		 	var gurl		=	'http://'+getIP+':8087/vamosgps/public//getGeoFenceReport?vehicleId='+$scope.vvid+'&fromDate='+$scope.fd+'&fromTime='+convert_to_24h($scope.ft)+'&toDate='+$scope.td+'&toTime='+convert_to_24h($scope.tt);
 				$scope.vid		=	$scope.vvid;
 				$scope.loading	=	true;
 				$http.get(gurl).success(function(gdata){				
@@ -122,7 +122,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 		 //$scope.tabActive = true;
 		 $scope.donut		=	false;
 		 $scope.bar			=	true;
-		 $scope.url = 'http://'+getIP+'/vamo/public/getVehicleLocations?group='+groupname;
+		 $scope.url = 'http://'+getIP+':8087/vamosgps/public//getVehicleLocations?group='+groupname;
 	}
 	
 	$scope.getLocation	=	function(lat,lon) {	
@@ -149,7 +149,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	$scope.plotHist			=		function() {
 		if($scope.whichdata) {
 			
-			var gurl		=	'http://'+getIP+'/vamo/public/getExecutiveReport?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+			var gurl		=	'http://'+getIP+':8087/vamosgps/public//getExecutiveReport?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 			//console.log(gurl);
 			$scope.loading			=	true;
 			$http.get(gurl).success(function(gdata){	
@@ -164,7 +164,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			});
 		}
 		else {			
-			var gurl		=	'http://'+getIP+'/vamo/public/getGeoFenceReport?vehicleId='+$scope.vid+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime);
+			var gurl		=	'http://'+getIP+':8087/vamosgps/public//getGeoFenceReport?vehicleId='+$scope.vid+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime);
 			//console.log(gurl);			
 			if(!$scope.sid) {
 				$scope.loading			=	true; 
@@ -302,7 +302,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
     		$scope.bar						=	false;  	
     	}
     			
-		var gurl			=	'http://'+getIP+'/vamo/public/getGeoFenceReport?vehicleId='+vehicleno+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime);
+		var gurl			=	'http://'+getIP+':8087/vamosgps/public//getGeoFenceReport?vehicleId='+vehicleno+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime);
 		//console.log(gurl);
 		$scope.loading			=	true;
 		$http.get(gurl).success(function(gdata){	

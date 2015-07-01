@@ -35,8 +35,8 @@ class VdmGroupController extends \BaseController {
                $shortNameList=null;   
             foreach ( $vehicleList as $vehicle ) {
                 $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicle );
-                $vehicleRefData=json_decode($vehicleRefData);
-                $shortName = $vehicleRefData->shortName; 
+                $vehicleRefData=json_decode($vehicleRefData,true);
+                $shortName = $vehicleRefData['shortName']; 
                 $shortNameList [] = $shortName;
             }
             $vehicleList =implode('<br/>',$vehicleList);
@@ -78,8 +78,8 @@ class VdmGroupController extends \BaseController {
 		foreach ($vehicleList as $key=>$value) {
 			$userVehicles=array_add($userVehicles, $value, $value);
             $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
-            $vehicleRefData=json_decode($vehicleRefData);
-             $shortName = $vehicleRefData->shortName; 
+            $vehicleRefData=json_decode($vehicleRefData,true);
+             $shortName = $vehicleRefData['shortName']; 
             $shortNameList = array_add($shortNameList,$value,$shortName);
             
 		}

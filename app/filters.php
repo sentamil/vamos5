@@ -70,6 +70,28 @@ Route::filter('guest', function()
 	if (Auth::check()) return Redirect::to('/');
 });
 
+Route::filter('adminauth',function()
+{
+
+    if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+      }
+      $username = Auth::user ()->username;
+      
+       $uri = Route::current()->getName();
+      Log::info('URL  '. $uri);
+      if(strpos($username,'admin')!==false || $uri=='vdmVehicles.edit') {
+             //do nothing
+
+      }
+      else {
+          log::info( ' inside else' . $username) ;
+           return Redirect::to ( 'live' ); //TODO should be replaced with aunthorized page - error
+      }
+});
+
+
+
 /*
 |--------------------------------------------------------------------------
 | CSRF Protection Filter
