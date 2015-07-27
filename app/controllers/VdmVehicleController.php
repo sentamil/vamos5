@@ -212,6 +212,7 @@ class VdmVehicleController extends \BaseController {
 	 * @return Response
 	 */
 	public function show($id) {
+		 Log::info(' inside show....');
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
@@ -461,7 +462,183 @@ class VdmVehicleController extends \BaseController {
         
     }
 
+	
+	
+	
+	
+	//ram
+	
+	public function stops($id) {
+        Log::info(' --------------inside stops-----------------'.$id);
+		 Log::info('id------------>'.$id);
+		  $ipaddress = 'localhost';
+		Log::info(' stops Ip....'.$ipaddress);
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $username = Auth::user ()->username;
+        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $id;
+		$url=htmlspecialchars_decode($url);
+ 
+		log::info( ' url :' . $url);
     
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+			// Include header in result? (0 = yes, 1 = no)
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+		$response = curl_exec($ch);
+		log::info( ' response :' . $response);
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+		curl_close($ch);
+         log::info( 'finished');
+		 
+       $sugStop = json_decode($response,true);
+	    log::info( ' user :');
+		if(!$sugStop['error']==null)
+		{
+			 log::info( ' ---------inside null--------- :');
+			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$id);
+		}	  
+	// var_dump($sugStop);
+	  $value = $sugStop['suggestedStop'];
+	  log::info( ' 1 :');
+	   //var_dump($value);
+	  
+	   $address = array();
+	   log::info( ' 2 :');
+        foreach($value as $org => $rowId) {			
+			  $rowId1 = json_decode($rowId,true);
+			  $t =0;
+			 foreach($rowId1 as $org1 => $rowId2) {
+				  if ($t==1) 
+				  {
+					  $address = array_add($address, $org,$rowId2);
+						log::info( ' 3 :' . $t .$rowId2);
+						
+				   }
+				 
+				 $t++;
+			 }
+			 log::info( ' final :'.$t);	
+        }		
+        $sugStop = $address;	  
+	   log::info( ' success :');
+        return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$id);        
+        
+    }
+
+    
+	
+	public function generate()
+	{
+		
+		log::info(" inside generate");
+		$vehicleId=Input::get('vehicleId');
+		
+			log::info(" inside generate .." . $vehicleId);	
+		$rules = array (
+				'date' => 'required|date:dd-MM-yyyy|',
+				'mst' => 'required|date_format:H:i',
+				'met' => 'required|date_format:H:i',
+				'est' => 'required|date_format:H:i',
+				'eet' => 'required|date_format:H:i'
+				
+		);
+		log::info(" inside 1 .." . $vehicleId);
+		$validator = Validator::make ( Input::all (), $rules );
+		log::info(" inside 2 .." . $vehicleId);
+		if ($validator->fails ()) {
+			log::info(" inside 4 .." . $vehicleId);
+			return Redirect::to ( 'vdmVehicles/stops/'.$vehicleId )->withErrors ( $validator );
+		} else {
+			log::info(" inside 3 .." . $vehicleId);
+			$date=Input::get('date');
+		$mst=Input::get('mst');
+		$met=Input::get('met');
+		$est=Input::get('est');
+		$eet=Input::get('eet');
+		
+		Log::info(' inside generate....'.$date .$mst .$met .$est .$eet. $vehicleId);			
+		 if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $username = Auth::user ()->username;
+		  $redis = Redis::connection();
+		$ipaddress = $redis->get('ipaddress');
+        $parameters='?userId='. $username;
+        $parameters=$parameters . '&vehicleId=' . $vehicleId . '&presentDay=' . $date . '&mST=' .$mst. '&mET=' .$met. '&eST=' .$est . '&eET='.$eet;        		
+        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?'. $parameters;
+		$url=htmlspecialchars_decode($url); 
+		log::info( ' url :' . $url);    
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		// Include header in result? (0 = yes, 1 = no)
+		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		  curl_setopt($ch, CURLOPT_TIMEOUT, 150);
+		  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+		$response = curl_exec($ch);
+		log::info( ' response :' . $response);
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+		curl_close($ch);
+  
+		$sugStop1 = json_decode($response,true);
+	    log::info( ' ------------check----------- :');
+		if(!$sugStop1['error']==null)
+		{
+			 log::info( ' ---------inside null--------- :');
+			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$vehicleId);
+		}
+        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $vehicleId;
+        $url=htmlspecialchars_decode($url);
+ 
+		 log::info( ' url :' . $url);    
+		 $ch = curl_init();
+		 curl_setopt($ch, CURLOPT_URL, $url);
+    // Include header in result? (0 = yes, 1 = no)
+		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		  curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+		  $response = curl_exec($ch);
+         log::info( ' response :' . $response);
+         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+         curl_close($ch);
+         log::info( 'finished');
+		 
+        $sugStop = json_decode($response,true);
+	    log::info( ' user :');
+		if(!$sugStop['error']==null)
+		{
+			 log::info( ' ---------inside null--------- :');
+			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$vehicleId);
+		}
+	     $value = $sugStop['suggestedStop'];
+	     log::info( ' 1 :');
+	     $address = array();
+	     log::info( ' 2 :');
+         foreach($value as $org => $rowId) {			
+		 $rowId1 = json_decode($rowId,true);
+		 $t =0;
+		 foreach($rowId1 as $org1 => $rowId2) {
+			  if ($t==1) 
+			  {
+				  $address = array_add($address, $org,$rowId2);
+					log::info( ' 3 :' . $t .$rowId2);
+					
+			  }
+			 
+			 $t++;
+		 }
+		 log::info( ' final :'.$t);		
+        }		
+        $sugStop = $address;	  
+	   log::info( ' success :');	
+        return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$vehicleId);   
+		 
+		 }
+		 
+	}
     
     public function storeMulti() {
         Log::info(' inside multiStore....');

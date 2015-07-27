@@ -259,10 +259,14 @@ Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeControl
 
 //adminauth
 
-Route::group(array('before' => 'adminauth'), function(){   //admin auth starts here
+//Route::group(array('before' => 'adminauth'), function(){   //admin auth starts here
     
 
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
+//ram
+Route::get('vdmVehicles/stops/{token}', array('uses' => 'VdmVehicleController@stops'));
+
+Route::post('vdmVehicles/generate', array('uses' => 'VdmVehicleController@generate'));
 
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
 
@@ -283,7 +287,7 @@ Route::resource('vdmGeoFence', 'VdmGeoFenceController');
 Route::resource('vdmOrganization', 'VdmOrganizationController');
 
 
-});   //admin auth ends here
+//});   //admin auth ends here
 
 Route::get('vdmSmsReportFilter', array('uses' => 'VdmSmsController@filter'));
 

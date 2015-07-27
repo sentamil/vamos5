@@ -23,30 +23,12 @@
 						</tr>
 					</thead>
 					<tbody>
-					@foreach($vehicleList as $key => $value)
-						<tr style="text-align: center;">
-							<td>{{ ++$key }}</td>
-							<td>{{ $value }}</td>
-							<td>{{ array_get($shortNameList, $value)}}</td>
-							<td>{{ array_get($deviceList, $value)}}</td>
-					        <td>{{ array_get($mobileNoList, $value)}}</td>    
-							<td>
-								{{ Form::open(array('url' => 'vdmVehicles/' . $value, 'class' => 'btn-sm pull-right')) }}
-									{{ Form::hidden('_method', 'DELETE') }}
-									{{ Form::submit('Remove', array('class' => 'btn btn-sm btn-danger')) }}
-								{{ Form::close() }}
-								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value) }}">Show Stops</a>
-								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/' . $value) }}">Show Vehicle</a>
-								
-								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmGeoFence/' . $value) }}">Show GeoFencing</a>
 					
-								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Edit</a>
-				
-							</td>
-						</tr>
-						@endforeach
 					</tbody>
-                </table></div></div>
+                </table></div>
+				
+				
+				</div>
             </div>
     </div>
 </div>
