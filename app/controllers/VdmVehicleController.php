@@ -290,9 +290,16 @@ class VdmVehicleController extends \BaseController {
        $refData = array_add($refData, 'orgId', $orgId);
        $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
        $refData= array_add($refData,'parkingAlert',$parkingAlert);
+	    $tmpOrgList = $redis->smembers('S_Organizations_' . $fcode);
+        $orgList=null;
+        foreach ( $tmpOrgList as $org ) {
+                $orgList = array_add($orgList,$org,$org);
+                
+            }
+	   
 	//  var_dump($refData);
 		return View::make ( 'vdm.vehicles.edit', array (
-				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData );
+				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList );
 	}
 	
 	/**
@@ -387,6 +394,8 @@ class VdmVehicleController extends \BaseController {
 			$redis->hset('H_Device_Cpy_Map',$deviceId,$fcode);
 			// redirect
 			Session::flash ( 'message', 'Successfully updated ' . $vehicleId . '!' );
+			
+			
 			return VdmVehicleController::edit($vehicleId);
 		}
 	}

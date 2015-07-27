@@ -60,7 +60,9 @@
     
      <div class="form-group">
         {{ Form::label('orgId', 'Org/College Name') }}
-        {{ Form::text('orgId', isset($refData['orgId'])?$refData['orgId']:' ', array('class' => 'form-control')) }}
+        
+		
+		{{ Form::select('orgId', array($orgList), Input::old('orgId'), array('class' => 'form-control')) }} 
     </div>
         
 	<div class="form-group">
