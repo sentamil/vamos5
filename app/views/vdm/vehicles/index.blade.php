@@ -36,6 +36,7 @@
 									{{ Form::submit('Remove', array('class' => 'btn btn-sm btn-danger')) }}
 								{{ Form::close() }}
 								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value) }}">Show Stops</a>
+								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/removeStop/' . $value) }}">Remove Stops</a>
 								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/' . $value) }}">Show Vehicle</a>
 								
 								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmGeoFence/' . $value) }}">Show GeoFencing</a>

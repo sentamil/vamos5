@@ -266,6 +266,8 @@ Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
 //ram
 Route::get('vdmVehicles/stops/{token}', array('uses' => 'VdmVehicleController@stops'));
 
+Route::get('vdmVehicles/removeStop/{token}', array('uses' => 'VdmVehicleController@removeStop'));
+
 Route::post('vdmVehicles/generate', array('uses' => 'VdmVehicleController@generate'));
 
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));

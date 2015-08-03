@@ -57,6 +57,15 @@
 										{{ Form::text('eet',   Input::old('eet'),array('placeholder' => 'hh:mm'), array('class' => 'form-control')) }}
 									</div>
 									</td>	
+									
+									</tr><tr>
+									<td>
+									
+									<div class="form-group">
+										{{ Form::label('spd', 'Speed') }}
+										{{ Form::select('type', array( '0' => 'Strict', '5' => 'Medium','10' => 'Relax'), Input::old('type'), array('class' => 'form-control')) }}  
+									</div>
+									</td>	
                                     <br />
 									
 									<br/>

@@ -479,14 +479,25 @@ class VdmVehicleController extends \BaseController {
 	
 	public function stops($id) {
         Log::info(' --------------inside stops-----------------'.$id);
-		 Log::info('id------------>'.$id);
-		  $ipaddress = 'localhost';
+		
+		
+		  $redis = Redis::connection();
+		$ipaddress = $redis->get('ipaddress');
 		Log::info(' stops Ip....'.$ipaddress);
         if (! Auth::check ()) {
             return Redirect::to ( 'login' );
         }
         $username = Auth::user ()->username;
-        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $id;
+		Log::info('id------------>'.$username);
+		 $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		 Log::info('id------------>'.$fcode);
+		 $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $id );            
+          $vehicleRefData=json_decode($vehicleRefData,true);
+		
+			$orgId=$vehicleRefData['orgId'];
+		 Log::info('id------------>'.$orgId);
+		 $type=0;
+        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $id . '&fcode=' . $fcode . '&orgcode=' .$orgId . '&type=' .$type;
 		$url=htmlspecialchars_decode($url);
  
 		log::info( ' url :' . $url);
@@ -513,12 +524,12 @@ class VdmVehicleController extends \BaseController {
 	// var_dump($sugStop);
 	  $value = $sugStop['suggestedStop'];
 	  log::info( ' 1 :');
-	   //var_dump($value);
+	 //  var_dump($value);
 	  
 	   $address = array();
 	   log::info( ' 2 :');
-        foreach($value as $org => $rowId) {			
-			  $rowId1 = json_decode($rowId,true);
+        foreach($value as $org => $geoAddress) {			
+			  $rowId1 = json_decode($geoAddress,true);
 			  $t =0;
 			 foreach($rowId1 as $org1 => $rowId2) {
 				  if ($t==1) 
@@ -538,6 +549,51 @@ class VdmVehicleController extends \BaseController {
         
     }
 
+	
+	public function removeStop($id) {
+        Log::info(' --------------inside remove-----------------'.$id);
+		
+		
+		  $redis = Redis::connection();
+		$ipaddress = $redis->get('ipaddress');
+		Log::info(' stops Ip....'.$ipaddress);
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $username = Auth::user ()->username;
+		Log::info('id------------>'.$username);
+		 $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		 Log::info('id------------>'.$fcode);
+		 $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $id );            
+          $vehicleRefData=json_decode($vehicleRefData,true);
+		
+			$orgId=$vehicleRefData['orgId'];
+			$routeNo=$vehicleRefData['shortName'];
+		 Log::info('org------------>'.$orgId);
+		 Log::info('route------------>'.$routeNo);
+		 
+		
+		 $suggeststop=$redis->LRANGE ('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode , 0, -1);
+		 if(!$suggeststop==null)
+		 {
+			 Log::info('inside value present------------>');
+			 $redis->del('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode);
+			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , $routeNo.':morning');
+			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , $routeNo.':evening');
+			 //HDEL myhash
+			 return Redirect::to ( 'vdmVehicles' );  
+		 }
+		 else{
+			  Log::info('inside no value present------------>');
+			 return Redirect::to ( 'vdmVehicles' ); 
+		 }
+       // L_Suggest_$routeNo_$orgId_$fcode
+	   //H_Stopseq_$orgId_$fcode $routeNo:morning
+	   //H_Stopseq_$orgId_$fcode $routeNo:evening
+       // return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$id);        
+        
+    }
+
     
 	
 	public function generate()
@@ -545,14 +601,16 @@ class VdmVehicleController extends \BaseController {
 		
 		log::info(" inside generate");
 		$vehicleId=Input::get('vehicleId');
-		
+		$type=Input::get('type');
+		 log::info("id------------>".$type);
 			log::info(" inside generate .." . $vehicleId);	
 		$rules = array (
 				'date' => 'required|date:dd-MM-yyyy|',
 				'mst' => 'required|date_format:H:i',
 				'met' => 'required|date_format:H:i',
 				'est' => 'required|date_format:H:i',
-				'eet' => 'required|date_format:H:i'
+				'eet' => 'required|date_format:H:i',
+				'type' => 'required'
 				
 		);
 		log::info(" inside 1 .." . $vehicleId);
@@ -577,7 +635,15 @@ class VdmVehicleController extends \BaseController {
 		  $redis = Redis::connection();
 		$ipaddress = $redis->get('ipaddress');
         $parameters='?userId='. $username;
-        $parameters=$parameters . '&vehicleId=' . $vehicleId . '&presentDay=' . $date . '&mST=' .$mst. '&mET=' .$met. '&eST=' .$est . '&eET='.$eet;        		
+		Log::info('id------------>'.$username);
+		 $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		 Log::info('id------------>'.$fcode);
+		 $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );            
+          $vehicleRefData=json_decode($vehicleRefData,true);
+		
+			$orgId=$vehicleRefData['orgId'];
+		 Log::info('id------------>'.$orgId);
+        $parameters=$parameters . '&vehicleId=' . $vehicleId . '&fcode=' . $fcode . '&orgcode=' .$orgId. '&presentDay=' . $date . '&mST=' .$mst. '&mET=' .$met. '&eST=' .$est . '&eET='.$eet .'&type='.$type;        		
         $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?'. $parameters;
 		$url=htmlspecialchars_decode($url); 
 		log::info( ' url :' . $url);    
@@ -599,7 +665,8 @@ class VdmVehicleController extends \BaseController {
 			 log::info( ' ---------inside null--------- :');
 			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$vehicleId);
 		}
-        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $vehicleId;
+		
+        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $vehicleId . '&fcode=' . $fcode . '&orgcode=' .$orgId . '&type=' .$type;
         $url=htmlspecialchars_decode($url);
  
 		 log::info( ' url :' . $url);    
@@ -670,7 +737,7 @@ class VdmVehicleController extends \BaseController {
         $parameters = 'key='.'MultiVehicle:'.$fcode . '&orgId='.$orgId;
         
         //TODO - remove ..this is just for testing
-        $ipaddress = 'localhost';
+       // $ipaddress = 'localhost';
         
         $url = 'http://' .$ipaddress . ':9000/addMultipleVehicles?' . $parameters;
     $url=htmlspecialchars_decode($url);
