@@ -118,9 +118,10 @@ class VdmVehicleController extends \BaseController {
         $redis = Redis::connection ();
         $vehicleId = Input::get ( 'vehicleId' );
         $vehicleIdCheck = $redis->sismember('S_Vehicles_' . $fcode, $vehicleId);
+		log::info( '------vehicleIdCheck---------- ::' . $vehicleIdCheck);
         if($vehicleIdCheck==1) {
             Session::flash ( 'message', 'VehicleId' . $vehicleId . 'already exist. Please choose another one' );
-            return Redirect::to ( 'vdmVehicles' );
+            return Redirect::to ( 'vdmVehicles/create' );
         }
         
 		if ($validator->fails ()) {
@@ -175,7 +176,6 @@ class VdmVehicleController extends \BaseController {
 			$refDataJson = json_encode ( $refDataArr );
             
 			// H_RefData
-
 			
 			$redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
 			
@@ -189,7 +189,7 @@ class VdmVehicleController extends \BaseController {
 			$redis->sadd ( 'S_Vehicles_' . $fcode, $vehicleId );
 			
 			$redis->hset('H_Device_Cpy_Map',$deviceId,$fcode);
-            
+            $redis->sadd('S_Vehicles_'.$orgId.'_'.$fcode , $vehicleId);
             $time =microtime(true);
             /*latitude,longitude,speed,alert,date,distanceCovered,direction,position,status,odoDistance,msgType,insideGeoFence
              13.104870,80.303138,0,N,$time,0.0,N,P,ON,$odoDistance,S,N
@@ -296,7 +296,7 @@ class VdmVehicleController extends \BaseController {
                 $orgList = array_add($orgList,$org,$org);
                 
             }
-	   
+	   $orgList=array_add($orgList,'Default','Default');
 	//  var_dump($refData);
 		return View::make ( 'vdm.vehicles.edit', array (
 				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList );
@@ -385,8 +385,20 @@ class VdmVehicleController extends \BaseController {
 			
 			$refDataJson = json_encode ( $refDataArr );
 			// H_RefData
+			$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);//ram
+			$refDataJson1=json_decode($refDataJson1,true);
+		
+			$org=$refDataJson1['orgId'];
 			
-
+			if($org!=$orgId)
+			{
+				Log::info('--------------------inside equal--------------------------------');
+				$redis->srem ( 'S_Vehicles_' . $org.'_'.$fcode, $vehicleId);
+			}
+			
+			
+			$redis->sadd ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleId);
+			
 			$redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
 			
 			$redis->hmset ( $vehicleDeviceMapId, $vehicleId, $deviceId, $deviceId, $vehicleId );
@@ -422,6 +434,11 @@ class VdmVehicleController extends \BaseController {
 		
 		$redis->srem ( $cpyDeviceSet, $deviceId );
 		
+		$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);//ram
+			$refDataJson1=json_decode($refDataJson1,true);
+		
+			$orgId=$refDataJson1['orgId'];
+		
 		$redis->hdel ( 'H_RefData_' . $fcode, $vehicleId );
         
 		$redis->hdel('H_Device_Cpy_Map',$deviceId);
@@ -433,6 +450,8 @@ class VdmVehicleController extends \BaseController {
 		$redis->hdel ( $vehicleDeviceMapId, $deviceId );
 		
 		$redis->srem ( 'S_Vehicles_' . $fcode, $redisVehicleId );
+		
+		$redis->srem ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleId);
 		
 		$groupList = $redis->smembers('S_Groups_' . $fcode);
 		
@@ -576,10 +595,20 @@ class VdmVehicleController extends \BaseController {
 		 $suggeststop=$redis->LRANGE ('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode , 0, -1);
 		 if(!$suggeststop==null)
 		 {
-			 Log::info('inside value present------------>');
-			 $redis->del('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode);
+			
+			 
+			$arraystop= $redis->lrange('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode ,0 ,-1);
+			  foreach($arraystop as $org => $geoAddress){
+				  Log::info('inside value present------------>'.$org);
+				  $redis->hdel('H_Bus_Stops_'.$orgId.'_'.$fcode , $routeNo.':stop'.$org);
+			 }
+			$redis->del('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode);
 			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , $routeNo.':morning');
 			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , $routeNo.':evening');
+			 
+			
+			 
+			 
 			 //HDEL myhash
 			 return Redirect::to ( 'vdmVehicles' );  
 		 }

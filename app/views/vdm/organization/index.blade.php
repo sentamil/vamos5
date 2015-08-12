@@ -32,10 +32,32 @@
                                                     <td>{{ $value }}</td>
 
                                                     <!-- we will also add show, edit, and delete buttons -->
-                                                    <td> {{ Form::open(array('url' => 'vdmOrganization/' . $value, 'class' => 'pull-right')) }}
+                                                    <td> {{ Form::open(array('url' => 'vdmOrganization/' . $value, 'onsubmit' => 'return ConfirmDelete()')) }}
                                                     {{ Form::hidden('_method', 'DELETE') }}
                                                     {{ Form::submit('Delete Organization', array('class' => 'btn btn-warning')) }}
+													
                                                     {{ Form::close() }}
+													
+													
+													
+
+  
+
+ 
+													
+<script>
+
+  function ConfirmDelete()
+  {
+  var x = confirm("It will removes all stops generated in this routes?");
+  if (x)
+    return true;
+  else
+    return false;
+  }
+
+</script>
+
                                                       
                                                     <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/edit') }}">Edit Organization </a>
                                                     <a class="btn btn-small btn-success" href="{{ URL::to('vdmBusRoutes/'. $value) }}">Show Routes</a>
