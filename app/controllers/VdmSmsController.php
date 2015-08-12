@@ -14,7 +14,7 @@ class VdmSmsController extends \BaseController {
 
         //get school list
 
-        $orgsList = $redis -> smembers('S_Organizations_' . $fcode);
+        $orgsList = $redis -> smembers('S_Organisations_' . $fcode);
 
         $orgsArr = array();
 

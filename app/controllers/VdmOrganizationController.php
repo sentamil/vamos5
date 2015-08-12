@@ -94,9 +94,9 @@ class VdmOrganizationController extends \BaseController {
 			}
 			
             $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-            $redis->sadd('S_Organizations_'. $fcode, $organizationId);
+            $redis->sadd('S_Organisations_'. $fcode, $organizationId);
             
-            $redis->hset('H_Organizations_'.$fcode,$organizationId,$orgDataJson );
+            $redis->hset('H_Organisations_'.$fcode,$organizationId,$orgDataJson );
 			$redis->hset('H_Org_Company_Map',$organizationId,$fcode);
             
 			
@@ -157,7 +157,7 @@ class VdmOrganizationController extends \BaseController {
         
         Log::info('fcode=' . $fcode);
         
-        $orgListId = 'S_Organizations_' . $fcode;
+        $orgListId = 'S_Organisations_' . $fcode;
         
         Log::info('orgListId=' . $orgListId);
 
@@ -191,8 +191,8 @@ class VdmOrganizationController extends \BaseController {
         
         Log::info('--------------------s--------------------------------' . $id);
         $organizationId = $id;
-        $redis->srem('S_Organizations_' . $fcode,$id);
-        $redis->hdel('H_Organizations_'.$fcode,$id);
+        $redis->srem('S_Organisations_' . $fcode,$id);
+        $redis->hdel('H_Organisations_'.$fcode,$id);//Orgnizations
         $redis->hdel('H_Org_Company_Map', $id);
         $userList = $redis->smembers('S_Users_' . $fcode);
         
@@ -261,7 +261,7 @@ class VdmOrganizationController extends \BaseController {
         
         $redis = Redis::connection();
         $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-        $jsonData =  $redis->hget('H_Organizations_'.$fcode,$id );
+        $jsonData =  $redis->hget('H_Organisations_'.$fcode,$id );
         
         $orgDataArr = json_decode ( $jsonData, true );
         
@@ -394,9 +394,9 @@ class VdmOrganizationController extends \BaseController {
             
             $redis = Redis::connection();
             $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-            $redis->sadd('S_Organizations_'. $fcode, $organizationId);
+            $redis->sadd('S_Organisations_'. $fcode, $organizationId);
             
-            $redis->hset('H_Organizations_'.$fcode,$organizationId,$orgDataJson );
+            $redis->hset('H_Organisations_'.$fcode,$organizationId,$orgDataJson );
             
             $routesArr = explode(",",$mobile);
             

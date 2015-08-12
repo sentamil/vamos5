@@ -78,7 +78,7 @@ class VdmVehicleController extends \BaseController {
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
         //get the Org list
-        $tmpOrgList = $redis->smembers('S_Organizations_' . $fcode);
+        $tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
         $orgList=null;
         foreach ( $tmpOrgList as $org ) {
                 $orgList = array_add($orgList,$org,$org);
@@ -290,7 +290,7 @@ class VdmVehicleController extends \BaseController {
        $refData = array_add($refData, 'orgId', $orgId);
        $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
        $refData= array_add($refData,'parkingAlert',$parkingAlert);
-	    $tmpOrgList = $redis->smembers('S_Organizations_' . $fcode);
+	    $tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
         $orgList=null;
         foreach ( $tmpOrgList as $org ) {
                 $orgList = array_add($orgList,$org,$org);
@@ -476,7 +476,7 @@ class VdmVehicleController extends \BaseController {
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
         Log::info(' inside multi ' );
         
-        $orgList = $redis->smembers('S_Organizations_'. $fcode);
+        $orgList = $redis->smembers('S_Organisations_'. $fcode);
         
       
         

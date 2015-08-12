@@ -17,7 +17,7 @@ class VdmBusRoutesController extends \BaseController {
         $org=$id;
         $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
-        $routeList = $redis->smembers('S_Organization_Route_'.$id .'_'. $fcode);
+        $routeList = $redis->smembers('S_Organisation_Route_'.$id .'_'. $fcode);
         return View::make('vdm.busRoutes.index', array('routeList'=> $routeList));
     }
     
@@ -39,7 +39,7 @@ class VdmBusRoutesController extends \BaseController {
         $orgId=$id;
         $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
-        $routeList = $redis->smembers('S_Organization_Route_'.$orgId .'_'. $fcode);
+        $routeList = $redis->smembers('S_Organisation_Route_'.$orgId .'_'. $fcode);
         return View::make('vdm.busRoutes.index', array('routeList'=> $routeList))->with('orgId',$orgId);
     }
     
@@ -53,7 +53,7 @@ class VdmBusRoutesController extends \BaseController {
         $username = Auth::user ()->username;
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-         $orgListId = 'S_Organizations_' . $fcode;
+         $orgListId = 'S_Organisations_' . $fcode;
         
         Log::info('orgListId=' . $orgListId);
 
@@ -157,7 +157,7 @@ class VdmBusRoutesController extends \BaseController {
                 }
                 $stopsDataJson = json_encode ( $stopsData );
                 Log::info ('$stopsDataJson ' . $stopsDataJson);
-                $redis->sadd('S_Organization_Route_'.$orgId .'_'. $fcode,$routeId);
+                $redis->sadd('S_Organisation_Route_'.$orgId .'_'. $fcode,$routeId);
                // $redis->rpush($stopList,$stopsDetailsArr[0]);
                 
                 //key routeIs: stop1 -- R1:stop1
