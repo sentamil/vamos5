@@ -159,6 +159,15 @@ Route::get('/getExecutiveReport', function() {
     return View::make('vls.getExecutiveReport');
 });
 
+
+Route::get('/getIndividualDriverPerformance', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getIndividualDriverPerformance');
+    return View::make('vls.getIndividualDriverPerformance');
+});
+
 Route::get('/getVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
