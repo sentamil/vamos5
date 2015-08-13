@@ -35,10 +35,47 @@
     <div class="col-md-4">
     
       <div class="form-group">
-        {{ Form::label('routes', 'Routes') }}
-        {{ Form::textarea('routes', $routes, array('class' => 'form-control')) }}
+        {{ Form::label('mobile', 'Mobile') }}
+        {{ Form::text('mobile', $mobile, array('class' => 'form-control')) }}
     </div>
-    
+    <div>
+	{{ Form::label('poi', 'Place Of interest') }}
+	</br>
+	
+	<table><tr><td>
+	@foreach($place as $key => $value)
+	<table><tr>
+	<td>{{ Form::hidden('oldlatandlan'.$k++, $key, array('class' => 'form-control')) }}</td><td>
+	{{ Form::text('latandlan'.$j++, $key, array('class' => 'form-control')) }}</td><td>
+	{{ Form::text( 'place'.$i++,$value ,array('class' => 'form-control','disabled' => 'disabled') ) }}</td>
+	</tr></table>
+	
+	
+	 
+	
+	 @endforeach
+	
+	</td><td >
+	@foreach($place1 as $key => $value)
+	 {{ Form::text('l'.$m++, $key, array('class' => 'form-control','disabled' => 'disabled')) }}
+	  @endforeach
+	</td></tr></table>
+	
+	 
+	 
+	 
+    <div>
+    <ul id="itemsort"> 
+	</br>
+	{{ Form::label('startTime', 'Critical Hours') }}
+	<table><tr><td>{{ Form::label('startTime', 'Start Time') }}</td><td>{{ Form::label('endTime', 'End Time') }}</td></tr>
+	
+	<tr><td>{{  Form::input('time', 'time1', $time1, ['class' => 'form-control', 'placeholder' => 'time'])}}</td>
+	<td>{{  Form::input('time', 'time2', $time2, ['class' => 'form-control', 'placeholder' => 'time'])}}</td></tr></table>
+	
+	
+    </ul></div>
+    </ul></div>
  </div>
   </div>
 

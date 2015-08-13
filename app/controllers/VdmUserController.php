@@ -59,10 +59,10 @@ class VdmUserController extends \BaseController {
 			}
 		}
         
-        $size = $redis->scard('S_Organizations_'.$fcode);
+        $size = $redis->scard('S_Organisations_'.$fcode);
         $orgsList=array();
         if ($size > 0) {
-            $orgs = $redis->smembers('S_Organizations_'.$fcode);
+            $orgs = $redis->smembers('S_Organisations_'.$fcode);
             foreach ( $orgs as $key => $value ) {
                 $orgsList = array_add ( $orgsList, $value, $value );
             }
@@ -212,11 +212,11 @@ class VdmUserController extends \BaseController {
 			$vehicleGroups = array_add ( $vehicleGroups, $value, $value );
 		}
         
-        $size = $redis->scard('S_Organizations_'.$fcode);
+        $size = $redis->scard('S_Organisations_'.$fcode);
        
         $orgsList=array();
         if ($size > 0) {
-            $orgs = $redis->smembers('S_Organizations_'.$fcode);
+            $orgs = $redis->smembers('S_Organisations_'.$fcode);
             foreach ( $orgs as $key => $value ) {
                 $orgsList = array_add ( $orgsList, $value, $value );
             }

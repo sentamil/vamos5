@@ -35,12 +35,30 @@
     <div class="col-md-4">
     
       <div class="form-group">
-        {{ Form::label('routes', 'Routes') }}
-        {{ Form::text('routes', Input::old('routes'), array('class' => 'form-control')) }}
-    </div>
-    
+        {{ Form::label('mobile', 'Mobile') }}
+        {{ Form::text('mobile', Input::old('mobile'), array('class' => 'form-control')) }}
+		
+    </div><div>
+    <ul id="itemsort"> {{ Form::label('poi', 'Place of interest') }}
+       @for ($i = 0; $i < 10; $i++)
+{{ Form::text('poi'.$i, Input::old('poi'), array('class' => 'form-control')) }}
+			@endfor
+    </ul></div>
+	
+	
+	<div>
+    <ul id="itemsort"> 
+	<table><tr><td>{{ Form::label('startTime', 'Start Time') }}</td><td>{{ Form::label('endTime', 'End Time') }}</td></tr>
+	
+	<tr><td>{{  Form::input('time', 'time1', null, ['class' => 'form-control', 'placeholder' => 'time'])}}</td>
+	<td>{{  Form::input('time', 'time2', null, ['class' => 'form-control', 'placeholder' => 'time'])}}</td></tr></table>
+	
+	
+    </ul></div>
  </div>
   </div>
+  
+ 
 
     {{ Form::submit('Add the School/College/Organization!', array('class' => 'btn btn-primary')) }}
 
