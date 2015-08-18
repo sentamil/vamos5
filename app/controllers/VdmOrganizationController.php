@@ -211,12 +211,32 @@ class VdmOrganizationController extends \BaseController {
 				$redis->hdel('H_Stopseq_'.$refData['orgId'].'_'.$fcode , $refData['shortName'].':'.'morning');
 				$redis->hdel('H_Stopseq_'.$refData['orgId'].'_'.$fcode , $refData['shortName'].':'.'evening');
 				
+				try{
+					
+				Log::info('--------------------org--------------------------------' . $list);
+				$redis->del('L_Suggest_'.$refData['altShortName'].'_'.$refData['orgId'].'_'.$fcode);
+				
+				$redis->hdel('H_Stopseq_'.$refData['orgId'].'_'.$fcode , $refData['altShortName'].':'.'morning');
+				$redis->hdel('H_Stopseq_'.$refData['orgId'].'_'.$fcode , $refData['altShortName'].':'.'evening');
+				}
+				catch(\Exception $e)
+				{
+					
+				}
+				try{
+					$vehiclemake=$refData['vehicleMake'];
+				}
+				catch(\Exception $e)
+				{
+					$vehiclemake=' ';
+				}
+				
 				$refDataArr = array (
 					'deviceId' => $refData['deviceId'],
 					'shortName' => $refData['shortName'],
 					'deviceModel' => $refData['deviceModel'],
 					'regNo' => $refData['regNo'],
-					'vehicleMake' => $refData['vehicleMake'],
+					
 					'vehicleType' => $refData['vehicleType'],
 					'oprName' => $refData['oprName'],
 					'mobileNo' => $refData['mobileNo'],
@@ -226,10 +246,12 @@ class VdmOrganizationController extends \BaseController {
 					'gpsSimNo' => $refData['gpsSimNo'],
 					'email' => $refData['email'],
 					'orgId' =>'Default',
+					'altShortName'=>'Default',
 					'sendGeoFenceSMS' => $refData['sendGeoFenceSMS'],
 					'morningTripStartTime' => $refData['morningTripStartTime'],
 					'eveningTripStartTime' => $refData['eveningTripStartTime'],
 					'parkingAlert' => $refData['parkingAlert'],
+					'vehicleMake' => $vehiclemake,
 			);
 			
 			$refDataJson = json_encode ( $refDataArr );
@@ -245,6 +267,7 @@ class VdmOrganizationController extends \BaseController {
         }
          $redis->del('H_Poi_'.$organizationId .'_'.$fcode);  
 		$redis->del('H_Bus_Stops_'.$organizationId.'_'.$fcode);
+		
         Session::flash('message', 'Successfully deleted ' . $id . '!');
         return Redirect::to('vdmOrganization');
     }

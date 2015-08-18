@@ -159,6 +159,15 @@ Route::get('/getExecutiveReport', function() {
     return View::make('vls.getExecutiveReport');
 });
 
+
+Route::get('/getIndividualDriverPerformance', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getIndividualDriverPerformance');
+    return View::make('vls.getIndividualDriverPerformance');
+});
+
 Route::get('/getVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -263,10 +272,10 @@ Route::group(array('before' => 'adminauth'), function(){   //admin auth starts h
     
 
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
-//ram
-Route::get('vdmVehicles/stops/{token}', array('uses' => 'VdmVehicleController@stops'));
+//ramB/{param}/C/{param1?
+Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleController@stops'));
 
-Route::get('vdmVehicles/removeStop/{token}', array('uses' => 'VdmVehicleController@removeStop'));
+Route::get('vdmVehicles/removeStop/{param}/{param1}', array('uses' => 'VdmVehicleController@removeStop'));
 
 Route::post('vdmVehicles/generate', array('uses' => 'VdmVehicleController@generate'));
 

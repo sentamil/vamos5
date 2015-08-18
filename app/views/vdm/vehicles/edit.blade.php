@@ -111,6 +111,11 @@
       {{ Form::select('sendGeoFenceSMS', array('no' => 'No','yes' => 'Yes'), $refData['sendGeoFenceSMS'], array('class' => 'form-control')) }}            
 
     </div>
+	<div class="form-group">
+        {{ Form::label('altShort', 'Alternate Short Name') }}
+      {{ Form::text('altShortName',$refData['altShortName'], array('class' => 'form-control')) }}           
+
+    </div>
 	
 	</div>
 	</div>

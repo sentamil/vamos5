@@ -65,6 +65,12 @@
 										{{ Form::label('spd', 'Speed') }}
 										{{ Form::select('type', array( '0' => 'Strict', '5' => 'Medium','10' => 'Relax'), Input::old('type'), array('class' => 'form-control')) }}  
 									</div>
+									
+									
+									<div class="form-group">
+										{{ Form::label('demo', 'Type') }}
+										{{ Form::text('demo', $demo ) }}
+									</div>
 									</td>	
                                     <br />
 									
@@ -73,6 +79,7 @@
 	</tr><tr><td colspan="2">
 									<div class="form-group">
 									    {{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}{{ Form::close() }}
+										
 									 </div>   
 
 								</td></tr>
