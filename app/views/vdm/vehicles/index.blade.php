@@ -35,17 +35,46 @@
 									{{ Form::hidden('_method', 'DELETE') }}
 									{{ Form::submit('Remove', array('class' => 'btn btn-sm btn-danger')) }}
 								{{ Form::close() }}
-								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value) }}">Show Stops</a>
-								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/removeStop/' . $value) }}">Remove Stops</a>
-								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/' . $value) }}">Show Vehicle</a>
 								
-								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmGeoFence/' . $value) }}">Show GeoFencing</a>
+								<a  class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value,'normal') }}" >Show Stops</a>
+								
+								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/removeStop/' . $value,'normal') }}">Remove Stops</a>
+								
+								<a  class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value,'alternate') }}" >Show ALTS</a>
+								
+								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/removeStop/' . $value,'alternate') }}">Remove ALTS</a>
+								
+								
+								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/' . $value) }}">Show Vehicle</a>
+								
+								
 					
 								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Edit</a>
+				
+			
 				
 							</td>
 						</tr>
 						@endforeach
+						
+						
+							<script>
+
+  function ConfirmDelete()
+  {
+ var person = prompt("Please enter route name", "");
+    
+    if (person != null) {
+        document.getElementById("demo").innerHTML =
+        person;
+		$demo=person;
+		return person;
+    }
+	else
+		return false;
+  }
+
+</script>
 					</tbody>
                 </table></div></div>
             </div>

@@ -59,10 +59,10 @@ class VdmVehicleController extends \BaseController {
              $mobileNo=isset($vehicleRefData['gpsSimNo'])?$vehicleRefData['gpsSimNo']:99999; 
             $mobileNoList = array_add($mobileNoList,$vehicle,$mobileNo);
 		}
-		
+		$demo='ahan';
 		return View::make ( 'vdm.vehicles.index', array (
 				'vehicleList' => $vehicleList 
-		) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList);
+		) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo);
 	}
 	
 	/**
@@ -148,7 +148,7 @@ class VdmVehicleController extends \BaseController {
             $eveningTripStartTime = Input::get ('eveningTripStartTime');
 			
 			$orgId = Input::get ('orgId');
-            
+            $altShortName= Input::get ('altShortName');
             $parkingAlert = Input::get('parkingAlert');
 			
 			$refDataArr = array (
@@ -170,6 +170,8 @@ class VdmVehicleController extends \BaseController {
 					'eveningTripStartTime' => $eveningTripStartTime,
 					'orgId'=>$orgId,
 					'parkingAlert'=>$parkingAlert,
+					'altShortName' => $altShortName,
+					
 					
 			);
 			
@@ -274,7 +276,7 @@ class VdmVehicleController extends \BaseController {
         $refData = array_add($refData, 'sendGeoFenceSMS', 'no');
         $refData = array_add($refData, 'morningTripStartTime', ' ');
         $refData = array_add($refData, 'eveningTripStartTime', ' ');
-  
+		$refData= array_add($refData, 'altShortName',' ');
   
        $refDataFromDB = json_decode ( $details, true );
        
@@ -352,7 +354,8 @@ class VdmVehicleController extends \BaseController {
             $morningTripStartTime = Input::get ('morningTripStartTime');
             $eveningTripStartTime = Input::get ('eveningTripStartTime');
             $parkingAlert = Input::get ('parkingAlert');
-            
+			
+            $altShortName=Input::get ('altShortName');
             $redis = Redis::connection ();
             $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
             
@@ -381,6 +384,7 @@ class VdmVehicleController extends \BaseController {
 					'morningTripStartTime' => $morningTripStartTime,
 					'eveningTripStartTime' => $eveningTripStartTime,
 					'parkingAlert' => $parkingAlert,
+					'altShortName'=>$altShortName,
 			);
 			
 			$refDataJson = json_encode ( $refDataArr );
@@ -388,7 +392,7 @@ class VdmVehicleController extends \BaseController {
 			$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);//ram
 			$refDataJson1=json_decode($refDataJson1,true);
 		
-			$org=$refDataJson1['orgId'];
+			$org=isset($refDataJson1['orgId']);
 			
 			if($org!=$orgId)
 			{
@@ -496,9 +500,9 @@ class VdmVehicleController extends \BaseController {
 	
 	//ram
 	
-	public function stops($id) {
-        Log::info(' --------------inside stops-----------------'.$id);
-		
+	public function stops($id,$demo) {
+        Log::info(' --------------inside 1-----------------'.$id);
+		 Log::info(' --------------inside 1-----------------'.$demo);
 		
 		  $redis = Redis::connection();
 		$ipaddress = $redis->get('ipaddress');
@@ -516,7 +520,7 @@ class VdmVehicleController extends \BaseController {
 			$orgId=$vehicleRefData['orgId'];
 		 Log::info('id------------>'.$orgId);
 		 $type=0;
-        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $id . '&fcode=' . $fcode . '&orgcode=' .$orgId . '&type=' .$type;
+        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $id . '&fcode=' . $fcode . '&orgcode=' .$orgId . '&type=' .$type.'&demo='.$demo;
 		$url=htmlspecialchars_decode($url);
  
 		log::info( ' url :' . $url);
@@ -538,7 +542,8 @@ class VdmVehicleController extends \BaseController {
 		if(!$sugStop['error']==null)
 		{
 			 log::info( ' ---------inside null--------- :');
-			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$id);
+			 
+			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$id)->with('demo',$demo);
 		}	  
 	// var_dump($sugStop);
 	  $value = $sugStop['suggestedStop'];
@@ -547,6 +552,10 @@ class VdmVehicleController extends \BaseController {
 	  
 	   $address = array();
 	   log::info( ' 2 :');
+	   try
+	   {
+		   
+	  
         foreach($value as $org => $geoAddress) {			
 			  $rowId1 = json_decode($geoAddress,true);
 			  $t =0;
@@ -561,7 +570,11 @@ class VdmVehicleController extends \BaseController {
 				 $t++;
 			 }
 			 log::info( ' final :'.$t);	
-        }		
+        }	
+		}catch(\Exception $e)
+	   {
+		return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$id)->with('demo',$demo);  
+	   }		
         $sugStop = $address;	  
 	   log::info( ' success :');
         return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$id);        
@@ -569,10 +582,10 @@ class VdmVehicleController extends \BaseController {
     }
 
 	
-	public function removeStop($id) {
+	public function removeStop($id,$demo) {
         Log::info(' --------------inside remove-----------------'.$id);
 		
-		
+		Log::info(' --------------inside remove-----------------'.$demo);
 		  $redis = Redis::connection();
 		$ipaddress = $redis->get('ipaddress');
 		Log::info(' stops Ip....'.$ipaddress);
@@ -593,8 +606,12 @@ class VdmVehicleController extends \BaseController {
 		 
 		
 		 $suggeststop=$redis->LRANGE ('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode , 0, -1);
+		  $suggeststop1=$redis->LRANGE ('L_Suggest_Alt'.$routeNo.'_'.$orgId.'_'.$fcode , 0, -1);
 		 if(!$suggeststop==null)
 		 {
+			if($demo=='normal')
+			{
+				
 			
 			 
 			$arraystop= $redis->lrange('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode ,0 ,-1);
@@ -605,12 +622,35 @@ class VdmVehicleController extends \BaseController {
 			$redis->del('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode);
 			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , $routeNo.':morning');
 			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , $routeNo.':evening');
+			 $redis->srem('S_Organisation_Route_'.$orgId.'_'.$fcode,$routeNo);
+			
+			 
+			 
+			 //HDEL myhash
+			 return Redirect::to ( 'vdmVehicles' );  
+			 }
+		 }
+		  if(!$suggeststop1==null)
+		 {
+			 Log::info('1');
+			if($demo=='alternate')
+			{
+			 Log::info('2');
+			$arraystop= $redis->lrange('L_Suggest_Alt'.$routeNo.'_'.$orgId.'_'.$fcode ,0 ,-1);
+			  foreach($arraystop as $org => $geoAddress){
+				  Log::info('inside value present------------>'.$org);
+				  $redis->hdel('H_Bus_Stops_'.$orgId.'_'.$fcode , 'Alt'.$routeNo.':stop'.$org);
+			 }
+			$redis->del('L_Suggest_Alt'.$routeNo.'_'.$orgId.'_'.$fcode);
+			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , 'Alt'.$routeNo.':morning');
+			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , 'Alt'.$routeNo.':evening');
 			 
 			
 			 
 			 
 			 //HDEL myhash
 			 return Redirect::to ( 'vdmVehicles' );  
+			}
 		 }
 		 else{
 			  Log::info('inside no value present------------>');
@@ -631,7 +671,9 @@ class VdmVehicleController extends \BaseController {
 		log::info(" inside generate");
 		$vehicleId=Input::get('vehicleId');
 		$type=Input::get('type');
+		$demo=Input::get('demo');
 		 log::info("id------------>".$type);
+		  log::info("demo------------>".$demo);
 			log::info(" inside generate .." . $vehicleId);	
 		$rules = array (
 				'date' => 'required|date:dd-MM-yyyy|',
@@ -647,7 +689,7 @@ class VdmVehicleController extends \BaseController {
 		log::info(" inside 2 .." . $vehicleId);
 		if ($validator->fails ()) {
 			log::info(" inside 4 .." . $vehicleId);
-			return Redirect::to ( 'vdmVehicles/stops/'.$vehicleId )->withErrors ( $validator );
+			return Redirect::to ( 'vdmVehicles/stops/'.$vehicleId .'/'.$demo)->withErrors ( $validator );
 		} else {
 			log::info(" inside 3 .." . $vehicleId);
 			$date=Input::get('date');
@@ -672,7 +714,7 @@ class VdmVehicleController extends \BaseController {
 		
 			$orgId=$vehicleRefData['orgId'];
 		 Log::info('id------------>'.$orgId);
-        $parameters=$parameters . '&vehicleId=' . $vehicleId . '&fcode=' . $fcode . '&orgcode=' .$orgId. '&presentDay=' . $date . '&mST=' .$mst. '&mET=' .$met. '&eST=' .$est . '&eET='.$eet .'&type='.$type;        		
+        $parameters=$parameters . '&vehicleId=' . $vehicleId . '&fcode=' . $fcode . '&orgcode=' .$orgId. '&presentDay=' . $date . '&mST=' .$mst. '&mET=' .$met. '&eST=' .$est . '&eET='.$eet .'&type='.$type.'&demo='.$demo;        		
         $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?'. $parameters;
 		$url=htmlspecialchars_decode($url); 
 		log::info( ' url :' . $url);    
@@ -692,10 +734,10 @@ class VdmVehicleController extends \BaseController {
 		if(!$sugStop1['error']==null)
 		{
 			 log::info( ' ---------inside null--------- :');
-			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$vehicleId);
+			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$vehicleId)->with('demo',$demo);
 		}
 		
-        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $vehicleId . '&fcode=' . $fcode . '&orgcode=' .$orgId . '&type=' .$type;
+        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $vehicleId . '&fcode=' . $fcode . '&orgcode=' .$orgId . '&type=' .$type.'&demo='.$demo;
         $url=htmlspecialchars_decode($url);
  
 		 log::info( ' url :' . $url);    
@@ -716,7 +758,7 @@ class VdmVehicleController extends \BaseController {
 		if(!$sugStop['error']==null)
 		{
 			 log::info( ' ---------inside null--------- :');
-			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$vehicleId);
+			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$vehicleId)->with('demo',$demo);
 		}
 	     $value = $sugStop['suggestedStop'];
 	     log::info( ' 1 :');
@@ -739,7 +781,7 @@ class VdmVehicleController extends \BaseController {
         }		
         $sugStop = $address;	  
 	   log::info( ' success :');	
-        return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$vehicleId);   
+        return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$vehicleId)->with('demo',$demo);   
 		 
 		 }
 		 

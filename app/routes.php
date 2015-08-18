@@ -272,10 +272,10 @@ Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeControl
     
 
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
-//ram
-Route::get('vdmVehicles/stops/{token}', array('uses' => 'VdmVehicleController@stops'));
+//ramB/{param}/C/{param1?
+Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleController@stops'));
 
-Route::get('vdmVehicles/removeStop/{token}', array('uses' => 'VdmVehicleController@removeStop'));
+Route::get('vdmVehicles/removeStop/{param}/{param1}', array('uses' => 'VdmVehicleController@removeStop'));
 
 Route::post('vdmVehicles/generate', array('uses' => 'VdmVehicleController@generate'));
 
