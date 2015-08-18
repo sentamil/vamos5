@@ -18,7 +18,7 @@
 	@foreach($sugStop as $key => $rowId)
 	<div style="width:1000" align="left">
 	 
-	 {{ ++$key }}. {{ $rowId }}.
+	 {{ ++$key-1 }}. {{ $rowId }}.
 	 
 	 
 	</div>
