@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
-<title>VAMOSGPS</title>
+<title>VAMOS</title>
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
@@ -18,15 +18,15 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 <style type="text/css">
-	#map_canvas{
-		width:100%;
-		height: 100vh; 
-	}
-	[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  		display: none !important;
-	 }
-	.gm-style-cc{ position:absolute !important; bottom:60px !important; z-index:99999999 !important;}
-	
+    #map_canvas{
+        width:100%;
+        height: 100vh; 
+    }
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+     }
+    .gm-style-cc{ position:absolute !important; bottom:60px !important; z-index:99999999 !important;}
+    
 </style>
 </head>
 <div id="preloader02" >
@@ -64,45 +64,45 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="topContent topContent01">
-                        	<div class="row">
-                    			<div class="col-md-12" align="center">
-                                	<div class="form-group" style="width:140px; margin-right:10px; float:left;">
-                                    	<div class="input-group datecomp" id="dateFromh">
+                            <div class="row">
+                                <div class="col-md-12" align="center">
+                                    <div class="form-group" style="width:140px; margin-right:10px; float:left;">
+                                        <div class="input-group datecomp" id="dateFromh">
                                             <input type="text" class="form-control placholdercolor" ng-model="fromdate" id="dateFrom" placeholder="From date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                    	</div>
-                                  	</div>
+                                        </div>
+                                    </div>
                                 
-                                	<div class="form-group" style="width:130px; margin-right:10px; float:left;">
-                                    	<div class="input-group datecomp" id="timeFromh">
+                                    <div class="form-group" style="width:130px; margin-right:10px; float:left;">
+                                        <div class="input-group datecomp" id="timeFromh">
                                             <input type="text" class="form-control placholdercolor" ng-model="fromtime" id="timeFrom" placeholder="From time">
                                             <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
-                                    	</div>
-                                  	</div>
+                                        </div>
+                                    </div>
                                
-                                	<div class="form-group" style="width:140px; margin-right:10px; float:left;">
-                                    	<div class="input-group datecomp" id="dateToh">
-                                          	<input type="text" class="form-control placholdercolor" ng-model="todate" id="dateTo" placeholder="To date">
-                                          	<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                    	</div>
-                                  	</div>
+                                    <div class="form-group" style="width:140px; margin-right:10px; float:left;">
+                                        <div class="input-group datecomp" id="dateToh">
+                                            <input type="text" class="form-control placholdercolor" ng-model="todate" id="dateTo" placeholder="To date">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
                                
-                                	<div class="form-group" style="width:130px; margin-right:10px; float:left;">
-                                    	<div class="input-group datecomp" id="timeToh">
-                                          	<input type="text" class="form-control placholdercolor" ng-model="totime" id="timeTo" placeholder="To time" >
-                                          	<div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
-                                    	</div>
-                                  	</div>
-                                	<div class="form-group" style="width:30px; margin-top: 5px; margin-right:10px; float:left;">
+                                    <div class="form-group" style="width:130px; margin-right:10px; float:left;">
+                                        <div class="input-group datecomp" id="timeToh">
+                                            <input type="text" class="form-control placholdercolor" ng-model="totime" id="timeTo" placeholder="To time" >
+                                            <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="width:30px; margin-top: 5px; margin-right:10px; float:left;">
                                  <button ng-click="plotting()">Plot</button>
                                  </div>
                                  <div class=" speedbutt" id="animatecontrols" style="padding-top: 5px; float: left; margin-left: 40px;" ng-init="speedval=100">
-                            		<label>Speed :</label>
-                            		<input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="speedval" value="200" type="radio" /><span>Slow</span>
-                            		<input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="100" /><span>Normal</span>
-                            		<input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="20" /><span>Fast</span>
-                            	</div>
-                            	<div class=""  style="padding-top: 5px;">
+                                    <label>Speed :</label>
+                                    <input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="speedval" value="200" type="radio" /><span>Slow</span>
+                                    <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="100" /><span>Normal</span>
+                                    <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="20" /><span>Fast</span>
+                                </div>
+                                <div class=""  style="padding-top: 5px;">
                                     <button ng-click="playhis()" id="playButton" style="display: none;"><i class="glyphicon glyphicon-play"></i></button>
                                     <button ng-click="pausehis()" id="pauseButton"><i class="glyphicon glyphicon-pause"></i></button>
                                     <button ng-click="animated()" id="replaybutton" disabled><i class="glyphicon glyphicon-repeat"></i></button>
@@ -115,27 +115,31 @@
                             <map id="map_canvas"></map>
                             <input id="pac-input" class="controls" type="text" placeholder="Location Search"/>
                             <div class="error" style="position:absolute; height:100%; background:#fff; top:0; left:0;  width:100%;" align="center">
-                            	<p style="padding:10px; background:#fff; margin-top:200px; display:inline-block;">No Data Found. Please select another date range</p>
+                                <p style="padding:10px; background:#fff; margin-top:200px; display:inline-block;">No Data Found. Please select another date range</p>
                             </div>
                             <div class="nearbyTable01" >
-                            	<h3>Vehicle Status</h3>
+                                <h3>Vehicle Status</h3>
                                 <div>
-                                	<table cellpadding="0" cellspacing="0">
-                                    	<tbody>
+                                    <table cellpadding="0" cellspacing="0">
+                                        <tbody>
                                             <tr>
-                                            	<td>Milestone</td>
+                                                <td>Milestone</td>
                                                 <td><img src="assets/imgs/milestone.png"/></td>
                                             </tr>
                                              <tr>
-                                            	<td>Parked</td>
+                                                <td>Parked</td>
                                                 <td><img src="assets/imgs/flag.png"/></td>
                                             </tr>
+                                            <tr>
+                                                <td>Idle</td>
+                                                <td><img src="assets/imgs/orange.png"/></td>
+                                            </tr>
                                              <tr>
-                                            	<td>Start</td>
+                                                <td>Start</td>
                                                 <td><img src="assets/imgs/startflagico.png"/></td>
                                             </tr>
                                              <tr>
-                                            	<td>End</td>
+                                                <td>End</td>
                                                 <td><img src="assets/imgs/endflagico.png"/></td>
                                             </tr>
                                          </tbody> 
@@ -144,37 +148,37 @@
                             </div>
                             <div class="latlong" style="bottom: 130px;width:275px"><label><input type="text" value="0.0" id="latinput" style="width:265px"  readonly /></label></div>
                             <div id="lastseen" style="left:0; bottom:100px; position:absolute; width:auto;"></div><div id="lstseendate" style="left:0; right:auto;"></div>
-                        	<div class="bottomContent">
-	                        	<div class="row">
-	                    			<div class="col-md-4 col-lg-2" align="center" id="vehiid">
-	                                	<h6>Vehicle ID</h6>
-	                                    <h3>-</h3>
-	                                </div>
-	                                <div class="col-md-2" align="center" id="vehdevtype">
-	                                	<h6>odoDistance</h6>
-	                                    <h3>-</h3>
-	                                </div>
-	                                <div class="col-md-2" align="center" id="vehstat">
-	                                	<h6>Total Idle Time</h6>
-	                                    <h3>-</h3>
-	                                </div>
-	                                
-	                                <div class="col-md-4 col-lg-2" align="center" id="toddist">
-	                                	<h6>Total Running Time</h6>
-	                                    <h3>-</h3>
-	                                </div>
-	                                <div class="col-md-2" align="center" id="mobno">
-	                                	<h6>Total Parked Time</h6>
-	                                    <h3>-</h3>
-	                                </div>
-	                                <div class="col-md-2" align="center" id="regno">
-	                                	<h6>Trip Distance</h6>
-	                                    <h3><span>-</span>&nbsp;km</h3>
-	                                </div>
-	                            </div>
-	                        </div>
-	                        <div ng-show="loading" class="overlay"></div>
-							<div ng-show="loading" class="loading-img"></div>
+                            <div class="bottomContent">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-2" align="center" id="vehiid">
+                                        <h6>Vehicle ID</h6>
+                                        <h3>-</h3>
+                                    </div>
+                                    <div class="col-md-2" align="center" id="vehdevtype">
+                                        <h6>odoDistance</h6>
+                                        <h3>-</h3>
+                                    </div>
+                                    <div class="col-md-2" align="center" id="vehstat">
+                                        <h6>Total Idle Time</h6>
+                                        <h3>-</h3>
+                                    </div>
+                                    
+                                    <div class="col-md-4 col-lg-2" align="center" id="toddist">
+                                        <h6>Total Running Time</h6>
+                                        <h3>-</h3>
+                                    </div>
+                                    <div class="col-md-2" align="center" id="mobno">
+                                        <h6>Total Parked Time</h6>
+                                        <h3>-</h3>
+                                    </div>
+                                    <div class="col-md-2" align="center" id="regno">
+                                        <h6>Trip Distance</h6>
+                                        <h3><span>-</span>&nbsp;km</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="loading" class="overlay"></div>
+                            <div ng-show="loading" class="loading-img"></div>
                     </div>
                 </div>
             </div>
@@ -183,21 +187,21 @@
     </div>
      
     <div class="modal fade" id="myModal">
-	  	<div class="modal-dialog">
-	    	<div class="modal-content">
-	      		<div class="modal-header">
-	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        		<h4 class="modal-title">Error</h4>
-	      		</div>
-			    <div class="modal-body">
-			        <p>{{hisloc.error}}</p>
-			    </div>
-			    <div class="modal-footer">
-	        		<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
-	      		</div>
-	    	</div><!-- /.modal-content -->
-	  	</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Error</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{hisloc.error}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -210,24 +214,24 @@
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/customplay.js"></script>
     <script>
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$("#wrapper").toggleClass("toggled");
-		});
-		
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        
         $(function () {
                 $('#dateFromh, #dateToh').datetimepicker({
-					format:'YYYY-MM-DD',
-					useCurrent:true,
-					pickTime: false
-				});
-				$('#timeFromh').datetimepicker({
-					pickDate: false
-				});
-				$('#timeToh').datetimepicker({
-					useCurrent:true,
-					pickDate: false
-				});
+                    format:'YYYY-MM-DD',
+                    useCurrent:true,
+                    pickTime: false
+                });
+                $('#timeFromh').datetimepicker({
+                    pickDate: false
+                });
+                $('#timeToh').datetimepicker({
+                    useCurrent:true,
+                    pickDate: false
+                });
         });
         </script>
 </body>

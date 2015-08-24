@@ -17,7 +17,7 @@ app.controller('mainCtrl',function($scope, $http){
 	$scope.vehicleno=0;
 	
 	$scope.markerClicked=false;
-	$scope.url = 'http://128.199.175.189/vamo/public/getVehicleLocations';
+	$scope.url = 'http://128.199.175.189:8087/vamosgps/public//getVehicleLocations';
 	$scope.historyfor='';
 	
 	$scope.$watch("url", function (val) {
@@ -123,7 +123,7 @@ app.controller('mainCtrl',function($scope, $http){
     }
 	
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.url = 'http://128.199.175.189/vamo/public/getVehicleLocations?group=' + groupname;
+		 $scope.url = 'http://128.199.175.189:8087/vamosgps/public//getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
 		 $scope.selected=undefined; 
 		 gmarkers=[];
@@ -194,7 +194,7 @@ app.controller('mainCtrl',function($scope, $http){
 				$('#vehdevtype h3').text(temp[i].deviceType);
 				$('#mobno h3').text(temp[i].mobileNumber);
 				$('#regno h3').text(temp[i].regNumber);			
-				var tempurl = "http://128.199.175.189/vamo/public/reverseGeoLocation?lat="+temp[i].latitude +"&lng="+temp[i].longitude;
+				var tempurl = "http://128.199.175.189:8087/vamosgps/public//reverseGeoLocation?lat="+temp[i].latitude +"&lng="+temp[i].longitude;
 				$http.get(tempurl).success(function(data){
 					$('#lastseen').text(data);
 				}).error(function(){});
@@ -258,7 +258,7 @@ app.directive('map', function($http) {
 							}
 						}else if(scope.nearbyflag==true){
 							$('.nearbyTable').show();
-							var tempurl = "http://128.199.175.189/vamo/public/getNearByVehicles?lat="+event.latLng.lat()+"&lng="+event.latLng.lng();
+							var tempurl = "http://128.199.175.189:8087/vamosgps/public//getNearByVehicles?lat="+event.latLng.lat()+"&lng="+event.latLng.lng();
 							$http.get(tempurl).success(function(data){
 								scope.nearbyLocs = data;
 							}).error(function(){ /*alert('error'); */});

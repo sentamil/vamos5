@@ -9,10 +9,14 @@ app.directive('map', function($http, vamoservice) {
 		   		var myOptions = {
 					zoom: 13,
 					center: new google.maps.LatLng(locs.latitude, locs.longitude),
-					mapTypeId: google.maps.MapTypeId.ROADMAP
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
             	};
             	scope.map = new google.maps.Map(document.getElementById(attrs.id), myOptions);
-				
+				google.maps.event.addListener(scope.map, 'click', function(event) {
+								scope.clickedLatlng = event.latLng.lat() +','+ event.latLng.lng();
+								$('#latinput').val(scope.clickedLatlng);
+							});
 				$('#vehiid span').text(locs.vehicleId + " (" +locs.shortName+")");
 				$('#toddist span span').text(locs.distanceCovered);
 				total = parseInt(locs.speed);
@@ -31,7 +35,7 @@ app.directive('map', function($http, vamoservice) {
 				
 			   	scope.speedval.push(data.speed);
            		scope.path.push(new google.maps.LatLng(data.latitude, data.longitude));
-				var labelAnchorpos = new google.maps.Point(12, 50);
+				var labelAnchorpos = new google.maps.Point(12, 37);
 				var myLatlng = new google.maps.LatLng(data.latitude, data.longitude);
 				
 				scope.startlatlong = new google.maps.LatLng(data.latitude, data.longitude);
@@ -101,7 +105,7 @@ app.directive('map', function($http, vamoservice) {
 					 	var latLngBounds = new google.maps.LatLngBounds();
 						latLngBounds.extend(scope.path[scope.path.length-1]);
 					}
-					var labelAnchorpos = new google.maps.Point(12, 50);
+					var labelAnchorpos = new google.maps.Point(12, 37);
 					
 					var myLatlng = new google.maps.LatLng(data.latitude, data.longitude);
 					scope.marker.setMap(null);
@@ -137,13 +141,14 @@ app.directive('map', function($http, vamoservice) {
 			        google.maps.event.trigger(document.getElementById('maploc'), "resize");
 		   		
 		   		});
-		   }, 10000);
+		   }, 60000);
         }
     };
 });
 app.controller('mainCtrl',function($scope, $http, vamoservice){ 
 	var res = document.location.href.split("?");
-	$scope.url = 'http://'+globalIP+'/vamo/public/getSelectedVehicleLocation?'+res[1];
+	$scope.vehicleno = res[1].trim();
+	$scope.url = 'http://'+globalIP+':8087/vamosgps/public//getSelectedVehicleLocation?'+res[1];
 	$scope.path = [];
 	$scope.speedval =[];
 	$scope.inter = 0;
@@ -151,7 +156,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 	$scope.cityCirclecheck=false;
 	vamoservice.getDataCall($scope.url).then(function(data) {
 		$scope.locations = data;
-		var url = 'http://'+globalIP+'/vamo/public/getGeoFenceView?'+res[1];
+		var url = 'http://'+globalIP+':8087/vamosgps/public//getGeoFenceView?'+res[1];
 				$scope.createGeofence(url)
 	});
     $scope.addMarker= function(pos){
@@ -176,7 +181,14 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 			}
 		  });
     };
-	
+	$scope.enterkeypress = function(){
+		var url = 'http://'+globalIP+':8087/vamosgps/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
+			vamoservice.getDataCall(url).then(function(data) {
+			 	document.getElementById('poival').value='';
+			});
+		}
+	}
 	$scope.trafficLayer = new google.maps.TrafficLayer();
 	$scope.checkVal=false;
 	$scope.clickflagVal =0;
@@ -204,6 +216,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 			if (typeof(data.geoFence) !== 'undefined' && data.geoFence.length) {	
 				//alert(data.geoFence[0].proximityLevel);
 				for(var i=0; i<data.geoFence.length; i++){
+					if(data.geoFence[i]!=null){
 					var populationOptions = {
 							  strokeColor: '#FF0000',
 							  strokeOpacity: 0.8,
@@ -217,7 +230,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 					$scope.cityCircle[i] = new google.maps.Circle(populationOptions);
 					var centerPosition = new google.maps.LatLng(data.geoFence[i].latitude, data.geoFence[i].longitude);
 					var labelText = data.geoFence[i].poiName;
-					var image = 'assets/imgs/bus.png';
+					var image = 'assets/imgs/busgeo.png';
 				  
 				  	
 				  
@@ -242,42 +255,37 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 					labelinfo.open($scope.map);
 					labelinfo.setPosition($scope.cityCircle[i].getCenter());
 				}
+				}
 			}
 		})
 	}          
 });
 $(document).ready(function(e) {
-	 var gaugeOptions = {
-
+	  var gaugeOptions = {
         chart: {
             type: 'solidgauge',
             backgroundColor:'rgba(255, 255, 255, 0)'
         },
-
         title: null,
-
         pane: {
-            center: ['50%', '85%'],
-            size: '200%',
+            center: ['50%', '90%'],
+            size: '180%',
             startAngle: -90,
             endAngle: 90,
             background: {
-            	
                 innerRadius: '60%',
                 outerRadius: '100%',
                 shape: 'arc'
             }
         },
-
         tooltip: {
             enabled: false
         },
-
         yAxis: {
             stops: [
-                [0.1, '#55BF3B'], // green
-                [0.5, '#DDDF0D'], // yellow
-                [0.9, '#DF5353'] // red
+                [0.1, '#55BF3B'], 
+                [0.5, '#DDDF0D'], 
+                [0.9, '#DF5353'] 
             ],
             lineWidth: 0,
             minorTickInterval: null,
@@ -290,7 +298,6 @@ $(document).ready(function(e) {
                 y: -100
             }
         },
-
         plotOptions: {
             solidgauge: {
                 dataLabels: {
@@ -302,20 +309,13 @@ $(document).ready(function(e) {
         }
     };
 
-    // The speed gauge
     $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 100,
-            title: {
-                text: ''
-            }
+            max: 120,
+            title: { text: '' }
         },
-
-        credits: {
-            enabled: false
-        },
-
+        credits: { enabled: false },
         series: [{
             name: 'Speed',
             data: [total],
@@ -323,23 +323,15 @@ $(document).ready(function(e) {
                 format: '<div style="text-align:center"><span style="font-size:12px; font-weight:normal;color: #196481'+ '">Speed - {y} km</span><br/>',
                  y: 25
             },
-            tooltip: {
-                valueSuffix: ' km/h'
-            }
+            tooltip: { valueSuffix: ' km/h'}
         }]
-
     }));
-  // Bring life to the dials
     setInterval(function () {
-        // Speed
-        var chart = $('#container-speed').highcharts(), point;
-
+      var chart = $('#container-speed').highcharts(), point;
         if (chart) {
             point = chart.series[0].points[0];
             point.update(total);
         }
-
-        
-    }, 1000);	
+    }, 1000);
 });
  

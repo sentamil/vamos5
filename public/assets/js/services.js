@@ -28,7 +28,7 @@ app.factory('vamoservice', function($http, $q){
 		},
 		geocodeToserver: function (lat, lng, address) {
 		  try { 
-				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'6&geoAddress='+address;
+				var reversegeourl = 'http://'+globalIP+':8087/vamosgps/public//store?geoLocation='+lat+','+lng+'6&geoAddress='+address;
 			    return this.getDataCall(reversegeourl);
 			}
 			catch(err){ console.log(err); }
@@ -65,6 +65,7 @@ app.factory('vamoservice', function($http, $q){
 				return posTime;
         },
         iconURL:function(temp){
+        	
         	if(temp.color =='P' || temp.color =='N' || temp.color =='A'){
 				if(temp.color =='A'){
 					pinImage = 'assets/imgs/orangeB.png';

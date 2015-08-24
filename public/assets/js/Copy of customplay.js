@@ -147,7 +147,7 @@ app.directive('map', function($http) {
 app.controller('mainCtrl',function($scope, $http){ 
 	$scope.locations = [];
 	$scope.path = [];
-	$scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations';
+	$scope.url = 'http://'+globalIP+':8087/vamosgps/public//getVehicleLocations';
 	$scope.getTodayDate  =	function(date) {
 		var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
@@ -155,7 +155,7 @@ app.controller('mainCtrl',function($scope, $http){
 	$http.get($scope.url).success(function(data){
 		$scope.locations = data;
 		$scope.trackVehID =$scope.locations[0].vehicleLocations[0].vehicleId;
-		$scope.hisurl = 'http://'+globalIP+'/vamo/public/getVehicleHistory?vehicleId='+$scope.trackVehID;
+		$scope.hisurl = 'http://'+globalIP+':8087/vamosgps/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
 	}).error(function(){ /*alert('error'); */});
 	$scope.genericFunction = function(a,b){
@@ -219,13 +219,13 @@ app.controller('mainCtrl',function($scope, $http){
 		}
 		if(document.getElementById('dateFrom').value==''){
 			if(document.getElementById('dateTo').value==''){
-				$scope.hisurl = 'http://'+globalIP+'/vamo/public/getVehicleHistory?vehicleId='+$scope.trackVehID;
+				$scope.hisurl = 'http://'+globalIP+':8087/vamosgps/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
 			}
 		}else{
 			if(document.getElementById('dateTo').value==''){
-				$scope.hisurl = 'http://'+globalIP+'/vamo/public/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
+				$scope.hisurl = 'http://'+globalIP+':8087/vamosgps/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
 			}else{
-				$scope.hisurl = 'http://'+globalIP+'/vamo/public/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime;
+				$scope.hisurl = 'http://'+globalIP+':8087/vamosgps/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime;
 			}
 		}
 		if($scope.hisurlold!=$scope.hisurl){	

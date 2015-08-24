@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
-<title>PRASANNA</title>
+<title>VAMOS</title>
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
@@ -61,7 +61,7 @@
                 	<span style="font-size: 12px; font-weight: bold;" ng-cloak><input type="radio" value="S" ng-model="vehicleStatus" name="vehicleStatus" class="radioButt"/> Idle <span>({{idleCount}}) </span></span>
                 -->
                 </li>
-                <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
+                <li ng-repeat="location in locations01"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
                     	<li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.vehicleId}} ({{loc.shortName}}) </a></li>
                     </ul>
@@ -219,7 +219,6 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/infobubble.js"  type="text/javascript"></script>
-    <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
     <script src="assets/js/custom.js"></script>

@@ -126,11 +126,11 @@ background:url('../imgs/marker-s-pink.png') no-repeat 5px center;
 color:#888;
 font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight";
 font-weight:normal;
-font-size:11px;
-padding-left:30px;
-background:url('../imgs/dot.png') no-repeat 20px center;
+font-size:12px;
+padding-left:0px;
+
 }
-.sidebar-subnav li li a.red{background:url(../imgs/red_dot.png) no-repeat 20px center; color:red;}
+.sidebar-subnav li li a.red{ color:red;}
 /*.sidebar-subnav li ul li a:hover {
 color:#152b44;
 }*/
@@ -141,8 +141,8 @@ color:#333;
 .sidebar-bottom{ margin-top:30%;}
 .col-lg-12{ padding:0 !important;}
 @media(min-width:768px) {
-    #wrapper { padding-left: 280px; }
-    #sidebar-wrapper { width: 280px; }
+    #wrapper { padding-left: 250px; }
+    #sidebar-wrapper { width: 250px; }
 	 #wrapper.toggled { padding-left: 20px; }
 	  #wrapper.toggled #sidebar-wrapper { width: 80px;}
 	  #wrapper.toggled #page-content-wrapper {
@@ -212,10 +212,10 @@ li a label{ width:100%; display:block;}
 .bottomContent h3{ padding-top:0; margin-top:0; font-size:12px;; text-align:center;}
 .labels{ color:#fff;}
 .container01{min-width: 200px; max-width: 220px; width: 220px; height: 125px; bottom:-33px; margin: 0 auto; position:absolute;}
-.labels { color: #fff; font-size: 11px; font-weight:bold; text-align: center; width: 24px; white-space: nowrap;}
+.labels { color: #fff; font-size: 8px; font-weight:normal; text-align: center; width: 24px; white-space: nowrap;}
 
 .controls {margin-top: 16px;border: 1px solid transparent;border-radius: 2px 0 0 2px;box-sizing: border-box;-moz-box-sizing: border-box;height: 32px;outline: none;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);}
-	  #pac-input {padding: 0 11px 0 13px; width: 400px;font-family: Roboto; z-index:999; position:absolute; left:75px; font-size: 15px;font-weight: 300;text-overflow: ellipsis;margin-top:40px;margin-right:10px;}
+	  #pac-input {padding: 0 11px 0 13px; width: 400px;font-family: Roboto; z-index:999; position:absolute; left:65px; font-size: 15px;font-weight: 300;text-overflow: ellipsis;margin-top:70px;margin-right:10px;}
 	  #pac-input01 {margin-right:0; margin-top:5px; margin-bottom:10px; position:absolute;  z-index:999; right:100px}
 	  #pac-input01 input{ background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa; margin-bottom:10px;}
 	  #pac-input02{ margin-right:0; margin-top:0;}
