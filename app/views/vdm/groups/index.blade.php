@@ -37,7 +37,7 @@
 				
 								<!-- delete the nerd (uses the destroy method DESTROY /nerds/{id} -->
 								<!-- we will add this later since its a little more complicated than the other two buttons -->
-								{{ Form::open(array('url' => 'vdmGroups/' . $value, 'class' => 'pull-right')) }}
+								{{ Form::open(array('url' => 'vdmGroups/' . $value, 'class' => 'pull-right','onsubmit' => 'return ConfirmDelete()')) }}
 									{{ Form::hidden('_method', 'DELETE') }}
 									{{ Form::submit('Delete this Group', array('class' => 'btn btn-warning')) }}
 								{{ Form::close() }}
@@ -57,6 +57,18 @@
 </div>
 </div>
 </div>
+<script>
+
+  function ConfirmDelete()
+  {
+  var x = confirm("It will removes all dealer based informations?");
+  if (x)
+    return true;
+  else
+    return false;
+  }
+
+</script>
 @include('includes.js_index')
 </body>
 </html>

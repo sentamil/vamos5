@@ -15,6 +15,16 @@ class VdmUserController extends \BaseController {
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		Log::info('username:' . $username . '  :: fcode' . $fcode);
 		$redisUserCacheId = 'S_Users_' . $fcode;
+		if(Session::get('cur')=='dealer')
+		{
+			log::info( '------login 1---------- '.Session::get('cur'));
+			
+			$redisUserCacheId = 'S_Users_Dealer_'.$username.'_'.$fcode;
+		}
+		else if(Session::get('cur')=='admin')
+		{
+			$redisUserCacheId = 'S_Users_Admin_'.$username.'_'.$fcode;
+		}
 	
 		$userList = $redis->smembers ( $redisUserCacheId);
 		
@@ -42,11 +52,22 @@ class VdmUserController extends \BaseController {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
+		Log::info('---------------users:--------------');
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		
 		$redisGrpId = 'S_Groups_' . $fcode;
+		if(Session::get('cur')=='dealer')
+		{
+			log::info( '------login 1---------- '.Session::get('cur'));
+			$redisGrpId = 'S_Groups_Dealer_'.$username.'_'.$fcode;
+		}
+		else if(Session::get('cur')=='admin')
+		{
+			$redisGrpId = 'S_Groups_Admin_'.$username.'_'.$fcode;
+		}
+		
 		// $vehicleGroups=array("No groups found");
 		$vehicleGroups = null;
 		$size = $redis->scard ( $redisGrpId );
@@ -67,8 +88,11 @@ class VdmUserController extends \BaseController {
                 $orgsList = array_add ( $orgsList, $value, $value );
             }
         }
-        
-		return View::make ( 'vdm.users.create' )->with ( 'vehicleGroups', $vehicleGroups )->with('orgsList',$orgsList);
+        $user=null;
+		
+		$user1= new VdmDealersController;
+		$user=$user1->checkuser();
+		return View::make ( 'vdm.users.create' )->with ( 'vehicleGroups', $vehicleGroups )->with('orgsList',$orgsList)->with ( 'user', $user );
 	}
 	
 	/**
@@ -114,24 +138,25 @@ class VdmUserController extends \BaseController {
 			$email = Input::get ( 'email' );
 			$vehicleGroups = Input::get ( 'vehicleGroups' );
 			$mobileNo = Input::get ( 'mobileNo' );
-            
-            $orgsList = Input::get ( 'orgsList' );
-            
-			
-			foreach ( $vehicleGroups as $grp ) {
+            foreach ( $vehicleGroups as $grp ) {
 				$redis->sadd ( $userId, $grp );
 			}
             
-            
-            if(isset($orgsList)) {
-                foreach ( $orgsList as $org ) {
-                    $redis->sadd ( 'S_Orgs_' .$userId . '_' . $fcode, $org );
-                    
-                     
-                }
-            }
+           
 			
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
+			if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				$redis->sadd('S_Users_Dealer_'.$username.'_'.$fcode,$userId);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				$redis->sadd('S_Users_Admin_'.$username.'_'.$fcode,$userId);
+			}
+			
+			
+			
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
 			$password='awesome';
 			$user = new User;
@@ -200,6 +225,16 @@ class VdmUserController extends \BaseController {
 		
 		
 		$redisGrpId = 'S_Groups_' . $fcode;
+		if(Session::get('cur')=='dealer')
+		{
+			log::info( '------login 1---------- '.Session::get('cur'));
+			$redisGrpId = 'S_Groups_Dealer_'.$username.'_'.$fcode;
+		}
+		else if(Session::get('cur')=='admin')
+		{
+			$redisGrpId = 'S_Groups_Admin_'.$username.'_'.$fcode;
+		}
+		
 	
 		$groupList = $redis->smembers ( $redisGrpId);
 		
@@ -282,7 +317,7 @@ class VdmUserController extends \BaseController {
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
 			
             
-            $orgsList = Input::get ( 'orgsList' );
+           /* $orgsList = Input::get ( 'orgsList' );
             // $orgs = $redis->smembers('S_Orgs_' .$userId . '_' . $fcode);
             $redis->del('S_Orgs_' .$userId . '_' . $fcode);
             
@@ -293,7 +328,7 @@ class VdmUserController extends \BaseController {
                foreach ( $orgsList as $org ) {
                     $redis->sadd ( 'S_Orgs_' .$userId . '_' . $fcode, $org );
                 }
-            }
+            }*/
                 
                 
 			// redirect
@@ -318,6 +353,10 @@ class VdmUserController extends \BaseController {
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		
 		$redis->srem ( 'S_Users_' . $fcode, $userId );
+		$redis->srem('S_Users_Dealer_'.$username.'_'.$fcode,$userId);
+		$redis->srem('S_Users_Admin_'.$username.'_'.$fcode,$userId);
+		
+		
 		$redis->del ( $userId );
          $redis->del('S_Orgs_' .$userId . '_' . $fcode);
 

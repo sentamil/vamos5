@@ -13,7 +13,7 @@ class VdmVehicleController extends \BaseController {
 		$username = Auth::user ()->username;
 		
 		log::info( 'User name  ::' . $username);
-		
+		Session::forget('page');
 		
 		$redis = Redis::connection ();
 		
@@ -21,7 +21,19 @@ class VdmVehicleController extends \BaseController {
 		
 		Log::info('fcode=' . $fcode);
 		
-		$vehicleListId = 'S_Vehicles_' . $fcode;
+		if(Session::get('cur')=='dealer')
+		{
+			$vehicleListId='S_Vehicles_Dealer_'.$username.'_'.$fcode;
+		}
+		else if(Session::get('cur')=='admin')
+		{
+			$vehicleListId='S_Vehicles_Admin_'.$username.'_'.$fcode;
+		}
+		else{
+			$vehicleListId = 'S_Vehicles_' . $fcode;
+		}
+	
+		
 		
 		Log::info('vehicleListId=' . $vehicleListId);
 
@@ -60,9 +72,14 @@ class VdmVehicleController extends \BaseController {
             $mobileNoList = array_add($mobileNoList,$vehicle,$mobileNo);
 		}
 		$demo='ahan';
+		$user=null;
+		
+		$user1= new VdmDealersController;
+		$user=$user1->checkuser();
+		
 		return View::make ( 'vdm.vehicles.index', array (
 				'vehicleList' => $vehicleList 
-		) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo);
+		) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user );
 	}
 	
 	/**
@@ -79,7 +96,19 @@ class VdmVehicleController extends \BaseController {
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
         //get the Org list
         $tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
+		
+		if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				 $tmpOrgList = $redis->smembers('S_Organisations_Dealer_'.$username.'_'.$fcode);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$username.'_'.$fcode);
+			}
+		
         $orgList=null;
+		$orgList=array_add($orgList,'Default','Default');
         foreach ( $tmpOrgList as $org ) {
                 $orgList = array_add($orgList,$org,$org);
                 
@@ -97,6 +126,7 @@ class VdmVehicleController extends \BaseController {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
+		
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -197,8 +227,19 @@ class VdmVehicleController extends \BaseController {
              13.104870,80.303138,0,N,$time,0.0,N,P,ON,$odoDistance,S,N
               13.04523,80.200222,0,N,0,0.0,null,null,null,0.0,null,N vehicleId=Prasanna_Amaze
 			*/
+			 $redis->sadd('S_Organisation_Route_'.$orgId.'_'.$fcode,$shortName);
 			$time = round($time * 1000);
 			
+			
+			if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				$redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				$redis->sadd('S_Vehicles_Admin_'.$username.'_'.$fcode,$vehicleId);
+			}
 			$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
             $redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
 			// redirect
@@ -238,6 +279,10 @@ class VdmVehicleController extends \BaseController {
 			var_dump ( $refDataArr );
 		}
 		$vehicleId = $redis->hget ( $vehicleDeviceMapId, $deviceId );
+		if($vehicleId==null)
+		{
+			return Redirect::to('vdmVehicles/dealerSearch');
+		}
 		
 		return View::make ( 'vdm.vehicles.show', array (
 				'deviceId' => $deviceId 
@@ -293,12 +338,25 @@ class VdmVehicleController extends \BaseController {
        $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
        $refData= array_add($refData,'parkingAlert',$parkingAlert);
 	    $tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
+		log::info( '------login 1---------- '.Session::get('cur'));
+		if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				 $tmpOrgList = $redis->smembers('S_Organisations_Dealer_'.$username.'_'.$fcode);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$username.'_'.$fcode);
+			}
+		
+		
         $orgList=null;
+		  $orgList=array_add($orgList,'Default','Default');
         foreach ( $tmpOrgList as $org ) {
                 $orgList = array_add($orgList,$org,$org);
                 
             }
-	   $orgList=array_add($orgList,'Default','Default');
+	 
 	//  var_dump($refData);
 		return View::make ( 'vdm.vehicles.edit', array (
 				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList );
@@ -392,15 +450,25 @@ class VdmVehicleController extends \BaseController {
 			$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);//ram
 			$refDataJson1=json_decode($refDataJson1,true);
 		
-			$org=isset($refDataJson1['orgId']);
+			//$org=isset($refDataJson1['orgId'])?$refDataJson1->orgId:'def';
+			$org=isset($refDataFromDB->orgId)?$refDataFromDB->orgId:$refDataJson1['orgId'];
+			$oldroute=isset($refDataFromDB->shortName)?$refDataFromDB->shortName:$refDataJson1['shortName'];
 			
 			if($org!=$orgId)
 			{
-				Log::info('--------------------inside equal--------------------------------');
+				Log::info('--------------------inside equal--------------------------------'.$org);
 				$redis->srem ( 'S_Vehicles_' . $org.'_'.$fcode, $vehicleId);
+				$redis->srem('S_Organisation_Route_'.$org.'_'.$fcode,$oldroute);
+				$redis->sadd('S_Organisation_Route_'.$org.'_'.$fcode,$shortName);
 			}
-			
-			
+			if($oldroute!=$shortName && $org==$orgId)
+			{
+				Log::info('--------------------inside equal1--------------------------------'.$org);
+				$redis->srem('S_Organisation_Route_'.$orgId.'_'.$fcode,$oldroute);
+				$redis->sadd('S_Organisation_Route_'.$orgId.'_'.$fcode,$shortName);
+				
+			}
+			//$redis->sadd('S_Organisation_Route_'.$orgId.'_'.$fcode,$shortName);
 			$redis->sadd ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleId);
 			
 			$redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
@@ -465,6 +533,16 @@ class VdmVehicleController extends \BaseController {
 		//	Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
 		}
 		
+		
+		
+				$redis->srem('S_Vehicles_Dealer_'.Session::get('page').'_'.$fcode,$vehicleId);
+				$redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
+			
+				$redis->srem('S_Vehicles_Admin_'.$username.'_'.$fcode,$vehicleId);
+			
+		
+		
+		
 		Session::flash ( 'message', 'Successfully deleted ' . $deviceId . '!' );
 		return Redirect::to ( 'vdmVehicles' );
 	}
@@ -495,6 +573,126 @@ class VdmVehicleController extends \BaseController {
     }
 
 	
+	 public function dealerSearch() {
+        Log::info('------- inside dealerSearch--------');
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $username = Auth::user ()->username;
+        $redis = Redis::connection ();
+        $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        Log::info(' inside multi ' );
+        
+        $dealerId = $redis->smembers('S_Dealers_'. $fcode);
+        
+      
+        
+        $orgArr = array();
+        foreach($dealerId as $org) {
+            $orgArr = array_add($orgArr, $org,$org);
+        }
+        $dealerId = $orgArr;
+      
+	 
+
+	  
+        return View::make ( 'vdm.vehicles.dealerSearch' )->with('dealerId',$dealerId);        
+        
+    }
+
+	
+	
+	
+	public function findDealerList() {
+		log::info( '-----------List----------- ::');
+		if (! Auth::check () ) {
+			return Redirect::to ( 'login' );
+		}
+		
+			$username = Input::get ( 'dealerId' );
+			
+		
+		
+		if($username==null)
+		{
+			log::info( '--------use one----------' );
+			$username = Session::get('page');
+		}
+		else{
+			log::info( '--------use two----------' );
+			Session::put('page',$username);
+		}
+			
+		 //$user = User::find(10);
+		 $user=User::where('username', '=', $username)->firstOrFail();
+log::info( '--------new name----------' .$user);
+		Auth::login($user);
+		
+		
+		/*log::info( 'findDealerList----------- ::' . $username);
+		
+		
+		$redis = Redis::connection ();
+		
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		
+		Log::info('fcode=' . $fcode);
+		
+	
+			$vehicleListId='S_Vehicles_Dealer_'.$username.'_'.$fcode;
+		
+	
+		
+		
+		Log::info('vehicleListId=' . $vehicleListId);
+
+		$vehicleList = $redis->smembers ( $vehicleListId);
+		
+		$deviceList = null;
+		$deviceId = null;
+        $shortName =null;
+        $shortNameList = null;
+        $portNo =null;
+        $portNoList = null;
+        $mobileNo =null;
+        $mobileNoList = null;
+        
+		foreach ( $vehicleList as $vehicle ) {
+			
+		      Log::info('$vehicle ' .$vehicle);
+			$vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicle );
+			
+            if(isset($vehicleRefData)) {
+                Log::info('$vehicle1 ' .$vehicleRefData);
+            }else{
+				continue;
+			}
+            
+			$vehicleRefData=json_decode($vehicleRefData,true);
+	
+			$deviceId = $vehicleRefData['deviceId'];
+            
+			$deviceList = array_add ( $deviceList, $vehicle,$deviceId );
+            $shortName = $vehicleRefData['shortName']; 
+            $shortNameList = array_add($shortNameList,$vehicle,$shortName);
+            $portNo=isset($vehicleRefData['portNo'])?$vehicleRefData['portNo']:9964; 
+            $portNoList = array_add($portNoList,$vehicle,$portNo);
+             $mobileNo=isset($vehicleRefData['gpsSimNo'])?$vehicleRefData['gpsSimNo']:99999; 
+            $mobileNoList = array_add($mobileNoList,$vehicle,$mobileNo);
+		}
+		$demo='ahan';
+		$user=null;
+		
+		$user1= new VdmDealersController;
+		$user=$user1->checkuser();
+		log::info( '-----final success----------- ::' );
+		return View::make ( 'vdm.vehicles.dealerList', array (
+				'vehicleList' => $vehicleList 
+		) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList);*/
+		return Redirect::to ( 'live' );
+	}
+	
+	
 	
 	
 	
@@ -502,7 +700,7 @@ class VdmVehicleController extends \BaseController {
 	
 	public function stops($id,$demo) {
         Log::info(' --------------inside 1-----------------'.$id);
-		 Log::info(' --------------inside 1-----------------'.$demo);
+		 Log::info(' --------------inside url-----------------'.Request::url() );
 		
 		  $redis = Redis::connection();
 		$ipaddress = $redis->get('ipaddress');
@@ -543,7 +741,8 @@ class VdmVehicleController extends \BaseController {
 		{
 			 log::info( ' ---------inside null--------- :');
 			 
-			 return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$id)->with('demo',$demo);
+			 //return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$id)->with('demo',$demo);
+
 		}	  
 	// var_dump($sugStop);
 	  $value = $sugStop['suggestedStop'];
@@ -655,6 +854,172 @@ class VdmVehicleController extends \BaseController {
 		 else{
 			  Log::info('inside no value present------------>');
 			 return Redirect::to ( 'vdmVehicles' ); 
+		 }
+       // L_Suggest_$routeNo_$orgId_$fcode
+	   //H_Stopseq_$orgId_$fcode $routeNo:morning
+	   //H_Stopseq_$orgId_$fcode $routeNo:evening
+       // return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$id);        
+        
+    }
+
+    
+	
+	public function stops1($id,$demo) {
+        Log::info(' --------------inside 1-----------------'.$id);
+		 Log::info(' --------------inside url-----------------'.Request::url() );
+		
+		  $redis = Redis::connection();
+		$ipaddress = $redis->get('ipaddress');
+		Log::info(' stops Ip....'.$ipaddress);
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $username = Auth::user ()->username;
+		Log::info('id------------>'.$username);
+		 $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		 Log::info('id------------>'.$fcode);
+		 $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $id );            
+          $vehicleRefData=json_decode($vehicleRefData,true);
+		
+			$orgId=$vehicleRefData['orgId'];
+		 Log::info('id------------>'.$orgId);
+		 $type=0;
+        $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $id . '&fcode=' . $fcode . '&orgcode=' .$orgId . '&type=' .$type.'&demo='.$demo;
+		$url=htmlspecialchars_decode($url);
+ 
+		log::info( ' url :' . $url);
+    
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+			// Include header in result? (0 = yes, 1 = no)
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+		$response = curl_exec($ch);
+		log::info( ' response :' . $response);
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+		curl_close($ch);
+         log::info( 'finished');
+		 
+       $sugStop = json_decode($response,true);
+	    log::info( ' user :');
+		if(!$sugStop['error']==null)
+		{
+			 log::info( ' ---------inside null--------- :');
+			 
+			 //return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$id)->with('demo',$demo);
+
+		}	  
+	// var_dump($sugStop);
+	  $value = $sugStop['suggestedStop'];
+	  log::info( ' 1 :');
+	 //  var_dump($value);
+	  
+	   $address = array();
+	   log::info( ' 2 :');
+	   try
+	   {
+		   
+	  
+        foreach($value as $org => $geoAddress) {			
+			  $rowId1 = json_decode($geoAddress,true);
+			  $t =0;
+			 foreach($rowId1 as $org1 => $rowId2) {
+				  if ($t==1) 
+				  {
+					  $address = array_add($address, $org,$rowId2);
+						log::info( ' 3 :' . $t .$rowId2);
+						
+				   }
+				 
+				 $t++;
+			 }
+			 log::info( ' final :'.$t);	
+        }	
+		}catch(\Exception $e)
+	   {
+		return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$id)->with('demo',$demo);  
+	   }		
+        $sugStop = $address;	  
+	   log::info( ' success :');
+        return View::make ( 'vdm.vehicles.dealerSearch' )->with('sugStop',$sugStop)->with('vehicleId',$id);        
+        
+    }
+
+	
+	public function removeStop1($id,$demo) {
+        Log::info(' --------------inside remove1-----------------'.$id);
+		
+		Log::info(' --------------inside remove1-----------------'.$demo);
+		  $redis = Redis::connection();
+		$ipaddress = $redis->get('ipaddress');
+		Log::info(' stops Ip....'.$ipaddress);
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $username = Auth::user ()->username;
+		Log::info('id------------>'.$username);
+		 $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		 Log::info('id------------>'.$fcode);
+		 $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $id );            
+          $vehicleRefData=json_decode($vehicleRefData,true);
+		
+			$orgId=$vehicleRefData['orgId'];
+			$routeNo=$vehicleRefData['shortName'];
+		 Log::info('org------------>'.$orgId);
+		 Log::info('route------------>'.$routeNo);
+		 
+		
+		 $suggeststop=$redis->LRANGE ('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode , 0, -1);
+		  $suggeststop1=$redis->LRANGE ('L_Suggest_Alt'.$routeNo.'_'.$orgId.'_'.$fcode , 0, -1);
+		 if(!$suggeststop==null)
+		 {
+			if($demo=='normal')
+			{
+				
+			
+			 
+			$arraystop= $redis->lrange('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode ,0 ,-1);
+			  foreach($arraystop as $org => $geoAddress){
+				  Log::info('inside value present------------>'.$org);
+				  $redis->hdel('H_Bus_Stops_'.$orgId.'_'.$fcode , $routeNo.':stop'.$org);
+			 }
+			$redis->del('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode);
+			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , $routeNo.':morning');
+			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , $routeNo.':evening');
+			 $redis->srem('S_Organisation_Route_'.$orgId.'_'.$fcode,$routeNo);
+			
+			 
+			 
+			 //HDEL myhash
+			 return Redirect::to ( 'vdmVehicles/dealerSearch' );  
+			 }
+		 }
+		  if(!$suggeststop1==null)
+		 {
+			 Log::info('1');
+			if($demo=='alternate')
+			{
+			 Log::info('2');
+			$arraystop= $redis->lrange('L_Suggest_Alt'.$routeNo.'_'.$orgId.'_'.$fcode ,0 ,-1);
+			  foreach($arraystop as $org => $geoAddress){
+				  Log::info('inside value present------------>'.$org);
+				  $redis->hdel('H_Bus_Stops_'.$orgId.'_'.$fcode , 'Alt'.$routeNo.':stop'.$org);
+			 }
+			$redis->del('L_Suggest_Alt'.$routeNo.'_'.$orgId.'_'.$fcode);
+			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , 'Alt'.$routeNo.':morning');
+			 $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , 'Alt'.$routeNo.':evening');
+			 
+			
+			 
+			 
+			 //HDEL myhash
+			 return Redirect::to ( 'vdmVehicles/dealerSearch' );  
+			}
+		 }
+		 else{
+			  Log::info('inside no value present------------>');
+			 return Redirect::to ( 'vdmVehicles/dealerSearch' ); 
 		 }
        // L_Suggest_$routeNo_$orgId_$fcode
 	   //H_Stopseq_$orgId_$fcode $routeNo:morning

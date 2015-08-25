@@ -31,7 +31,7 @@
 							<td>{{ array_get($deviceList, $value)}}</td>
 					        <td>{{ array_get($mobileNoList, $value)}}</td>    
 							<td>
-								{{ Form::open(array('url' => 'vdmVehicles/' . $value, 'class' => 'btn-sm pull-right')) }}
+								{{ Form::open(array('url' => 'vdmVehicles/' . $value, 'class' => 'btn-sm pull-right','onsubmit' => 'return ConfirmDelete()')) }}
 									{{ Form::hidden('_method', 'DELETE') }}
 									{{ Form::submit('Remove', array('class' => 'btn btn-sm btn-danger')) }}
 								{{ Form::close() }}
@@ -62,16 +62,11 @@
 
   function ConfirmDelete()
   {
- var person = prompt("Please enter route name", "");
-    
-    if (person != null) {
-        document.getElementById("demo").innerHTML =
-        person;
-		$demo=person;
-		return person;
-    }
-	else
-		return false;
+  var x = confirm("Confirm to remove?");
+  if (x)
+    return true;
+  else
+    return false;
   }
 
 </script>

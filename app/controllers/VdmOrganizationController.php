@@ -95,6 +95,18 @@ class VdmOrganizationController extends \BaseController {
 			
             $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
             $redis->sadd('S_Organisations_'. $fcode, $organizationId);
+			
+			if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				$redis->sadd('S_Organisations_Dealer_'.$username.'_'.$fcode,$organizationId);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				$redis->sadd('S_Organisations_Admin_'.$username.'_'.$fcode,$organizationId);
+			}
+			
+			
             
             $redis->hset('H_Organisations_'.$fcode,$organizationId,$orgDataJson );
 			$redis->hset('H_Org_Company_Map',$organizationId,$fcode);
@@ -158,6 +170,17 @@ class VdmOrganizationController extends \BaseController {
         Log::info('fcode=' . $fcode);
         
         $orgListId = 'S_Organisations_' . $fcode;
+		
+		if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				 $orgListId = 'S_Organisations_Dealer_'.$username.'_'.$fcode;
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				 $orgListId = 'S_Organisations_Admin_'.$username.'_'.$fcode;
+			}
+		
         
         Log::info('orgListId=' . $orgListId);
 
@@ -192,6 +215,11 @@ class VdmOrganizationController extends \BaseController {
         Log::info('--------------------s--------------------------------' . $id);
         $organizationId = $id;
         $redis->srem('S_Organisations_' . $fcode,$id);
+		$redis->srem('S_Organisations_Dealer_'.$username.'_'.$fcode,$id);
+		$redis->srem('S_Organisations_Admin_'.$username.'_'.$fcode,$id);
+		
+		
+		
         $redis->hdel('H_Organisations_'.$fcode,$id);//Orgnizations
         $redis->hdel('H_Org_Company_Map', $id);
         $userList = $redis->smembers('S_Users_' . $fcode);

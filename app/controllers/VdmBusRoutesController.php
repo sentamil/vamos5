@@ -20,7 +20,7 @@ class VdmBusRoutesController extends \BaseController {
         $routeList = $redis->smembers('S_Organisation_Route_'.$id .'_'. $fcode);
         return View::make('vdm.busRoutes.index', array('routeList'=> $routeList));
     }
-    
+     
     
     /**
      * 

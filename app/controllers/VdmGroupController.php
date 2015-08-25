@@ -27,16 +27,32 @@ class VdmGroupController extends \BaseController {
 	    $shortName =null;
         $shortNameList = null;
         $shortNameListArr =null;
+		if(Session::get('cur')=='dealer')
+		{
+			$redisGrpId = 'S_Groups_Dealer_'.$username.'_'.$fcode;
+		}
+		else if(Session::get('cur')=='admin')
+		{
+			$redisGrpId = 'S_Groups_Admin_'.$username.'_'.$fcode;
+		}
+		else{
+			$redisGrpId = 'S_Groups_' . $fcode ;
+		}
+		
+		
+		
 		$groupList = $redis->smembers($redisGrpId);
 		
 		foreach($groupList as $key=>$group) {
 		
+		Log::info(' ---------inside---------------- '.$group);		
 			$vehicleList = $redis->smembers($group);
                $shortNameList=null;   
             foreach ( $vehicleList as $vehicle ) {
+				Log::info(' ---------vehicle---------------- '.$vehicle);		
                 $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicle );
                 $vehicleRefData=json_decode($vehicleRefData,true);
-                $shortName = isset($vehicleRefData->shortName)?$vehicleRefData->shortName:" ";
+                $shortName = $vehicleRefData['shortName']; 
                 $shortNameList [] = $shortName;
             }
             $vehicleList =implode('<br/>',$vehicleList);
@@ -70,6 +86,17 @@ class VdmGroupController extends \BaseController {
 		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 		
 		$vehicleList = $redis->smembers('S_Vehicles_' . $fcode);
+			if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				
+				$vehicleList = $redis->smembers('S_Vehicles_Dealer_'.$username.'_'.$fcode);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				$vehicleList = $redis->smembers('S_Vehicles_Admin_'.$username.'_'.$fcode);
+			}
+		
 		
 		$userVehicles=null;
 		$shortName =null;
@@ -79,9 +106,7 @@ class VdmGroupController extends \BaseController {
 			$userVehicles=array_add($userVehicles, $value, $value);
             $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
             $vehicleRefData=json_decode($vehicleRefData,true);
-             //$shortName = $vehicleRefData['shortName']; 
-             $shortName = isset($vehicleRefData->shortName)?$vehicleRefData->shortName:" ";
-             
+             $shortName = $vehicleRefData['shortName']; 
             $shortNameList = array_add($shortNameList,$value,$shortName);
             
 		}
@@ -126,6 +151,17 @@ class VdmGroupController extends \BaseController {
 				$redis->sadd($groupId . ':' . $fcode,$vehicle);
 			}
 
+			
+			if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				$redis->sadd('S_Groups_Dealer_'.$username.'_'.$fcode,$groupId . ':' . $fcode);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				$redis->sadd('S_Groups_Admin_'.$username.'_'.$fcode,$groupId . ':' . $fcode);
+			}
+			
  			// redirect
  			Session::flash('message', 'Successfully created ' . $groupId . '!');
  			return Redirect::to('vdmGroups');
@@ -155,6 +191,7 @@ class VdmGroupController extends \BaseController {
 					
 		$redis = Redis::connection();
 		$groupId=$id;
+		Log::info('-------------- $groupId 1-----------'.$groupId);
 		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 		
 		
@@ -163,6 +200,7 @@ class VdmGroupController extends \BaseController {
 		//S_Vehicles_
 		foreach($vehicleList as $vehicle) {
 			$result = $redis->sismember("S_Vehicles_" . $fcode,$vehicle);
+			
 			if($result == 0) {
 				$redis->srem($groupId. ':' . $fcode,$vehicle);
 			}
@@ -194,19 +232,32 @@ class VdmGroupController extends \BaseController {
 		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
 		$vehicles = $redis->smembers('S_Vehicles_' . $fcode);
+		if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				
+				$vehicles = $redis->smembers('S_Vehicles_Dealer_'.$username.'_'.$fcode);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				$vehicles = $redis->smembers('S_Vehicles_Admin_'.$username.'_'.$fcode);
+			}
+		
 		
 		$selectedVehicles =  $redis->smembers($groupId);
 		      $shortName =null;
         $shortNameList = null;
 		$vehicleList=null;
+		
 		foreach($vehicles as $key=>$value) {
+			Log::info('-------------- $groupId in-----------'.$value);
 		     $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
             $vehicleRefData=json_decode($vehicleRefData);
-             $shortName = isset($vehicleRefData->shortName)?$vehicleRefData->shortName:" "; 
-             
+             $shortName = isset($vehicleRefData->shortName)?$vehicleRefData->shortName:""; 
             $shortNameList = array_add($shortNameList,$value,$shortName);
 			$vehicleList=array_add($vehicleList, $value, $value);
 		}
+		Log::info('-------------- $groupId 1 -----------');
 		return View::make('vdm.groups.edit',array('groupId'=>$groupId))->with('vehicleList', $vehicleList)->
 		with('selectedVehicles',$selectedVehicles)->with('shortNameList',$shortNameList);
 	}
@@ -263,6 +314,12 @@ class VdmGroupController extends \BaseController {
 		
 		$redis->srem('S_Groups_' . $fcode,$groupId);
 		
+		
+		$redis->srem('S_Groups_Dealer_'.$username.'_'.$fcode,$groupId );
+		$redis->srem('S_Groups_Admin_'.$username.'_'.$fcode,$groupId );
+		
+		
+		Log::info('-------------- $g -----------'.$groupId);
 		$redis->del($groupId);
 		
 		

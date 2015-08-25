@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Application & Route Filters
@@ -77,16 +78,70 @@ Route::filter('adminauth',function()
             return Redirect::to ( 'login' );
       }
       $username = Auth::user ()->username;
+      Session::put('user',$username);
+       $uri = Route::current()->getName();
+      Log::info('URL  '. $uri);
+      if(strpos($username,'admin')!==false ) {
+             //do nothing
+ log::info( '---------- inside if filter adminauth----------' . $username) ;
+			//Auth::session(['cur' => 'admin']);
+			Session::put('cur','admin');
+      }
+	 
+      else {
+           
+		  $redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		log::info( '-----------------inside else filter adminauth-------------' . $username .$fcode) ;
+		$val1= $redis->sismember ( 'S_Dealers_' . $fcode, $username );
+		$val = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		  if($val1==1 && isset($val)) {
+			Log::info('---------------is dealer adminauth:--------------');
+			$breadcrumb=null;
+			
+			Session::put('cur','dealer');
+			
+		}
+		else{
+			return Redirect::to ( 'live' ); //TODO should be replaced with aunthorized page - error
+		}
+           
+      }
+});
+
+
+Route::filter('dealerauth',function()
+{
+
+    if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+      }
+      $username = Auth::user ()->username;
       
        $uri = Route::current()->getName();
       Log::info('URL  '. $uri);
       if(strpos($username,'admin')!==false || $uri=='vdmVehicles.edit') {
              //do nothing
-
+ log::info( '---------- inside if filter----------' . $username) ;
+ return 'admin';
       }
+	 
       else {
-          log::info( ' inside else' . $username) ;
-           return Redirect::to ( 'live' ); //TODO should be replaced with aunthorized page - error
+           
+		  $redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		log::info( '-----------------inside else filter-------------' . $username .$fcode) ;
+		$val1= $redis->sismember ( 'S_Dealers_' . $fcode, $username );
+		$val = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		  if($val1==1 || isset($val)) {
+			Log::info('---------------is dealer:--------------');
+			return 'dealer';
+			
+		}
+		else{
+			return null; //TODO should be replaced with aunthorized page - error
+		}
+           
       }
 });
 

@@ -15,6 +15,17 @@ class VdmSmsController extends \BaseController {
         //get school list
 
         $orgsList = $redis -> smembers('S_Organisations_' . $fcode);
+		
+		
+		if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				 $orgsList = $redis -> smembers('S_Organisations_Dealer_'.$username.'_'.$fcode);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				 $orgsList = $redis -> smembers('S_Organisations_Admin_'.$username.'_'.$fcode);
+			}
 
         $orgsArr = array();
 
