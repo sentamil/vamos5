@@ -168,6 +168,15 @@ Route::get('/getIndividualDriverPerformance', function() {
     return View::make('vls.getIndividualDriverPerformance');
 });
 
+Route::get('/getOverallDriverPerformance', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getOverallDriverPerformance');
+    return View::make('vls.getOverallDriverPerformance');
+});
+
+
 Route::get('/getVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -211,7 +220,12 @@ Route::get('password/reset/{token}', array('uses' => 'RemindersController@reset'
 
 Route::post('password/reset/{token}', array('before' => 'csrf', 'uses' => 'RemindersController@update', 'as' => 'password.update'));
 
-
+Route::get('/performance', function() {
+          if (!Auth::check()) {
+              return Redirect::to('login');
+          }
+          return View::make('reports.performanceChart');
+      });
 
   //vdmGeoFence
 
