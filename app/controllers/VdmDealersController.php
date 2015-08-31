@@ -1,0 +1,359 @@
+<?php
+class VdmDealersController extends \BaseController {
+	
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index() {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		Log::info('username:' . $username . '  :: fcode' . $fcode);
+		$redisDealerCacheID = 'S_Dealers_' . $fcode;
+	
+		$dealerlist = $redis->smembers ( $redisDealerCacheID);
+		
+		$userGroups = null;
+		$userGroupsArr = null;
+		foreach ( $dealerlist as $key => $value ) {
+			
+			
+			$userGroups = $redis->smembers ( $value);
+			
+			$userGroups = implode ( '<br/>', $userGroups );
+			$detailJson=$redis->hget ( 'H_DealerDetails_' . $fcode, $value);
+			$detail=json_decode($detailJson,true);
+			$userGroupsArr = array_add ( $userGroupsArr, $value, $detail['mobileNo'] );
+		}
+		
+		return View::make ( 'vdm.dealers.index' )->with ( 'fcode', $fcode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'dealerlist', $dealerlist );
+	}
+	
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	 
+	 
+	 
+	public function create() {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		
+	
+		Log::info('---------------create:--------------');
+		
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		
+		$dealer = 'S_dealer_' . $fcode;
+		// $vehicleGroups=array("No groups found");
+		$vehicleGroups = null;
+		$user=null;
+		
+		$user1= new VdmDealersController;
+		$user=$user1->checkuser();
+		return View::make ( 'vdm.dealers.create' )->with ( 'vehicleGroups', $vehicleGroups )->with('user',$user);
+	}
+	
+	
+	
+	public function checkuser()
+	{
+		if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+      }
+      $username = Auth::user ()->username;
+      
+       $uri = Route::current()->getName();
+      Log::info('URL  '. $uri);
+      if(strpos($username,'admin')!==false || $uri=='vdmVehicles.edit') {
+             //do nothing
+			log::info( '---------- inside if filter----------' . $username) ;
+		return 'admin';
+      }
+	 
+      else {
+           
+		  $redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		log::info( '-----------------inside else filter-------------' . $username .$fcode) ;
+		$val1= $redis->sismember ( 'S_Dealers_' . $fcode, $username );
+		$val = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		  if($val1==1 || isset($val)) {
+			Log::info('---------------is dealer:--------------');
+			return 'dealer';
+			
+		}
+		else{
+			return null; //TODO should be replaced with aunthorized page - error
+		}
+	  }
+	}
+	/**
+	 * Store a newly created resource in storage.
+	 * TODO validations should be improved to prevent any attacks
+	 * 
+	 * @return Response
+	 */
+	public function store() {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		
+			Log::info('---------------Dealers:--------------');
+		$rules = array (
+				'dealerId' => 'required',
+				'email' => 'required|email',
+				'mobileNo' => 'required'  
+				);
+                
+                
+		$validator = Validator::make ( Input::all (), $rules );
+       
+		if ($validator->fails ()) {
+			return Redirect::to ( 'vdmDealers/create' )->withErrors ( $validator );
+		}else {
+		      $dealerId = Input::get ( 'dealerId' );
+              $val = $redis->hget ( 'H_UserId_Cust_Map', $dealerId . ':fcode' );
+              $val1= $redis->sismember ( 'S_Dealers_' . $fcode, $dealerId );
+		}
+		
+		if($val1==1 || isset($val)) {
+			Log::info('---------------already prsent:--------------');
+			Session::flash ( 'message', $dealerId . ' already exist. Please use different id ' . '!' );
+			return Redirect::to ( 'vdmDealers/create' );
+		}
+		else {
+			// store
+			
+			$dealerId = Input::get ( 'dealerId' );
+			$email = Input::get ( 'email' );
+			$mobileNo = Input::get ( 'mobileNo' );
+           
+			// ram
+			$detail=array(
+			'email'	=> $email,
+			'mobileNo' => $mobileNo,
+			);
+			
+			$detailJson=json_encode($detail);
+			
+			$redis->sadd ( 'S_Dealers_' .$fcode, $dealerId );
+			$redis->hset ( 'H_DealerDetails_' . $fcode, $dealerId, $detailJson );
+			$password=Input::get ( 'password' );
+			if($password==null)
+			{
+				$password='awesome';
+			}
+			$redis->hmset ( 'H_UserId_Cust_Map', $dealerId . ':fcode', $fcode, $dealerId . ':mobileNo', $mobileNo,$dealerId.':email',$email );
+			$user = new User;
+			$user->name = $dealerId;
+			$user->username=$dealerId;
+			$user->email=$email;
+			$user->mobileNo=$mobileNo;
+			$user->password=Hash::make($password);
+			$user->save();
+			
+			Session::flash ( 'message', 'Successfully created ' . $dealerId . '!' );
+			return Redirect::to ( 'vdmDealers' );
+		}
+	}
+	
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param int $id        	
+	 * @return Response
+	 */
+	public function show($id) {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		Log::info('---------------inside show:--------------'.$id);
+		$redis = Redis::connection ();
+		
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$detailJson=$redis->hget ( 'H_DealerDetails_' . $fcode, $id);
+			$detail=json_decode($detailJson,true);
+		
+		$userId=$id;
+		$mobileNo = $detail['mobileNo'];
+		$email =$detail['email'];
+		$vehicleGroups = $redis->smembers ( $userId );
+		
+		
+		
+		return View::make ( 'vdm.dealers.show', array (
+				'userId' => $userId 
+		) )->with('mobileNo',$mobileNo)->with('email',$email);
+	}
+	
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param int $id        	
+	 * @return Response
+	 */
+	 
+	 
+	 public function editDealer($id)
+	 {
+		 log::info( '------@@@@-----------inside edit dealer------@@@@@-------'.$id) ;
+		
+		 
+		 
+		 
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$userId = Session::get('user');
+		
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		 log::info( '---------- user----------' . $username) ;
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		
+		$detailJson=$redis->hget ( 'H_DealerDetails_' . $fcode, Session::get('user'));
+			$detail=json_decode($detailJson,true);
+		
+		$dealerid=Session::get('user');
+		$mobileNo = $detail['mobileNo'];
+		$email =$detail['email'];		
+		return View::make ( 'vdm.dealers.edit', array (
+				'dealerid' => $dealerid 
+		) )->with ( 'mobileNo', $mobileNo )->
+		with('email',$email);
+		 
+	 }
+	 
+	 
+	 
+	 
+	 
+	public function edit($id) {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$userId = $id;
+		
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		
+		$detailJson=$redis->hget ( 'H_DealerDetails_' . $fcode, $id);
+			$detail=json_decode($detailJson,true);
+		
+		$dealerid=$id;
+		$mobileNo = $detail['mobileNo'];
+		$email =$detail['email'];		
+		return View::make ( 'vdm.dealers.edit', array (
+				'dealerid' => $dealerid 
+		) )->with ( 'mobileNo', $mobileNo )->
+		with('email',$email);
+	}
+	
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param int $id        	
+	 * @return Response
+	 */
+	public function update($id) {
+	
+		$dealerid = $id;
+		
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		
+		$rules = array (
+				'mobileNo' => 'required',
+				'email' => 'required',
+				
+		);
+		$validator = Validator::make ( Input::all(), $rules );
+		if ($validator->fails ()) {
+			Log::error('VDM User Controller update validation failed');
+			Session::flash ( 'message', 'Update failed. Please check logs for more details' . '!' );
+			return Redirect::to ( 'vdmDealers/update' )->withErrors ( $validator );
+		} else {
+			// store
+			
+			
+			
+			
+			$mobileNo = Input::get ( 'mobileNo' );
+			$email = Input::get ( 'email' );
+			
+			$detail=array(
+			'email'	=> $email,
+			'mobileNo' => $mobileNo,
+			);
+			
+			$detailJson=json_encode($detail);
+			$redis->hset ( 'H_DealerDetails_' . $fcode, $dealerid, $detailJson );
+			$redis->hmset ( 'H_UserId_Cust_Map', $dealerid . ':fcode', $fcode, $dealerid . ':mobileNo', $mobileNo,$dealerid.':email',$email );
+			
+			// redirect
+			Session::flash ( 'message', 'Successfully updated ' . $dealerid . '!' );
+			return Redirect::to ( 'vdmDealers' );
+		}
+	}
+	
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param int $id        	
+	 * @return Response
+	 */
+	public function destroy($id) {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		$userId = $id;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		
+		$redis->srem ( 'S_Users_' . $fcode, $userId );
+		$redis->del ( $userId );
+         $redis->del('S_Orgs_' .$userId . '_' . $fcode);
+
+		$email=$redis->hget('H_UserId_Cust_Map',$userId.':email');
+		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email');
+		
+		Log::info(" about to delete user" .$userId);
+		
+		DB::table('users')->where('username', $userId)->delete();
+		
+		
+		Session::put('email',$email);
+		Log::info("Email Id :" . Session::get ( 'email1' ));
+	/*	
+		Mail::queue('emails.welcome', array('fname'=>$fcode,'userId'=>$userId), function($message)
+		{
+			Log::info("Inside email :" . Session::get ( 'email' ));
+		
+			$message->to(Session::pull ( 'email' ))->subject('User Id deleted');
+		});
+*/
+		Session::flash ( 'message', 'Successfully deleted ' . $userId . '!' );
+		return Redirect::to ( 'vdmUsers' );
+	}
+}
