@@ -32,11 +32,19 @@
                                                     <td>{{ $value }}</td>
 
                                                     <!-- we will also add show, edit, and delete buttons -->
-                                                    <td> {{ Form::open(array('url' => 'vdmOrganization/' . $value, 'onsubmit' => 'return ConfirmDelete()')) }}
+                                                    <td> 
+													<table>
+<tr><td>
+
+ <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/edit') }}">Edit Organization </a>
+</td>
+<td>{{ Form::open(array('url' => 'vdmOrganization/' . $value, 'onsubmit' => 'return ConfirmDelete()')) }}
                                                     {{ Form::hidden('_method', 'DELETE') }}
                                                     {{ Form::submit('Delete Organization', array('class' => 'btn btn-warning')) }}
 													
-                                                    {{ Form::close() }}
+                                                    {{ Form::close() }}</td>
+</tr></table>													  
+													
 													
 													
 													
@@ -59,8 +67,8 @@
 </script>
 
                                                       
-                                                    <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/edit') }}">Edit Organization </a>
-                                                    <a class="btn btn-small btn-success" href="{{ URL::to('vdmBusRoutes/'. $value) }}">Show Routes</a>
+                                                 
+                                                    
                                                     
                                                     </td>
                                                 </tr>

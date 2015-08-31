@@ -34,7 +34,7 @@
 								<td>{{ array_get($userGroupsArr, $value)}}</td>	
 								<td>{{ $fcode }}</td>
 								<td>
-									{{ Form::open(array('url' => 'vdmUsers/' . $value, 'class' => 'pull-right')) }}
+									{{ Form::open(array('url' => 'vdmUsers/' . $value, 'class' => 'pull-right' ,'onsubmit' => 'return ConfirmDelete()')) }}
 										{{ Form::hidden('_method', 'DELETE') }}
 										{{ Form::submit('Delete this User', array('class' => 'btn btn-warning')) }}
 									{{ Form::close() }}
@@ -49,6 +49,19 @@
     </div>
 </div>
 </div>
+
+<script>
+
+  function ConfirmDelete()
+  {
+  var x = confirm("It will removes all users based information?");
+  if (x)
+    return true;
+  else
+    return false;
+  }
+
+</script>
 </div>
 @include('includes.js_index')
 </body>

@@ -170,12 +170,11 @@ class HomeController extends BaseController {
                       return  Redirect::to('live');
                   }
             */
-				  if(strpos($username,'admin')!==false) {
+				// validation successful!
 				
-				        return  Redirect::to('vdmVehicles');
-                  }
-                  else  
-				    return  Redirect::to('live');
+				//return  Redirect::to('vdmVehicles');
+				
+				 return  Redirect::to('live');
 				
 
 			} else {	 	

@@ -54,15 +54,7 @@
 								</br/>
 								
 								
-								{{ Form::label('orgsList', 'Select Organizations:') }}
 								
-								<br/>
-								<br/>
-                                @foreach($orgsList as $key => $value)
-                                    {{ Form::checkbox('orgsList[]', $key, null, ['class' => 'field']) }}
-                                    {{ Form::label($value) }}
-                                    <br/>
-                                @endforeach
                                 </br/>
 								
 							<div style="text-align: right">

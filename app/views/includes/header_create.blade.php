@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
  <meta charset="utf-8">
@@ -22,9 +23,11 @@
     <link rel="stylesheet" href="../fonts/pe-icon-7-stroke/css/helper.css" />
     <link rel="stylesheet" href="../styles/style.css">
 	<link href="../plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css">
+	
 </head>
-<body>
+<body onload="VdmDealersController.checkuser()">
 
+	
 <!-- Simple splash screen-->
 <div class="splash"> <div class="color-line"></div><div class="splash-title"><h1>Welcome To VAMOSGPS</h1><img src="images/loading-bars.svg" width="64" height="64" /> </div> </div>
 <!--[if lt IE 7]>
@@ -33,6 +36,7 @@
 
 <!-- Header -->
 <div id="header">
+
     <div class="color-line">
     </div>
     <div id="logo" class="light-version">
@@ -65,7 +69,7 @@
 <aside id="menu">
     <div id="navigation">
         <div class="profile-picture">
-            <a href="index.html">
+            <a href="../live">
                 <img src="../assets/imgs/logo.png" class="img-circle m-b" alt="logo">
             </a>
 
@@ -73,49 +77,135 @@
                 <span class="font-extra-bold font-uppercase">Admin</span>
             </div>
         </div>
+		
         <ul class="nav" id="side-menu">
+		
             <li>
-                <a href="../vdmVehicles"> <span class="nav-label">Vehicles List</span> <span class="label label-success pull-right">v.2</span> </a>
+			<a href="Routes"> <span class="nav-label">Vehicles</span><span class="fa arrow"></span></a>
+			
+			 <ul class="nav nav-second-level">
+                     
+					 <li>
+               <a href="../vdmVehicles/create"> <span class="nav-label">Add Vehicles</span></a>
             </li>
-            <li>
-                <a href="../vdmVehicles/create"> <span class="nav-label">Add Vehicles</span></a>
-                
-            </li>
-            <li>
+			<li><a href="../vdmVehicles"> <span class="nav-label">Vehicles List</span> <span class="label label-success pull-right">v.2</span> </a></li>
+			<li>
                 <a href="../vdmVehicles/multi"> <span class="nav-label">Add Multiple Vehicles</span></a>
                 
             </li>
-            <li>
-                <a href="../vdmGroups"> <span class="nav-label">Groups List</span></a>
-            </li>
-			<li>
-                <a href="../vdmGroups/create"> <span class="nav-label">Create Group</span></a>
-            </li>
-            
-            
-            <li>
-                <a href="../vdmUsers"> <span class="nav-label">User List</span></a>
-            </li>
-            <li>
-                <a href="../vdmUsers/create"> <span class="nav-label">User Create</span></a>
-            </li>
-            <li>
-                <a href="../vdmOrganization"> <span class="nav-label">Organization List</span></a>
-            </li>
-            <li>
-                <a href="../vdmOrganization/create"> <span class="nav-label">Add Organization</span></a>
-            </li>
-			<li>
-                <a href="../vdmSmsReportFilter"> <span class="nav-label">SMS Reports</span></a>
+			
+                </ul>
+			
+			
                 
             </li>
-                       <li {{ Request::is( '../Routes') ? 'active' : '' }}>
+            
+            
+            <li>
+			
+			<a href="Routes"> <span class="nav-label">Groups</span><span class="fa arrow"></span></a>
+			
+			 <ul class="nav nav-second-level">
+                     
+					 <li>
+               <a href="../vdmGroups"> <span class="nav-label">Groups List</span></a>
+            </li>
+			<li><a href="../vdmGroups/create"> <span class="nav-label">Create Group</span></a></li>
+			 
+                </ul>
+			
+			
+			
+			
+			
+               
+            </li>
+
+            
+            <li >
+			<a href="Routes"> <span class="nav-label">Users</span><span class="fa arrow"></span></a>
+			
+			 <ul class="nav nav-second-level">
+                     
+					 <li>
+              <a href="../vdmUsers"> <span class="nav-label">User List</span></a>
+            </li>
+			<li> <a href="../vdmUsers/create"> <span class="nav-label">User Create</span></a></li>
+			 
+                </ul>
+			
+			
+			
+                
+					
+            </li>
+           
+						
+				@if(Session::get('cur')=='admin')
+			 <li>
+		 
+		 <a href="Routes"> <span class="nav-label">Dealers</span><span class="fa arrow"></span></a>
+			
+			 <ul class="nav nav-second-level">
+                     
+					 <li>
+               <a href="../vdmDealers"> <span class="nav-label">Dealer List</span></a>
+            </li>
+			<li> <a href="../vdmDealers/create"> <span class="nav-label">Dealer Create</span></a></li>
+			 
+                </ul>
+		 
+		 
+              
+				
+            </li>
+			@endif 
+            
+            <li>
+			<a href="Routes"> <span class="nav-label">Organisations</span><span class="fa arrow"></span></a>
+			
+			 <ul class="nav nav-second-level">
+                     
+					 <li>
+             <a href="../vdmOrganization"> <span class="nav-label">Organisation List</span></a>
+            </li>
+			<li>  <a href="../vdmOrganization/create"> <span class="nav-label">Add Organisation</span></a></li>
+			 
+                </ul>
+			
+			
+               
+            </li>
+			  <li {{ Request::is( '../Routes') ? 'active' : '' }}>
                 <a href="../Routes"> <span class="nav-label">Routes</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                       <li><a href="../vdmBusRoutes/create">Create Bus Routes with Stops</a></li>
 \                </ul>
             </li>
+           
+			@if(Session::get('cur')=='admin')
+			<li>
+                <a href="../vdmVehicles/dealerSearch"> <span class="nav-label">Switch Login</span></a>
+            </li>@endif 
+			<li>
+                <a href="../vdmSmsReportFilter"> <span class="nav-label">SMS Reports</span></a>
+                
+            </li>
+			
+			<li>
+                
+				
+							
+				@if(Session::get('cur')=='dealer')
+			 
+		<a href="{{ URL::to('vdmDealers/editDealer/' .Session::get('cur')) }}"> <span class="nav-label">My Profile</span></a> 
+		@endif 
+		
+		
+            </li>
+                     
  
         </ul>
     </div>
 </aside>
+{{ Form::close() }}	

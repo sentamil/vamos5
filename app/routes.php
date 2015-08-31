@@ -286,10 +286,20 @@ Route::group(array('before' => 'adminauth'), function(){   //admin auth starts h
     
 
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
+Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dealerSearch'));
+
+Route::post('vdmVehicles/findDealerList', array('uses' => 'VdmVehicleController@findDealerList'));
+
+
 //ramB/{param}/C/{param1?
 Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleController@stops'));
 
 Route::get('vdmVehicles/removeStop/{param}/{param1}', array('uses' => 'VdmVehicleController@removeStop'));
+
+Route::get('vdmVehicles/stops1/{param}/{param1}', array('uses' => 'VdmVehicleController@stops1'));
+
+Route::get('vdmVehicles/removeStop1/{param}/{param1}', array('uses' => 'VdmVehicleController@removeStop1'));
+
 
 Route::post('vdmVehicles/generate', array('uses' => 'VdmVehicleController@generate'));
 
@@ -301,6 +311,10 @@ Route::resource('vdmVehicles', 'VdmVehicleController');
 
 Route::resource('vdmUsers', 'VdmUserController');
 
+Route::resource('vdmDealers', 'VdmDealersController');
+
+Route::get('vdmDealers/editDealer/{param}', array('uses' => 'VdmDealersController@editDealer'));
+
 Route::resource('vdmSchools', 'VdmSchoolController');
 
 Route::resource('vdmBusRoutes', 'VdmBusRoutesController');
@@ -310,7 +324,6 @@ Route::resource('vdmBusStops', 'VdmBusStopsController');
 Route::resource('vdmGeoFence', 'VdmGeoFenceController');
 
 Route::resource('vdmOrganization', 'VdmOrganizationController');
-
 
 });   //admin auth ends here
 
