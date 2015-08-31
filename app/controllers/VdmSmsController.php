@@ -24,7 +24,7 @@ class VdmSmsController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				 $orgsList = $redis -> smembers('S_Organisations_Admin_'.$username.'_'.$fcode);
+				 $orgsList = $redis -> smembers('S_Organisations_Admin_'.$fcode);
 			}
 
         $orgsArr = array();

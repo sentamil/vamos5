@@ -41,6 +41,18 @@
 								</div>
 							</div>
 							<br />
+							<div class="row">
+								<div class="col-md-3">
+									{{ Form::label('password', 'Password') }}	
+								</div>
+								<div class="col-md-9">
+									{{ Form::text('password', Input::old('password'), array('class' => 'form-control')) }}
+								</div>
+							</div>
+							<br/>
+							
+							
+							
 							 <div class="form-group">
 							 	{{ Form::label('vehicleGroups', 'Select the Groups:') }}
 							 </div>

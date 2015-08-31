@@ -27,7 +27,7 @@ class VdmVehicleController extends \BaseController {
 		}
 		else if(Session::get('cur')=='admin')
 		{
-			$vehicleListId='S_Vehicles_Admin_'.$username.'_'.$fcode;
+			$vehicleListId='S_Vehicles_Admin_'.$fcode;
 		}
 		else{
 			$vehicleListId = 'S_Vehicles_' . $fcode;
@@ -104,7 +104,7 @@ class VdmVehicleController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$username.'_'.$fcode);
+				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$fcode);
 			}
 		
         $orgList=null;
@@ -122,6 +122,13 @@ class VdmVehicleController extends \BaseController {
 	 * 
 	 * @return Response
 	 */
+	 
+	/* Validator::extend('alpha_spaces', function($attribute, $value)
+{
+    return preg_match('/^[\pL\s]+$/u', $value);
+});*/
+	
+	 
 	public function store() {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
@@ -238,7 +245,7 @@ class VdmVehicleController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				$redis->sadd('S_Vehicles_Admin_'.$username.'_'.$fcode,$vehicleId);
+				$redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
 			}
 			$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
             $redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
@@ -346,7 +353,7 @@ class VdmVehicleController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$username.'_'.$fcode);
+				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$fcode);
 			}
 		
 		
@@ -538,7 +545,7 @@ class VdmVehicleController extends \BaseController {
 				$redis->srem('S_Vehicles_Dealer_'.Session::get('page').'_'.$fcode,$vehicleId);
 				$redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
 			
-				$redis->srem('S_Vehicles_Admin_'.$username.'_'.$fcode,$vehicleId);
+				$redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleId);
 			
 		
 		

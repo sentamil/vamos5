@@ -103,7 +103,7 @@ class VdmOrganizationController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				$redis->sadd('S_Organisations_Admin_'.$username.'_'.$fcode,$organizationId);
+				$redis->sadd('S_Organisations_Admin_'.$fcode,$organizationId);
 			}
 			
 			
@@ -178,7 +178,7 @@ class VdmOrganizationController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				 $orgListId = 'S_Organisations_Admin_'.$username.'_'.$fcode;
+				 $orgListId = 'S_Organisations_Admin_'.$fcode;
 			}
 		
         
@@ -216,7 +216,7 @@ class VdmOrganizationController extends \BaseController {
         $organizationId = $id;
         $redis->srem('S_Organisations_' . $fcode,$id);
 		$redis->srem('S_Organisations_Dealer_'.$username.'_'.$fcode,$id);
-		$redis->srem('S_Organisations_Admin_'.$username.'_'.$fcode,$id);
+		$redis->srem('S_Organisations_Admin_'.$fcode,$id);
 		
 		
 		
@@ -330,9 +330,13 @@ class VdmOrganizationController extends \BaseController {
 		  $latandlan=array();
 		$address1= $redis->hgetall('H_Poi_'.$id.'_'.$fcode);
 		
-		foreach($address1 as $org => $rowId) {
-			  
-				  $place = array_add($address1, $org,$org);
+		$temp=null;
+		foreach($address1 as $org => $rowId)
+	{
+			 
+			  log::info( 'inside no result' .count($address1));
+			 
+				 $place = array_add($address1, $org,$org);
 					$latandlan = array_add($address1, $rowId,$rowId);
 					
 					 $geocode=file_get_contents("http://maps.google.com/maps/api/geocode/json?address=".$org);
@@ -362,8 +366,19 @@ class VdmOrganizationController extends \BaseController {
 					 
 				 }	
 					$place1 = array_add($place1, $place3,$place3);
+					
 			 
 		 }
+		 
+		
+		  $temp=10-count($address1);
+		 for ($p = 0; $p < $temp; $p++)
+		 {
+			  log::info( '---------------place------------- ::' .count($place1));
+			  $place = array_add($place, $p,'');
+			 $place1 = array_add($place1, $p,'');
+		 }
+		 
 		$i=0;
 		$j=0;$k=0;$m=0;
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
@@ -461,7 +476,7 @@ for ($i = 0; $i < 10; $i++) {
 	//log::info( '---------------latand lan------------- ::' . $latandlan);
 	log::info( '---------------oldplace------------- ::' . $oldplace);
 	
-	if(!$place==null)
+	if(!$place==null && !is_numeric($place))
 	{
 		log::info( '---------------place------------- ::' . $place);
 		
