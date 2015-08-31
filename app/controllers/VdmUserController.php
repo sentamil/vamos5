@@ -23,7 +23,7 @@ class VdmUserController extends \BaseController {
 		}
 		else if(Session::get('cur')=='admin')
 		{
-			$redisUserCacheId = 'S_Users_Admin_'.$username.'_'.$fcode;
+			$redisUserCacheId = 'S_Users_Admin_'.$fcode;
 		}
 	
 		$userList = $redis->smembers ( $redisUserCacheId);
@@ -65,7 +65,7 @@ class VdmUserController extends \BaseController {
 		}
 		else if(Session::get('cur')=='admin')
 		{
-			$redisGrpId = 'S_Groups_Admin_'.$username.'_'.$fcode;
+			$redisGrpId = 'S_Groups_Admin_'.$fcode;
 		}
 		
 		// $vehicleGroups=array("No groups found");
@@ -152,13 +152,16 @@ class VdmUserController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				$redis->sadd('S_Users_Admin_'.$username.'_'.$fcode,$userId);
+				$redis->sadd('S_Users_Admin_'.$fcode,$userId);
 			}
 			
-			
+			$password=Input::get ( 'password' );
+			if($password==null)
+			{
+				$password='awesome';
+			}
 			
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
-			$password='awesome';
 			$user = new User;
 			
 			$user->name = $userId;
@@ -232,7 +235,7 @@ class VdmUserController extends \BaseController {
 		}
 		else if(Session::get('cur')=='admin')
 		{
-			$redisGrpId = 'S_Groups_Admin_'.$username.'_'.$fcode;
+			$redisGrpId = 'S_Groups_Admin_'.$fcode;
 		}
 		
 	
@@ -354,7 +357,7 @@ class VdmUserController extends \BaseController {
 		
 		$redis->srem ( 'S_Users_' . $fcode, $userId );
 		$redis->srem('S_Users_Dealer_'.$username.'_'.$fcode,$userId);
-		$redis->srem('S_Users_Admin_'.$username.'_'.$fcode,$userId);
+		$redis->srem('S_Users_Admin_'.$fcode,$userId);
 		
 		
 		$redis->del ( $userId );

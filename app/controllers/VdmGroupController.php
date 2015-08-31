@@ -33,7 +33,7 @@ class VdmGroupController extends \BaseController {
 		}
 		else if(Session::get('cur')=='admin')
 		{
-			$redisGrpId = 'S_Groups_Admin_'.$username.'_'.$fcode;
+			$redisGrpId = 'S_Groups_Admin_'.$fcode;
 		}
 		else{
 			$redisGrpId = 'S_Groups_' . $fcode ;
@@ -94,7 +94,7 @@ class VdmGroupController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				$vehicleList = $redis->smembers('S_Vehicles_Admin_'.$username.'_'.$fcode);
+				$vehicleList = $redis->smembers('S_Vehicles_Admin_'.$fcode);
 			}
 		
 		
@@ -159,7 +159,7 @@ class VdmGroupController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				$redis->sadd('S_Groups_Admin_'.$username.'_'.$fcode,$groupId . ':' . $fcode);
+				$redis->sadd('S_Groups_Admin_'.$fcode,$groupId . ':' . $fcode);
 			}
 			
  			// redirect
@@ -240,7 +240,7 @@ class VdmGroupController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				$vehicles = $redis->smembers('S_Vehicles_Admin_'.$username.'_'.$fcode);
+				$vehicles = $redis->smembers('S_Vehicles_Admin_'.$fcode);
 			}
 		
 		
@@ -316,7 +316,7 @@ class VdmGroupController extends \BaseController {
 		
 		
 		$redis->srem('S_Groups_Dealer_'.$username.'_'.$fcode,$groupId );
-		$redis->srem('S_Groups_Admin_'.$username.'_'.$fcode,$groupId );
+		$redis->srem('S_Groups_Admin_'.$fcode,$groupId );
 		
 		
 		Log::info('-------------- $g -----------'.$groupId);

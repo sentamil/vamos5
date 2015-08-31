@@ -55,6 +55,18 @@ class VdmBusRoutesController extends \BaseController {
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
          $orgListId = 'S_Organisations_' . $fcode;
         
+		if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				 $orgListId = 'S_Organisations_Dealer_'.$username.'_'.$fcode;
+				
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				$orgListId = 'S_Organisations_Admin_'.$fcode;
+			
+			}
+		
         Log::info('orgListId=' . $orgListId);
 
         $orgArr = $redis->smembers ( $orgListId);
@@ -112,7 +124,8 @@ class VdmBusRoutesController extends \BaseController {
             
              $redis->set('K_Morning_StopSeq_'.$orgId. '_' .$routeId .'_' . $fcode,$morningSeqList);
              $redis->set('K_Evening_StopSeq_'.$orgId. '_' .$routeId.'_' . $fcode,$eveningSeqList);
-             
+             $redis->hset('H_Stopseq_'.$orgId.'_'.$fcode,$routeId.':morning',$morningSeqList);
+			  $redis->hset('H_Stopseq_'.$orgId.'_'.$fcode,$routeId.':evening',$eveningSeqList);
 
            foreach ( $allStopsArr as $stop) {
               $stopsDetailsArr = explode(':',$stop);
@@ -121,8 +134,9 @@ class VdmBusRoutesController extends \BaseController {
            }
             
             //stop:geo:mobile:stopname
+			$i=0;
             foreach ( $allStopsArr as $stop) {
-            
+					$i++;
                 Log::info(' stop--- ' . $stop);
                 $stopsDetailsArr = explode(':',$stop);
                 $key = $routeId  .':'. $stopsDetailsArr[0];
@@ -156,7 +170,7 @@ class VdmBusRoutesController extends \BaseController {
                     $stopsData = array_add($stopsData,'stopName',$stopsDetailsArr[3]);
                 }
                 $stopsDataJson = json_encode ( $stopsData );
-                Log::info ('$stopsDataJson ' . $stopsDataJson);
+                Log::info ('$stopsDataJson ' . $stopsDetailsArr[3]);
                 $redis->sadd('S_Organisation_Route_'.$orgId .'_'. $fcode,$routeId);
                // $redis->rpush($stopList,$stopsDetailsArr[0]);
                 
