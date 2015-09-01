@@ -132,9 +132,9 @@ class VdmBusRoutesController extends \BaseController {
               $key = $routeId  .':'. $stopsDetailsArr[0];
               $redis->hdel('H_Bus_Stops_' . $orgId . '_' .$fcode,$key);
            }
-            
+            $redis->del('L_Suggest_'.$routeId.'_'.$orgId.'_'.$fcode);
             //stop:geo:mobile:stopname
-			$i=0;
+			$i=0;$temp=null;
             foreach ( $allStopsArr as $stop) {
 					$i++;
                 Log::info(' stop--- ' . $stop);
@@ -170,8 +170,35 @@ class VdmBusRoutesController extends \BaseController {
                     $stopsData = array_add($stopsData,'stopName',$stopsDetailsArr[3]);
                 }
                 $stopsDataJson = json_encode ( $stopsData );
+				
+				 $redis->sadd('S_Organisation_Route_'.$orgId .'_'. $fcode,$routeId);
+				 
+				 try
+				 {
+					 
+				
+				
+				$stopsDetails = explode(',',$stopsDetailsArr[1]);
+				$refDataArr = array (
+					'rowId' => 0,
+					'geoAddress' => $stopsDetailsArr[3],
+					'latitude' => $stopsDetails[0],
+					'longitude' => $stopsDetails[1],
+					
+			);
+				if($temp!=$stopsDetailsArr[3])
+				{
+					  Log::info ('$different ' . $stopsDetailsArr[3].$temp);
+					$redis->rpush('L_Suggest_'.$routeId.'_'.$orgId.'_'.$fcode, json_encode ( $refDataArr ));
+					
+				}
+				 }catch(\Exception $e)
+			   {
+			   }
+			   $temp=$stopsDetailsArr[3];
                 Log::info ('$stopsDataJson ' . $stopsDetailsArr[3]);
-                $redis->sadd('S_Organisation_Route_'.$orgId .'_'. $fcode,$routeId);
+				
+               
                // $redis->rpush($stopList,$stopsDetailsArr[0]);
                 
                 //key routeIs: stop1 -- R1:stop1
