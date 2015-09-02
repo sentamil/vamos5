@@ -64,7 +64,6 @@ app.filter('statusfilter', function(){
 	$scope.vehicleOnline = 0;
 	$scope.distanceCovered= 0;
 	$scope.attention= 0;
-	$scope.vehicleno='';
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
@@ -103,6 +102,8 @@ app.filter('statusfilter', function(){
 			$scope.initilize('map_canvas');
 		}
 	});
+	
+	
 	
 	$scope.statusFilter = function(obj, param){
 	 	var out = [];
@@ -205,7 +206,6 @@ app.filter('statusfilter', function(){
 	}
 	
 	$scope.groupSelection = function(groupname, groupid){
-		console.log('group name-->'+groupname+'-->groupid---->'+groupid)
 		 $scope.selected=undefined;
 		 $scope.url = 'http://'+globalIP+'vamo/public/getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
@@ -321,29 +321,30 @@ app.filter('statusfilter', function(){
 			}
 		}
 	};
-	
+			
+			
 			$scope.single=false;
 			$scope.group=true;
-			//console.log('true false------>'+$scope.single)
 			var today = new Date();
 			var aMonth = 0;
 			aMonth = today.getMonth();
-			var previousMonth = new Date(today);
-			previousMonth.setYear(today.getFullYear());
-			var s=''+previousMonth
+			aMonth=aMonth-1;
+			today = new Date(today.setMonth(today.getMonth() - 1));
+			var s=''+today
 			var a = s.split(' ')
 			var date1='';
+			var subString='';
 			for(var sp in a)
 			{
 				date1=a[1]+","+a[3];
 			}
 			
 			$scope.fromdate=date1;
+			
 			var months= [];
-			var today = new Date();
-			var aMonth = today.getMonth();
-			var month = new Array('January', 'February', 'March','April','May','June','July','August','September','October','November','December');
-			//console.log('months->'+month[aMonth])
+			//var today = new Date();
+			//var aMonth = today.getMonth();
+			var month = new Array('Jan', 'Feb', 'Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
 			for (var i=0; i<12; i++) 
 			{
 				months.push(month[aMonth]);
@@ -351,172 +352,83 @@ app.filter('statusfilter', function(){
 				if (aMonth < 0) 
 				{
 					aMonth = 11;
-					console.log("if loop-->")
 				}
 			}
-			//console.log('months----->'+months)
-			
+	$scope.value=[];
+	
+	// //performance report date
+	// $scope.datemethod=function($scope.fromdate)
+	// {
 		
+	// }
+	
 	// performance report search by date . . .
-	
-	$scope.viewButton=function()
+	$scope.monthYear=function()
 	{
-		console.log('inthe button click---->'+$scope.fromdate)
-		//console.log('inthe button click---->'+$scope.fromdate+'-----'+$scope.todate);
-		//var split=$scope.fromdate.split(',');
-		//console.log('valie--->'+split)
-		
-	};
+		var splitComma='';
+		splitComma=$scope.fromdate.split(',');
+		$scope.month=splitComma[0];
+		$scope.year=splitComma[1];
+		return $scope.month,$scope.year;
+	}
 	
-	$scope.genericFunction1 = function(vehicleno, index)
+	//list for table
+	$scope.tableValue=[];
+	var dataTableList=[];
+	
+	$scope.genericFunction1 = function(vehicleno, groupname, index)
 	{
+		$scope.tableValue=[];
+		var dataTableList=[];
+		$scope.monthYear($scope.month,$scope.year);
 		$scope.single=true;
 		$scope.group=false;
-		var tempurl='';
+		var acc = '';
 		var totalsuddenBreak=[];
 		var SuddenAcc=[];
 		var OverSpeed=[];
 		var sparkAlarm=[];
-		var i=0;
-		//if($scope.fromdate)
-			console.log('date--->'+$scope.fromdate)
-		tempurl='http://localhost/vamo/public/getIndividualDriverPerformance?vehicleId='+vehicleno;
-		//console.log(vehicleno+'-----'+index)
+		var kiloMeter=[];
+		var timestamp=0;
+		$scope.tableValue=[];
+		var monthList="";
+		
+		months=[];
+		var monthIndex=0;
+		monthIndex=month.indexOf($scope.month);
+		for (var j=0; j<12; j++) 
+		{
+			months.push(month[monthIndex]);
+			monthIndex--; 
+			if (monthIndex < 0) 
+			{
+				monthIndex = 11;
+			}
+		}
+		var tempurl='http://'+globalIP+'/vamo/public/getIndividualDriverPerformance?groupId='+groupname+'&vehicleId='+vehicleno+'&month='+$scope.month+'&year='+$scope.year;
 		$http.get(tempurl).success(function(data){
-		for(i; i<data.length; i++)
+		console.log(tempurl)
+		for(var i=0; i<data.length; i++)
 		{
-			totalsuddenBreak.push(data[i].suddenBreakWeightage);
-			SuddenAcc.push(data[i].totalSudAccelStar);
-			OverSpeed.push(data[i].topSpeed);
-			//console.log('---aa-->'+data[i].historyShockAlarm)
-			sparkAlarm.push(data[i].topSpeedAlarm);
+			totalsuddenBreak.push(data[i].weightedBreakAnalysis);
+			SuddenAcc.push(data[i].weightedAccelAnalysis);
+			OverSpeed.push(data[i].weightedSpeedAnalysis);
+			sparkAlarm.push(data[i].weightedShockAlarmAnalysis);
+			kiloMeter.push(data[i].distance);
+			dataTableList.push({'month': months[i],'data': data[i]});
+			console.log('value----->'+data[i].weightedBreakAnalysis)
 		}
-		console.log(totalsuddenBreak)
+		$scope.tableValue=dataTableList;
+		console.log('value----->'+totalsuddenBreak)
+		$('#container').highcharts({
+			
+		//charts
 		
-	
-	//console.log('-----final-->'+totalsuddenBreak)
-	$('#container').highcharts({
-		
-	//charts
-	
         chart: {
             type: 'bar'
         },
         title: {
-            text: 'Individual Performance chart'
-        },
-		subtitle: {
-            align: 'right',
-			x: 10,
-            verticalAlign: 'top',
-			y: 30,
-            text: 'Total Distance',
-			style: {
-                    color: Highcharts.getOptions().colors[2]
-                }
-				
-        },
-        xAxis: {
-            categories: months
-        },
-		 xAxis: [{
-                categories: months,
-                reversed: false,
-                labels: {
-                    step: 1
-                }
-            }, { // mirror axis on right side
-                opposite: true,
-                reversed: false,
-                categories: months,
-                linkedTo: 0,
-                labels: {
-                    step: 1,
-					 //format: vehiclename,
-					
-                },
-			 }],
-        yAxis: {
-            min: 0,
-            /*title: {
-                text: vehicleno
-            }*/
-        },
-        legend: {
-            reversed: true
-        },
-        plotOptions: {
-            series: {
-                stacking: 'normal'
-            }
-        },
-        series: [{
-            name: 'Break Analyzer',
-            data: totalsuddenBreak
-        }, {
-            name: 'Over Speed',
-            data: OverSpeed
-        }, {
-            name: 'Sudden Accleration',
-            data: SuddenAcc
-        }, {
-            name: 'Shock Alarm',
-            data: sparkAlarm
-        }]
-    });
-	})
-	}
-	var tempurl1='http://localhost/vamo/public/getOverallDriverPerformance';
-		var totalsuddenBreak=[];
-		var SuddenAcc=[];
-		var OverSpeed=[];
-		var sparkAlarm=[];
-		var vehiclename=[];
-		$scope.value=[];
-		var viewTable=false;
-	// click the group 
-	$scope.groupSelection1 = function(groupname, groupid){
-		$scope.single=false;
-		$scope.group=true;
-	}
-		
-		var i=0;
-		var value=0;
-		$http.get(tempurl1).success(function(data){
-			$scope.value=data;
-			//console.log('arun---->'+$scope.value)
-		for(i; i<data.length; i++)
-		{
-			
-			vehiclename.push(data[i].vehicleId);
-			totalsuddenBreak.push(data[i].suddenBreakWeightage);
-			SuddenAcc.push(data[i].totalSudAccelStar);
-			//console.log('---3-->'+data[i].topSpeed)
-			if(data[i].topSpeed<=50){value=10;}
-			else if(data[i].topSpeed>50 && data[i].topSpeed<=75){value=20;}
-			else if(data[i].topSpeed>75 && data[i].topSpeed<=100){value=30;}
-			else if(data[i].topSpeed>100 && data[i].topSpeed<=125){value=40;} 
-			else if(data[i].topSpeed>125){value=50;}
-			OverSpeed.push(value);
-			
-			//console.log('---aa-->'+data[i].historyShockAlarm)
-			sparkAlarm.push(data[i].topSpeedAlarm);
-			
-		}
-		//console.log('---3-->'+OverSpeed)
-		//console.log(totalsuddenBreak)
-	//group value charts
-
-	
-	$('#container1').highcharts({
-		
-	//charts
-	
-        chart: {
-            type: 'bar'
-        },
-        title: {
-            text: 'Group Performance chart'
+            text: 'Individual Driver Performance chart'
         },
 		subtitle: {
             align: 'right',
@@ -531,15 +443,15 @@ app.filter('statusfilter', function(){
         },
         
 		 xAxis: [{
-                categories: vehiclename,
-                reversed: false,
+                categories: months,
+                //reversed: false,
                 labels: {
                     step: 1
                 }
             }, { // mirror axis on right side
                 opposite: true,
-                reversed: false,
-                categories: OverSpeed,
+               // reversed: false,
+                categories: kiloMeter,
                 linkedTo: 0,
                 labels: {
                     step: 1,
@@ -549,80 +461,302 @@ app.filter('statusfilter', function(){
 			 }],
         yAxis: {
             min: 0,
-			
             /*title: {
                 text: vehicleno
             }*/
         },
-		 tooltip: {
-            shared: true,
+			
+		tooltip: {
+				shared: true,
+				//tooltip: 
+
+     // formatter: function() { return ' ' +
        
-           
-        },
-		
+        // 'Unlocked: ' +point.data+ '<br />' +
+        // 'Potential: ' + this.x;
+     // }
+
+				},
         legend: {
             reversed: true
         },
-        /*plotOptions: {
-
+        plotOptions: {
             series: {
                 stacking: 'normal'
             }
-        },*/
-		 plotOptions: {
-            series: {
-			  stacking: 'normal',
-              cursor: 'pointer',
-                   
-               
-            }
         },
         series: [{
-            name: 'Break Analysis',
-            data: totalsuddenBreak
-        }, {
-            name: 'Speed Analysis',
-            data: OverSpeed
-			
-        }, {
-            name: 'Shock Alarm',
-            data: sparkAlarm
-        }]
-    });
-	})
+					name: 'Break Analysis',
+					data: totalsuddenBreak
+					
+				}, {
+					name: 'Speed Analysis',
+					data: OverSpeed
+					
+				}, {
+					name: 'Shock Analysis',
+					data: sparkAlarm
+				}, {
+					name: 'Acceleration Analysis',
+					data: SuddenAcc
+				}]
+				});
+		
+		})
+	}
 	
-	//function for click on the table
 
-	// $scope.arun=function(id, fromdate)
-	// {
-		// console.log("arun in the information----->"+id+'date----->'+fromdate)
-		// var tempurl='http://localhost/vamo/public/getIndividualDriverPerformance?vehicleId='+id;
-		// var gdata=[];
-		// $http.get(tempurl).success(function(data){
-			// gdata=data;
-			// //console.log('data------->'+gdata[0].time)
-			// var timestamp = gdata[0].time,
-			// //var date = new Date(parseInt(jsonDate.substr(6)));
-			// date = new Date(timestamp),
-			// datevalues = [
-			   // date.getFullYear(),
-			   // date.getMonth()+1,
-			   // date.getDate(),
-			   // date.getHours(),
-			   // date.getMinutes(),
-			   // date.getSeconds(),
-			// ];
-			// //console.log('date are------>'+date.getFullYear())
-		// })
-	// }
+	//onload calling ng-init	
+	$scope.initMethod= function ()
+	{
+		$scope.tableValue=[];
+		var dataTableList=[];
+		$scope.single=false;
+		$scope.group=true;
+		$scope.monthYear($scope.month,$scope.year);
+		console.log('date----->'+$scope.month+$scope.year)
+		var tempurl1='http://'+globalIP+'/vamo/public/getOverallDriverPerformance';
+		$http.get($scope.url).success(function(data)
+		{
+			$scope.groupName=data[0].group;
+			tempurl1='http://'+globalIP+'/vamo/public/getOverallDriverPerformance?groupId='+data[0].group+'&month='+$scope.month+'&year='+$scope.year;
+			console.log(tempurl1)
+		//	console.log('inside the web service call---->'+tempurl1)
+		
+			console.log('--->'+tempurl1)
+		var totalsuddenBreak=[];
+		var SuddenAcc=[];
+		var OverSpeed=[];
+		var sparkAlarm=[];
+		var vehiclename=[];
+		var kiloMeter=[];
+		$scope.value=[];
+		var viewTable=false;
+		var i=0;
+		//console.log('inside the url')
+		$http.get(tempurl1).success(function(data)
+		{
+			$scope.value=data;
+			for(i; i<data.length; i++)
+			{
+				vehiclename.push(data[i].vehicleId);
+				totalsuddenBreak.push(data[i].weightedBreakAnalysis);
+				SuddenAcc.push(data[i].weightedAccelAnalysis);
+				OverSpeed.push(data[i].weightedSpeedAnalysis);
+				sparkAlarm.push(data[i].weightedShockAlarmAnalysis);
+				kiloMeter.push(data[i].distance);
+				dataTableList.push({'month':data[i].vehicleId,'data': data[i]});
+			}
+			$scope.tableValue=dataTableList;
+			//console.log($scope.tableValue[1])
+			//group value charts
+			$('#container1').highcharts({
+				chart: {
+					type: 'bar'
+				},
+				title: {
+					text: 'Drivers Performance chart'
+				},
+				subtitle: {
+					align: 'right',
+					x: 10,
+					verticalAlign: 'top',
+					y: 30,
+					text: 'Total Distance',
+					style: {
+							color: Highcharts.getOptions().colors[2]
+						}
+					
+				},
+				xAxis: [{
+					categories: vehiclename,
+					reversed: false,
+					labels: {
+						step: 1
+					}
+					}, { // mirror axis on right side
+					opposite: true,
+					reversed: false,
+					categories: kiloMeter,
+					linkedTo: 0,
+					labels: {
+						step: 1,
+						 //format: vehiclename,
+						
+					},
+				 }],
+				yAxis: {
+					min: 0,
+					
+					/*title: {
+						text: vehicleno
+					}*/
+				},
+				tooltip: {
+				shared: true,
+				},
+			
+				legend: {
+					reversed: true
+				},
+				/*plotOptions: {
+
+					series: {
+						stacking: 'normal'
+					}
+				},*/
+				plotOptions: {
+					series: {
+					  stacking: 'normal',
+					  cursor: 'pointer',
+						   
+					   
+					}
+				},
+				series: [{
+					name: 'Break Analysis',
+					data: totalsuddenBreak
+				}, {
+					name: 'Speed Analysis',
+					data: OverSpeed
+					
+				}, {
+					name: 'Shock Analysis',
+					data: sparkAlarm
+				}, {
+					name: 'Acceleration Analysis',
+					data: SuddenAcc
+				}]
+			});
+		})
 	
+	});
+	}
+	// click the group 
+	$scope.groupSelection1 = function(groupname, groupid, index)
+	{
+		$scope.tableValue=[];
+		var dataTableList=[];
+		var totalsuddenBreak=[];
+		var SuddenAcc=[];
+		var OverSpeed=[];
+		var sparkAlarm=[];
+		var vehiclename=[];
+		var kiloMeter=[];
+		$scope.value=[];
+		$scope.monthYear($scope.month,$scope.year);
+		tempurl1='http://'+globalIP+'/vamo/public/getOverallDriverPerformance?groupId='+groupname+'&month='+$scope.month+'&year='+$scope.year;
+		//console.log(tempurl1)
+		$http.get(tempurl1).success(function(data)
+		{
+			$scope.value=data;
+			for(var i=0; i<data.length; i++)
+			{
+				vehiclename.push(data[i].vehicleId);
+				totalsuddenBreak.push(data[i].weightedBreakAnalysis);
+				SuddenAcc.push(data[i].weightedAccelAnalysis);
+				OverSpeed.push(data[i].weightedSpeedAnalysis);
+				sparkAlarm.push(data[i].weightedShockAlarmAnalysis);
+				kiloMeter.push(data[i].distance);
+				dataTableList.push({'month':data[i].vehicleId,'data': data[i]});
+				//console.log('data here--------->'+dataTableList[i].data.vehicleId)
+			}
+			$scope.tableValue=dataTableList;
+			$('#container1').highcharts({
+			chart: {
+				type: 'bar'
+			},
+			title: {
+				text: 'Drivers Performance chart'
+			},
+			subtitle: {
+				align: 'right',
+				x: 10,
+				verticalAlign: 'top',
+				y: 30,
+				text: 'Total Distance',
+				style: {
+						color: Highcharts.getOptions().colors[2]
+					}
+				
+			},
+			xAxis: [{
+				categories: vehiclename,
+				reversed: false,
+				labels: {
+					step: 1
+				}
+				}, { // mirror axis on right side
+				opposite: true,
+				reversed: false,
+				categories: kiloMeter,
+				linkedTo: 0,
+				labels: {
+					step: 1,
+					 //format: vehiclename,
+					
+				},
+			 }],
+			yAxis: {
+				min: 0,
+				
+				/*title: {
+					text: vehicleno
+				}*/
+			},
+			tooltip: {
+			shared: true,
+			},
+		
+			legend: {
+				reversed: true
+			},
+			/*plotOptions: {
+
+				series: {
+					stacking: 'normal'
+				}
+			},*/
+			plotOptions: {
+				series: {
+				  stacking: 'normal',
+				  cursor: 'pointer',
+					   
+				   
+				}
+			},
+			series: [{
+					name: 'Break Analysis',
+					data: totalsuddenBreak
+				}, {
+					name: 'Speed Analysis',
+					data: OverSpeed
+					
+				}, {
+					name: 'Shock Analysis',
+					data: sparkAlarm
+				}, {
+					name: 'Acceleration Analysis',
+					data: SuddenAcc
+				}]
+			});
+		});
+		$scope.single=false;
+		$scope.group=true;
+	};
+	
+	
+	
+
 	// popup
 	$scope.modalShown = false;
 	//var address;
 	$scope.toggleModal = function(user) {
+		//console.log('arun---------->'+user.data.vehicleId)
 		$scope.detailedView=user;
 		$scope.modalShown = !$scope.modalShown;
-		var obj = $scope.detailedView.suddenBreakList.normal.historySuddenBrk;
+		var obj = $scope.detailedView.data.suddenBreakList.normal.historySuddenBrk;
+		//console.log(obj)
 		var latitude=0;
 		var longutide=0;
 		var tempurl1='';
@@ -634,7 +768,7 @@ app.filter('statusfilter', function(){
 		$scope.aggressive=[];
 		$scope.aggressiveCount=0;
 		$scope.harsh=[];
-		$scope.id=$scope.detailedView.vehicleId;
+		$scope.id=$scope.detailedView.data.vehicleId;
 		$scope.harshCount=0;
 		$scope.normal=0;
 		$scope.locationname='';
@@ -642,17 +776,22 @@ app.filter('statusfilter', function(){
 		angular.forEach(obj, function(value, key) 
 		{	
 			splitting=value.split(',');
+			//console.log('inthe for each---1--->'+splitting[0])
 			latitude = splitting[0]
 			longutide = splitting[1]
 			speed=splitting[3]
 			slow=splitting[2];
 			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
-		detailedJson.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
+			detailedJson.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
 			
 		});
 		$scope.Values=detailedJson;
-		$scope.normal=$scope.detailedView.suddenBreakList.normal.subTotalSuddenBreak;
-		var obj1 = $scope.detailedView.suddenBreakList.aggressive.historySuddenBrk;
+		$scope.normal=$scope.detailedView.data.suddenBreakList.normal.subTotalSuddenBreak;
+		
+		
+		
+		
+		var obj1 = $scope.detailedView.data.suddenBreakList.aggressive.historySuddenBrk;
 		var detailedJson1=[];
 		//aggresive breaks for loop
 		angular.forEach(obj1, function(value, key) 
@@ -664,13 +803,13 @@ app.filter('statusfilter', function(){
 			slow=splitting[2];
 			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
 			detailedJson1.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
-			console.log('second for----->'+obj1)
+			//console.log('second for----->'+obj1)
 		});
 		$scope.aggressive=detailedJson1;
-		$scope.aggressiveCount=$scope.detailedView.suddenBreakList.aggressive.subTotalSuddenBreak;
+		$scope.aggressiveCount=$scope.detailedView.data.suddenBreakList.aggressive.subTotalSuddenBreak;
 		
 		//harsh break
-		var obj2 = $scope.detailedView.suddenBreakList.harsh.historySuddenBrk;
+		var obj2 = $scope.detailedView.data.suddenBreakList.harsh.historySuddenBrk;
 		var detailedJson2=[];
 		angular.forEach(obj2, function(value, key) 
 		{	
@@ -681,14 +820,14 @@ app.filter('statusfilter', function(){
 			slow=splitting[2];
 			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
 			detailedJson2.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
-			console.log('third for----->'+obj2)
+			//console.log('third for----->'+obj2)
 		});
 		$scope.harsh=detailedJson2;
-		$scope.harshCount=$scope.detailedView.suddenBreakList.harsh .subTotalSuddenBreak;
+		$scope.harshCount=$scope.detailedView.data.suddenBreakList.harsh.subTotalSuddenBreak;
 		//very harsh break
-		var obj1 = $scope.detailedView.suddenBreakList.veryharsh.historySuddenBrk;
+		var obj3 = $scope.detailedView.data.suddenBreakList.veryharsh.historySuddenBrk;
 		var detailedJson3=[];
-		angular.forEach(obj2, function(value, key) 
+		angular.forEach(obj3, function(value, key) 
 		{	
 			splitting=value.split(',');
 			latitude = splitting[0]
@@ -697,10 +836,190 @@ app.filter('statusfilter', function(){
 			slow=splitting[2];
 			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
 			detailedJson3.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
-			console.log('third for----->'+obj2)
+			//console.log('third for----->'+obj3)
 		});
 		$scope.Veryharsh=detailedJson3;
-		$scope.veryHarsh=$scope.detailedView.suddenBreakList.veryharsh.subTotalSuddenBreak;
+		$scope.veryHarsh=$scope.detailedView.data.suddenBreakList.veryharsh.subTotalSuddenBreak;
+		// worst performer
+		var obj4 = $scope.detailedView.data.suddenBreakList.worst.historySuddenBrk;
+		var detailedJson4=[];
+		angular.forEach(obj4, function(value, key) 
+		{	
+			splitting=value.split(',');
+			latitude = splitting[0]
+			longutide = splitting[1]
+			speed=splitting[3]
+			slow=splitting[2];
+			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			detailedJson4.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
+			//console.log('third for----->'+obj4)
+		});
+		$scope.worst=detailedJson4;
+		$scope.worstCount=$scope.detailedView.data.suddenBreakList.worst.subTotalSuddenBreak;
+	};
+	
+	// popup
+	
+	$scope.modalShown1 = false;
+	//var address;
+	$scope.excellent='';
+	$scope.toggleModal1 = function(user) 
+	{
+		console.log('modal two popup-------->'+user.historySpeedAnalysis)
+		$scope.excellentCount=0;
+		$scope.excellentSpeed=0;
+		$scope.bestCount=0;
+		$scope.bestSpeed=0;
+		$scope.averageCount=0;
+		$scope.averageSpeed=0;
+		$scope.worstCount=0;
+		$scope.worstSpeed=0;
+		$scope.redlinerCount=0;
+		$scope.redlinerSpeed=0;
+		$scope.topSpeed=0;
+		var splitValue='';
+		$scope.id='';
+		$scope.modalShown1 = !$scope.modalShown1;
+		$scope.id=user.data.vehicleId;
+		//$scope.topSpeed=user.topSpeed;
+		$scope.excellentCount=user.data.historySpeedAnalysis.Excellent.split(',')[0];
+		$scope.excellentSpeed=user.data.historySpeedAnalysis.Excellent.split(',')[1];
+		$scope.bestCount=user.data.historySpeedAnalysis.Best.split(',')[0];
+		$scope.bestSpeed=user.data.historySpeedAnalysis.Best.split(',')[1];
+		$scope.averageCount=user.data.historySpeedAnalysis.Average.split(',')[0];
+		$scope.averageSpeed=user.data.historySpeedAnalysis.Average.split(',')[1];
+		//console.log('in the second popup------>'+$scope.averageSpeed)
+		$scope.worstCount=user.data.historySpeedAnalysis.Aggressive.split(',')[0];
+		$scope.worstSpeed=user.data.historySpeedAnalysis.Aggressive.split(',')[1];
+		$scope.redlinerCount=user.data.historySpeedAnalysis.RedLiner.split(',')[0];
+		$scope.redlinerSpeed=user.data.historySpeedAnalysis.RedLiner.split(',')[1];
+	};
+	//$('#example').DataTable();
+	// popup
+	$scope.modalShown2 = false;
+	//var address;
+	$scope.toggleModal2 = function(user) {
+		$scope.modalShown2 = !$scope.modalShown2;
+		$scope.id=user.data.vehicleId;
+		//$scope.topSpeed=user.data.topSpeedAlarm;
+		$scope.excellentCount=user.data.historyShockAlarm.Excellent.split(',')[0];
+		$scope.excellentSpeed=user.data.historyShockAlarm.Excellent.split(',')[1];
+		$scope.bestCount=user.data.historyShockAlarm.Best.split(',')[0];
+		$scope.bestSpeed=user.data.historyShockAlarm.Best.split(',')[1];
+		$scope.averageCount=user.data.historyShockAlarm.Average.split(',')[0];
+		$scope.averageSpeed=user.data.historyShockAlarm.Average.split(',')[1];
+		$scope.worstCount=user.data.historyShockAlarm.Aggressive.split(',')[0];
+		$scope.worstSpeed=user.data.historyShockAlarm.Aggressive.split(',')[1];
+		$scope.redlinerCount=user.data.historyShockAlarm.RedLiner.split(',')[0];
+		$scope.redlinerSpeed=user.data.historyShockAlarm.RedLiner.split(',')[1];
+	};
+	
+	// popup
+	$scope.modalShown3 = false;
+	//var address;
+	$scope.toggleModal3 = function(user) {
+		$scope.detailedView=user;
+		$scope.modalShown3 = !$scope.modalShown3;
+		//console.log('arun')
+		
+		var obj = $scope.detailedView.data.suddenAcceleration.normal.historySuddenAcceleration;
+		//console.log(obj)
+		var latitude=0;
+		var longutide=0;
+		var tempurl1='';
+		var splitting='';
+		var speed=0;
+		var slow=0;
+		var detailedJson=[];
+		$scope.Values=[];
+		$scope.aggressive=[];
+		$scope.aggressiveCount=0;
+		$scope.harsh=[];
+		console.log(1)
+		$scope.id=$scope.detailedView.data.vehicleId;
+		$scope.harshCount=0;
+		$scope.normal=0;
+		$scope.locationname='';
+		//normal breaks for loop
+		angular.forEach(obj, function(value, key) 
+		{	
+			splitting=value.split(',');
+			console.log('inthe for each---1--->'+splitting[0])
+			latitude = splitting[0]
+			longutide = splitting[1]
+			speed=splitting[3]
+			slow=splitting[2];
+			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			detailedJson.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
+			
+		});
+		$scope.Values=detailedJson;
+		$scope.normal=$scope.detailedView.data.suddenAcceleration.normal.totalSudAcceleration;
+		
+		
+		
+		
+		var obj1 = $scope.detailedView.data.suddenAcceleration.aggressive.historySuddenAcceleration;
+		var detailedJson1=[];
+		//aggresive breaks for loop
+		angular.forEach(obj1, function(value, key) 
+		{	
+			splitting=value.split(',');
+			latitude = splitting[0]
+			longutide = splitting[1]
+			speed=splitting[3]
+			slow=splitting[2];
+			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			detailedJson1.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
+		});
+		$scope.aggressive=detailedJson1;
+		$scope.aggressiveCount=$scope.detailedView.data.suddenAcceleration.aggressive.totalSudAcceleration;
+		
+		//harsh break
+		var obj2 = $scope.detailedView.data.suddenAcceleration.harsh.historySuddenAcceleration;
+		var detailedJson2=[];
+		angular.forEach(obj2, function(value, key) 
+		{	
+			splitting=value.split(',');
+			latitude = splitting[0]
+			longutide = splitting[1]
+			speed=splitting[3]
+			slow=splitting[2];
+			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			detailedJson2.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
+		});
+		$scope.harsh=detailedJson2;
+		$scope.harshCount=$scope.detailedView.data.suddenAcceleration.harsh.totalSudAcceleration;
+		//very harsh break
+		var obj3 = $scope.detailedView.data.suddenAcceleration.veryharsh.historySuddenBrk;
+		var detailedJson3=[];
+		angular.forEach(obj3, function(value, key) 
+		{	
+			splitting=value.split(',');
+			latitude = splitting[0]
+			longutide = splitting[1]
+			speed=splitting[3]
+			slow=splitting[2];
+			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			detailedJson3.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
+		});
+		$scope.Veryharsh=detailedJson3;
+		$scope.veryHarsh=$scope.detailedView.data.suddenAcceleration.veryharsh.subTotalSuddenBreak;
+		// worst performer
+		var obj4 = $scope.detailedView.data.suddenAcceleration.worst.historySuddenBrk;
+		var detailedJson4=[];
+		angular.forEach(obj4, function(value, key) 
+		{	
+			splitting=value.split(',');
+			latitude = splitting[0]
+			longutide = splitting[1]
+			speed=splitting[3]
+			slow=splitting[2];
+			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			detailedJson4.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
+		});
+		$scope.worst=detailedJson4;
+		$scope.worstCount=$scope.detailedView.data.suddenAcceleration.worst.subTotalSuddenBreak;
 	};
 	
 	$scope.assignValue=function(dataVal){
@@ -1119,4 +1438,3 @@ $(document).ready(function(e) {
         }
     }, 1000);
 });
- 
