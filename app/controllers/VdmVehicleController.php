@@ -142,9 +142,8 @@ class VdmVehicleController extends \BaseController {
 		$rules = array (
 				'deviceId' => 'required|alpha_dash',
 				'vehicleId' => 'required|alpha_dash',
-				'shortName' => 'required',
-				'regNo' => 'required',
 				'shortName' => 'required|alpha_dash',
+				'regNo' => 'required|alpha_dash',
 				'vehicleType' => 'required',
 				'oprName' => 'required',
 				'deviceModel' => 'required', 
