@@ -143,7 +143,8 @@ class VdmFranchiseController extends \BaseController {
 			$user->name = $fname;
 			$user->username=$userId;
 			$user->email=$email1;
-			$user->password=Hash::make($password);
+            $user->mobileNo=$mobileNo1;
+			$user->password=Hash::make($otherDetails);
 			$user->save();
 
 			Log::info("going to email..");
@@ -157,6 +158,7 @@ class VdmFranchiseController extends \BaseController {
 			$user->name = 'vamos'.$fname;
 			$user->username=$vamosid;
 			$user->email='support@vamosys.com';
+            $user->mobileNo='9840898818';
 			$user->password=Hash::make($password);
 			$user->save();
 			$redis->sadd ( 'S_Users_' . $fcode, $vamosid );
@@ -321,27 +323,11 @@ class VdmFranchiseController extends \BaseController {
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo',
 					 $mobileNo1,$userId.':email',$email1 );
 		
-/*
-			$user = User::where('userId', '=', $userId);
-			$user->email=$email1;
-			$user->save();
-	*/		
 			
 			DB::table('users')
 			->where('username', $userId)
 			->update(array('email' => $email1));
-			
-		/*	$password='awesome';
-			
-			Log::info(" about to send mail");
-						
-			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
-			{
-				Log::info("Inside email :" . Input::get ( 'email1' ));
-				
-				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
-			});
-         * /
+
 
 		}
 					
@@ -357,6 +343,7 @@ class VdmFranchiseController extends \BaseController {
 	 * @param int $id        	
 	 * @return Response
 	 */
+	
 	public function destroy($id) {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
