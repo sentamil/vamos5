@@ -29,7 +29,9 @@
 			                		</tr>
 			                	</thead>
 			                	<tbody>	
-			                		@foreach($userVehicles as $key => $value)
+								@if(isset($userVehicles))
+									
+								@foreach($userVehicles as $key => $value)
 			                		<tr class="col-md-2">
 			                			<td>
 				                			{{ Form::checkbox('vehicleList[]', $key, null, ['class' => 'field']) }}
@@ -38,6 +40,9 @@
 											@endforeach
 			                			</td>	
 			                		</tr>
+								
+								@endif
+			                		
                					</tbody>
                 		</table>
                	{{ Form::close() }}	

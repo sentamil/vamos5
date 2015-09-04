@@ -101,15 +101,30 @@ class VdmGroupController extends \BaseController {
 		$userVehicles=null;
 		$shortName =null;
         $shortNameList = null;
-        
-		foreach ($vehicleList as $key=>$value) {
+        try{
+			Log::info('-------------- $try-----------');
+			if($vehicleList!=null)
+			{
+				Log::info('-------------- $try11-----------');
+				foreach ($vehicleList as $key=>$value) {
 			$userVehicles=array_add($userVehicles, $value, $value);
             $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
             $vehicleRefData=json_decode($vehicleRefData,true);
              $shortName = $vehicleRefData['shortName']; 
             $shortNameList = array_add($shortNameList,$value,$shortName);
+			}
+			
+			
+			
             
 		}
+		 
+		Log::info('-------------- $out-----------');
+		}catch(\Exception $e)
+	   {
+		
+	   }
+		
 		
 			return View::make('vdm.groups.create')->with('userVehicles',$userVehicles)->with('shortNameList',$shortNameList);;
 	}

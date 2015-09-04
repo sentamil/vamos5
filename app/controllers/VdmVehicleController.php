@@ -140,8 +140,8 @@ class VdmVehicleController extends \BaseController {
 		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 		
 		$rules = array (
-				'deviceId' => 'required',
-				'vehicleId' => 'required',
+				'deviceId' => 'required|alpha_dash',
+				'vehicleId' => 'required|alpha_dash',
 				'shortName' => 'required',
 				'regNo' => 'required',
 				'vehicleType' => 'required',

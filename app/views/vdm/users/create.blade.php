@@ -56,7 +56,10 @@
 							 <div class="form-group">
 							 	{{ Form::label('vehicleGroups', 'Select the Groups:') }}
 							 </div>
+							   
 							   <br>
+							   @if(isset($vehicleGroups))
+							   
 								@foreach($vehicleGroups as $key => $value)
 									{{ Form::checkbox('vehicleGroups[]', $key, null, ['class' => 'field']) }}
 									{{ Form::label($value) }}
@@ -64,7 +67,7 @@
 								@endforeach
 								</br/>
 								</br/>
-								
+								@endif
 								
 								
                                 </br/>
