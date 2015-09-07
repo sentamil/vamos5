@@ -272,7 +272,7 @@ class VdmGroupController extends \BaseController {
             $shortNameList = array_add($shortNameList,$value,$shortName);
 			$vehicleList=array_add($vehicleList, $value, $value);
 		}
-		Log::info('-------------- $groupId 1 -----------');
+		Log::info('-------------- $groupId 2 -----------');
 		return View::make('vdm.groups.edit',array('groupId'=>$groupId))->with('vehicleList', $vehicleList)->
 		with('selectedVehicles',$selectedVehicles)->with('shortNameList',$shortNameList);
 	}

@@ -27,6 +27,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+											 @if(isset($stopNames))
                                                 @foreach($stopNames as $key => $value)
                                                 <tr>
                                                     <td>{{ $key }}</td>
@@ -39,6 +40,7 @@
                                                  </td>
                                                 </tr>
                                                 @endforeach
+												@endif
                                             </tbody>
                                         </table>
                                     </div>

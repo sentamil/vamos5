@@ -247,6 +247,15 @@ class VdmDealersController extends \BaseController {
 			
 			// redirect
 			Session::flash ( 'message', 'Successfully updated ' . $dealerid . '!' );
+			if(Session::get('cur')=='dealer')
+			{
+				Session::flash ( 'message', 'Updates Successfully !' );
+			return View::make ( 'vdm.dealers.edit', array (
+				'dealerid' => $dealerid 
+		) )->with ( 'mobileNo', $mobileNo )->
+		with('email',$email);
+			}
+			
 			return Redirect::to ( 'vdmDealers' );
 		}
 	}
