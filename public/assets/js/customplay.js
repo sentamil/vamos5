@@ -16,6 +16,15 @@ app.directive('map', function($http) {
         template: '<div></div>',
         link: function(scope, element, attrs) {
         	scope.path=[];
+        	function utcdateConvert(milliseconds){
+				//var milliseconds=1440700484003;
+				var offset='+10';
+				var d = new Date(milliseconds);
+				utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+				nd = new Date(utc + (3600000*offset));
+				var result=nd.toLocaleString();
+				return result;
+			}
 		 	scope.$watch("hisurl", function (val) { 
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
@@ -54,12 +63,12 @@ app.directive('map', function($http) {
 							$('#vehiid h3').text(locs.vehicleId + " (" +locs.shortName+")");
 							$('#toddist h3').text(scope.timeCalculate(locs.totalRunningTime));
 							$('#vehstat h3').text(scope.timeCalculate(locs.totalIdleTime));
-							$('#vehdevtype h3').text(locs.odoDistance);
+							$('#vehdevtype h3 span').text(locs.odoDistance);
 							$('#mobno h3').text(scope.timeCalculate(locs.totalParkedTime));
 							$('#regno h3 span').text(locs.tripDistance);
 							
-							$('#lastseen').html('<strong>From Date & time :</strong> '+ data.fromDateTime);
-							$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> '+ data.toDateTime);
+							$('#lastseen').html('<strong>From Date & time :</strong> '+ new Date(data.fromDateTimeUTC).toString().split('GMT')[0]);
+							$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> '+ new Date(data.toDateTimeUTC).toString().split('GMT')[0]);
 							
 							var myOptions = {
 								zoom: Number(locs.zoomLevel),
@@ -200,7 +209,7 @@ app.directive('map', function($http) {
 							$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
 						}
 					}
-					var url = 'http://'+globalIP+':80/vamo/public//getGeoFenceView?vehicleId='+scope.trackVehID;
+					var url = 'http://'+globalIP+':8087/vamosgps/public//getGeoFenceView?vehicleId='+scope.trackVehID;
 		
 				scope.createGeofence(url);
 		   		}).error(function(){ });
@@ -216,7 +225,7 @@ app.controller('mainCtrl',function($scope, $http, $q){
 	$scope.tempadd01='';
 	$scope.cityCircle=[];
 	$scope.geoMarkerDetails={};
-	$scope.url = 'http://'+globalIP+':80/vamo/public//getVehicleLocations';
+	$scope.url = 'http://'+globalIP+':8087/vamosgps/public//getVehicleLocations';
 	$scope.getTodayDate  =	function(date) {
 		var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
@@ -237,7 +246,7 @@ app.controller('mainCtrl',function($scope, $http, $q){
 			}
 		}
 		
-		$scope.hisurl = 'http://'+globalIP+':80/vamo/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
+		$scope.hisurl = 'http://'+globalIP+':8087/vamosgps/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
 		$scope.loading	=	false;
 	}).error(function(){ /*alert('error'); */});
@@ -365,7 +374,7 @@ app.controller('mainCtrl',function($scope, $http, $q){
 	
 	$scope.groupSelection = function(groupname, groupid){
 		 $scope.selected=0;
-		 $scope.url = 'http://'+globalIP+':80/vamo/public//getVehicleLocations?group=' + groupname;
+		 $scope.url = 'http://'+globalIP+':8087/vamosgps/public//getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
 		 gmarkers=[];
 		 ginfowindow=[];
@@ -375,7 +384,7 @@ app.controller('mainCtrl',function($scope, $http, $q){
 			if(data.length)
 				$scope.vehiname	= data[0].vehicleLocations[0].vehicleId;
 			$scope.trackVehID =$scope.locations[$scope.gIndex].vehicleLocations[$scope.selected].vehicleId;
-			$scope.hisurl = 'http://'+globalIP+':80/vamo/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
+			$scope.hisurl = 'http://'+globalIP+':8087/vamosgps/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
 			$('.nav-second-level li').eq(0).children('a').addClass('active');
 			$scope.loading	=	false;
 		}).error(function(){ /*alert('error'); */});
@@ -493,6 +502,15 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		var tempTim = addZ(hrs) + ' H : ' + addZ(mins) + ' M : ' + addZ(secs) + ' S '; //+ ms;
 		return tempTim;
 	}
+	function utcdateConvert(milliseconds){
+		//var milliseconds=1440700484003;
+		var offset='+10';
+		var d = new Date(milliseconds);
+		utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+		nd = new Date(utc + (3600000*offset));
+		var result=nd.toLocaleString();
+		return result;
+	}
 	$scope.timeconversion= function(time){
 		var time = time;
 		var hours = Number(time.match(/^(\d+)/)[1]);
@@ -522,13 +540,13 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		}
 		if(document.getElementById('dateFrom').value==''){
 			if(document.getElementById('dateTo').value==''){
-				$scope.hisurl = 'http://'+globalIP+':80/vamo/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
+				$scope.hisurl = 'http://'+globalIP+':8087/vamosgps/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
 			}
 		}else{
 			if(document.getElementById('dateTo').value==''){
-				$scope.hisurl = 'http://'+globalIP+':80/vamo/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
+				$scope.hisurl = 'http://'+globalIP+':8087/vamosgps/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
 			}else{
-				$scope.hisurl = 'http://'+globalIP+':80/vamo/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime;
+				$scope.hisurl = 'http://'+globalIP+':8087/vamosgps/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime;
 			}
 		}
 		if($scope.hisurlold!=$scope.hisurl){	
@@ -669,6 +687,7 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		
 		if(data.position=='S'){
 			posval = 'Idle Time';
+		
 		}else if(data.position=='P'){
 			posval = 'Parked Time';
 		}

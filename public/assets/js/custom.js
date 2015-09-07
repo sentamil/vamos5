@@ -31,6 +31,25 @@ app.filter('statusfilter', function(){
 			}
 	   }
   	}
+}).directive('trafficLayer', function() {
+	return {
+		restrict:'E',
+		replace:true,
+		template:'<input type="button" id="traffic" ng-click="trafficEnable()" value="Traffic" />',
+		controller:function($scope){
+			$scope.trafficLayer = new google.maps.TrafficLayer();
+			$scope.checkVal=false;
+			$scope.trafficEnable = function(){
+				if($scope.checkVal==false){
+					$scope.trafficLayer.setMap($scope.map);
+					$scope.checkVal = true;
+				}else{
+					$scope.trafficLayer.setMap(null);
+					$scope.checkVal = false;
+				}
+			}
+		}
+	}
 })
 .controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $http, vamoservice, $filter, statusfilter){
 	$scope.locations = [];
@@ -70,6 +89,7 @@ app.filter('statusfilter', function(){
 				$scope.vehiname	= data[0].vehicleLocations[0].vehicleId;
 				$scope.locations = $scope.statusFilter($scope.locations02[0].vehicleLocations, $scope.vehicleStatus);
 				$scope.zoomLevel = parseInt(data[$scope.gIndex].zoomLevel);
+				$scope.support = data[$scope.gIndex].supportDetails;
 				$scope.initilize('map_canvas');
 			}
 		});	
@@ -131,6 +151,7 @@ app.filter('statusfilter', function(){
 	$scope.genericFunction = function(vehicleno, index){
 		$scope.selected = index;
 		$scope.removeTask(vehicleno);
+		
 	}
 	
 	$scope.check = function(){
@@ -165,7 +186,15 @@ app.filter('statusfilter', function(){
 			}
 		});
     };
-	
+	function utcdateConvert(milliseconds){
+		//var milliseconds=1440700484003;
+		var offset='+10';
+		var d = new Date(milliseconds);
+		utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+		nd = new Date(utc + (3600000*offset));
+		var result=nd.toLocaleString();
+		return result;
+	}
 	$scope.distance = function(){
 		$scope.nearbyflag=false;
 		$('.nearbyTable').hide();
@@ -183,6 +212,7 @@ app.filter('statusfilter', function(){
 	
 	$scope.groupSelection = function(groupname, groupid){
 		 $scope.selected=undefined;
+		 $scope.dynamicvehicledetails1=false;
 		 $scope.url = 'http://'+globalIP+':8087/vamosgps/public//getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
 		 gmarkers=[];
@@ -206,7 +236,7 @@ app.filter('statusfilter', function(){
 		+'<div><b style="width:100px; display:inline-block;">Speed</b> - '+data.speed+' <span style="font-size:10px;font-weight:bold;">kmph</span></div>'
 		+'<div><b style="width:100px; display:inline-block;">ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 		+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
-		+'<div><b style="width:100px; display:inline-block;">ACC Satus</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
+		+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 		+'<div><b style="width:100px; display:inline-block;">'+tempoTime.tempcaption+' Time</b> - '+tempoTime.temptime+'</div><br>'
 		+'<div><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a></div>'
 		+'</div>';
@@ -269,14 +299,24 @@ app.filter('statusfilter', function(){
 	
 	$scope.assignValue=function(dataVal){
 		$('#vehiid span').text(dataVal.vehicleId + " (" +dataVal.shortName+")");
-		$('#toddist span span').text(dataVal.distanceCovered);
+		$('#toddist span').text(dataVal.distanceCovered);
 		$('#vehstat span').text(dataVal.position);
 		total = parseInt(dataVal.speed);
 		$('#vehdevtype span').text(dataVal.odoDistance);
 		$('#mobno span').text(dataVal.overSpeedLimit);
 		$('#positiontime').text(vamoservice.statusTime(dataVal).tempcaption);
 		$('#regno span').text(vamoservice.statusTime(dataVal).temptime);
-		$('#lstseendate').html('<strong>Last Seen Date & time :</strong> '+ dataVal.lastSeen);	
+		
+		//var t0 = new Date(utcdateConvert(dataVal.date)).toString();
+		// var t1 = Date.parse(t0.toUTCString().replace('GMT', ''));
+    	//var t2 = (2 * t0) - t1;
+    //	var ldt = new Date(dataVal.date).toString().split('GMT')
+    //	console.log(t[0]);
+    //	console.log(Date(t2).toString());
+    
+		$('#lstseendate').html(new Date(dataVal.date).toString().split('GMT')[0])
+	//	new Date(now.toUTCString())
+	//	$('#lstseendate').html(utcdateConvert(dataVal.date));
 	}
 	
 	$scope.enterkeypress = function(){
@@ -497,7 +537,7 @@ app.filter('statusfilter', function(){
 		//$scope.endlatlong = new google.maps.LatLng();
 		//$scope.startlatlong = new google.maps.LatLng();
 		$scope.map.setZoom(19);
-		
+		$scope.dynamicvehicledetails1=true;
 		for(var i=0; i<temp.length;i++){
 			if(temp[i].vehicleId==$scope.vehicleno){
 				

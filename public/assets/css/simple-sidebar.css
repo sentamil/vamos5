@@ -218,29 +218,26 @@ li a label{ width:100%; display:block;}
 	  #pac-input {padding: 0 11px 0 13px; width: 400px;font-family: Roboto; z-index:999; position:absolute; left:65px; font-size: 15px;font-weight: 300;text-overflow: ellipsis;margin-top:70px;margin-right:10px;}
 	  #pac-input01 {margin-right:0; margin-top:5px; margin-bottom:10px; position:absolute;  z-index:999; right:100px}
 	  #pac-input01 input{ background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa; margin-bottom:10px;}
-	  #pac-input02{ margin-right:0; margin-top:0;}
+	  #pac-input02{ margin-right:0; margin-top:0; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa;}
       #pac-input:focus { border-color: #4d90fe; margin-left: -1px; padding-left: 14px; width: 401px;}
 	  #vehiid h3{ font-size:12px;}
-	  #lastseen{ font-size:12px; color:#000; position:absolute; bottom:67px; margin-left:1px; padding:3px 5px; background:#fff;}
-	   #lastseentrack{ font-size:12px; color:#000; position:absolute; bottom:35px; margin-left:1px; padding:3px 5px; background:#fff;}
-	  #lstseendate{font-size:12px; color:#000; position:absolute; bottom:67px; margin-left:1px; padding:3px 5px; background:#fff; right:0;}
-	 #distanceVal{font-size:14px; color:#000; background:#666 !important; border:1px solid #ccc; position:absolute; top:32px; height:22px; padding-right:5px; text-align:right; color:#eee; font-size:11px; right:-94px; width:89px !important;}
-	 #traffic{ width:58px; }
-	 #nearbyVeh{ position:absolute; text-align:center; width:153px;  }
+	  #distanceVal{font-size:14px; color:#000; background:#666 !important; border:1px solid #ccc; height:22px; padding-right:5px; text-align:right; color:#eee; font-size:11px; width:70px;}
+	 #traffic{ width:58px; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa;}
+	 #nearbyVeh{  text-align:center; width:230px; margin-top:5px; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa;}
 	 
-	 .nearbyTable{ position:absolute !important; top:91px; padding:10px; background:#fff; right:7px;}
+	 .nearbyTable{  position:relative; }
 	 .nearbyTable01{ bottom:95px;  position:absolute !important; background:#fff; right:7px; border:1px solid #999;}
 	 .nearbyTable02{ background:#fff; }
 	 .nearbyTable h3, .nearbyTable01 h3, h3.infoh3{padding:0 0 10px 0; font-size:14px; margin:0; text-align:center;}
 	 .nearbyTable01 h3{ background:#ccc; font-size:12px; padding:10px;}
 	 
 	 .nearbyTable h5{padding:0 0 5px 0; font-size:12px; margin:0; text-align:center;}
-	 .nearbyTable table, .nearbyTable01 table, .nearbyTable02 table{font-size:11px;}
+	 .nearbyTable table{font-size:11px; width:100%;}
 	 .nearbyTable table th{ padding:3px 5px; background:#eee; }
 	 .nearbyTable table td, .nearbyTable01 table td, .nearbyTable02 table td{ padding:3px 5px;}
 	 .nearbyTable table tbody tr:nth-child(even), .nearbyTable01 table tbody tr:nth-child(even), .nearbyTable02 table tbody tr:nth-child(even){background: #efefef;}
-	.latlong{font-size:12px; color:#000; position:absolute; bottom:33px; margin-left:1px; background:#fff; padding:5px 0 0 5px; }
-	.latlong label{ margin-right:10px;}
+	.latlong{font-size:12px; color:#000; margin-left:1px; background:#fff; }
+	.latlong label{ }
 	.latlong input{ width:150px; font-weight:normal; padding-left:10px; }
 	.topContent01{ padding-top:15px; padding-bottom:0; width:85%; opacity:0.95;}
  	label{font-weight:normal !important;}
@@ -291,3 +288,30 @@ li a label{ width:100%; display:block;}
   height: 100%;
 }
 .radioButt{margin-right:5px; vertical-align:baseline;}
+#container{width:80%; height:500px}
+#container1{width:80%; height:1000px}
+.legendlist, .dynamicvehicledetails{ border:1px solid #eee ; padding-top: 0; margin-top: 5px;}
+.legendlist h3{ font-size: 12px; text-align: center; margin: 0; background:#eee; padding:7px 10px;}
+.legendlist td{ font-size: 11px; width:25%;}
+.legendlist table{ width:100%;}
+.legendlist table th{ padding:3px 5px; background:#eee; }
+.legendlist table td, .legendlist table td, .legendlist table td{ padding:3px 7px;}
+.legendlist table tbody tr:nth-child(even), .legendlist table tbody tr:nth-child(even), .legendlist table tbody tr:nth-child(even){background: #efefef;}
+
+.dynamicvehicledetails{ font-size: 12px;}
+.dynamicvehicledetails h3{ font-size: 14px; text-align: center; font-weight: bold; background:#eee; padding:5px 7px; margin-top:0; margin-bottom:5px; }
+.dynamicvehicledetails div{ /*padding-bottom: 10px;*/}
+.dynamicvehicledetails td{ font-size: 12px;}
+.dynamicvehicledetails table{width:228px;}
+.dynamicvehicledetails table td, .dynamicvehicledetails table td, .dynamicvehicledetails table td{ padding:3px 7px;}
+.dynamicvehicledetails table tbody tr:nth-child(odd), .dynamicvehicledetails table tbody tr:nth-child(odd), .dynamicvehicledetails table tbody tr:nth-child(odd){background: #efefef;}
+
+.tracklegend td{ padding:3px;}
+.tracklegend tr:nth-child(odd){background: #efefef;}
+.trackDetails td{ padding:5px;}
+.trackDetails tr:nth-child(odd){background: #efefef;}
+.dynData{ width:100%; margin-top:5px; margin-bottom:10px; }
+.dynData td{ font-size:12px; padding:5px;}
+#lastseen, #lstseendate{font-size:12px;}
+.dynData h3{ font-size:12px; margin:0; padding-left:10px; font-weight:normal;}
+.dynData tbody tr:nth-child(odd){background: #efefef;}

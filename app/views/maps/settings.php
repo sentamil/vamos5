@@ -1,5 +1,3 @@
-<!-- ../public/settings  ../public/vdmVehicles/{{trackVehID}}/edit-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +31,7 @@
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
                 <li class="settings"><a href="../public/settings"  class="active"><div></div><label>Settings</label></a></li>
-                <li class="admin"><a href="javascript:void(0);"><div></div><label>Admin</label></a></li>
+                <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;">
@@ -44,8 +42,8 @@
                     </div>
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
-                    <ul class="nav nav-second-level" style="max-height: 250px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="javascript:void(0);" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)">{{loc.vehicleId}} ({{loc.shortName}}) <img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="20" height="20"/></a></li>
+                    <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.vehicleId}} ({{loc.shortName}})</a></li>
                     </ul>
                 </li>
             </ul>
