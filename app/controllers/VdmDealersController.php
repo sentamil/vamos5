@@ -276,7 +276,7 @@ class VdmDealersController extends \BaseController {
 		
 			Log::info('---------------Dealers:--------------');
 		$rules = array (
-				'dealerId' => 'required',
+				'dealerId' => 'required|alpha_dash',
 				'email' => 'required|email',
 				'mobileNo' => 'required'  
 				);

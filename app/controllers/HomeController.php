@@ -174,6 +174,34 @@ class HomeController extends BaseController {
 				
 				//return  Redirect::to('vdmVehicles');
 				
+			/*	if(Session::get('cur')=='dealer' || Session::get('cur')=='admin')
+				{
+					log::info( '------login 1---------- '.Session::get('cur'));
+					$redis->sadd('S_Organisations_Dealer_'.$username.'_'.$fcode,$organizationId);
+					 return  Redirect::to('vdmVehicles');
+				}*/
+			  if(strpos($username,'admin')!==false ) {
+             //do nothing
+			log::info( '---------- inside if filter adminauth----------' . $username) ;
+			//Auth::session(['cur' => 'admin']);
+			 return  Redirect::to('vdmVehicles');
+      }
+	 
+      else {
+           
+		  $redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$val1= $redis->sismember ( 'S_Dealers_' . $fcode, $username );
+		$val = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		  if($val1==1 && isset($val)) {
+			Log::info('---------------is dealer adminauth:--------------');			
+			 return  Redirect::to('vdmVehicles');
+			
+		}
+		
+           
+      }
+				
 				 return  Redirect::to('live');
 				
 

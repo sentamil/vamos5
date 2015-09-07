@@ -24,7 +24,7 @@ class VdmOrganizationController extends \BaseController {
         }
         $username = Auth::user()->username;
         $rules = array(
-                'organizationId'       => 'required',
+                'organizationId'       => 'required|alpha_dash',
                 'mobile' => 'required'
         );
         $validator = Validator::make(Input::all(), $rules);

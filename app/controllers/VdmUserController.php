@@ -111,7 +111,7 @@ class VdmUserController extends \BaseController {
 		
 		
 		$rules = array (
-				'userId' => 'required',
+				'userId' => 'required|alpha_dash',
 				'email' => 'required|email',
 				'vehicleGroups' => 'required'  
 				);

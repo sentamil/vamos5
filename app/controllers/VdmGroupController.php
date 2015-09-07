@@ -145,7 +145,7 @@ class VdmGroupController extends \BaseController {
 		}
 		$username = Auth::user()->username;
 		$rules = array(
-				'groupId'       => 'required',
+				'groupId'       => 'required|alpha_dash',
 				'vehicleList' => 'required'
  		);
 		$validator = Validator::make(Input::all(), $rules);
