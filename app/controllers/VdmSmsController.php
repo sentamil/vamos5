@@ -111,13 +111,7 @@ class VdmSmsController extends \BaseController {
         $mobileNos = $result['mobileNos'];
         $deliveryTime = $result['deliveryTime'];
         
-        
-        foreach ($stopNames as $value) {
-        }
-        foreach ($mobileNos as $value) {
-        }
-        foreach ($deliveryTime as $value) {
-        }
+			
         Log::info(' before view');
 
         return View::make('vdm.sms.report') -> with('stopNames', $stopNames) -> with('mobileNos', $mobileNos) -> with('deliveryTime', $deliveryTime) -> with('vehicleId', $vehicleId) -> with('routeNo', $routeNo) -> with('deliveryDate', $deliveryDate);

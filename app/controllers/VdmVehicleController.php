@@ -142,8 +142,8 @@ class VdmVehicleController extends \BaseController {
 		$rules = array (
 				'deviceId' => 'required|alpha_dash',
 				'vehicleId' => 'required|alpha_dash',
-				'shortName' => 'required|alpha_dash',
-				'regNo' => 'required|alpha_dash',
+				'shortName' => 'required',
+				'regNo' => 'required',
 				'vehicleType' => 'required',
 				'oprName' => 'required',
 				'deviceModel' => 'required', 
@@ -304,7 +304,7 @@ class VdmVehicleController extends \BaseController {
 	 */
 	
 	public function edit($id) {
-		
+		try{
 		Log::info('entering edit......');
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
@@ -333,7 +333,10 @@ class VdmVehicleController extends \BaseController {
        $refDataFromDB = json_decode ( $details, true );
        
 	
+		
+	
         $refDatatmp = array_merge($refData,$refDataFromDB);
+		
         $refData=$refDatatmp;
         //S_Schl_Rt_CVSM_ALH
         
@@ -367,6 +370,10 @@ class VdmVehicleController extends \BaseController {
 	//  var_dump($refData);
 		return View::make ( 'vdm.vehicles.edit', array (
 				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList );
+				}catch(\Exception $e)
+	{
+	return Redirect::to ( 'vdmVehicles' );
+}
 	}
 	
 	/**
@@ -1181,7 +1188,7 @@ log::info( '--------new name----------' .$user);
         
         //TODO - remove ..this is just for testing
        // $ipaddress = 'localhost';
-        
+        $ipaddress = $redis->get('ipaddress');
         $url = 'http://' .$ipaddress . ':9000/addMultipleVehicles?' . $parameters;
     $url=htmlspecialchars_decode($url);
  
