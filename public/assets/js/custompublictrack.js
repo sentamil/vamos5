@@ -174,3 +174,4 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 		  });
     };        
 }); 
+

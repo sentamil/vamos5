@@ -9,8 +9,8 @@ app.directive('map', function($http, vamoservice) {
 		   		var myOptions = {
 					zoom: 13,
 					center: new google.maps.LatLng(locs.latitude, locs.longitude),
-					mapTypeId: google.maps.MapTypeId.ROADMAP,
-					styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
+					mapTypeId: google.maps.MapTypeId.ROADMAP/*,
+					styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}] */
             	};
             	scope.map = new google.maps.Map(document.getElementById(attrs.id), myOptions);
 				google.maps.event.addListener(scope.map, 'click', function(event) {
@@ -148,7 +148,7 @@ app.directive('map', function($http, vamoservice) {
 app.controller('mainCtrl',function($scope, $http, vamoservice){ 
 	var res = document.location.href.split("?");
 	$scope.vehicleno = res[1].trim();
-	$scope.url = 'http://'+globalIP+':8087/vamosgps/public//getSelectedVehicleLocation?'+res[1];
+	$scope.url = 'http://'+globalIP+'/vamo/public//getSelectedVehicleLocation?'+res[1];
 	$scope.path = [];
 	$scope.speedval =[];
 	$scope.inter = 0;
@@ -156,7 +156,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 	$scope.cityCirclecheck=false;
 	vamoservice.getDataCall($scope.url).then(function(data) {
 		$scope.locations = data;
-		var url = 'http://'+globalIP+':8087/vamosgps/public//getGeoFenceView?'+res[1];
+		var url = 'http://'+globalIP+'/vamo/public//getGeoFenceView?'+res[1];
 				$scope.createGeofence(url)
 	});
     $scope.addMarker= function(pos){
@@ -182,7 +182,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 		  });
     };
 	$scope.enterkeypress = function(){
-		var url = 'http://'+globalIP+':8087/vamosgps/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+		var url = 'http://'+globalIP+'/vamo/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
 		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
 			vamoservice.getDataCall(url).then(function(data) {
 			 	document.getElementById('poival').value='';

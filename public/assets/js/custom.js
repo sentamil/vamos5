@@ -65,7 +65,7 @@ app.filter('statusfilter', function(){
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
-	$scope.url = 'http://'+globalIP+':8087/vamosgps/public//getVehicleLocations';
+	$scope.url = 'http://'+globalIP+'/vamo/public//getVehicleLocations';
 	$scope.historyfor='';
 	$scope.map =  null;
 	$scope.flightpathall = []; 
@@ -213,7 +213,7 @@ app.filter('statusfilter', function(){
 	$scope.groupSelection = function(groupname, groupid){
 		 $scope.selected=undefined;
 		 $scope.dynamicvehicledetails1=false;
-		 $scope.url = 'http://'+globalIP+':8087/vamosgps/public//getVehicleLocations?group=' + groupname;
+		 $scope.url = 'http://'+globalIP+'/vamo/public//getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
 		 gmarkers=[];
 		 for(var i=0; i<ginfowindow.length;i++){		
@@ -320,7 +320,7 @@ app.filter('statusfilter', function(){
 	}
 	
 	$scope.enterkeypress = function(){
-		var url = 'http://'+globalIP+':8087/vamosgps/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+		var url = 'http://'+globalIP+'/vamo/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
 		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
 			vamoservice.getDataCall(url).then(function(data) {
 			 	document.getElementById('poival').value='';
@@ -459,7 +459,7 @@ app.filter('statusfilter', function(){
 			
 			var lat = location02[$scope.gIndex].latitude;
 			var lng = location02[$scope.gIndex].longitude;
-			var myOptions = { zoom: $scope.zoomLevel, center: new google.maps.LatLng(lat, lng), mapTypeId: google.maps.MapTypeId.ROADMAP,styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]};
+			var myOptions = { zoom: $scope.zoomLevel, center: new google.maps.LatLng(lat, lng), mapTypeId: google.maps.MapTypeId.ROADMAP/*,styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]*/};
 			$scope.map = new google.maps.Map(document.getElementById(ID), myOptions);
 			
 			google.maps.event.addListener($scope.map, 'click', function(event) {
@@ -474,7 +474,7 @@ app.filter('statusfilter', function(){
 				}else if($scope.nearbyflag==true){
 					$('#status02').show(); 
 					$('#preloader02').show(); 
-					var tempurl = 'http://'+globalIP+':8087/vamosgps/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
+					var tempurl = 'http://'+globalIP+'/vamo/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
 					
 					$http.get(tempurl).success(function(data){
 						$scope.nearbyLocs = data;
@@ -554,7 +554,7 @@ app.filter('statusfilter', function(){
 					ginfowindow[j].close();
 				}
 				ginfowindow[i].open($scope.map,gmarkers[i]);
-				var url = 'http://'+globalIP+':8087/vamosgps/public//getGeoFenceView?vehicleId='+$scope.vehicleno;
+				var url = 'http://'+globalIP+'/vamo/public//getGeoFenceView?vehicleId='+$scope.vehicleno;
 				$scope.createGeofence(url);
 				
 			}
