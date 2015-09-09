@@ -400,7 +400,7 @@ class VdmVehicleController extends \BaseController {
 				'vehicleType' => 'required',
 			//	'oprName' => 'required',
 			//	'mobileNo' => 'required',
-				'overSpeedLimit' => 'required||numeric',
+				'overSpeedLimit' => 'required|numeric',
 		);
 	
 		$validator = Validator::make ( Input::all (), $rules );
