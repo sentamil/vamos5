@@ -147,12 +147,13 @@ class VdmVehicleController extends \BaseController {
 				'deviceId' => 'required|alpha_dash',
 				'vehicleId' => 'required|alpha_dash',
 				'shortName' => 'required|alpha_dash',
-				'regNo' => 'required',
+				'regNo' => 'required|alpha_dash',
 				'vehicleType' => 'required',
-				'oprName' => 'required',
-				'deviceModel' => 'required', 
-				'odoDistance' => 'required',
-				'gpsSimNo' => 'required'
+				'oprName' => 'required|alpha_dash',
+				'deviceModel' => 'required|alpha_dash', 
+				'odoDistance' => 'required|numeric',
+				'gpsSimNo' => 'required|numeric',
+				'overSpeedLimit' => 'required|numeric',
 				
 		);
 		$validator = Validator::make ( Input::all (), $rules );
@@ -441,7 +442,7 @@ class VdmVehicleController extends \BaseController {
 				'vehicleType' => 'required',
 			//	'oprName' => 'required',
 			//	'mobileNo' => 'required',
-		//		'overSpeedLimit' => 'required',
+				'overSpeedLimit' => 'required|numeric',
 		);
 	
 		$validator = Validator::make ( Input::all (), $rules );

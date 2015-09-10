@@ -25,7 +25,7 @@ var app = angular.module('mapApp',[])
 	$scope.markerClicked=false;
 	$scope.endlatlong = new google.maps.LatLng();
 	$scope.startlatlong = new google.maps.LatLng();
-	$scope.url = 'http://'+globalIP+':8087/vamosgps/public//getVehicleLocations';
+	$scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations';
 	$scope.historyfor='';
 	
 	$scope.locations01 = vamoservice.getDataCall($scope.url)
@@ -117,7 +117,7 @@ var app = angular.module('mapApp',[])
 	
 	$scope.groupSelection = function(groupname, groupid){
 		 $scope.selected=0;
-		 $scope.url = 'http://'+globalIP+':8087/vamosgps/public//getVehicleLocations?group=' + groupname;
+		 $scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
 		 gmarkers=[];
 		 ginfowindow=[];
@@ -212,7 +212,7 @@ var app = angular.module('mapApp',[])
         });
 	}
 	$scope.enterkeypress = function(){
-		var url = 'http://'+globalIP+':8087/vamosgps/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+		var url = 'http://'+globalIP+'/vamo/public/setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
 		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
 			vamoservice.getDataCall(url).then(function(data) {
 			 	document.getElementById('poival').value='';
@@ -307,7 +307,7 @@ var app = angular.module('mapApp',[])
 				$scope.getLocation(temp[i].latitude, temp[i].longitude, function(count){ 
 					$('#lastseen').text(count); 
 				});
-				var url = 'http://'+globalIP+':8087/vamosgps/public//getGeoFenceView?vehicleId='+$scope.vehicleno;
+				var url = 'http://'+globalIP+'/vamo/public/getGeoFenceView?vehicleId='+$scope.vehicleno;
 				$scope.createGeofence(url);
 			}
 		}
@@ -444,7 +444,7 @@ var app = angular.module('mapApp',[])
 						}else if(scope.nearbyflag==true){
 							$('#status02').show(); 
 							$('#preloader02').show(); 
-							var tempurl = 'http://'+globalIP+':8087/vamosgps/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
+							var tempurl = 'http://'+globalIP+'/vamo/public/getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
 							$http.get(tempurl).success(function(data){
 								scope.nearbyLocs = data;
 								$('#status02').fadeOut(); 

@@ -41,6 +41,9 @@ app.controller('histCtrl',function($scope, $http, $filter){
     $scope.td			=	getParameterByName('td');
     $scope.tt	 		= 	getParameterByName('tt');
   	
+  	console.log($scope.repId);
+  	console.log(getParameterByName('rid'));
+  	
     $scope.todayhistory	=	[];
     
     $scope.getTodayDate  =	function(date) {
