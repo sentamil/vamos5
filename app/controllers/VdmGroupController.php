@@ -161,6 +161,14 @@ class VdmGroupController extends \BaseController {
 			
 			$redis = Redis::connection();
 			$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+			$value1=$redis->SISMEMBER('S_Groups_' . $fcode, $groupId . ':' . $fcode);
+			if($value1==1)
+			{
+				
+				Session::flash('message', 'This group name already present along the Admin level '. '!');
+				return Redirect::to('vdmGroups/create')
+				;
+			}
 			$redis->sadd('S_Groups_' . $fcode, $groupId . ':' . $fcode);
 			foreach($vehicleList as $vehicle) {
 				$redis->sadd($groupId . ':' . $fcode,$vehicle);

@@ -184,7 +184,7 @@ class HomeController extends BaseController {
              //do nothing
 			log::info( '---------- inside if filter adminauth----------' . $username) ;
 			//Auth::session(['cur' => 'admin']);
-			 return  Redirect::to('vdmVehicles');
+			 return  Redirect::to('DashBoard');
       }
 	 
       else {
@@ -195,7 +195,7 @@ class HomeController extends BaseController {
 		$val = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		  if($val1==1 && isset($val)) {
 			Log::info('---------------is dealer adminauth:--------------');			
-			 return  Redirect::to('vdmVehicles');
+			 return  Redirect::to('DashBoard');
 			
 		}
 		
