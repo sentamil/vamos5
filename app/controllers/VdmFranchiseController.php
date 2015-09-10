@@ -164,14 +164,14 @@ class VdmFranchiseController extends \BaseController {
 			$redis->sadd ( 'S_Users_' . $fcode, $vamosid );
 			$redis->hmset ( 'H_UserId_Cust_Map', $vamosid . ':fcode', $fcode);
 				
-               		
+            /*   		
 			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
 			{
 				Log::info("Inside email :" . Input::get ( 'email1' ));
 				
 				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
 			});
-			
+			*/
 			
 			// redirect
 			Session::flash ( 'message', 'Successfully created ' . $fname . '!' );
@@ -381,14 +381,14 @@ class VdmFranchiseController extends \BaseController {
 		
 		Session::put('email1',$email1);
 		Log::info("Email Id :" . Session::get ( 'email1' ));
-		
+		/*
 		Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId), function($message)
 		{
 			Log::info("Inside email :" . Session::get ( 'email1' ));
 		
 			$message->to(Session::pull ( 'email1' ))->subject('User Id deleted');
 		});
-	
+	   */
 		
 		Session::flash ( 'message', 'Successfully deleted ' . 'fname:'.$fcode . '!' );
 		return Redirect::to ( 'vdmFranchises' );
