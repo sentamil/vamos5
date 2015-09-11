@@ -161,8 +161,7 @@ class VdmFranchiseController extends \BaseController {
 			$user->save();
 			$redis->sadd ( 'S_Users_' . $fcode, $vamosid );
 			$redis->hmset ( 'H_UserId_Cust_Map', $vamosid . ':fcode', $fcode);
-				
-               		
+						
 			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
 			{
 				Log::info("Inside email :" . Input::get ( 'email1' ));
