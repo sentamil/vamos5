@@ -22,7 +22,7 @@ class DashBoardController extends \BaseController {
 		Log::info('fcode=' . $fcode);
 		$dealerId =null;
 		$count=0;
-		$new_date = date('FY', strtotime("+0 month"));
+		$new_date = date('FY', strtotime("+1 month"));
 		$expireData=$redis->hget ( 'H_Expire_' . $fcode, $new_date);
 		$vechile=array();$temp=array();
 		if($expireData!=null)
