@@ -170,12 +170,12 @@ class VdmUserController extends \BaseController {
 			$user->mobileNo=$mobileNo;
 			$user->password=Hash::make($password);
 			$user->save();
-			/*
+			
 			Mail::queue('emails.welcome', array('fname'=>$userId,'userId'=>$userId,'password'=>$password), function($message)
 			{
 				$message->to(Input::get ( 'email' ))->subject('Welcome to VAMO Systems');	
 			});
-			*/
+			
 			// redirect
 			Session::flash ( 'message', 'Successfully created ' . $userId . '!' );
 			return Redirect::to ( 'vdmUsers' );
@@ -366,7 +366,7 @@ class VdmUserController extends \BaseController {
 		$email=$redis->hget('H_UserId_Cust_Map',$userId.':email');
 		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email');
 		
-		Log::info(" about to delete user " . $userId . ' by user ' . $username);
+		Log::info(" about to delete user" .$userId);
 		
 		DB::table('users')->where('username', $userId)->delete();
 		

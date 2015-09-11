@@ -53,7 +53,15 @@
         {{ Form::label('eveningTripStartTime', 'Evening Trip Start Time') }}
         {{ Form::text('eveningTripStartTime',$refData['eveningTripStartTime'], array('class' => 'form-control'))}}             
 	</div>
-    
+    <div class="form-group">
+		{{ Form::label('date', 'Date') }}
+		{{ Form::text('date', $refData['date'], array('class' => 'form-control','disabled' => 'disabled')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('expiredPeriod', 'Expired Period') }}
+		{{ Form::text('expiredPeriod', $refData['expiredPeriod'], array('class' => 'form-control','disabled' => 'disabled')) }}
+	</div>
+	
      </div>
 
 	<div class="col-md-4">
@@ -116,6 +124,10 @@
       {{ Form::text('altShortName',$refData['altShortName'], array('class' => 'form-control')) }}           
 
     </div>
+	<div class="form-group">
+		{{ Form::label('paymentType', 'Payment Type') }}
+		{{ Form::text('paymentType', $refData['paymentType'], array('class' => 'form-control','disabled' => 'disabled')) }}
+	</div>
 	
 	</div>
 	</div>

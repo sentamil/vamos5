@@ -168,15 +168,6 @@ Route::get('/getIndividualDriverPerformance', function() {
     return View::make('vls.getIndividualDriverPerformance');
 });
 
-Route::get('/getOverallDriverPerformance', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    Log::info('getOverallDriverPerformance');
-    return View::make('vls.getOverallDriverPerformance');
-});
-
-
 Route::get('/getVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -220,20 +211,16 @@ Route::get('password/reset/{token}', array('uses' => 'RemindersController@reset'
 
 Route::post('password/reset/{token}', array('before' => 'csrf', 'uses' => 'RemindersController@update', 'as' => 'password.update'));
 
-Route::get('/performance', function() {
-          if (!Auth::check()) {
-              return Redirect::to('login');
-          }
-          return View::make('reports.performanceChart');
-      });
+
 
   //vdmGeoFence
 
 Route::get('passwordremind', array('uses' => 'RemindersController@getRemind'));
 
 // route to process the form
+//Route::group(array('before' => 'adminauth'), function(){
 Route::post('login', array('before' => 'csrf', 'uses' => 'HomeController@doLogin'));
-
+//});
 Route::get('logout', array('uses' => 'HomeController@doLogout'));
 
 Route::get('admin', array('uses' => 'HomeController@admin'));
@@ -294,6 +281,8 @@ Route::post('vdmVehicles/findDealerList', array('uses' => 'VdmVehicleController@
 //ramB/{param}/C/{param1?
 Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleController@stops'));
 
+Route::get('vdmVehicles/migration/{param1}', array('uses' => 'VdmVehicleController@migration'));
+
 Route::get('vdmVehicles/removeStop/{param}/{param1}', array('uses' => 'VdmVehicleController@removeStop'));
 
 Route::get('vdmVehicles/stops1/{param}/{param1}', array('uses' => 'VdmVehicleController@stops1'));
@@ -303,11 +292,15 @@ Route::get('vdmVehicles/removeStop1/{param}/{param1}', array('uses' => 'VdmVehic
 
 Route::post('vdmVehicles/generate', array('uses' => 'VdmVehicleController@generate'));
 
+Route::post('vdmVehicles/migrationUpdate', array('uses' => 'VdmVehicleController@migrationUpdate'));
+
+
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
 
 Route::resource('vdmGroups', 'VdmGroupController');
 
 Route::resource('vdmVehicles', 'VdmVehicleController');
+Route::resource('DashBoard', 'DashBoardController');
 
 Route::resource('vdmUsers', 'VdmUserController');
 

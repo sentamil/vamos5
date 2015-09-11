@@ -16,39 +16,37 @@
 
 									{{ Form::open(array('url' => 'vdmBusRoutes')) }}
 
-									<div class="col-md-4">
+					                  			<div class="col-md-4">
 										<div class="form-group">
 											{{ Form::label('orgId', 'org Id') }}
+										
 											{{ Form::select('orgId', $orgList,Input::old('orgId'),array('class' => 'form-control')) }}
-										</div>
-
+										</div></br>
+										<br>
 										<div class="form-group">
 											{{ Form::label('routeId', 'Bus Route Number') }}
+										
 											{{ Form::text('routeId', Input::old('routeId'), array('class' => 'form-control')) }}
-
-										</div>
-
+										</div></br>
+										<br>
 										<div class="form-group">
 											{{ Form::label('morningSeq', 'Morning Sequence') }}
-                                            {{ Form::text('morningSeq', Input::old('morningSeq'), array('class' => 'form-control')) }}
+					                                            {{ Form::text('morningSeq', Input::old('morningSeq'), array('class' => 'form-control')) }}
 
-										</div>
-										
+										</div></br>
+										<br>
 										<div class="form-group">
-                                            {{ Form::label('eveningSeq', 'Evening Sequence') }}
-                                            {{ Form::text('eveningSeq', Input::old('eveningSeq'), array('class' => 'form-control')) }}
-
-                                        </div>
-										
-										
-									</div>
-
-									<div class="col-md-4">
-
+                                           						 {{ Form::label('eveningSeq', 'Evening Sequence') }}
+                                                                                        {{ Form::text('eveningSeq', Input::old('eveningSeq'), array('class' => 'form-control')) }}
+                                       						 </div></br>
+										 <br></div>
+										<div class="col-md-4">
 										<div class="form-group">
+										
 											{{ Form::label('stops', 'Bus Stops') }}
 											{{ Form::textarea('stops', '', array('class' => 'form-control')) }}
-										</div>
+										</div></br>
+										</br>
 										{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}
 
 										{{ Form::close() }}
