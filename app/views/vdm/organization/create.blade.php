@@ -20,6 +20,11 @@
         {{ Form::text('description', Input::old('[description'), array('class' => 'form-control')) }}
 
     </div>
+	<div class="form-group">
+        {{ Form::label('etc', 'Evening Trip Cron') }}
+        {{ Form::text('etc', Input::old('etc'), array('class' => 'form-control')) }}
+		
+    </div>
     <div class="form-group">
         {{ Form::label('address', 'Address') }}
         {{ Form::textarea('address', Input::old('address'), array('class' => 'form-control')) }}
@@ -38,7 +43,24 @@
         {{ Form::label('mobile', 'Mobile') }}
         {{ Form::text('mobile', Input::old('mobile'), array('class' => 'form-control')) }}
 		
-    </div><div>
+    </div>
+	
+	<div class="form-group">
+        {{ Form::label('mtc', 'Morning Trip Cron') }}
+        {{ Form::text('mtc', Input::old('mtc'), array('class' => 'form-control')) }}
+		
+    </div>
+	<div class="form-group">
+        {{ Form::label('atc', 'After Trip Cron') }}
+        {{ Form::text('atc', Input::old('atc'), array('class' => 'form-control')) }}
+		
+    </div>
+	
+	
+	
+	
+	
+	<div>
     <ul id="itemsort"> {{ Form::label('poi', 'Place of interest') }}
        @for ($i = 0; $i < 10; $i++)
 {{ Form::text('poi'.$i, Input::old('poi'), array('class' => 'form-control')) }}

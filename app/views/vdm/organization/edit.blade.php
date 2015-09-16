@@ -20,6 +20,12 @@
         {{ Form::text('description', $description, array('class' => 'form-control')) }}
 
     </div>
+	<div class="form-group">
+        {{ Form::label('etc', 'Evening Trip Cron') }}
+        {{ Form::text('etc', $etc, array('class' => 'form-control')) }}
+		
+    </div>
+	
     <div class="form-group">
         {{ Form::label('address', 'Address') }}
         {{ Form::textarea('address', $address, array('class' => 'form-control')) }}
@@ -37,6 +43,17 @@
       <div class="form-group">
         {{ Form::label('mobile', 'Mobile') }}
         {{ Form::text('mobile', $mobile, array('class' => 'form-control')) }}
+    </div>
+	
+	<div class="form-group">
+        {{ Form::label('mtc', 'Morning Trip Cron') }}
+        {{ Form::text('mtc', $mtc, array('class' => 'form-control')) }}
+		
+    </div>
+	<div class="form-group">
+        {{ Form::label('atc', 'AfterNoon Trip Cron') }}
+        {{ Form::text('atc', $atc, array('class' => 'form-control')) }}
+		
     </div>
     <div>
 	{{ Form::label('poi', 'Place Of interest') }}

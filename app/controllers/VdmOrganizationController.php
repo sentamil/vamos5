@@ -70,6 +70,9 @@ class VdmOrganizationController extends \BaseController {
             $description      = Input::get('description');
             $address      = Input::get('address');
             $mobile      = Input::get('mobile');
+			$atc= Input::get('atc');
+			$etc=Input::get('etc');
+			$mtc=Input::get('mtc');
 			$startTime =$time1;
 			$endTime=$time2;
             $orgDataArr = array (
@@ -78,13 +81,21 @@ class VdmOrganizationController extends \BaseController {
                     'address' => $address,
                     'mobile' => $mobile,
 					'startTime' => $startTime,
-					'endTime'  => $endTime
+					'endTime'  => $endTime,
+					'atc' => $atc,
+					'etc' =>$etc,
+					'mtc' =>$mtc
             );
-            
+			 $redis = Redis::connection();
+			 $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+          
+			
+			
+			
             $orgDataJson = json_encode ( $orgDataArr );
          
             
-            $redis = Redis::connection();
+           
 			$companymap=$redis->hget('H_Org_Company_Map',$organizationId);
 			if($companymap!=null)
 			{
@@ -93,7 +104,7 @@ class VdmOrganizationController extends \BaseController {
 			 return Redirect::to('vdmOrganization/create');
 			}
 			
-            $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+           
             $redis->sadd('S_Organisations_'. $fcode, $organizationId);
 			
 			if(Session::get('cur')=='dealer')
@@ -106,6 +117,48 @@ class VdmOrganizationController extends \BaseController {
 				$redis->sadd('S_Organisations_Admin_'.$fcode,$organizationId);
 			}
 			
+			  if($etc!=null)
+			{
+				$etccron = array (
+                    'timeCron' => $etc,
+                    'methodToCall' => 'getReadyForEveningSchoolTrips',
+                    'fcode' => $fcode,
+                    'orgId' => $organizationId,
+					'className' => 'com.el.tasks.scheduled.ScheduledTasks'
+            );
+			
+			$etcjson = json_encode ( $etccron );
+			$redis->hset('H_Scheduler_'.$fcode,'getReadyForEveningSchoolTrips_'.$organizationId,$etcjson);
+			
+			}
+			  if($mtc!=null)
+			{
+				$mtccron = array (
+                    'timeCron' => $mtc,
+                    'methodToCall' => 'getReadyForMorningSchoolTrips',
+                    'fcode' => $fcode,
+                    'orgId' => $organizationId,
+					'className' => 'com.el.tasks.scheduled.ScheduledTasks'
+            );
+			
+			$mtcjson = json_encode ( $mtccron );
+			$redis->hset('H_Scheduler_'.$fcode,'getReadyForMorningSchoolTrips_'.$organizationId,$mtcjson);
+			
+			}
+			if($atc!=null)
+			{
+				$atccron = array (
+                    'timeCron' => $atc,
+                    'methodToCall' => 'getReadyForAfternoonSchoolTrips',
+                    'fcode' => $fcode,
+                    'orgId' => $organizationId,
+					'className' => 'com.el.tasks.scheduled.ScheduledTasks'
+            );
+			
+			$atcjson = json_encode ( $atccron );
+			$redis->hset('H_Scheduler_'.$fcode,'getReadyForAfternoonSchoolTrips_'.$organizationId,$atcjson);
+			
+			}
 			
             
             $redis->hset('H_Organisations_'.$fcode,$organizationId,$orgDataJson );
@@ -322,6 +375,9 @@ class VdmOrganizationController extends \BaseController {
         $mobile =isset($orgDataArr['mobile'])?$orgDataArr['mobile']:' ';
         $time1=isset($orgDataArr['startTime'])?$orgDataArr['startTime']:' ';
 		$time2=isset($orgDataArr['endTime'])?$orgDataArr['endTime']:' ';
+		$etc=isset($orgDataArr['etc'])?$orgDataArr['etc']:' ';
+		$mtc=isset($orgDataArr['mtc'])?$orgDataArr['mtc']:' ';
+		$atc=isset($orgDataArr['atc'])?$orgDataArr['atc']:' ';
         log::info( 'time1 ::' . $time1);
          log::info( 'time2 ::' . $time2);
 		$address1=array();
@@ -382,7 +438,7 @@ class VdmOrganizationController extends \BaseController {
 		$i=0;
 		$j=0;$k=0;$m=0;
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
-        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('place1',$place1);   
+        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('place1',$place1)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc);   
         
     }
     
@@ -442,7 +498,9 @@ class VdmOrganizationController extends \BaseController {
             $description      = Input::get('description');
             $address      = Input::get('address');
             $organizationId = $id;
-			
+			$atc= Input::get('atc');
+			$etc=Input::get('etc');
+			$mtc=Input::get('mtc');
 					$startTime =$time1;
 			$endTime=$time2;
             $orgDataArr = array (
@@ -452,7 +510,10 @@ class VdmOrganizationController extends \BaseController {
                     'address' => $address,
                     'description' => $description,
 					'startTime' => $startTime,
-					'endTime'  => $endTime
+					'endTime'  => $endTime,
+					'atc' => $atc,
+					'etc' =>$etc,
+					'mtc' =>$mtc
             );
             
             $orgDataJson = json_encode ( $orgDataArr );
@@ -466,6 +527,48 @@ class VdmOrganizationController extends \BaseController {
             
             $routesArr = explode(",",$mobile);
             
+			  if($etc!=null)
+			{
+				$etccron = array (
+                    'timeCron' => $etc,
+                    'methodToCall' => 'getReadyForEveningSchoolTrips',
+                    'fcode' => $fcode,
+                    'orgId' => $organizationId,
+					'className' => 'com.el.tasks.scheduled.ScheduledTasks'
+            );
+			
+			$etcjson = json_encode ( $etccron );
+			$redis->hset('H_Scheduler_'.$fcode,'getReadyForEveningSchoolTrips_'.$organizationId,$etcjson);
+			
+			}
+			  if($mtc!=null)
+			{
+				$mtccron = array (
+                    'timeCron' => $mtc,
+                    'methodToCall' => 'getReadyForMorningSchoolTrips',
+                    'fcode' => $fcode,
+                    'orgId' => $organizationId,
+					'className' => 'com.el.tasks.scheduled.ScheduledTasks'
+            );
+			
+			$mtcjson = json_encode ( $mtccron );
+			$redis->hset('H_Scheduler_'.$fcode,'getReadyForMorningSchoolTrips_'.$organizationId,$mtcjson);
+			
+			}
+			if($atc!=null)
+			{
+				$atccron = array (
+                    'timeCron' => $atc,
+                    'methodToCall' => 'getReadyForAfternoonSchoolTrips',
+                    'fcode' => $fcode,
+                    'orgId' => $organizationId,
+					'className' => 'com.el.tasks.scheduled.ScheduledTasks'
+            );
+			
+			$atcjson = json_encode ( $atccron );
+			$redis->hset('H_Scheduler_'.$fcode,'getReadyForAfternoonSchoolTrips_'.$organizationId,$atcjson);
+			
+			}
            
 
 
