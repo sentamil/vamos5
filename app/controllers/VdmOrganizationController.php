@@ -73,8 +73,14 @@ class VdmOrganizationController extends \BaseController {
 			$atc= Input::get('atc');
 			$etc=Input::get('etc');
 			$mtc=Input::get('mtc');
+			$parkingAlert=Input::get('parkingAlert');
+			$idleAlert=Input::get('idleAlert');
+			$parkDuration=Input::get('parkDuration');
+			$idleDuration=Input::get('idleDuration');
+			$overspeedalert=Input::get('overspeedalert');
 			$startTime =$time1;
 			$endTime=$time2;
+			$sendGeoFenceSMS = Input::get ('sendGeoFenceSMS');
             $orgDataArr = array (
                     'description' => $description,
                     'email' => $email,
@@ -84,7 +90,14 @@ class VdmOrganizationController extends \BaseController {
 					'endTime'  => $endTime,
 					'atc' => $atc,
 					'etc' =>$etc,
-					'mtc' =>$mtc
+					'mtc' =>$mtc,
+					'parkingAlert'=>$parkingAlert,
+					'idleAlert'=>$idleAlert,
+					'parkDuration'=>$parkDuration,
+					'idleDuration'=>$idleDuration,
+					'overspeedalert'=>$overspeedalert,
+					'sendGeoFenceSMS'=>$sendGeoFenceSMS
+					
             );
 			 $redis = Redis::connection();
 			 $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
@@ -378,6 +391,13 @@ class VdmOrganizationController extends \BaseController {
 		$etc=isset($orgDataArr['etc'])?$orgDataArr['etc']:' ';
 		$mtc=isset($orgDataArr['mtc'])?$orgDataArr['mtc']:' ';
 		$atc=isset($orgDataArr['atc'])?$orgDataArr['atc']:' ';
+		$parkDuration=isset($orgDataArr['parkDuration'])?$orgDataArr['parkDuration']:'';
+		$idleDuration=isset($orgDataArr['idleDuration'])?$orgDataArr['idleDuration']:'';
+		$parkingAlert=isset($orgDataArr['parkingAlert'])?$orgDataArr['parkingAlert']:'';
+		$idleAlert=isset($orgDataArr['idleAlert'])?$orgDataArr['idleAlert']:'';
+		$overspeedalert=isset($orgDataArr['overspeedalert'])?$orgDataArr['overspeedalert']:'';
+		$sendGeoFenceSMS=isset($orgDataArr['sendGeoFenceSMS'])?$orgDataArr['sendGeoFenceSMS']:'';
+		
         log::info( 'time1 ::' . $time1);
          log::info( 'time2 ::' . $time2);
 		$address1=array();
@@ -438,7 +458,7 @@ class VdmOrganizationController extends \BaseController {
 		$i=0;
 		$j=0;$k=0;$m=0;
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
-        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('place1',$place1)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc);   
+        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('place1',$place1)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS);   
         
     }
     
@@ -501,6 +521,13 @@ class VdmOrganizationController extends \BaseController {
 			$atc= Input::get('atc');
 			$etc=Input::get('etc');
 			$mtc=Input::get('mtc');
+			$parkingAlert=Input::get('parkingAlert');
+			$idleAlert=Input::get('idleAlert');
+			$parkDuration=Input::get('parkDuration');
+			$idleDuration=Input::get('idleDuration');
+			$overspeedalert=Input::get('overspeedalert');
+			$sendGeoFenceSMS=Input::get('sendGeoFenceSMS');
+			
 					$startTime =$time1;
 			$endTime=$time2;
             $orgDataArr = array (
@@ -513,7 +540,13 @@ class VdmOrganizationController extends \BaseController {
 					'endTime'  => $endTime,
 					'atc' => $atc,
 					'etc' =>$etc,
-					'mtc' =>$mtc
+					'mtc' =>$mtc,
+					'parkingAlert'=>$parkingAlert,
+					'idleAlert'=>$idleAlert,
+					'parkDuration'=>$parkDuration,
+					'idleDuration'=>$idleDuration,
+					'overspeedalert'=>$overspeedalert,
+					'sendGeoFenceSMS'=>$sendGeoFenceSMS
             );
             
             $orgDataJson = json_encode ( $orgDataArr );

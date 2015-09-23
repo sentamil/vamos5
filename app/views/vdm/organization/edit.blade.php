@@ -25,7 +25,29 @@
         {{ Form::text('etc', $etc, array('class' => 'form-control')) }}
 		
     </div>
+	<div class="form-group">
+        {{ Form::label('parkingAlert', 'Parking Alert') }}
+      
+		 {{ Form::select('parkingAlert',  array( 'no' => 'No','yes' => 'Yes' ), $parkingAlert, array('class' => 'form-control')) }} 
+		
+    </div>
+	<div class="form-group">
+        {{ Form::label('idleAlert', 'Idle Alert') }}
+		 {{ Form::select('idleAlert',  array( 'no' => 'No','yes' => 'Yes' ), $idleAlert, array('class' => 'form-control')) }} 
+		
+    </div>
 	
+	
+	<div class="form-group">
+        {{ Form::label('overspeedalert', 'Over Speed Alert') }}
+		 {{ Form::select('overspeedalert',  array( 'no' => 'No','yes' => 'Yes' ), $overspeedalert, array('class' => 'form-control')) }} 
+		
+    </div>
+	<div class="form-group">
+        {{ Form::label('sendGeoFenceSMS', 'Send GeoFence SMS') }}
+         {{ Form::select('sendGeoFenceSMS',  array( 'no' => 'No','yes' => 'Yes' ), $sendGeoFenceSMS, array('class' => 'form-control')) }} 
+		
+    </div>
     <div class="form-group">
         {{ Form::label('address', 'Address') }}
         {{ Form::textarea('address', $address, array('class' => 'form-control')) }}
@@ -55,6 +77,17 @@
         {{ Form::text('atc', $atc, array('class' => 'form-control')) }}
 		
     </div>
+	<div class="form-group">
+        {{ Form::label('parkDuration', 'Park Duration in minutes') }}
+        {{ Form::text('parkDuration', $parkDuration, array('class' => 'form-control')) }}
+		
+    </div>
+	<div class="form-group">
+        {{ Form::label('idleDuration', 'Idle Duration in minutes') }}
+        {{ Form::text('idleDuration', $idleDuration, array('class' => 'form-control')) }}
+		
+    </div>
+	
     <div>
 	{{ Form::label('poi', 'Place Of interest') }}
 	</br>

@@ -191,26 +191,12 @@
 										
 										
                                         <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {{ Form::label('parkingAlert', 'Parking Alert') }}
-                                                </div>
-                                                <div class="col-md-6">
-                                                    {{ Form::select('parkingAlert',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('parkingAlert'), array('class' => 'form-control')) }} 
-                                                </div>  
-                                            </div>
+                                           
                                         </div>
                                         
 																	
 										<div class="col-md-6">
-											<div class="row">
-												<div class="col-md-6">
-													{{ Form::label('sendGeoFenceSMS', 'Send GeoFence SMS') }}
-												</div>
-												<div class="col-md-6">
-													{{ Form::select('sendGeoFenceSMS', array( 'no' => 'No','yes' => 'Yes' ), Input::old('vehicleType'), array('class' => 'form-control')) }} 
-												</div>
-											</div>
+											
 										</div>
 										
 										
