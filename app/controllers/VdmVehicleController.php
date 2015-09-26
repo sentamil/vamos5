@@ -301,11 +301,10 @@ class VdmVehicleController extends \BaseController {
 	 * @return Response
 	 */
 	public function show($id) {
-		 Log::info(' inside show....');
+		 Log::info(' inside show....' . $id);
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
-		$username = Auth::user ()->username;
 	
 		
 		$redis = Redis::connection ();
@@ -329,7 +328,7 @@ class VdmVehicleController extends \BaseController {
 		{
 			return Redirect::to('vdmVehicles/dealerSearch');
 		}
-		
+		log::info(' vehicle Id = '. $vehicleId . ' fcode = ' . $deviceRefData['fcode'] );
 		return View::make ( 'vdm.vehicles.show', array (
 				'deviceId' => $deviceId 
 		) )->with ( 'deviceRefData', $deviceRefData )->with ( 'vehicleId', $vehicleId );
@@ -521,7 +520,7 @@ class VdmVehicleController extends \BaseController {
 			$refDataJson1=json_decode($refDataJson1,true);
 		
 			//$org=isset($refDataJson1['orgId'])?$refDataJson1->orgId:'def';
-			$org=isset($refDataFromDB->orgId)?$refDataFromDB->orgId:$refDataJson1['orgId'];
+			$org=isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'def';
 			$oldroute=isset($refDataFromDB->shortName)?$refDataFromDB->shortName:$refDataJson1['shortName'];
 			
 			if($org!=$orgId)
@@ -806,8 +805,8 @@ class VdmVehicleController extends \BaseController {
 		$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);//ram
 			$refDataJson1=json_decode($refDataJson1,true);
 		
-			$orgId=$refDataJson1['orgId'];
-		
+         $orgId=isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'-';
+
 		$redis->hdel ( 'H_RefData_' . $fcode, $vehicleId );
         
 		$redis->hdel('H_Device_Cpy_Map',$deviceId);

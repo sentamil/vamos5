@@ -55,7 +55,8 @@
 							<thead>	
 								<tr>
 								<th>
-							 	{{ Form::label('vehicleGroups', 'Select the Groups:') }}</th>
+							 	{{ Form::label('vehicleGroups', 'Select the Groups:') }}
+								</th>
 							 </tr>
 							   </thead>
 								<tbody>

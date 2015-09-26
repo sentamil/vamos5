@@ -1,137 +1,117 @@
-<?php
-class DashBoardController extends \BaseController {
-	
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index() {
-		if (! Auth::check () ) {
-			return Redirect::to ( 'login' );
-		}
-		$username = Auth::user ()->username;
-		
-		log::info( 'User name  ::' . $username);
-		Session::forget('page');
-		
-		$redis = Redis::connection ();
-		
-		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-		
-		Log::info('fcode=' . $fcode);
-		$dealerId =null;
-		$count=0;
-		$new_date = date('FY', strtotime("+1 month"));
-		$expireData=$redis->hget ( 'H_Expire_' . $fcode, $new_date);
-		$vechile=array();$temp=array();
-		if($expireData!=null)
-		{
-			
-			$vehiclesExpire = explode(',',$expireData);
-			if(Session::get('cur')=='dealer')
-			{
-				foreach($vehiclesExpire as $org) {
-					$vehicleListId='S_Vehicles_Dealer_'.$username.'_'.$fcode;
-					$value=$redis->SISMEMBER($vehicleListId,$org);
-					if($value==1)
-					{
-						log::info( 'value if--->' . $value);
-						$vechile = array_add($vechile, $org, $org);
-					}
-				}
-			}
-			else if(Session::get('cur')=='admin')
-			{
-				$dealer = $redis->smembers('S_Dealers_'. $fcode);  
+@include('includes.header_index')
+<div id="wrapper">
+<div class="content animate-panel">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="hpanel">
+                <div class="panel-heading">
+                   <h4> Dash Board</h4>
+                </div>
+                <div class="panel-body">
+                <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6">
+                <div class="col-sm-6"><div id="example2_filter" class="dataTables_filter"></div></div></div><div class="row">
+			<div class="col-sm-12">
+			<div class="form-group">
+					<font face="tahoma" size="3" style="color:orange">{{ Form::label('tnovo', 'Total Vehicles OnBoard :') }}
+					{{ Form::label('count', $count.' ') }}</font>
+					</div></br>
+					<div claa="col-sm-12">
+					<div class="form-group">
+					<div class="row">
+					<div class="col-sm-12">
+					<font face="tahoma" size="3" style="color:green"> {{ Form::label('vechileEx', 'Number of Vehicles Expires this month') }}
+
+					   {{ Form::label('l', count($vechile), array('class' => 'form-control')) }}</font>
+					 </div></br><br>
+					<div class="col-sm-12">
+			                <font face="tahoma" size="3" color="blue"> {{ Form::label('vechileEx', 'Vehicles Details :') }}</font>
+					</br><br>
+					<table id="example1" class="table table-bordered dataTable">
+					<thead>
+						<font face="tahoma" color="rose">
+
+						<tr>
+							<th style="text-align: center;">VEHICLE ID</th>
+						</tr>
+					</font>
+
+					</thead>
+					<tbody>
+					@if(isset($vechile))
+					@foreach($vechile as $key => $value)
+					<tr style="text-align: center;">
+					 <td>{{ Form::label('li', $key) }}</td>
+					 </tr>
+					  @endforeach
+					  </tbody>
+					  @endif
+					</table>
+					</div>
+					</div>
+					<br>
+					<div class="row">
+					<div class="col-sm-12">
+					<div class="form-group">
+       					<font face="tahoma" size="3" color="blue">{{ Form::label('vehicles', 'Vehicles OnBoard with each Dealers :') }}</font>
+					<table id="example1" class="table table-bordered dataTable">
+					<thead>
+						<tr>
+							<th style="text-align: center;">DEALER ID</th>
+							<th style="text-align: center;">NUMBER OF VEHICLES</th>
+						</tr>
+					</thead>
+					<tbody>
+					@if(isset($dealerId))
+					@foreach($dealerId as $key => $value)
+						<tr style="text-align: center;">
+							<td> {{ Form::label('li', $key) }}</td>
+							<td> {{ Form::label('l',$value .' '.' ') }}</td>
+						</tr>
+					@endforeach
+					</tbody>
+					@endif
+					</table>
 				
-						foreach($dealer as $org1) 
-						{$temp3=0;
-							$vechile1 =array();
-								foreach($vehiclesExpire as $org) {
-								$vehicleListId='S_Vehicles_Admin_'.$fcode;
-								$value=$redis->SISMEMBER($vehicleListId,$org);
-						
-								if($value==1)
-								{
-									$vechile = array_add($vechile, $org, $org);
-								}
-							else{
-							
-									
-									$vehicleListId='S_Vehicles_Dealer_'.$org1.'_'.$fcode;
-									$value1=$redis->SISMEMBER($vehicleListId,$org);
-									if($value1==1)
-									{
-										$vechile1 = array_add($vechile1, $org, $org);
-										$temp2=count($vechile1);
-									
-									if($temp2!=0)
-									{
-										log::info('value not zero'.$temp3);
-										try
-										{
-											$temp3=$temp[org1]+$temp2;
-										}
-										catch(\Exception $e)
-										{
-											$temp3=$temp2;
-										}
-											unset($temp[$org1]);
-											$temp = array_add($temp, $org1,strval($temp3));
-									}
-									}
-									
-									
-								$value1=0;
-								//
-								}						
-							}
-					
-						}
-			}
-				
-		}
-		Log::info('count');
-		Log::info(count($vechile));
-		if(Session::get('cur')=='dealer')
-		{
-			$vehicleListId='S_Vehicles_Dealer_'.$username.'_'.$fcode;
-			$count=$redis->scard($vehicleListId);
-			$vechileEx=' ';
-			$vechileEx1=' ';
-		}
-		else if(Session::get('cur')=='admin')
-		{
-			$vechileEx='Number of Vehicles Expired this month for dealers :';
-			$vechileEx1=' ';
-			$vehicleListId='S_Vehicles_Admin_'.$fcode;
-			$count=$redis->scard($vehicleListId);
-			log::info( 'count  ::' . $count);
-			$dealerId = $redis->smembers('S_Dealers_'. $fcode);        
-			$orgArr = array();
-			foreach($dealerId as $org) {
-				log::info( 'Dealer  ::' . $org);
-				$vehicleListId='S_Vehicles_Dealer_'.$org.'_'.$fcode;
-				$count=$count+$redis->scard($vehicleListId);
-				$orgArr = array_add($orgArr, $org,$redis->scard($vehicleListId));
-				log::info( 'count in  ::' . $count);
-			}
-			$dealerId = $orgArr;
-			log::info( 'count  ::' . $count);
-		}
-		else{
-			$vehicleListId = 'S_Vehicles_' . $fcode;
-		}
-		
-		return View::make ( 'vdm.vehicles.dashboard')->with('count',$count)->with('dealerId',$dealerId)->with('vechile',$vechile)->with('temp',$temp)->with('vechileEx',$vechileEx)->with('vechileEx1',$vechileEx1);
-	}
-	
-	 protected function schedule(Schedule $schedule)
-    {
-        $schedule->call(function () {
-            //DB::table('recent_users')->delete();
-			
-        })->everyMinute();
-    }
-	}
+					</br>
+					</div>
+					</div>
+					<div class="row">
+					<div class="col-sm-12">
+					<div class="form-group">
+					<div class="col-sm-12">
+					<font face="tahoma" size="3" style="color:blue"> {{ Form::label('vechileEx', $vechileEx) }}</font>
+					<div class="row">
+					<div class="col-sm-12">
+					<div class="form-group"> 
+					{{ Form::label('vechileEx1', $vechileEx1) }}
+					</div>
+					<table id="example1" class="table table-bordered dataTable">
+					<thead>
+						<tr>
+							<th style="text-align: center;">DEALER ID</th>
+							<th style="text-align: center;">NUMBER OF VEHICLES</th>
+						</tr>
+					</thead>
+					<tbody>
+					 @if(isset($temp))
+					@foreach($temp as $key => $value)
+					<tr style="text-align: center;">
+					<td> {{ Form::label('li', $key) }}</td>
+					<td> {{ Form::label('l', $value .'  '.' ') }}</td>
+					 </tr>
+					  @endforeach
+					  </tbody>
+					  @endif
+					</table>
+					{{ Form::close() }}
+					</div>
+					</div>
+				</div>
+            </div>
+    </div>
+</div>
+</div>
+</div>
+@include('includes.js_index')
+</body>
+</html>
