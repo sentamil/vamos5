@@ -14,7 +14,273 @@ class VdmOrganizationController extends \BaseController {
         
         return View::make('vdm.organization.create');   
     }
+	
+	
+	 public function placeOfInterest() 
+	 {
+		if(!Auth::check()) {
+			return Redirect::to('login');
+		}
+		$username = Auth::user()->username;
+		$redis = Redis::connection();
+		
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		
+		$Places = $redis->zrange('S_Places_India',0,-1);
+			
+		
+		$userplace=null;
+		$shortName =null;
+        $shortNameList = null;
+        try{
+			Log::info('-------------- $try-----------');
+			if($Places!=null)
+			{
+				Log::info('-------------- $try11-----------');
+				foreach ($Places as $key=>$value) {
+			$userplace=array_add($userplace, $value, $value);
+            $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
+            $vehicleRefData=json_decode($vehicleRefData,true);
+             $shortName = $vehicleRefData['shortName']; 
+            $shortNameList = array_add($shortNameList,$value,$shortName);
+			}
+			
+			
+			
+            
+		}
+		  $tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
+		
+		if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				 $tmpOrgList = $redis->smembers('S_Organisations_Dealer_'.$username.'_'.$fcode);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$fcode);
+			}
+		 $orgList=null;
+        foreach ( $tmpOrgList as $org ) {
+                $orgList = array_add($orgList,$org,$org);
+                
+            }
+		Log::info('-------------- $out-----------');
+		}catch(\Exception $e)
+	   {
+		
+	   }
+	   
+       return View::make('vdm.organization.placeOfInterest')->with('userplace',$userplace)->with ( 'orgList', $orgList ); 
+    }
+public function addpoi()
+	{
+		
+	log::info( ' url :-----' );
+		
+		if(!Auth::check()) {
+			return Redirect::to('login');
+		}
+		$username = Auth::user()->username;
+		$rules = array(
+				'orgId'       => 'required|alpha_dash',
+				'radiusrange' => 'required',
+				'poi' => 'required'
+ 		);
+		$validator = Validator::make(Input::all(), $rules);
+		if ($validator->fails()) {
+			return Redirect::to('vdmOrganization/placeOfInterest')
+			->withErrors($validator);
+			
+ 		} else {
+			// store
+			log::info( ' url :------------');
+			$orgId  = Input::get('orgId');
+			$poi = Input::get('poi');
+			$radiusrange =Input::get('radiusrange');
+			$redis = Redis::connection();
+			$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+			
+			$jsonData =  $redis->hget('H_Organisations_'.$fcode,$orgId );
+        
+        $orgDataArr = json_decode ( $jsonData, true );
+        
+        $email =isset($orgDataArr['email'])?$orgDataArr['email']:' ';
+        $address =isset($orgDataArr['address'])?$orgDataArr['address']:' ';
+        $description =isset($orgDataArr['description'])?$orgDataArr['description']:' ';
+        $mobile =isset($orgDataArr['mobile'])?$orgDataArr['mobile']:' ';
+        $time1=isset($orgDataArr['startTime'])?$orgDataArr['startTime']:' ';
+		$time2=isset($orgDataArr['endTime'])?$orgDataArr['endTime']:' ';
+		$etc=isset($orgDataArr['etc'])?$orgDataArr['etc']:' ';
+		$mtc=isset($orgDataArr['mtc'])?$orgDataArr['mtc']:' ';
+		$atc=isset($orgDataArr['atc'])?$orgDataArr['atc']:' ';
+		$parkDuration=isset($orgDataArr['parkDuration'])?$orgDataArr['parkDuration']:'';
+		$idleDuration=isset($orgDataArr['idleDuration'])?$orgDataArr['idleDuration']:'';
+		$parkingAlert=isset($orgDataArr['parkingAlert'])?$orgDataArr['parkingAlert']:'';
+		$idleAlert=isset($orgDataArr['idleAlert'])?$orgDataArr['idleAlert']:'';
+		$overspeedalert=isset($orgDataArr['overspeedalert'])?$orgDataArr['overspeedalert']:'';
+		$sendGeoFenceSMS=isset($orgDataArr['sendGeoFenceSMS'])?$orgDataArr['sendGeoFenceSMS']:'';
+		$radius=$radiusrange;
+			 $orgDataArr = array (
+                    
+                    'mobile' => $mobile,
+                    'email' => $email,
+                    'address' => $address,
+                    'description' => $description,
+					'startTime' => $time1,
+					'endTime'  => $time2,
+					'atc' => $atc,
+					'etc' =>$etc,
+					'mtc' =>$mtc,
+					'parkingAlert'=>$parkingAlert,
+					'idleAlert'=>$idleAlert,
+					'parkDuration'=>$parkDuration,
+					'idleDuration'=>$idleDuration,
+					'overspeedalert'=>$overspeedalert,
+					'sendGeoFenceSMS'=>$sendGeoFenceSMS,
+					'radius'=>$radiusrange
+            );
+            
+            $orgDataJson = json_encode ( $orgDataArr );
+			$redis->hset('H_Organisations_'.$fcode,$orgId ,$orgDataJson);
+			
+			
+			$temp='S_Poi_'.$orgId.'_'.$fcode.':temp';
+			$redis->del($temp);
+			foreach($poi as $place) {
+				$redis->sadd($temp,$place);
+			}
+			$ipaddress = $redis->get('ipaddress');
+			 $url = 'http://' .$ipaddress . ':9000/getPoiPlace?key=' . $temp;
+			$url=htmlspecialchars_decode($url);
+	 
+			log::info( ' url :' . $url);
+		
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+			$response = curl_exec($ch);
+			log::info( ' response :' . $response);
+			$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+			curl_close($ch);
+			
+			}
+			
+ 			Session::flash('message', 'Successfully created !');
+ 			return Redirect::to('vdmOrganization');
+	 		}
+		
+		
+	public function poiEdit($id)
+	{
+		
+		if(!Auth::check()) {
+			return Redirect::to('login');
+		}
+		$username = Auth::user()->username;
+		$redis = Redis::connection();
+		$orgId=$id;
+		Log::info(' $orgId ' . $orgId);
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
+		$places = $redis->zrange('S_Places_India',0,-1);
+		
+		
+		
+		$selectedVehicles =  $redis->zrange('S_Poi_'.$id.'_'.$fcode,0,-1);
+		      
+        $shortNameList = null;
+		$placeList=null;
+		
+		foreach($places as $key=>$value) {
+			Log::info('-------------- $orgId in-----------'.$value);
+		    
+           
+			$placeList=array_add($placeList, $value, $value);
+		}
+		
+		$vehicleRefData = $redis->hget ( 'H_Organisations_' . $fcode, $id );
+            $vehicleRefData=json_decode($vehicleRefData,true);
+             $radiusrange = isset($vehicleRefData['radius'])?$vehicleRefData['radius']:'';
+		
+		Log::info('-------------- $orgId 2 -----------');
+		return View::make('vdm.organization.poiEdit',array('orgId'=>$orgId))->with('userplace', $placeList)->
+		with('selectedVehicles',$selectedVehicles)->with('radiusrange',$radiusrange);
+	}
+	
+	
+	
+	
+	
+	public function poiDelete($id)
+	{
+		
+		if(!Auth::check()) {
+			return Redirect::to('login');
+		}
+		$username = Auth::user()->username;
+		$redis = Redis::connection();
+		$orgId=$id;
+		Log::info(' $orgId ' . $orgId);
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');		
+		
+		 $redis->del('S_Poi_'.$id.'_'.$fcode);
+		 $redis->del('S_Poi_'.$id.'_'.$fcode.':temp');
+		
+       return Redirect::to('vdmOrganization');
+		
+	}
+	
+	
+	
+	
+	public function poiView($id)
+	{
+		if(!Auth::check()) {
+			return Redirect::to('login');
+		}
+		$username = Auth::user()->username;
+		$redis = Redis::connection();
+		
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		
+		$Places = $redis->zrange('S_Poi_'.$id.'_'.$fcode,0,-1);
+			
+		
+		$userplace=null;
+		$radius =null;
+        $shortNameList = null;
+        try{
+			Log::info('-------------- $try-----------');
+			if($Places!=null)
+			{
+				Log::info('-------------- $try11-----------');
+				foreach ($Places as $key=>$value) {
+			$userplace=array_add($userplace, $value, $value);
+            
+            
+			}
+			
+			$vehicleRefData = $redis->hget ( 'H_Organisations_' . $fcode, $id );
+            $vehicleRefData=json_decode($vehicleRefData,true);
+             $radius = $vehicleRefData['radius']; 
+			 Log::info('-------------- radius-----------'.$radius);
+			
+            
+		}
+		
+		Log::info('-------------- $out-----------');
+		}catch(\Exception $e)
+	   {
+		
+	   }
+	   
+       return View::make('vdm.organization.poiView')->with('userplace',$userplace)->with ( 'radius', $radius )->with('orgId',$id); 
+	 		}
+		
+	
 
     public function store()
     {
@@ -81,6 +347,7 @@ class VdmOrganizationController extends \BaseController {
 			$startTime =$time1;
 			$endTime=$time2;
 			$sendGeoFenceSMS = Input::get ('sendGeoFenceSMS');
+			$radius=0;
             $orgDataArr = array (
                     'description' => $description,
                     'email' => $email,
@@ -96,7 +363,8 @@ class VdmOrganizationController extends \BaseController {
 					'parkDuration'=>$parkDuration,
 					'idleDuration'=>$idleDuration,
 					'overspeedalert'=>$overspeedalert,
-					'sendGeoFenceSMS'=>$sendGeoFenceSMS
+					'sendGeoFenceSMS'=>$sendGeoFenceSMS,
+					'radius'=>$radius
 					
             );
 			 $redis = Redis::connection();
@@ -397,6 +665,7 @@ class VdmOrganizationController extends \BaseController {
 		$idleAlert=isset($orgDataArr['idleAlert'])?$orgDataArr['idleAlert']:'';
 		$overspeedalert=isset($orgDataArr['overspeedalert'])?$orgDataArr['overspeedalert']:'';
 		$sendGeoFenceSMS=isset($orgDataArr['sendGeoFenceSMS'])?$orgDataArr['sendGeoFenceSMS']:'';
+		$radius=isset($orgDataArr['radius'])?$orgDataArr['radius']:'';
 		
         log::info( 'time1 ::' . $time1);
          log::info( 'time2 ::' . $time2);
@@ -458,7 +727,7 @@ class VdmOrganizationController extends \BaseController {
 		$i=0;
 		$j=0;$k=0;$m=0;
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
-        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('place1',$place1)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS);   
+        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('place1',$place1)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius);   
         
     }
     
@@ -511,13 +780,19 @@ class VdmOrganizationController extends \BaseController {
             
         }
 		 }
-			
-			
+		  $organizationId = $id;
+		  $redis = Redis::connection();
+            $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+            $redis->sadd('S_Organisations_'. $fcode, $organizationId);
+			$orgDataJson1=$redis->hget('H_Organisations_'.$fcode,$organizationId );
+			$orgDataJson1 = json_decode ( $orgDataJson1, true );
+        
+        $radius =isset($orgDataJson1['radius'])?$orgDataJson1['radius']:'';
             $mobile      = Input::get('mobile');
             $email      = Input::get('email');
             $description      = Input::get('description');
             $address      = Input::get('address');
-            $organizationId = $id;
+           
 			$atc= Input::get('atc');
 			$etc=Input::get('etc');
 			$mtc=Input::get('mtc');
@@ -527,7 +802,6 @@ class VdmOrganizationController extends \BaseController {
 			$idleDuration=Input::get('idleDuration');
 			$overspeedalert=Input::get('overspeedalert');
 			$sendGeoFenceSMS=Input::get('sendGeoFenceSMS');
-			
 					$startTime =$time1;
 			$endTime=$time2;
             $orgDataArr = array (
@@ -546,15 +820,14 @@ class VdmOrganizationController extends \BaseController {
 					'parkDuration'=>$parkDuration,
 					'idleDuration'=>$idleDuration,
 					'overspeedalert'=>$overspeedalert,
-					'sendGeoFenceSMS'=>$sendGeoFenceSMS
+					'sendGeoFenceSMS'=>$sendGeoFenceSMS,
+					'radius'=>$radius
             );
             
             $orgDataJson = json_encode ( $orgDataArr );
          
             
-            $redis = Redis::connection();
-            $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-            $redis->sadd('S_Organisations_'. $fcode, $organizationId);
+           
             
             $redis->hset('H_Organisations_'.$fcode,$organizationId,$orgDataJson );
             

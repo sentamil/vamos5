@@ -169,11 +169,14 @@
 					 <li>
              <a href="../vdmOrganization"> <span class="nav-label">Organisation List</span></a>
             </li>
+			
 			<li>  <a href="../vdmOrganization/create"> <span class="nav-label">Add Organisation</span></a></li>
 			 
-                </ul>
-			
-			
+               
+			 <li>
+             <a href="../vdmOrganization/placeOfInterest"> <span class="nav-label">Place Of Interest</span></a>
+            </li>
+			 </ul>
                
             </li>
 			  <li {{ Request::is( '../Routes') ? 'active' : '' }}>

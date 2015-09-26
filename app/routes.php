@@ -315,8 +315,20 @@ Route::resource('vdmBusRoutes', 'VdmBusRoutesController');
 Route::resource('vdmBusStops', 'VdmBusStopsController');
 
 Route::resource('vdmGeoFence', 'VdmGeoFenceController');
+Route::get('vdmOrganization/placeOfInterest', array('uses' => 'VdmOrganizationController@placeOfInterest'));
+Route::post('vdmOrganization/addpoi', array('uses' => 'VdmOrganizationController@addpoi'));
+Route::get('vdmOrganization/{param}/poiView', array('uses' => 'VdmOrganizationController@poiView'));
+
+Route::get('vdmOrganization/{param}/poiEdit', array('uses' => 'VdmOrganizationController@poiEdit'));
+
+Route::get('vdmOrganization/{param}/poiDelete', array('uses' => 'VdmOrganizationController@poiDelete'));
+
 
 Route::resource('vdmOrganization', 'VdmOrganizationController');
+
+
+
+
 
 });   //admin auth ends here
 
