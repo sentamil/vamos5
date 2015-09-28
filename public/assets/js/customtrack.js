@@ -141,7 +141,7 @@ app.directive('map', function($http, vamoservice) {
 			        google.maps.event.trigger(document.getElementById('maploc'), "resize");
 		   		
 		   		});
-		   }, 60000);
+		   }, 10000);
         }
     };
 });

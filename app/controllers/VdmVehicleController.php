@@ -305,8 +305,9 @@ class VdmVehicleController extends \BaseController {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
-	
-		
+		//added
+		$username = Auth::user ()->username;
+
 		$redis = Redis::connection ();
 		$deviceId = $id;
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -328,7 +329,7 @@ class VdmVehicleController extends \BaseController {
 		{
 			return Redirect::to('vdmVehicles/dealerSearch');
 		}
-		log::info(' vehicle Id = '. $vehicleId . ' fcode = ' . $deviceRefData['fcode'] );
+		//log::info(' vehicle Id = '. $vehicleId . ' fcode = ' . $deviceRefData['fcode'] );
 		return View::make ( 'vdm.vehicles.show', array (
 				'deviceId' => $deviceId 
 		) )->with ( 'deviceRefData', $deviceRefData )->with ( 'vehicleId', $vehicleId );
