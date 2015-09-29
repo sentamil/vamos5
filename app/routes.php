@@ -115,6 +115,20 @@ Route::get('/publicTracking', function() {
          return View::make('vls.publicTracking');
 });
 
+Route::get('/performance', function() {
+          if (!Auth::check()) {
+              return Redirect::to('login');
+          }
+          return View::make('reports.performanceChart');
+      });
+Route::get('/getOverallDriverPerformance', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getOverallDriverPerformance');
+    return View::make('vls.getOverallDriverPerformance');
+});
+
 
 
 Route::get('/playBack', function() {
