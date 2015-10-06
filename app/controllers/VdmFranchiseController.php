@@ -161,14 +161,15 @@ class VdmFranchiseController extends \BaseController {
 			$user->save();
 			$redis->sadd ( 'S_Users_' . $fcode, $vamosid );
 			$redis->hmset ( 'H_UserId_Cust_Map', $vamosid . ':fcode', $fcode);
-						
+		
+        /*				
 			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
 			{
 				Log::info("Inside email :" . Input::get ( 'email1' ));
 				
 				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
 			});
-			
+			*/
 			
 			// redirect
 			Session::flash ( 'message', 'Successfully created ' . $fname . '!' );
@@ -320,28 +321,13 @@ class VdmFranchiseController extends \BaseController {
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo',
 					 $mobileNo1,$userId.':email',$email1 );
-		
-/*
-			$user = User::where('userId', '=', $userId);
-			$user->email=$email1;
-			$user->save();
-	*/		
+
 			
 			DB::table('users')
 			->where('username', $userId)
 			->update(array('email' => $email1));
 			
-		/*	$password='awesome';
-			
-			Log::info(" about to send mail");
-						
-			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
-			{
-				Log::info("Inside email :" . Input::get ( 'email1' ));
-				
-				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
-			});
-         * /
+	
 
 		}
 					
