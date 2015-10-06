@@ -103,6 +103,16 @@ Route::get('/getVehicleLocations', function() {
     return View::make('vls.getVehicleLocations');
 });
 
+Route::get('/getPoiHistory', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get POI History');
+    return View::make('vls.getPoiHistory');
+});
+
+
+
 
 Route::get('/publicTrack', function() {
         Log::info('get publicTracking Vehicle Locations');
@@ -113,6 +123,20 @@ Route::get('/publicTrack', function() {
 Route::get('/publicTracking', function() {
         Log::info('get publicTracking Vehicle Locations');
          return View::make('vls.publicTracking');
+});
+
+Route::get('/performance', function() {
+          if (!Auth::check()) {
+              return Redirect::to('login');
+          }
+          return View::make('reports.performanceChart');
+      });
+Route::get('/getOverallDriverPerformance', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getOverallDriverPerformance');
+    return View::make('vls.getOverallDriverPerformance');
 });
 
 
