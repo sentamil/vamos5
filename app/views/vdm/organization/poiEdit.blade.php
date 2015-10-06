@@ -30,7 +30,7 @@
 		@foreach($userplace as $key => $value)
 			 
 			{{ Form::checkbox('poi[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field']) }}
-			{{ Form::label($value) }}
+			{{ Form::label($key) }}
 			
 			<br/>
 		@endforeach

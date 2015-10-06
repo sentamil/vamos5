@@ -40,7 +40,7 @@
 			                		<tr class="col-md-2">
 			                			<td>
 				                			{{ Form::checkbox('poi[]', $key, null, ['class' => 'field']) }}
-											{{ Form::label($value) }}
+											{{ Form::label($key) }}
 											
 											@endforeach
 			                			</td>	
