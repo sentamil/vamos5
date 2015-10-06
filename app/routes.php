@@ -103,6 +103,16 @@ Route::get('/getVehicleLocations', function() {
     return View::make('vls.getVehicleLocations');
 });
 
+Route::get('/getPoiHistory', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get POI History');
+    return View::make('vls.getPoiHistory');
+});
+
+
+
 
 Route::get('/publicTrack', function() {
         Log::info('get publicTracking Vehicle Locations');
