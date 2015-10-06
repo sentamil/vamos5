@@ -158,12 +158,17 @@ class VdmVehicleController extends \BaseController {
 		$validator = Validator::make ( Input::all (), $rules );
         $redis = Redis::connection ();
         $vehicleId = Input::get ( 'vehicleId' );
+		$deviceId = Input::get ( 'deviceId' );
         $vehicleIdCheck = $redis->sismember('S_Vehicles_' . $fcode, $vehicleId);
-		
+		$deviceidCheck = $redis->sismember('S_Device_' . $fcode, $deviceId);
 		log::info( '------vehicleIdCheck---------- ::');
 		
         if($vehicleIdCheck==1) {
             Session::flash ( 'message', 'VehicleId' . $vehicleId . 'already exist. Please choose another one' );
+            return Redirect::to ( 'vdmVehicles/create' );
+        }
+		 if($deviceidCheck==1) {
+            Session::flash ( 'message', 'DeviceId' . $deviceidCheck . 'already exist. Please choose another one' );
             return Redirect::to ( 'vdmVehicles/create' );
         }
         
@@ -203,13 +208,13 @@ class VdmVehicleController extends \BaseController {
 			}elseif($paymentType=='yearly'){
 				$paymentmonth=12;
 			}
-			if($v<15)
+			if($v>15)
 			{
 				log::info('inside if');
 				$paymentmonth=$paymentmonth+1;
 				
 			}
-			for ($i = 1; $i <$paymentmonth; $i++){
+			for ($i = 1; $i <=$paymentmonth; $i++){
 
 			$new_date = date('F Y', strtotime("+$i month"));
 				$new_date2 = date('FY', strtotime("$i month"));
@@ -301,13 +306,13 @@ class VdmVehicleController extends \BaseController {
 	 * @return Response
 	 */
 	public function show($id) {
-		 Log::info(' inside show....' . $id);
+		 Log::info(' inside show....');
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
-		//added
 		$username = Auth::user ()->username;
-
+	
+		
 		$redis = Redis::connection ();
 		$deviceId = $id;
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -329,7 +334,7 @@ class VdmVehicleController extends \BaseController {
 		{
 			return Redirect::to('vdmVehicles/dealerSearch');
 		}
-		//log::info(' vehicle Id = '. $vehicleId . ' fcode = ' . $deviceRefData['fcode'] );
+		
 		return View::make ( 'vdm.vehicles.show', array (
 				'deviceId' => $deviceId 
 		) )->with ( 'deviceRefData', $deviceRefData )->with ( 'vehicleId', $vehicleId );
@@ -521,7 +526,7 @@ class VdmVehicleController extends \BaseController {
 			$refDataJson1=json_decode($refDataJson1,true);
 		
 			//$org=isset($refDataJson1['orgId'])?$refDataJson1->orgId:'def';
-			$org=isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'def';
+			$org=isset($refDataFromDB->orgId)?$refDataFromDB->orgId:$refDataJson1['orgId'];
 			$oldroute=isset($refDataFromDB->shortName)?$refDataFromDB->shortName:$refDataJson1['shortName'];
 			
 			if($org!=$orgId)
@@ -806,8 +811,8 @@ class VdmVehicleController extends \BaseController {
 		$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);//ram
 			$refDataJson1=json_decode($refDataJson1,true);
 		
-         $orgId=isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'-';
-
+			$orgId=$refDataJson1['orgId'];
+		
 		$redis->hdel ( 'H_RefData_' . $fcode, $vehicleId );
         
 		$redis->hdel('H_Device_Cpy_Map',$deviceId);
@@ -1496,8 +1501,8 @@ log::info( '--------new name----------' .$user);
         
         $redis = Redis::connection ();
         $redis->set('MultiVehicle:'.$fcode, $vehicleDetails) ;
-            
-        $parameters = 'key='.'MultiVehicle:'.$fcode . '&orgId='.$orgId;
+         $who=Session::get('cur');
+        $parameters = 'key='.'MultiVehicle:'.$fcode . '&orgId='.$orgId. '&who='.$who. '&username='.$username;
         
         //TODO - remove ..this is just for testing
        // $ipaddress = 'localhost';
