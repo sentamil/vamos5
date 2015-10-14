@@ -143,6 +143,7 @@ class VdmFranchiseController extends \BaseController {
 			$user->name = $fname;
 			$user->username=$userId;
 			$user->email=$email1;
+			$user->mobileNo=$mobileNo1;
 			$user->password=Hash::make($password);
 			$user->save();
 
@@ -157,6 +158,7 @@ class VdmFranchiseController extends \BaseController {
 			$user->name = 'vamos'.$fname;
 			$user->username=$vamosid;
 			$user->email='support@vamosys.com';
+			$user->mobileNo='9840898818';
 			$user->password=Hash::make($password);
 			$user->save();
 			$redis->sadd ( 'S_Users_' . $fcode, $vamosid );
@@ -380,12 +382,13 @@ class VdmFranchiseController extends \BaseController {
 		Session::put('email1',$email1);
 		Log::info("Email Id :" . Session::get ( 'email1' ));
 		
-		Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId), function($message)
+		/*Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId), function($message)
 		{
 			Log::info("Inside email :" . Session::get ( 'email1' ));
 		
 			$message->to(Session::pull ( 'email1' ))->subject('User Id deleted');
 		});
+		*/
 	
 		
 		Session::flash ( 'message', 'Successfully deleted ' . 'fname:'.$fcode . '!' );
