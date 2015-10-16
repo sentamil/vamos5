@@ -676,6 +676,8 @@ public function addpoi()
 		$address1= $redis->hgetall('H_Poi_'.$id.'_'.$fcode);
 		
 		$temp=null;
+/*
+		
 		foreach($address1 as $org => $rowId)
 	{
 			 
@@ -684,9 +686,10 @@ public function addpoi()
 				 $place = array_add($address1, $org,$org);
 					$latandlan = array_add($address1, $rowId,$rowId);
 					
-					 $geocode=file_get_contents("http://maps.google.com/maps/api/geocode/json?address=".$org);
+					// $geocode=file_get_contents("http://maps.google.com/maps/api/geocode/json?address=".$org);
 
-				$output= json_decode($geocode);
+			//	$output= json_decode($geocode);
+				$output='';
 				 if($output->status=="ZERO_RESULTS")
 				 {
 					 log::info( 'inside no result' );
@@ -714,6 +717,7 @@ public function addpoi()
 					
 			 
 		 }
+
 		 
 		
 		  $temp=10-count($address1);
@@ -726,8 +730,13 @@ public function addpoi()
 		 
 		$i=0;
 		$j=0;$k=0;$m=0;
+
+
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
         with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('place1',$place1)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius);   
+*/
+
+		return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->with('organizationId',$id)->with('email',$email)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius);
         
     }
     
