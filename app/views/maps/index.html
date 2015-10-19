@@ -41,7 +41,7 @@
                 <li class="settings"><a href="../public/settings"><div></div><label>Settings</label></a></li>
                 -->
 		    <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
-                <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
+                <li><a href="../public/logout"><img src="assets/imgs/logout.png"/><div></div><label>Logout</label></a></li>         
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
                 <li style="margin-bottom: 15px;"><div class="right-inner-addon" align="center"><i class="fa fa-search"></i><input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" /></div>
@@ -98,6 +98,28 @@
                                <input type="text" id="distanceVal" value="0" disabled/> <span style="font-size:12px;">Kms</span>
                                
                                <input type="button" value="Near by Vehicles" id="nearbyVeh" ng-click="nearBy();"/>
+                               <a href="../public/liveTrack" id="fullscreen" target="_blank">Full Screen</a>
+                               <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Live Tracking</div>
+                               <div>
+                               <select ng-model="days1">
+                                    <option value = "0" label = "Vehicle Id"></option>
+                                    <option ng-repeat="vehi in vehicle_list">{{vehi}}</option>
+                                </select>
+                                <select id="Days" ng-model="days">
+                                    <option value = "0" label = "Days"></option>
+                                    <option value = "1" label = "1"></option>
+                                    <option value = "2" label = "2"></option>
+                                    <option value = "3" label = "3"></option>
+                                    <option value = "4" label = "4"></option>
+                                    <option value = "5" label = "5"></option>
+                                    <option value = "6" label = "6"></option>
+                                    <option value = "7" label = "7"></option>
+                                    <option value = "8" label = "8"></option>
+                                    <option value = "9" label = "9"></option>
+                                    <option value = "10" label = "10"></option>
+                                </select>
+                                <a ng-href= "#" ng-click="clicked(days1, days)">click</a>
+                               </div>
                                <div class="nearbyTable">
                             	<h3>NearBy Vehicles <a href="#" style="position:absolute; top:10px; right:10px;" ng-click="nearBy();">X</a></h3>
                                 <h5 ng-cloak>Your Place - {{nearbyLocs.fromAddress}}</h5>	

@@ -75,7 +75,6 @@ app.filter('statusfilter', function(){
 	$scope.checkVal=false;
 	$scope.clickflagVal =0;
 	$scope.nearbyflag = false;
-	
 	var tempdistVal = 0;
 	$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
@@ -224,6 +223,7 @@ app.filter('statusfilter', function(){
 		 $scope.locations01 = vamoservice.getDataCall($scope.url);
 	}
 	
+
 	$scope.infoBoxed = function(map, marker, vehicleID, lat, lng, data){
 		var tempoTime = vamoservice.statusTime(data);
 		if(data.ignitionStatus=='ON'){
@@ -231,16 +231,18 @@ app.filter('statusfilter', function(){
 		}else{
 			var classVal = 'red';
 		}
-		var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
+			var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
 		+'<div><b style="width:100px; display:inline-block;">Vehicle ID</b> - '+vehicleID+'<span style="font-weight:bold;">('+data.shortName+')</span></div>'
 		+'<div><b style="width:100px; display:inline-block;">Speed</b> - '+data.speed+' <span style="font-size:10px;font-weight:bold;">kmph</span></div>'
 		+'<div><b style="width:100px; display:inline-block;">ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 		+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 		+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 		+'<div><b style="width:100px; display:inline-block;">'+tempoTime.tempcaption+' Time</b> - '+tempoTime.temptime+'</div><br>'
-		+'<div><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a></div>'
+		+'<div><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a>&nbsp;&nbsp;'
 		+'</div>';
 		
+		// var	drop1 = document.getElementById("ddlViewBy");
+		// var drop_value1= drop1.options[drop1.selectedIndex].value;
 		var infowindow = new InfoBubble({
 		maxWidth: 400,	
 		maxHeight:170,
@@ -256,7 +258,81 @@ app.filter('statusfilter', function(){
 	   		});	
 		})(marker);
 	}
+
+	// for new window track
+	$scope.days=0;
+	$scope.days1=0;
+	$scope.vehicle_list=[];
+	$scope.fcode=[];
+	$scope.final_data;
+	// for list of vehicles
+	$http.get('http://'+globalIP+'/vamo/public//getVehicleLocations').success(function(data)
+	{
+		for (var i = 0; i < data[0].vehicleLocations.length; i++) 
+		{
+			$scope.vehicle_list.push(data[0].vehicleLocations[i].vehicleId)
+		};
+		$scope.fcode.push(data[0])
+	})
+
+
+	//split methods
+	$scope.split_fcode = function(fcode){
+		var str = $scope.fcode[0].group;
+		var strFine = str.substring(str.lastIndexOf(':'));
+		while(strFine.charAt(0)===':')
+		strFine = strFine.substr(1);
+		return strFine;
+
+	}
 	
+	//encryt url
+	function encrypt_window(url)
+	{
+		$http.get(url).success(function(data){
+				// console.log('---->'+url)
+				// console.log(' encript code '+data)
+				// //$scope.final_data = data;
+			})
+			//ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
+	}
+
+
+	// live track in new window method
+
+	$scope.clicked = function(vehi, days)
+	{
+		if(vehi == 0 && days ==0)
+			console.log(' not selected ')
+		else
+		{
+			$scope.split_fcode($scope.fcode[0].group);
+			var f_code = $scope.split_fcode($scope.fcode[0].group);
+			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'days='+days;
+			var ecrypt_code_url = '';
+			$http.get(f_code_url).success(function(result){
+				//console.log(' result '+result)
+				//ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
+				$scope.final_data = result;
+				
+    			var url='../public/track?vehicleId='+result.trim();
+				window.open(url,'_blank');
+				//$('body').append(atag);
+				//$('#sam').trigger('click');
+				//document.location.href="/live_track?encyID="+result;
+				//encrypt_window(ecrypt_code_url);
+			})
+			//console.log(' url for encrypt  '+ecrypt_code_url)
+			// $http.get(ecrypt_code_url).success(function(data){
+			// 	console.log('---->'+ecrypt_code_url)
+			// 	console.log(' encript code '+data)
+			// 	$scope.final_data = data;
+			// })
+			// ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
+			//console.log(' value selected----> '+'----->'+vehi+'---->'+days+'------>'+$scope.fcode[0].group+'----> '+$scope.split_fcode($scope.fcode[0].group))
+			
+		}
+	}
 	$scope.addMarker= function(pos){
 	    
 	    var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
@@ -398,6 +474,7 @@ app.filter('statusfilter', function(){
 	}
 	
 	$scope.initial02 = function(){
+		//console.log(' marker click ')
 		$scope.assignHeaderVal($scope.locations02);
 		var locs = $scope.locations;
 	 	var parkedCount = 0;
@@ -584,7 +661,9 @@ app.filter('statusfilter', function(){
 		$scope.attention  =data[$scope.gIndex].attention;
 		$scope.vehicleOnline =data[$scope.gIndex].online;
 	}
-}]).directive('ngEnter', function () {
+}])
+
+.directive('ngEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {

@@ -223,8 +223,8 @@ li a label{ width:100%; display:block;}
 	  #vehiid h3{ font-size:12px;}
 	  #distanceVal{font-size:14px; color:#000; background:#666 !important; border:1px solid #ccc; height:22px; padding-right:5px; text-align:right; color:#eee; font-size:11px; width:70px;}
 	 #traffic{ width:58px; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa;}
-	 #nearbyVeh{  text-align:center; width:230px; margin-top:5px; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa;}
-	 
+	 #nearbyVeh{  text-align:center; width:160px; margin-top:5px; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa;}
+	 #fullscreen{text-align: center; width: 70px; margin-top: 5px; background: none;font-size: 11px; background-color: #fff;}
 	 .nearbyTable{  position:relative; }
 	 .nearbyTable01{ bottom:95px;  position:absolute !important; background:#fff; right:7px; border:1px solid #999;}
 	 .nearbyTable02{ background:#fff; }

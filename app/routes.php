@@ -32,12 +32,24 @@ Route::get('/track', function() {
     }
     return View::make('maps.track');
 });
+
+View::addExtension('html', 'php');
+Route::get('/liveTrack', function() {
+
+    
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('maps.live_track');
+});
+
 Route::get('/settings', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
     return View::make('maps.settings');
 });
+
 
 View::addExtension('html', 'php');
 Route::get('/reports', function() {
