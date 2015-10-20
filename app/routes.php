@@ -115,6 +115,16 @@ Route::get('/getVehicleLocations', function() {
     return View::make('vls.getVehicleLocations');
 });
 
+Route::get('/getVehicleExp', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get Vehicle Expiry');
+    return View::make('vls.getVehicleExp');
+});
+
+
+
 Route::get('/getPoiHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
