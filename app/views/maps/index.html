@@ -92,7 +92,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="rightsection" style="position: absolute;top: 30px;right: 10px; z-index:999999; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
+                        <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
+                            <img src="assets/imgs/add.png" />
+                        </div>
+                        
+                        <div id="contentmin" class="rightsection" style="position: absolute;top: 30px;right: 10px; z-index:999999; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
                         	   <input type="button" id="traffic" ng-click="check()" value="Traffic" />
                         	   <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>
                                <input type="text" id="distanceVal" value="0" disabled/> <span style="font-size:12px;">Kms</span>
@@ -251,6 +255,13 @@
     <script src="assets/js/services.js"></script>
     <script src="assets/js/custom.js"></script>
     <script>
+    $(document).ready(function(){
+        $('#minmax').click(function(){
+            $('#contentmin').animate({
+                height: 'toggle'
+            },2000);
+        });
+    });
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");

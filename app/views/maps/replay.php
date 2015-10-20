@@ -64,8 +64,10 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        
-                            <div class="rightsection" style="position: absolute;top: 30px;right: 10px; z-index:9; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
+                        <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
+                            <img src="assets/imgs/add.png" />
+                        </div>
+                        <div id="contentmin" class="rightsection" style="position: absolute;top: 30px;right: 10px; z-index:9; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
                                  <table cellpadding="0" cellspacing="0" class="dynData">
                                         	<tbody>
                                                 <tr>
@@ -249,6 +251,13 @@
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/customplay.js"></script>
     <script>
+     $(document).ready(function(){
+        $('#minmax').click(function(){
+            $('#contentmin').animate({
+                height: 'toggle'
+            },2000);
+        });
+    });
 		$("#menu-toggle").click(function(e) {
 			e.preventDefault();
 			$("#wrapper").toggleClass("toggled");

@@ -39,7 +39,10 @@
                             <map id="map_canvas"></map>
                         </div>
                     </div>
-                    <div class="rightSection">
+                    <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
+                            <img src="assets/imgs/add.png" />
+                        </div>
+                    <div class="rightSection" id="contentmin">
                         <table cellpadding="0" cellspacing="0" style="font-size:12px;" class="trackDetails">
                             <tr>
                                 <td style="width:50%">Vehicle ID</td>
@@ -150,6 +153,13 @@
     <script src="assets/js/services.js"></script>
     <script src="assets/js/customtrack.js"></script>
     <script>
+    $(document).ready(function(){
+        $('#minmax').click(function(){
+            $('#contentmin').animate({
+                height: 'toggle'
+            },2000);
+        });
+    });
 		$("#menu-toggle").click(function(e) {
 			e.preventDefault();
 			$("#wrapper").toggleClass("toggled");
