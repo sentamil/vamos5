@@ -315,7 +315,7 @@ app.filter('statusfilter', function(){
 				//ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
 				$scope.final_data = result;
 				
-    			var url='../public/track?vehicleId='+result.trim();
+    			var url='../public/publicTrack?vehicleId='+result.trim();
 				window.open(url,'_blank');
 				//$('body').append(atag);
 				//$('#sam').trigger('click');
