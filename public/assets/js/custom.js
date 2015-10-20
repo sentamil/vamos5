@@ -308,7 +308,7 @@ app.filter('statusfilter', function(){
 		{
 			$scope.split_fcode($scope.fcode[0].group);
 			var f_code = $scope.split_fcode($scope.fcode[0].group);
-			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'days='+days;
+			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days;
 			var ecrypt_code_url = '';
 			$http.get(f_code_url).success(function(result){
 				//console.log(' result '+result)
