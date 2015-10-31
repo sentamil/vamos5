@@ -19,6 +19,7 @@ app.controller('mainCtrl',function($scope, $http){
 	$scope.vehicleno=0;
 	
 	$scope.markerClicked=false;*/
+	$scope.gIndex = 0;
 	$scope.vvid			=	getParameterByName('vid');
 	//alert($scope.vvid)
 	$scope.mainlist		=	[];
@@ -38,7 +39,7 @@ app.controller('mainCtrl',function($scope, $http){
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
 			if(data.length)
-				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
+				$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {
 				  console.log(value.totalVehicles, key);				  
 				  if(value.totalVehicles) {
@@ -211,6 +212,7 @@ app.controller('mainCtrl',function($scope, $http){
 	
 	$scope.groupSelection = function(groupname, groupid){
 		 $scope.url = 'http://'+getIP+'/vamo/public/getVehicleLocations?group='+groupname;
+		 $scope.gIndex = groupid;
 		 /*$scope.gIndex = groupid;
 		 $scope.selected=undefined; 
 		 gmarkers=[];

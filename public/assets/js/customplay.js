@@ -379,14 +379,43 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		 gmarkers=[];
 		 ginfowindow=[];
 		 $scope.loading	=	true;
+		 
+		 for(var i=0; i<gmarkers.length; i++){
+				gmarkers[i].setMap(null);
+			}
+			if($scope.polyline){
+			for(var i=0; i<$scope.polyline1.length; i++){
+				$scope.polyline1[i].setMap(null);
+			}
+			
+			
+			$scope.polyline.setMap(null);
+}
+if($scope.markerstart){
+			$scope.markerstart.setMap(null);
+			$scope.markerend.setMap(null);
+			$scope.path = [];
+			$scope.polylinearr = [];
+			gmarkers=[];
+			ginfowindow=[];
+			contentString = [];
+			gsmarker=[];
+			gsinfoWindow=[];
+			window.clearInterval(id);
+			$('#replaybutton').attr('disabled','disabled');
+			$('#lastseen').html('<strong>From Date & time :</strong> -');
+			$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
+}
 		 $http.get($scope.url).success(function(data){
 			$scope.locations = data;
 			if(data.length)
-				$scope.vehiname	= data[0].vehicleLocations[0].vehicleId;
+				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
 			$scope.trackVehID =$scope.locations[$scope.gIndex].vehicleLocations[$scope.selected].vehicleId;
 			$scope.hisurl = 'http://'+globalIP+'/vamo/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
 			$('.nav-second-level li').eq(0).children('a').addClass('active');
 			$scope.loading	=	false;
+			
+			
 		}).error(function(){ /*alert('error'); */});
 		
 	}

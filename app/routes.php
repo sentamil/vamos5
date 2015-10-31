@@ -35,12 +35,8 @@ Route::get('/track', function() {
 
 View::addExtension('html', 'php');
 Route::get('/liveTrack', function() {
-
     
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    return View::make('maps.live_track');
+    return View::make('maps.track');
 });
 
 Route::get('/settings', function() {

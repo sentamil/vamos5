@@ -8,7 +8,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
         sortingOrder : 'id',
         reverse : false
     };
-	
+	$scope.gIndex = 0;
     $scope.url 				= 	'http://'+getIP+'/vamo/public//getVehicleLocations';
     $scope.sid 				= 	getParameterByName('sid');
     
@@ -100,7 +100,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			$scope.locations 	= 	data;
 			//console.log(data[0].vehicleLocations[0].vehicleId);
 			if(data.length)
-				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
+				$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {			  
 				  if(value.totalVehicles) {
 				  		$scope.data1		=	data[key];
@@ -122,6 +122,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 		 $scope.donut		=	false;
 		 $scope.bar			=	true;
 		 $scope.url = 'http://'+getIP+'/vamo/public//getVehicleLocations?group='+groupname;
+		 $scope.gIndex = groupid;
 	}
 	
 	$scope.getLocation	=	function(lat,lon) {	
@@ -574,4 +575,3 @@ return {
   }// end link
 }
 });
-

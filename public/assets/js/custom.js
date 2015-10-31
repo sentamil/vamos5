@@ -76,7 +76,7 @@ app.filter('statusfilter', function(){
 	$scope.clickflagVal =0;
 	$scope.nearbyflag = false;
 	var tempdistVal = 0;
-	$scope.locations01 = vamoservice.getDataCall($scope.url);
+	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
 	}				
@@ -85,8 +85,8 @@ app.filter('statusfilter', function(){
 			$scope.selected=undefined;
 			$scope.locations02 = data;
 			if(data.length){
-				$scope.vehiname	= data[0].vehicleLocations[0].vehicleId;
-				$scope.locations = $scope.statusFilter($scope.locations02[0].vehicleLocations, $scope.vehicleStatus);
+				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
+				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
 				$scope.zoomLevel = parseInt(data[$scope.gIndex].zoomLevel);
 				$scope.support = data[$scope.gIndex].supportDetails;
 				$scope.initilize('map_canvas');
@@ -220,7 +220,8 @@ app.filter('statusfilter', function(){
 		 }
 		 ginfowindow=[];
 		 clearInterval(setintrvl);
-		 $scope.locations01 = vamoservice.getDataCall($scope.url);
+	//	 $scope.locations01 = vamoservice.getDataCall($scope.url);
+		 	
 	}
 	
 
@@ -315,7 +316,7 @@ app.filter('statusfilter', function(){
 				//ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
 				$scope.final_data = result;
 				
-    			var url='../public/publicTrack?vehicleId='+result.trim();
+    			var url='../public/track?vehicleId='+result.trim();
 				window.open(url,'_blank');
 				//$('body').append(atag);
 				//$('#sam').trigger('click');
@@ -525,8 +526,8 @@ app.filter('statusfilter', function(){
 	
 	$scope.initilize = function(ID){
 		
-		vamoservice.getDataCall($scope.url).then(function(location02) {
-			
+	//	vamoservice.getDataCall($scope.url).then(function(location02) {
+			var location02 = $scope.locations02;
 			if($('.nav-second-level li').eq($scope.selected).children('a').hasClass('active')){
 			}else{
 				$('.nav-second-level li').eq($scope.selected).children('a').addClass('active');
@@ -598,7 +599,7 @@ app.filter('statusfilter', function(){
 				$scope.addMarker({ lat: lat, lng: lng , data: locs[i]});
 				$scope.infoBoxed($scope.map,gmarkers[i], locs[i].vehicleId, lat, lng, locs[i]);
 			}
-		});
+	//	});
 		$scope.loading	=	false;
 		if($scope.selected>-1 && gmarkers[$scope.selected]!=undefined){
 			$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
@@ -789,4 +790,3 @@ $(document).ready(function(e) {
         }
     }, 1000);
 });
- 
