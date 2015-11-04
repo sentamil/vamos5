@@ -129,7 +129,6 @@ app.controller('histCtrl',function($scope, $http, $filter){
 				$scope.recursive(location, ++index);
 			var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
 			$http.get(tempurl).success(function(data){
-				console.log(data.status);
 				$scope.locationname = data.results[0].formatted_address;
 				if($scope.downloadid=='overspeedreport')
 					$scope.oaddress[index]	= data.results[0].formatted_address;
@@ -139,7 +138,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 					$scope.saddress[index]	= data.results[0].formatted_address;
 				setTimeout(function() {
 				      $scope.recursive(location, ++index);
-				}, 2000);
+				}, 1000);
 			}).error(function(){ /*alert('error'); */});
 		}
 	}
@@ -215,6 +214,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 				break;
 			case 'movementreport':
 				$scope.recursive($scope.movementdata,ind);
+				console.log(' movement data '+$scope.movement)
 				break;
 			case 'stoppedparkingreport':
 				$scope.recursive($scope.parkeddata,ind);
