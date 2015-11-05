@@ -10,7 +10,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	$scope.maddress	=	[];
 	$scope.saddress	=	[];
 	$scope.location	=	[];
-	$scope.interval	=	getParameterByName('interval')?getParameterByName('interval'):10;
+	$scope.interval	=	getParameterByName('interval')?getParameterByName('interval'):5;
 	$scope.sort = {       
                 sortingOrder : 'id',
                 reverse : false
@@ -61,6 +61,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	}
 
     $scope.$watch($scope.repId, function() {
+    	//console.log(' id1	 '+$scope.repId)
     		$scope.id							=	$scope.vvid
 		   switch($scope.repId) {
 		   		case 'overspeedreport':
@@ -90,6 +91,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
   
    	$scope.$watch(prodId, function() {
    		$scope.id	=	prodId;
+   		//console.log(' id '+$scope.id)
    		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId;
    		console.log(histurl);
    		$scope.loading	=	true;
