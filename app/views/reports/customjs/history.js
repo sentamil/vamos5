@@ -10,7 +10,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	$scope.maddress	=	[];
 	$scope.saddress	=	[];
 	$scope.location	=	[];
-	$scope.interval	=	getParameterByName('interval')?getParameterByName('interval'):5;
+	$scope.interval	=	getParameterByName('interval')?getParameterByName('interval'): 5;
 	$scope.sort = {       
                 sortingOrder : 'id',
                 reverse : false
@@ -92,8 +92,8 @@ app.controller('histCtrl',function($scope, $http, $filter){
    	$scope.$watch(prodId, function() {
    		$scope.id	=	prodId;
    		//console.log(' id '+$scope.id)
-   		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId;
-   		console.log(histurl);
+   		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval;
+   		//console.log(histurl);
    		$scope.loading	=	true;
 		$http.get(histurl).success(function(data){
 			$scope.loading			=	false;
@@ -216,7 +216,6 @@ app.controller('histCtrl',function($scope, $http, $filter){
 				break;
 			case 'movementreport':
 				$scope.recursive($scope.movementdata,ind);
-				console.log(' movement data '+$scope.movement)
 				break;
 			case 'stoppedparkingreport':
 				$scope.recursive($scope.parkeddata,ind);
@@ -249,6 +248,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 				$scope.overallEnable =	true;
 				break;
 			case 'Movement':
+
 				$scope.downloadid	 =	'movementreport';
 				$scope.overallEnable =	true;
 				$scope.recursive($scope.movementdata,0);
@@ -269,7 +269,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	};
 	
 	$scope.exportData = function (data) {
-		console.log(data);
+		//console.log(data);
 		var blob = new Blob([document.getElementById(data).innerHTML], {
            	type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
@@ -277,7 +277,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
     };
     
     $scope.exportDataCSV = function (data) {
-		console.log(data);
+		//console.log(data);
 		CSV.begin('#'+data).download(data+'.csv').go();
     };
     
@@ -326,7 +326,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 		$scope.loading	=	true;
 		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
 		//var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"$&fromTime="+convert_to_24h($scope.fromtime)+"&toDate=2015-12-01&toTime="+convert_to_24h($scope.totime);		
-		console.log(histurl);		
+		//console.log(histurl);		
 		$http.get(histurl).success(function(data){
 			$scope.loading			=	false;
 			$scope.hist				=	data;
@@ -340,7 +340,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
      
      $scope.pdfHist			=		function() {  	
 		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;			
-		console.log(histurl);		
+		//console.log(histurl);		
 		$http.get(histurl).success(function(data){
 			$scope.hist				=	data;
 			$scope.dataArray(data.vehicleLocations);
@@ -363,7 +363,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
  	
  	
  	function dateStringFormat(d) {
- 		 console.log(d);
+ 		// console.log(d);
  		 var s 		= 		d.split(' ');
  		 var t 		= 		s[0].split('-');
 		 var ds 	= 		(t[2].concat('-'+t[1]).concat('-'+t[0])).concat(' '+s[1]);
@@ -375,7 +375,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	    var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
 	    var end = begin + $scope.itemsPerPage;
 	    $scope.filteredTodos = $scope.movementdata.slice(begin, end);
-		console.log($scope.currentPage);
+		//console.log($scope.currentPage);
 	  };
 	  
 	  	
@@ -435,7 +435,7 @@ app.directive("getLocation", function () {
 	    	var lat = attrs.lat;
 	    	var lon = attrs.lon;
 	    	var ind	= attrs.index;
-	    	console.log(ind);
+	    	//console.log(ind);
 			scope.getLocation(lat,lon,ind);
 		});
     }

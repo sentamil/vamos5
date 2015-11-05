@@ -47,8 +47,8 @@ background-color: #ffffff;
                     </div>
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
-                    <ul class="nav nav-second-level" style="max-height: 250px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)">{{loc.vehicleId}} ({{loc.shortName}})</a></li>
+                    <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.vehicleId}} ({{loc.shortName}})</a></li>
                     </ul>
                 </li>
             </ul>
@@ -115,13 +115,13 @@ background-color: #ffffff;
                                     	<div class="input-group datecomp">
                                           	<select ng-change="intervalChange()" class="input-sm form-control" ng-model="interval">
 						                   		 <option value="">Interval</option>
-						                   		 <option>1</option>
-						                   		 <option>2</option>
-						                   		 <option>5</option>
-						                   		 <option>10</option>
-						                   		 <option>15</option>
+						                   		 <option label="1 mins">1</option>
+						                   		 <option label="2 mins">2</option>
+						                   		 <option label="5 mins">5</option>
+						                   		 <option label="10 mins">10</option>
+						                   		 <option label="15 mins">15</option>
 						                   	</select>
-                                    	</div>
+						                </div>
                                   	</div>
                                 </div>
                                 <div class="col-md-1" align="center">
@@ -249,19 +249,19 @@ background-color: #ffffff;
 								    </tr>
 								    <tr><td colspan="7"></td></tr>
 									<tr style="text-align:center" >
-										<th width="12%" class="id" style="text-align:center;">Time</th>
-										<th width="7%" class="id" style="text-align:center;">Speed</th>
-										<th width="9%" class="id" style="text-align:center;">G-Map</th>
-										<th width="40%" class="id" style="text-align:center;">Address</th>
+										<th width="14%" class="id" style="text-align:center;">Time</th>
+										<th width="8%" class="id" style="text-align:center;">Speed</th>
+										<th width="7%" class="id" style="text-align:center;">G-Map</th>
+										<th width="38%" class="id" style="text-align:center;">Address</th>
 										<th width="9%" class="id" style="text-align:center;">Dist</th>
-										<th width="14%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;">C-Dist (KM)</th>
+										<th width="15%" class="id" style="text-align:center;">C-Dist (KM)</th>
 										<th width="13%" class="id" style="text-align:center;">Odo (KM)</th>
 
 									</tr></thead>
 									 
 													                
 					                <tbody>
-									<tr ng-repeat="user in movementdata | orderBy:sort.sortingOrder:sort.reverse " class="active" style="text-align:center">
+									<tr ng-repeat="user in movementdata" class="active" style="text-align:center">
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.speed}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
