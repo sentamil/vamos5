@@ -27,9 +27,7 @@ Route::get('/history', function() {
 });
 
 Route::get('/track', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
+   
     return View::make('maps.track');
 });
 
@@ -186,9 +184,7 @@ Route::get('/getGeoFenceView', function() {
 });
 
 Route::get('/getSelectedVehicleLocation', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
+
     Log::info('get Selected Vehicle Location');
     return View::make('vls.getSelectedVehicleLocation');
 });
