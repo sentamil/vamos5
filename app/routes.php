@@ -111,6 +111,14 @@ Route::get('/getVehicleLocations', function() {
     return View::make('vls.getVehicleLocations');
 });
 
+Route::get('/getOverallVehicleHistory', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get Vehicle Locations');
+    return View::make('vls.getOverallVehicleHistory');
+});
+
 Route::get('/getVehicleExp', function() {
     if (!Auth::check()) {
         return Redirect::to('login');

@@ -147,7 +147,6 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	};
 	
 	$scope.plotHist			=		function() {
-		 console.log('hi arun----->'+$scope.whichdata)
 		if($scope.whichdata) {	
 			var gurl		=	'http://'+getIP+'/vamo/public//getExecutiveReport?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 			$scope.loading			=	true;
@@ -172,7 +171,6 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 				$http.get(gurl).success(function(gdata){
 				//console.log(gdata);	
 					$scope.dataGeofence(gdata.history);	
-					console.log("----va.ue------->"+gdata);
 					$scope.loading			=	false;
 				});
 			}

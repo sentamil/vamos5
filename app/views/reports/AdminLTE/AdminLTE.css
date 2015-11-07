@@ -1385,8 +1385,12 @@ body > .header .logo .icon {
   width: 100%;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
+
 .box.box-primary {
   border-top-color: #3c8dbc;
+}
+.box.box-primary1 {
+  /*//border-top-color: #3c8dbc;*/
 }
 .box.box-info {
   border-top-color: #00c0ef;

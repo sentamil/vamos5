@@ -24,34 +24,148 @@ app.controller('mainCtrl',function($scope, $http){
 	//alert($scope.vvid)
 	$scope.mainlist		=	[];
 	$scope.url 			= 	'http://'+getIP+'/vamo/public/getVehicleLocations';
-
-	//$scope.historyfor='';
 	
+	//console.log(' url '+$scope.conUrl)
+	$scope.getTodayDate1  =	function(date) {
+     	var date = new Date(date);
+		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
+    };
+
+     function formatAMPM(date) {
+    	  var date = new Date(date);
+		  var hours = date.getHours();
+		  var minutes = date.getMinutes();
+		  var ampm = hours >= 12 ? 'PM' : 'AM';
+		  hours = hours % 12;
+		  hours = hours ? hours : 12; // the hour '0' should be '12'
+		  minutes = minutes < 10 ? '0'+minutes : minutes;
+		  var strTime = hours + ':' + minutes + ' ' + ampm;
+		  return strTime;
+	}
+
+	$scope.fromNowTS1		=	new Date();
+	//$scope.toNowTS1			=	new Date().getTime() - 86400000;
+	$scope.fromdate1		=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
+	$scope.todate1			=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
+	$scope.fromtime1		=	formatAMPM($scope.fromNowTS1);
+	$scope.totime1			=	formatAMPM($scope.toNowTS1);
+
+
+
+	// $scope.fromDate;
+	// $scope.todate;
+	$scope.fromTime ='00:00:00';
+	$scope.totime='11:59:00';
+	$scope.vehigroup;
+
+// 	var today = new Date();
+// var dd = today.getDate();
+// var mm = today.getMonth()+1; //January is 0!
+// var yyyy = today.getFullYear();
+
+// if(dd<10) {
+//     dd='0'+dd
+// } 
+
+// if(mm<10) {
+//     mm='0'+mm
+// } 
+
+// today = dd+'/'+mm+'/'+yyyy;
+// var day = Date.parse(today);
+// $scope.fromdate = day;
+// console.log(day)
+	//console.log(day[0].moment)
+	// $scope.getTodayDate  =	function(date) {
+ //     	var date = new Date(date);
+	// 	return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
+ //    };
+	//$scope.historyfor='';
+	//console.log(' group name '+groupname)
+	 
 	$scope.sort = {       
                 sortingOrder : 'id',
                 reverse : false
             };
-	
-	$scope.$watch("url", function (val) {
+    $scope.$watch("url", function (val) {
 		//$scope.today =	$scope.getTodayDate();
 		//alert(111);
 		$scope.loading	=	true;
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
+			$scope.vehigroup    =   data[0].group;
+			$scope.consoldate(data[0].group);
 			if(data.length)
 				$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {
-				  console.log(value.totalVehicles, key);				  
-				  if(value.totalVehicles) {
+				   if(value.totalVehicles) {
 				  		$scope.data1		=	data[key];
 				  }
 			});				
-			console.log($scope.data1);
+			
 		//$scope.zoomLevel = parseInt(data[$scope.gIndex].zoomLevel);
 		$scope.loading	=	false;
 		$scope.recursive($scope.data1.vehicleLocations,0);
 		}).error(function(){ /*alert('error'); */});
 	});
+	
+	
+    $scope.consoldate1 =  function()
+	{
+		$scope.loading	=	true;
+		var conUrl       =   'http://'+getIP+'/vamo/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
+		$http.get(conUrl).success(function(data)
+		{
+			$scope.consoldateData = data;
+		});
+		$scope.loading	=	false;
+	}
+
+	$scope.consoldate =  function(group)
+	{
+		$scope.loading	=	true;
+		var conUrl       =   'http://'+getIP+'/vamo/public/getOverallVehicleHistory?group='+group+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
+		$http.get(conUrl).success(function(data)
+		{
+			$scope.consoldateData = data;
+		});
+		$scope.loading	=	false;
+	}
+		
+
+	$scope.exportData = function (data) {
+		//console.log(data);
+		var blob = new Blob([document.getElementById(data).innerHTML], {
+           	type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, data+".xls");
+    };
+    $scope.exportDataCSV = function (data) {
+		//console.log(data);
+		CSV.begin('#'+data).download(data+'.csv').go();
+    };
+
+// $scope.getTodayDate1  =	function(date) {
+//      	var date = new Date(date);
+//     	return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
+//     };
+
+      $scope.msToTime = function(ms) {
+       
+    var x = ms / 1000;
+    var seconds = Math.round(x % 60);
+    x /= 60;
+    var minutes = Math.round(x % 60);
+    x /= 60;
+    var hours = Math.round(x % 24);
+    x /= 24;
+    var days = Math.round(x);
+
+    return hours +" hrs "+minutes+" min "+seconds+" sec ";
+
+
+        
+    }
 	
 	$scope.recursive   = function(location,index){
 		if(location.length<=index){
@@ -82,7 +196,7 @@ app.controller('mainCtrl',function($scope, $http){
 	
 	$scope.getLocation	=	function(lat,lon,ind) {	
 		var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
-		console.log(tempurl);
+		//Fconsole.log(tempurl);
 		$scope.loading	=	true;
 		$http.get(tempurl).success(function(data){	
 			//console.log(data);
@@ -116,7 +230,8 @@ app.controller('mainCtrl',function($scope, $http){
 	        results = regex.exec(location.search);
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
-	
+	$scope.consoldateData=[];
+
 	/*$scope.map =  null;
 	$scope.flightpathall = []; 
 	$scope.clickflag = false;
@@ -302,7 +417,7 @@ app.controller('mainCtrl',function($scope, $http){
     };
     
     $scope.exportDataCSV = function (data) {
-		console.log(data);
+		//console.log('---->'+data);
 		CSV.begin('#'+data).download(data+'.csv').go();
     };
     
