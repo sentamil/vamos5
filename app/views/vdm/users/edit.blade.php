@@ -46,3 +46,4 @@
 	{{ Form::submit('Update the User!', array('class' => 'btn btn-primary')) }}
 
 {{ Form::close() }}
+@stop

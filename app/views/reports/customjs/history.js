@@ -90,7 +90,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
   
    	$scope.$watch(prodId, function() {
    		$scope.id	=	prodId;
-   		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId;
+   		var histurl	=	"http://"+getIP+":8087/vamosgps/public//getVehicleHistory?vehicleId="+prodId;
    		console.log(histurl);
    		$scope.loading	=	true;
 		$http.get(histurl).success(function(data){
@@ -185,7 +185,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	    return marktimestr;
     };
 	
-	$scope.url = 'http://'+getIP+'/vamo/public/getVehicleLocations';	
+	$scope.url = 'http://'+getIP+':8087/vamosgps/public//getVehicleLocations';	
 	$scope.$watch("url", function (val) {
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
@@ -203,7 +203,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	});
 	
 	$scope.groupSelection = function(groupname, groupid){
-		$scope.url = 'http://'+getIP+'/vamo/public/getVehicleLocations?group='+groupname;
+		$scope.url = 'http://'+getIP+':8087/vamosgps/public//getVehicleLocations?group='+groupname;
 		
 	};
 	
@@ -322,8 +322,8 @@ app.controller('histCtrl',function($scope, $http, $filter){
 		console.log($scope.tempgeo);	*/
 		//console.log($scope.fromdate);
 		$scope.loading	=	true;
-		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
-		//var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"$&fromTime="+convert_to_24h($scope.fromtime)+"&toDate=2015-12-01&toTime="+convert_to_24h($scope.totime);		
+		var histurl	=	"http://"+getIP+":8087/vamosgps/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
+		//var histurl	=	"http://"+getIP+":8087/vamosgps/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"$&fromTime="+convert_to_24h($scope.fromtime)+"&toDate=2015-12-01&toTime="+convert_to_24h($scope.totime);		
 		console.log(histurl);		
 		$http.get(histurl).success(function(data){
 			$scope.loading			=	false;
@@ -337,7 +337,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
      
      
      $scope.pdfHist			=		function() {  	
-		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;			
+		var histurl	=	"http://"+getIP+":8087/vamosgps/public//getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;			
 		console.log(histurl);		
 		$http.get(histurl).success(function(data){
 			$scope.hist				=	data;

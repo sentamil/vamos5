@@ -16,10 +16,11 @@
 <![endif]-->
 <style type="text/css">
 	 #map_canvas{ width:100%; height:100%;}	 
-	 #container-speed{  width: 240px; height: 120px;} 
+	 #container-speed{ position:absolute; top:-90px; left:-50px;width: 310px; height: 120px; float: left} 
 	 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   		display: none !important;
 	 }
+	 .gm-style-cc{ position:absolute !important; bottom:40px !important; z-index:99999999 !important;}
 </style>
 </head>
 <div id="preloader" >
@@ -37,10 +38,8 @@
                 <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-                <!--
                 <li class="settings"><a href="../public/settings"><div></div><label>Settings</label></a></li>
-                -->
-		    <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
+                <li class="admin"><a href="../public/vdmVehicles"><div></div><label>Admin</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
@@ -62,7 +61,7 @@
                 	<span style="font-size: 12px; font-weight: bold;" ng-cloak><input type="radio" value="S" ng-model="vehicleStatus" name="vehicleStatus" class="radioButt"/> Idle <span>({{idleCount}}) </span></span>
                 -->
                 </li>
-                <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
+                <li ng-repeat="location in locations01"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
                     	<li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.vehicleId}} ({{loc.shortName}}) </a></li>
                     </ul>
@@ -92,22 +91,31 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="rightsection" style="position: absolute;top: 30px;right: 10px; z-index:999999; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
-                        	   <input type="button" id="traffic" ng-click="check()" value="Traffic" />
-                        	   <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>
-                               <input type="text" id="distanceVal" value="0" disabled/> <span style="font-size:12px;">Kms</span>
-                               
-                               <input type="button" value="Near by Vehicles" id="nearbyVeh" ng-click="nearBy();"/>
-                               <div class="nearbyTable">
+                        <a href="javascript:void(0);" class="contentexpand"><img src="assets/imgs/add.png"/></a>
+                        <div id="maploc">
+                        	<div id="pac-input01">
+                                <div>
+                                	<input type="button" id="traffic" ng-click="check()" value="Traffic" />
+                                </div> 
+                                <div>
+                            		<input type="button" value="Distance" id="pac-input02" ng-click="distance();"/>
+                                    <input type="text" id="distanceVal" value="0" disabled/> 
+                                    <input type="button" value="Near by Vehicles" id="nearbyVeh" ng-click="nearBy();"/>
+                                </div>
+                        	</div>
+                        	 
+                            <map id="map_canvas" style="height:100vh; width:100%;"></map>
+                            <div id="lastseen" style="top:0; height: auto; bottom:auto">&nbsp;</div>
+                            <div class="nearbyTable">
                             	<h3>NearBy Vehicles <a href="#" style="position:absolute; top:10px; right:10px;" ng-click="nearBy();">X</a></h3>
                                 <h5 ng-cloak>Your Place - {{nearbyLocs.fromAddress}}</h5>	
                                 <div>
                                 	<table cellpadding="0" cellspacing="0">
                                     	<thead>
                                             <tr>
-                                                <th style="width:30%;">Vehicle ID</th>
-                                                <th style="width:30%;">Distance</th>
-                                                <th style="width:40%;">Address</th>
+                                                <th>Vehicle ID</th>
+                                                <th>Distance</th>
+                                                <th>Address</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -120,79 +128,66 @@
                                     </table>
                                 </div>
                             </div>
-                        	   <div class="dynamicvehicledetails" ng-init="dynamicvehicledetails1=false" ng-if="dynamicvehicledetails1==true">
-                                    <h3 id="vehiid"><span></span> Details</h3>
-                                    <div>
-                                    	<table cellpadding="0" cellspacing="0">
-                                        	<tbody>
-                                                <tr>
-                                                	<td>odoDistance</td>
-                                                    <td id="vehdevtype"><span></span> kms</td>
-                                                    
-                                                </tr>
-                                                 <tr>
-                                                	<td>Speed Limit</td>
-                                                    <td id="mobno"><span></span> km/h</td>
-                                                    
-                                                </tr>
-                                                 <tr>
-                                                	<td>Today Distance</td>
-                                                    <td id="toddist"><span></span> kms</td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                    <td id="positiontime"><span></span> Time</td>
-                                                    <td id="regno"><span></span></td>
-                                                    
-                                                </tr>
-                                        </table>
-                                    </div>
-                                    <div id="rightAddress">
-                                        <h3>Address</h3>
-                                        <div align="center" id="lastseen"></div>
-                                    </div>
-                                    <h3>Last Seen Date & Time</h3>
-                                    <div align="center" id="lstseendate">
-                                       
-                                    </div>
-                                    <div id="container-speed"></div>
-                                    <h3>Support details</h3>
-                                    <div align="center">{{support}}</div>
+                            <div class="nearbyTable01">
+                            	<h3>Vehicle Status</h3>
+                                <div>
+                                	<table cellpadding="0" cellspacing="0">
+                                    	<tbody>
+                                            <tr>
+                                            	<td>Moving</td>
+                                                <td><img src="assets/imgs/green.png"/></td>
+                                            </tr>
+                                             <tr>
+                                            	<td>Parked</td>
+                                                <td><img src="assets/imgs/flag.png"/></td>
+                                            </tr>
+                                             <tr>
+                                            	<td>Overspeed</td>
+                                                <td><img src="assets/imgs/red.png"/></td>
+                                            </tr>
+                                             <tr>
+                                            	<td>Standing</td>
+                                                <td><img src="assets/imgs/orange.png"/></td>
+                                            </tr>
+                                             <tr>
+                                            	<td>Geo Fence</td>
+                                                <td><img src="assets/imgs/blue.png"/></td>
+                                            </tr>
+                                            <tr>
+                                            	<td>No Data</td>
+                                                <td><img src="assets/imgs/gray.png"/></td>
+                                            </tr>
+                                    </table>
                                 </div>
-                        	   
-                        	    <div class="legendlist">
-                                	<h3><b>Vehicle Status</b></h3>
-                                    <div>
-                                    	<table cellpadding="0" cellspacing="0">
-                                        	<tbody>
-                                                <tr>
-                                                	<td>Moving</td>
-                                                    <td><img src="assets/imgs/green.png"/></td>
-                                                    <td>Standing</td>
-                                                    <td><img src="assets/imgs/orange.png"/></td>
-                                                </tr>
-                                                 <tr>
-                                                	<td>Parked</td>
-                                                    <td><img src="assets/imgs/flag.png"/></td>
-                                                    <td>Geo Fence</td>
-                                                    <td><img src="assets/imgs/blue.png"/></td>
-                                                </tr>
-                                                 <tr>
-                                                	<td>Overspeed</td>
-                                                    <td><img src="assets/imgs/red.png"/></td>
-                                                    <td>No Data</td>
-                                                    <td><img src="assets/imgs/gray.png"/></td>
-                                                </tr>
-                                        </table>
-                                    </div>
+                            </div>
+                        </div>
+                        <!--<div class="latlong"><label><input type="text" value="0.0" id="latinput" readonly style="display: none"/> POI : <input type="text" style="width:300px;" id="poival" placeholder="Enter Point of Interest" ng-enter="enterkeypress()" /> <button ng-click="enterkeypress()">Save</button></label></div>--><div id="lstseendate">&nbsp;</div>
+                         <div class="bottomContent">
+                        	<div class="row">
+                    			<div class="col-md-4 col-lg-2" align="center" id="vehiid">
+                                	<h6 style="overflow: hidden; width: 200px;">Vehicle ID - <span>&nbsp;</span></h6>
                                 </div>
+                                <div class="col-md-2" align="center" id="vehdevtype">
+                                	<h6>odoDistance - <span>&nbsp;</span></h6>
+                                </div>
+                                <div class="col-md-2" align="center" id="mobno">
+                                	<h6>Speed Limit - <span>&nbsp;</span></h6>
+                                </div>
+                                
+                                <div class="col-md-4 col-lg-2" align="center">
+                                	<div id="container-speed"></div>
+                          			<!-- div class="container01" align="center">&nbsp;</div -->
+                                </div>
+                                
+                                <div class="col-md-4 col-lg-2" align="right" id="toddist">
+                                	<h6 align="right" style="text-align:right;">&nbsp; Today Distance - <span><span>&nbsp;</span>Km</span></h6>
+                                </div>
+                                
+                                <div class="col-md-2" align="center" id="regno">
+                                	<h6><p id="positiontime" style="display: inline; padding: 0; margin: 0;">Position</p> time - <span>&nbsp;</span></h6>
+                                </div>
+                            </div>
                         </div>
-                        <a href="javascript:void(0);" class="contentexpand"><img src="assets/imgs/add.png"/></a>
-                        <div id="maploc">
-                            <map id="map_canvas" style="height:100vh; width:100%;"></map>
-                            
-                        </div>
-                         
                     </div>
                 </div>
             </div>
@@ -224,7 +219,6 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/infobubble.js"  type="text/javascript"></script>
-    <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
     <script src="assets/js/custom.js"></script>

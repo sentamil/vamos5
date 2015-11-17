@@ -19,11 +19,12 @@ app.controller('mainCtrl',function($scope, $http, $filter){
     $scope.ft 				= 	getParameterByName('ft');
     $scope.td 				= 	getParameterByName('td');
     $scope.tt	 			= 	getParameterByName('tt');
-   	$scope.cid 				=	getParameterByName('cid');
-
-   	$scope.getTodayDate  =	function(date) {
+   
+   	
+    
+	$scope.getTodayDate  =	function(date) {
      	var date = new Date(date);
-		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
+    	return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };
     
     function formatAMPM(date) {
@@ -45,12 +46,12 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
 	
+	
 	$scope.$watch('sid', function() {
 		 //alert(1);
-		if($scope.rid=='executive') {
-			$scope.loading			=	true;
+   		 if($scope.rid=='executive') {
+		 	$scope.loading			=	true;
    		 	var gurl				=	'http://'+getIP+'/vamo/public//getExecutiveReport?groupId='+$scope.sid+'&fromDate='+$scope.fd+'&toDate='+$scope.td;
-			
 			$http.get(gurl).success(function(gdata){
 				$scope.loading			=	false;
 				$scope.execGroupReportData	=	gdata.execReportData;
@@ -60,11 +61,8 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			});
    		 }
    		 else { 
-
    		 	if($scope.vvid) {
-   		 		//console.log(1)
-	   		 	var gurl		=	'http://'+getIP+'/vamo/public//getPoiHistory?vehicleId='+$scope.vvid+'&fromDate='+$scope.fd+'&toDate='+$scope.td;
-	   		 	//console.log('----pio------>'+gurl)
+	   		 	var gurl		=	'http://'+getIP+'/vamo/public//getGeoFenceReport?vehicleId='+$scope.vvid+'&fromDate='+$scope.fd+'&fromTime='+convert_to_24h($scope.ft)+'&toDate='+$scope.td+'&toTime='+convert_to_24h($scope.tt);
 				$scope.vid		=	$scope.vvid;
 				$scope.loading	=	true;
 				$http.get(gurl).success(function(gdata){				
@@ -77,15 +75,15 @@ app.controller('mainCtrl',function($scope, $http, $filter){
    	});
    	
    	$scope.recursive   = function(location,index,$timeout){
-   		//console.log('--->'+location)
-   		if(location.length<=index){
+   		//console.log(location);
+		if(location.length<=index){
 			return;
 		}else{
 			var geo		 =	location[index].topSpeedGeoLocation;
 			if(!geo)
 				$scope.recursive(location, ++index);
 			var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+geo+"&sensor=true";
-			$http.get(tempurl).success(function(data){
+			$http.get(tempurl).success(function(data){	
 				$scope.locationname		=	data.results[0].formatted_address;
 				$scope.maddress[index]	=	data.results[0].formatted_address;
 				setTimeout(function() {
@@ -94,11 +92,12 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			});
 		}
 	}
-   	$scope.$watch("url", function (val) {
-   		$scope.loading	=	true;
+   	
+	$scope.$watch("url", function (val) {
+		$scope.loading	=	true;
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
-			//console.log(data[0].vehicleLocations[0].vehicleId);
+			console.log(data[0].vehicleLocations[0].vehicleId);
 			if(data.length)
 				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {			  
@@ -106,6 +105,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 				  		$scope.data1		=	data[key];
 				  }
 			});				
+			//console.log($scope.data1.group);
 			$scope.loading			=	false;	
 			$scope.fromNowTS		=	new Date();
 			$scope.toNowTS			=	new Date().getTime() - 86400000;
@@ -117,8 +117,9 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 		}).error(function(){ /*alert('error'); */});
 	});
 	
+	
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.tabActive = true;
+		 //$scope.tabActive = true;
 		 $scope.donut		=	false;
 		 $scope.bar			=	true;
 		 $scope.url = 'http://'+getIP+'/vamo/public//getVehicleLocations?group='+groupname;
@@ -146,118 +147,72 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	};
 	
 	$scope.plotHist			=		function() {
-		 console.log('hi arun----->'+$scope.whichdata)
-		if($scope.whichdata) {	
+		if($scope.whichdata) {
+			
 			var gurl		=	'http://'+getIP+'/vamo/public//getExecutiveReport?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+			//console.log(gurl);
 			$scope.loading			=	true;
 			$http.get(gurl).success(function(gdata){	
-				//console.log(gurl)
-				$scope.execGroupReportData	=	gdata.execReportData;
+				$scope.execGroupReportData	=	gdata.execReportData; 
 				if($scope.vid)
-				$scope.execGroupReportData	=	($filter('filter')($scope.execGroupReportData, {'vehicleId':$scope.vid}));
-				$scope.texecGroupReportData		=	$scope.execGroupReportData;	
-				//console.log(gurl)			
+					$scope.execGroupReportData	=	($filter('filter')($scope.execGroupReportData, {'vehicleId':$scope.vid}));
+				$scope.texecGroupReportData		=	$scope.execGroupReportData;				
 				$scope.donutLoad(gdata);
 				$scope.barLoad($scope.vid);
 				$scope.loading			=	false;
 				$scope.recursive($scope.execGroupReportData,0);	
 			});
 		}
-		else {		
-			var gurl		=	'http://'+getIP+'/vamo/public//getPoiHistory?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+		else {			
+			var gurl		=	'http://'+getIP+'/vamo/public//getGeoFenceReport?vehicleId='+$scope.vid+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime);
 			//console.log(gurl);			
 			if(!$scope.sid) {
 				$scope.loading			=	true; 
 				$http.get(gurl).success(function(gdata){
 				//console.log(gdata);	
-					$scope.dataGeofence(gdata.history);	
-					console.log("----va.ue------->"+gdata);
+					$scope.dataGeofence(gdata.gfTrip);	
 					$scope.loading			=	false;
 				});
 			}
 			
 		}	
     };
-   
+    
     $scope.donutLoad		=		function(data) {
     	$scope.barArray		=		[];
-    	$scope.loading=false;
     	angular.forEach(JSON.parse(data.distanceCoveredAnalytics), function(value, key) {
+   			//console.log(value, key);
    			$scope.barArray.push([key, value]);
-   		}); 
-    	$('#container').highcharts({
-			        chart: {
-			            type: 'column'
-			        },
-			        title: {
-			            text: 'Total Distance'
-			        },
-			        xAxis: {
-			            type: 'category',
-			            labels: {
-			                rotation: -45,
-			                style: {
-			                    fontSize: '8px',
-			                    fontFamily: 'Verdana, sans-serif'
-			                }
-			            }
-			        },
-			        yAxis: {
-			            min: 0,
-			            title: {
-			                text: 'Distance Travelled'
-			            }
-			        },
-			        legend: {
-			            enabled: false
-			        },
-			        // tooltip: {
-			        //     pointFormat: 'Population in 2008: <b>{point.y:.1f} millions</b>'
-			        // },
-			        series: [{
-			            name: 'Distance',
-			            data: $scope.barArray,
-			            dataLabels: {
-			                enabled: true,
-			                rotation: -90,
-			                color: '#003366',
-			                align: 'right',
-			                format: '{point.y:.1f}', // one decimal
-			                y: 10, // 10 pixels down from the top
-			                style: {
-			                    fontSize: '9px',
-			                    fontFamily: 'Verdana, sans-serif'
-			                }
-			            }
-			        }]
-			    });
-  //  		c3.generate({
-  //  			bindto: '#chart1',
-		//     data: {
-		//         columns: [
-		//             ['Consolidate RunningTime', data.consolidateRunningTime],
-		//             ['Consolidated IdleTime', data.consolidatedIdleTime],
-		//             ['Consolidated NoDataTime', data.consolidatedNoDataTime],
-		//             ['Consolidated ParkedTime', data.consolidatedParkedTime],
-		//         ],
-		//         type : 'donut',
-		//     },
+		}); 
+    	
+    	
+   		c3.generate({
+   			bindto: '#chart1',
+		    data: {
+		        columns: [
+		            ['Consolidate RunningTime', data.consolidateRunningTime],
+		            ['Consolidated IdleTime', data.consolidatedIdleTime],
+		            ['Consolidated NoDataTime', data.consolidatedNoDataTime],
+		            ['Consolidated ParkedTime', data.consolidatedParkedTime],
+		        ],
+		        type : 'donut',
+		    },
 		    
-		//     donut: {
-		//         title: "Time"
-		//     }
-		// });
+		    donut: {
+		        title: "Time"
+		    }
+		});
 		
-		// c3.generate({
-  //  			bindto: '#chart2',
-		//     data: {
-		//         columns: $scope.barArray,
-		//         type : 'donut',
-		//     },
-		//     donut: {
-		//         title: "Distance Covered Analytics"
-		//     }
-		// });
+		c3.generate({
+   			bindto: '#chart2',
+		    data: {
+		        columns: $scope.barArray,
+		        type : 'donut',
+		    },
+		    donut: {
+		        title: "Distance Covered Analytics"
+		    }
+		});
    	};
    	
    	$scope.barLoad	=		function(vehicleId) {
@@ -341,11 +296,13 @@ app.controller('mainCtrl',function($scope, $http, $filter){
     	$scope.vid							=	vehicleno;
     	$scope.vehiclenull					=	vehicleno;
     	
+    	
     	if($scope.downloadid=='executive'){
     		$scope.donut					=	true;
     		$scope.bar						=	false;  	
     	}
-    	var gurl			=	'http://'+getIP+'/vamo/public//getGeoFenceReport?vehicleId='+vehicleno+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime);
+    			
+		var gurl			=	'http://'+getIP+'/vamo/public//getGeoFenceReport?vehicleId='+vehicleno+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime);
 		//console.log(gurl);
 		$scope.loading			=	true;
 		$http.get(gurl).success(function(gdata){	
@@ -361,6 +318,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	}
 	
 	$scope.alertMe		=	function(data) {	
+		//console.log(data); 
 		switch(data) {
 			case 'executive':			
 				$scope.donut		=		false;
@@ -373,6 +331,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 				$scope.downloadid	=		'executive';
 				break;
 			case 'geofence':
+				//console.log('test');
 				if($scope.vid==null) {
 					$scope.vehiclenull	=	null;
 				}
@@ -380,16 +339,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 				$scope.whichdata	=		false;
 				$scope.donut		=		true;
 				$scope.bar			=		true;
-				$scope.downloadid	=		'geofencereport';
-				var gurl		=	'http://'+getIP+'/vamo/public//getPoiHistory?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-				console.log(gurl);			
-				$scope.loading			=	true; 
-				$http.get(gurl).success(function(gdata)
-				{
-					$scope.dataGeofence(gdata.history);	
-					$scope.loading			=	false;
-				});
-					
+				$scope.downloadid	=		'geofencereport';	
 				break;			
 			default:
 				break;
@@ -397,21 +347,6 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 		//console.log($scope.downloadid);
 	};
 	
-
-	// $scope.poi      =    function()
-	// {
-	// 	console.log('date---->'+$scope.data1.group+'------>'+$scope.fromdate)
-	// 	var gurl		=	'http://'+getIP+'/vamo/public//getPoiHistory?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-	// 	console.log(gurl)
-	// 	$http.get(url).success(function(data)
-	// 	{
-
-	// 	})
-	// }
-
-
-
-
 	function convert_to_24h(time_str) {
  		
  		var str		=	time_str.split(' ');
@@ -436,72 +371,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	    return marktimestr;
 	};
 	
-	// bar stacked high charts...
-	//$.getJSON("arun.json", function(data)
-	// {
-		// var lsit1=[];
-		// //lsit1=(data.time.suddenBreakList);
-		// console.log("data hot code --->"+data.suddenBreakList.ahan1.historySuddenBrk[0])
-		// var getjson = data.suddenBreakList.ahan1.historySuddenBrk[0];
-		// var split=getjson.split(',')
-		// var latitude = split[0]
-		// var longutide = split[1]
-		// var tempurl1	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
-		// $http.get(tempurl1).success(function(data){
-			// //$scope.loading			=	false;
-			// $scope.locationname = data.results[0].formatted_address;
-		// });
-		// var url1= 'http://localhost/vamo/public/getIndividualDriverPerformance?vehicleId=CV-1044';
-		// $http.get(url1).success(function(data)
-		// {
-			
-			// var overSpeed=[];
-			// var suddenBreak=[];
-			// var suddenAcc=[];
-			// var sparkAlarm=[];
-			// var temp=[];
-			// for(var i=0; i<12; i++)
-			// {
-				// overSpeed.push(data[i].topSpeed);
-				
-				// //console.log("for loop---1--->"+$scope.list[0].suddenBreakList)
-				// suddenBreak.push(data[i].presentStarSudBrk);
-				// suddenAcc.push(data[i].totalSudAccelStar);
-				// sparkAlarm.push(data[i].topSpeedAlarm);
-				
-			// }
-			// //temp=temp.push(data[0].suddenBreakList[0].length)
-			// // console.log("total 1-q--->"+data.suddenBreakList)
-			
-			
-			// // console.log("value----->----"+overSpeed+"--------"+suddenBreak)
-			
-	
-	// $scope.$watch("cid",function () 
-	// {
-	// 	$http.get($scope.url).success(function(data)
-	// 	{
-	// 		$scope.fromDateNow    =   new Date();
-	// 		$scope.toDateBefore   =   new Date().getTime() - 86400000;
-	// 		$scope.fromdate       =   $scope.getTodayDate($scope.fromDateNow.setDate($scope.fromDateNow.getDate()-7));
-	// 		$scope.todate         =   $scope.getTodayDate($scope.toDateBefore);
-	// 		$scope.groupName      =   data[0].group;
-	// 		var gurl		=	'http://'+getIP+'/vamo/public//getExecutiveReport?groupId='+$scope.groupName+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-	// 		$http.get(gurl).success(function(info)
-	// 		{
-	// 			$scope.barChart=[];
-	// 			$scope.loading=false;
-	// 			console.log(gurl+'--->'+info.length)
-	// 			if(info.length)
-	// 			angular.forEach(JSON.parse(info.distanceCoveredAnalytics),function(value, key)
-	// 			{
-	// 				$scope.barChart.push([key, value]);
-	// 			})
-	// 			//console.log(gurl)
-				
-	// 		});		
-	// 	});
-	// });
+
 });
 
 app.directive("getLocation", function () {
@@ -574,4 +444,3 @@ return {
   }// end link
 }
 });
-

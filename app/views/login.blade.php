@@ -46,7 +46,7 @@
 
         <!-- /.social-auth-links -->
 
-        <a href="#">{{ HTML::link('password/reset', 'Forgot/reset your password?', array('id' => 'linkid'), false)}} </a><br>
+        <a href="#">{{ HTML::link('password/reset', 'Forgot/reset your password?', array('id' => 'linkid'), true)}} </a><br>
 
       </div><!-- /.login-box-body -->
     </div>
