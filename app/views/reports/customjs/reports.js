@@ -57,7 +57,7 @@ app.controller('mainCtrl',function($scope, $http){
 	$scope.fromTime ='00:00:00';
 	$scope.totime='11:59:00';
 	$scope.vehigroup;
-
+	$scope.consoldateData=[];
 // 	var today = new Date();
 // var dd = today.getDate();
 // var mm = today.getMonth()+1; //January is 0!
@@ -109,6 +109,12 @@ app.controller('mainCtrl',function($scope, $http){
 		}).error(function(){ /*alert('error'); */});
 	});
 	
+	// var checkNulValue = function(result)
+	// {
+	// 	angular.forEach(data, function(value, key){
+	// 		if(value==null){console.log('null')}else{$scope.consoldateData = data;}
+	// 	})
+	// }
 	
     $scope.consoldate1 =  function()
 	{
@@ -117,6 +123,7 @@ app.controller('mainCtrl',function($scope, $http){
 		$http.get(conUrl).success(function(data)
 		{
 			$scope.consoldateData = data;
+			
 		});
 		$scope.loading	=	false;
 	}
@@ -126,8 +133,7 @@ app.controller('mainCtrl',function($scope, $http){
 		$scope.loading	=	true;
 		var conUrl       =   'http://'+getIP+'/vamo/public/getOverallVehicleHistory?group='+group+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
 		$http.get(conUrl).success(function(data)
-		{
-			$scope.consoldateData = data;
+		{$scope.consoldateData = data;
 		});
 		$scope.loading	=	false;
 	}
@@ -152,14 +158,29 @@ app.controller('mainCtrl',function($scope, $http){
 
       $scope.msToTime = function(ms) {
        
-    var x = ms / 1000;
-    var seconds = Math.round(x % 60);
-    x /= 60;
-    var minutes = Math.round(x % 60);
-    x /= 60;
-    var hours = Math.round(x % 24);
-    x /= 24;
-    var days = Math.round(x);
+    // var x = ms / 1000;
+    // var seconds = Math.round(x % 60);
+    // x /= 60;
+    // var minutes = Math.round(x % 60);
+    // x /= 60;
+    // var hours = Math.round(x % 24);
+    // x /= 24;
+    // var days = Math.round(x);
+  days = Math.floor(ms / (24 * 60 * 60 * 1000));
+  daysms = ms % (24 * 60 * 60 * 1000);
+  hours = Math.floor((daysms) / (60 * 60 * 1000));
+  hoursms = ms % (60 * 60 * 1000);
+  minutes = Math.floor((hoursms) / (60 * 1000));
+  minutesms = ms % (60 * 1000);
+  seconds = Math.floor((minutesms) / 1000);
+  //var rep = days + ":" + hours + ":" + minutes + ":" + seconds;
+  
+//     var value = 42838395/3600000;
+//     var i = '';
+//     i = value;	
+//     console.log(value);
+// var name = i.split(".")[0];
+//     console.log(' total value '+ms+' hrs '+extensionRemoved)
 
     return hours +" hrs "+minutes+" min "+seconds+" sec ";
 
@@ -230,7 +251,7 @@ app.controller('mainCtrl',function($scope, $http){
 	        results = regex.exec(location.search);
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
-	$scope.consoldateData=[];
+	
 
 	/*$scope.map =  null;
 	$scope.flightpathall = []; 
