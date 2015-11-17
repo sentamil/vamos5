@@ -50,6 +50,8 @@
 								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/migration/' . $value) }}">Migration</a>
 					
 								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Edit</a>
+								
+								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/calibrateOil/' . $value) }}">Calibrate</a>
 				
 			
 				

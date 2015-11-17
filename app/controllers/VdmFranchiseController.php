@@ -143,7 +143,6 @@ class VdmFranchiseController extends \BaseController {
 			$user->name = $fname;
 			$user->username=$userId;
 			$user->email=$email1;
-			$user->mobileNo=$mobileNo1;
 			$user->password=Hash::make($password);
 			$user->save();
 
@@ -158,20 +157,18 @@ class VdmFranchiseController extends \BaseController {
 			$user->name = 'vamos'.$fname;
 			$user->username=$vamosid;
 			$user->email='support@vamosys.com';
-			$user->mobileNo='9840898818';
 			$user->password=Hash::make($password);
 			$user->save();
 			$redis->sadd ( 'S_Users_' . $fcode, $vamosid );
 			$redis->hmset ( 'H_UserId_Cust_Map', $vamosid . ':fcode', $fcode);
-		
-        /*				
+						
 			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
 			{
 				Log::info("Inside email :" . Input::get ( 'email1' ));
 				
 				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
 			});
-			*/
+			
 			
 			// redirect
 			Session::flash ( 'message', 'Successfully created ' . $fname . '!' );
@@ -323,13 +320,28 @@ class VdmFranchiseController extends \BaseController {
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo',
 					 $mobileNo1,$userId.':email',$email1 );
-
+		
+/*
+			$user = User::where('userId', '=', $userId);
+			$user->email=$email1;
+			$user->save();
+	*/		
 			
 			DB::table('users')
 			->where('username', $userId)
 			->update(array('email' => $email1));
 			
-	
+		/*	$password='awesome';
+			
+			Log::info(" about to send mail");
+						
+			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
+			{
+				Log::info("Inside email :" . Input::get ( 'email1' ));
+				
+				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
+			});
+         * /
 
 		}
 					
@@ -382,13 +394,12 @@ class VdmFranchiseController extends \BaseController {
 		Session::put('email1',$email1);
 		Log::info("Email Id :" . Session::get ( 'email1' ));
 		
-		/*Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId), function($message)
+		Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId), function($message)
 		{
 			Log::info("Inside email :" . Session::get ( 'email1' ));
 		
 			$message->to(Session::pull ( 'email1' ))->subject('User Id deleted');
 		});
-		*/
 	
 		
 		Session::flash ( 'message', 'Successfully deleted ' . 'fname:'.$fcode . '!' );

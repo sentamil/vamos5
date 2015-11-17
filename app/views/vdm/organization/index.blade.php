@@ -41,6 +41,7 @@
  <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/poiView') }}">View POI </a>
  <a class="btn btn-warning" href="{{ URL::to('vdmOrganization/' . $value . '/poiEdit') }}">Edit POI </a>
  <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/poiDelete') }}">Delete POI </a>
+ <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/getSmsReport') }}">SMS Report </a>
 </td>
 <td>{{ Form::open(array('url' => 'vdmOrganization/' . $value, 'onsubmit' => 'return ConfirmDelete()')) }}
                                                     {{ Form::hidden('_method', 'DELETE') }}

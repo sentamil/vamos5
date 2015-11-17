@@ -9,7 +9,7 @@ app.controller('mainCtrl',function($scope, $http){
 	
 	
     $scope.vechID	= 	getParameterByName('vid');
-    $scope.url 		= 	'http://'+getIP+'/vamo/public/getVehicleLocations';
+    $scope.url 		= 	'http://'+getIP+':8087/vamosgps/public//getVehicleLocations';
 	
 	$scope.getTodayDate  =	function(date) {
      	var date = new Date(date);
@@ -38,7 +38,7 @@ app.controller('mainCtrl',function($scope, $http){
    	});
 	
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.url = 'http://'+getIP+'/vamo/public/getVehicleLocations?group='+groupname;
+		 $scope.url = 'http://'+getIP+':8087/vamosgps/public//getVehicleLocations?group='+groupname;
 	}
 	
 	$scope.getLocation	=	function(lat,lon) {			
@@ -74,7 +74,7 @@ app.controller('mainCtrl',function($scope, $http){
 	}
 	
 	$scope.plotHist			=		function() {
-    	var vurl	=	'http://'+getIP+'/vamo/public/getExecutiveReport?vehicleId='+$scope.vechID+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+    	var vurl	=	'http://'+getIP+':8087/vamosgps/public//getExecutiveReport?vehicleId='+$scope.vechID+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 		$http.get(vurl).success(function(vdata){	
 			$scope.execVechReportData	=	vdata.execReportData;
 		});	

@@ -1,14 +1,13 @@
-@if (Session::has('error'))
+
+ {{ HTML::ul($errors->all()) }}
+{{ Form::open(array('route' => array('password.update', $token))) }}                        
+          @if (Session::has('error'))
   {{ trans(Session::get('reason')) }}
 @endif
- 
- {{ HTML::ul($errors->all()) }}
- 
-{{ Form::open(array('route' => array('password.update', $token))) }}
- 
-  <p>{{ Form::label('userid', 'userid') }}
-  {{ Form::text('userid') }}</p>
 
+  <p>{{ Form::label('email', 'email') }}
+  {{ Form::text('email') }}</p>
+ 
   <p>{{ Form::label('password', 'Password') }}
   {{ Form::password('password') }}</p>
  
@@ -20,3 +19,5 @@
   <p>{{ Form::submit('Submit') }}</p>
  
 {{ Form::close() }}
+
+

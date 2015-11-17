@@ -71,7 +71,7 @@ app.directive('map', function($http) {
 							$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> '+ new Date(data.toDateTimeUTC).toString().split('GMT')[0]);
 							
 							var myOptions = {
-								zoom: Number(locs.zoomLevel),zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
+								zoom: Number(locs.zoomLevel),
 								center: new google.maps.LatLng(data.vehicleLocations[0].latitude, data.vehicleLocations[0].longitude),
 								mapTypeId: google.maps.MapTypeId.ROADMAP
 								//styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
@@ -379,43 +379,14 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		 gmarkers=[];
 		 ginfowindow=[];
 		 $scope.loading	=	true;
-		 
-		 for(var i=0; i<gmarkers.length; i++){
-				gmarkers[i].setMap(null);
-			}
-			if($scope.polyline){
-			for(var i=0; i<$scope.polyline1.length; i++){
-				$scope.polyline1[i].setMap(null);
-			}
-			
-			
-			$scope.polyline.setMap(null);
-}
-if($scope.markerstart){
-			$scope.markerstart.setMap(null);
-			$scope.markerend.setMap(null);
-			$scope.path = [];
-			$scope.polylinearr = [];
-			gmarkers=[];
-			ginfowindow=[];
-			contentString = [];
-			gsmarker=[];
-			gsinfoWindow=[];
-			window.clearInterval(id);
-			$('#replaybutton').attr('disabled','disabled');
-			$('#lastseen').html('<strong>From Date & time :</strong> -');
-			$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
-}
 		 $http.get($scope.url).success(function(data){
 			$scope.locations = data;
 			if(data.length)
-				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
+				$scope.vehiname	= data[0].vehicleLocations[0].vehicleId;
 			$scope.trackVehID =$scope.locations[$scope.gIndex].vehicleLocations[$scope.selected].vehicleId;
 			$scope.hisurl = 'http://'+globalIP+'/vamo/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
 			$('.nav-second-level li').eq(0).children('a').addClass('active');
 			$scope.loading	=	false;
-			
-			
 		}).error(function(){ /*alert('error'); */});
 		
 	}

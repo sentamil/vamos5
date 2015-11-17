@@ -19,10 +19,10 @@ app.controller('mainCtrl',function($scope, $http){
 	$scope.vehicleno=0;
 	
 	$scope.markerClicked=false;*/
-	$scope.gIndex = 0;
 	$scope.vvid			=	getParameterByName('vid');
 	//alert($scope.vvid)
 	$scope.mainlist		=	[];
+
 	$scope.url 			= 	'http://'+getIP+'/vamo/public/getVehicleLocations';
 	
 	//console.log(' url '+$scope.conUrl)
@@ -49,6 +49,9 @@ app.controller('mainCtrl',function($scope, $http){
 	$scope.todate1			=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
 	$scope.fromtime1		=	formatAMPM($scope.fromNowTS1);
 	$scope.totime1			=	formatAMPM($scope.toNowTS1);
+
+
+	$scope.url 			= 	'http://'+getIP+'/vamo/public//getVehicleLocations';
 
 
 
@@ -96,7 +99,7 @@ app.controller('mainCtrl',function($scope, $http){
 			$scope.vehigroup    =   data[0].group;
 			$scope.consoldate(data[0].group);
 			if(data.length)
-				$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
+				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {
 				   if(value.totalVehicles) {
 				  		$scope.data1		=	data[key];
@@ -228,7 +231,7 @@ app.controller('mainCtrl',function($scope, $http){
 	};
 	
 	$scope.getStatusReport		=		function() {
-		 $scope.url = 'http://'+getIP+'/vamo/public/getVehicleLocations?group='+$scope.vvid;
+		 $scope.url = 'http://'+getIP+'/vamo/public//getVehicleLocations?group='+$scope.vvid;
 	}
 	
 	$scope.getTodayDate		=		function() {
@@ -347,8 +350,7 @@ app.controller('mainCtrl',function($scope, $http){
     }*/
 	
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.url = 'http://'+getIP+'/vamo/public/getVehicleLocations?group='+groupname;
-		 $scope.gIndex = groupid;
+		 $scope.url = 'http://'+getIP+'/vamo/public//getVehicleLocations?group='+groupname;
 		 /*$scope.gIndex = groupid;
 		 $scope.selected=undefined; 
 		 gmarkers=[];
@@ -421,7 +423,7 @@ app.controller('mainCtrl',function($scope, $http){
 				$('#vehdevtype h3').text(temp[i].deviceType);
 				$('#mobno h3').text(temp[i].mobileNumber);
 				$('#regno h3').text(temp[i].regNumber);			
-				var tempurl = "http://128.199.175.189/vamo/public/reverseGeoLocation?lat="+temp[i].latitude +"&lng="+temp[i].longitude;
+				var tempurl = "http://128.199.175.189:8087/vamosgps/public//reverseGeoLocation?lat="+temp[i].latitude +"&lng="+temp[i].longitude;
 				$http.get(tempurl).success(function(data){
 					$('#lastseen').text(data);
 				}).error(function(){});
@@ -552,7 +554,7 @@ return {
 							}
 						}else if(scope.nearbyflag==true){
 							$('.nearbyTable').show();
-							var tempurl = "http://128.199.175.189/vamo/public/getNearByVehicles?lat="+event.latLng.lat()+"&lng="+event.latLng.lng();
+							var tempurl = "http://128.199.175.189:8087/vamosgps/public//getNearByVehicles?lat="+event.latLng.lat()+"&lng="+event.latLng.lng();
 							$http.get(tempurl).success(function(data){
 								scope.nearbyLocs = data;
 							}).error(function(){ });

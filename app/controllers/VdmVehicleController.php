@@ -194,7 +194,7 @@ class VdmVehicleController extends \BaseController {
             $sendGeoFenceSMS = Input::get ('sendGeoFenceSMS');
             $morningTripStartTime = Input::get ('morningTripStartTime');
             $eveningTripStartTime = Input::get ('eveningTripStartTime');
-			
+			$fuel=Input::get ('fuel');
 			$orgId = Input::get ('orgId');
             $altShortName= Input::get ('altShortName');
             $parkingAlert = Input::get('parkingAlert');
@@ -244,6 +244,7 @@ class VdmVehicleController extends \BaseController {
 					'date' =>$new_date1,
 					'paymentType'=>$paymentType,
 					'expiredPeriod'=>$new_date,
+					'fuel'=>$fuel,
 					
 					
 			);
@@ -376,7 +377,7 @@ class VdmVehicleController extends \BaseController {
 		$refData= array_add($refData, 'date',' ');
 		$refData= array_add($refData, 'paymentType',' ');
 		$refData= array_add($refData, 'expiredPeriod',' ');
-  
+		$refData= array_add($refData, 'fuel', 'no');
        $refDataFromDB = json_decode ( $details, true );
        
 	
@@ -422,6 +423,102 @@ class VdmVehicleController extends \BaseController {
 	return Redirect::to ( 'vdmVehicles' );
 }
 	}
+	
+	public function updateCalibration() {
+		Log::info('-------------inside calibrate add-----------');
+		$temp=0;
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		
+		$redis = Redis::connection ();
+		$vehicleId = Input::get ('vehicleId');
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$redis->del ( 'Z_Sensor_'.$vehicleId.'_'.$fcode );
+		 for ($p = 9; $p>=$temp; $p--)
+		 {
+			 $volt=Input::get ('volt'.$p);
+			 $litre=Input::get ('litre'.$p);
+			  log::info( $volt.'---------------vechile------------- ::' .$litre);
+			 if(!$litre==null && !$volt==null)
+			 {
+				// log::info( $volt.'---------------vechile------------- ::' .$litre);
+				 $redis->zadd ( 'Z_Sensor_'.$vehicleId.'_'.$fcode,$volt,$litre);
+			 }
+			  
+			  
+		 }
+		Log::info('-------------outside calibrate add-----------');
+		return Redirect::to ( 'vdmVehicles' );
+	}
+	
+	
+	public function calibrate($id) {
+		
+		Log::info('-------------inside calibrate-----------');
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		
+		$redis = Redis::connection ();
+		$vehicleId = $id;
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
+		$deviceId = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
+
+		$details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
+       
+		$refData=null;
+	    
+       $refData = json_decode ( $details, true );
+       
+	$address1=array();
+		 $place=array();
+		 $place1=array();
+		  $latandlan=array();
+		$address1= $redis->zrange( 'Z_Sensor_'.$vehicleId.'_'.$fcode,0,-1,'withscores');
+		
+		$temp=null;
+		foreach($address1 as $org => $rowId)
+	{
+			 
+			  
+		
+			 log::info( 'inside no result' .$rowId[0]);
+		
+				 $place = array_add($place, $rowId[0],$rowId[1]);
+					
+		 }
+		 
+		
+		  $temp=10-count($place);
+		  log::info( $temp.'---------------place------------- ::' .count($place));
+		 for ($p = 0; $p < $temp; $p++)
+		 {
+			  log::info( '---------------in------------- ::' );
+			  $place = array_add($place, "litre".$p,'');
+			
+		 }
+		 
+		$i=0;
+		$j=0;$k=0;$m=0;
+		
+	
+        
+		
+     
+		
+	 
+	//  var_dump($refData);
+		return View::make ( 'vdm.vehicles.calibrate', array (
+				'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with ( 'place', $place )->with ( 'k', $k )->with ( 'j', $j )->with ( 'i', $i )->with ( 'm', $m )->with ( 'place1', $place1 );
+				
+	}
+	
+	
+	
 	
 	/**
 	 * Update the specified resource in storage.
@@ -473,7 +570,7 @@ class VdmVehicleController extends \BaseController {
             $morningTripStartTime = Input::get ('morningTripStartTime');
             $eveningTripStartTime = Input::get ('eveningTripStartTime');
             $parkingAlert = Input::get ('parkingAlert');
-			
+			$fuel=Input::get ('fuel');
             $altShortName=Input::get ('altShortName');
             $redis = Redis::connection ();
             $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
@@ -518,6 +615,7 @@ class VdmVehicleController extends \BaseController {
 					'date' =>$date,
 					'paymentType'=>$paymentType,
 					'expiredPeriod'=>$expiredPeriod,
+					'fuel'=>$fuel,
 			);
 			
 			$refDataJson = json_encode ( $refDataArr );
