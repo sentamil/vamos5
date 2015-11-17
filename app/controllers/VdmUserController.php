@@ -171,11 +171,11 @@ class VdmUserController extends \BaseController {
 			$user->password=Hash::make($password);
 			$user->save();
 			
-		/*	Mail::queue('emails.welcome', array('fname'=>$userId,'userId'=>$userId,'password'=>$password), function($message)
+			Mail::queue('emails.welcome', array('fname'=>$userId,'userId'=>$userId,'password'=>$password), function($message)
 			{
 				$message->to(Input::get ( 'email' ))->subject('Welcome to VAMO Systems');	
 			});
-		*/	
+			
 			// redirect
 			Session::flash ( 'message', 'Successfully created ' . $userId . '!' );
 			return Redirect::to ( 'vdmUsers' );

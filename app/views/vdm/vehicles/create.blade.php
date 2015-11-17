@@ -191,7 +191,8 @@
 										
 										
                                         <div class="col-md-6">
-                                           
+                                             {{ Form::label('fuel', 'Fuel') }}
+										{{ Form::select('fuel',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('fuel'), array('class' => 'form-control')) }} 
                                         </div>
                                         
 																	

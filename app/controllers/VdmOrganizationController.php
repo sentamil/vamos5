@@ -234,7 +234,65 @@ public function addpoi()
 	}
 	
 	
-	
+	public function getSmsReport($id)
+	{
+		if(!Auth::check()) {
+			return Redirect::to('login');
+		}
+		$username = Auth::user()->username;
+		$redis = Redis::connection();
+		$ipaddress = $redis->get('ipaddress');
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		
+		$url = 'http://' .$ipaddress . ':9000/getSmsAuditOrg?fcode=' . $fcode . '&orgId=' . $id;
+        $url=htmlspecialchars_decode($url);
+ 
+		 log::info( ' url :' . $url);    
+		 $ch = curl_init();
+		 curl_setopt($ch, CURLOPT_URL, $url);
+    // Include header in result? (0 = yes, 1 = no)
+		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		  curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+		  $response = curl_exec($ch);
+         log::info( ' response :' . $response);
+         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+         curl_close($ch);
+         log::info( 'finished');
+		 
+        $report = json_decode($response,true);
+          if($report==null)
+		{
+			 log::info( ' ---------inside null--------- :');
+			return Redirect::to('vdmOrganization');
+		}
+		//$smsCount=$report['error'];
+		//$value = $sugStop['suggestedStop'];
+	     log::info( ' 1 :');
+	     $address = array();
+		  
+		   $details = array();
+		 $address=$report;
+	     log::info( ' 2 :');
+         foreach($address as $org => $rowId) {			
+		$temp = array();
+		 foreach($rowId as $org1 => $rowId2) {
+			  
+			if($org1!='year' && $org1!='month')
+			{
+				log::info($rowId2. ' final :'.$org1);
+				$temp=array_add($temp, $org1,$rowId2);
+			}				
+			
+		 }
+		 $details=array_add($details, $org,$temp); 
+		 log::info( ' final :'.$org);		
+        }
+		
+		
+       return View::make('vdm.organization.smsReport')->with('details',$details); 
+	 		}
+		
 	
 	public function poiView($id)
 	{

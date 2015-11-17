@@ -128,6 +128,10 @@
 		{{ Form::label('paymentType', 'Payment Type') }}
 		{{ Form::text('paymentType', $refData['paymentType'], array('class' => 'form-control','disabled' => 'disabled')) }}
 	</div>
+	<div>
+	{{ Form::label('fuel', 'Fuel') }}
+						 {{ Form::select('fuel', array('no' => 'No','yes' => 'Yes' ), $refData['fuel'],array('class' => 'form-control')) }}  
+	</div>
 	
 	</div>
 	</div>
