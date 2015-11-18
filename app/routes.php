@@ -27,17 +27,23 @@ Route::get('/history', function() {
 });
 
 Route::get('/track', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
+   
     return View::make('maps.track');
 });
+
+View::addExtension('html', 'php');
+Route::get('/liveTrack', function() {
+    
+    return View::make('maps.track');
+});
+
 Route::get('/settings', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
     return View::make('maps.settings');
 });
+
 
 View::addExtension('html', 'php');
 Route::get('/reports', function() {
@@ -102,9 +108,6 @@ Route::get('/getVehicleLocations', function() {
     Log::info('get Vehicle Locations');
     return View::make('vls.getVehicleLocations');
 });
-
-
-
 Route::get('/getOverallVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -135,8 +138,6 @@ Route::get('/getPoiHistory', function() {
 
 
 
-
-
 Route::get('/publicTrack', function() {
         Log::info('get publicTracking Vehicle Locations');
          return View::make('maps.publictrack');
@@ -146,6 +147,20 @@ Route::get('/publicTrack', function() {
 Route::get('/publicTracking', function() {
         Log::info('get publicTracking Vehicle Locations');
          return View::make('vls.publicTracking');
+});
+
+Route::get('/performance', function() {
+          if (!Auth::check()) {
+              return Redirect::to('login');
+          }
+          return View::make('reports.performanceChart');
+      });
+Route::get('/getOverallDriverPerformance', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getOverallDriverPerformance');
+    return View::make('vls.getOverallDriverPerformance');
 });
 
 
@@ -177,9 +192,7 @@ Route::get('/getGeoFenceView', function() {
 });
 
 Route::get('/getSelectedVehicleLocation', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
+
     Log::info('get Selected Vehicle Location');
     return View::make('vls.getSelectedVehicleLocation');
 });
@@ -303,21 +316,18 @@ Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeControl
 //adminauth
 
 Route::group(array('before' => 'adminauth'), function(){   //admin auth starts here
-
-Route::get('vdmVehicles/calibrateOil/{param}', array('uses' => 'VdmVehicleController@calibrate'));
-
+    
 
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
 Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dealerSearch'));
 
 Route::post('vdmVehicles/findDealerList', array('uses' => 'VdmVehicleController@findDealerList'));
-Route::post('vdmVehicles/updateCalibration', array('uses' => 'VdmVehicleController@updateCalibration'));
+
 
 //ramB/{param}/C/{param1?
 Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleController@stops'));
 
 Route::get('vdmVehicles/migration/{param1}', array('uses' => 'VdmVehicleController@migration'));
-
 
 Route::get('vdmVehicles/removeStop/{param}/{param1}', array('uses' => 'VdmVehicleController@removeStop'));
 
@@ -358,8 +368,6 @@ Route::get('vdmOrganization/{param}/poiView', array('uses' => 'VdmOrganizationCo
 Route::get('vdmOrganization/{param}/poiEdit', array('uses' => 'VdmOrganizationController@poiEdit'));
 
 Route::get('vdmOrganization/{param}/poiDelete', array('uses' => 'VdmOrganizationController@poiDelete'));
-
-Route::get('vdmOrganization/{param}/getSmsReport', array('uses' => 'VdmOrganizationController@getSmsReport'));
 
 
 Route::resource('vdmOrganization', 'VdmOrganizationController');
