@@ -641,6 +641,36 @@ class VdmVehicleController extends \BaseController {
 				$redis->sadd('S_Organisation_Route_'.$orgId.'_'.$fcode,$shortName);
 				
 			}
+			$vec=$redis->hget('H_ProData_' . $fcode, $vehicleId);
+			$details= explode(',',$vec);
+					$temp=null;
+					$i=0;
+					foreach ( $details as $gr ) {
+						$i++;
+						
+						if($temp==null)
+						{
+							$temp=$gr;
+						}
+						else{
+							if($i==10 && $vehicleRefData['odoDistance']!=$odoDistance)
+							{
+								Log::info('-----------inside log----------'.$odoDistance);
+								$temp=$temp.','.$odoDistance;
+							}
+							else{
+								$temp=$temp.','.$gr;
+							}
+							
+						}					
+				}
+			
+			
+            $redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $temp );
+			
+			
+			
+			
 			//$redis->sadd('S_Organisation_Route_'.$orgId.'_'.$fcode,$shortName);
 			$redis->sadd ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleId);
 			

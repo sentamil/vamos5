@@ -27,23 +27,17 @@ Route::get('/history', function() {
 });
 
 Route::get('/track', function() {
-   
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
     return View::make('maps.track');
 });
-
-View::addExtension('html', 'php');
-Route::get('/liveTrack', function() {
-    
-    return View::make('maps.track');
-});
-
 Route::get('/settings', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
     return View::make('maps.settings');
 });
-
 
 View::addExtension('html', 'php');
 Route::get('/reports', function() {
@@ -110,6 +104,7 @@ Route::get('/getVehicleLocations', function() {
 });
 
 
+
 Route::get('/getOverallVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -136,6 +131,7 @@ Route::get('/getPoiHistory', function() {
     Log::info('get POI History');
     return View::make('vls.getPoiHistory');
 });
+
 
 
 
@@ -181,7 +177,9 @@ Route::get('/getGeoFenceView', function() {
 });
 
 Route::get('/getSelectedVehicleLocation', function() {
-
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
     Log::info('get Selected Vehicle Location');
     return View::make('vls.getSelectedVehicleLocation');
 });
