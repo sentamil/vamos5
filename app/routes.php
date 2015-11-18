@@ -31,11 +31,11 @@ Route::get('/track', function() {
     return View::make('maps.track');
 });
 
-View::addExtension('html', 'php');
-Route::get('/liveTrack', function() {
+// View::addExtension('html', 'php');
+// Route::get('/liveTrack', function() {
     
-    return View::make('maps.track');
-});
+//     return View::make('maps.track');//
+// });
 
 Route::get('/settings', function() {
     if (!Auth::check()) {
@@ -138,7 +138,7 @@ Route::get('/getPoiHistory', function() {
 
 
 
-Route::get('/publicTrack', function() {
+Route::get('/liveTrack', function() {
         Log::info('get publicTracking Vehicle Locations');
          return View::make('maps.publictrack');
 });
