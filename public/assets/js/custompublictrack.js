@@ -140,17 +140,17 @@ app.directive('map', function($http, vamoservice) {
     };
 });
 app.controller('mainCtrl',function($scope, $http, vamoservice){ 
-	//var res = document.location.href.split("?");
-	//$scope.vehicleno = res[1].trim();
-	//$scope.url = 'http://'+globalIP+'/vamo/public//publicTracking?'+res[1];
+	var res = document.location.href.split("?");
+	$scope.vehicleno = res[1].trim();
+	$scope.url = 'http://'+globalIP+'/vamo/public//publicTracking?'+res[1];
 	$scope.path = [];
 	$scope.speedval =[];
 	$scope.inter = 0;
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
-	// vamoservice.getDataCall($scope.url).then(function(data) {
-	// 	$scope.locations = data;
-	// });
+	vamoservice.getDataCall($scope.url).then(function(data) {
+		$scope.locations = data;
+	});
     $scope.addMarker= function(pos){
 	   var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
 	   var marker = new google.maps.Marker({
