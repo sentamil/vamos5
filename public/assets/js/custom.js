@@ -101,6 +101,12 @@ app.filter('statusfilter', function(){
 		}
 	});
 	
+
+	$scope.temp = function()
+	{
+		//temp method want to delete
+	}
+
 	$scope.statusFilter = function(obj, param){
 	 	var out = [];
 	   	if(param=='ALL'){

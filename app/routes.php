@@ -104,6 +104,39 @@ Route::get('/getVehicleLocations', function() {
 });
 
 
+
+Route::get('/getOverallVehicleHistory', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get Vehicle Locations');
+    return View::make('vls.getOverallVehicleHistory');
+});
+
+
+Route::get('/getVehicleExp', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get Vehicle Expiry');
+    return View::make('vls.getVehicleExp');
+});
+
+
+
+Route::get('/getPoiHistory', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get POI History');
+    return View::make('vls.getPoiHistory');
+});
+
+
+
+
+
+
 Route::get('/publicTrack', function() {
         Log::info('get publicTracking Vehicle Locations');
          return View::make('maps.publictrack');

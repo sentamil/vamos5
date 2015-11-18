@@ -36,7 +36,7 @@
         <div id="wrapper" >
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand"><a href="javascript:void(0);"><img src="assets/imgs/logo.png"/></i></a></li>
+                <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
                 <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
                 <li class="history"><a href="javascript:void(0);"  class="active"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
@@ -214,9 +214,20 @@
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/customplay.js"></script>
     <script>
+
+    var logo =document.location.host;
+    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    $('#imagesrc').attr('src', imgName);
+     $(document).ready(function(){
+        $('#minmax').click(function(){
+            $('#contentmin').animate({
+                height: 'toggle'
+            },2000);
+
         $("#menu-toggle").click(function(e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
+
         });
         
         $(function () {

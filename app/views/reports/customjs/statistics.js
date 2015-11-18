@@ -147,8 +147,12 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	};
 	
 	$scope.plotHist			=		function() {
+
+		
+
 		if($scope.whichdata) {
 			
+
 			var gurl		=	'http://'+getIP+'/vamo/public//getExecutiveReport?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 			//console.log(gurl);
 			$scope.loading			=	true;
@@ -170,7 +174,11 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 				$scope.loading			=	true; 
 				$http.get(gurl).success(function(gdata){
 				//console.log(gdata);	
+
+					$scope.dataGeofence(gdata.history);	
+
 					$scope.dataGeofence(gdata.gfTrip);	
+
 					$scope.loading			=	false;
 				});
 			}

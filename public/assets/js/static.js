@@ -1,1 +1,1 @@
-var globalIP = "188.166.244.126";
+var globalIP = document.location.host;

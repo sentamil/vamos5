@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>vamosgps</title>
-	<link href="http://almsaeedstudio.com/themes/AdminLTE/dist/css/AdminLTE.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="http://almsaeedstudio.com/themes/AdminLTE/bootstrap/css/bootstrap.min.css">
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <title>VTS</title>
+  <link href="http://almsaeedstudio.com/themes/AdminLTE/dist/css/AdminLTE.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="http://almsaeedstudio.com/themes/AdminLTE/bootstrap/css/bootstrap.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
+
 <body class="login-page">
-	
-	{{ Form::open(array('url' => 'login')) }}
+  
+  {{ Form::open(array('url' => 'login')) }}
     <div class="login-box">
       <div class="login-logo">
-        <img src="assets/imgs/logo.png"/>
+        <img id="imagesrc"/>
+        <script>
+          var logo =document.location.host;
+          var imgName= '/vamo/public/assets/imgs/'+logo+'.png';
+          //cons
+          $('#imagesrc').attr('src', imgName);
+        </script>
         <h5>
         <?php if(Session::has('flash_notice')): ?>
             <div class="text-danger" id="flash_notice"><?php echo Session::get('flash_notice') ?></div>
         <?php endif; ?>
-    	</h5>
+      </h5>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-        <p class="login-box-msg">VAMO Systems Fleet Management</p>
+        <p class="login-box-msg">Vehicle Tracking System</p>
         <form action="../../index2.html" method="post">
           <div class="form-group has-feedback">
             {{ Form::text('userName', Input::old('userName'), array('placeholder' => 'Username', 'class'=>'form-control')) }}

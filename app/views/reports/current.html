@@ -10,10 +10,12 @@
 <title>VAMOSGPS</title>
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css">
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
+
 
 <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -54,7 +56,7 @@ background-color: #ffffff;
 	<div id="wrapper" ng-controller="mainCtrl">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand"><a href="javascript:void(0);"><img src="assets/imgs/logo.png"/></i></a></li>
+                <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
                 <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
                 <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="javascript:void(0);" class="active"><div></div><label>Reports</label></a></li>
@@ -152,9 +154,13 @@ background-color: #ffffff;
     <!-- AdminLTE css box-->
    
        <div class="col-md-12">
-	       	<div class="box box-primary">
+	       	<tabset class="nav-tabs-custom">
+			   			 <tab heading="Current Status Report">
+			   			 	<div class="box box-primary1">
+
 		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
-		            <h3 class="box-title">Current Status Report</h3>
+		        	
+		            <h5 class="box-title">Current Status Report</h5>
 		            <div class="box-tools pull-right">
 		                <a href="downloadreport?vid={{data1.group}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
 		                <img style="cursor: pointer;" ng-click="exportData('statusreport')"  src="../app/views/reports/image/xls.png" />
@@ -332,26 +338,189 @@ background-color: #ffffff;
 		        <div ng-show="loading" class="overlay"></div>
 		        <div ng-show="loading" class="loading-img"></div>
 		    </div>	
+    		</tab>
+    		<tab heading="Consolidated Report"> 
+    			<div class="box box-primary1">
+    				 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
+		        	
+		            <h5 class="box-title">Consolidated Report</h5>
+		            <div class="box-tools pull-right">
+		                <a href="" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
+		                <img style="cursor: pointer;" ng-click="exportData('conreport')"  src="../app/views/reports/image/xls.png" />
+		            	<img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV('conreport')"  src="../app/views/reports/image/csv.jpeg" />
+		            </div>
+		        </div>
+		        	
+		            <div class="row">
+		            		<div class="col-md-1" align="center"></div>
+		    				<div class="col-md-2" align="center">
+		                    	<div class="form-group">
+		                        	<div class="input-group datecomp">
+		                                <input type="text" ng-model="fromdate1" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
+		                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div></input>
+		                        	</div>
+		                      	</div>
+		                    </div>
+		                    <div class="col-md-2" align="center">
+		                    	<div class="form-group">
+		                        	<div class="input-group datecomp">
+		                                <input type="text" ng-model="fromTime" class="form-control placholdercolor" id="timeFrom" placeholder="From time">
+		                                <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+		                        	</div>
+		                      	</div>
+		                    </div>
+		                    <div class="col-md-2" align="center">
+		                    	<div class="form-group">
+		                        	<div class="input-group datecomp">
+		                              	<input type="text" ng-model="todate1" class="form-control placholdercolor" id="dateTo" placeholder="To date">
+		                              	<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+		                        	</div>
+		                      	</div>
+		                    </div>
+		                    <div class="col-md-2" align="center">
+		                    	<div class="form-group">
+		                        	<div class="input-group datecomp">
+		                              	<input type="text" ng-model="totime" class="form-control placholdercolor" id="timeTo" placeholder="To time">
+		                              	<div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+		                        	</div>
+		                      	</div>
+		                    </div>
+		                    <!-- <div class="col-md-2" align="center">
+		                    	<div class="form-group">
+		                        	<div class="input-group datecomp">
+		                              	<select ng-change="intervalChange()" class="input-sm form-control" ng-model="interval">
+					                   		 <option value="">Interval</option>
+					                   		 <option label="1 mins">1</option>
+					                   		 <option label="2 mins">2</option>
+					                   		 <option label="5 mins">5</option>
+					                   		 <option label="10 mins">10</option>
+					                   		 <option label="15 mins">15</option>
+					                   	</select>
+					                </div>
+		                      	</div> 
+		                    </div>-->
+		                    <div class="col-md-2" align="center">
+		                    	<div class="form-group">
+		                    		<div class="input-group datecomp">
+		                       			 <button ng-click="consoldate1()" style="margin-left: -100%;">Submit</button>
+		                       		</div>
+		                    	</div>
+		                    </div>
+		                   
+		                </div>
+		                <div class="box-body" id="conreport">
+		                <table class="table table-striped table-bordered table-condensed table-hover">
+		           				  <tbody ng-repeat="user in consoldateData">
+		           				  	<!-- <tr ng-if="user==null">
+										<td colspan="7">No Records Found Choose some other date</td>
+									</tr> -->
+										<tr style="text-align:center">
+											<td colspan="2"><b>Vehicle Id : {{user.vehicleId}}</b></td>
+											<td colspan="4"><b>From : {{fromdate1}}:{{fromTime}}, &nbsp;&nbsp; To : {{todate1}}:{{totime}}</b></td>
+											<td colspan="3"><b>Trip : {{user.totalTripLength}} Kms</b></td>
+										</tr>
+										<tr style="text-align:center">
+											<td colspan="2"><b>Moving : {{user.totalMovingTime | date:'HH:mm'}}</b></td>
+											<td colspan="2"><b>Stopped : {{user.totalParkedTime | date:'HH:mm'}}</b></td>
+											<td colspan="1"><b>Speed hike : {{user.topSpeed}}</b></td>
+											<td colspan="2"><b>Average speed : {{user.averageSpeed}}</b></td>
+										</tr>
+										<tr><td colspan="7" bgcolor="black"></td><tr>
+									<tr class="active" style="text-align:center">
+										<td rowspan="2"><b>Status</b></td>
+										<td rowspan="2"><b>Start</b></td>
+										<td rowspan="2"><b>End</b></td>
+										<td rowspan="2"><b>Duration</b></td>
+										<td colspan="3"><b>Stop position</b></td>
+									</tr>
+									<tr class="active" style="text-align:center">
+										<td><b>Length</b></td>
+										<td><b>Speed Hike</b></td>
+										<td><b>Speed Avg</b></td>
+									</tr>
+									<tr ng-repeat="subdata in user.historyConsilated" style="text-align:center">
+										<td ng-switch on="subdata.state">
+											<span ng-switch-when="S">Idle</span>
+											<span ng-switch-when="M">Moving</span>
+											<span ng-switch-when="P">Parked</span>
+										</td>
+										<td>{{subdata.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+										<td>{{subdata.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+										<td>{{msToTime(subdata.duration)}}</td>
+										<td ng-if="subdata.averageSpeed ==null" colspan="3"><a href="https://www.google.com/maps?q=loc:{{subdata.latitude}},{{subdata.longitude}}" target="_blank">{{subdata.latitude}}, {{subdata.longitude}}</a></td>
+										<td ng-if="subdata.latitude ==null">{{subdata.tripDistance}} Kms</td>
+										<td ng-if="subdata.latitude ==null">{{subdata.topSpeed}}</td>
+										<td ng-if="subdata.latitude ==null">{{subdata.averageSpeed}}</td>
+									</tr>
+									<!-- <tfoot>
+									    <tr>
+									      <td colspan="7"></td>
+									    </tr>
+									  </tfoot> -->
+									</tbody>
+									
+									
+								</table>
+								<div ng-show="loading" class="overlay"></div>
+		        <div ng-show="loading" class="loading-img"></div>
+							</div>
+
+		            </div>
+				
+    		</tab>
+        	</tabset>
+	       	
         </div>
-       
-                 
+      
+     <!-- <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    // <script src="../app/views/reports/customjs/moment.js"></script>
+    // <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    // <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
+    // <script src="../app/views/reports/datatable/jquery.dataTables.js"></script> -->
+    <script src="assets/js/static.js"></script>
 	<script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
     <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
-    <script src="../app/views/reports/customjs/FileSaver.js"></script>
     <script src="../app/views/reports/customjs/html5csv.js"></script>
-    <script src="assets/js/static.js"></script>
-	<script src="../app/views/reports/customjs/reports.js"></script>
+   <script src="../app/views/reports/customjs/moment.js"></script>
+    <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
+    <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
+    <script src="../app/views/reports/customjs/reports.js"></script>
 	
     <!-- script src="assets/js/custom.js"></script -->   
     <script>
-    $("#menu-toggle").click(function(e) {
+	     var logo =document.location.host;
+    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    $('#imagesrc').attr('src', imgName);
+	    $("#example1").dataTable();
+	      
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+		
+        $(function () {
+                $('#dateFrom, #dateTo').datetimepicker({
+					format:'YYYY-MM-DD',
+					useCurrent:true,
+					pickTime: false
+				});
+				$('#timeFrom').datetimepicker({
+					pickDate: false
+				});
+				$('#timeTo').datetimepicker({
+					useCurrent:true,
+					pickDate: false
+				});
+        });      
+        $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
     </script>
-   
+    
 </body>
 </html>
 
