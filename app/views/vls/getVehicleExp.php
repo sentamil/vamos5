@@ -34,7 +34,7 @@ foreach ($input as $key => $value) {
  $parameters="{$parameters}&{$web}={$val}";
  log::info( ' parameters :' . $parameters);
 
-		 $url = 'http://' .$ipaddress .':9000/getVechicleExp' . $parameters;
+		 $url = 'http://' .$ipaddress .':9000/getVehicleExp' . $parameters;
 		$url=htmlspecialchars_decode($url);
 		 log::info( 'Routing to backed  :' . $url );
 
