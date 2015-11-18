@@ -27,23 +27,17 @@ Route::get('/history', function() {
 });
 
 Route::get('/track', function() {
-   
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
     return View::make('maps.track');
 });
-
-View::addExtension('html', 'php');
-Route::get('/liveTrack', function() {
-    
-    return View::make('maps.track');
-});
-
 Route::get('/settings', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
     return View::make('maps.settings');
 });
-
 
 View::addExtension('html', 'php');
 Route::get('/reports', function() {
@@ -110,28 +104,6 @@ Route::get('/getVehicleLocations', function() {
 });
 
 
-Route::get('/getVehicleExp', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    Log::info('get Vehicle Expiry');
-    return View::make('vls.getVehicleExp');
-});
-
-
-
-Route::get('/getPoiHistory', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    Log::info('get POI History');
-    return View::make('vls.getPoiHistory');
-});
-
-
-
-
-
 Route::get('/publicTrack', function() {
         Log::info('get publicTracking Vehicle Locations');
          return View::make('maps.publictrack');
@@ -172,7 +144,9 @@ Route::get('/getGeoFenceView', function() {
 });
 
 Route::get('/getSelectedVehicleLocation', function() {
-
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
     Log::info('get Selected Vehicle Location');
     return View::make('vls.getSelectedVehicleLocation');
 });
