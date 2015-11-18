@@ -151,7 +151,7 @@
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
-    <script src="assets/js/customtrack.js"></script>
+    <script src="assets/js/custompublictrack.js"></script>
     <script>
     $(document).ready(function(){
         $('#minmax').click(function(){
