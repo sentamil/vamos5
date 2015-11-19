@@ -6,8 +6,9 @@ $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
 
 $username='';
-
-$username = Auth::user ()->username;
+if(isset(Auth::user ()->username)){
+	$username = Auth::user ()->username;
+}
 
 $parameters='?userId='. $username;
 foreach ($input as $key => $value) {
