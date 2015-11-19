@@ -7,11 +7,8 @@ $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
 
 
-if (! Auth::check ()) {
-	return Redirect::to ( 'login' );
-}
 
-$username = Auth::user ()->username;
+$username = '';
 
 //TODO - this hardcoding should be removed
 //$username='demouser1';
