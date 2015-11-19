@@ -5,14 +5,9 @@ $input = Input::all();
 $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
 
-
-if (! Auth::check ()) {
-	return Redirect::to ( 'login' );
-}
+$username='';
 
 $username = Auth::user ()->username;
-//TODO - this hardcoding should be removed
-//$username='demouser1';
 
 $parameters='?userId='. $username;
 foreach ($input as $key => $value) {
