@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>VTS</title>
+  <title>GPS</title>
   <link href="http://almsaeedstudio.com/themes/AdminLTE/dist/css/AdminLTE.min.css" rel="stylesheet">
   <link rel="stylesheet" href="http://almsaeedstudio.com/themes/AdminLTE/bootstrap/css/bootstrap.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -27,7 +27,7 @@
       </h5>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-        <p class="login-box-msg">Vehicle Tracking System</p>
+        <p class="login-box-msg">GPS Tracking System</p>
         <form action="../../index2.html" method="post">
           <div class="form-group has-feedback">
             {{ Form::text('userName', Input::old('userName'), array('placeholder' => 'Username', 'class'=>'form-control')) }}
@@ -54,7 +54,7 @@
 
         <!-- /.social-auth-links -->
 
-        <a href="#">{{ HTML::link('password/reset', 'Forgot/reset your password?', array('id' => 'linkid'), true)}} </a><br>
+        <a href="#">{{ HTML::link('password/reset', 'Forgot/reset your password?', array('id' => 'linkid'), false)}} </a><br>
 
       </div><!-- /.login-box-body -->
     </div>
