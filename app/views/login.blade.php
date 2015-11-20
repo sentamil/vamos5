@@ -27,7 +27,7 @@
       </h5>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-        <p class="login-box-msg">Vehicle Tracking System</p>
+        <p class="login-box-msg">GPS Tracking System</p>
         <form action="../../index2.html" method="post">
           <div class="form-group has-feedback">
             {{ Form::text('userName', Input::old('userName'), array('placeholder' => 'Username', 'class'=>'form-control')) }}
