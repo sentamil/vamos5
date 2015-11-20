@@ -81,7 +81,7 @@ return array(
 	|
 	*/
 
-	'username' => vehiclemonit@gmail.com,
+	'username' => 'vehiclemonit@gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -94,7 +94,7 @@ return array(
 	|
 	*/
 
-	'password' => #VAMOsys123,
+	'password' => '#VAMOsys123',
 
 	/*
 	|--------------------------------------------------------------------------
