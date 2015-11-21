@@ -22,22 +22,44 @@
 
 	</div>
 	 -->
-		 <div class="form-group">
+	 <div class="form-group">
+	 <div class="row">
+	 <div class="col-md-9">
 	 {{ Form::label('vehicleList', 'Select the vehicles:') }}
+	 {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}
+	</div>
+	<div class="col-md-3">
+	 {{ Form::submit('Update the Group!', array('class' => 'btn btn-primary')) }}
+	</div>
+</div>
 	 </div>
 	 @if(isset($vehicleList))		  
 		@foreach($vehicleList as $key => $value)
-			 
+			<div class="col-md-3 vehiclelist"> 
 			{{ Form::checkbox('vehicleList[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field']) }}
 			{{ Form::label($value) }}
-			 {{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
-			<br/>
+			{{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
+			</div>
+			
 		@endforeach
 	@endif
 		</br/>
 		</br/>
-
-	{{ Form::submit('Update the Group!', array('class' => 'btn btn-primary')) }}
-
 {{ Form::close() }}
+
+<script type="text/javascript">
+$( ".searchkey" ).keyup(function() {
+  var valThis = $(this).val().toLowerCase();
+   $('.vehiclelist>input').each(function(){
+       var text = $(this).val().toLowerCase();
+       if(text.indexOf(valThis) >= 0) {
+       	$(this).parent('div').fadeIn();
+       }
+       else{
+       	$(this).parent('div').fadeOut();
+       }
+
+  });
+})</script>
+
 @stop
