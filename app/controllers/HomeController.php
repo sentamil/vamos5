@@ -184,7 +184,7 @@ class HomeController extends BaseController {
              //do nothing
 			log::info( '---------- inside if filter adminauth----------' . $username) ;
 			//Auth::session(['cur' => 'admin']);
-			 return  Redirect::to('DashBoard');
+			 return  Redirect::to('Business');
       }
 	 
       else {

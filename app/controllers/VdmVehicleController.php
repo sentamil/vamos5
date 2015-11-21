@@ -16,7 +16,7 @@ class VdmVehicleController extends \BaseController {
 		Session::forget('page');
 		
 		$redis = Redis::connection ();
-		
+		log::info( 'User 1  ::' );
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		
 		Log::info('fcode=' . $fcode);
@@ -119,6 +119,24 @@ class VdmVehicleController extends \BaseController {
             }
 		return View::make ( 'vdm.vehicles.create' )->with ( 'orgList', $orgList );
 	}
+	
+	
+	
+	public function dashboard() {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+        $username = Auth::user ()->username;
+        $redis = Redis::connection ();
+       
+		log::info( '------login dashboard---------- '.Session::get('cur'));
+				
+		return Redirect::to ( 'DashBoard' );
+	}
+	
+	
+	
+	
 	
 	/**
 	 * Store a newly created resource in storage.
@@ -818,6 +836,10 @@ class VdmVehicleController extends \BaseController {
 			$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, Session::get('vehicleId'));
 			$refDataJson1=json_decode($refDataJson1,true);
 			$orgId=$refDataJson1['orgId'];
+			$time =microtime(true);
+			$time = round($time * 1000);
+			$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$refDataJson1['odoDistance']. ',S,N';
+            $redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
 			try{
 				$expiredPeriod=$refDataJson1['expiredPeriod'];
 				$vec=$redis->hget('H_Expire_'.$fcode,$expiredPeriod);
@@ -871,9 +893,12 @@ class VdmVehicleController extends \BaseController {
 		$groupList = $redis->smembers('S_Groups_' . $fcode);
 		
 		foreach ( $groupList as $group ) {
+			if($redis->sismember($group,Session::get('vehicleId'))==1)
+			{
+				$result = $redis->srem($group,Session::get('vehicleId'));
+				$redis->sadd($group,$vehicleId);
+			}
 			
-			$result = $redis->srem($group,Session::get('vehicleId'));
-			$redis->sadd($group,$vehicleId);
 		//	Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
 		}
 		
@@ -884,14 +909,24 @@ class VdmVehicleController extends \BaseController {
 				log::info('-----------inside dealer-----------');
 				$redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,Session::get('vehicleId'));
 				$redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
+				$groupList1 = $redis->smembers('S_Groups_Dealer_'.$username.'_' . $fcode);
 			}
 			else if(Session::get('cur')=='admin')
 			{
 				log::info('-----------inside admin-----------');
 				$redis->srem('S_Vehicles_Admin_'.$fcode,Session::get('vehicleId'));
 				$redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
+				$groupList1 = $redis->smembers('S_Groups_Admin_'.$fcode);
 			}
-		
+		foreach ( $groupList1 as $group ) {
+			if($redis->sismember($group,Session::get('vehicleId'))==1)
+			{
+				$result = $redis->srem($group,Session::get('vehicleId'));
+				$redis->sadd($group,$vehicleId);
+			}
+			
+		//	Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
+		}
 		
 			
 		}

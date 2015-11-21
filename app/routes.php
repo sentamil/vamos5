@@ -31,12 +31,11 @@ Route::get('/track', function() {
     return View::make('maps.track');
 });
 
-/* View::addExtension('html', 'php');
- Route::get('/liveTrack', function() {
-   
-     return View::make('maps.track');//
- });
-*/
+// View::addExtension('html', 'php');
+// Route::get('/liveTrack', function() {
+    
+//     return View::make('maps.track');//
+// });
 
 Route::get('/settings', function() {
     if (!Auth::check()) {
@@ -138,12 +137,11 @@ Route::get('/getPoiHistory', function() {
 
 
 
-View::addExtension('html', 'php');
+
 Route::get('/liveTrack', function() {
         Log::info('get publicTracking Vehicle Locations');
          return View::make('maps.publictrack');
 });
-
 
 
 Route::get('/publicTracking', function() {
@@ -325,9 +323,9 @@ Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dea
 
 Route::post('vdmVehicles/findDealerList', array('uses' => 'VdmVehicleController@findDealerList'));
 
-
-//ramB/{param}/C/{param1?
 Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleController@stops'));
+//ramB/{param}/C/{param1?
+Route::get('vdmVehicles/dashboard', array('uses' => 'VdmVehicleController@dashboard'));
 
 Route::get('vdmVehicles/migration/{param1}', array('uses' => 'VdmVehicleController@migration'));
 
@@ -350,6 +348,9 @@ Route::resource('vdmGroups', 'VdmGroupController');
 Route::resource('vdmVehicles', 'VdmVehicleController');
 Route::resource('DashBoard', 'DashBoardController');
 
+
+Route::resource('Business', 'BusinessController');
+
 Route::resource('vdmUsers', 'VdmUserController');
 
 Route::resource('vdmDealers', 'VdmDealersController');
@@ -371,7 +372,7 @@ Route::get('vdmOrganization/{param}/poiEdit', array('uses' => 'VdmOrganizationCo
 
 Route::get('vdmOrganization/{param}/poiDelete', array('uses' => 'VdmOrganizationController@poiDelete'));
 
-
+Route::get('vdmOrganization/{param}/getSmsReport', array('uses' => 'VdmOrganizationController@getSmsReport'));
 Route::resource('vdmOrganization', 'VdmOrganizationController');
 
 
