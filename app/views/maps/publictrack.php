@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Satheesh">
-    <title>VAMOSGPS</title>
+    <title>GPS</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
@@ -89,16 +89,22 @@
             </div>
         </div>
     </div>
-        <script src="assets/js/static.js"></script>
+
+<script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/highcharts-more.js"></script>
+    <script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
+    <script src="assets/js/infobubble.js"  type="text/javascript"></script>
+    <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
-    <script src="assets/js/custompublictrack.js"></script>
-    <script>
+<script src="assets/js/customlivetrack.js"></script>    
+<script>
 		$("#menu-toggle").click(function(e) {
 			e.preventDefault();
 			$("#wrapper").toggleClass("toggled");
@@ -106,3 +112,4 @@
     </script>
 </body>
 </html>
+

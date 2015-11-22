@@ -63,6 +63,11 @@
 		{{ Form::text('otherDetails', Input::old('otherDetails'), array('class' => 'form-control')) }}
 	</div>
 	
+	<div class="form-group">
+		{{ Form::label('numberofLicence', 'Number of Licence') }}
+		{{ Form::text('numberofLicence', Input::old('numberofLicence'), array('class' => 'form-control')) }}
+	</div>
+	
 	{{ Form::submit('Add the Franchise!', array('class' => 'btn btn-primary')) }}
 
 	{{ Form::close() }}

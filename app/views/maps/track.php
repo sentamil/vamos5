@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Satheesh">
-    <title>VAMOSGPS</title>
+    <title>GPS</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
@@ -19,7 +19,8 @@
             width:100%;
             height: 100vh; 
         }
-         #container-speed{ position:absolute; top:-67px; left:-50px;width: 300px; height: 100px; float: left} 
+         #container-speed{ width: 230px; height: 100px;} 
+         .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
     </style>
 </head>
 <body ng-app="mapApp">
@@ -31,50 +32,81 @@
                     <div class="col-lg-12">
                     	<div id="maploc">
                         	<div id="pac-input01">
-                                   
                                 <div>
                                 	<input type="button" id="traffic" ng-click="check()" value="Traffic" />
                                 </div> 
-                                </div>
-                        <map id="map_canvas"></map>
-                        </div>
-                        <div class="nearbyTable01">
-                            	<h3>Vehicle Status</h3>
-                                <div>
-                                	<table cellpadding="0" cellspacing="0">
-                                    	<tbody>
-                                            <tr>
-                                            	<td>Moving</td>
-                                                <td><img src="assets/imgs/green.png"/></td>
-                                            </tr>
-                                             <tr>
-                                            	<td>Parked</td>
-                                                <td><img src="assets/imgs/flag.png"/></td>
-                                            </tr>
-                                             <tr>
-                                            	<td>Overspeed</td>
-                                                <td><img src="assets/imgs/red.png"/></td>
-                                            </tr>
-                                             <tr>
-                                            	<td>Standing</td>
-                                                <td><img src="assets/imgs/orange.png"/></td>
-                                            </tr>
-                                             <tr>
-                                            	<td>Geo Fence</td>
-                                                <td><img src="assets/imgs/blue.png"/></td>
-                                            </tr>
-                                            <tr>
-                                            	<td>No Data</td>
-                                                <td><img src="assets/imgs/gray.png"/></td>
-                                            </tr>
-                                    </table>
-                                </div>
                             </div>
+                            <map id="map_canvas"></map>
+                        </div>
                     </div>
-                    <div id="lastseentrack" style="top:0; height: auto; bottom:auto">&nbsp;</div>
-                    <div class="latlong"><label><input type="text"  style="width:265px" value="0.0" id="latinput" readonly/> POI : <input type="text" style="width:300px;" id="poival" placeholder="Enter Point of Interest" ng-enter="enterkeypress()" /> <button ng-click="enterkeypress()">Save</button></label><!--<label>Longitude : <input type="text" value="0.0" id="lnginput" readonly/></label>--></div>
-                         <div class="bottomContent">
-                        	<!--<a href="javascript:void(0);" class="contentbClose"><img src="assets/imgs/close.png"/></a>-->
+                    <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
+                            <img src="assets/imgs/add.png" />
+                        </div>
+                    <div class="rightSection" id="contentmin">
+                        <table cellpadding="0" cellspacing="0" style="font-size:12px;" class="trackDetails">
+                            <tr>
+                                <td style="width:50%">Vehicle ID</td>
+                                <td id="vehiid" style="width:50%"><span></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%">odoDistance</td>
+                                <td id="vehdevtype" style="width:50%"><span></span> Km</td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%">Speed Limit</td>
+                                <td id="mobno"><span></span> Km/h</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><div id="container-speed"></div></td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%">Today Distance</td>
+                                <td id="toddist"><span><span></span>&nbsp;Km</span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%"><span id="positiontime">Position </span>Time</td>
+                                <td id="regno"><span></span></td>
+                            </tr>
+                             <tr>
+                                <td style="width:50%">Last Seen</td>
+                                <td id="lastseentrack"><span></span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="latlong"><label>LatLong<input type="text"  style="width:230px" value="0.0" id="latinput" readonly/> <br/> POI : <input type="text" style="width:153px;" id="poival" placeholder="Enter Point of Interest" ng-enter="enterkeypress()" /> <button ng-click="enterkeypress()">Save</button></label></div>
+                                </td>
+                                
+                            </tr>
+                        </table>
+                        
+                    	<h3 style="font-size:14px; text-align:center; margin-top:0;">Vehicle Status</h3>
+                        <div class="tracklegend">
+                        	<table cellpadding="0" cellspacing="0" style="font-size:12px;">
+                            	<tbody>
+                                    <tr>
+                                    	<td style="width:25%">Moving</td>
+                                        <td align="center"><img src="assets/imgs/green.png"/></td>
+                                        <td style="width:25%">Parked</td>
+                                        <td align="center"><img src="assets/imgs/flag.png"/></td>
+                                    </tr>
+                                     <tr>
+                                    	<td>Overspeed</td>
+                                        <td align="center"><img src="assets/imgs/red.png"/></td>
+                                        <td>Standing</td>
+                                        <td align="center"><img src="assets/imgs/orange.png"/></td>
+                                    </tr>
+                                     <tr>
+                                    	<td>Geo Fence</td>
+                                        <td align="center"><img src="assets/imgs/blue.png"/></td>
+                                        <td>No Data</td>
+                                        <td align="center"><img src="assets/imgs/gray.png"/></td>
+                                    </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!--div id="lastseentrack" style="top:0; height: auto; bottom:auto">&nbsp;</div-->
+                   <!-- <div class="latlong"><label><input type="text"  style="width:265px" value="0.0" id="latinput" readonly/> POI : <input type="text" style="width:300px;" id="poival" placeholder="Enter Point of Interest" ng-enter="enterkeypress()" /> <button ng-click="enterkeypress()">Save</button></label><!--<label>Longitude : <input type="text" value="0.0" id="lnginput" readonly/></label></div>-->
+                         <!-- div class="bottomContent">
                         	<div class="row">
                     			<div class="col-md-4 col-lg-2" align="center" id="vehiid">
                                 	<h6>Vehicle ID - <span></span></h6>
@@ -101,12 +133,12 @@
                                     
                                 </div>
                             </div>
-                        </div>
+                        </div -->
                 </div>
             </div>
         </div>
     </div>
-        <script src="assets/js/static.js"></script>
+    <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
@@ -121,6 +153,13 @@
     <script src="assets/js/services.js"></script>
     <script src="assets/js/customtrack.js"></script>
     <script>
+    $(document).ready(function(){
+        $('#minmax').click(function(){
+            $('#contentmin').animate({
+                height: 'toggle'
+            },2000);
+        });
+    });
 		$("#menu-toggle").click(function(e) {
 			e.preventDefault();
 			$("#wrapper").toggleClass("toggled");

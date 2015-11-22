@@ -65,6 +65,10 @@
 		{{ Form::label('otherDetails', 'Other Details') }}
 		{{ Form::text('otherDetails', $otherDetails, array('class' => 'form-control')) }}
 	</div>
+	<div class="form-group">
+		{{ Form::label('numberofLicence', 'Other Details') }}
+		{{ Form::text('numberofLicence', $numberofLicence, array('class' => 'form-control')) }}
+	</div>
 	
 	
 	{{ Form::submit('Update the Franchise!', array('class' => 'btn btn-primary')) }}

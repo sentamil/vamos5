@@ -41,7 +41,7 @@ return array(
 	|
 	*/
 
-	'port' => 465,
+	'port' => 587,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,8 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'pk@vamosys.com', 'name' => 'VAMO Systems'),
+	'from' => array('address' => 'vehiclemonit@gmail.com', 'name' => 'GPS'),
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,7 +68,7 @@ return array(
 	|
 	*/
 
-	'encryption' => 'ssl',
+	'encryption' => 'tls',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +81,7 @@ return array(
 	|
 	*/
 
-	'username' => 'pk@vamosys.com',
+	'username' => 'vehiclemonit@gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +94,7 @@ return array(
 	|
 	*/
 
-	'password' => 'myp%76ANNA',
+	'password' => '#VAMOsys123',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -122,3 +123,4 @@ return array(
 	'pretend' => false,
 
 );
+

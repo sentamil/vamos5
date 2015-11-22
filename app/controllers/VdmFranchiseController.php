@@ -21,9 +21,9 @@ class VdmFranchiseController extends \BaseController {
 		$fnameArray=null;
 		
 		foreach ( $fcodeArray as $key => $value ) {
-			$fname = $redis->hget('H_Franchise',$value.':fname');
-			
-			$fnameArray=array_add($fnameArray, $value, $fname);
+			$details = $redis->hget('H_Franchise',$value);
+			$details_json=json_decode($details,true);
+			$fnameArray=array_add($fnameArray, $value, $details_json['fname']);
 		}
 		//dd($fnameArray);
 		
@@ -70,6 +70,7 @@ class VdmFranchiseController extends \BaseController {
 		}
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
+		
 		$rules = array (
 				'fname' => 'required',
 				'fcode' => 'required',
@@ -114,6 +115,7 @@ class VdmFranchiseController extends \BaseController {
 			$email2 = Input::get ( 'email2' );
 			$userId = Input::get ('userId');
 			$otherDetails = Input::get ('otherDetails');
+			$numberofLicence = Input::get ('numberofLicence');
 			
 	
 			
@@ -125,11 +127,29 @@ class VdmFranchiseController extends \BaseController {
 			
 			
 	
-			$redis->hmset ( 'H_Franchise', $fcode.':fname',$fname,$fcode.':description',$description,
+			/*$redis->hmset ( 'H_Franchise', $fcode.':fname',$fname,$fcode.':description',$description,
 					$fcode.':landline',$landline,$fcode.':mobileNo1',$mobileNo1,$fcode.':mobileNo2',$mobileNo2,
-					$fcode.':email1',$email1,$fcode.':email2',$email2,$fcode.':userId',$userId);
+					$fcode.':email1',$email1,$fcode.':email2',$email2,$fcode.':userId',$userId);*///ram what to do migration
 			
-
+			$details = array (
+					'fname' => $fname,
+					'description' => $description,
+					'landline' => $landline,
+					'mobileNo1' => $mobileNo1,					
+					'mobileNo2' => $mobileNo2,
+					'email1' => $email1,
+					'email2' => $email2,
+					'userId' => $userId,
+					'fullAddress' => $fullAddress,
+					'otherDetails' => $otherDetails,
+					'numberofLicence' => $numberofLicence,
+					
+					
+					
+			);
+			
+			$detailsJson = json_encode ( $details );
+			$redis->hmset ( 'H_Franchise', $fcode,$detailsJson);
 			
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo1,$userId.':email',$email1 );
@@ -161,14 +181,15 @@ class VdmFranchiseController extends \BaseController {
 			$user->save();
 			$redis->sadd ( 'S_Users_' . $fcode, $vamosid );
 			$redis->hmset ( 'H_UserId_Cust_Map', $vamosid . ':fcode', $fcode);
-						
+		
+        /*				
 			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
 			{
 				Log::info("Inside email :" . Input::get ( 'email1' ));
 				
 				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
 			});
-			
+			*/
 			
 			// redirect
 			Session::flash ( 'message', 'Successfully created ' . $fname . '!' );
@@ -192,15 +213,18 @@ class VdmFranchiseController extends \BaseController {
 		$redis = Redis::connection ();
 		
 	
-		$franDetails = $redis->hmget ( 'H_Franchise', $fcode.':fname',$fcode.':descrption:',
+		/*$franDetails = $redis->hmget ( 'H_Franchise', $fcode.':fname',$fcode.':descrption:',
 				$fcode.':landline',$fcode.':mobileNo1',$fcode.':mobileNo2',
-				$fcode.':email1',$fcode.':email2',$fcode.':userId');
+				$fcode.':email1',$fcode.':email2',$fcode.':userId');*/
+				
+				$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+				$franDetails=json_decode($franDetails_json,true);
 		
 		
 		$franchiseDetails = implode ( '<br/>', $franDetails );
 		
 		return View::make ( 'vdm.franchise.show', array (
-				'fname' => $franDetails[0] 
+				'fname' => $franDetails['fname'] 
 		) )->with ( 'fcode', $fcode )->with ( 'franchiseDetails', $franchiseDetails );
 	}
 	
@@ -219,24 +243,68 @@ class VdmFranchiseController extends \BaseController {
 		$redis = Redis::connection ();
 		$fcode = $id;
 		
-		$franchiseDetails = $redis->hmget ( 'H_Franchise', $fcode.':fname',$fcode.':description',
+		/*$franchiseDetails = $redis->hmget ( 'H_Franchise', $fcode.':fname',$fcode.':description',
 				$fcode.':landline',$fcode.':mobileNo1',$fcode.':mobileNo2',
-				$fcode.':email1',$fcode.':email2',$fcode.':userId',$fcode.':fullAddress',$fcode.':otherDetails');
+				$fcode.':email1',$fcode.':email2',$fcode.':userId',$fcode.':fullAddress',$fcode.':otherDetails');*/
 			
+		$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+				$franchiseDetails=json_decode($franDetails_json,true);
 		
+		if(isset($franchiseDetails['description'])==1)
+			$description=$franchiseDetails['description'];
+		else
+			$description='';
+		if(isset($franchiseDetails['landline'])==1)
+			$landline=$franchiseDetails['landline'];
+		else
+			$landline='';
+		if(isset($franchiseDetails['mobileNo1'])==1)
+			$mobileNo1=$franchiseDetails['mobileNo1'];
+		else
+			$mobileNo1='';
+		if(isset($franchiseDetails['mobileNo2'])==1)
+			$mobileNo2=$franchiseDetails['mobileNo2'];
+		else
+			$mobileNo2='';
+			
+		if(isset($franchiseDetails['email1'])==1)
+			$email1=$franchiseDetails['email1'];
+		else
+			$email1='';
+		if(isset($franchiseDetails['email2'])==1)
+			$email2=$franchiseDetails['email2'];
+		else
+			$email2='';
+		if(isset($franchiseDetails['userId'])==1)
+			$userId=$franchiseDetails['userId'];
+		else
+			$userId='';
+		if(isset($franchiseDetails['fullAddress'])==1)
+			$fullAddress=$franchiseDetails['fullAddress'];
+		else
+			$fullAddress='';
+		if(isset($franchiseDetails['otherDetails'])==1)
+			$otherDetails=$franchiseDetails['otherDetails'];
+		else
+			$otherDetails='';
+		if(isset($franchiseDetails['numberofLicence'])==1)
+			$numberofLicence=$franchiseDetails['numberofLicence'];
+		else
+			$numberofLicence='';
 		
 		return View::make ( 'vdm.franchise.edit', array (
-				'fname' => $franchiseDetails[0] 
+				'fname' => $franchiseDetails['fname'] 
 		) )->with ( 'fcode', $fcode )->with ( 'franchiseDetails', $franchiseDetails )
-		->with('description',$franchiseDetails[1])
-		->with('landline',$franchiseDetails[2])
-		->with('mobileNo1',$franchiseDetails[3])
-		->with('mobileNo2',$franchiseDetails[4])
-		->with('email1',$franchiseDetails[5])
-		->with('email2',$franchiseDetails[6])
-		->with('userId',$franchiseDetails[7])
-		->with('fullAddress',$franchiseDetails[8])
-		->with('otherDetails',$franchiseDetails[9]);
+		->with('description',$description)
+		->with('landline',$landline)
+		->with('mobileNo1',$mobileNo1)
+		->with('mobileNo2',$mobileNo2)
+		->with('email1',$email1)
+		->with('email2',$email2)
+		->with('userId',$userId)
+		->with('fullAddress',$fullAddress)
+		->with('otherDetails',$otherDetails)
+		->with('numberofLicence',$numberofLicence);
 	
 
 	}
@@ -260,8 +328,8 @@ class VdmFranchiseController extends \BaseController {
 				'description' => 'required',
 				'fullAddress' => 'required',
 				'landline' => 'required',
-				'mobileNo1' => 'required|numeric',
-				'mobileNo2' => 'numeric',
+				'mobileNo1' => 'required',
+				'mobileNo2' => 'required',
 				'email1' => 'required|email',
 				'email2' => 'email',
 				'otherDetails' => 'required'
@@ -290,7 +358,7 @@ class VdmFranchiseController extends \BaseController {
 			$email2 = Input::get ( 'email2' );
 
 			$otherDetails = Input::get ('otherDetails');
-				
+			$numberofLicence = Input::get ('numberofLicence');	
 			$redis = Redis::connection ();
 				
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
@@ -308,40 +376,47 @@ class VdmFranchiseController extends \BaseController {
 			* Possible improvement..implement ajax call - verify the code while typing itself
 			*
 			*/
+			$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+				$franchiseDetails=json_decode($franDetails_json,true);
 			
-			$userId = $redis->hget('H_Franchise',$fcode.':userId');
-			$fname =$redis->hget('H_Franchise',$fcode.':fname');
+			$userId = $franchiseDetails['userId'];
+			$fname =$franchiseDetails['fname'];
 			
-			$redis->hmset ( 'H_Franchise', $fcode.':description',$description,
+			/*$redis->hmset ( 'H_Franchise', $fcode.':description',$description,
 					$fcode.':landline',$landline,$fcode.':mobileNo1',$mobileNo1,$fcode.':mobileNo2',$mobileNo2,
-					$fcode.':email1',$email1,$fcode.':email2',$email2);
+					$fcode.':email1',$email1,$fcode.':email2',$email2);*/
+					
+					$details = array (
+					'fname' => $fname,
+					'description' => $description,
+					'landline' => $landline,
+					'mobileNo1' => $mobileNo1,					
+					'mobileNo2' => $mobileNo2,
+					'email1' => $email1,
+					'email2' => $email2,
+					'userId' => $userId,
+					'fullAddress' => $fullAddress,
+					'otherDetails' => $otherDetails,
+					'numberofLicence' => $numberofLicence,
+					
+					
+					
+			);
+			
+			$detailsJson = json_encode ( $details );
+			$redis->hmset ( 'H_Franchise', $fcode,$detailsJson);
 			
 			
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo',
 					 $mobileNo1,$userId.':email',$email1 );
-		
-/*
-			$user = User::where('userId', '=', $userId);
-			$user->email=$email1;
-			$user->save();
-	*/		
+
 			
 			DB::table('users')
 			->where('username', $userId)
 			->update(array('email' => $email1));
 			
-		/*	$password='awesome';
-			
-			Log::info(" about to send mail");
-						
-			Mail::queue('emails.welcome', array('fname'=>$fname,'userId'=>$userId,'password'=>$password), function($message)
-			{
-				Log::info("Inside email :" . Input::get ( 'email1' ));
-				
-				$message->to(Input::get ( 'email1' ))->subject('Welcome to VAMO Systems');
-			});
-         * /
+	
 
 		}
 					
@@ -366,14 +441,23 @@ class VdmFranchiseController extends \BaseController {
 		
 		$fcode = $id;
 		
-		$userId = $redis->hget('H_Franchise',$fcode.':userId');
+		$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+				$franchiseDetails=json_decode($franDetails_json,true);
+			
+			$userId = $franchiseDetails['userId'];
+			$fname =$franchiseDetails['fname'];
+			$email1 = $franchiseDetails['email1'];
+		
+		
+		/*$userId = $redis->hget('H_Franchise',$fcode.':userId');
 		$fname = $redis->hget('H_Franchise',$fcode.':fname');
 		
-		$email1 = $redis->hget('H_Franchise', $fcode.':email1');
+		$email1 = $redis->hget('H_Franchise', $fcode.':email1');*/
 		
-		$redis->hdel ( 'H_Franchise', $fcode.':fname',$fcode.':description',
-				$fcode.':landline',$fcode.':mobileNo1',$fcode.':mobileNo2',
-				$fcode.':email1',$fcode.':email2',$fcode.':userId');
+		$redis->hdel ( 'H_Franchise', $fcode);
+				
+				
+				
 		
 		$redis->srem('S_Franchises',$fcode);
 
