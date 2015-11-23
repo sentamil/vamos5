@@ -122,7 +122,7 @@ app.controller('mainCtrl',function($scope, $http){
     $scope.consoldate1 =  function()
 	{
 		$scope.loading	=	true;
-		var conUrl       =   'http://'+getIP+'/vamo/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
+		var conUrl       =   'http://'+getIP+'/vamo/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$('#fromdate1').val()+'&fromTime='+ $('#timeFrom').val()+'&toDate='+ $('#dateTo').val()+'&toTime='+ $('#timeTo').val();
 		$http.get(conUrl).success(function(data)
 		{
 			$scope.consoldateData = data;
