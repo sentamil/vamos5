@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Page title -->
-    <title>VAMOSGPS</title>
+    <title>GPS Admin</title>
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
@@ -26,7 +26,7 @@
 <body onload="VdmDealersController.checkuser()">
 
 <!-- Simple splash screen-->
-<div class="splash"> <div class="color-line"></div><div class="splash-title"><h1>Welcome To VAMOSGPS</h1><img src="images/loading-bars.svg" width="64" height="64" /> </div> </div>
+<div class="splash"> <div class="color-line"></div><div class="splash-title"><h1>GPS Admin</h1> </div> </div>
 <!--[if lt IE 7]>
 <p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -63,41 +63,16 @@
     <div id="navigation">
         <div class="profile-picture">
 	<a href="live">
+            <!--
                 <img src="assets/imgs/logo.png" class="img-circle m-b" alt="logo">
+            -->
             </a>
  <div class="stats-label text-color">
-                <span class="font-extra-bold font-uppercase">VAMOSGPS ADMIN</span>
+                <span class="font-extra-bold font-uppercase">GPS ADMIN</span>
             </div>
 
         </div>	
         <ul class="nav" id="side-menu">
-		
-		 <li>
-		<a href="vdmVehicles/dashboard"> <span class="nav-label">Dashboard</span></a>
-		
-		</li>
-		
-		
-		
-		<li>
-			<a href="Routes"> <span class="nav-label">Business</span><span class="fa arrow"></span></a>
-			  <ul class="nav nav-second-level">
-                     
-					 <li>
-                <a href="Business/create"> <span class="nav-label">Add Device</span></a>
-            </li>
-			<li><a href="vdmVehicles"> <span class="nav-label">Device List</span> <span class="label label-success pull-right">v.2</span> </a></li>
-			
-			
-			
-		
-                </ul>
-			
-                
-            </li>
-		
-		
-		
             <li>
 			<a href="Routes"> <span class="nav-label">Vehicles</span><span class="fa arrow"></span></a>
 			  <ul class="nav nav-second-level">
@@ -210,3 +185,4 @@
         </ul>
     </div>
 </aside>
+
