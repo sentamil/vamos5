@@ -31,6 +31,7 @@
        });
 })
 
+
       $(function () {
         $("#example1").dataTable();
 
@@ -66,6 +67,21 @@
         
       });
     </script>
+	<script type="text/javascript">
+$( ".searchkey" ).keyup(function() {
+  var valThis = $(this).val().toLowerCase();
+   $('.userplace>input').each(function(){
+       var text = $(this).val().toLowerCase();
+       if(text.indexOf(valThis) >= 0) {
+       	$(this).parent('div').fadeIn();
+       }
+       else{
+       	$(this).parent('div').fadeOut();
+       }
+
+  });
+})</script>
+
 <script>
 
     $(function () {
