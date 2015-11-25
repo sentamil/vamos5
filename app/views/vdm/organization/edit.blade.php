@@ -1,6 +1,6 @@
 @extends('includes.vdmheader')
 @section('mainContent')
-<h1>Add a school/college/Organization</h1>
+<h2><font color="blue">Add a school / college / Organization</font></h2>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
