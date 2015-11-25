@@ -2,7 +2,7 @@
 @section('mainContent')
 
 
-<h1>Showing UserId</h1>
+<h2><font color="blue"><b>Showing UserId</b></font></h1>
 
 	<div class="jumbotron text-center">
 		<h2>{{ $userId }}</h2>

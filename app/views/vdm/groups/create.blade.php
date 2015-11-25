@@ -6,7 +6,7 @@
     		<div class="col-lg-12">
         		<div class="hpanel">
                 <div class="panel-heading">
-                   Group Create  
+                   <h4><b><font color="blue">Group Create </font></b></h4> 
                 </div>
                 <div class="panel-body">
                 	<div class="row">
@@ -39,7 +39,7 @@
 										{{ Form::label($value) }}
 										{{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
 										</div>
-										
+												
 									@endforeach
 								@endif
 

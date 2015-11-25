@@ -1,7 +1,7 @@
 @extends('includes.vdmheader')
 @section('mainContent')
 
-<h1>Edit Group</h1>
+<h2><b><font color="blue">Edit Group</font></b></h2>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
@@ -25,8 +25,10 @@
 	 <div class="form-group">
 	 <div class="row">
 	 <div class="col-md-9">
-	 {{ Form::label('vehicleList', 'Select the vehicles:') }}
-	 {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}
+	  <h4>{{ Form::label('Filter', 'Filter :') }}
+	  {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}} </br></br>
+	 {{ Form::label('vehicleList', 'Select the vehicles:') }}</h4>
+	
 	</div>
 	<div class="col-md-3">
 	 {{ Form::submit('Update the Group!', array('class' => 'btn btn-primary')) }}

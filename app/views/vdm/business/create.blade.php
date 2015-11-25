@@ -6,7 +6,7 @@
     		<div class="col-lg-12">
        			 <div class="hpanel">
                		 <div class="panel-heading">
-                   		 Vehicles Create 
+                   		 <h4><b><font color="blue">ADD DEVICE</font></b></h4>
                 	 </div>
                 	<div class="panel-body">
                 		<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
@@ -18,8 +18,8 @@
 										<div class="col-md-12">
 											<div class="col-md-6">
 												<div class="row">
-													<div class="col-md-6">
-														{{ Form::label('deviceId', 'Device ID') }}
+													<div class="col-md-3">
+														<h5>{{ Form::label('deviceId', 'Device ID') }}</h5>
 													</div>
 													<div class="col-md-6">
 														{{ Form::textarea('deviceId', Input::old('deviceId'), array('class' => 'form-control')) }}

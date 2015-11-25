@@ -7,7 +7,7 @@
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
-                    Dealer List  
+                    <h4><b><font color="blue">Dealer List</b> </font> </h4>
                 </div>
                 <div class="panel-body">
                 <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row">
@@ -36,10 +36,10 @@
 								<td>
 									{{ Form::open(array('url' => 'vdmDealers/' . $value, 'class' => 'pull-right' ,'onsubmit' => 'return ConfirmDelete()')) }}
 										{{ Form::hidden('_method', 'DELETE') }}
-										{{ Form::submit('Delete this User', array('class' => 'btn btn-warning')) }}
+										{{ Form::submit('Delete this Dealer', array('class' => 'btn btn-warning')) }}
 									{{ Form::close() }}
-									<a class="btn btn-small btn-success" href="{{ URL::to('vdmDealers/' . $value) }}">Show this User</a>
-									<a class="btn btn-small btn-info" href="{{ URL::to('vdmDealers/' . $value . '/edit') }}">Edit this User</a>					
+									<a class="btn btn-small btn-success" href="{{ URL::to('vdmDealers/' . $value) }}">Show Dealer</a>
+									<a class="btn btn-small btn-info" href="{{ URL::to('vdmDealers/' . $value . '/edit') }}">Edit Dealer</a>					
 								</td>
 							</tr>
 						@endforeach

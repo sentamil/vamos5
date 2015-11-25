@@ -6,7 +6,7 @@
     		<div class="col-lg-12">
        			 <div class="hpanel">
                		 <div class="panel-heading">
-                   		 Vehicles Create 
+                   		<h4><b><font color="blue"> Vehicles Create </font></b></h4>
                 	 </div>
                 	<div class="panel-body">
                 		<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">

@@ -2,10 +2,10 @@
 @section('mainContent')
 
 
-<h1>Showing DealerId</h1>
+<h2><font color="blue">Showing DealerId</font></h2>
 
 	<div class="jumbotron text-center">
-		<h2>{{ $userId }}</h2>
+		<h2><font color="green">{{ $userId }}</font></h2>
 			<p>
 				<strong><br/>Mobile No: </strong><br/><br/> {{ $mobileNo }}<br>
 		</p>

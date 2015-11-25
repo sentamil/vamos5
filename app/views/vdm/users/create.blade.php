@@ -6,71 +6,64 @@
     		<div class="col-lg-12">
         		<div class="hpanel">
                		 <div class="panel-heading">
-                  		 User Create
+                  		<h4><b><font color="blue"> User Create</font></b></h4>
                 	</div>
                		 <div class="panel-body">
-				<div class="row">
+				
                 		{{ HTML::ul($errors->all()) }}
 						{{ Form::open(array('url' => 'vdmUsers')) }}
+							
 							<div class="row">
-							<div class="col-md-2">
+							<div class="col-md-4">
+							<div class="form-group">
 							{{ Form::label('userId', 'User ID') }}
-							</div>
-							<div class="col-md-6">
-							{{ Form::text('userId', Input::old('userId'), array('class' => 'form-control')) }}
-							</div>
+							{{ Form::text('userId', Input::old('userId'), array('class' =>'form-control')) }}
 							</div>
 							</br>
-							<div class="row">
-							<div class="col-md-2">
-							{{ Form::label('mobileNo', 'Mobile Number') }}
-							</div>
-							<div class="col-md-6">
+							<div class="form-group">
+							{{ Form::label('mobileNo', 'MOBILE NUMBER') }}
 							{{ Form::text('mobileNo', Input::old('mobileNo'), array('class' => 'form-control')) }}
 							</div>
 							</div>
-							</br>
-							<div class="row">
-							<div class="col-md-2">
+							<div class="col-md-4">
+							<div class="form-group">
 							{{ Form::label('email', 'Email') }}
-							</div>
-							<div class="col-md-6">
+							
 							{{ Form::text('email', Input::old('email'), array('class' => 'form-control')) }}
 							</div>
-							</div>
 							</br>
-							<div class="row">
-							<div class="col-md-2">
+							 <div class="form-group">
 							{{ Form::label('password', 'Password') }}
-							</div>
-							<div class="col-md-6">
+							
 							{{ Form::text('password', Input::old('password'), array('class' =>'form-control')) }}
 							</div>
 							</div>
-	                                                <div  style="text-align: right">
-							<h6>{{ Form::submit('submit',array('class'=>'btn btn-primary')) }}</h6>
+	                        <div class="col-md-3" style="text-align: right"><br>
+							<h6>{{ Form::submit('submit', array('class' => 'btn btn-primary')) }}</h6>
+							</div>
 							</div>
 							<hr>
-							<table id="example1" class="table table-bordered dataTable">
-							<thead>	
-								<tr>
-								<th>
-							 	{{ Form::label('vehicleGroups', 'Select the Groups:') }}</th>
-							 </tr>
-							   </thead>
-								<tbody>
+							 
+							<div class="row">
+							<div class="col-md-9">
+							 	
+							 <h4> {{ Form::label('Filter', 'Filter :') }}
+							  {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</h4>
+							  <h4><font color="green">{{ Form::label('vehicleGroups', 'Select the Groups:') }}</font></h4>
+							 </div>
+							 </div>
+							 </br>
 							              @if(isset($vehicleGroups))
 								            @foreach($vehicleGroups as $key => $value)
-										<tr class="col-md-2">
-									<td>
+										<div class="col-md-3 vehiclelist">
+									
 									{{ Form::checkbox('vehicleGroups[]', $key, null, ['class' => 'field']) }}
 									{{ Form::label($value) }}
+									</div>
 								@endforeach
-								</td>
-								</tr>
+								
 								@endif
-								</tbody>
-								</table>
+								
 								{{ Form::close() }}
 						</div>
 			</div>
