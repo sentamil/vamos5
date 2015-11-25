@@ -5,7 +5,7 @@
             <div class="col-lg-12">
                 <div class="hpanel">
                     <div class="panel-heading">
-                        Vehicles List
+                       <h4><b><font color="blue"> Organization List</font></b></h4>
                     </div>
                     <div class="panel-body">
                         <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
@@ -21,7 +21,7 @@
                                             <thead>
                                                 <tr>
                                                     <th style="text-align: center;">ID</th>
-                                                    <th style="text-align: center;">School ID</th>
+                                                    <th style="text-align: center;">Organization ID</th>
                                                     <th style="text-align: center;">Actions</th>
                                                 </tr>
                                             </thead>
