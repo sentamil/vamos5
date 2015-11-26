@@ -66,8 +66,16 @@
 		{{ Form::text('otherDetails', $otherDetails, array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
-		{{ Form::label('numberofLicence', 'Other Details') }}
-		{{ Form::text('numberofLicence', $numberofLicence, array('class' => 'form-control')) }}
+		{{ Form::label('numberofLicence', 'Number of Licence') }}
+		{{ Form::text('numberofLicence', $numberofLicence, array('class' => 'form-control','disabled' => 'disabled')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('availableLincence', 'Available licence ') }}
+		{{ Form::text('availableLincence', $availableLincence, array('class' => 'form-control','disabled' => 'disabled')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('addLicence', 'Add licence ') }}
+		{{ Form::text('addLicence', Input::old('addLicence'), array('class' => 'form-control')) }}
 	</div>
 	
 	

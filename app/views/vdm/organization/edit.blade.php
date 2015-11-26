@@ -89,26 +89,21 @@
     </div>
 	
     <div>
-	{{ Form::label('poi', 'Place Of interest') }}
 	</br>
 	
 	<table><tr><td>
-	@foreach($place as $key => $value)
+	
 	<table><tr>
-	<td>{{ Form::hidden('oldlatandlan'.$k++, $key, array('class' => 'form-control')) }}</td><td>
-	{{ Form::text('latandlan'.$j++, $key, array('class' => 'form-control')) }}</td><td>
-	{{ Form::text( 'place'.$i++,$value ,array('class' => 'form-control','disabled' => 'disabled') ) }}</td>
+	<td>
+	</td><td>
+	</td>
 	</tr></table>
 	
 	
 	 
 	
-	 @endforeach
-	
 	</td><td >
-	@foreach($place1 as $key => $value)
-	 {{ Form::text('l'.$m++, $key, array('class' => 'form-control','disabled' => 'disabled')) }}
-	  @endforeach
+	
 	</td></tr></table>
 	
 	 

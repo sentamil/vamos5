@@ -121,6 +121,61 @@ class VdmVehicleController extends \BaseController {
 	}
 	
 	
+	public function create1($id) {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+        $username = Auth::user ()->username;
+        $redis = Redis::connection ();
+        $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        //get the Org list
+        $tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
+		
+		if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				 $tmpOrgList = $redis->smembers('S_Organisations_Dealer_'.$username.'_'.$fcode);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$fcode);
+			}
+		
+        $orgList=null;
+		$orgList=array_add($orgList,'Default','Default');
+        foreach ( $tmpOrgList as $org ) {
+                $orgList = array_add($orgList,$org,$org);
+                
+            }
+			
+			
+			if(Session::get('cur')=='dealer')
+				{	
+					$key='H_Pre_Onboard_Dealer_'.$username.'_'.$fcode;			
+					
+				}
+				else if(Session::get('cur')=='admin')
+				{
+					$key='H_Pre_Onboard_Admin_'.$fcode;
+				}
+				$details=$redis->hget($key,$id);
+				Log::info('id=' . $id);
+				$valueData=json_decode($details,true);
+				$deviceId = $valueData['deviceid'];
+				$deviceModel = $valueData['deviceidtype'];
+				$deviceidCheck = $redis->sismember('S_Device_' . $fcode, $deviceId);
+				log::info( '------vehicleIdCheck---------- ::'.$deviceidCheck);
+				 if($deviceidCheck==1) {
+					//Session::flash ( 'message', 'DeviceId' . $deviceidCheck . 'already exist. Please choose another one' );
+					$value =$redis->hget('H_Vehicle_Device_Map_'.$fcode,$deviceId);
+					return Redirect::to ( 'vdmVehicles/' . $value );
+				}
+				
+				
+		return View::make ( 'vdm.vehicles.createnew' )->with ( 'orgList', $orgList )->with('deviceId',$deviceId)->with('deviceModel',$deviceModel);
+	}
+	
+	
 	
 	public function dashboard() {
 		if (! Auth::check ()) {
@@ -1101,7 +1156,7 @@ log::info( '--------new name----------' .$user);
 		
 		
 		
-		return Redirect::to ( 'vdmVehicles' );
+		return Redirect::to ( 'Business' );
 	}
 	
 	
