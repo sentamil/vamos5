@@ -28,20 +28,20 @@
 		
 	</div>
 	</div>
-
+ <hr>
 		 <div class="form-group">
 		 <div class="row">
 	 <div class="col-md-8">
-	 
+	  <h4><font color="green">{{ Form::label('userplace', 'Select the Places:') }}</font></h4>
 		 <h4>{{ Form::label('Filter', 'Filter :') }}
 		 {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}} </h4>
-	 <h4><font color="green">{{ Form::label('userplace', 'Select the Places:') }}</font></h4>
+	
 	 </div>
 	 <div class="col-md-3" style="text-align: right"></br></br>
 	 {{ Form::submit('Update the POI!', array('class' => 'btn btn-primary')) }}
 	</div>
 	 </div>
-	 <hr>
+	
 	 @if(isset($userplace))		  
 		@foreach($userplace as $key => $value)
 			 <div class="col-md-3 userplace">

@@ -13,7 +13,7 @@
 		
 		{{ Form::label('groupId' , $groupId) }}
 	</div>
-	
+	<hr>
 <!-- 
 	
 	<div class="form-group">
@@ -25,11 +25,12 @@
 	 <div class="form-group">
 	 <div class="row">
 	 <div class="col-md-9">
-	  <h4>{{ Form::label('Filter', 'Filter :') }}
-	  {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}} </br></br>
-	 {{ Form::label('vehicleList', 'Select the vehicles:') }}</h4>
-	
+	 
+	 <h4><font color="green">{{ Form::label('vehicleList', 'Select the vehicles:') }} </font><br><br>
+	 {{ Form::label('Filter', 'Filter :') }}
+	  {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}} </h4>
 	</div>
+
 	<div class="col-md-3">
 	 {{ Form::submit('Update the Group!', array('class' => 'btn btn-primary')) }}
 	</div>
