@@ -6,7 +6,7 @@
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
-                   <h4><b><font color="blue">Group List  </font></b></h4>
+                   <h4><b><font color="blue">Group List </font></b></h4>
                 </div>
                 <div class="panel-body">
                 <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6">
@@ -16,7 +16,7 @@
                 <thead>
 						<tr>
 							<th style="text-align: center;">ID</th>
-							<th style="text-align: center;">GD</th>
+							<th style="text-align: center;">GD ID</th>
 							<th style="text-align: center;">Vehicles</th>
 							<th style="text-align: center;">Short Name</th>
 							<th style="text-align: center;">Actions</th>
