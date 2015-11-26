@@ -344,12 +344,16 @@ Route::post('vdmVehicles/migrationUpdate', array('uses' => 'VdmVehicleController
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
 
 Route::resource('vdmGroups', 'VdmGroupController');
-
+Route::get('vdmVehicles/create1/{param1}', array('uses' => 'VdmVehicleController@create1'));
 Route::resource('vdmVehicles', 'VdmVehicleController');
 Route::resource('DashBoard', 'DashBoardController');
 
 
 Route::resource('Business', 'BusinessController');
+
+Route::post('Business/adddevice', array('uses' => 'BusinessController@adddevice'));
+
+Route::post('Business/batchSale', array('uses' => 'BusinessController@batchSale'));
 
 Route::resource('vdmUsers', 'VdmUserController');
 
