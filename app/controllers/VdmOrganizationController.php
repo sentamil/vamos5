@@ -742,50 +742,17 @@ public function addpoi()
 				 $place = array_add($address1, $org,$org);
 					$latandlan = array_add($address1, $rowId,$rowId);
 					
-					 $geocode=file_get_contents("http://maps.google.com/maps/api/geocode/json?address=".$org);
-
-				$output= json_decode($geocode);
-				 if($output->status=="ZERO_RESULTS")
-				 {
-					 log::info( 'inside no result' );
-					 $place3 = '';
-			
-				 }
-				 else{
-					 try
-					 {
-						  $place3 =  $output->results[0]->address_components[0]->long_name .','.$output->results[0]->address_components[1]->long_name ;
-					 }catch(\Exception $e)
-					{
-						$place3 =  $output->results[0]->address_components[0]->long_name;
-					   Log::error($e->getMessage());
-					}
-					
-					 log::info( '---------------place------------- ::' . $place3);
-					 
-					 
-					
-					
-					 
-				 }	
-					$place1 = array_add($place1, $place3,$place3);
+				
 					
 			 
 		 }
 		 
 		
-		  $temp=10-count($address1);
-		 for ($p = 0; $p < $temp; $p++)
-		 {
-			  log::info( '---------------place------------- ::' .count($place1));
-			  $place = array_add($place, $p,'');
-			 $place1 = array_add($place1, $p,'');
-		 }
 		 
 		$i=0;
 		$j=0;$k=0;$m=0;
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
-        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('place1',$place1)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius);   
+        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius);   
         
     }
     
