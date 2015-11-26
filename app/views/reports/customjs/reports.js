@@ -31,6 +31,16 @@ app.controller('mainCtrl',function($scope, $http){
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };
 
+    function format24hrs(date)
+    {
+    	//var date1 = new Date(date);
+    	var hrs   = date.getHours();
+    	var min   = date.getMinutes();
+    	var sec   = date.getSeconds();
+    	//console.log(hrs+':'+min+':'+sec)
+    	return hrs+':'+min+':'+sec;
+    }
+
      function formatAMPM(date) {
     	  var date = new Date(date);
 		  var hours = date.getHours();
@@ -117,11 +127,11 @@ app.controller('mainCtrl',function($scope, $http){
     $scope.consoldate1 =  function()
 	{
 		$scope.fromdate1   = document.getElementById("dateFrom").value;
-		var ftime          = document.getElementById("timeFrom").value;
-		$scope.fromTime    = ftime.split(" ")[0]+':00';
+		//var ftime          = document.getElementById("timeFrom").value;
+		$scope.fromTime    = document.getElementById("timeFrom").value;
 		$scope.todate1     = document.getElementById("dateTo").value;
-		var ttime          = document.getElementById("timeTo").value;
-		$scope.totime      = ttime.split(" ")[0]+':00';
+		//var ttime          = document.getElementById("timeTo").value;
+		$scope.totime      =document.getElementById("timeTo").value;
 		$scope.loading	   = true;
 		var conUrl1        = 'http://'+getIP+'/vamo/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
 		$http.get(conUrl1).success(function(data)
@@ -134,13 +144,13 @@ app.controller('mainCtrl',function($scope, $http){
 
 	$scope.consoldate =  function(group)
 	{
-		$scope.fromNowTS1		=	new Date();
+	$scope.fromNowTS1		=	new Date();
 	//$scope.toNowTS1			=	new Date().getTime() - 86400000;
 	$scope.fromdate1		=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
 	$scope.todate1			=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
-	$scope.fromtime1		=	formatAMPM($scope.fromNowTS1);
-	$scope.totime1			=	formatAMPM($scope.toNowTS1);
-
+	//$scope.fromtime1		=	format24hrs($scope.fromNowTS1);
+	$scope.totime		    =	format24hrs($scope.fromNowTS1);
+	//console.log("hi"+$scope.fromtime1)
 		$scope.loading	=	true;
 		var conUrl       =   'http://'+getIP+'/vamo/public/getOverallVehicleHistory?group='+group+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
 		$http.get(conUrl).success(function(data)
@@ -235,6 +245,7 @@ app.controller('mainCtrl',function($scope, $http){
 			$scope.locationname = data.results[0].formatted_address;
 			$scope.mainlist[ind]=	data.results[0].formatted_address;
 			$scope.loading	=	false;
+			console.log($scope.mainlist[ind])
 		});
 	};
 	
@@ -464,6 +475,7 @@ app.directive("getLocation", function () {
 	    	var lat = attrs.lat;
 	    	var lon = attrs.lon;
 	    	var ind	= attrs.index;
+	    	//console.log(' ind '+ind)
 			scope.getLocation(lat,lon,ind);
 		});
     }

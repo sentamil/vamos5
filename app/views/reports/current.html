@@ -325,8 +325,8 @@ background-color: #ffffff;
 										<td>{{user.status}}</td>
 										<td>{{user.latitude}}, {{user.longitude}}</td>
 										<td ng-if="user.address!=null">{{user.address}}</td>
-										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
-										<td get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
+										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
+										<td get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>														
 									</tr>
 									<tr ng-if="data1.vehicleLocations==null">
@@ -362,11 +362,12 @@ background-color: #ffffff;
 		                    </div>
 		                    <div class="col-md-2" align="center">
 		                    	<div class="form-group">
-		                        	<div class="input-group datecomp">
-		                                <input type="text" ng-model="fromTime" class="form-control placholdercolor" id="timeFrom" placeholder="From time">
-		                                <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
-		                        	</div>
+		                        	<div class="input-group datecomp" id="timeFromh">
+                                            <input type="text" class="form-control placholdercolor" ng-model="fromTime" id="timeFrom" placeholder="From time">
+                                            <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                                    	</div>
 		                      	</div>
+		                      	
 		                    </div>
 		                    <div class="col-md-2" align="center">
 		                    	<div class="form-group">
@@ -419,8 +420,8 @@ background-color: #ffffff;
 											<td colspan="3"><b>Trip : {{user.totalTripLength}} Kms</b></td>
 										</tr>
 										<tr style="text-align:center">
-											<td colspan="2"><b>Moving : {{user.totalMovingTime | date:'HH:mm'}}</b></td>
-											<td colspan="2"><b>Stopped : {{user.totalParkedTime | date:'HH:mm'}}</b></td>
+											<td colspan="2"><b>Moving : {{msToTime(user.totalMovingTime)}}</b></td>
+											<td colspan="2"><b>Stopped : {{msToTime(user.totalParkedTime)}}</b></td>
 											<td colspan="1"><b>Speed hike : {{user.topSpeed}}</b></td>
 											<td colspan="2"><b>Average speed : {{user.averageSpeed}}</b></td>
 										</tr>
@@ -446,7 +447,23 @@ background-color: #ffffff;
 										<td>{{subdata.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{subdata.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{msToTime(subdata.duration)}}</td>
-										<td ng-if="subdata.averageSpeed ==null" colspan="3"><a href="https://www.google.com/maps?q=loc:{{subdata.latitude}},{{subdata.longitude}}" target="_blank">{{subdata.latitude}}, {{subdata.longitude}}</a></td>
+										
+<!-- 
+										<td ng-if="subdata.averageSpeed ==null" colspan="3">
+											<p get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}} ng-if="subdata.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</p>
+											</td> -->
+
+											<td ng-if="subdata.averageSpeed ==null" colspan="3">
+										<p ng-if="subdata.address!=null">{{subdata.address}}</p>
+										<p style="cursor: pointer;" get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}}  ng-if="subdata.address==null && mainlist[$index]==null">Click Me</p>
+										<p get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}}  ng-if="subdata.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</p>
+									</td>
+
+
+										<!-- <td get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}} ng-if="subdata.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
+										<td get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}} ng-if="subdata.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
+ -->
+
 										<td ng-if="subdata.latitude ==null">{{subdata.tripDistance}} Kms</td>
 										<td ng-if="subdata.latitude ==null">{{subdata.topSpeed}}</td>
 										<td ng-if="subdata.latitude ==null">{{subdata.averageSpeed}}</td>
@@ -461,7 +478,7 @@ background-color: #ffffff;
 									
 								</table>
 								<div ng-show="loading" class="overlay"></div>
-		        <div ng-show="loading" class="loading-img"></div>
+		                        <div ng-show="loading" class="loading-img"></div>
 							</div>
 
 		            </div>
@@ -507,12 +524,32 @@ background-color: #ffffff;
 					pickTime: false
 				});
 				$('#timeFrom').datetimepicker({
-					pickDate: false
+					pickDate: false,
+					format: 'HH:mm:ss'
 				});
 				$('#timeTo').datetimepicker({
-					useCurrent:true,
-					pickDate: false
+					pickDate: false,
+					format: 'HH:mm:ss'
 				});
+				// $('#datetimepicker3').datetimepicker({
+				// 	//useCurrent:true,
+				// 	//pickDate: false,
+				// 	//pickTime: true,
+				// 	//showMeridian: false,
+				// 	//	pick12HourFormat: true,
+				// 	format: 'HM:MM'
+				// });
+				// $('#timeTo').datetimepicker({
+				// 	pickDate: false,
+				// 	format: 'HH:MM'
+				// });
+				// 	//useCurrent:true,
+				// 	pickTime: true,
+				// 	//use12hours: true,
+				// 	//useCurrent:true,
+				// 	format: 'HH:MM' 
+				// 	//showMeridian:false
+				// });
         });      
         $("#menu-toggle").click(function(e) {
         e.preventDefault();
