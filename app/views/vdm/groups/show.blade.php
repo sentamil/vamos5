@@ -1,6 +1,6 @@
 @extends('includes.vdmheader')
 @section('mainContent')
-<h1>Showing Group Details</h1>
+<h2><font color="blue"><b>Showing Group Details</b></font></h1>
 
 	<div class="jumbotron text-center">
 		<h2>{{ $groupId }}</h2>

@@ -1,108 +1,156 @@
-@extends('includes.vdmheader')
-@section('mainContent')
-<h1>Add a school/college/Organization</h1>
+@include('includes.header_create')
+<!-- Main Wrapper -->
+<div id="wrapper">
+	<div class="content animate-panel">
+		<div class="row">
+    		<div class="col-lg-12">
+       			 <div class="hpanel">
+               		 <div class="panel-heading">
+                   		<h4><font color="blue"><b>Add a school / college / Organization</b></font></h4>
+                	 </div>
+                	<div class="panel-body">
+                		<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                			<div class="row">
+                				<div class="col-sm-12">
 
 <!-- if there are creation errors, they will show here -->
-{{ HTML::ul($errors->all()) }}
+	{{ HTML::ul($errors->all()) }}
 
-{{ Form::open(array('url' => 'vdmOrganization')) }}
-<div class="row">
-    <div class="col-md-4">   
+	{{ Form::open(array('url' => 'vdmOrganization')) }}
+	<div class="row">	
+     <div class="col-md-6">
+	<div class="form-group">
+    <div class="col-md-6">   
     
        
-    <div class="form-group">
+    
         {{ Form::label('organizationId', 'School/College/Organization Id :')  }}
+		</div>
+								<div class="col-md-6">
         {{ Form::text('organizationId', Input::old('organizationId'), array('class' => 'form-control')) }}
 
-    </div>
-   <div class="form-group">
-        {{ Form::label('description', 'Description') }}
+    </div><br><br><br>
+	
+    <div class="col-md-6"> 
+   
+        {{ Form::label('description', 'Description :') }}
+		</div>
+								<div class="col-md-6">
         {{ Form::text('description', Input::old('[description'), array('class' => 'form-control')) }}
 
-    </div>
-	<div class="form-group">
-        {{ Form::label('etc', 'Evening Trip Cron') }}
-        {{ Form::text('etc', Input::old('etc'), array('class' => 'form-control')) }}
-		
-    </div>
-	<div class="form-group">
-        {{ Form::label('parkingAlert', 'Parking Alert') }}
-         {{ Form::select('parkingAlert',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('parkingAlert'), array('class' => 'form-control')) }} 
-		
-    </div>
-	<div class="form-group">
-        {{ Form::label('idleAlert', 'Idle Alert') }}
-         {{ Form::select('idleAlert',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('idleAlert'), array('class' => 'form-control')) }} 
-		
-    </div>
+    </div><br><br><br>
 	
-	<div class="form-group">
-        {{ Form::label('overspeedalert', 'Over Speed Alert') }}
-         {{ Form::select('overspeedalert',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('overspeedalert'), array('class' => 'form-control')) }} 
-		
-    </div>
-	
-	<div class="form-group">
-        {{ Form::label('sendGeoFenceSMS', 'Send GeoFence SMS') }}
-         {{ Form::select('sendGeoFenceSMS',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('sendGeoFenceSMS'), array('class' => 'form-control')) }} 
-		
-    </div>
-	
-    <div class="form-group">
-        {{ Form::label('address', 'Address') }}
-        {{ Form::textarea('address', Input::old('address'), array('class' => 'form-control')) }}
-    </div>
-    
-    <div class="form-group">
-        {{ Form::label('email', 'Email') }}
+    <div class="col-md-6"> 
+        {{ Form::label('email', 'Email :') }}
+		</div>
+								<div class="col-md-6">
         {{ Form::text('email', Input::old('email'), array('class' => 'form-control')) }}
     </div>
-    
-    
-    </div>
-    <div class="col-md-4">
-    
-      <div class="form-group">
-        {{ Form::label('mobile', 'Mobile') }}
+    <br><br><br>
+     
+    <div class="col-md-6"> 
+        {{ Form::label('mobile', 'Mobile :') }}
+		</div>
+								<div class="col-md-6">
         {{ Form::text('mobile', Input::old('mobile'), array('class' => 'form-control')) }}
 		
     </div>
+	<br><br><br>
 	
-	<div class="form-group">
-        {{ Form::label('mtc', 'Morning Trip Cron') }}
+     <div class="col-md-6"> 
+        {{ Form::label('mtc', 'Morning Trip Cron :') }}
+		</div>
+								  <div class="col-md-6"> 
         {{ Form::text('mtc', Input::old('mtc'), array('class' => 'form-control')) }}
 		
     </div>
-	<div class="form-group">
-        {{ Form::label('atc', 'After Trip Cron') }}
+	<br><br><br>
+	
+      <div class="col-md-6"> 
+        {{ Form::label('atc', 'After Trip Cron :') }}
+		</div>
+								  <div class="col-md-6"> 
         {{ Form::text('atc', Input::old('atc'), array('class' => 'form-control')) }}
 		
     </div>
-	<div class="form-group">
-        {{ Form::label('parkDuration', 'Park Duration in minutes') }}
+	<br><br><br>
+    
+    <div class="col-md-6"> 
+        {{ Form::label('etc', 'Evening Trip Cron :') }}
+		</div>
+								<div class="col-md-6">
+        {{ Form::text('etc', Input::old('etc'), array('class' => 'form-control')) }}
+		
+    </div><br><br><br>
+	
+    <div class="col-md-6"> 
+        {{ Form::label('parkingAlert', 'Parking Alert :') }}
+		</div>
+								<div class="col-md-6">
+         {{ Form::select('parkingAlert',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('parkingAlert'), array('class' => 'form-control')) }} 
+		
+    </div><br><br><br>
+	
+    <div class="col-md-6"> 
+        {{ Form::label('idleAlert', 'Idle Alert :') }}
+		</div>
+								<div class="col-md-6">
+         {{ Form::select('idleAlert',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('idleAlert'), array('class' => 'form-control')) }} 
+		
+    </div>
+	<br><br><br>
+	
+    <div class="col-md-6"> 
+        {{ Form::label('overspeedalert', 'Over Speed Alert :') }}
+		</div>
+								<div class="col-md-6">
+         {{ Form::select('overspeedalert',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('overspeedalert'), array('class' => 'form-control')) }} 
+		
+    </div>
+	<br><br><br>
+	
+    <div class="col-md-6"> 
+        {{ Form::label('sendGeoFenceSMS', 'Send GeoFence SMS :') }}
+		</div>
+								<div class="col-md-6">
+         {{ Form::select('sendGeoFenceSMS',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('sendGeoFenceSMS'), array('class' => 'form-control')) }} 
+		
+    </div>
+	<br><br><br>
+   
+    
+	
+    
+    <div class="col-md-6"> 
+        {{ Form::label('parkDuration', 'Park Duration in minutes :') }}
+		</div>
+								<div class="col-md-6">
         {{ Form::text('parkDuration', Input::old('parkDuration'), array('class' => 'form-control')) }}
 		
     </div>
-	<div class="form-group">
-        {{ Form::label('idleDuration', 'Idle Duration in minutes') }}
+	<br><br><br>
+	
+    <div class="col-md-6"> 
+        {{ Form::label('idleDuration', 'Idle Duration in minutes :') }}
+		</div>
+								<div class="col-md-6">
         {{ Form::text('idleDuration', Input::old('idleDuration'), array('class' => 'form-control')) }}
 		
     </div>
-	
-	
-	
-	
-	<div>
-    <ul id="itemsort"> {{ Form::label('poi', 'Place of interest') }}
-       @for ($i = 0; $i < 10; $i++)
-{{ Form::text('poi'.$i, Input::old('poi'), array('class' => 'form-control')) }}
-			@endfor
-    </ul></div>
-	
-	
+	<br><br><br>
+	<div class="col-md-6"> 
+        {{ Form::label('address', 'Address :') }}
+		</div>
+								<div class="col-md-6">
+		<textarea rows="4" cols="40">
+		</textarea>
+    </div>
+    
+	<br><br><br>
 	<div>
     <ul id="itemsort"> 
-	<table><tr><td>{{ Form::label('startTime', 'Start Time') }}</td><td>{{ Form::label('endTime', 'End Time') }}</td></tr>
+	<table><tr><td>{{ Form::label('startTime', 'Start Time :') }}</td>
+	<td>{{ Form::label('endTime :', 'End Time') }}</td></tr>
 	
 	<tr><td>{{  Form::input('time', 'time1', null, ['class' => 'form-control', 'placeholder' => 'time'])}}</td>
 	<td>{{  Form::input('time', 'time2', null, ['class' => 'form-control', 'placeholder' => 'time'])}}</td></tr></table>
@@ -110,11 +158,12 @@
 	
     </ul></div>
  </div>
-  </div>
   
- 
-
-    {{ Form::submit('Add the School/College/Organization!', array('class' => 'btn btn-primary')) }}
+  
+ <br><br><br>
+ <right> {{ Form::submit('Add the School/College/Organization!', array('class' => 'btn btn-primary')) }}</right>
 
 {{ Form::close() }}
-@stop
+@include('includes.js_create')
+ </body>
+</html>

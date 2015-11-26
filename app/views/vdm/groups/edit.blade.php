@@ -1,7 +1,7 @@
 @extends('includes.vdmheader')
 @section('mainContent')
 
-<h1>Edit Group</h1>
+<h2><b><font color="blue">Edit Group</font></b></h2>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
@@ -22,22 +22,46 @@
 
 	</div>
 	 -->
-		 <div class="form-group">
-	 {{ Form::label('vehicleList', 'Select the vehicles:') }}
+	 <div class="form-group">
+	 <div class="row">
+	 <div class="col-md-9">
+	  <h4>{{ Form::label('Filter', 'Filter :') }}
+	  {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}} </br></br>
+	 {{ Form::label('vehicleList', 'Select the vehicles:') }}</h4>
+	
+	</div>
+	<div class="col-md-3">
+	 {{ Form::submit('Update the Group!', array('class' => 'btn btn-primary')) }}
+	</div>
+</div>
 	 </div>
 	 @if(isset($vehicleList))		  
 		@foreach($vehicleList as $key => $value)
-			 
+			<div class="col-md-3 vehiclelist"> 
 			{{ Form::checkbox('vehicleList[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field']) }}
 			{{ Form::label($value) }}
-			 {{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
-			<br/>
+			{{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
+			</div>
+			
 		@endforeach
 	@endif
 		</br/>
 		</br/>
-
-	{{ Form::submit('Update the Group!', array('class' => 'btn btn-primary')) }}
-
 {{ Form::close() }}
+
+<script type="text/javascript">
+$( ".searchkey" ).keyup(function() {
+  var valThis = $(this).val().toLowerCase();
+   $('.vehiclelist>input').each(function(){
+       var text = $(this).val().toLowerCase();
+       if(text.indexOf(valThis) >= 0) {
+       	$(this).parent('div').fadeIn();
+       }
+       else{
+       	$(this).parent('div').fadeOut();
+       }
+
+  });
+})</script>
+
 @stop
