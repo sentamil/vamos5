@@ -73,6 +73,35 @@
 
         </div>	
         <ul class="nav" id="side-menu">
+
+		
+		 <li>
+		<a href="vdmVehicles/dashboard"> <span class="nav-label">Dashboard</span></a>
+		
+		</li>
+		
+		
+		
+		<li>
+			<a href="Routes"> <span class="nav-label">Business</span><span class="fa arrow"></span></a>
+			  <ul class="nav nav-second-level">
+                    
+			@if(Session::get('cur')=='admin')					
+					 <li>
+                <a href="Business/create"> <span class="nav-label">Add Device</span></a>
+            </li>
+			
+			@endif 
+			
+			<li><a href="Business"> <span class="nav-label">Device List</span> <span class="label label-success pull-right">v.2</span> </a></li>
+		
+                </ul>
+			
+                
+            </li>
+		
+		
+
             <li>
 			<a href="Routes"> <span class="nav-label">Vehicles</span><span class="fa arrow"></span></a>
 			  <ul class="nav nav-second-level">

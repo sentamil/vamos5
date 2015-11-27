@@ -46,10 +46,10 @@
 							 
 							<div class="row">
 							<div class="col-md-9">
-							 	
+							  <h4><font color="green">{{ Form::label('vehicleGroups', 'Select the Groups:') }}</font></h4>	
 							 <h4> {{ Form::label('Filter', 'Filter :') }}
 							  {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</h4>
-							  <h4><font color="green">{{ Form::label('vehicleGroups', 'Select the Groups:') }}</font></h4>
+							 
 							 </div>
 							 </div>
 							 </br>

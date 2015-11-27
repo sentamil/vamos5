@@ -6,29 +6,30 @@
     		<div class="col-lg-12">
         		<div class="hpanel">
                 <div class="panel-heading">
-                   <h4><b><font color="blue">Group Create </font></b></h4> 
+                   <h4><b><font color="blue">Create Group  </font></b></h4> 
                 </div>
                 <div class="panel-body">
                 	<div class="row">
                 		{{ HTML::ul($errors->all()) }}
 						{{ Form::open(array('url' => 'vdmGroups')) }}
   	              				<div class="row">
-  	              				<div class="col-md-9">
-  	              					{{ Form::label('groupId', 'Group ID') }}
+  	              				<div class="col-md-6">
+  	              					<h5>{{ Form::label('groupId', 'Group ID') }}</h5>
 											{{ Form::text('groupId', Input::old('groupId'), array('class' => 'form-control')) }}
   	              				</div>
-                				<div class="col-md-3" style="text-align: right"><br>
+                				<div class="col-md-5" style="text-align: right"><br>
                 					<h4>{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</h4>
                 				</div>
 								</div>
 								<hr> 
 
 								<div class="row">
-									 <div class="col-md-9">
-									 {{ Form::label('vehicleList', 'Select the vehicles:') }}
+									 <div class="col-md-6">
+									 <h4><font color="green">{{ Form::label('vehicleList', 'Select the vehicles:') }}</font></h4>
 									 </div>
-									 <div class="col-md-3">
-									 {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}
+									 <div class="col-md-9">
+									<h4> {{ Form::label('Filter', 'Filter :') }}
+									 {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</h4>
 									</div>
 								</div>
 								<br/>

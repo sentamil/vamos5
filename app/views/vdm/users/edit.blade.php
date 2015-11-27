@@ -12,9 +12,9 @@
 	 <div class="col-md-4">
 
 	<div class="form-group">
-		{{ Form::label('userId', 'UserId :') }}
+	<h4>	{{ Form::label('userId', 'UserId :') }}
 		
-		{{ Form::label('userId', $userId) }}
+		{{ Form::label('userId', $userId) }}</h4>
 	</div>
 
 <div class="form-group">
@@ -26,15 +26,20 @@
 		{{ Form::text('email', $email, array('class' => 'form-control')) }}
 	</div>
 	</div>
+	</div>
 	</br>
+	<div class="row">
 		 <div class="form-group">
 		 
 	 <div class="col-md-9">
+	  <h4><font color="green">{{ Form::label('vehicleList', 'Select the groups:') }}</font></h4>
+	  
 	 <h4>{{ Form::label('Filter', 'Filter :') }}
 	  {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}} </h4>
-	 <h4><font color="green">{{ Form::label('vehicleList', 'Select the groups:') }}</font></h4>
+	
 	
 	 </div>
+	
 	 <div class="col-md-3">
 	 {{ Form::submit('Update the User!', array('class' => 'btn btn-primary')) }}
 </div>
@@ -50,6 +55,7 @@
 		@endif
 		</br/>
 		</br/>	
+		
 {{ Form::close() }}
 <script type="text/javascript">
 $( ".searchkey" ).keyup(function() {

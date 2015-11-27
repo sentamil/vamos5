@@ -115,7 +115,7 @@ return array(
 		'cluster' => false,
 
 		'default' => array(
-			'host'     => '188.166.244.126',
+			'host'     => '188.166.237.200',
 			'port'     => 6379,
 			'database' => 0,
 			'password' => 'ahanram@vamosystems.in',

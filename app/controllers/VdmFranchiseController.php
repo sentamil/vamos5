@@ -143,6 +143,7 @@ class VdmFranchiseController extends \BaseController {
 					'fullAddress' => $fullAddress,
 					'otherDetails' => $otherDetails,
 					'numberofLicence' => $numberofLicence,
+					'availableLincence'=>$numberofLicence,
 					
 					
 					
@@ -290,8 +291,13 @@ class VdmFranchiseController extends \BaseController {
 		if(isset($franchiseDetails['numberofLicence'])==1)
 			$numberofLicence=$franchiseDetails['numberofLicence'];
 		else
-			$numberofLicence='';
-		
+			$numberofLicence='0';
+		if(isset($franchiseDetails['availableLincence'])==1)
+			$availableLincence=$franchiseDetails['availableLincence'];
+		else
+			$availableLincence='0';
+		Session::put('available',$availableLincence);
+		Session::put('numberofLicence',$numberofLicence);
 		return View::make ( 'vdm.franchise.edit', array (
 				'fname' => $franchiseDetails['fname'] 
 		) )->with ( 'fcode', $fcode )->with ( 'franchiseDetails', $franchiseDetails )
@@ -304,7 +310,8 @@ class VdmFranchiseController extends \BaseController {
 		->with('userId',$userId)
 		->with('fullAddress',$fullAddress)
 		->with('otherDetails',$otherDetails)
-		->with('numberofLicence',$numberofLicence);
+		->with('numberofLicence',$numberofLicence)
+		->with('availableLincence',$availableLincence);
 	
 
 	}
@@ -358,8 +365,22 @@ class VdmFranchiseController extends \BaseController {
 			$email2 = Input::get ( 'email2' );
 
 			$otherDetails = Input::get ('otherDetails');
-			$numberofLicence = Input::get ('numberofLicence');	
+			$numberofLicence = Input::get ('addLicence');	
 			$redis = Redis::connection ();
+				
+				if($numberofLicence==null)
+				{
+					$numberofLicence=0;
+				}
+				/*if($numberofLicence<Session::get('available'))
+				{
+					log::info('--------------inside less value-----------');
+					return Redirect::to ( 'vdmFranchises/update' )->withErrors ( 'Please check the License count' );
+				}
+				else{*/
+					$availableLincence=$numberofLicence+Session::get('available');
+					$numberofLicence=$numberofLicence+Session::get('numberofLicence');
+				//}
 				
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
 			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'deviceModel'=>$deviceModel);
@@ -398,6 +419,7 @@ class VdmFranchiseController extends \BaseController {
 					'fullAddress' => $fullAddress,
 					'otherDetails' => $otherDetails,
 					'numberofLicence' => $numberofLicence,
+					'availableLincence'=>$availableLincence,
 					
 					
 					

@@ -29,11 +29,11 @@
 								<hr> 
 								<div class="row">
 								<div class="col-md-9">
-								<h4><font color="green">{{ Form::label('userplace', 'Select the Place Of Interest :') }}</font></h4>
+								<h5><font color="green">{{ Form::label('userplace', 'Select the Place Of Interest :') }}</font></h5>
 								</div>
-								<div class="col-md-3">
-								{{ Form::label('Search', 'Search :')}}
-								{{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}
+								<div class="col-md-6">
+								<h4>{{ Form::label('Filter', 'Filter :')}}
+								{{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</h4>
 								</div>
 								</div>
 								<br>

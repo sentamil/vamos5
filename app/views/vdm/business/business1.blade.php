@@ -20,11 +20,11 @@
 					 
 						 <br/>
 					 <br/><br/>
-								<div> Available licence :  {{  $availableLincence }}
+								
 								<br/>
 								<br/>
-								<table><tr><td id="hide">{{ Form::radio('type', 'Move') }}</td><td width=20></td><td>Batch Move</td><td width=20></td><td id="p1">{{ Form::select('dealerId', array($dealerId), array('class' => 'form-control')) }}</td></tr>
-								<tr><td id="show">{{ Form::radio('type', 'Sale') }}</td><td width=20></td><td>Batch Sale</td>
+								<table>
+								<tr><td ></td><td width=20></td><td>Batch Sale</td>
 								
 								<td></td>
 								</tr></table>
@@ -36,7 +36,7 @@
 
 
 </p>
-<table id="p"><tr><td id="hide1">{{ Form::radio('type1', 'new') }}</td><td width=20></td><td>New</td><td width=20></td><td id="p1">
+<table ><tr><td id="hide1">{{ Form::radio('type1', 'new') }}</td><td width=20></td><td>New</td><td width=20></td><td id="p1">
 								<tr><td id="show1">{{ Form::radio('type1', 'existing') }}</td><td width=20></td><td>Existing</td>
 								
 								<td></td>
