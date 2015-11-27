@@ -99,20 +99,8 @@
 	{{ Form::text('latandlan'.$j++, $key, array('class' => 'form-control')) }}</td><td>
 	{{ Form::text( 'place'.$i++,$value ,array('class' => 'form-control','disabled' => 'disabled') ) }}</td>
 	</tr></table>
-	
-	
-	 
-	
 	 @endforeach
 	
-	</td><td >
-	@foreach($place1 as $key => $value)
-	 {{ Form::text('l'.$m++, $key, array('class' => 'form-control','disabled' => 'disabled')) }}
-	  @endforeach
-	</td></tr></table>
-	
-	 
-	 
 	 
     <div>
     <ul id="itemsort"> 
