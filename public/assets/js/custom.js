@@ -301,15 +301,15 @@ app.filter('statusfilter', function(){
 	$scope.getMailIdPhoneNo = function(vehi, days)
 	{
 		console.log('inside the methods')
-		var mailId = document.getElementById("phone").value;
-		var phone  = document.getElementById("mail").value;
+		var mailId = document.getElementById("mail").value;
+		var phone  = document.getElementById("phone").value;
 		if(vehi == 0 && days ==0)
 		console.log('select correctly')	
 		else
 		{
 			$scope.split_fcode($scope.fcode[0].group);
 			var f_code = $scope.split_fcode($scope.fcode[0].group);
-			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId'+mailId+'&phone'+phone;
+			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
 			var ecrypt_code_url = '';
 			$http.get(f_code_url).success(function(result){
 				
