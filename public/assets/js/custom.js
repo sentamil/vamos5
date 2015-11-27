@@ -298,18 +298,18 @@ app.filter('statusfilter', function(){
 			//ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
 	}
 
-
-	// live track in new window method
-
-	$scope.clicked = function(vehi, days)
+	$scope.getMailIdPhoneNo = function(vehi, days)
 	{
+		console.log('inside the methods')
+		var mailId = document.getElementById("phone").value;
+		var phone  = document.getElementById("mail").value;
 		if(vehi == 0 && days ==0)
-			console.log(' not selected ')
+		console.log('select correctly')	
 		else
 		{
 			$scope.split_fcode($scope.fcode[0].group);
 			var f_code = $scope.split_fcode($scope.fcode[0].group);
-			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days;
+			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId'+mailId+'&phone'+phone;
 			var ecrypt_code_url = '';
 			$http.get(f_code_url).success(function(result){
 				//console.log(' result '+result)
@@ -323,17 +323,43 @@ app.filter('statusfilter', function(){
 				//document.location.href="/live_track?encyID="+result;
 				//encrypt_window(ecrypt_code_url);
 			})
-			//console.log(' url for encrypt  '+ecrypt_code_url)
-			// $http.get(ecrypt_code_url).success(function(data){
-			// 	console.log('---->'+ecrypt_code_url)
-			// 	console.log(' encript code '+data)
-			// 	$scope.final_data = data;
-			// })
-			// ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
-			//console.log(' value selected----> '+'----->'+vehi+'---->'+days+'------>'+$scope.fcode[0].group+'----> '+$scope.split_fcode($scope.fcode[0].group))
-			
-		}
 	}
+}
+	// live track in new window method
+
+	// $scope.clicked = function(vehi, days)
+	// {
+	// 	if(vehi == 0 && days ==0)
+	// 		console.log(' not selected ')
+	// 	else
+	// 	{
+	// 		$scope.split_fcode($scope.fcode[0].group);
+	// 		var f_code = $scope.split_fcode($scope.fcode[0].group);
+	// 		var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days;
+	// 		var ecrypt_code_url = '';
+	// 		$http.get(f_code_url).success(function(result){
+	// 			//console.log(' result '+result)
+	// 			//ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
+	// 			$scope.final_data = result;
+				
+ //    			var url='../public/track?vehicleId='+result.trim();
+	// 			window.open(url,'_blank');
+	// 			//$('body').append(atag);
+	// 			//$('#sam').trigger('click');
+	// 			//document.location.href="/live_track?encyID="+result;
+	// 			//encrypt_window(ecrypt_code_url);
+	// 		})
+	// 		//console.log(' url for encrypt  '+ecrypt_code_url)
+	// 		// $http.get(ecrypt_code_url).success(function(data){
+	// 		// 	console.log('---->'+ecrypt_code_url)
+	// 		// 	console.log(' encript code '+data)
+	// 		// 	$scope.final_data = data;
+	// 		// })
+	// 		// ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
+	// 		//console.log(' value selected----> '+'----->'+vehi+'---->'+days+'------>'+$scope.fcode[0].group+'----> '+$scope.split_fcode($scope.fcode[0].group))
+			
+	// 	}
+	// }
 	$scope.addMarker= function(pos){
 	    
 	    var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
