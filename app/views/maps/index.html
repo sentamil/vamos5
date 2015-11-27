@@ -9,6 +9,7 @@
 <title>GPS</title>
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -102,11 +103,15 @@
                                <a href="../public/liveTrack" id="fullscreen" target="_blank">Full Screen</a>
                                <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Live Tracking</div>
                                <div>
-                               <select ng-model="days1">
+                                
+                              
+                               
+                               <select ng-model="days1" style="width:100%; font-weight: bold; font-size: 12px; padding : 3px">
                                     <option value = "0" label = "Vehicle Id"></option>
                                     <option ng-repeat="vehi in vehicle_list">{{vehi}}</option>
                                 </select>
-                                <select id="Days" ng-model="days">
+                                <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px">
+                                <select id="Days" ng-model="days" style="height: 18px">
                                     <option value = "0" label = "Days"></option>
                                     <option value = "1" label = "1"></option>
                                     <option value = "2" label = "2"></option>
@@ -119,7 +124,32 @@
                                     <option value = "9" label = "9"></option>
                                     <option value = "10" label = "10"></option>
                                 </select>
-                                <a ng-href= "#" ng-click="clicked(days1, days)">Get Url</a>
+                                <button type="button" data-toggle="modal" data-target="#myModal" style="height: 19px; background: #3398ff; color: #ffffff; border-radius: 5px">Get Url</button>
+                               <!--  <a ng-href= "#"  target="myModal">Get Url</a> -->
+                                <!-- ng-click="clicked(days1, days)" -->
+                                </div>
+
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                         <div class="form-group">
+                                              <label for="mail">Mail Id:</label>
+                                              <input type="text" class="form-control" id="mail">
+                                            
+                                              <label for="phone">Phone No:</label>
+                                              <input type="text" class="form-control" id="phone">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="modal-footer">
+                                          <button type="button" ng-click="getMailIdPhoneNo(days1, days)" class="btn btn-default" data-dismiss="modal">Submit</button>
+                                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
                                </div>
                                <div class="nearbyTable">
                                 <h3>NearBy Vehicles <a href="#" style="position:absolute; top:10px; right:10px;" ng-click="nearBy();">X</a></h3>
