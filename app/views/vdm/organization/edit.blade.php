@@ -105,15 +105,6 @@
 	
 	 @endforeach
 	
-	</td><td >
-	@foreach($place1 as $key => $value)
-	 {{ Form::text('l'.$m++, $key, array('class' => 'form-control','disabled' => 'disabled')) }}
-	  @endforeach
-	</td></tr></table>
-	
-	 
-	 
-	 
     <div>
     <ul id="itemsort"> 
 	</br>
