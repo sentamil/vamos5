@@ -66,19 +66,24 @@ class BusinessController extends \BaseController {
 			$dealerId = $orgArr;
 		}
 
-        $redisUserCacheId = 'S_Users_' . $fcode;
+        	$redisUserCacheId = 'S_Users_' . $fcode; //dummy installation
+		$redisGrpCacheId='S_Users_';
+		
 		if(Session::get('cur')=='dealer')
 		{
 			log::info( '------login 1---------- '.Session::get('cur'));
 			
 			$redisUserCacheId = 'S_Users_Dealer_'.$username.'_'.$fcode;
+			
 		}
 		else if(Session::get('cur')=='admin')
 		{
 			$redisUserCacheId = 'S_Users_Admin_'.$fcode;
 		}
 	
-		$userList = $redis->smembers ( $redisUserCacheId);
+		//$userList = $redis->smembers ( $redisUserCacheId);
+		//get the intersection of users set and groups set
+		$userList=$redis->sinter($redisUserCacheId,'S_Organisations_'.$fcode);
 		$orgArra = array();
       foreach($userList as $org) {
             $orgArra = array_add($orgArra, $org,$org);
@@ -295,7 +300,7 @@ class BusinessController extends \BaseController {
 		if(!Auth::check()) {
 			return Redirect::to('login');
 		}
-		log::info( '------ahan device---------- ');
+		log::info( '------batch Sale---------- ');
 		$username = Auth::user()->username;
 			$redis = Redis::connection();
 			$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
@@ -346,11 +351,21 @@ class BusinessController extends \BaseController {
 				}
 				
 				if($val1==1 || isset($val)) {
-					log::info('id alreasy exist '.$userId);
-					         
-                
+					log::info('id already exist '.$userId);
 					return Redirect::to ( 'Business' )->withErrors ( 'User Id already exist' );
 				}
+
+
+			        $mobArr = explode(',', $mobileNo);
+				foreach($mobArr as $mob){
+					$val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
+					if($val1==1 ) {
+                                        	log::info('id alreasy exist '.$mob);
+                                        	return Redirect::to ( 'Business' )->withErrors ($mob . ' User Id already exist' );
+                                	}
+				}	
+
+
 			}
 			log::info('value type---->'.$type);
 			$organizationId=$userId;
@@ -602,12 +617,41 @@ class BusinessController extends \BaseController {
 							$user->password=Hash::make($password);
 							$user->save();
 							
-							Mail::queue('emails.welcome', array('fname'=>$userId,'userId'=>$userId,'password'=>$password), function($message)
-							{
-								$message->to(Input::get ( 'email' ))->subject('Welcome to VAMO Systems');	
-							});
-			
 						}
+
+
+					      foreach($mobArr as $mob){
+
+						  if($ownerShip!='OWN')
+                                                        {
+                                                                log::info( '------login 1---------- '.Session::get('cur'));
+                                                                $redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$mob);
+                                                        }
+                                                  else if($ownerShip=='OWN')
+                                                        {
+                                                                $redis->sadd('S_Users_Admin_'.$fcode,$mob);
+                                                        }
+
+						  log::info(' mobile number saved successfully');
+						  $redis->sadd ( $mob, $groupId . ':' . $fcode );
+                                                  $redis->sadd ( 'S_Users_' . $fcode, $mob ); 
+					    
+						  $password=Input::get ( 'password' );
+                                                        if($password==null)
+                                                        {
+                                                                $password='awesome';
+                                                        }
+                                                        $redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.':email',$email );
+                                                        $user = new User;
+
+                                                        $user->name = $mob;
+                                                        $user->username=$mob;
+                                                        $user->email=$email;
+                                                        $user->mobileNo=$mobileNo;
+                                                        $user->password=Hash::make($password);
+                                                        $user->save();
+                                	         }
+
 					}
 				
 				
@@ -618,10 +662,10 @@ class BusinessController extends \BaseController {
 	}
 	
 	 protected function schedule(Schedule $schedule)
-    {
-        $schedule->call(function () {
+    	{
+        	$schedule->call(function () {
             //DB::table('recent_users')->delete();
-			
-        })->everyMinute();
-    }
+        	})->everyMinute();
+    	       }
 	}
+
