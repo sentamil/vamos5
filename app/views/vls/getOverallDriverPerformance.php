@@ -2,7 +2,7 @@
 
 $input = Input::all();
 $redis = Redis::connection ();
-$ipaddress ='128.199.217.144';
+$ipaddress ='188.166.244.126';
 
 
 if (! Auth::check ()) {
