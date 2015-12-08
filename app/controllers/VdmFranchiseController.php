@@ -217,11 +217,12 @@ class VdmFranchiseController extends \BaseController {
 		/*$franDetails = $redis->hmget ( 'H_Franchise', $fcode.':fname',$fcode.':descrption:',
 				$fcode.':landline',$fcode.':mobileNo1',$fcode.':mobileNo2',
 				$fcode.':email1',$fcode.':email2',$fcode.':userId');*/
-				
+			 var_dump($fcode);	
 				$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+			 var_dump($franDetails_json);	
 				$franDetails=json_decode($franDetails_json,true);
 		
-		
+	 var_dump($franDetails);	
 		$franchiseDetails = implode ( '<br/>', $franDetails );
 		
 		return View::make ( 'vdm.franchise.show', array (
@@ -332,14 +333,8 @@ class VdmFranchiseController extends \BaseController {
 
 		$rules = array (
 
-				'description' => 'required',
-				'fullAddress' => 'required',
-				'landline' => 'required',
-				'mobileNo1' => 'required',
-				'mobileNo2' => 'required',
 				'email1' => 'required|email',
 				'email2' => 'email',
-				'otherDetails' => 'required'
 		);
 		$validator = Validator::make ( Input::all (), $rules );
 
