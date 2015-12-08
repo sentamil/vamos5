@@ -507,3 +507,4 @@ class VdmFranchiseController extends \BaseController {
 		return Redirect::to ( 'vdmFranchises' );
 	}
 }
+

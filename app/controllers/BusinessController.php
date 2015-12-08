@@ -668,3 +668,4 @@ class BusinessController extends \BaseController {
         	})->everyMinute();
     	       }
 	}
+

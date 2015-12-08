@@ -99,10 +99,6 @@
 	{{ Form::text('latandlan'.$j++, $key, array('class' => 'form-control')) }}</td><td>
 	{{ Form::text( 'place'.$i++,$value ,array('class' => 'form-control','disabled' => 'disabled') ) }}</td>
 	</tr></table>
-	
-	
-	 
-	
 	 @endforeach
 	
     <div>
