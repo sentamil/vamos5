@@ -86,7 +86,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout){
     					// Calling the func in 2 secs inerval
     					$timeout(function(){
                 			$scope.getAddressFromGAPI(url_address, index1, index2);
-            			}, 3000);
+            			}, 10000);
     				}
     			}
     		})
