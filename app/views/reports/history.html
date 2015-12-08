@@ -165,8 +165,8 @@ background-color: #ffffff;
 								    
 								    <tr><td colspan="7"></td></tr>
 									<tr> 
-										<th width="12%" class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Last Seen</th>
-										<th width="10%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed</th>
+										<th width="12%" class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Date&amp;Time</th>
+										<th width="10%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed (Km)</th>
 										<th width="13%" class="id" order="'latitude'" style="text-align:center;">Location</th>
 										<th width="30%" class="id" order="'address'" style="text-align:center;">Address</th>
 										<th ng-hide="true" class="id" custom-sort order="'isOverSpeed'" sort="sort" style="text-align:center;">Over Speed</th>
@@ -249,7 +249,7 @@ background-color: #ffffff;
 								    </tr>
 								    <tr><td colspan="7"></td></tr>
 									<tr style="text-align:center" >
-										<th width="14%" class="id" style="text-align:center;">Time</th>
+										<th width="14%" class="id" style="text-align:center;">Date&amp;Time</th>
 										<th width="8%" class="id" style="text-align:center;">Speed</th>
 										<th width="7%" class="id" style="text-align:center;">G-Map</th>
 										<th width="38%" class="id" style="text-align:center;">Address</th>
@@ -265,9 +265,13 @@ background-color: #ffffff;
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.speed}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
-										<td ng-if="user.address!=null">{{user.address}}</td>
-										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && maddress[$index]==null">Click Me</td>
-										<td get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && maddress[$index]!=null">{{maddress[$index]}}</td>
+										<td> 
+											<p ng-if="user.address!=null">{{user.address}}</p>
+											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && maddress1[$index]!=null">{{maddress1[$index]}}</p>
+											<p ng-if="user.address==null && maddress1[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+										</td>
+										<!-- <td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && maddress[$index]==null">Click Me</td> -->
+										<!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && maddress1[$index]!=null">{{maddress1[$index]}}</td> -->
 										<td>{{user.tmpDistance}}</td>
 										<td>{{user.distanceCovered}}</td>
 										<td>{{user.odoDistance}}</td>
@@ -285,14 +289,14 @@ background-color: #ffffff;
 			   				 <table class="table table-bordered  table-striped table-condensed table-hover">
 			   				 	<thead>
 								   	<tr style="text-align:center; font-weight: bold;">
-									  	<td colspan="2"><b>Vehicle Group</b></td>
+									  	<td colspan="1"><b>Vehicle Group</b></td>
 									  	<td>{{vgroup}}</td>
 									  	<td colspan="1"><b>Vehicle ID</b></td>
-									  	<td colspan="2">{{hist.vehicleId}}</td>
-									  	<td ng-hide="true" colspan="2"><b>Register No</b></td>
-								       	<td ng-hide="true">{{hist.regNo}}</td>				
+									  	<td colspan="1">{{hist.vehicleId}}</td>
+									  	<!-- <td ng-hide="true" colspan="2"><b>Register No</b></td>
+								       	<td ng-hide="true">{{hist.regNo}}</td>	 -->			
 								  	</tr>
-								  	 <tr ng-hide="true" style="text-align:center; font-weight: bold;" >
+								  	 <!-- <tr ng-hide="true" style="text-align:center; font-weight: bold;" >
 									  	<td colspan="2"><b>From Date</b></td>
 									  	<td>{{fromdate}}</td>
 									  	<td colspan="1"><b>From Time</b></td>
@@ -303,26 +307,30 @@ background-color: #ffffff;
 								       	<td>{{todate}}</td>
 								      	<td colspan="1"><b>To Time</b></td>
 								      	<td colspan="2">{{totime}}</td>
-								    </tr>
-								  	<tr><td colspan="6"></td></tr>
+								    </tr> -->
+								  	<tr><td colspan="5"></td></tr>
 									<tr style="text-align:center;font-weight: bold;">
 										
-										<th width="13%" class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Last Seen</th>
+										<th width="13%" class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Parked Time</th>
 										<th width="12%" class="id" order="'latitude'" style="text-align:center;">Location</th>
 										<th width="40%" class="id" order="'address'" style="text-align:center;">Address</th>
-										<th width="15%" colspan="2" class="id" custom-sort order="'parkedTime'" sort="sort" style="text-align:center;">Parked Time</th>
-										<th width="20%" colspan="2" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Total Parked Time</th>
+										<th width="15%" class="id" custom-sort order="'parkedTime'" sort="sort" style="text-align:center;">Duration</th>
+										<!-- <th width="20%" colspan="2" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Total Parked Time</th> -->
 									</tr></thead>
 									<tbody>
 									<tr ng-repeat="user in parkeddata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
 										
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.latitude}}, {{user.longitude}}</td>
-										<td ng-if="user.address!=null">{{user.address}}</td>
-										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && saddress[$index]==null">Click Me</td>
-										<td get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && saddress[$index]!=null">{{saddress[$index]}}</td>
-										<td colspan="2">{{getParkedCorrectHours(user.parkedTime)}}</td>
-										<td colspan="2">{{getParkedCorrectHours(user.totalParkedTime)}}</td>
+										<td> 
+											<p ng-if="user.address!=null">{{user.address}}</p>
+											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && saddressStop[$index]!=null">{{saddressStop[$index]}}</p>
+											<p ng-if="user.address==null && saddressStop[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+										</td>
+										<!-- <td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && saddress[$index]==null">Click Me</td> -->
+										<!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && saddressStop[$index]!=null">{{saddressStop[$index]}}</td> -->
+										<td>{{getParkedCorrectHours(user.parkedTime)}}</td>
+										<!-- <td colspan="2">{{getParkedCorrectHours(user.totalParkedTime)}}</td> -->
 									</tr>
 									<tr ng-if="parkeddata==null">
 										<td colspan="6">No Records Found Choose some other date</td>
