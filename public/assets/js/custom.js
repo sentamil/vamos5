@@ -297,43 +297,40 @@ app.filter('statusfilter', function(){
 			})
 			//ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
 	}
-
-
-	// live track in new window method
-
-	$scope.clicked = function(vehi, days)
+	//
+	$scope.getMailIdPhoneNo = function(vehi, days)
 	{
+		console.log('inside the methods')
+		var mailId = document.getElementById("mail").value;
+		var phone  = document.getElementById("phone").value;
 		if(vehi == 0 && days ==0)
-			console.log(' not selected ')
+		console.log('select correctly')	
 		else
 		{
 			$scope.split_fcode($scope.fcode[0].group);
 			var f_code = $scope.split_fcode($scope.fcode[0].group);
-			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days;
+			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
 			var ecrypt_code_url = '';
 			$http.get(f_code_url).success(function(result){
-				//console.log(' result '+result)
-				//ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
+				
 				$scope.final_data = result;
 				
     			var url='../public/track?vehicleId='+result.trim();
 				window.open(url,'_blank');
-				//$('body').append(atag);
-				//$('#sam').trigger('click');
-				//document.location.href="/live_track?encyID="+result;
-				//encrypt_window(ecrypt_code_url);
+				
 			})
-			//console.log(' url for encrypt  '+ecrypt_code_url)
-			// $http.get(ecrypt_code_url).success(function(data){
-			// 	console.log('---->'+ecrypt_code_url)
-			// 	console.log(' encript code '+data)
-			// 	$scope.final_data = data;
-			// })
-			// ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
-			//console.log(' value selected----> '+'----->'+vehi+'---->'+days+'------>'+$scope.fcode[0].group+'----> '+$scope.split_fcode($scope.fcode[0].group))
-			
-		}
 	}
+}
+	
+				
+ //    			var url='../public/track?vehicleId='+result.trim();
+	// 			window.open(url,'_blank');
+	// 			//$('body').append(atag);
+	// 			//$('#sam').trigger('click');
+	// 			//document.location.href="/live_track?encyID="+result;
+	// 			//encrypt_window(ecrypt_code_url);
+	// 		})
+	
 	$scope.addMarker= function(pos){
 	    
 	    var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
@@ -360,8 +357,6 @@ app.filter('statusfilter', function(){
 		google.maps.event.addListener(gmarkers[gmarkers.length-1], "click", function(e){	
 			
 			$scope.vehicleno = pos.data.vehicleId;
-			//$scope.startlatlong= new google.maps.LatLng();
-			//$scope.endlatlong= new google.maps.LatLng();
 			$scope.assignValue(pos.data);
 			$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
 				$('#lastseen').text(count); 
