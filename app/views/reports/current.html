@@ -45,13 +45,21 @@
 z-index: 1020;
 background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
 }
-
+#status1, #status102 {width: 200px;height: 200px;position: absolute;left: 50%;top: 50%;background-image: url(../app/views/reports/ajax-loader1.gif);background-repeat: no-repeat;background-position: center;background-color:transparent;margin: -100px 0 0 -100px;}
+	
 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
 background-color: #ffffff;
 }
 	  
 </style>
 </head>
+<!-- <div id="preloader" >
+				    <div class="overlay">&nbsp;</div>
+				</div>
+				<div id="preloader02" >
+				    <div class="loading-img">&nbsp;</div>
+				</div> -->
+
 <body ng-app="mapApp">
 	<div id="wrapper" ng-controller="mainCtrl">
         <div id="sidebar-wrapper">
@@ -81,70 +89,7 @@ background-color: #ffffff;
         <div id="page-content-wrapper">
             <div class="container-fluid">
         		<div class="panel panel-default">
-				  <!-- <div class="panel-heading">
-				  	<span style="font-size: 18px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;">Current Status Report</span>
-				  	<select class="pull-right drop-menu" ng-change="downloadType('statusreport')" ng-model="dtype">
-					  <option value=''>Download as</option>
-					  <option>CSV</option>
-					  <option>PDF</option>
-					</select>
-				  </div> -->
-				  <!-- <div class="panel-body">
-				  	<tabset justified="true">
-					    <tab heading="Status Report"><br>
-					    	<div id="statusreport">
-		                  		<table class="table table-bordered table-condensed table-hover"  id="tab_customers" style="background-color: rgb(247, 247, 247);">
-								   	<tr style="text-align:center; font-weight: bold;">
-									  	<td colspan="4"> Vehical Group</td>
-									  	<td >{{data1[0].group}}</td>
-									  	<td colspan="2">Total Vehicle</td>
-									  	<td >{{data1[0].totalVehicles}}</td>
-									  	<td colspan="3">Total Km - today</td>
-									  	<td>{{data1[0].distance}}</td>						
-								  	</tr>
-								  	<tr style="text-align:center;font-weight: bold;">
-									  	<td colspan="4">Alarms/Atentions</td>
-								       	<td>{{data1[0].alerts}}</td>
-								      	<td colspan="2">Vehicles Online</td>
-								      	<td>{{data1[0].online}}</td>
-								      	<td colspan="3">Report Date</td>
-								      	<td></td>
-								    </tr>
-									<tr style="text-align:center" >
-										<td>Vehicle ID</td>
-										<td>Vehicle Name</td>
-										<td>Reg No</td>
-										<td>Driver Name</td>
-										<td>Mobile Number</td>
-										<td>Last Seen</td>
-										<td>km today</td>
-										<td>Current Speed</td>
-										<td>Current Position</td>
-										<td>GPS Status</td>
-										<td>Current Location</td>
-										<td>Google Map Link</td>
-									</tr>
-									<tr ng-repeat="user in data1[0].vehicleLocations" class="active" style="text-align:center">
-										<td>{{user.vehicleId}}</td>
-										<td></td>
-										<td>{{user.regNo}}</td>
-										<td>{{user.driverName}}</td>
-										<td>{{user.mobileNo}}</td>
-										<td>{{user.lastSeen}}</td>
-										<td>{{user.distanceCovered}}</td>
-										<td>{{user.speed}}</td>
-										<td>{{user.position}}</td>
-										<td>{{user.status}}</td>
-										<td></td>
-										<td></td>						
-									</tr>
-								</table>						
-         			 		</div>
-					    </tab>
-					    <tab heading="Executive Report">
-					    	<br>Work in Progress</tab>
-				    </tabset>
-				  </div> -->
+				 
 				</div>   
         </div>
         <!-- /#page-content-wrapper -->
@@ -334,12 +279,14 @@ background-color: #ffffff;
 									</tr>
 								</table>		
 		        </div><!-- /.box-body -->
-		        <div ng-show="loading" class="overlay"></div>
-		        <div ng-show="loading" class="loading-img"></div>
+		        <!-- <div ng-show="loading" class="overlay"></div>
+		        <div ng-show="loading" class="loading-img"></div> -->
 		    </div>	
     		</tab>
     		<tab heading="Consolidated Report"> 
+    			
     			<div class="box box-primary1">
+    				
     				 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
 		        	
 		            <h5 class="box-title">Consolidated Report</h5>
@@ -385,21 +332,7 @@ background-color: #ffffff;
 		                        	</div>
 		                      	</div>
 		                    </div>
-		                    <!-- <div class="col-md-2" align="center">
-		                    	<div class="form-group">
-		                        	<div class="input-group datecomp">
-		                              	<select ng-change="intervalChange()" class="input-sm form-control" ng-model="interval">
-					                   		 <option value="">Interval</option>
-					                   		 <option label="1 mins">1</option>
-					                   		 <option label="2 mins">2</option>
-					                   		 <option label="5 mins">5</option>
-					                   		 <option label="10 mins">10</option>
-					                   		 <option label="15 mins">15</option>
-					                   	</select>
-					                </div>
-		                      	</div> 
-		                    </div>-->
-		                    <div class="col-md-2" align="center">
+		                   <div class="col-md-2" align="center">
 		                    	<div class="form-group">
 		                    		<div class="input-group datecomp">
 		                       			 <button ng-click="consoldate1()" style="margin-left: -100%;">Submit</button>
@@ -409,7 +342,8 @@ background-color: #ffffff;
 		                   
 		                </div>
 		                <div class="box-body" id="conreport">
-		                <table class="table table-striped table-bordered table-condensed table-hover">
+
+		                <table class="table table-striped table-bordered table-condensed table-hover" id = "myTable">
 		           				  <tbody ng-repeat="user in consoldateData">
 		           				  	<!-- <tr ng-if="user==null">
 										<td colspan="7">No Records Found Choose some other date</td>
@@ -417,13 +351,14 @@ background-color: #ffffff;
 										<tr style="text-align:center">
 											<td colspan="2"><b>Vehicle Id : {{user.vehicleId}}</b></td>
 											<td colspan="4"><b>From : {{fromdate1}}:{{fromTime}}, &nbsp;&nbsp; To : {{todate1}}:{{totime}}</b></td>
-											<td colspan="3"><b>Trip : {{user.totalTripLength}} Kms</b></td>
+											<td colspan="3"><b>Trip : {{user.totalTripLength}} Km</b></td>
 										</tr>
 										<tr style="text-align:center">
 											<td colspan="2"><b>Moving : {{msToTime(user.totalMovingTime)}}</b></td>
-											<td colspan="2"><b>Stopped : {{msToTime(user.totalParkedTime)}}</b></td>
-											<td colspan="1"><b>Speed hike : {{user.topSpeed}}</b></td>
-											<td colspan="2"><b>Average speed : {{user.averageSpeed}}</b></td>
+											<td colspan="2"><b>Parked : {{msToTime(user.totalParkedTime)}}</b></td>
+											<td><b>Idle : {{msToTime(user.totalIdleTime)}}</b></td>
+											<td colspan="1"><b>Speed hike : {{user.topSpeed}} Km</b></td>
+											<td colspan="1"><b>Avg speed : {{user.averageSpeed}} Km</b></td>
 										</tr>
 										<tr><td colspan="7" bgcolor="black"></td><tr>
 									<tr class="active" style="text-align:center">
@@ -431,7 +366,7 @@ background-color: #ffffff;
 										<td rowspan="2"><b>Start</b></td>
 										<td rowspan="2"><b>End</b></td>
 										<td rowspan="2"><b>Duration</b></td>
-										<td colspan="3"><b>Stop position</b></td>
+										<td width="40%" colspan="3"><b>Stop position</b></td>
 									</tr>
 									<tr class="active" style="text-align:center">
 										<td><b>Length</b></td>
@@ -444,8 +379,8 @@ background-color: #ffffff;
 											<span ng-switch-when="M">Moving</span>
 											<span ng-switch-when="P">Parked</span>
 										</td>
-										<td>{{subdata.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-										<td>{{subdata.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+										<td>{{subdata.startTime | date:'yyyy-MM-dd HH:mm'}}</td>
+										<td>{{subdata.endTime | date:'yyyy-MM-dd HH:mm'}}</td>
 										<td>{{msToTime(subdata.duration)}}</td>
 										
 <!-- 
@@ -453,10 +388,12 @@ background-color: #ffffff;
 											<p get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}} ng-if="subdata.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</p>
 											</td> -->
 
-											<td ng-if="subdata.averageSpeed ==null" colspan="3">
-										<p ng-if="subdata.address!=null">{{subdata.address}}</p>
-										<p style="cursor: pointer;" get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}}  ng-if="subdata.address==null && mainlist[$index]==null">Click Me</p>
-										<p get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}}  ng-if="subdata.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</p>
+									<td ng-if="subdata.averageSpeed ==null" colspan="3">
+										<!-- <p ng-if="subdata.address!=null">{{subdata.address}}</p> -->
+										<!-- <p style="cursor: pointer;" get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}}  ng-if="subdata.address==null && mainlist[$index]==null">Click Me</p> -->
+										<!-- <p get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}} parent={{$parent.$index}} ng-if="subdata.address==null">{{mainlist[$index][$parent.$index]}}</p> -->
+										<p> {{subdata.address}} </p>
+										<p ng-if="subdata.address == null"><img src="assets/imgs/loader.gif" align="middle"></p>
 									</td>
 
 
@@ -464,9 +401,9 @@ background-color: #ffffff;
 										<td get-location lat={{subdata.latitude}} lon={{subdata.longitude}} index={{$index}} ng-if="subdata.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
  -->
 
-										<td ng-if="subdata.latitude ==null">{{subdata.tripDistance}} Kms</td>
-										<td ng-if="subdata.latitude ==null">{{subdata.topSpeed}}</td>
-										<td ng-if="subdata.latitude ==null">{{subdata.averageSpeed}}</td>
+										<td ng-if="subdata.latitude ==null">{{subdata.tripDistance}} Km</td>
+										<td ng-if="subdata.latitude ==null">{{subdata.topSpeed}} Km</td>
+										<td ng-if="subdata.latitude ==null">{{subdata.averageSpeed}} Km</td>
 									</tr>
 									<!-- <tfoot>
 									    <tr>
@@ -477,12 +414,18 @@ background-color: #ffffff;
 									
 									
 								</table>
-								<div ng-show="loading" class="overlay"></div>
-		                        <div ng-show="loading" class="loading-img"></div>
+								
 							</div>
-
+							
 		            </div>
 				
+		        <div id="preloader" >
+    <div id="status1">&nbsp;</div>
+</div>
+<div id="preloader02" >
+    <div id="status102">&nbsp;</div>
+</div>
+		        
     		</tab>
         	</tabset>
 	       	

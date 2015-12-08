@@ -9,7 +9,7 @@
 <title>GPS</title>
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -100,7 +100,6 @@
                                <input type="text" id="distanceVal" value="0" disabled/> <span style="font-size:12px;">Kms</span>
                                
                                <input type="button" value="Near by Vehicles" id="nearbyVeh" ng-click="nearBy();"/>
-                               <a href="../public/liveTrack" id="fullscreen" target="_blank">Full Screen</a>
                                <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Live Tracking</div>
                                <div>
                                 
@@ -125,6 +124,7 @@
                                     <option value = "10" label = "10"></option>
                                 </select>
                                 <button type="button" data-toggle="modal" data-target="#myModal" style="height: 19px; background: #3398ff; color: #ffffff; border-radius: 5px">Get Url</button>
+                                <a href="../public/liveTrack" id="fullscreen" target="_blank">Full Screen</a>
                                <!--  <a ng-href= "#"  target="myModal">Get Url</a> -->
                                 <!-- ng-click="clicked(days1, days)" -->
                                 </div>
