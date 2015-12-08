@@ -6,7 +6,7 @@
     		<div class="col-lg-12">
        			 <div class="hpanel">
                		 <div class="panel-heading">
-                   		 Vehicles Create 
+                   		<h4><font color="blue"> <b>Vehicles Create </b></font><h4> 
                 	 </div>
                 	<div class="panel-body">
                 		<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
@@ -35,7 +35,7 @@
 																	<tr style="text-align: center;">
 							<td>{{ $i }}</td>
 							<td>{{ Form::text('deviceid'.$i, Input::old('deviceid'), array('class' => 'form-control')) }}</td>
-							<td>{{ Form::text('deviceidtype'.$i, Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
+							<td>{{ Form::text('deviceidtype' .$i, Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
 																		</tr>
 																	@endfor
 						
