@@ -196,7 +196,8 @@ $(document).ready(function(){
             </div>
     </div>
 	<br>
-	
+	<h5><font color="green">{{ Form::label('Business','BUSINESS :') }}</font></h5>
+	<font color="blue">
 				<table><tr><td id="hide">{{ Form::radio('type', 'Move') }}</td><td width=20></td><td>Batch Move</td><td width=20></td><td id="p1">{{ Form::select('dealerId', array($dealerId), array('class' => 'form-control')) }}</td></tr>
 								<tr><td id="show">{{ Form::radio('type', 'Sale') }}</td><td width=20></td><td>Batch Sale</td>
 								
