@@ -67,6 +67,10 @@
     max-height: calc(100vh - 210px);
     overflow-y: auto;
 }
+.box > .loading-img {
+z-index: 1020;
+background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
+}
 </style>
 </head>
 
@@ -451,14 +455,15 @@
 				
 			</div>
 			
-			
+			<div ng-show="loading" class="overlay"></div>
+	   		<div ng-show="loading" class="loading-img"></div>
 		</div>
+				
 		</div>
 		</div>
 		
 		
-		<div ng-show="loading" class="overlay"></div>
-		<div ng-show="loading" class="loading-img"></div>
+		
     
 	<script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -482,7 +487,7 @@
     <script src="assets/js/vamoApp.js"></script>
 	<script src="assets/js/highcharts-bar.js"></script>
 	<script src="assets/js/services.js"></script>
-    <script src="assets/js/Performance.js"></script>
+    <script src="assets/js/performance.js"></script>
 	<script type="text/javascript">
 	// For demo to fit into DataTables site builder...
 	$('#example')
