@@ -93,7 +93,38 @@
                         <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
                             <img src="assets/imgs/add.png" />
                         </div>
-                        
+                        <div id="minmaxMarker" style="position: absolute;top: 10px;left: 120px; z-index:999999" title="Maps Marker Details">
+                            <img src="assets/imgs/add.png" />
+                        </div>
+                        <div id="draggable" style="position: absolute;top: 40px;left: 130px; z-index:999999; width: 250px;padding: 7px;background: #fff;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;">
+                               <div class="legendlist">
+                                    <h3><b>Vehicle Status</b></h3>
+                                    <div>
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Moving</td>
+                                                    <td><img src="assets/imgs/green.png"/></td>
+                                                    <td>Standing</td>
+                                                    <td><img src="assets/imgs/orange.png"/></td>
+                                                </tr>
+                                                 <tr>
+                                                    <td>Parked</td>
+                                                    <td><img src="assets/imgs/flag.png"/></td>
+                                                    <td>Geo Fence</td>
+                                                    <td><img src="assets/imgs/blue.png"/></td>
+                                                </tr>
+                                                 <tr>
+                                                    <td>Overspeed</td>
+                                                    <td><img src="assets/imgs/red.png"/></td>
+                                                    <td>No Data</td>
+                                                    <td><img src="assets/imgs/gray.png"/></td>
+                                                </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                        </div>
+
                         <div id="contentmin" class="rightsection" style="position: absolute;top: 30px;right: 10px; z-index:999999; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
                                <input type="button" id="traffic" ng-click="check()" value="Traffic" />
                                <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>
@@ -210,34 +241,7 @@
                                     </div>
                                     <div id="container-speed"></div>
                                     <h3>Support details</h3>
-                                    <div align="center">{{support}}</div>
-                                </div>
-                               
-                                <div class="legendlist">
-                                    <h3><b>Vehicle Status</b></h3>
-                                    <div>
-                                        <table cellpadding="0" cellspacing="0">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Moving</td>
-                                                    <td><img src="assets/imgs/green.png"/></td>
-                                                    <td>Standing</td>
-                                                    <td><img src="assets/imgs/orange.png"/></td>
-                                                </tr>
-                                                 <tr>
-                                                    <td>Parked</td>
-                                                    <td><img src="assets/imgs/flag.png"/></td>
-                                                    <td>Geo Fence</td>
-                                                    <td><img src="assets/imgs/blue.png"/></td>
-                                                </tr>
-                                                 <tr>
-                                                    <td>Overspeed</td>
-                                                    <td><img src="assets/imgs/red.png"/></td>
-                                                    <td>No Data</td>
-                                                    <td><img src="assets/imgs/gray.png"/></td>
-                                                </tr>
-                                        </table>
-                                    </div>
+                                    <div align="center"><p>{{support}}</p></div>
                                 </div>
                         </div>
                         <a href="javascript:void(0);" class="contentexpand"><img src="assets/imgs/add.png"/></a>
@@ -271,7 +275,7 @@
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 
     <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -297,6 +301,19 @@
             },2000);
         });
     });
+
+    $(document).ready(function(){
+      //  $('#minmaxMarker').click
+        $('#draggable').hide(0);  //or do it through css
+        $('#minmaxMarker').click(function(){
+             //$('#draggable').toggled();
+              $('#draggable').animate({
+                height: 'toggle'
+            },2000);
+        });
+    
+
+    });
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
@@ -306,6 +323,10 @@
             document.body.style.zoom="90%";
         }
     });
+
+   
+    
+ 
     </script>
 </body>
 </html>
