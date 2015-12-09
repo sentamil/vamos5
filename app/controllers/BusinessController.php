@@ -331,6 +331,7 @@ class BusinessController extends \BaseController {
 			{	
 					$type='Sale';
 					$ownerShip = $username;
+					    $mobArr = explode(',', $mobileNo);
 			}
 			else if($type=='Sale' && $type1=='new')
 			{
@@ -356,7 +357,7 @@ class BusinessController extends \BaseController {
 				}
 
 
-			        $mobArr = explode(',', $mobileNo);
+			    $mobArr = explode(',', $mobileNo);
 				foreach($mobArr as $mob){
 					$val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
 					if($val1==1 ) {
@@ -391,9 +392,6 @@ class BusinessController extends \BaseController {
 				
 					foreach($deviceList as $device) {
 					log::info( '------ownership---------- '.$ownerShip);
-					
-					
-					
 					$myArray = explode(',', $device);
 					$vehicleId='gpsvts_'.substr($myArray[0], -5);
 					$deviceId=$myArray[0];
@@ -484,7 +482,7 @@ class BusinessController extends \BaseController {
 								
 								$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
 								$redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
-					}
+						}
 								if($ownerShip!='OWN')
 								{
 									log::info( '------login 1---------- '.Session::get('cur'));
@@ -496,7 +494,7 @@ class BusinessController extends \BaseController {
 									$redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
 									$redis->srem('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
 								}
-					log::info( '------vehicle id---------- '.$vehicleId);
+								log::info( '------vehicle id---------- '.$vehicleId);
 					
 					
 						
@@ -617,40 +615,43 @@ class BusinessController extends \BaseController {
 							$user->password=Hash::make($password);
 							$user->save();
 							
-						}
-
-
-					      foreach($mobArr as $mob){
+							 foreach($mobArr as $mob){
 
 						  if($ownerShip!='OWN')
-                                                        {
-                                                                log::info( '------login 1---------- '.Session::get('cur'));
+                           {
+                                   log::info( '------login 1---------- '.Session::get('cur'));
                                                                 $redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$mob);
-                                                        }
-                                                  else if($ownerShip=='OWN')
-                                                        {
-                                                                $redis->sadd('S_Users_Admin_'.$fcode,$mob);
-                                                        }
+                           }
+						  else if($ownerShip=='OWN')
+								{
+										$redis->sadd('S_Users_Admin_'.$fcode,$mob);
+								}
 
 						  log::info(' mobile number saved successfully');
 						  $redis->sadd ( $mob, $groupId . ':' . $fcode );
-                                                  $redis->sadd ( 'S_Users_' . $fcode, $mob ); 
+                          $redis->sadd ( 'S_Users_' . $fcode, $mob ); 
 					    
 						  $password=Input::get ( 'password' );
-                                                        if($password==null)
-                                                        {
-                                                                $password='awesome';
-                                                        }
-                                                        $redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.':email',$email );
-                                                        $user = new User;
+							if($password==null)
+							{
+									$password='awesome';
+							}
+							$redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.' :email',$email );
+							$user = new User;
 
-                                                        $user->name = $mob;
-                                                        $user->username=$mob;
-                                                        $user->email=$email;
-                                                        $user->mobileNo=$mobileNo;
-                                                        $user->password=Hash::make($password);
-                                                        $user->save();
-                                	         }
+							$user->name = $mob;
+							$user->username=$mob;
+							$user->email=$email;
+							$user->mobileNo=$mobileNo;
+							$user->password=Hash::make($password);
+							$user->save();
+                         }
+							
+						}
+                            
+							
+
+					     
 
 					}
 				
