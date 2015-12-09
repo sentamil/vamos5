@@ -5,7 +5,7 @@
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
-                    Dash Board
+                   <h4><font color="blue"><b> Dash Board </b> </font></h4>
                 </div>
                 <div class="panel-body">
 				{{ HTML::ul($errors->all()) }}
@@ -15,21 +15,17 @@
                 	<div class="col-sm-12">
                 	
 				
-					<br/>
+					
 					<div class="form-group">
-					 
-						 <br/>
-					 <br/><br/>
-								
-								<br/>
-								<br/>
+							<h5><font color="green"<b>	
 								<table>
 								<tr><td ></td><td width=20></td><td>Batch Sale</td>
 								
 								<td></td>
 								</tr></table>
-								<br>
+								</b></font></h5>
 								
+								<br>
 								
 								
 
@@ -51,10 +47,10 @@
 </td>
 <td id="t1">
 <p>
+
 <div class="row">
                 	
-							<div class="row">
-							<div class="col-md-2">
+							<div class="col-md-3">
 							{{ Form::label('userId', 'User ID') }}
 							</div>
 							<div class="col-md-6">
@@ -63,7 +59,7 @@
 							</div>
 							</br>
 							<div class="row">
-							<div class="col-md-2">
+							<div class="col-md-3">
 							{{ Form::label('mobileNo', 'Mobile Number') }}
 							</div>
 							<div class="col-md-6">
@@ -72,7 +68,7 @@
 							</div>
 							</br>
 							<div class="row">
-							<div class="col-md-2">
+							<div class="col-md-3">
 							{{ Form::label('email', 'Email') }}
 							</div>
 							<div class="col-md-6">
@@ -81,7 +77,7 @@
 							</div>
 							</br>
 							<div class="row">
-							<div class="col-md-2">
+							<div class="col-md-3">
 							{{ Form::label('password', 'Password') }}
 							</div>
 							<div class="col-md-6">
@@ -89,7 +85,7 @@
 							</div>
 							</div>
 	                               
-							<hr>
+							
 							
 						</div>
 
@@ -146,7 +142,7 @@ $(document).ready(function(){
 							<h4>{{ Form::submit('Submit', array('class' => 'btn btn-sm btn-info')) }}</h4>	
 							
 							
-								{{ Form::text('groupId', Input::old('groupId'), array('class' => 'form-control')) }}
+							<!--	{{ Form::text('groupId', Input::old('groupId'), array('class' => 'form-control')) }} -->
 					 
 					 <table id="example1" class="table table-bordered dataTable">
                		 <thead>

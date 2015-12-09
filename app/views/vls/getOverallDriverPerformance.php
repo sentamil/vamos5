@@ -2,8 +2,7 @@
 
 $input = Input::all();
 $redis = Redis::connection ();
-$ipaddress ='188.166.244.126';
-
+$ipaddress = $redis->get('ipaddress');
 
 if (! Auth::check ()) {
 	return Redirect::to ( 'login' );
