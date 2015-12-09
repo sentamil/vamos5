@@ -6,7 +6,7 @@ var getIP	=	globalIP;
 var app = angular.module('mapApp',['ui.bootstrap']);
 //var gmarkers=[];
 //var ginfowindow=[];
-app.controller('mainCtrl',function($scope, $http, $timeout){
+app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
@@ -84,14 +84,43 @@ app.controller('mainCtrl',function($scope, $http, $timeout){
     					var url_address	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+value.latitude+','+value.longitude+"&sensor=true";
 
     					// Calling the func in 2 secs inerval
-    					$timeout(function(){
-                			$scope.getAddressFromGAPI(url_address, index1, index2);
-            			}, 10000);
+    					// (function(index1, index2){
+	    				// 	setTimeout(function(){
+	        //         			$scope.getAddressFromGAPI(url_address, index1, index2);
+	        //     			}, 3000 * index2);
+	        //     		}(index1, index2))
+		        		delayed(1000, function (index1, index2) {
+					      return function () {
+					        $scope.getAddressFromGAPI(url_address, index1, index2);
+					      };
+					    }(index1, index2));
     				}
     			}
     		})
     	})
     }
+
+    var delayed = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
+
 
 	$scope.getAddressFromGAPI = function(url, index1, index2, ind) {
 		$http.get(url).success(function(data) {
@@ -178,8 +207,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout){
 				$scope.locationname		=	data.results[0].formatted_address;
 				$scope.mainlist[index]	=	data.results[0].formatted_address;
 				setTimeout(function() {
-					//console.log("in the set inter------->"+location+'index------>'+index)
-				      $scope.recursive(location, ++index);
+					$scope.recursive(location, ++index);
 				}, 2000);
 			});
 		}
