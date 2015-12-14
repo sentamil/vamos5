@@ -35,7 +35,7 @@
 																	<tr style="text-align: center;">
 							<td>{{ $i }}</td>
 							<td>{{ Form::text('deviceid'.$i, Input::old('deviceid'), array('class' => 'form-control')) }}</td>
-							<td>{{ Form::select('deviceidtype' .$i, array( '0' => 'GT06N', '1' => 'FM1202','2' => 'FM1120', '3' => 'TR03', '4' => 'GT03A', '5' => 'VTRACK2'), Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
+							<td>{{ Form::select('deviceidtype' .$i, array( 'GT06N' => 'GT06N', 'FM1202' => 'FM1202','FM1120' => 'FM1120', 'TR03' => 'TR03', 'GT03A' => 'GT03A', 'VTRACK2' => 'VTRACK2'), Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
 																		</tr>
 																	@endfor
 						
