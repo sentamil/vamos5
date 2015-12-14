@@ -1,6 +1,6 @@
 @extends('includes.vdmEditHeader')
 @section('mainContent')
-<h1>Vehicle Migration</h1>
+<h1><font color="blue">Vehicle Migration</font></h1>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
@@ -9,11 +9,11 @@
 <div class="row">
 		<div class="col-md-4">
 	<div class="form-group">
-		{{ Form::label('vehicleId', 'Vehicle Id :')  }}
+		{{ Form::label('vehicleId', 'Edit Vehicle Id :')  }}
 		 {{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
-		{{ Form::label('deviceId', 'Device Id') }}
+		{{ Form::label('deviceId', 'Edit Device Id') }}
 		<br/>
 		{{ Form::text('deviceId', $deviceId, array('class' => 'form-control')) }}
 

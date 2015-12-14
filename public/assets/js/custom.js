@@ -234,11 +234,11 @@ app.filter('statusfilter', function(){
 		}
 			var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
 		+'<div><b style="width:100px; display:inline-block;">Vehicle ID</b> - '+vehicleID+'<span style="font-weight:bold;">('+data.shortName+')</span></div>'
-		+'<div><b style="width:100px; display:inline-block;">Speed</b> - '+data.speed+' <span style="font-size:10px;font-weight:bold;">kmph</span></div>'
+		
 		+'<div><b style="width:100px; display:inline-block;">ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 		+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 		+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
-		+'<div><b style="width:100px; display:inline-block;">'+tempoTime.tempcaption+' Time</b> - '+tempoTime.temptime+'</div><br>'
+
 		+'<div><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a>&nbsp;&nbsp;'
 		+'</div>';
 		
@@ -633,6 +633,7 @@ app.filter('statusfilter', function(){
 			}
 		}
 	};
+	
 	
 	$scope.infowindowshowFunc = function(){
 		for(var j=0; j<ginfowindow.length;j++){
