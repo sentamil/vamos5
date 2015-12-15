@@ -163,7 +163,8 @@ class VdmFranchiseController extends \BaseController {
 			
 			$user->name = $fname;
 			$user->username=$userId;
-			$user->email=$email1;
+			$user->email=$email1; 
+			$user->mobileNo=$mobileNo1;
 			$user->password=Hash::make($password);
 			$user->save();
 
@@ -176,6 +177,7 @@ class VdmFranchiseController extends \BaseController {
 			$user = new User;
 			$vamosid='vamos'.$fcode;	
 			$user->name = 'vamos'.$fname;
+			$user->mobileNo='1234567890';
 			$user->username=$vamosid;
 			$user->email='support@vamosys.com';
 			$user->password=Hash::make($password);
