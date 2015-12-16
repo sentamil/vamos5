@@ -89,7 +89,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	        //         			$scope.getAddressFromGAPI(url_address, index1, index2);
 	        //     			}, 3000 * index2);
 	        //     		}(index1, index2))
-		        		delayed(1000, function (index1, index2) {
+		        		delayed(3000, function (index1, index2) {
 					      return function () {
 					        $scope.getAddressFromGAPI(url_address, index1, index2);
 					      };
@@ -208,7 +208,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 				$scope.mainlist[index]	=	data.results[0].formatted_address;
 				setTimeout(function() {
 					$scope.recursive(location, ++index);
-				}, 2000);
+				}, 3000);
 			});
 		}
 	}

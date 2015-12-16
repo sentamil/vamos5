@@ -92,7 +92,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
   
    	$scope.$watch(prodId, function() {
    		$scope.id	=	prodId;
-   		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId;
+   		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval;
    		$scope.loading	=	true;
 		$http.get(histurl).success(function(data){
 			$scope.loading			=	false;
@@ -140,7 +140,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 					$scope.saddress[index]	= data.results[0].formatted_address;
 				setTimeout(function() {
 				      $scope.recursive(location, ++index);
-				}, 2000);
+				}, 4000);
 			}).error(function(){ /*alert('error'); */});
 		}
 	}
@@ -160,7 +160,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	 			$scope.maddress1[indes]	= response.results[0].formatted_address;
 				setTimeout(function() {
 				      $scope.recursive1(locations, ++indes);
-				}, 2000);
+				}, 4000);
 	 		})
 		}
 	}
@@ -179,7 +179,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 				$scope.saddressStop[indexStop]	= data.results[0].formatted_address;
 				setTimeout(function() {
 				      $scope.recursiveStop(locationStop, ++indexStop);
-				}, 2000);
+				}, 4000);
 			}).error(function(){ /*alert('error'); */});
 		}
 	}

@@ -1,12 +1,13 @@
 @extends('includes.vdmheader')
 @section('mainContent')
 
-<h1>Select the Dealer name</h1>
+<h2><font color="blue">Select the Dealer name</font></h2>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
 
 {{ Form::open(array('url' => 'vdmVehicles/findDealerList')) }}
+<br>
 <div class="row">
     <div class="col-md-6">
     <div class="form-group">
