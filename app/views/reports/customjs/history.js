@@ -92,7 +92,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
   
    	$scope.$watch(prodId, function() {
    		$scope.id	=	prodId;
-   		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId;
+   		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval;
    		$scope.loading	=	true;
 		$http.get(histurl).success(function(data){
 			$scope.loading			=	false;
