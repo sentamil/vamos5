@@ -119,7 +119,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		//console.log($scope.overspeeddata);
 		$scope.recursive($scope.overspeeddata,0);
    	};
-   	var promis;
+   	//svar promis;
    	$scope.recursive   = function(location,index){
    		if(location.length<=index){
 			return;
@@ -282,7 +282,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			case 'Movement':
 				$scope.downloadid	 =	'movementreport';
 				$scope.overallEnable =	true;
-				clearTimeout(promis);
+				//clearTimeout(promis);
 				$scope.recursive1($scope.movementdata,0);
 				break;
 			case 'Stopped/Parked':
@@ -391,7 +391,7 @@ app.factory('vamo_sysservice', function($http, $q){
 	return {
 		geocodeToserver: function (lat, lng, address) {
 		  try { 
-				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'6&geoAddress='+address;
+				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'&geoAddress='+address;
 			    return this.getDataCall(reversegeourl);
 			}
 			catch(err){ console.log(err); }
