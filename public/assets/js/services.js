@@ -28,7 +28,7 @@ app.factory('vamoservice', function($http, $q){
 		},
 		geocodeToserver: function (lat, lng, address) {
 		  try { 
-				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'6&geoAddress='+address;
+				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'&geoAddress='+address;
 			    return this.getDataCall(reversegeourl);
 			}
 			catch(err){ console.log(err); }

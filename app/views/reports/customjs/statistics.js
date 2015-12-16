@@ -230,33 +230,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			            }
 			        }]
 			    });
-  //  		c3.generate({
-  //  			bindto: '#chart1',
-		//     data: {
-		//         columns: [
-		//             ['Consolidate RunningTime', data.consolidateRunningTime],
-		//             ['Consolidated IdleTime', data.consolidatedIdleTime],
-		//             ['Consolidated NoDataTime', data.consolidatedNoDataTime],
-		//             ['Consolidated ParkedTime', data.consolidatedParkedTime],
-		//         ],
-		//         type : 'donut',
-		//     },
-		    
-		//     donut: {
-		//         title: "Time"
-		//     }
-		// });
-		
-		// c3.generate({
-  //  			bindto: '#chart2',
-		//     data: {
-		//         columns: $scope.barArray,
-		//         type : 'donut',
-		//     },
-		//     donut: {
-		//         title: "Distance Covered Analytics"
-		//     }
-		// });
+  
    	};
    	
    	$scope.barLoad	=		function(vehicleId) {

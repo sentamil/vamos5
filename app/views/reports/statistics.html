@@ -190,9 +190,9 @@ background-color: #ffffff;
 										<td>{{user.odoClosingReading}}</td>
 										<td>{{user.topSpeed}}</td>	
 										<td>{{user.topSpeedTime}}</td>
-										<td get-geo geo={{user.topSpeedGeoLocation}} title="{{geoname}}">{{user.topSpeedGeoLocation}}</td>
+										<td get-geo geo={{user.topSpeedGeoLocation}}>{{user.topSpeedGeoLocation}}</td>
 										<td ng-if="user.address!=null">{{user.address}}</td>
-										<td style="cursor: pointer;" get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} title="{{locationname}}" ng-if="user.address==null && maddress[$index]==null">Click Me</td>
+										<td style="cursor: pointer;" get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]==null">Click Me</td>
 										<td get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]!=null">{{maddress[$index]}}</td>
 										<!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} title="{{locationname}}">{{user.latitude}},{{user.longitude}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>						
@@ -284,7 +284,7 @@ background-color: #ffffff;
     <script src="assets/js/highcharts_statistics.js"></script>
     <script src="../app/views/reports/c3chart/c3.min.js"></script>
 	<script src="../app/views/reports/customjs/statistics.js"></script>
-	<script src="../app/views/reports/customjs/history.js"></script>
+	<!-- <script src="../app/views/reports/customjs/history.js"></script> -->
 	<!-- // <script src="assets/js/performance.js"></script> -->
     <!-- script src="assets/js/custom.js"></script -->   
     <script>
