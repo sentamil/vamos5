@@ -2,7 +2,7 @@
 var getIP	=	globalIP;
 var app = angular.module('hist',['ui.bootstrap']);
 
-app.controller('histCtrl',function($scope, $http, $filter){
+app.controller('histCtrl',function($scope, $http, $filter, vamoservice){
 	//$scope.getLocation1(13.0401945,80.2153889);
 	
 	$scope.overallEnable = true;
@@ -138,6 +138,10 @@ app.controller('histCtrl',function($scope, $http, $filter){
 					$scope.maddress[index]	= data.results[0].formatted_address;
 				else if($scope.downloadid=='stoppedparkingreport')
 					$scope.saddress[index]	= data.results[0].formatted_address;
+
+				// address to backend
+				var t = vamoservice.geocodeToserver(lat,lon,data.results[0].formatted_address);
+
 				setTimeout(function() {
 				      $scope.recursive(location, ++index);
 				}, 4000);
@@ -158,6 +162,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	 		var temurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat1+','+lon1+"&sensor=true";
 	 		$http.get(temurl).success(function(response){
 	 			$scope.maddress1[indes]	= response.results[0].formatted_address;
+	 			var t = vamoservice.geocodeToserver(lat1,lon1,data.results[0].formatted_address);
 				setTimeout(function() {
 				      $scope.recursive1(locations, ++indes);
 				}, 4000);
@@ -177,6 +182,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 			$http.get(tempurl).success(function(data){
 				//console.log(data.status);
 				$scope.saddressStop[indexStop]	= data.results[0].formatted_address;
+				var t = vamoservice.geocodeToserver(latStop,lonStop,data.results[0].formatted_address);
 				setTimeout(function() {
 				      $scope.recursiveStop(locationStop, ++indexStop);
 				}, 4000);
