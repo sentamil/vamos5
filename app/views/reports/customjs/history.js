@@ -162,7 +162,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	 		var temurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat1+','+lon1+"&sensor=true";
 	 		$http.get(temurl).success(function(response){
 	 			$scope.maddress1[indes]	= response.results[0].formatted_address;
-	 			var t = vamo_sysservice.geocodeToserver(lat1,lon1,data.results[0].formatted_address);
+	 			var t = vamo_sysservice.geocodeToserver(lat1,lon1,response.results[0].formatted_address);
 				setTimeout(function() {
 				      $scope.recursive1(locations, ++indes);
 				}, 4000);
