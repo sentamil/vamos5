@@ -1,8 +1,8 @@
 //alert(globalIP);
 var getIP	=	globalIP;
-app = angular.module('hist',['ui.bootstrap']);
+var app = angular.module('hist',['ui.bootstrap']);
 
-app.controller('histCtrl',function($scope, $http, $filter, vamoservice){
+app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	//$scope.getLocation1(13.0401945,80.2153889);
 	
 	$scope.overallEnable = true;
@@ -140,7 +140,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamoservice){
 					$scope.saddress[index]	= data.results[0].formatted_address;
 
 				// address to backend
-				var t = vamoservice.geocodeToserver(lat,lon,data.results[0].formatted_address);
+				var t = vamo_sysservice.geocodeToserver(lat,lon,data.results[0].formatted_address);
 
 				setTimeout(function() {
 				      $scope.recursive(location, ++index);
@@ -162,7 +162,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamoservice){
 	 		var temurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat1+','+lon1+"&sensor=true";
 	 		$http.get(temurl).success(function(response){
 	 			$scope.maddress1[indes]	= response.results[0].formatted_address;
-	 			var t = vamoservice.geocodeToserver(lat1,lon1,data.results[0].formatted_address);
+	 			var t = vamo_sysservice.geocodeToserver(lat1,lon1,data.results[0].formatted_address);
 				setTimeout(function() {
 				      $scope.recursive1(locations, ++indes);
 				}, 4000);
@@ -182,7 +182,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamoservice){
 			$http.get(tempurl).success(function(data){
 				//console.log(data.status);
 				$scope.saddressStop[indexStop]	= data.results[0].formatted_address;
-				var t = vamoservice.geocodeToserver(latStop,lonStop,data.results[0].formatted_address);
+				var t = vamo_sysservice.geocodeToserver(latStop,lonStop,data.results[0].formatted_address);
 				setTimeout(function() {
 				      $scope.recursiveStop(locationStop, ++indexStop);
 				}, 4000);
@@ -387,7 +387,27 @@ app.controller('histCtrl',function($scope, $http, $filter, vamoservice){
   
 
 });
-
+app.factory('vamo_sysservice', function($http, $q){
+	return {
+		geocodeToserver: function (lat, lng, address) {
+		  try { 
+				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'6&geoAddress='+address;
+			    return this.getDataCall(reversegeourl);
+			}
+			catch(err){ console.log(err); }
+		  
+		},
+        getDataCall: function(url){
+        	var defdata = $q.defer();
+        	$http.get(url).success(function(data){
+            	 defdata.resolve(data);
+			}).error(function() {
+                    defdata.reject("Failed to get data");
+            });
+			return defdata.promise;
+        }
+    }
+});
 app.directive("customSort", function() {
 return {
     restrict: 'A',
