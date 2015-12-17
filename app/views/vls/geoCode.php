@@ -13,11 +13,11 @@ $ipaddress = $redis->get('ipaddress');
 if (! Auth::check ()) {
     return Redirect::to ( 'login' );
 }
-
+$ch=curl_init();
 $username = Auth::user ()->username;
 $parameters='?userId='. $username;
 foreach ($input as $key => $value) {
-   
+        $value=curl_escape($value);
         $parameters="{$parameters}&{$key}={$value}";
    
 }
