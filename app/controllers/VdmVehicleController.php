@@ -165,10 +165,13 @@ class VdmVehicleController extends \BaseController {
 				$deviceModel = $valueData['deviceidtype'];
 				$deviceidCheck = $redis->sismember('S_Device_' . $fcode, $deviceId);
 				log::info( '------vehicleIdCheck---------- ::'.$deviceidCheck);
-				 if($deviceidCheck==1) {
+				if($deviceidCheck==1) {
 					//Session::flash ( 'message', 'DeviceId' . $deviceidCheck . 'already exist. Please choose another one' );
+					log::info( '------vehicleIdCheck1---------- ::'.$deviceidCheck);
 					$value =$redis->hget('H_Vehicle_Device_Map_'.$fcode,$deviceId);
-					return Redirect::to ( 'vdmVehicles/' . $value );
+					$vehicleId='gpsvts_'.substr($deviceId, -5);
+					
+					return Redirect::to ('vdmVehicles/' . $value . '/edit1');
 				}
 				
 				
@@ -497,6 +500,82 @@ class VdmVehicleController extends \BaseController {
 }
 	}
 	
+	public function edit1($id) {
+		try{
+		Log::info('entering edit......');
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		
+		$redis = Redis::connection ();
+		$vehicleId = $id;
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
+		$deviceId = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
+
+		$details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
+       
+		$refData=null;
+	    $refData = array_add($refData, 'overSpeedLimit', '50');
+	    $refData = array_add($refData, 'driverName', '');
+	    $refData = array_add($refData, 'gpsSimNo', '');
+	    $refData = array_add($refData, 'email', ' ');
+        $refData = array_add($refData, 'odoDistance', '0');
+        $refData = array_add($refData, 'sendGeoFenceSMS', 'no');
+        $refData = array_add($refData, 'morningTripStartTime', ' ');
+        $refData = array_add($refData, 'eveningTripStartTime', ' ');
+		$refData= array_add($refData, 'altShortName',' ');
+		$refData= array_add($refData, 'date',' ');
+		$refData= array_add($refData, 'paymentType',' ');
+		$refData= array_add($refData, 'expiredPeriod',' ');
+		$refData= array_add($refData, 'fuel', 'no');
+       $refDataFromDB = json_decode ( $details, true );
+       
+	
+		
+	
+        $refDatatmp = array_merge($refData,$refDataFromDB);
+		
+        $refData=$refDatatmp;
+        //S_Schl_Rt_CVSM_ALH
+        
+        
+       
+       $orgId =isset($refDataFromDB['orgId'])?$refDataFromDB['orgId']:'NotAvailabe';
+       Log::info(' orgId = ' . $orgId);
+       $refData = array_add($refData, 'orgId', $orgId);
+       $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
+       $refData= array_add($refData,'parkingAlert',$parkingAlert);
+	    $tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
+		log::info( '------login 1---------- '.Session::get('cur'));
+		if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				 $tmpOrgList = $redis->smembers('S_Organisations_Dealer_'.$username.'_'.$fcode);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$fcode);
+			}
+		
+		
+        $orgList=null;
+		  $orgList=array_add($orgList,'Default','Default');
+        foreach ( $tmpOrgList as $org ) {
+                $orgList = array_add($orgList,$org,$org);
+                
+            }
+	 
+	//  var_dump($refData);
+		return View::make ( 'vdm.vehicles.edit1', array (
+				'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList );
+				}catch(\Exception $e)
+	{
+	return Redirect::to ( 'vdmVehicles' );
+}
+	}
+	
 	public function updateCalibration() {
 		Log::info('-------------inside calibrate add-----------');
 		$temp=0;
@@ -760,6 +839,168 @@ class VdmVehicleController extends \BaseController {
 		}
 	}
 	
+	public function update1() {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
+		log::info( '------date---------- ::'.microtime(true));
+		$rules = array (
+				'deviceId' => 'required|alpha_dash',
+				'vehicleId' => 'required|alpha_dash',
+				'shortName' => 'required|alpha_dash',
+				'regNo' => 'required',
+				'vehicleType' => 'required',
+				'oprName' => 'required',
+				'deviceModel' => 'required', 
+				'odoDistance' => 'required',
+				'gpsSimNo' => 'required'
+				
+		);
+		$validator = Validator::make ( Input::all (), $rules );
+        $redis = Redis::connection ();
+        $vehicleId = Input::get ( 'vehicleId' );
+		 $vehicleIdTemp = Input::get ( 'vehicleIdTemp' );
+		$deviceId = Input::get ( 'deviceId' );
+        $vehicleIdCheck = $redis->sismember('S_Vehicles_' . $fcode, $vehicleId);
+		$deviceidCheck = $redis->sismember('S_Device_' . $fcode, $deviceId);
+		
+		
+       
+		if ($validator->fails ()) {
+			return Redirect::to ( 'vdmVehicles/create' )->withErrors ( $validator );
+		} else {
+			// store
+			
+			$deviceId = Input::get ( 'deviceId' );
+			$vehicleId = Input::get ( 'vehicleId' );
+			$shortName = Input::get ( 'shortName' );
+			$regNo = Input::get ( 'regNo' );
+			$vehicleMake = Input::get ( 'vehicleMake' );
+			$vehicleType = Input::get ( 'vehicleType' );
+			$oprName = Input::get ( 'oprName' );
+			$mobileNo = Input::get ( 'mobileNo' );
+			$overSpeedLimit = Input::get ( 'overSpeedLimit' );
+			$deviceModel = Input::get ( 'deviceModel' );
+			$odoDistance = Input::get ('odoDistance');
+			$driverName = Input::get ('driverName');
+			$gpsSimNo = Input::get ('gpsSimNo');
+			$email = Input::get ('email');
+            $sendGeoFenceSMS = Input::get ('sendGeoFenceSMS');
+            $morningTripStartTime = Input::get ('morningTripStartTime');
+            $eveningTripStartTime = Input::get ('eveningTripStartTime');
+			$fuel=Input::get ('fuel');
+			$orgId = Input::get ('orgId');
+            $altShortName= Input::get ('altShortName');
+            $parkingAlert = Input::get('parkingAlert');
+			$v=idate("d") ;
+		//	$paymentType=Input::get ( 'paymentType' );
+			$paymentType='yearly';
+			log::info('paymentType--->'.$paymentType);
+			if($paymentType=='halfyearly')
+			{
+				$paymentmonth=6;
+			}elseif($paymentType=='yearly'){
+				$paymentmonth=12;
+			}
+			if($v>15)
+			{
+				log::info('inside if');
+				$paymentmonth=$paymentmonth+1;
+				
+			}
+			for ($i = 1; $i <=$paymentmonth; $i++){
+
+			$new_date = date('F Y', strtotime("+$i month"));
+				$new_date2 = date('FY', strtotime("$i month"));
+			}
+			$new_date1 = date('F d Y', strtotime("+0 month"));
+			log::info( $new_date);
+			$refDataArr = array (
+					'deviceId' => $deviceId,
+					'shortName' => $shortName,
+					'deviceModel' => $deviceModel,
+					'regNo' => $regNo,
+					'vehicleMake' => $vehicleMake,
+					'vehicleType' => $vehicleType,
+					'oprName' => $oprName,
+					'mobileNo' => $mobileNo,
+					'overSpeedLimit' => $overSpeedLimit,
+					'odoDistance' => $odoDistance,
+					'driverName' => $driverName,
+					'gpsSimNo' => $gpsSimNo,
+					'email' => $email,
+					'sendGeoFenceSMS' => $sendGeoFenceSMS,
+					'morningTripStartTime' => $morningTripStartTime,
+					'eveningTripStartTime' => $eveningTripStartTime,
+					'orgId'=>$orgId,
+					'parkingAlert'=>$parkingAlert,
+					'altShortName' => $altShortName,
+					'date' =>$new_date1,
+					'paymentType'=>$paymentType,
+					'expiredPeriod'=>$new_date,
+					'fuel'=>$fuel,
+					
+					
+			);
+			VdmVehicleController::destroy($vehicleIdTemp);
+			$refDataJson = json_encode ( $refDataArr );
+            
+			// H_RefData
+			$expireData=$redis->hget ( 'H_Expire_' . $fcode, $new_date2);
+			
+			$redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
+			
+			$cpyDeviceSet = 'S_Device_' . $fcode;
+			
+			$redis->sadd ( $cpyDeviceSet, $deviceId );
+			
+			$redis->hmset ( $vehicleDeviceMapId, $vehicleId , $deviceId, $deviceId, $vehicleId );
+			
+	       //this is for security check			
+			$redis->sadd ( 'S_Vehicles_' . $fcode, $vehicleId );
+			
+			$redis->hset('H_Device_Cpy_Map',$deviceId,$fcode);
+            $redis->sadd('S_Vehicles_'.$orgId.'_'.$fcode , $vehicleId);
+			if($expireData==null)
+			{
+				$redis->hset ( 'H_Expire_' . $fcode, $new_date2,$vehicleId);
+			}else{
+				 $redis->hset ( 'H_Expire_' . $fcode, $new_date2,$expireData.','.$vehicleId);
+			}
+			
+            $time =microtime(true);
+            /*latitude,longitude,speed,alert,date,distanceCovered,direction,position,status,odoDistance,msgType,insideGeoFence
+             13.104870,80.303138,0,N,$time,0.0,N,P,ON,$odoDistance,S,N
+              13.04523,80.200222,0,N,0,0.0,null,null,null,0.0,null,N vehicleId=Prasanna_Amaze
+			*/
+			 $redis->sadd('S_Organisation_Route_'.$orgId.'_'.$fcode,$shortName);
+			$time = round($time * 1000);
+			
+			
+			if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				$redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				$redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
+			}
+			$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+            $redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
+			// redirect
+			
+			Session::flash ( 'message', 'Successfully created ' . $vehicleId . '!' );
+		return VdmVehicleController::edit1($vehicleId);
+		}
+			
+		
+	}
 	
 	
 	
