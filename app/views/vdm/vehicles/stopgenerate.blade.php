@@ -1,7 +1,7 @@
 @extends('includes.vdmheader')
 @section('mainContent')
 
-<h1 align="center">Generate Stops</h1>
+<h1 align="center"><font color="blue">Generate Stops</font></h1>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
@@ -20,11 +20,11 @@
 	
 	
 									<div class="form-group">
-										{{ Form::label('vechicle', 'Vechicle Id') }}
+										<font color="green">{{ Form::label('vechicle', 'Vechicle Id') }}
 										 
 									 {{ Form::label('vehicleId', $vehicleId) }}
 
-									  {{ Form::hidden('vehicleId', $vehicleId) }}
+									  {{ Form::hidden('vehicleId', $vehicleId) }}</font>
 									</div></td>
 	
 	<td >
@@ -36,6 +36,7 @@
                                     
                                    
 									<div class="form-group">
+									
 										{{ Form::label('Date', 'Date') }}
 										{{ Form::text('date',   Input::old('date'),array('placeholder' => 'dd-mm-yyyy'), array('class' => 'form-control')) }}
 									</div></td></tr><tr><td>
@@ -76,7 +77,7 @@
 									
 									<br/>
 									</td>
-	</tr><tr><td colspan="2">
+	    </tr><tr><td colspan="2">
 									<div class="form-group">
 									    {{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}{{ Form::close() }}
 										

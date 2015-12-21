@@ -2,7 +2,7 @@
 var getIP	=	globalIP;
 var app = angular.module('hist',['ui.bootstrap']);
 
-app.controller('histCtrl',function($scope, $http, $filter){
+app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	//$scope.getLocation1(13.0401945,80.2153889);
 	
 	$scope.overallEnable = true;
@@ -92,7 +92,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
   
    	$scope.$watch(prodId, function() {
    		$scope.id	=	prodId;
-   		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId;
+   		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval;
    		$scope.loading	=	true;
 		$http.get(histurl).success(function(data){
 			$scope.loading			=	false;
@@ -119,7 +119,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 		//console.log($scope.overspeeddata);
 		$scope.recursive($scope.overspeeddata,0);
    	};
-   	var promis;
+   	//svar promis;
    	$scope.recursive   = function(location,index){
    		if(location.length<=index){
 			return;
@@ -138,9 +138,13 @@ app.controller('histCtrl',function($scope, $http, $filter){
 					$scope.maddress[index]	= data.results[0].formatted_address;
 				else if($scope.downloadid=='stoppedparkingreport')
 					$scope.saddress[index]	= data.results[0].formatted_address;
+
+				// address to backend
+				var t = vamo_sysservice.geocodeToserver(lat,lon,data.results[0].formatted_address);
+
 				setTimeout(function() {
 				      $scope.recursive(location, ++index);
-				}, 2000);
+				}, 4000);
 			}).error(function(){ /*alert('error'); */});
 		}
 	}
@@ -158,9 +162,10 @@ app.controller('histCtrl',function($scope, $http, $filter){
 	 		var temurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat1+','+lon1+"&sensor=true";
 	 		$http.get(temurl).success(function(response){
 	 			$scope.maddress1[indes]	= response.results[0].formatted_address;
+	 			var t = vamo_sysservice.geocodeToserver(lat1,lon1,response.results[0].formatted_address);
 				setTimeout(function() {
 				      $scope.recursive1(locations, ++indes);
-				}, 2000);
+				}, 4000);
 	 		})
 		}
 	}
@@ -177,9 +182,10 @@ app.controller('histCtrl',function($scope, $http, $filter){
 			$http.get(tempurl).success(function(data){
 				//console.log(data.status);
 				$scope.saddressStop[indexStop]	= data.results[0].formatted_address;
+				var t = vamo_sysservice.geocodeToserver(latStop,lonStop,data.results[0].formatted_address);
 				setTimeout(function() {
 				      $scope.recursiveStop(locationStop, ++indexStop);
-				}, 2000);
+				}, 4000);
 			}).error(function(){ /*alert('error'); */});
 		}
 	}
@@ -276,7 +282,7 @@ app.controller('histCtrl',function($scope, $http, $filter){
 			case 'Movement':
 				$scope.downloadid	 =	'movementreport';
 				$scope.overallEnable =	true;
-				clearTimeout(promis);
+				//clearTimeout(promis);
 				$scope.recursive1($scope.movementdata,0);
 				break;
 			case 'Stopped/Parked':
@@ -381,7 +387,27 @@ app.controller('histCtrl',function($scope, $http, $filter){
   
 
 });
-
+app.factory('vamo_sysservice', function($http, $q){
+	return {
+		geocodeToserver: function (lat, lng, address) {
+		  try { 
+				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'&geoAddress='+address;
+			    return this.getDataCall(reversegeourl);
+			}
+			catch(err){ console.log(err); }
+		  
+		},
+        getDataCall: function(url){
+        	var defdata = $q.defer();
+        	$http.get(url).success(function(data){
+            	 defdata.resolve(data);
+			}).error(function() {
+                    defdata.reject("Failed to get data");
+            });
+			return defdata.promise;
+        }
+    }
+});
 app.directive("customSort", function() {
 return {
     restrict: 'A',

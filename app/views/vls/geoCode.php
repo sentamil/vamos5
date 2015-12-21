@@ -13,11 +13,11 @@ $ipaddress = $redis->get('ipaddress');
 if (! Auth::check ()) {
     return Redirect::to ( 'login' );
 }
-
+$ch=curl_init();
 $username = Auth::user ()->username;
 $parameters='?userId='. $username;
 foreach ($input as $key => $value) {
-   
+        $value=curl_escape($ch,$value);
         $parameters="{$parameters}&{$key}={$value}";
    
 }
@@ -26,9 +26,6 @@ foreach ($input as $key => $value) {
     $url = 'http://' .$ipaddress .':9000/storeGeoCode' . $parameters;
     $url=htmlspecialchars_decode($url);
     log::info( 'Routing to backed  :' . $url );
-
-
-    $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
     // Include header in result? (0 = yes, 1 = no)
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

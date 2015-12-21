@@ -6,7 +6,7 @@ var getIP	=	globalIP;
 var app = angular.module('mapApp',['ui.bootstrap']);
 //var gmarkers=[];
 //var ginfowindow=[];
-app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
+app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_sysservice){
 	
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
@@ -82,16 +82,17 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
     				if(value.address == undefined)
     				{
     					var url_address	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+value.latitude+','+value.longitude+"&sensor=true";
-
+    					var latCon       =  value.latitude;
+    					var loncon		 =  value.longitude;
     					// Calling the func in 2 secs inerval
     					// (function(index1, index2){
 	    				// 	setTimeout(function(){
 	        //         			$scope.getAddressFromGAPI(url_address, index1, index2);
 	        //     			}, 3000 * index2);
 	        //     		}(index1, index2))
-		        		delayed(1000, function (index1, index2) {
+	        			delayed(3000, function (index1, index2) {
 					      return function () {
-					        $scope.getAddressFromGAPI(url_address, index1, index2);
+					        $scope.getAddressFromGAPI(url_address, index1, index2, latCon, loncon);
 					      };
 					    }(index1, index2));
     				}
@@ -122,12 +123,13 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	}());
 
 
-	$scope.getAddressFromGAPI = function(url, index1, index2, ind) {
+	$scope.getAddressFromGAPI = function(url, index1, index2, lat, lan) {
 		$http.get(url).success(function(data) {
     		
     		// Declare the new property address to the existing list
 			$scope.consoldateData[index1].historyConsilated[index2].address = " ";
 			$scope.consoldateData[index1].historyConsilated[index2].address = data.results[0].formatted_address;
+			var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
     	})
 	};
 
@@ -206,9 +208,10 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 			$http.get(tempurl).success(function(data){	
 				$scope.locationname		=	data.results[0].formatted_address;
 				$scope.mainlist[index]	=	data.results[0].formatted_address;
+				var t = vamo_sysservice.geocodeToserver(lat, lon, data.results[0].formatted_address);
 				setTimeout(function() {
 					$scope.recursive(location, ++index);
-				}, 2000);
+				}, 3000);
 			});
 		}
 	}
@@ -300,6 +303,28 @@ app.directive("getLocation", function () {
     }
   };
 });
+app.factory('vamo_sysservice', function($http, $q){
+	return {
+		geocodeToserver: function (lat, lng, address) {
+		  try { 
+				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'&geoAddress='+address;
+			    return this.getDataCall(reversegeourl);
+			}
+			catch(err){ console.log(err); }
+		  
+		},
+        getDataCall: function(url){
+        	var defdata = $q.defer();
+        	$http.get(url).success(function(data){
+            	 defdata.resolve(data);
+			}).error(function() {
+                    defdata.reject("Failed to get data");
+            });
+			return defdata.promise;
+        }
+    }
+});
+
 
 app.directive("customSort", function() {
 return {
