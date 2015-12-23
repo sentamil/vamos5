@@ -33,7 +33,7 @@
 														{{ Form::label('deviceId', 'Device ID') }}
 													</div>
 													<div class="col-md-6">
-														{{ Form::text('deviceId', $deviceId,Input::old('deviceId'), array('class' => 'form-control')) }}
+														{{ Form::text('deviceId', $deviceId,Input::old('deviceId'), array('class' => 'form-control','disabled' => 'disabled')) }}
 													</div>
 												</div>	
 											</div>
@@ -54,7 +54,7 @@
 														{{ Form::label('deviceModel', 'Device Model') }}
 													</div>
 													<div class="col-md-6">
-														{{ Form::text('deviceModel',$deviceModel, Input::old('deviceModel'), array('class' => 'form-control')) }}
+														{{ Form::text('deviceModel',$deviceModel, Input::old('deviceModel'), array('class' => 'form-control','disabled' => 'disabled')) }}
 													</div>
 												</div>	
 											</div>
