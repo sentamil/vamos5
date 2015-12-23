@@ -327,6 +327,10 @@ Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleCont
 //ramB/{param}/C/{param1?
 Route::get('vdmVehicles/dashboard', array('uses' => 'VdmVehicleController@dashboard'));
 
+Route::get('vdmVehicles/{param}/edit1', array('uses' => 'VdmVehicleController@edit1'));
+Route::post('vdmVehicles/update1', array('uses' => 'VdmVehicleController@update1'));
+
+
 Route::get('vdmVehicles/migration/{param1}', array('uses' => 'VdmVehicleController@migration'));
 
 Route::get('vdmVehicles/removeStop/{param}/{param1}', array('uses' => 'VdmVehicleController@removeStop'));
