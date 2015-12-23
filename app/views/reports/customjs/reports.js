@@ -182,7 +182,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
     };
 
 
-
+    // millesec to day, hours, min, sec
     $scope.msToTime = function(ms) 
     {
         days = Math.floor(ms / (24 * 60 * 60 * 1000));
@@ -192,7 +192,10 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		minutes = Math.floor((hoursms) / (60 * 1000));
 		minutesms = ms % (60 * 1000);
 		seconds = Math.floor((minutesms) / 1000);
-		return hours +" hrs "+minutes+" min ";
+		if(days==0)
+			return hours +" h "+minutes+" m "+seconds+" s ";
+		else
+			return days+" d "+hours +" h "+minutes+" m "+seconds+" s ";
 	}
 	
 	$scope.recursive   = function(location,index){
