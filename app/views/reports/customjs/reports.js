@@ -84,7 +84,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
     					var url_address	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+value.latitude+','+value.longitude+"&sensor=true";
     					var latCon       =  value.latitude;
     					var loncon		 =  value.longitude;
-    					// Calling the func in 2 secs inerval
+    					// Calling the func in 3 secs inerval
     					// (function(index1, index2){
 	    				// 	setTimeout(function(){
 	        //         			$scope.getAddressFromGAPI(url_address, index1, index2);

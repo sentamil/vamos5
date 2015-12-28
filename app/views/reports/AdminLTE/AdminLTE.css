@@ -176,11 +176,15 @@ img {
 .bg-fuchsia,
 .bg-purple,
 .bg-maroon,
-.bg-black {
+.bg-black,
+.bg-dark-gray {
   color: #f9f9f9 !important;
 }
 .bg-gray {
   background-color: #eaeaec !important;
+}
+.bg-dark-gray {
+  background-color: #808080 !important;
 }
 .bg-black {
   background-color: #222222 !important;
@@ -1276,7 +1280,7 @@ body > .header .logo .icon {
   margin-bottom: 15px;
 }
 .small-box > .inner {
-  padding: 10px;
+  padding: 13px;
 }
 .small-box > .small-box-footer {
   position: relative;
