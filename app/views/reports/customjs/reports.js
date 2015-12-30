@@ -24,7 +24,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
     	var hrs   = date.getHours();
     	var min   = date.getMinutes();
     	var sec   = date.getSeconds();
-    	console.log(hrs+':'+min+':'+sec)
+    	//console.log(hrs+':'+min+':'+sec)
     	return hrs+':'+min+':'+sec;
     }
 
@@ -70,7 +70,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		$scope.recursive($scope.data1.vehicleLocations,0);
 		}).error(function(){ /*alert('error'); */});
 	});
-
+    // address resolving with delay function
 	$scope.selectMe = function(consoldateData)
     {
     	angular.forEach(consoldateData, function(value, primaryKey){
@@ -84,13 +84,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
     					var url_address	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+value.latitude+','+value.longitude+"&sensor=true";
     					var latCon       =  value.latitude;
     					var loncon		 =  value.longitude;
-    					// Calling the func in 3 secs inerval
-    					// (function(index1, index2){
-	    				// 	setTimeout(function(){
-	        //         			$scope.getAddressFromGAPI(url_address, index1, index2);
-	        //     			}, 3000 * index2);
-	        //     		}(index1, index2))
-	        			delayed(3000, function (index1, index2) {
+    					delayed(3000, function (index1, index2) {
 					      return function () {
 					        $scope.getAddressFromGAPI(url_address, index1, index2, latCon, loncon);
 					      };
@@ -133,7 +127,19 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
     	})
 	};
 
+	//address resolving in table td click
+	// $("#table_address").on("click", "td", function(){
+	// 	console.log(' get the value from the td '+$(this).text());
+	// });
 	
+	// $("#table_address").on("click", "td", function() {
+ //     alert($( this ).text());
+ //   });
+	// $scope.address_click = function(address, ind)
+	// {
+	// 	$scope.mainlist[ind]='arun';
+	// 	console.log(' address '+address.latitude)
+	// }
     $scope.consoldate1 =  function()
 	{
 		$('#preloader').show(); 
@@ -226,13 +232,14 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		}
 	});
 	
-	$scope.getLocation	=	function(lat,lon,ind) {	
+	$scope.getLocation	=	function(lat,lon,ind) {
 		var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
 		$scope.loading	=	true;
 		$http.get(tempurl).success(function(data){	
 			$scope.locationname = data.results[0].formatted_address;
 			$scope.mainlist[ind]=	data.results[0].formatted_address;
 			$scope.loading	=	false;
+			var t = vamo_sysservice.geocodeToserver(lat, lon, data.results[0].formatted_address);
 		});
 	};
 	

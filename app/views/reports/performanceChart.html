@@ -187,16 +187,17 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 					<tbody>
 					<tr ng-repeat="user in tableValue" class="active" style="text-align:center">
 						<td>{{user.month}}</td>
-						<td ng-click="toggleModal(user)"><a>{{user.data.weightedBreakAnalysis}}</a>
+						<td><a ng-if="user.data.weightedBreakAnalysis != 0" ng-click="toggleModal(user)">{{user.data.weightedBreakAnalysis}}</a>
 							 <span ng-if="!user.data.weightedBreakAnalysis">0</span>
 						</td>
-						<td ng-click="toggleModal1(user)"><a>{{user.data.weightedSpeedAnalysis}}</a>
+						<td><a ng-if="user.data.weightedSpeedAnalysis != 0" ng-click="toggleModal1(user)">{{user.data.weightedSpeedAnalysis}}</a>
 							<span ng-if="!user.data.weightedSpeedAnalysis">0</span>
 						</td>
-						<td ng-click="toggleModal2(user)"><a>{{user.data.weightedShockAlarmAnalysis}}</a>
+						<td><a ng-if="user.data.weightedShockAlarmAnalysis != 0" ng-click="toggleModal2(user)">{{user.data.weightedShockAlarmAnalysis}}</a>
 							 <span ng-if="!user.data.weightedShockAlarmAnalysis">0</span>
 						</td>
-						<td ng-click="toggleModal3(user)"><a>{{user.data.weightedAccelAnalysis}}</a>
+						<td><a ng-if="user.data.weightedAccelAnalysis != 0" ng-click="toggleModal3(user)">{{user.data.weightedAccelAnalysis}}</a>
+							<span ng-if="!user.data.weightedAccelAnalysis">0</span>
 						</td>
 					</tr>
 					</tbody>
@@ -393,8 +394,8 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 						</tr>
 						<tr style="text-align:center">
 							<th width="10%" style="text-align:center;">Place</th>
-							<th width="10%" style="text-align:center;">Speed</th>
 							<th width="10%" style="text-align:center;">Slow</th>
+							<th width="10%" style="text-align:center;">Speed</th>
 							<th width="10%" style="text-align:center;">Time & Date</th>
 						</tr>
 						<tr ng-repeat="info in aggressive" style="text-align:center" class="active">
@@ -408,8 +409,8 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 						</tr>
 						<tr style="text-align:center">
 							<th width="10%" style="text-align:center;">Place</th>
-							<th width="10%" style="text-align:center;">Speed</th>
 							<th width="10%" style="text-align:center;">Slow</th>
+							<th width="10%" style="text-align:center;">Speed</th>
 							<th width="10%" style="text-align:center;">Time & Date</th>
 						</tr>
 						<tr ng-repeat="info in harsh" style="text-align:center" class="active">
@@ -423,8 +424,8 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 						</tr>
 						<tr style="text-align:center">
 							<th width="10%" style="text-align:center;">Place</th>
-							<th width="10%" style="text-align:center;">Speed</th>
 							<th width="10%" style="text-align:center;">Slow</th>
+							<th width="10%" style="text-align:center;">Speed</th>
 							<th width="10%" style="text-align:center;">Time & Date</th>
 						</tr>
 						<tr ng-repeat="info in Veryharsh" style="text-align:center" class="active">
@@ -438,8 +439,8 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 						</tr>
 						<tr style="text-align:center">
 							<th width="10%" style="text-align:center;">Place</th>
-							<th width="10%" style="text-align:center;">Speed</th>
 							<th width="10%" style="text-align:center;">Slow</th>
+							<th width="10%" style="text-align:center;">Speed</th>
 							<th width="10%" style="text-align:center;">Time & Date</th>
 						</tr>
 						<tr ng-repeat="info in worst" style="text-align:center" class="active">
