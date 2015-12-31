@@ -5,14 +5,15 @@ var app = angular.module('hist',['ui.bootstrap']);
 app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	//$scope.getLocation1(13.0401945,80.2153889);
 	
-	$scope.overallEnable = true;
-	$scope.oaddress	=	[];
-	$scope.maddress	=	[];
-	$scope.maddress1=	[];
-	$scope.saddress	=	[];
+	$scope.overallEnable= true;
+	$scope.oaddress	    =	[];
+	$scope.maddress	    =	[];
+	$scope.maddress1    =	[];
+	$scope.saddress	    =	[];
+	$scope.addressIdle  =   [];
 	$scope.saddressStop =   [];
-	$scope.location	=	[];
-	$scope.interval	=	getParameterByName('interval')?getParameterByName('interval'):10;
+	$scope.location	    =	[];
+	$scope.interval	    =	getParameterByName('interval')?getParameterByName('interval'):1;
 	$scope.sort = {       
                 sortingOrder : 'id',
                 reverse : false
@@ -32,7 +33,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
   	$scope.currentPage = 0;*/
 
 
-    $scope.downloadid	=	'overspeedreport';
+    $scope.downloadid	=	'movementreport';
     var prodId 			= 	getParameterByName('vid');
    	$scope.vgroup 		= 	getParameterByName('vg');
    	$scope.dvgroup 		= 	getParameterByName('dvg');
@@ -84,6 +85,11 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		   			$scope.geofencereport		=	true;
 		   			$scope.tableTitle			=	'Geo Fence Report';
 		   			break;
+		   		case 'idlereport':
+		   			$scope.idlereport			= 	true;
+		   			$scope.tableTitle			=	'Idle Report';
+		   			$scope.downloadid           =   'idlereport';
+		   			break;
 		   		default:
 		   			break;		
 		   }
@@ -116,78 +122,287 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
-		//console.log($scope.overspeeddata);
-		$scope.recursive($scope.overspeeddata,0);
+		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
+		$scope.recursive1($scope.movementdata,0);
+		//console.log(' data----> '+$scope.downloadid)
    	};
-   	//svar promis;
-   	$scope.recursive   = function(location,index){
-   		if(location.length<=index){
-			return;
-		}else{
-			var lat		 =	location[index].latitude;
-			var lon		 =	location[index].longitude;
-			if(!lat || !lon)
-				$scope.recursive(location, ++index);
-			var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
-			$http.get(tempurl).success(function(data){
-				//console.log(data.status);
-				$scope.locationname = data.results[0].formatted_address;
-				if($scope.downloadid=='overspeedreport')
-					$scope.oaddress[index]	= data.results[0].formatted_address;
-				else if($scope.downloadid=='movementreport')
-					$scope.maddress[index]	= data.results[0].formatted_address;
-				else if($scope.downloadid=='stoppedparkingreport')
-					$scope.saddress[index]	= data.results[0].formatted_address;
 
-				// address to backend
-				var t = vamo_sysservice.geocodeToserver(lat,lon,data.results[0].formatted_address);
+   	$scope.dataArray_click			=		function(data) {
+   		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
+		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
+		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
+		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
+		$scope.alertMe_click($scope.downloadid);
+   	};
 
-				setTimeout(function() {
-				      $scope.recursive(location, ++index);
-				}, 4000);
-			}).error(function(){ /*alert('error'); */});
-		}
+   	$scope.alertMe_click		=	function(value){
+   		switch(value){
+   			case 'movementreport':
+   				$scope.recursive1($scope.movementdata,0);
+   				break;
+   			case 'overspeedreport':
+   				$scope.recursive($scope.overspeeddata,0);
+   				break;
+   			case 'stoppedparkingreport':
+   				$scope.recursiveStop($scope.parkeddata,0);
+   				break;
+   			case 'idlereport':
+   				$scope.recursiveIdle($scope.idlereport,0);
+   				break;
+   			default:
+   				break;
+   		}
+   	}
+
+   	$scope.recursive   = function(location_over,index){
+   		var indexs = 0;
+   		angular.forEach(location_over, function(value, primaryKey){
+    		indexs = primaryKey;
+    		if(location_over[indexs].address == undefined)
+				{
+					//console.log(' address over speed'+indexs)
+					var latOv		 =	location_over[indexs].latitude;
+				 	var lonOv		 =	location_over[indexs].longitude;
+					var tempurlOv	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latOv+','+lonOv+"&sensor=true";
+					//console.log(' in overspeed '+indexs)
+					delayed(3000, function (indexs) {
+					      return function () {
+					        google_api_call_Over(tempurlOv, indexs, latOv, lonOv);
+					      };
+					    }(indexs));
+				}
+    	})
+
+  //  		if(location.length<=index){
+		// 	return;
+		// }else{
+		// 	var lat		 =	location[index].latitude;
+		// 	var lon		 =	location[index].longitude;
+		// 	if(!lat || !lon)
+		// 		$scope.recursive(location, ++index);
+		// 	var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
+		// 	$http.get(tempurl).success(function(data){
+		// 		//console.log(data.status);
+		// 		$scope.locationname = data.results[0].formatted_address;
+		// 		if($scope.downloadid=='overspeedreport')
+		// 			$scope.oaddress[index]	= data.results[0].formatted_address;
+		// 		else if($scope.downloadid=='movementreport')
+		// 			$scope.maddress[index]	= data.results[0].formatted_address;
+		// 		else if($scope.downloadid=='stoppedparkingreport')
+		// 			$scope.saddress[index]	= data.results[0].formatted_address;
+
+		// 		// address to backend
+		// 		var t = vamo_sysservice.geocodeToserver(lat,lon,data.results[0].formatted_address);
+
+		// 		setTimeout(function() {
+		// 		      $scope.recursive(location, ++index);
+		// 		}, 4000);
+		// 	}).error(function(){ /*alert('error'); */});
+		// }
 	}
 
+	// $(document).on('click', '#tableId td', function(events){
+	// 	var td_value	=	$(this);
+	// 	var content		=	td_value.text().trim();
+	// 	console.log(' value   '+content+'  events   '+events)
+	// })
+
+	// this method for click and resolve the address
+	// $(document).on('click','.add_td',function(){
+	// 	var id = $(this).closest("tr").find('td:eq(3)').text();
+	// 	console.log(' id '+id.trim())
+	// 	//$("#element td:nth-child(2)").empty();
+	// 	$(".add_td:nth-child(2)").empty();
+	// })
+
+	function google_api_call_Over(tempurlOv, indexs, latOv, lonOv){
+		$http.get(tempurlOv).success(function(data){
+			$scope.oaddress[indexs] = data.results[0].formatted_address;
+			var t = vamo_sysservice.geocodeToserver(latOv,lonOv,data.results[0].formatted_address);
+		})
+	}
+
+
+	function google_api_call(tempurlMo, index1, latMo, lonMo) {
+		$http.get(tempurlMo).success(function(data){
+			$scope.maddress1[index1] = data.results[0].formatted_address;
+			var t = vamo_sysservice.geocodeToserver(latMo,lonMo,data.results[0].formatted_address);
+		})
+	};
 	$scope.recursive1   =   function(locations, indes)
 	{
-		if(locations.length<=indes)
-		{return;}
-		else
-		{
-			var lat1    =  locations[indes].latitude;
-			var lon1    =  locations[indes].longitude;
-			if(!lat1 || !lon1)
-				$scope.recursive1(locations, ++indes);
-	 		var temurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat1+','+lon1+"&sensor=true";
-	 		$http.get(temurl).success(function(response){
-	 			$scope.maddress1[indes]	= response.results[0].formatted_address;
-	 			var t = vamo_sysservice.geocodeToserver(lat1,lon1,response.results[0].formatted_address);
-				setTimeout(function() {
-				      $scope.recursive1(locations, ++indes);
-				}, 4000);
-	 		})
-		}
+		var index1  =  0;
+		angular.forEach(locations, function(value, primaryKey){
+    		index1 = primaryKey;
+    		if(locations[index1].address == undefined)
+				{
+					//console.log(' address movementreport'+index1)
+					var latMo		 =	locations[index1].latitude;
+				 	var lonMo		 =	locations[index1].longitude;
+					var tempurlMo	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latMo+','+lonMo+"&sensor=true";
+					//console.log('  movement report  '+index1)
+					delayed1(3000, function (index1) {
+					      return function () {
+					        google_api_call(tempurlMo, index1, latMo, lonMo);
+					      };
+					    }(index1));
+				}
+    	})
 	}
 
+
+	var delayed = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
+	var delayed1 = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
+	var delayed2 = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
+	var delayed3 = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
+
+	// $scope.address_click = function(address, ind)
+	// {
+	// 	$scope.maddress1[1]=null;
+	// 	console.log(' inside the addressIdle ')
+	// 	// $scope.maddress1[1]=' formatted_address ';
+	// 	// console.log(' address '+address.latitude)
+	// }
+
+	// var tbl = document.getElementById("tblMain");
+ //        if (tbl != null) {
+ //            for (var i = 0; i < tbl.rows.length; i++) {
+ //                for (var j = 0; j < tbl.rows[i].cells.length; j++)
+ //                    tbl.rows[i].cells[j].onclick = function () { getval(this); };
+ //            }
+ //        }
+
+ //         function getval(cel) {
+ //           console.log(' in the cel value '+cel)
+ //        }
+	
+	function google_api_call_stop(tempurlStop, index2, latStop, lonStop) {
+		$http.get(tempurlStop).success(function(data){
+			$scope.saddressStop[index2] = data.results[0].formatted_address;
+			var t = vamo_sysservice.geocodeToserver(latStop,lonStop,data.results[0].formatted_address);
+		})
+	};
+
 	$scope.recursiveStop   = function(locationStop,indexStop){
-   		if(locationStop.length<=indexStop){
-			return;
-		}else{
-			var latStop		 =	locationStop[indexStop].latitude;
-			var lonStop		 =	locationStop[indexStop].longitude;
-			if(!latStop || !lonStop)
-				$scope.recursiveStop(locationStop, ++indexStop);
-			var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latStop+','+lonStop+"&sensor=true";
-			$http.get(tempurl).success(function(data){
-				//console.log(data.status);
-				$scope.saddressStop[indexStop]	= data.results[0].formatted_address;
-				var t = vamo_sysservice.geocodeToserver(latStop,lonStop,data.results[0].formatted_address);
-				setTimeout(function() {
-				      $scope.recursiveStop(locationStop, ++indexStop);
-				}, 4000);
-			}).error(function(){ /*alert('error'); */});
-		}
+   		var index2 = 0;
+   		angular.forEach(locationStop, function(value, primaryKey){
+    		index2 = primaryKey;
+    		if(locationStop[index2].address == undefined)
+				{
+					//console.log(' address stop'+index2)
+					var latStop		 =	locationStop[index2].latitude;
+				 	var lonStop		 =	locationStop[index2].longitude;
+					var tempurlStop	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latStop+','+lonStop+"&sensor=true";
+					//console.log('  stopped or parked '+index2)
+					delayed2(3000, function (index2) {
+					      return function () {
+					        google_api_call_stop(tempurlStop, index2, latStop, lonStop);
+					      };
+					    }(index2));
+				}
+    	})
+	}
+	function google_api_call_Idle(tempurlIdle, index3, latIdle, lonIdle) {
+		$http.get(tempurlIdle).success(function(data){
+			$scope.addressIdle[index3] = data.results[0].formatted_address;
+			var t = vamo_sysservice.geocodeToserver(latIdle,lonIdle,data.results[0].formatted_address);
+		})
+	};
+
+	$scope.recursiveIdle   = function(locationIdle,indexIdle){
+		var index3 = 0;
+		angular.forEach(locationIdle, function(value, primaryKey){
+    		index3 = primaryKey;
+    		if(locationIdle[index3].address == undefined)
+				{
+					//console.log(' address idle'+index3)
+					var latIdle		 =	locationIdle[index3].latitude;
+				 	var lonIdle		 =	locationIdle[index3].longitude;
+					var tempurlIdle	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latIdle+','+lonIdle+"&sensor=true";
+					//console.log(' Idle report  '+index3)
+					delayed3(3000, function (index3) {
+					      return function () {
+					        google_api_call_Idle(tempurlIdle, index3, latIdle, lonIdle);
+					      };
+					    }(index3));
+				}
+    	})
 	}
 
 	/*$scope.dataGeofence 		= 		function(data) {
@@ -235,7 +450,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.$watch("url", function (val) {
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
-			console.log($scope.locations);
+			//console.log($scope.locations);
 			if(data.length)
 				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {
@@ -244,7 +459,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 				  		$scope.data1		=	data[key];
 				  }
 			});				
-			console.log($scope.data1);
+			//console.log($scope.data1);
 		}).error(function(){ /*alert('error'); */ });
 	});
 	
@@ -278,6 +493,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			case 'Overspeed':
 				$scope.downloadid	 =	'overspeedreport';
 				$scope.overallEnable =	true;
+				$scope.recursive($scope.overspeeddata,0);
 				break;
 			case 'Movement':
 				$scope.downloadid	 =	'movementreport';
@@ -294,10 +510,14 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 				$scope.downloadid	 =	'geofencereport';
 				$scope.overallEnable =	false;
 				break;
+			case 'idlereport':
+				$scope.downloadid    =  'idlereport';
+				$scope.overallEnable =  true;
+				$scope.recursiveIdle($scope.idlereport,0);
+				break;
 			default:
 				break;
 		}
-		//console.log($scope.downloadid);
 	};
 	
 	$scope.exportData = function (data) {
@@ -314,12 +534,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     };
     
     $scope.msToTime		=	function(ms) {
-       /* var d = moment.duration(x, 'milliseconds');
-		var hours = Math.floor(d.asHours());
-		var mins = Math.floor(d.asMinutes()) - hours * 60;
-		return hours + ":" + mins;*/
-		
-		days = Math.floor(ms / (24*60*60*1000));
+        days = Math.floor(ms / (24*60*60*1000));
 	    daysms=ms % (24*60*60*1000);
 	    hours = Math.floor((daysms)/(60*60*1000));
 	    hoursms=ms % (60*60*1000);
@@ -336,14 +551,14 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			$scope.loading			=	false;
 			$scope.hist				=	data;
 			$scope.topspeedtime		=	data.topSpeedTime;
-			$scope.dataArray(data.vehicleLocations);	
+			$scope.dataArray_click(data.vehicleLocations);	
 		}); 
      }
      
-     
+     //pdf method
      $scope.pdfHist			=		function() {  	
 		var histurl	=	"http://"+getIP+"/vamo/public//getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;			
-		console.log(histurl);		
+		//console.log(histurl);		
 		$http.get(histurl).success(function(data){
 			$scope.hist				=	data;
 			$scope.dataArray(data.vehicleLocations);
@@ -354,6 +569,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			case 'stoppedparkingreport':
 				$scope.recursiveStop($scope.parkeddata,0);
 				break;
+			case 'idlereport':
+				$scope.recursiveIdle($scope.idlereport,0);
+				break; 
 			default:
 				break;
 			}			
