@@ -19,8 +19,7 @@
 		{{ Form::text('deviceId', $deviceId, array('class' => 'form-control','disabled' => 'disabled')) }}
 
 	</div>
-	
-	
+
      </div>
 
 	<div class="col-md-4">
@@ -32,8 +31,8 @@
 	@foreach($place as $key => $value)
 	<table><tr>
 	<td></td><td>
-	{{ Form::text('volt'.$j++,$value,  array('class' => 'form-control')) }}</td><td>
-	{{ Form::text( 'litre'.$i++,$key ,array('class' => 'form-control') ) }}</td>
+	{{ Form::text('volt'.$j++, isset(explode(":", $value)[0])?explode(":", $value)[0]:0,  array('class' => 'form-control')) }}</td><td>
+	{{ Form::text( 'litre'.$i++,isset(explode(":", $value)[1])?explode(":", $value)[1]:0,array('class' => 'form-control') ) }}</td>
 	</tr></table>
 	
 	
@@ -51,4 +50,20 @@
 	{{ Form::submit('Calibrate!', array('class' => 'btn btn-primary')) }}
 
 {{ Form::close() }}
+{{ Form::open(array('url' => 'vdmVehicles/calibrate/analog/')) }}
+	<div class="form-group">
+		{{ Form::label('tanksize', 'Tank Size') }}
+		<br/>
+		{{ Form::text('tanksize', $tanksize, array('class' => 'form-control')) }}
+
+	</div>
+	<div class="form-group">
+		 {{ Form::hidden('vehicleId', $vehicleId, array('class' => 'form-control')) }}
+	{{ Form::submit('Calibrate Analog!', array('class' => 'btn btn-sm btn-success')) }}
+	</div>
+
+
+
+
+
 @stop

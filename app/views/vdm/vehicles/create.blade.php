@@ -195,11 +195,6 @@
 										{{ Form::select('fuel',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('fuel'), array('class' => 'form-control')) }} 
                                         </div>
                                         
-																	
-										<div class="col-md-6">
-											
-										</div>
-										
 										
 										
 										

@@ -161,7 +161,7 @@ class VdmUserController extends \BaseController {
 				$password='awesome';
 			}
 			
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password);
 			$user = new User;
 			
 			$user->name = $userId;
@@ -361,7 +361,7 @@ class VdmUserController extends \BaseController {
          $redis->del('S_Orgs_' .$userId . '_' . $fcode);
 
 		$email=$redis->hget('H_UserId_Cust_Map',$userId.':email');
-		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email');
+		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email',$userId.':password');
 		
 		Log::info(" about to delete user" .$userId);
 		

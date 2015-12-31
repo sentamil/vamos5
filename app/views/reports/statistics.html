@@ -76,10 +76,14 @@ background-color: #ffffff;
 	       	<div class="box box-primary">
 		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
 		            <h3 class="box-title">Executive Summary Report</h3>
+		           <!--  <div class="box-tools pull-right">
+                    	<span class="pull-right"><a href="performance"><input class="btn btn-xs btn-danger pull-right" type="button" value="Performance"></a></span></div> -->
 		            <div class="box-tools pull-right">
+
 		                <a href="downloadstatistics?sid={{data1.group}}&rid={{downloadid}}&vid={{vid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
 		                <img style="cursor: pointer;" ng-click="exportData(downloadid)"  src="../app/views/reports/image/xls.png" />
 		            	<img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV(downloadid)"  src="../app/views/reports/image/csv.jpeg" />
+
 		            </div>
 		        </div>
 		        <div class="row">
