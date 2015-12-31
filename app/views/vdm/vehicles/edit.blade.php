@@ -61,7 +61,11 @@
 		{{ Form::label('expiredPeriod', 'Expired Period') }}
 		{{ Form::text('expiredPeriod', $refData['expiredPeriod'], array('class' => 'form-control','disabled' => 'disabled')) }}
 	</div>
-	
+	<div>
+	{{ Form::label('fuel', 'Fuel') }}
+						 {{ Form::select('fuel', array('no' => 'No','yes' => 'Yes' ), $refData['fuel'],array('class' => 'form-control')) }}  
+	</div>
+	<br/>
      </div>
 
 	<div class="col-md-4">
@@ -128,10 +132,11 @@
 		{{ Form::label('paymentType', 'Payment Type') }}
 		{{ Form::text('paymentType', $refData['paymentType'], array('class' => 'form-control','disabled' => 'disabled')) }}
 	</div>
-	<div>
-	{{ Form::label('fuel', 'Fuel') }}
-						 {{ Form::select('fuel', array('no' => 'No','yes' => 'Yes' ), $refData['fuel'],array('class' => 'form-control')) }}  
-	</div>
+	<div class="form-group">
+        {{ Form::label('fuelTyp', 'Fuel Type') }}<br>
+     
+{{ Form::select('fuelType', array('digital' => 'Digital','analog' => 'Analog'), isset($refData['fuelType'])?$refData['fuelType']:'Digital', array('class' => 'form-control')) }}  
+    </div>
 	
 	</div>
 	</div>

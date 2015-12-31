@@ -423,6 +423,61 @@ class VdmVehicleController extends \BaseController {
 	 * @param int $id        	
 	 * @return Response
 	 */
+	public function analogCalibrate() {
+		if (! Auth::check ())
+		{
+				return Redirect::to ( 'login' );
+		}
+		$redis = Redis::connection ();
+		$username = Auth::user ()->username;
+		
+		$tanksize = Input::get ( 'tanksize' );
+		$vehicleId = Input::get ( 'vehicleId' );
+		
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
+		Log::info($vehicleId.'-------------inside analogCalibrate-----------'.$tanksize);
+		$refDataFromDB = json_decode ( $details, true );
+		$fuelType =isset($refDataFromDB['fuelType'])?$refDataFromDB['fuelType']:'NotAvailabe';
+		if($fuelType=='analog')
+		{
+			
+			
+			$maxmin=$redis->hget('H_Auto_'.$fcode,$vehicleId);
+			if($maxmin!=null)
+			{
+			
+				$maxmin=explode(',',$maxmin);
+				$volt=$maxmin[0];
+				Log::info($volt.'------------- analogCalibrate-----------'.$maxmin[0]);
+				$litre=$tanksize;
+				
+				$voltDiff=$maxmin[1]-$maxmin[0];
+				$voltDiff=$voltDiff/5;
+				$tanksize=$tanksize/5;	
+				if($voltDiff>=0 && $tanksize>=1)
+				{
+					$redis->del('Z_Sensor_'.$vehicleId.'_'.$fcode);
+					for($i = 0; $i <=10; $i++){					
+					
+						log::info( $volt.'---------------vechile------------- ::' .$litre);
+						if($litre<0)
+							break;
+						 $redis->zadd ( 'Z_Sensor_'.$vehicleId.'_'.$fcode,$volt,round($litre));
+						 $volt=$volt+$voltDiff;
+						 $litre=$litre-$tanksize;
+					
+				}
+				}					
+				
+			}
+			else{
+				
+			}
+			
+		}
+		return Redirect::to ( 'vdmVehicles' );	
+		}
 	
 	public function edit($id) {
 		try{
@@ -454,6 +509,7 @@ class VdmVehicleController extends \BaseController {
 		$refData= array_add($refData, 'paymentType',' ');
 		$refData= array_add($refData, 'expiredPeriod',' ');
 		$refData= array_add($refData, 'fuel', 'no');
+	//	$refData= array_add($refData, 'fuelType', 'digital');
        $refDataFromDB = json_decode ( $details, true );
        
 	
@@ -593,7 +649,7 @@ class VdmVehicleController extends \BaseController {
 			 $volt=Input::get ('volt'.$p);
 			 $litre=Input::get ('litre'.$p);
 			  log::info( $volt.'---------------vechile------------- ::' .$litre);
-			 if(!$litre==null && !$volt==null)
+			 if((!$litre==null || $litre==0) && !$volt==null)
 			 {
 				// log::info( $volt.'---------------vechile------------- ::' .$litre);
 				 $redis->zadd ( 'Z_Sensor_'.$vehicleId.'_'.$fcode,$volt,$litre);
@@ -604,6 +660,10 @@ class VdmVehicleController extends \BaseController {
 		Log::info('-------------outside calibrate add-----------');
 		return Redirect::to ( 'vdmVehicles' );
 	}
+	
+	
+	
+		
 	
 	
 	public function calibrate($id) {
@@ -629,19 +689,23 @@ class VdmVehicleController extends \BaseController {
 	$address1=array();
 		 $place=array();
 		 $place1=array();
+		 
 		  $latandlan=array();
 		$address1= $redis->zrange( 'Z_Sensor_'.$vehicleId.'_'.$fcode,0,-1,'withscores');
 		
 		$temp=null;
+		$v=0;
 		foreach($address1 as $org => $rowId)
 	{
 			 
 			  
 		
-			 log::info( 'inside no result' .$rowId[0]);
+		$ahan=$rowId[1].':'.$rowId[0];
 		
-				 $place = array_add($place, $rowId[0],$rowId[1]);
-					
+			 log::info( $rowId[1].'inside no'.$ahan.' result' .$rowId[0]);
+				 //$place = array_add($place, $rowId[1].':'.$rowId[0],$ahan);
+				 $place = array_add($place,$v,$ahan);
+				$v++;
 		 }
 		 
 		
@@ -650,7 +714,7 @@ class VdmVehicleController extends \BaseController {
 		 for ($p = 0; $p < $temp; $p++)
 		 {
 			  log::info( '---------------in------------- ::' );
-			  $place = array_add($place, "litre".$p,'');
+			  $place = array_add($place, "".':'."litre".$p,'');
 			
 		 }
 		 
@@ -661,11 +725,11 @@ class VdmVehicleController extends \BaseController {
         
 		
      
-		
+		$tanksize='';
 	 
 	//  var_dump($refData);
 		return View::make ( 'vdm.vehicles.calibrate', array (
-				'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with ( 'place', $place )->with ( 'k', $k )->with ( 'j', $j )->with ( 'i', $i )->with ( 'm', $m )->with ( 'place1', $place1 );
+				'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with ( 'place', $place )->with ( 'k', $k )->with ( 'j', $j )->with ( 'i', $i )->with ( 'm', $m )->with ( 'place1', $place1 )->with('tanksize',$tanksize);
 				
 	}
 	
@@ -724,6 +788,7 @@ class VdmVehicleController extends \BaseController {
             $parkingAlert = Input::get ('parkingAlert');
 			$fuel=Input::get ('fuel');
             $altShortName=Input::get ('altShortName');
+			$fuelType=Input::get ('fuelType');
             $redis = Redis::connection ();
             $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
             
@@ -768,6 +833,7 @@ class VdmVehicleController extends \BaseController {
 					'paymentType'=>$paymentType,
 					'expiredPeriod'=>$expiredPeriod,
 					'fuel'=>$fuel,
+					'fuelType'=>$fuelType,
 			);
 			
 			$refDataJson = json_encode ( $refDataArr );
