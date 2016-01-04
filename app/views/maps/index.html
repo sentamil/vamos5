@@ -54,13 +54,6 @@
                     <option value="S">Idle ({{idleCount}})</option>
                     <option value="O">Overspeed ({{overspeedCount}})</option>
                 </select>
-                <!--    <span style="font-size: 12px; font-weight: bold;" ng-cloak><input type="radio" value="ALL" ng-model="vehicleStatus" name="vehicleStatus" class="radioButt" /> All ({{totalVehicles}}) &nbsp;</span>
-                    <span style="font-size: 12px; font-weight: bold;" ng-cloak><input type="radio" value="ON" ng-model="vehicleStatus" name="vehicleStatus" class="radioButt"/> On <span style="color: green">({{vehicleOnline}}) &nbsp;</span></span>
-                    <span style="font-size: 12px; font-weight: bold;" ng-cloak><input type="radio" value="OFF" ng-model="vehicleStatus" name="vehicleStatus" class="radioButt"/> Off <span style="color: red">({{attention}}) </span></span><br/>
-                    <span style="font-size: 12px; font-weight: bold;" ng-cloak><input type="radio" value="P" ng-model="vehicleStatus" name="vehicleStatus" class="radioButt"/> Parked <span>({{parkedCount}}) </span></span> &nbsp; &nbsp;
-                    <span style="font-size: 12px; font-weight: bold;" ng-cloak> <input type="radio" value="M" ng-model="vehicleStatus" name="vehicleStatus" class="radioButt"/> Moving <span>({{movingCount}}) </span></span><br/>
-                    <span style="font-size: 12px; font-weight: bold;" ng-cloak><input type="radio" value="S" ng-model="vehicleStatus" name="vehicleStatus" class="radioButt"/> Idle <span>({{idleCount}}) </span></span>
-                -->
                 </li>
                 <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
@@ -277,7 +270,7 @@
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 
     <script src="http://code.highcharts.com/highcharts.js"></script>

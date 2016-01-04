@@ -187,6 +187,16 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		CSV.begin('#'+data).download(data+'.csv').go();
     };
 
+    $scope.address_click = function(data, ind)
+	{
+		console.log(' address --->'+data+'---->'+ind)
+		var urlAddress 		=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
+		$http.get(urlAddress).success(function(response)
+		{
+			data.address 	=	response.results[0].formatted_address;
+			var t 			= 	vamo_sysservice.geocodeToserver(data.latitude,data.longitude,response.results[0].formatted_address);
+		});
+	}
 
     // millesec to day, hours, min, sec
     $scope.msToTime = function(ms) 
@@ -205,26 +215,63 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	}
 	
 	$scope.recursive   = function(location,index){
-		if(location.length<=index){
-			return;
-		}else{
+		// if(location.length<=index){
+		// 	return;
+		// }else{
 			
-			var lat		 =	location[index].latitude;
-			var lon		 =	location[index].longitude;
-			if(!lat || !lon)
-				$scope.recursive(location, ++index);
-			var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
-			$http.get(tempurl).success(function(data){	
-				$scope.locationname		=	data.results[0].formatted_address;
-				$scope.mainlist[index]	=	data.results[0].formatted_address;
-				var t = vamo_sysservice.geocodeToserver(lat, lon, data.results[0].formatted_address);
-				setTimeout(function() {
-					$scope.recursive(location, ++index);
-				}, 3000);
-			});
-		}
+		// 	var lat		 =	location[index].latitude;
+		// 	var lon		 =	location[index].longitude;
+		// 	if(!lat || !lon && location[index].address != undefined)
+		// 		$scope.recursive(location, ++index);
+		// 	var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
+		// 	$http.get(tempurl).success(function(data){	
+		// 		$scope.locationname		=	data.results[0].formatted_address;
+		// 		$scope.mainlist[index]	=	data.results[0].formatted_address;
+		// 		var t = vamo_sysservice.geocodeToserver(lat, lon, data.results[0].formatted_address);
+		// 		setTimeout(function() {
+		// 			$scope.recursive(location, ++index);
+		// 		}, 3000);
+		// 	});
+		// }
+		var index3 = 0;
+		angular.forEach(location, function(value, primaryKey){
+    		index3 = primaryKey;
+    		if(location[index3].address == undefined)
+				{
+					//console.log(' address idle'+index3)
+					var latIdle		 =	location[index3].latitude;
+				 	var lonIdle		 =	location[index3].longitude;
+					var tempurlIdle	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latIdle+','+lonIdle+"&sensor=true";
+					//console.log(' Idle report  '+index3)
+					delayed1(3000, function (index3) {
+					      return function () {
+					        google_api_call(tempurlIdle, index3, latIdle, lonIdle);
+					      };
+					    }(index3));
+				}
+    	})
 	}
 	
+	var delayed1 = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
 	
 	$scope.$watch('vvid', function () {
 		if($scope.vvid) {
@@ -232,7 +279,16 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		}
 	});
 	
+	function google_api_call(url, index1, lat, lan) {
+		$http.get(url).success(function(data) {
+    		
+    		// Declare the new property address to the existing list
+			$scope.mainlist[index1]= data.results[0].formatted_address;
+			var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
+    	})
+	};
 	$scope.getLocation	=	function(lat,lon,ind) {
+		console.log(' calling function ')
 		var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
 		$scope.loading	=	true;
 		$http.get(tempurl).success(function(data){	

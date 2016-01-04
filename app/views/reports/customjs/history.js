@@ -208,12 +208,62 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	// })
 
 	// this method for click and resolve the address
-	// $(document).on('click','.add_td',function(){
+	// $(document).on('click','.add_td',function(events){
+
+
 	// 	var id = $(this).closest("tr").find('td:eq(3)').text();
-	// 	console.log(' id '+id.trim())
+	// 	console.log(' id '+$('td:eq(3)').text().trim());
 	// 	//$("#element td:nth-child(2)").empty();
-	// 	$(".add_td:nth-child(2)").empty();
+	// 	//$(".add_td").(this).empty();
 	// })
+
+	$(document).on('click','.add_td',function(){
+		var id 				= 	$(this).closest("tr").find('td:eq(2)').text();
+		var split_comma 	=	id.split(',');
+		var row_index 		= 	$(this).index();
+		var col_index 		= 	$(this).parent().index();
+		console.log(' index '+col_index)
+		//console.log('lat----->'+split_comma[0]+'lat----->'+split_comma[1])
+		var url 			= 	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+split_comma[0]+','+split_comma[1]+"&sensor=true";
+
+		var address 		=	'';
+		//console.log(address);
+		//var colIndex = $('.lat_lan').text();
+    	//var rowIndex = $(this).parent().parent().children().index($(this).parent());
+    	//var value = $(this).find(".add_td").eq(2).html()
+    	//console.log(id);
+    	$http.get(url).success(function(value){
+			//console.log(url)
+			address 		=	value.results[0].formatted_address;
+			//var va =$('#tabl tr:nth-child('+row_index+') .add_td:nth-child('+col_index+')').html(address);
+			//alert(' alert '+$('#tabl tr:nth-child('+row_index+') .add_td:nth-child('+col_index+')').Append(address));
+			
+			$(document).ready(function(){
+			    $('#tabl tr:nth-child('+row_index+') .add_td:nth-child('+col_index+')').html('foo');
+			});
+			//console.log(' list '+$('#tabl tr:nth-child('+row_index+') .add_td:nth-child('+col_index+')').html(address))
+			//var $cell = $(this);
+			//$("#tabl").children()[row_index].children[col_index].innerHTML = "H!";
+			//$('#tabl').find('tr#' + row_index).find('add_td:eq('+col_index+')').html(address);
+			//return address_Click;
+			// var arr = $('#tabl > tbody > tr').map(function ()
+			// {
+			//     return $(this).children().map(function ()
+			//     {
+			//         return $(this);
+			//     });
+			// });
+			// arr[3][3].text('address');
+
+		})
+	});
+	// var address_Click 	=	''; 
+	// function click_resolve(url)
+	// {	
+		
+		
+		
+	// }
 
 	function google_api_call_Over(tempurlOv, indexs, latOv, lonOv){
 		$http.get(tempurlOv).success(function(data){
@@ -332,26 +382,18 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	  	};
 	}());
 
-	// $scope.address_click = function(address, ind)
-	// {
-	// 	$scope.maddress1[1]=null;
-	// 	console.log(' inside the addressIdle ')
-	// 	// $scope.maddress1[1]=' formatted_address ';
-	// 	// console.log(' address '+address.latitude)
-	// }
+	$scope.address_click = function(data, ind)
+	{
+		console.log(' address --->'+data+'---->'+ind)
+		var urlAddress 		=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
+		$http.get(urlAddress).success(function(response)
+		{
+			data.address 	=	response.results[0].formatted_address;
+			var t 			= 	vamo_sysservice.geocodeToserver(data.latitude,data.longitude,response.results[0].formatted_address);
+		});
+	}
 
-	// var tbl = document.getElementById("tblMain");
- //        if (tbl != null) {
- //            for (var i = 0; i < tbl.rows.length; i++) {
- //                for (var j = 0; j < tbl.rows[i].cells.length; j++)
- //                    tbl.rows[i].cells[j].onclick = function () { getval(this); };
- //            }
- //        }
 
- //         function getval(cel) {
- //           console.log(' in the cel value '+cel)
- //        }
-	
 	function google_api_call_stop(tempurlStop, index2, latStop, lonStop) {
 		$http.get(tempurlStop).success(function(data){
 			$scope.saddressStop[index2] = data.results[0].formatted_address;
