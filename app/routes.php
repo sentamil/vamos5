@@ -317,7 +317,8 @@ Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeControl
 
 Route::group(array('before' => 'adminauth'), function(){   //admin auth starts here
     
-
+Route::get('vdmVehicles/calibrateOil/{param}', array('uses' => 'VdmVehicleController@calibrate'));
+Route::post('vdmVehicles/updateCalibration', array('uses' => 'VdmVehicleController@updateCalibration'));
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
 Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dealerSearch'));
 
@@ -382,7 +383,7 @@ Route::get('vdmOrganization/{param}/poiDelete', array('uses' => 'VdmOrganization
 
 Route::get('vdmOrganization/{param}/getSmsReport', array('uses' => 'VdmOrganizationController@getSmsReport'));
 Route::resource('vdmOrganization', 'VdmOrganizationController');
-
+Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleController@analogCalibrate'));
 
 
 
