@@ -254,7 +254,7 @@ background-color: #ffffff;
 										<th width="5%" style="text-align:center;">Current Position</th>
 										<th width="5%" style="text-align:center;">GPS Status</th>
 										<th width="5%" style="text-align:center;">Current Location</th>
-										<th width="40%" style="text-align:center;">Address</th>
+										<th width="40%" style="text-align:center;">Nearest Location</th>
 										<th width="5%" style="text-align:center;">G-Map</th>
 									</tr>
 									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
@@ -269,9 +269,9 @@ background-color: #ffffff;
 										<td>{{user.position}}</td>
 										<td>{{user.status}}</td>
 										<td>{{user.latitude}}, {{user.longitude}}</td>
-										<td ng-if="user.address!=null">{{user.address}}</td>
+										<td ng-if="user.address!=null" ng-click="address_click(user, $index)">{{user.address}}</td>
 										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
-										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
+										<td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>														
 									</tr>
 									<tr ng-if="data1.vehicleLocations==null">
