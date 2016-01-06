@@ -13,7 +13,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.addressIdle  =   [];
 	$scope.saddressStop =   [];
 	$scope.location	    =	[];
-	$scope.interval	    =	getParameterByName('interval')?getParameterByName('interval'):1;
+	$scope.interval	    =	getParameterByName('interval')?getParameterByName('interval'):5;
 	$scope.sort = {       
                 sortingOrder : 'id',
                 reverse : false
