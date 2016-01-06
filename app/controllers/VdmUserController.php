@@ -149,10 +149,12 @@ class VdmUserController extends \BaseController {
 			{
 				log::info( '------login 1---------- '.Session::get('cur'));
 				$redis->sadd('S_Users_Dealer_'.$username.'_'.$fcode,$userId);
+				$OWN=$username;
 			}
 			else if(Session::get('cur')=='admin')
 			{
 				$redis->sadd('S_Users_Admin_'.$fcode,$userId);
+				$OWN='admin';
 			}
 			
 			$password=Input::get ( 'password' );
@@ -161,7 +163,7 @@ class VdmUserController extends \BaseController {
 				$password='awesome';
 			}
 			
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password);
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password,,$userId.':OWN',$OWN);
 			$user = new User;
 			
 			$user->name = $userId;
