@@ -1299,8 +1299,9 @@ class VdmVehicleController extends \BaseController {
 		Session::put('vehicleId',$vehicleId);
 		Session::put('deviceId',$deviceId);
 		Session::flash ( 'message', 'Successfully updated ' . '!' );
-		return View::make ( 'vdm.vehicles.migration', array (
-				'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
+		 return Redirect::to ( 'vdmVehicles' );
+
+	//	return View::make ( 'vdm.vehicles.migration', array ('vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 				
 	}
 	
