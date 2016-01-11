@@ -900,8 +900,8 @@ class VdmVehicleController extends \BaseController {
 			// redirect
 			Session::flash ( 'message', 'Successfully updated ' . $vehicleId . '!' );
 			
-			
-			return VdmVehicleController::edit($vehicleId);
+			return Redirect::to ( 'vdmVehicles' );
+		//	return VdmVehicleController::edit($vehicleId);
 		}
 	}
 	
