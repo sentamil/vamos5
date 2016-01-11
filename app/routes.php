@@ -430,7 +430,7 @@ Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleControlle
 Route::post('AddSiteController/store', array('uses' => 'AddSiteController@store'));
 Route::resource('AddSite', 'AddSiteController');
 Route::post('AddSiteController/update', array('uses' => 'AddSiteController@update'));
-
+Route::post('AddSiteController/delete', array('uses' => 'AddSiteController@delete'));
 Route::get('vdmSmsReportFilter', array('uses' => 'VdmSmsController@filter'));
 
 Route::post('vdmSmsReport', array('uses' => 'VdmSmsController@show'));
