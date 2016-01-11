@@ -22,7 +22,7 @@
     <div id="wrapper" ng-controller="mainCtrl">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand"><a href="javascript:void(0);"><img src="assets/imgs/logo.png"/></i></a></li>
+                <li class="sidebar-brand"><a href="javascript:void(0);"><img src=""/></i></a></li>
                 <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
                 <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
@@ -125,7 +125,8 @@
 
     //menu loading
     $("#testLoad").load("../public/menu");
-
+    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    $('#imagesrc').attr('src', imgName);
     </script>
 </body>
 </html>
