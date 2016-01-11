@@ -841,8 +841,8 @@ class VdmVehicleController extends \BaseController {
 			$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);//ram
 			$refDataJson1=json_decode($refDataJson1,true);
 		
-			//$org=isset($refDataJson1['orgId'])?$refDataJson1->orgId:'def';
-			$org=isset($refDataFromDB->orgId)?$refDataFromDB->orgId:$refDataJson1['orgId'];
+			$torg = isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default';
+			$org=isset($refDataFromDB->orgId)?$refDataFromDB->orgId:$torg;
 			$oldroute=isset($refDataFromDB->shortName)?$refDataFromDB->shortName:$refDataJson1['shortName'];
 			
 			if($org!=$orgId)
@@ -900,8 +900,8 @@ class VdmVehicleController extends \BaseController {
 			// redirect
 			Session::flash ( 'message', 'Successfully updated ' . $vehicleId . '!' );
 			
-			
-			return VdmVehicleController::edit($vehicleId);
+			return Redirect::to ( 'vdmVehicles' );
+		//	return VdmVehicleController::edit($vehicleId);
 		}
 	}
 	
@@ -1197,7 +1197,8 @@ class VdmVehicleController extends \BaseController {
 			
 			$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, Session::get('vehicleId'));
 			$refDataJson1=json_decode($refDataJson1,true);
-			$orgId=$refDataJson1['orgId'];
+			
+			$orgId=isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default';
 			$time =microtime(true);
 			$time = round($time * 1000);
 			$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$refDataJson1['odoDistance']. ',S,N';
@@ -1298,8 +1299,9 @@ class VdmVehicleController extends \BaseController {
 		Session::put('vehicleId',$vehicleId);
 		Session::put('deviceId',$deviceId);
 		Session::flash ( 'message', 'Successfully updated ' . '!' );
-		return View::make ( 'vdm.vehicles.migration', array (
-				'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
+		 return Redirect::to ( 'vdmVehicles' );
+
+	//	return View::make ( 'vdm.vehicles.migration', array ('vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 				
 	}
 	
