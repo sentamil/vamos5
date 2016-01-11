@@ -163,7 +163,7 @@ class VdmUserController extends \BaseController {
 				$password='awesome';
 			}
 			
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password,,$userId.':OWN',$OWN);
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password,$userId.':OWN',$OWN);
 			$user = new User;
 			
 			$user->name = $userId;
@@ -311,7 +311,7 @@ class VdmUserController extends \BaseController {
 			$vehicleGroups = Input::get ( 'vehicleGroups' );
 			
 			$mobileNo = Input::get ( 'mobileNo' );
-			$email = Input::get ( 'mobileNo' );
+			$email = Input::get ( 'email' );
 			$redis->del ( $userId );
 			foreach ( $vehicleGroups as $grp ) {
 				$redis->sadd ( $userId, $grp );

@@ -22,22 +22,39 @@ class RemindersController extends Controller {
 		log::info(" postRemind ");
 		 $data = Input::all();
 		//var_dump($data);
-		
-		$response = Password::remind(Input::only('email'), function($message)
+		$redis = Redis::connection ();
+		$username=Input::get ('userId');
+		log::info(" user ");
+		$fcode = $redis->hmget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		if($fcode!=null)
 		{
-			$message->subject('Password Reminder');
-		});
-		
-		switch ($response)
-		{
-			case Password::INVALID_USER:
-				return Redirect::back()->with('error', Lang::get($response));
+			log::info("valid user ".$username);
+			$emailTemp=$redis->hget ( 'H_UserId_Cust_Map', $username . ':email');
+			$email=explode(",", $emailTemp);			
+			$response = Password::remind($email, function($message)
+			{
+				$message->subject('Password Reminder');
+			});
+			
+			switch ($response)
+			{
+				case Password::INVALID_USER:
+					log::info($emailTemp." invalid user ".Lang::get($response));		
+					return Redirect::back()->with('error', Lang::get($response));
 
-			case Password::REMINDER_SENT:
-				return Redirect::to('login')->with('flash_notice','Please check your mail for password details.');
+				case Password::REMINDER_SENT:
+					log::info($emailTemp." valid user ".$username);		
+					log::info(" token user ".Password::token);
+					return Redirect::to('login')->with('flash_notice','Please check your mail for password details.');
 
-				//return Redirect::back()->with('status', Lang::get($response));
+					//return Redirect::back()->with('status', Lang::get($response));
+			}
 		}
+		else
+		{
+			log::info("invalid user please check the userId");
+		}
+		
 	}
 	
 	public function request()

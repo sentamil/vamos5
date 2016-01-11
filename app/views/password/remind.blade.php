@@ -8,8 +8,8 @@
 
 {{ Form::open(array('route' => 'password.postremind')) }}
  
-  <p>{{ Form::label('email', 'email') }}
-  {{ Form::text('email') }}</p>
+  <p>{{ Form::label('userId', 'userId') }}
+  {{ Form::text('userId') }}</p>
  
   <p>{{ Form::submit('Send Reminder') }}</p>
  

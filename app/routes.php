@@ -45,6 +45,15 @@ Route::get('/settings', function() {
 });
 
 
+Route::get('/sites', function() {
+    // if (!Auth::check()) {
+    //     return Redirect::to('login');
+    // }
+    return Redirect::to('AddSite');
+});
+
+
+
 View::addExtension('html', 'php');
 Route::get('/reports', function() {
     if (!Auth::check()) {
@@ -390,6 +399,10 @@ Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleControlle
 
 });   //admin auth ends here
 
+Route::post('AddSiteController/store', array('uses' => 'AddSiteController@store'));
+Route::post('AddSiteController/update', array('uses' => 'AddSiteController@update'));
+Route::post('AddSiteController/delete', array('uses' => 'AddSiteController@delete'));
+Route::resource('AddSite', 'AddSiteController');
 Route::get('vdmSmsReportFilter', array('uses' => 'VdmSmsController@filter'));
 
 Route::post('vdmSmsReport', array('uses' => 'VdmSmsController@show'));
