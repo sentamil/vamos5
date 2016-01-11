@@ -207,7 +207,7 @@ class AddSiteController extends \BaseController {
 				'siteName' => 'required|alpha_dash',					
 		);       
 		 $ch = curl_init();
-		 $siteType= curl_escape($ch,$siteType);
+		 //$siteType= curl_escape($ch,$siteType);
 		 $url = 'http://' .$ipaddress . ':9000/deleteSite?fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .$siteName.'&userId='.$username;		
 		$url=htmlspecialchars_decode($url);
 		//urlencode($url);
