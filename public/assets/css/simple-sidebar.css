@@ -25,7 +25,12 @@
 }
 
 #page-content-wrapper { width: 100%; }
-
+#page-content-wrapper1 { 
+	z-index: 1000;
+    position: fixed;
+    left: 90px;
+	width: 80%; 
+}
 
 /* Sidebar Styles */
 

@@ -378,7 +378,7 @@ app.filter('statusfilter', function(){
 		$('#mobno span').text(dataVal.overSpeedLimit);
 		$('#positiontime').text(vamoservice.statusTime(dataVal).tempcaption);
 		$('#regno span').text(vamoservice.statusTime(dataVal).temptime);
-		
+		$('#driverName').text(dataVal.driverName);
 		//var t0 = new Date(utcdateConvert(dataVal.date)).toString();
 		// var t1 = Date.parse(t0.toUTCString().replace('GMT', ''));
     	//var t2 = (2 * t0) - t1;

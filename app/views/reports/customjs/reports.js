@@ -127,20 +127,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
     	})
 	};
 
-	//address resolving in table td click
-	// $("#table_address").on("click", "td", function(){
-	// 	console.log(' get the value from the td '+$(this).text());
-	// });
-	
-	// $("#table_address").on("click", "td", function() {
- //     alert($( this ).text());
- //   });
-	// $scope.address_click = function(address, ind)
-	// {
-	// 	$scope.mainlist[ind]='arun';
-	// 	console.log(' address '+address.latitude)
-	// }
-    $scope.consoldate1 =  function()
+	$scope.consoldate1 =  function()
 	{
 		$('#preloader').show(); 
 		$('#preloader02').show();
@@ -189,7 +176,6 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 
     $scope.address_click = function(data, ind)
 	{
-		console.log(' address --->'+data+'---->'+ind)
 		var urlAddress 		=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
 		$http.get(urlAddress).success(function(response)
 		{
@@ -215,24 +201,6 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	}
 	
 	$scope.recursive   = function(location,index){
-		// if(location.length<=index){
-		// 	return;
-		// }else{
-			
-		// 	var lat		 =	location[index].latitude;
-		// 	var lon		 =	location[index].longitude;
-		// 	if(!lat || !lon && location[index].address != undefined)
-		// 		$scope.recursive(location, ++index);
-		// 	var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
-		// 	$http.get(tempurl).success(function(data){	
-		// 		$scope.locationname		=	data.results[0].formatted_address;
-		// 		$scope.mainlist[index]	=	data.results[0].formatted_address;
-		// 		var t = vamo_sysservice.geocodeToserver(lat, lon, data.results[0].formatted_address);
-		// 		setTimeout(function() {
-		// 			$scope.recursive(location, ++index);
-		// 		}, 3000);
-		// 	});
-		// }
 		var index3 = 0;
 		angular.forEach(location, function(value, primaryKey){
     		index3 = primaryKey;

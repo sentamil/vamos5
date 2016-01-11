@@ -66,6 +66,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
+                        <div style="position: absolute;top: 0px;left: 20%; z-index:999999;" id="testLoad">
+
+                         </div>
                         <div class="topContent" style="visibility: hidden">
                             <div class="row">
                                 <div class="col-md-2" align="center" id="totalvehicles">
@@ -224,6 +227,11 @@
                                                     <td id="regno"><span></span></td>
                                                     
                                                 </tr>
+                                                <tr>
+                                                    <td><span></span> Driver Name</td>
+                                                    <td id="driverName"><span></span></td>
+                                                    
+                                                </tr>
                                         </table>
                                     </div>
                                     <div id="rightAddress">
@@ -284,7 +292,9 @@
     <script src="assets/js/services.js"></script>
     <script src="assets/js/custom.js"></script>
     <script>
-
+    
+    //menu loading
+    $("#testLoad").load("../public/menu");
     var logo =document.location.host;
     var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
     $('#imagesrc').attr('src', imgName);
@@ -296,6 +306,8 @@
             },2000);
         });
     });
+
+    
 
     $(document).ready(function(){
       //  $('#minmaxMarker').click
