@@ -637,7 +637,9 @@ class BusinessController extends \BaseController {
 							{
 									$password='awesome';
 							}
+
 							$redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.' :email',$email,$mob.':password',$password,$mob.':OWN','admin');
+
 							$user = new User;
 
 							$user->name = $mob;
