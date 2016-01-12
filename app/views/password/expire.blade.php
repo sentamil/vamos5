@@ -7,5 +7,4 @@
 
 <p> Thanks,
 </br>
-  VAMO Systems
  </p>
