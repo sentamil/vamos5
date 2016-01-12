@@ -28,8 +28,8 @@ class RemindersController extends Controller {
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );		
 		if(($fcode!=null && $username!=null) || $username=='vamos')
 		{
-			try
-	   {
+		/*	try
+	   {*/
 			log::info("valid user ".$username);
 			$emailTemp=$redis->hget ( 'H_UserId_Cust_Map', $username . ':email');
 						
@@ -56,11 +56,11 @@ class RemindersController extends Controller {
 			   }
 				
 		return Redirect::to('login')->with('flash_notice','Please check '.$emailTemp.' mail for password details.');	
-	   }
+	  /* }
 	   catch(\Exception $e)
 	   {
 		return Redirect::to('login')->with('flash_notice','Invalid mail Id.'); 
-	   }
+	   }*/
 			
 			
 		}
