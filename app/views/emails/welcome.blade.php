@@ -6,5 +6,4 @@
 <p> {{$userId}}</p>
 
 <p> Thanks,
-  VAMO Systems
  </p>

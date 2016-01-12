@@ -5,8 +5,9 @@
   {{ trans(Session::get('reason')) }}
 @endif
 
-  <p>{{ Form::label('email', 'email') }}
-  {{ Form::text('email') }}</p>
+  <p>{{ Form::label('userId', 'UserId') }}
+  {{ Form::label('userId',$userId) }}
+    {{ Form::hidden('userId1',$userId) }}</p>
  
   <p>{{ Form::label('password', 'Password') }}
   {{ Form::password('password') }}</p>
