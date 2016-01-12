@@ -8,9 +8,10 @@
     <meta name="author" content="Satheesh">
     <title>GPS</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <link href="assets/css/jVanilla.css" rel="stylesheet">
     <link href="assets/css/site.css" rel="stylesheet">
-    <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+    <!-- <link href="assets/css/jVanilla.css" rel="stylesheet"> -->
+    
+    <!-- <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet"> -->
     <style type="text/css">
         #map_canvas{
             width:100%;
@@ -125,6 +126,7 @@
 
     //menu loading
     $("#testLoad").load("../public/menu");
+    var logo =document.location.host;
     var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
     $('#imagesrc').attr('src', imgName);
     </script>

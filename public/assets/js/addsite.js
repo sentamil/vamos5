@@ -98,17 +98,32 @@ app.controller('mainCtrl',function($scope, $http){
 
     var url_site          = 'http://'+getIP+'/vamo/public/viewSite';
     $http.get(url_site).success(function(response){
+      
+     
       mergeList       = [];
       for(var i = 0; response.siteParent.length>i; i++)
       {
-        for(var j = 0; response.siteParent[i].site.length>j; j++)
-        {
-          mergeList.push({'siteName': response.siteParent[i].site[j].siteName, 'siteType' : response.siteParent[i].site[j].siteType, 'latLng' : response.siteParent[i].site[j].latLng, 'orgId' : response.siteParent[i].site[j].orgId})
-        }
+        console.log(i)
         dropDown.push(response.orgIds[i])
+        $scope.dropDownList = dropDown;
+        if(response.siteParent)
+        {
+          try 
+          {
+            for(var j = 0; response.siteParent[i].site.length>j; j++)
+            {
+              mergeList.push({'siteName': response.siteParent[i].site[j].siteName, 'siteType' : response.siteParent[i].site[j].siteType, 'latLng' : response.siteParent[i].site[j].latLng, 'orgId' : response.siteParent[i].site[j].orgId})
+            } 
+          }
+          catch(err) 
+          {
+              mergeList =null;
+          }
+          
+        }
       }
-      $scope.orgIdlist    = mergeList;
-      $scope.dropDownList = dropDown;
+       $scope.orgIdlist    = mergeList;
+      
     });
   }
 
