@@ -60,13 +60,6 @@ Route::get('/sites', function() {
 });
 
 
-Route::get('/sites', function() {
-    // if (!Auth::check()) {
-    //     return Redirect::to('login');
-    // }
-    return Redirect::to('AddSite');
-});
-
 
 
 View::addExtension('html', 'php');
