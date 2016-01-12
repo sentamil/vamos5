@@ -44,13 +44,21 @@ Route::get('/settings', function() {
     return View::make('maps.settings');
 });
 
-
-Route::get('/sites', function() {
+View::addExtension('html', 'php');
+Route::get('/menu', function() {
     // if (!Auth::check()) {
     //     return Redirect::to('login');
     // }
-    return Redirect::to('AddSite');
+    return View::make('maps.menu.menu');
 });
+
+Route::get('/sites', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.siteDetails');
+});
+
 
 
 
@@ -117,6 +125,16 @@ Route::get('/getVehicleLocations', function() {
     Log::info('get Vehicle Locations');
     return View::make('vls.getVehicleLocations');
 });
+
+Route::get('/getActionReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get Vehicle Locations');
+    return View::make('vls.getActionReport');
+});
+
+
 Route::get('/getOverallVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -231,6 +249,15 @@ Route::get('/getVehicleHistory', function() {
     return View::make('vls.getVehicleHistory');
 });
 
+Route::get('/getActionReport', function() {     
+    if (!Auth::check()) {       
+        return Redirect::to('login');       
+    }       
+    Log::info('get Vehicle Locations');     
+    return View::make('vls.getActionReport');       
+});     
+
+
 Route::get('/admin', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -249,8 +276,12 @@ Route::get('register', function() {
     return View::make('pages.register');
 });
 
-Route::get('example', function() {
-    return View::make('example');
+Route::get('register', function() {
+    return View::make('pages.register');
+});
+
+Route::get('viewSite', function() {
+    return View::make('vls.viewSite');
 });
 
 // route to show the login form
