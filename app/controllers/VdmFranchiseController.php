@@ -82,6 +82,7 @@ class VdmFranchiseController extends \BaseController {
 				'email1' => 'required|email',
 				'email2' => 'email',
 				'userId' => 'required', 
+				'website' => 'required', 
 				'otherDetails' => 'required' 
 		);
 		$validator = Validator::make ( Input::all (), $rules );
@@ -111,6 +112,7 @@ class VdmFranchiseController extends \BaseController {
 			$landline = Input::get ( 'landline' );
 			$mobileNo1 = Input::get ( 'mobileNo1' );
 			$mobileNo2 = Input::get ( 'mobileNo2' );
+			$website = Input::get ( 'website' );
 			$email1 = Input::get ( 'email1' );
 			$email2 = Input::get ( 'email2' );
 			$userId = Input::get ('userId');
@@ -144,6 +146,7 @@ class VdmFranchiseController extends \BaseController {
 					'otherDetails' => $otherDetails,
 					'numberofLicence' => $numberofLicence,
 					'availableLincence'=>$numberofLicence,
+					'website'=>$website,
 					
 					
 					
@@ -219,12 +222,8 @@ class VdmFranchiseController extends \BaseController {
 		/*$franDetails = $redis->hmget ( 'H_Franchise', $fcode.':fname',$fcode.':descrption:',
 				$fcode.':landline',$fcode.':mobileNo1',$fcode.':mobileNo2',
 				$fcode.':email1',$fcode.':email2',$fcode.':userId');*/
-			 var_dump($fcode);	
-				$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
-			 var_dump($franDetails_json);	
+				$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);	
 				$franDetails=json_decode($franDetails_json,true);
-		
-	 var_dump($franDetails);	
 		$franchiseDetails = implode ( '<br/>', $franDetails );
 		
 		return View::make ( 'vdm.franchise.show', array (
@@ -299,6 +298,10 @@ class VdmFranchiseController extends \BaseController {
 			$availableLincence=$franchiseDetails['availableLincence'];
 		else
 			$availableLincence='0';
+		if(isset($franchiseDetails['website'])==1)
+			$website=$franchiseDetails['website'];
+		else
+			$website='';
 		Session::put('available',$availableLincence);
 		Session::put('numberofLicence',$numberofLicence);
 		return View::make ( 'vdm.franchise.edit', array (
@@ -314,7 +317,8 @@ class VdmFranchiseController extends \BaseController {
 		->with('fullAddress',$fullAddress)
 		->with('otherDetails',$otherDetails)
 		->with('numberofLicence',$numberofLicence)
-		->with('availableLincence',$availableLincence);
+		->with('availableLincence',$availableLincence)
+		->with('website',$website);
 	
 
 	}
@@ -363,6 +367,7 @@ class VdmFranchiseController extends \BaseController {
 
 			$otherDetails = Input::get ('otherDetails');
 			$numberofLicence = Input::get ('addLicence');	
+			$website= Input::get ('website');
 			$redis = Redis::connection ();
 				
 				if($numberofLicence==null)
@@ -417,6 +422,7 @@ class VdmFranchiseController extends \BaseController {
 					'otherDetails' => $otherDetails,
 					'numberofLicence' => $numberofLicence,
 					'availableLincence'=>$availableLincence,
+					'website'=>$website,
 					
 					
 					
