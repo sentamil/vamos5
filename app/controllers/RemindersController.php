@@ -132,7 +132,7 @@ class RemindersController extends Controller {
 		{
 			return Redirect::back()->withErrors('Password not match');
 		}
-		$id = DB::table('users')->where('name', $userId)->pluck('id');
+		$id = DB::table('users')->where('username', $userId)->pluck('id');
 		DB::table('users')
             ->where('id', $id)
             ->update(array('password' => Hash::make($password)));
