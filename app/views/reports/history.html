@@ -394,7 +394,7 @@ background-color: #ffffff;
 			   			 	 			<td>{{user.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>
 											<p ng-if="user.duration!=null">{{msToTime(user.duration)}}</p>
-											<p ng-if="user.duration">--</p>
+											<p ng-if="user.duration==null">--</p>
 										</td>
 			   			 	 			<td colspan="2" ng-click="address_click(user, $index)">
 			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
