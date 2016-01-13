@@ -392,7 +392,10 @@ background-color: #ffffff;
 			   			 	 	<tbody>
 			   			 	 		<tr ng-repeat="user in eventReportData" class="active" style="text-align:center">
 			   			 	 			<td>{{user.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-										<td>{{msToTime(user.duration)}}</td>
+										<td>
+											<p ng-if="user.duration!=null">{{msToTime(user.duration)}}</p>
+											<p ng-if="user.duration">--</p>
+										</td>
 			   			 	 			<td colspan="2" ng-click="address_click(user, $index)">
 			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
 			   			 	 				<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && addressEvent[$index]!=null">{{addressEvent[$index]}}</p>
