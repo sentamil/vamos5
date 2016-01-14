@@ -26,7 +26,10 @@
 		{{ Form::label('email', 'EMail :') }}
 		{{ Form::text('email', $email, array('class' => 'form-control')) }}
 	</div>
-
+<div class="form-group">
+		{{ Form::label('website', 'EMail :') }}
+		{{ Form::text('website', $website, array('class' => 'form-control')) }}
+	</div>
 		 
 		</br/>
 		</br>

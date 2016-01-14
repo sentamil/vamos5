@@ -25,34 +25,48 @@ class RemindersController extends Controller {
 		$redis = Redis::connection ();
 		$username=Input::get ('userId');
 		log::info(" user ");
-		$fcode = $redis->hmget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-		if($fcode!=null)
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );		
+		if(($fcode!=null && $username!=null) || $username=='vamos')
 		{
+			try
+	   {
 			log::info("valid user ".$username);
 			$emailTemp=$redis->hget ( 'H_UserId_Cust_Map', $username . ':email');
-			$email=explode(",", $emailTemp);			
-			$response = Password::remind($email, function($message)
-			{
-				$message->subject('Password Reminder');
+						
+				Session::put('email',$emailTemp);
+				$ipaddress = $redis->get('ipaddress');
+				$temp=$username.$fcode.time().$ipaddress;				
+				$hashurl=Hash::make($temp);
+				$hashurl=str_replace("/","a",$hashurl);
+				log::info($emailTemp."valid user ".$username.' token '.$temp." hash url ".$hashurl);
+				$url='http://' .$ipaddress . '/vamo/public/password/reset/'.$hashurl;
+					$response=Mail::send('emails.reset', array('url'=>$url), function($message){
+				$message->to(Session::pull ( 'email' ))->subject('PASSWORD RESET!');
 			});
-			
-			switch ($response)
-			{
-				case Password::INVALID_USER:
-					log::info($emailTemp." invalid user ".Lang::get($response));		
-					return Redirect::back()->with('error', Lang::get($response));
-
-				case Password::REMINDER_SENT:
-					log::info($emailTemp." valid user ".$username);		
-					log::info(" token user ".Password::token);
-					return Redirect::to('login')->with('flash_notice','Please check your mail for password details.');
-
-					//return Redirect::back()->with('status', Lang::get($response));
+			$redis->set($hashurl, $username);
+			$redis->expire($hashurl, 3600);
+			try{
+				$emailT=explode('@',$emailTemp);
+				$mailId= substr($emailT[0], 0, -3).'***';
+				$emailTemp=$mailId.'@'.$emailT[1];
 			}
+			catch(\Exception $e)
+			   {
+				
+			   }
+				
+		return Redirect::to('login')->with('flash_notice','Please check '.$emailTemp.' mail for password details.');	
+	   }
+	   catch(\Exception $e)
+	   {
+		return Redirect::to('login')->with('flash_notice','Invalid mail Id.'); 
+	   }
+			
+			
 		}
 		else
 		{
-			log::info("invalid user please check the userId");
+			return Redirect::to('login')->with('flash_notice','invalid user please check the userId.');
 		}
 		
 	}
@@ -86,40 +100,48 @@ class RemindersController extends Controller {
 	
 	public function reset($token)
 	{
-		
+		$redis = Redis::connection ();
+		$username=$redis->get($token);
+		if($username!=null)
+		{
+			return View::make('password.reset')->with('token', $token)->with('userId', $username);
+		}
+		else{
+			return View::make('password.expire');
+		}
 	
-		return View::make('password.reset')->with('token', $token);
+		
 	}
 	
 	
 	public function update()
 	{
 		//$credentials = array('email' => Input::get('email'));
-		log::info(" update");
-		$credentials = Input::only(
-				'userId', 'password', 'password_confirmation', 'token'
-		);
-		
-		$response = Password::reset($credentials, function($user, $password)
+		log::info(" update" );
+		$redis = Redis::connection ();
+		$userId=Input::get('userId1');
+		$token=Input::get('token');
+		$password=Input::get('password');
+		$passwordCon=Input::get('password_confirmation');
+		log::info(" user name ". $userId.' token '.$token.'password 1 '.$password.' password conf '.$passwordCon);
+		if($password==null || $passwordCon==null)
 		{
-			$user->password = Hash::make($password);
-	
-			$user->save();
-			log::info(" saved");
-			return Redirect::to('login')->with('message', 'Your password has been reset');
-		});
-		switch ($response)
-		{
-			case Password::INVALID_PASSWORD:
-				
-			case Password::INVALID_TOKEN:
-			case Password::INVALID_USER:
-				log::info(" invalid");
-				return Redirect::back()->withErrors('Invalid User or Password');
-		
-			case Password::PASSWORD_RESET:
-				return Redirect::to('login')->with('flash', 'Your password has been reset');
+			return Redirect::back()->withErrors('Enter Both password');
 		}
+		else if($password!=$passwordCon)
+		{
+			return Redirect::back()->withErrors('Password not match');
+		}
+		$id = DB::table('users')->where('username', $userId)->pluck('id');
+		DB::table('users')
+            ->where('id', $id)
+            ->update(array('password' => Hash::make($password)));
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':password',$password);
+			$redis->del($token);
+	return Redirect::to('login')->with('flash_notice', 'Your password has been reset');	
+			
+			
+		
 	}
 
 	/**

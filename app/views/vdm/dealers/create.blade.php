@@ -49,7 +49,15 @@
 									{{ Form::text('password', Input::old('password'), array('class' => 'form-control')) }}
 								</div>
 							</div>
-							  
+							  <br />
+							 <div class="row">
+								<div class="col-md-3">
+									{{ Form::label('website', 'website') }}	
+								</div>
+								<div class="col-md-6">
+									{{ Form::text('website', Input::old('website'), array('class' => 'form-control')) }}
+								</div>
+							</div>
 								</br/>
 								</br/>
 							<div style="text-align: right">

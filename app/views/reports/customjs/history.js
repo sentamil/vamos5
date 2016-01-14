@@ -5,15 +5,17 @@ var app = angular.module('hist',['ui.bootstrap']);
 app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	//$scope.getLocation1(13.0401945,80.2153889);
 	
-	$scope.overallEnable= true;
-	$scope.oaddress	    =	[];
-	$scope.maddress	    =	[];
-	$scope.maddress1    =	[];
-	$scope.saddress	    =	[];
-	$scope.addressIdle  =   [];
-	$scope.saddressStop =   [];
-	$scope.location	    =	[];
-	$scope.interval	    =	getParameterByName('interval')?getParameterByName('interval'):5;
+	$scope.overallEnable	= true;
+	$scope.oaddress	    	=	[];
+	$scope.maddress	    	=	[];
+	$scope.maddress1    	=	[];
+	$scope.saddress	    	=	[];
+	$scope.addressIdle  	=   [];
+	$scope.addressEvent  	=   [];
+	$scope.saddressStop 	=   [];
+	$scope.eventReportData 	= 	[];
+	$scope.location	    	=	[];
+	$scope.interval	    	=	getParameterByName('interval')?getParameterByName('interval'):1;
 	$scope.sort = {       
                 sortingOrder : 'id',
                 reverse : false
@@ -63,36 +65,55 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		  return strTime;
 	}
 
-	//method for event report variable
-    
 
-	//for individual method for event report service call
-	$scope.eventReportData 	= 		[];
-	$scope.eventCall 		= 		function()
+	function as(ff)
+	{
+		$scope.buttonClick = ff;
+		serviceCallEvent();
+	}
+
+	function serviceCallEvent()
     {
-    	var stoppage 		= 	document.getElementById ("stop").checked;
+    	var stoppage 		= 	document.getElementById ("stop").checked
     	var idleEvent 		= 	document.getElementById ("idle").checked;
     	var notReachable 	= 	document.getElementById ("notreach").checked;
     	var overspeedEvent 	= 	document.getElementById ("overspeed").checked;
-    	var locationEvent 	= 	document.getElementById ("location").checked;
-    	// var siteEvent 		= 	document.getElementById ("stop").checked;
-    	//$scope.stoppage 		= 		true;
-	    $scope.stopMints 		= 		10;
-	    //$scope.idleEvent 		=		true;
-	    $scope.idleMints 		= 		10;
-	    //$scope.notReachable 	= 		true;
-	    $scope.notReachMints 	=  		10;
-	    //$scope.overspeedEvent 	= 		true;
-	    $scope.speedEvent 		= 		20;
-	    //$scope.locationEvent 	= 		false;
-	    //$scope.siteEvent 		= 		false;
-    	var urlEvent 	= "http://"+getIP+"/vamo/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+stoppage+"&stopMints="+$scope.stopMints+"&idle="+idleEvent+"&idleMints="+$scope.idleMints+"&notReachable="+notReachable+"&notReachableMints="+$scope.notReachMints+"&overspeed="+overspeedEvent+"&speed="+$scope.speedEvent;
-    	console.log(' inside the method '+ urlEvent)
-    	$http.get(urlEvent).success(function(response){
-    		console.log(' data '+response)
-    		$scope.eventReportData 		=	response;
+    	var stopMints 		= 	document.getElementById ("stop1").value;
+    	var idleMints 		= 	document.getElementById ("idle1").value;
+    	var notReachMints 	= 	document.getElementById ("notreach1").value;
+    	var speedEvent 		= 	document.getElementById ("overspeed1").value
+    	var locEvent 		=   document.getElementById ("location").checked;
+    	var siteEvent 		= 	document.getElementById ("site").checked;
+    	var urlEvent 	= "http://"+getIP+"/vamo/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+stoppage+"&stopMints="+stopMints+"&idle="+idleEvent+"&idleMints="+idleMints+"&notReachable="+notReachable+"&notReachableMints="+notReachMints+"&overspeed="+overspeedEvent+"&speed="+speedEvent+"&location="+locEvent+"&site="+siteEvent;
+    	//console.log(' inside the method '+ urlEvent)
+
+    	$http.get(urlEvent).success(function(eventRes){
+    		$scope.eventReportData 		=	eventRes;
+    		if($scope.buttonClick==true)
+    		{
+    			$scope.alertMe_click($scope.downloadid);
+				
+    		}
+
     	})
-    	return $scope.eventReportData;
+    	
+    }
+
+	//for individual method for event report service call
+	
+	$scope.eventCall 		= 		function()
+    {
+    	document.getElementById ("stop").checked 				= true;
+    	document.getElementById ("idle").checked 				= true;
+    	document.getElementById ("notreach").checked 			= true;
+    	document.getElementById ("overspeed").checked			= true;
+    	document.getElementById ("stop1").defaultValue 			= 10;
+    	document.getElementById ("idle1").defaultValue 			= 10;
+    	document.getElementById ("notreach1").defaultValue 		= 10;
+    	document.getElementById ("overspeed1").defaultValue		= 10;
+    	//buttonClick = false;
+    	serviceCallEvent();
+    	// return $scope.eventReportData;
     }
     $scope.$watch($scope.repId, function() {
     		$scope.id							=	$scope.vvid
@@ -190,6 +211,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    				break;
    			case 'idlereport':
    				$scope.recursiveIdle($scope.idlereport,0);
+   				break;
+   			case 'eventReport':
+   				$scope.recursiveEvent($scope.eventReportData,0);
    				break;
    			default:
    				break;
@@ -335,6 +359,26 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	    	}
 	  	};
 	}());
+	var delayed4 = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
 
 	$scope.address_click = function(data, ind)
 	{
@@ -379,7 +423,13 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			var t = vamo_sysservice.geocodeToserver(latIdle,lonIdle,data.results[0].formatted_address);
 		})
 	};
-
+	function google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent) {
+		$http.get(tempurlEvent).success(function(data){
+			$scope.addressEvent[index4] = data.results[0].formatted_address;
+			console.log(' address '+$scope.addressEvent[index4])
+			var t = vamo_sysservice.geocodeToserver(latEvent,lonEvent,data.results[0].formatted_address);
+		})
+	};
 	$scope.recursiveIdle   = function(locationIdle,indexIdle){
 		var index3 = 0;
 		angular.forEach(locationIdle, function(value, primaryKey){
@@ -399,6 +449,25 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     	})
 	}
 
+	$scope.recursiveEvent 	= 	function(locationEvent, indexEvent)
+	{
+		var index4 = 0;
+		angular.forEach(locationEvent, function(value ,primaryKey){
+			console.log(' primaryKey '+primaryKey)
+			index4 = primaryKey;
+			if(locationEvent[index4].address == undefined)
+			{
+				var latEvent		 =	locationEvent[index4].latitude;
+			 	var lonEvent		 =	locationEvent[index4].longitude;
+				var tempurlEvent =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
+				delayed4(2000, function (index4) {
+				      return function () {
+				        google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent);
+				      };
+				    }(index4));
+			}
+		})
+	}
 	$scope.getParkedCorrectHours	=	function(data) {
 			return $scope.msToTime(data);
    	}
@@ -500,6 +569,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			case 'eventReport':
 	   			$scope.downloadid    =   'eventReport';
 	   			$scope.overallEnable = 	true;
+	   			$scope.recursiveEvent($scope.eventReportData,0);
 	   			break;
 			default:
 				break;
@@ -530,6 +600,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	    return days+"d : "+hours+"h : "+minutes+"m : "+sec+"s";
     }
     //submit button click function
+    $scope.buttonClick;
     $scope.plotHist			=	function() {
     	$scope.loading		=	true;
     	var valueas 		=   $('#txtv').val();
@@ -537,9 +608,15 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		if($scope.downloadid == 'eventReport')
 		{
 
-			var eventUrl 	= "http://"+getIP+"/vamo/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.stoppage+"&stopMints="+$scope.stopMints+"&idle="+$scope.idleEvent+"&idleMints="+$scope.idleMints+"&notReachable="+$scope.notReachable+"&notReachableMints="+$scope.notReachMints+"&overspeed="+$scope.overspeedEvent+"&speed="+$scope.speedEvent+"&location="+$scope.locationEvent+"&site="+$scope.siteEvent;
-			console.log(' inside the if '+eventUrl)
+			// var eventUrl 	= "http://"+getIP+"/vamo/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.stoppage+"&stopMints="+$scope.stopMints+"&idle="+$scope.idleEvent+"&idleMints="+$scope.idleMints+"&notReachable="+$scope.notReachable+"&notReachableMints="+$scope.notReachMints+"&overspeed="+$scope.overspeedEvent+"&speed="+$scope.speedEvent+"&location="+$scope.locationEvent+"&site="+$scope.siteEvent;
+			// console.log(' inside the if '+eventUrl)
+			$scope.buttonClick 	= true;
+			$scope.eventReportData=[];
 			$scope.loading	=	false;
+			as($scope.buttonClick);
+			
+			//console.log(' value '+$scope.eventReportData.length)
+			
 		} 
 		else
 		{
@@ -551,6 +628,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			});
 			$scope.loading	=	false;
 		}
+		console.log(' true or false  '+$scope.buttonClick)
      }
      
    
@@ -586,7 +664,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
  	function dateStringFormat(d) {
  		var s 		= 		d.split(' ');
  		var t 		= 		s[0].split('-');
-		var ds 	= 		(t[2].concat('-'+t[1]).concat('-'+t[0])).concat(' '+s[1]);
+		var ds 		= 		(t[2].concat('-'+t[1]).concat('-'+t[0])).concat(' '+s[1]);
 		return new Date(ds).getTime();
  	}
  	
