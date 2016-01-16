@@ -34,7 +34,8 @@ class RemindersController extends Controller {
 			$emailTemp=$redis->hget ( 'H_UserId_Cust_Map', $username . ':email');
 						
 				Session::put('email',$emailTemp);
-				$ipaddress = $redis->get('ipaddress');
+			//	$ipaddress = $redis->get('ipaddress');
+			$ipaddress = '188.166.244.126';
 				$temp=$username.$fcode.time().$ipaddress;				
 				$hashurl=Hash::make($temp);
 				$hashurl=str_replace("/","a",$hashurl);
