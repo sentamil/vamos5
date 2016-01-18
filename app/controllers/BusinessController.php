@@ -214,6 +214,7 @@ class BusinessController extends \BaseController {
 			for($i =1;$i<=Session::get('numberofdevice');$i++)
 			{
 				$deviceid = Input::get ( 'deviceid'.$i);
+				$deviceid=trim($deviceid," ");
 				log::info( '--------inside deviceid in  ::----------'.$deviceid);
 				$deviceidtype=Input::get('deviceidtype'.$i);
 				log::info( '--------inside deviceidtype in  ::----------'.$deviceidtype);
@@ -318,6 +319,10 @@ class BusinessController extends \BaseController {
 			if($type1=='existing')
 			{
 				$userId      = Input::get('userIdtemp');
+				if($userId==null)
+				{
+					return Redirect::to ( 'Business' )->withErrors ( 'Invalid user Id' );
+				}
 				
 				
 			}

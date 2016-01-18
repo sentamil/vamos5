@@ -178,7 +178,7 @@ app.filter('statusfilter', function(){
 		}
 		var tempurl='http://'+globalIP+'/vamo/public/getIndividualDriverPerformance?groupId='+groupname+'&vehicleId='+vehicleno+'&month='+$scope.month+'&year='+$scope.year;
 		$http.get(tempurl).success(function(data){
-		console.log(tempurl)
+		//console.log(tempurl)
 		for(var i=0; i<data.length; i++)
 		{
 			totalsuddenBreak.push(data[i].weightedBreakAnalysis);
@@ -187,7 +187,7 @@ app.filter('statusfilter', function(){
 			sparkAlarm.push(data[i].weightedShockAlarmAnalysis);
 			kiloMeter.push(data[i].distance);
 			dataTableList.push({'month': months[i],'data': data[i]});
-			console.log('value----->'+data[i].weightedBreakAnalysis)
+			//console.log('value----->'+data[i].weightedBreakAnalysis)
 		}
 		$scope.tableValue=dataTableList;
 		$('#container').highcharts({
@@ -299,7 +299,7 @@ app.filter('statusfilter', function(){
 		}
 		else
 		{
-			console.log('    group false   ')
+			//console.log('    group false   ')
 			$scope.genericFunction1($scope.vSingle, $scope.gSingle, $scope.iSingle);
 		// 	$scope.vSingle		=	vehicleno;
 		// $scope.gSingle		=	groupname;
@@ -559,7 +559,7 @@ app.filter('statusfilter', function(){
 	$scope.excellent='';
 	$scope.toggleModal1 = function(user) 
 	{
-		console.log('modal two popup-------->'+user.historySpeedAnalysis)
+		//console.log('modal two popup-------->'+user.historySpeedAnalysis)
 		$scope.excellentCount=0;
 		$scope.excellentSpeed=0;
 		$scope.bestCount=0;
@@ -643,7 +643,7 @@ app.filter('statusfilter', function(){
 		$scope.aggressive=[];
 		$scope.aggressiveCount=0;
 		$scope.harsh=[];
-		console.log(1)
+		//console.log(1)
 		$scope.id=$scope.detailedView.data.vehicleId;
 		$scope.harshCount=0;
 		$scope.normal=0;
@@ -652,7 +652,7 @@ app.filter('statusfilter', function(){
 		angular.forEach(obj, function(value, key) 
 		{	
 			splitting=value.split(',');
-			console.log('inthe for each---1--->'+splitting[0])
+			//console.log('inthe for each---1--->'+splitting[0])
 			latitude = splitting[0]
 			longutide = splitting[1]
 			speed=splitting[3]

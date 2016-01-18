@@ -1113,11 +1113,11 @@ class VdmVehicleController extends \BaseController {
 				return View::make ( 'vdm.vehicles.migration', array (
 				'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 			}
-			else if($vehicleId==Session::get('vehicleId') && $deviceId!=Session::get('deviceId'))
+			else if($vehicleId==Session::get('vehicleId') && $deviceId!==Session::get('deviceId'))
 			{
 				log::info('-----------inside same vehicleid and different device Id ');
 				$deviceIdTemp = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
-				if($deviceIdTemp!=null)
+				if($deviceIdTemp!==null)
 				{
 					Session::flash ( 'message', 'Device Id Already Present ' .'!' );
 					$deviceId= Session::get('deviceId');
@@ -1126,11 +1126,11 @@ class VdmVehicleController extends \BaseController {
 					'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 				}
 			}
-			else if($vehicleId!=Session::get('vehicleId') && $deviceId==Session::get('deviceId'))
+			else if($vehicleId!==Session::get('vehicleId') && $deviceId==Session::get('deviceId'))
 			{
 				log::info('-----------inside different vehicleid and same device Id');
 				$vehicleIdTemp = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
-				if($vehicleIdTemp!=null)
+				if($vehicleIdTemp!==null)
 				{
 					Session::flash ( 'message', 'Vehicle Id Already Present ' .'!' );
 					$deviceId= Session::get('deviceId');
@@ -1139,11 +1139,11 @@ class VdmVehicleController extends \BaseController {
 					'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 				}
 			}
-			else if($vehicleId!=Session::get('vehicleId') && $deviceId!=Session::get('deviceId'))
+			else if($vehicleId!==Session::get('vehicleId') && $deviceId!==Session::get('deviceId'))
 			{
 				log::info('-----------inside different vehicleid and different device Id ');
 				$vehicleIdTemp = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
-				if($vehicleIdTemp!=null)
+				if($vehicleIdTemp!==null)
 				{
 					Session::flash ( 'message', 'Vehicle Id Already Present ' .'!' );
 					$deviceId= Session::get('deviceId');
@@ -1152,7 +1152,7 @@ class VdmVehicleController extends \BaseController {
 					'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 				}
 				$deviceIdTemp = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
-				if($deviceIdTemp!=null)
+				if($deviceIdTemp!==null)
 				{
 					Session::flash ( 'message', 'Device Id Already Present ' . '!' );
 					$deviceId= Session::get('deviceId');
@@ -1160,7 +1160,7 @@ class VdmVehicleController extends \BaseController {
 					return View::make ( 'vdm.vehicles.migration', array (
 					'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 				}
-				if($deviceIdTemp!=null && $vehicleIdTemp!=null)
+				if($deviceIdTemp!==null && $vehicleIdTemp!==null)
 				{
 					Session::flash ( 'message', 'Device Id and Vehicle Id Already Present ' . '!' );
 					$deviceId= Session::get('deviceId');
@@ -1231,13 +1231,20 @@ class VdmVehicleController extends \BaseController {
 			{
 				
 			}
-			log::info('org---->'.$orgId);
+			
 			unset($refDataJson1['deviceId']);
 			unset($refDataJson1['vehicleId']);
 			$refDataJson1= array_add($refDataJson1, 'deviceId',$deviceId);
 			$refDataJson1= array_add($refDataJson1, 'vehicleId',$vehicleId);
 			$redis->hdel ( 'H_RefData_' . $fcode, Session::get('vehicleId') );
-			
+			$expiredPeriod=$redis->hget('H_Expire_'.$fcode,Session::get('expiredPeriod'));
+			log::info(' expire---->'.Session::get('expiredPeriod'));
+			if(!$expiredPeriod==null)
+			{
+				log::info('inside expire---->'.$expiredPeriod);
+				$expiredPeriod=str_replace(Session::get('vehicleId'), $vehicleId, $expiredPeriod);
+				$redis->hset('H_Expire_'.$fcode,Session::get('expiredPeriod'),$expiredPeriod);
+			}
 			$refDataJson1 = json_encode ( $refDataJson1 );
 			
 			$redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson1 );
@@ -1537,8 +1544,8 @@ log::info( '--------new name----------' .$user);
 			 foreach($rowId1 as $org1 => $rowId2) {
 				  if ($t==1) 
 				  {
-					  $address = array_add($address, $org,$rowId2);
-						log::info( ' 3 :' . $t .$rowId2);
+					  $address = array_add($address, $org,$rowId2.' '.$rowId1['time']);
+						log::info( $org.' 3 :' . $t .$rowId2.$rowId1['time']);
 						
 				   }
 				 
@@ -1560,7 +1567,7 @@ log::info( '--------new name----------' .$user);
 	
 	public function migration($id)
 	{
-		try{
+		
 		Log::info('.........migration........');
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
@@ -1603,6 +1610,10 @@ log::info( '--------new name----------' .$user);
        
        $orgId =isset($refDataFromDB['orgId'])?$refDataFromDB['orgId']:'NotAvailabe';
        Log::info(' orgId = ' . $orgId);
+	    $expiredPeriod =isset($refDataFromDB['expiredPeriod'])?$refDataFromDB['expiredPeriod']:'NotAvailabe';
+	   $expiredPeriod=str_replace(' ', '', $expiredPeriod);
+	   log::info( '------expiredPeriod ---------- '.$expiredPeriod);
+		Session::put('expiredPeriod',$expiredPeriod);
        $refData = array_add($refData, 'orgId', $orgId);
        $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
        $refData= array_add($refData,'parkingAlert',$parkingAlert);
@@ -1624,18 +1635,13 @@ log::info( '--------new name----------' .$user);
         $orgList=null;
 		  $orgList=array_add($orgList,'Default','Default');
         foreach ( $tmpOrgList as $org ) {
-                $orgList = array_add($orgList,$org,$org);
-                
+                $orgList = array_add($orgList,$org,$org);                
             }
 	 $deviceId=$refData['deviceId'];
 	//  var_dump($refData);
 		return View::make ( 'vdm.vehicles.migration', array (
 				'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
-				}
-	catch(\Exception $e)
-	{
-	return Redirect::to ( 'vdmVehicles' );
-	}
+				
         
     }
 
@@ -1786,8 +1792,8 @@ log::info( '--------new name----------' .$user);
 			 foreach($rowId1 as $org1 => $rowId2) {
 				  if ($t==1) 
 				  {
-					  $address = array_add($address, $org,$rowId2);
-						log::info( ' 3 :' . $t .$rowId2);
+					  $address = array_add($address, $org,$rowId2.' '.$rowId1['time']);
+						log::info( $org.' 3 :' . $t .$rowId2);
 						
 				   }
 				 
@@ -1994,8 +2000,8 @@ log::info( '--------new name----------' .$user);
 		 foreach($rowId1 as $org1 => $rowId2) {
 			  if ($t==1) 
 			  {
-				  $address = array_add($address, $org,$rowId2);
-					log::info( ' 3 :' . $t .$rowId2);
+				  $address = array_add($address, $org,$rowId2.' '.$rowId1['time']);
+					log::info( $org.' a3 :' . $t .$rowId2.$rowId1['time']);
 					
 			  }
 			 
