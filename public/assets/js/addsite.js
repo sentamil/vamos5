@@ -49,7 +49,7 @@ app.controller('mainCtrl',function($scope, $http){
   var oldName         = '';
   $scope.url          = 'http://'+getIP+'/vamo/public/viewSite';
   var myOptions		    = {
-          								zoom: 13,
+          								zoom: 7,
           								center: new google.maps.LatLng(12.993803, 80.193075),
           								mapTypeId: google.maps.MapTypeId.ROADMAP
           						   };
@@ -101,28 +101,31 @@ app.controller('mainCtrl',function($scope, $http){
       
      
       mergeList       = [];
+      dropDown=[];
+      $scope.dropDownList=[];
       for(var i = 0; response.siteParent.length>i; i++)
       {
-        console.log(i)
+        //console.log(i)
         dropDown.push(response.orgIds[i])
         $scope.dropDownList = dropDown;
-        if(response.siteParent)
+        if(response.siteParent[i]!=undefined)
         {
-          try 
-          {
-            for(var j = 0; response.siteParent[i].site.length>j; j++)
-            {
-              mergeList.push({'siteName': response.siteParent[i].site[j].siteName, 'siteType' : response.siteParent[i].site[j].siteType, 'latLng' : response.siteParent[i].site[j].latLng, 'orgId' : response.siteParent[i].site[j].orgId})
-            } 
-          }
-          catch(err) 
-          {
-              mergeList =null;
-          }
-          
+          //console.log(response.siteParent)
+          // try 
+          // {
+            // if()
+            //   {
+                for(var j = 0; response.siteParent[i].site.length>j; j++)
+                {
+                  mergeList.push({'siteName': response.siteParent[i].site[j].siteName, 'siteType' : response.siteParent[i].site[j].siteType, 'latLng' : response.siteParent[i].site[j].latLng, 'orgId' : response.siteParent[i].site[j].orgId})
+                }
+              // } 
+          // }
+          // catch(err) 
+          // {mergeList =null;}
         }
       }
-       $scope.orgIdlist    = mergeList;
+      $scope.orgIdlist    = mergeList;
       
     });
   }
@@ -176,6 +179,10 @@ app.controller('mainCtrl',function($scope, $http){
     latlanList    = [];
     seclat        = '';
     seclan        = '';
+    // $scope.textValue    = '';
+    // $scope.dropValue    = '';
+    // $scope.orgID        = '';
+
  	}
 
   
@@ -187,6 +194,7 @@ app.controller('mainCtrl',function($scope, $http){
       $scope.dropValue    = user.siteType;
       $scope.orgID        = user.orgId;
       var split           = user.latLng.split(",");
+
       drawlineJoin(split);
   }
 
@@ -203,7 +211,10 @@ app.controller('mainCtrl',function($scope, $http){
           pointToPoint(sp[0], sp[1]);
       }
       sp = list[0].split(":");
-      pointToPoint(sp[0], sp[1]); 
+      pointToPoint(sp[0], sp[1]);
+      $scope.map.setCenter(new google.maps.LatLng(sp[0], sp[1])); 
+      $scope.map.setZoom(17);
+      
     }
   }
 

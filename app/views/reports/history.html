@@ -350,27 +350,24 @@ background-color: #ffffff;
 			   			 	</div>
 			   				 
 			   			 </tab>
-			   			 <!-- <tab select="alertMe('eventReport')" heading="Event Report">
+			   			 <tab select="alertMe('eventReport')" heading="Event Report">
 			   			 	<p style="margin:0" class="page-header">Event Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="eventReport">
 			   			 	 	<table style="background-color: #cecece; color: #000" class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr>
-					   			 	 		<td><label><input type="checkbox"  id="stop" checked="checked"><b> Stoppage </b></label></td>
-					   			 	 		<td><label><input type="textbox" ng-model="stopMints" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (mins) </b></label></td>
-					   			 	 		<td><label><input type="checkbox" id="idle" checked="checked"><b> Idle </b></label></td>
-					   			 	 		<td><label><input type="textbox" ng-model="idleMints" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (mins) </b></label></td>
-					   			 	 		<td><label><input type="checkbox" id="notreach" checked="checked"><b> NotReachable </b></label><br/></td>
-					   			 	 		<td><label><input type="textbox" ng-model="notReachMints" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (mins) </b></label></td>
-					   			 	 		<td><label><input type="checkbox" id="overspeed" checked="checked"><b> Overspeed </b></label></td>
-					   			 	 		<td><label><input type="checkbox" id="location" checked="checked"><b> Location </b></label></td>
+					   			 	 		<td><label><input type="checkbox"  id="stop"><b> Stoppage </b></label></td>
+					   			 	 		<td><label><input type="textbox" id="stop1" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (mins) </b></label></td>
+					   			 	 		<td><label><input type="checkbox" id="idle"><b> Idle </b></label></td>
+					   			 	 		<td><label><input type="textbox" id="idle1" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (mins) </b></label></td>
+					   			 	 		<td><label><input type="checkbox" id="location" ><b> Location </b></label></td>
 					   			 	 	</tr>
 					   			 	 	<tr>
-					   			 	 		<td><label><input type="textbox" ng-model="stopMints" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (mins) </b></label></td>
-					   			 	 		<td><label><input type="textbox" ng-model="idleMints" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (mins) </b></label></td>
-					   			 	 		<td><label><input type="textbox" ng-model="notReachMints" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (mins) </b></label></td>
-					   			 	 		<td><label><input type="textbox" ng-model="speedEvent" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (Km) </b></label></td>
-					   			 	 		<td><label><input type="checkbox" ng-model="siteEvent"><b> Site </b></label>	</td>
+					   			 	 		<td><label><input type="checkbox" id="overspeed"><b> Overspeed </b></label></td>
+					   			 	 		<td><label><input type="textbox" id="overspeed1" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (Km) </b></label></td>
+					   			 	 		<td><label><input type="checkbox" id="notreach"><b> NotReachable </b></label><br/></td>
+					   			 	 		<td><label><input type="textbox" id="notreach1" style="height: 20px; width:30px; border-radius: 3px" value="10"/><b> (mins) </b></label></td>
+					   			 	 		<td><label><input type="checkbox" id="site"><b> Site </b></label>	</td>
 					   			 	 	</tr>
 					   			 	 	
 			   			 	 			
@@ -395,21 +392,24 @@ background-color: #ffffff;
 			   			 	 	<tbody>
 			   			 	 		<tr ng-repeat="user in eventReportData" class="active" style="text-align:center">
 			   			 	 			<td>{{user.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-										<td>{{msToTime(user.duration)}}</td>
-			   			 	 			<td colspan="2">{{user.address}}
-			   			 	 				<p ng-if="user.address!=null"></p>
-			   			 	 				<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && addressIdle[$index]!=null">{{addressIdle[$index]}}</p>
-			   			 	 				<p ng-if="user.address==null && addressIdle[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p> 
+										<td>
+											<p ng-if="user.duration!=null">{{msToTime(user.duration)}}</p>
+											<p ng-if="user.duration==null">--</p>
+										</td>
+			   			 	 			<td colspan="2" ng-click="address_click(user, $index)">
+			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
+			   			 	 				<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && addressEvent[$index]!=null">{{addressEvent[$index]}}</p>
+			   			 	 				<p ng-if="user.address==null && addressEvent[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
 			   			 	 			</td>
 			   			 	 			<td>{{user.state}}</td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if="idlereport==null">
+			   			 	 		<tr ng-if="eventReportData==null">
 										<td colspan="5">No Records Found Choose some other date</td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
 			   			 	</div>
-			   			 </tab> -->
+			   			 </tab>
 			   			<div class="pull-right">
 		                <a href="downloadhistory?vvid={{id}}&rid={{downloadid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}&dvg={{vgroup}}&interval={{interval}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
 		                <img style="cursor: pointer;" ng-click="exportData(downloadid)"  src="../app/views/reports/image/xls.png" />
