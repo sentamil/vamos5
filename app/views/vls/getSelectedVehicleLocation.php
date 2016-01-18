@@ -35,7 +35,7 @@ $web="web";
   $response = curl_exec($ch);
 	 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
      if(curl_errno($ch)){
-        log.info( 'Curl error: ' . curl_error($ch));
+        log::info( 'Curl error: ' . curl_error($ch));
       }
   curl_close($ch);
 log::info( 'curl status  :' .$httpCode  );
