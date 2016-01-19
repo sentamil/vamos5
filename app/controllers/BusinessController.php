@@ -622,7 +622,13 @@ class BusinessController extends \BaseController {
 							$user->save();
 							
 							 foreach($mobArr as $mob){
-
+								 
+								 if($mob!=='')
+							{
+								
+							
+								 
+							log::info( '------mobile number---------- '.$mob);
 						  if($ownerShip!='OWN')
                            {
                                    log::info( '------login 1---------- '.Session::get('cur'));
@@ -653,6 +659,7 @@ class BusinessController extends \BaseController {
 							$user->mobileNo=$mobileNo;
 							$user->password=Hash::make($password);
 							$user->save();
+							}
                          }
 							
 						}
