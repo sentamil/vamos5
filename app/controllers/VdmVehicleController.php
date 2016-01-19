@@ -505,7 +505,7 @@ class VdmVehicleController extends \BaseController {
 			
 			
 			$maxmin=$redis->hget('H_Auto_'.$fcode,$vehicleId);
-			if($maxmin!=null)
+			if($maxmin!==null)
 			{
 			
 				$maxmin=explode(',',$maxmin);
@@ -908,14 +908,14 @@ class VdmVehicleController extends \BaseController {
 			$org=isset($vehicleRefData->orgId)?$vehicleRefData->orgId:$torg;
 			$oldroute=isset($vehicleRefData->shortName)?$vehicleRefData->shortName:$refDataJson1['shortName'];
 			
-			if($org!=$orgId)
+			if($org!==$orgId)
 			{
 				Log::info($vehicleId.'--------------------inside equal--------------------------------'.$org);
 				$redis->srem ( 'S_Vehicles_' . $org.'_'.$fcode, $vehicleId);
 				$redis->srem('S_Organisation_Route_'.$org.'_'.$fcode,$oldroute);
 				$redis->sadd('S_Organisation_Route_'.$orgId.'_'.$fcode,$shortName);
 			}
-			if($oldroute!=$shortName && $org==$orgId)
+			if($oldroute!==$shortName && $org==$orgId)
 			{
 				Log::info($vehicleId.'--------------------inside equal1--------------------------------'.$org);
 				$redis->srem('S_Organisation_Route_'.$orgId.'_'.$fcode,$oldroute);
@@ -934,7 +934,7 @@ class VdmVehicleController extends \BaseController {
 							$temp=$gr;
 						}
 						else{
-							if($i==10 && $vehicleRefData['odoDistance']!=$odoDistance)
+							if($i==10 && $vehicleRefData['odoDistance']!==$odoDistance)
 							{
 								Log::info('-----------inside log----------'.$odoDistance);
 								$temp=$temp.','.$odoDistance;
@@ -1113,14 +1113,14 @@ class VdmVehicleController extends \BaseController {
 			$org=isset($vehicleRefData->orgId)?$vehicleRefData->orgId:$torg;
 			$oldroute=isset($vehicleRefData->shortName)?$vehicleRefData->shortName:$refDataJson1['shortName'];
 			
-			if($org!=$orgId)
+			if($org!==$orgId)
 			{
 				Log::info($vehicleId.'--------------------inside equal--------------------------------'.$org);
 				$redis->srem ( 'S_Vehicles_' . $org.'_'.$fcode, $vehicleId);
 				$redis->srem('S_Organisation_Route_'.$org.'_'.$fcode,$oldroute);
 				$redis->sadd('S_Organisation_Route_'.$orgId.'_'.$fcode,$shortName);
 			}
-			if($oldroute!=$shortName && $org==$orgId)
+			if($oldroute!==$shortName && $org==$orgId)
 			{
 				Log::info($vehicleId.'--------------------inside equal1--------------------------------'.$org);
 				$redis->srem('S_Organisation_Route_'.$orgId.'_'.$fcode,$oldroute);
@@ -1139,7 +1139,7 @@ class VdmVehicleController extends \BaseController {
 							$temp=$gr;
 						}
 						else{
-							if($i==10 && $vehicleRefData['odoDistance']!=$odoDistance)
+							if($i==10 && $vehicleRefData['odoDistance']!==$odoDistance)
 							{
 								Log::info('-----------inside log----------'.$odoDistance);
 								$temp=$temp.','.$odoDistance;
@@ -1502,7 +1502,7 @@ class VdmVehicleController extends \BaseController {
 			try{
 				$expiredPeriod=$refDataJson1['expiredPeriod'];
 				$vec=$redis->hget('H_Expire_'.$fcode,$expiredPeriod);
-				if($vec!=null)
+				if($vec!==null)
 				{
 					$details= explode(',',$vec);
 					$temp=null;
