@@ -407,7 +407,7 @@ class BusinessController extends \BaseController {
 						$deviceDataJson = json_encode ( $deviceDataArr );
 					$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 					$back=$redis->hget($vehicleDeviceMapId, $deviceId);
-					if($back!=null)
+					if($back!==null)
 					{
 						$vehicleId=$back;
 					}
@@ -485,10 +485,25 @@ class BusinessController extends \BaseController {
 								
 								
 								
-								$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+							
+								$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+							$franchiseDetails=json_decode($franDetails_json,true);
+							$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+							if(isset($franchiseDetails['fullAddress'])==1)
+							{
+								$fullAddress=$franchiseDetails['fullAddress'];
+								$data_arr = BusinessController::geocode($fullAddress);
+							  if($data_arr){         
+									$latitude = $data_arr[0];
+									$longitude = $data_arr[1];
+									log::info( '------lat lang---------- '.$latitude.','.$longitude);
+									$tmpPositon =  $latitude.','.$longitude.',0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+							  }
+							}
+							log::info( '------prodata---------- '.$tmpPositon);
 								$redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
 						}
-								if($ownerShip!='OWN')
+								if($ownerShip!=='OWN')
 								{
 									log::info( '------login 1---------- '.Session::get('cur'));
 									$redis->sadd('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
@@ -632,7 +647,7 @@ class BusinessController extends \BaseController {
 						  if($ownerShip!='OWN')
                            {
                                    log::info( '------login 1---------- '.Session::get('cur'));
-                                                                $redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$mob);
+                                   $redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$mob);
                            }
 						  else if($ownerShip=='OWN')
 								{
@@ -676,6 +691,55 @@ class BusinessController extends \BaseController {
  			return Redirect::to('Business');
 	 		
 	}
+	
+	
+	public static function geocode($address){
+ 
+    // url encode the address
+    $address = urlencode($address);
+     
+    // google map geocode api url
+    $url = "http://maps.google.com/maps/api/geocode/json?address={$address}";
+ 
+    // get the json response
+    $resp_json = file_get_contents($url);
+     
+    // decode the json
+    $resp = json_decode($resp_json, true);
+ 
+    // response status will be 'OK', if able to geocode given address 
+    if($resp['status']=='OK'){
+ 
+        // get the important data
+        $lati = $resp['results'][0]['geometry']['location']['lat'];
+        $longi = $resp['results'][0]['geometry']['location']['lng'];
+        $formatted_address = $resp['results'][0]['formatted_address'];
+         
+        // verify if data is complete
+        if($lati && $longi && $formatted_address){
+         
+            // put the data in the array
+            $data_arr = array();            
+             
+            array_push(
+                $data_arr, 
+                    $lati, 
+                    $longi, 
+                    $formatted_address
+                );
+             
+            return $data_arr;
+             
+        }else{
+            return false;
+        }
+         
+    }else{
+        return false;
+    }
+}
+	
+	
 	
 	 protected function schedule(Schedule $schedule)
     	{

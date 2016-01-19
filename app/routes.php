@@ -429,7 +429,7 @@ Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleControlle
 
 
 });   //admin auth ends here
-
+Route::post('vdmVehicles/updateLive/{param}', array('uses' => 'VdmVehicleController@updateLive'));
 Route::post('AddSiteController/store', array('uses' => 'AddSiteController@store'));
 Route::post('AddSiteController/update', array('uses' => 'AddSiteController@update'));
 Route::post('AddSiteController/delete', array('uses' => 'AddSiteController@delete'));
