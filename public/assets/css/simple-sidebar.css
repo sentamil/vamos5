@@ -5,7 +5,24 @@
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
-
+#mapList {
+	padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+#mapTable-mapList{
+	position: absolute;
+    top: 0;
+    width: 100vw;
+    margin-left: -50%;
+    padding: 0;
+	height: 100vh;
+    list-style: none;
+	/*background:#196481;*/
+	box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;
+}
 #sidebar-wrapper {
     z-index: 1000;
     position: fixed;
@@ -147,6 +164,8 @@ color:#333;
 .col-lg-12{ padding:0 !important;}
 @media(min-width:768px) {
     #wrapper { padding-left: 250px; }
+    #mapList { padding-left: 50%; }
+    #mapTable-mapList { width: 50%; }
     #sidebar-wrapper { width: 250px; }
 	 #wrapper.toggled { padding-left: 20px; }
 	  #wrapper.toggled #sidebar-wrapper { width: 80px;}
@@ -215,10 +234,24 @@ li a label{ width:100%; display:block;}
 .bottomContent h6{text-align:center;  color:#196481; font-weight:normal;}
 .bottomContent h6 span{ font-weight:bold;}
 .bottomContent h3{ padding-top:0; margin-top:0; font-size:12px;; text-align:center;}
-.labels{ color:#fff;}
+/*.labels{ color:#fff;}*/
 .container01{min-width: 200px; max-width: 220px; width: 220px; height: 125px; bottom:-33px; margin: 0 auto; position:absolute;}
-.labels { color: #fff; font-size: 8px; font-weight:normal; text-align: center; width: 24px; white-space: nowrap;}
-
+.labels { color: #0d0d0d; font-size: 11px; font-weight:bold; text-align: center; white-space: nowrap;background: #f4f4f4; border: 1px solid #0d0d0d; padding: 3px; border-radius: 2px}
+./*labels1 { color: #fff; font-size: 9px; font-weight:normal; text-align: center; white-space: nowrap;  width: 24px;}*/
+/*.labels:before {
+	content: '';
+display: block;
+position: absolute;
+top: 10px;
+left: 100%;
+width: 0;
+height: 0;
+border-color: transparent transparent transparent #CAD5E0;
+border-style: solid;
+border-width: 10px;
+*/
+   
+}
 .controls {margin-top: 16px;border: 1px solid transparent;border-radius: 2px 0 0 2px;box-sizing: border-box;-moz-box-sizing: border-box;height: 32px;outline: none;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);}
 	  #pac-input {padding: 0 11px 0 13px; width: 400px;font-family: Roboto; z-index:999; position:absolute; left:65px; font-size: 15px;font-weight: 300;text-overflow: ellipsis;margin-top:70px;margin-right:10px;}
 	  #pac-input01 {margin-right:0; margin-top:5px; margin-bottom:10px; position:absolute;  z-index:999; right:100px}
@@ -227,6 +260,7 @@ li a label{ width:100%; display:block;}
       #pac-input:focus { border-color: #4d90fe; margin-left: -1px; padding-left: 14px; width: 401px;}
 	  #vehiid h3{ font-size:12px;}
 	  #distanceVal{font-size:14px; color:#000; background:#666 !important; border:1px solid #ccc; height:22px; padding-right:5px; text-align:right; color:#eee; font-size:11px; width:70px;}
+	  
 	 #traffic{ width:58px; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa;}
 	 #nearbyVeh{  text-align:center; width:230px; margin-top:5px; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa;}
 	 
