@@ -17,7 +17,8 @@
 <![endif]-->
 <style type="text/css">
      #map_canvas{ width:100%; height:100%;}  
-     #container-speed{  width: 240px; height: 120px;} 
+     #container-speed{  width: 240px; height: 120px;}
+
      [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
         display: none !important;
      }
@@ -30,7 +31,8 @@
     <div id="status02">&nbsp;</div>
 </div>
 <body ng-app="mapApp">
-    <div id="wrapper" ng-controller="mainCtrl">
+<div ng-controller="mainCtrl">
+   <div id="wrapper">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a>
@@ -41,7 +43,7 @@
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
                 <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
-                <li><a href="../public/logout"><img src="assets/imgs/logout.png"/><div></div><label>Logout</label></a></li>         
+                <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
                 <li style="margin-bottom: 15px;"><div class="right-inner-addon" align="center"><i class="fa fa-search"></i><input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" /></div>
@@ -57,7 +59,7 @@
                 </li>
                 <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.vehicleId}} ({{loc.shortName}}) </a></li>
+                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
                     </ul>
                 </li>
             </ul>
@@ -90,6 +92,14 @@
                         </div>
                         <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
                             <img src="assets/imgs/add.png" />
+                        </div>
+                        <div id="menuView" style="position: absolute;bottom: 30px;left: 10px; z-index:999999; background: #fff; padding: 4px; box-shadow:0px 1px 2px rgba(0, 0, 0, 0.2)  !important; border-radius : 2px; font-size: 11px;">
+
+                            <!-- <input type="button" name="mapClick" value="mapList" > List &amp; Map -->
+                            <span id="listImg" ng-click="mapView('listMap')" title="List and Map"><img src="assets/imgs/list.png" /></span>
+                            <span id="homeImg" ng-click="mapView('home')"><img src="assets/imgs/home.png" /></span>
+
+                            <!-- <input type="radio" name="mapClick" value="mapList" ng-click="mapView('home')"> Home -->
                         </div>
                         <div id="minmaxMarker" style="position: absolute;top: 10px;left: 120px; z-index:999999" title="Maps Marker Details">
                             <img src="assets/imgs/add.png" />
@@ -136,7 +146,7 @@
                                
                                <select ng-model="days1" style="width:100%; font-weight: bold; font-size: 12px; padding : 3px">
                                     <option value = "0">Vehicle Id</option>
-                                    <option ng-repeat="vehi in vehicle_list">{{vehi}}</option>
+                                    <option ng-repeat="vehi in vehicle_list" ng-value="">{{vehi}}</option>
                                 </select>
                                 <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px">
                                 <select id="Days" ng-model="days" style="height: 18px;">
@@ -187,14 +197,14 @@
                                     <table cellpadding="0" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th style="width:30%;">Vehicle ID</th>
+                                                <th style="width:30%;">Vehicle Name</th>
                                                 <th style="width:30%;">Distance</th>
                                                 <th style="width:40%;">Address</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="nearbyLoc in nearbyLocs.vehicleDetails">
-                                                <td ng-cloak>{{nearbyLoc.vehicleId}}({{nearbyLoc.shortName}})</td>
+                                                <td ng-cloak>({{nearbyLoc.shortName}})</td>
                                                 <td align="right" ng-cloak>{{nearbyLoc.distance}}</td>
                                                 <td ng-cloak>{{nearbyLoc.address}}</td>
                                             </tr>
@@ -203,37 +213,74 @@
                                 </div>
                             </div>
                                <div class="dynamicvehicledetails" ng-init="dynamicvehicledetails1=false" ng-if="dynamicvehicledetails1==true">
-                                    <h3 id="vehiid"><span></span> Details</h3>
+                                <div id="viewable">
+                                    <h3 id="vehiid"><span id="val"></span> Details <input id="inputEdit" type="button" value="Edit"/></h3>
+                                    
                                     <div>
                                         <table cellpadding="0" cellspacing="0">
                                             <tbody>
                                                 <tr>
-                                                    <td>odoDistance</td>
-                                                    <td id="vehdevtype"><span></span> kms</td>
+                                                    <td>Odo Reading</td>
+                                                    <td id="vehdevtype"><span id="val"></span> kms</td>
                                                     
                                                 </tr>
                                                  <tr>
                                                     <td>Speed Limit</td>
-                                                    <td id="mobno"><span></span> km/h</td>
-                                                    
-                                                </tr>
-                                                 <tr>
-                                                    <td>Today Distance</td>
-                                                    <td id="toddist"><span></span> kms</td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                    <td id="positiontime"><span></span> Time</td>
-                                                    <td id="regno"><span></span></td>
+                                                    <td id="mobno"><span id="val"></span> km/h</td>
                                                     
                                                 </tr>
                                                 <tr>
                                                     <td><span></span> Driver Name</td>
-                                                    <td id="driverName"><span></span></td>
+                                                    <td id="driverName"><span id="val"></span></td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>Today Distance</td>
+                                                    <td id="toddist"><span id="val"></span> kms</td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td id="positiontime"><span></span> Time</td>
+                                                    <td id="regno"><span id="val"></span></td>
                                                     
                                                 </tr>
                                         </table>
                                     </div>
+                                </div>
+
+                                <div id="editable">
+                                    <h3 id="vehiid"><input id="val_veh" type="input" ng-model="vehShort"/> Details <input id="inputEdit" type="button" value="Update" ng-click="updateDetails()"/></h3>
+                                    
+                                    <div>
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Odo Reading</td>
+                                                    <td id="vehdevtype"><input id="val" type="input" ng-model="ododis"/> kms</td>
+                                                    
+                                                </tr>
+                                                 <tr>
+                                                    <td>Speed Limit</td>
+                                                    <td id="mobno"><input id="val" type="input" ng-model="spLimit"/> km/h</td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td><span></span> Driver Name</td>
+                                                    <td id="driverName"><input id="val" type="input" ng-model="driName"/></td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td>Today Distance</td>
+                                                    <td id="toddist"><span id="val"> kms</span></td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td id="positiontime"><span></span> Time</td>
+                                                    <td id="regno"><span id="val"></span></td>
+                                                </tr>
+                                        </table>
+                                    </div>
+                                </div>
                                     <div id="rightAddress">
                                         <h3>Address</h3>
                                         <div align="center" id="lastseen"></div>
@@ -248,16 +295,58 @@
                                 </div>
                         </div>
                         <a href="javascript:void(0);" class="contentexpand"><img src="assets/imgs/add.png"/></a>
-                        <div id="maploc">
-                            <map id="map_canvas" style="height:100vh; width:100%;"></map>
-                            
+                        <div>
+                            <div id="maploc">
+                                <map id="map_canvas" style="height:100vh; width:100%;"></map>
+                            </div>
                         </div>
-                         
                     </div>
                 </div>
             </div>
         </div>
+        <div id="mapTable-mapList">
+            <div style="width: 100%; height: 100%; overflow: auto;">
+                   <table class="table table-striped table-bordered table-condensed table-hover">
+                        <tr style="text-align:center">
+                            <th style="text-align:center;"><div style="width: 100px;">Vehicle ID</div></th>
+                            <th style="text-align:center;"><div style="width: 100px;">Regn No</div></th>
+                            <th style="text-align:center;"><div style="width: 100px;">Driver Name</div></th>
+                            <th style="text-align:center;"><div style="width: 100px;">Last Seen</div></th>
+                            <th style="text-align:center;"><div style="width: 50px;">KM</div></th>
+                            <th style="text-align:center;"><div style="width: 70px;">Speed</div></th>
+                            <th style="text-align:center;"><div style="width: 70px;">Position</div></th>
+                            <th style="text-align:center;"><div style="width: 70px;">GPS</div></th>
+                            <th style="text-align:center;"><div style="width: 70px;">Ignition</div></th>
+                            <th style="text-align:center;"><div style="width: 300px;">Nearest Location</div></th>
+                                   
+                        </tr>
+                        <tr ng-repeat="user in mapTable" style="text-align:center" ng-mouseover="mouseJump(user)">
+                            <td>{{user.vehicleId}}</td>
+                            <td>{{user.regNo}}</td>
+                            <td>{{user.driverName}}</td>
+                            <td>{{user.lastSeen}}</td>
+                            <td>{{user.distanceCovered}}</td>
+                            <td>{{user.speed}}</td>
+                            <td>{{user.position}}</td>
+                            <td>{{user.status}}</td>
+                            <td>{{user.ignitionStatus}}</td>
+                            <td ng-click="address_click(user, $index)">{{user.address}}</td>
+                            <!-- <td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
+                            <td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
+                            <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td> -->                                                      
+                        </tr>
+                    </table>        
+                </div>
+        </div>
     </div>
+   <!--  <div ng-show="true">aasd {{support}}
+        <div id="maploc">
+            <map id="map_canvas" style="height:100vh; width:100%;"></map>
+        </div>
+    </div> -->
+    
+    
+</div>
     <div class="modal fade" id="myModal">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -307,7 +396,8 @@
         });
     });
 
-    
+    $("#editable").hide();
+    $("#viewable").show();
 
     $(document).ready(function(){
       //  $('#minmaxMarker').click
@@ -321,6 +411,12 @@
     
 
     });
+    $("#inputEdit").click(function(e){
+        $("#editable").show();
+        $("#viewable").hide();
+    })
+    
+    
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
