@@ -103,14 +103,16 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	
 	$scope.eventCall 		= 		function()
     {
-    	document.getElementById ("stop").checked 				= true;
-    	document.getElementById ("idle").checked 				= true;
-    	document.getElementById ("notreach").checked 			= true;
-    	document.getElementById ("overspeed").checked			= true;
-    	document.getElementById ("stop1").defaultValue 			= 10;
-    	document.getElementById ("idle1").defaultValue 			= 10;
-    	document.getElementById ("notreach1").defaultValue 		= 10;
-    	document.getElementById ("overspeed1").defaultValue		= 10;
+    	document.getElementById ("stop").checked 				= false;
+    	document.getElementById ("idle").checked 				= false;
+    	document.getElementById ("notreach").checked 			= false;
+    	document.getElementById ("overspeed").checked			= false;
+    	document.getElementById ("stop1").defaultValue 			= 0;
+    	document.getElementById ("idle1").defaultValue 			= 0;
+    	document.getElementById ("notreach1").defaultValue 		= 0;
+    	document.getElementById ("overspeed1").defaultValue		= 0;
+    	document.getElementById ("location").checked 			= true;
+    	document.getElementById ("site").checked 	 			= true;
     	//buttonClick = false;
     	serviceCallEvent();
     	// return $scope.eventReportData;
