@@ -127,13 +127,17 @@ class VdmDealersController extends \BaseController {
 		$userId=$id;
 		$mobileNo = $detail['mobileNo'];
 		$email =$detail['email'];
+		if(isset($detail['website'])==1)
+			$website=$detail['website'];
+		else
+			$website='';
 		$vehicleGroups = $redis->smembers ( $userId );
 		
 		
 		
 		return View::make ( 'vdm.dealers.show', array (
 				'userId' => $userId 
-		) )->with('mobileNo',$mobileNo)->with('email',$email);
+		) )->with('mobileNo',$mobileNo)->with('email',$email)->with('website',$website);
 	}
 	
 	/**
@@ -166,11 +170,15 @@ class VdmDealersController extends \BaseController {
 		
 		$dealerid=Session::get('user');
 		$mobileNo = $detail['mobileNo'];
-		$email =$detail['email'];		
+		$email =$detail['email'];
+		if(isset($detail['website'])==1)
+			$website=$detail['website'];
+		else
+			$website='';		
 		return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email);
+		with('email',$email)->with('website',$website);
 		 
 	 }
 	 
@@ -193,11 +201,15 @@ class VdmDealersController extends \BaseController {
 		
 		$dealerid=$id;
 		$mobileNo = $detail['mobileNo'];
-		$email =$detail['email'];		
+		$email =$detail['email'];	
+		if(isset($detail['website'])==1)
+			$website=$detail['website'];
+		else
+			$website='';		
 		return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email);
+		with('email',$email)->with('website',$website);
 	}
 	
 	/**
@@ -235,10 +247,11 @@ class VdmDealersController extends \BaseController {
 			
 			$mobileNo = Input::get ( 'mobileNo' );
 			$email = Input::get ( 'email' );
-			
+			$website=Input::get ( 'website' );
 			$detail=array(
 			'email'	=> $email,
 			'mobileNo' => $mobileNo,
+			'website' => $website,
 			);
 			
 			$detailJson=json_encode($detail);
@@ -253,7 +266,7 @@ class VdmDealersController extends \BaseController {
 			return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email);
+		with('email',$email)->with('website',$website);
 			}
 			
 			return Redirect::to ( 'vdmDealers' );
@@ -303,11 +316,12 @@ class VdmDealersController extends \BaseController {
 			$dealerId = Input::get ( 'dealerId' );
 			$email = Input::get ( 'email' );
 			$mobileNo = Input::get ( 'mobileNo' );
-           
+           $website=Input::get ( 'website' );
 			// ram
 			$detail=array(
 			'email'	=> $email,
 			'mobileNo' => $mobileNo,
+			'website'=>$website,
 			);
 			
 			$detailJson=json_encode($detail);

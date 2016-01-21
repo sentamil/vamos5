@@ -10,6 +10,7 @@
 <meta name="author" content="Satheesh">
 <title>GPS</title>
 <link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="assets/css/jVanilla.css" rel="stylesheet">
 <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
@@ -37,7 +38,7 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
                 <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
-                <li class="history"><a href="javascript:void(0);"  class="active"><div></div><label>History</label></a></li>
+                <li class="history"><a href="../public/replay" class="active"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
                 <!--
@@ -64,6 +65,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
+                        <div style="position: absolute;top: 0px;left: 20%; z-index:999999;" id="testLoad">
+                        </div>
+                        </div>
                         <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
                             <img src="assets/imgs/add.png" />
                         </div>
@@ -254,6 +258,9 @@
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/customplay.js"></script>
     <script>
+
+    //menu loading
+    $("#testLoad").load("../public/menu");
     var logo =document.location.host;
     var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
     $('#imagesrc').attr('src', imgName);

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Satheesh">
+    <title>GPS</title>
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/site.css" rel="stylesheet">
+    <!-- <link href="assets/css/jVanilla.css" rel="stylesheet"> -->
+    
+    <!-- <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet"> -->
+    <style type="text/css">
+        #map_canvas{
+            width:100%;
+            height: 100vh; 
+        }
+    </style>
+</head>
+<body ng-app="mapApp">
+    <div id="wrapper" ng-controller="mainCtrl">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
+                <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
+                <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
+                <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
+                <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
+                <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
+                <!-- <li class="settings"><a href="../public/settings"  class="active"><div></div><label>Settings</label></a></li>
+                <li class="admin"><a href="javascript:void(0);"><div></div><label>Admin</label></a></li> -->
+                <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
+            </ul>
+        </div>
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div style="position: absolute;top: 0px;left: 35%; z-index:999999;" id="testLoad">
+                </div>
+                <div style="position: absolute;top: 30px;right: 20px; z-index:999999; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
+                    <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Add Sites</div>
+                        <div class="siteInput" > 
+                            <table cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr><td colspan="2"></td></tr>
+                                    <tr>
+                                        <td><b>Site Name</b></td>
+                                        <td><input name="txt" type="text" ng-model="textValue" style="width:100%; font-weight: bold; font-size: 12px; padding : 3px"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Type</b></td>
+                                        <td>
+                                            <select id="drop" ng-model="dropValue" style="width:100%; font-weight: bold; font-size: 12px; padding : 3px">
+                                                <option value = "Home Site">Home Site</option>
+                                                <option value = "Client Site">Client Site</option>
+                                                <option value = "Restricted Site">Restricted Site</option>
+                                                <option value = "Other">Other</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Org Id</b>
+                                        </td>
+                                        <td>
+                                            <select style="width:100%; font-weight: bold; font-size: 12px; padding : 3px" ng-model="orgID">
+                                                <option ng-repeat="org in dropDownList">{{org}}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center">
+                                            <input type="button" value="Create" ng-click="drawline()"/>
+                                            <input type="button" value="Update" ng-click="updateDrawline()"/>
+                                            <input type="button" value="Clear Map" ng-click="clearline()"/>
+                                            
+                                        </td>                            
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div align="left">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <input type"input" placeholder="Site Name" ng-model="search" style="width:100%; font-weight: bold; font-size: 12px; padding : 2px"/>
+                                            </td>
+                                        </tr>
+                                    </thead>       
+                                </table>
+                                <div style=" height: 300px; width: 100%; overflow: scroll">
+                                    <table >
+                                        <tbody>
+                                            <tr ng-repeat="user in orgIdlist | filter:search">
+                                                <td ng-click="siteNameClick(user)" style="cursor:pointer ; hover: black">{{user.siteName}}</td>
+                                                <td>{{user.siteType}}</td>   
+                                                <td class="delete" ng-click="deleteClick(user)">Delete</td>
+                                            </tr>
+                                        </tbody>
+                                    </table> 
+                                </div>
+                            </div>
+                               
+                        </div>       
+                    </div>
+                <div id="maploc">
+                    <map id="map_canvas" style="height:100vh; width:100%;"></map>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/static.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
+    <script src="assets/js/vamoApp.js"></script>
+    <script src="assets/js/services.js"></script>
+    <script src="assets/js/addsite.js"></script>
+    <script>
+
+    //menu loading
+    $("#testLoad").load("../public/menu");
+    var logo =document.location.host;
+    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    $('#imagesrc').attr('src', imgName);
+    </script>
+</body>
+</html>

@@ -44,6 +44,24 @@ Route::get('/settings', function() {
     return View::make('maps.settings');
 });
 
+View::addExtension('html', 'php');
+Route::get('/menu', function() {
+    // if (!Auth::check()) {
+    //     return Redirect::to('login');
+    // }
+    return View::make('maps.menu.menu');
+});
+
+
+Route::get('/sites', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.siteDetails');
+});
+
+
+
 
 View::addExtension('html', 'php');
 Route::get('/reports', function() {
@@ -108,6 +126,16 @@ Route::get('/getVehicleLocations', function() {
     Log::info('get Vehicle Locations');
     return View::make('vls.getVehicleLocations');
 });
+
+Route::get('/getActionReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get Vehicle Locations');
+    return View::make('vls.getActionReport');
+});
+
+
 Route::get('/getOverallVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -222,6 +250,15 @@ Route::get('/getVehicleHistory', function() {
     return View::make('vls.getVehicleHistory');
 });
 
+Route::get('/getActionReport', function() {     
+    if (!Auth::check()) {       
+        return Redirect::to('login');       
+    }       
+    Log::info('get Vehicle Locations');     
+    return View::make('vls.getActionReport');       
+});     
+
+
 Route::get('/admin', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -240,8 +277,12 @@ Route::get('register', function() {
     return View::make('pages.register');
 });
 
-Route::get('example', function() {
-    return View::make('example');
+Route::get('register', function() {
+    return View::make('pages.register');
+});
+
+Route::get('viewSite', function() {
+    return View::make('vls.viewSite');
 });
 
 // route to show the login form
@@ -389,7 +430,11 @@ Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleControlle
 
 
 });   //admin auth ends here
-
+Route::post('vdmVehicles/updateLive/{param}', array('uses' => 'VdmVehicleController@updateLive'));
+Route::post('AddSiteController/store', array('uses' => 'AddSiteController@store'));
+Route::post('AddSiteController/update', array('uses' => 'AddSiteController@update'));
+Route::post('AddSiteController/delete', array('uses' => 'AddSiteController@delete'));
+Route::resource('AddSite', 'AddSiteController');
 Route::get('vdmSmsReportFilter', array('uses' => 'VdmSmsController@filter'));
 
 Route::post('vdmSmsReport', array('uses' => 'VdmSmsController@show'));

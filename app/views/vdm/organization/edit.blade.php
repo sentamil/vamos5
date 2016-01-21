@@ -87,7 +87,11 @@
         {{ Form::text('idleDuration', $idleDuration, array('class' => 'form-control')) }}
 		
     </div>
-	
+	<div class="form-group">
+        {{ Form::label('smsSender', 'SMS Sender') }}
+        {{ Form::text('smsSender', $smsSender, array('class' => 'form-control')) }}
+		
+    </div>
     <div>
 	{{ Form::label('poi', 'Place Of interest') }}
 	</br>
