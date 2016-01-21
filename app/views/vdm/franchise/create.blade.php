@@ -71,6 +71,10 @@
 		{{ Form::label('website', 'Website') }}
 		{{ Form::text('website', Input::old('website'), array('class' => 'form-control')) }}
 	</div>
+	<div class="form-group">
+		{{ Form::label('smsSender', 'SMS Sender') }}
+		{{ Form::text('smsSender', Input::old('smsSender'), array('class' => 'form-control')) }}
+	</div>
 	
 	{{ Form::submit('Add the Franchise!', array('class' => 'btn btn-primary')) }}
 

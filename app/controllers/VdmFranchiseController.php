@@ -118,7 +118,7 @@ class VdmFranchiseController extends \BaseController {
 			$userId = Input::get ('userId');
 			$otherDetails = Input::get ('otherDetails');
 			$numberofLicence = Input::get ('numberofLicence');
-			
+			$smsSender=Input::get ('smsSender');
 	
 			
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
@@ -147,6 +147,7 @@ class VdmFranchiseController extends \BaseController {
 					'numberofLicence' => $numberofLicence,
 					'availableLincence'=>$numberofLicence,
 					'website'=>$website,
+					'smsSender'=>$smsSender,
 					
 					
 					
@@ -302,6 +303,10 @@ class VdmFranchiseController extends \BaseController {
 			$website=$franchiseDetails['website'];
 		else
 			$website='';
+		if(isset($franchiseDetails['smsSender'])==1)
+			$smsSender=$franchiseDetails['smsSender'];
+		else
+			$smsSender='';
 		Session::put('available',$availableLincence);
 		Session::put('numberofLicence',$numberofLicence);
 		return View::make ( 'vdm.franchise.edit', array (
@@ -318,7 +323,8 @@ class VdmFranchiseController extends \BaseController {
 		->with('otherDetails',$otherDetails)
 		->with('numberofLicence',$numberofLicence)
 		->with('availableLincence',$availableLincence)
-		->with('website',$website);
+		->with('website',$website)
+		->with('smsSender',$smsSender);
 	
 
 	}
@@ -368,6 +374,7 @@ class VdmFranchiseController extends \BaseController {
 			$otherDetails = Input::get ('otherDetails');
 			$numberofLicence = Input::get ('addLicence');	
 			$website= Input::get ('website');
+			$smsSender=Input::get ('smsSender');
 			$redis = Redis::connection ();
 				
 				if($numberofLicence==null)
@@ -423,6 +430,7 @@ class VdmFranchiseController extends \BaseController {
 					'numberofLicence' => $numberofLicence,
 					'availableLincence'=>$availableLincence,
 					'website'=>$website,
+					'smsSender'=>$smsSender,
 					
 					
 					
