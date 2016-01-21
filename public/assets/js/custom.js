@@ -194,8 +194,10 @@ app.filter('statusfilter', function(){
 	{
 		var url = 'http://'+globalIP+'/vamo/public//getVehicleLocations';
 		$http.get(url).success(function(response){
-			$scope.locations02=[];
-			$scope.locations02 = response;
+			// $scope.locations02=[];
+			// $scope.locations=[];
+			// $scope.locations02 = response;
+			// $scope.locations=response;
 			for (var i = 0; i < response[0].vehicleLocations.length; i++) 
 			{
 				if($scope.vehicleid == response[0].vehicleLocations[i].vehicleId)
