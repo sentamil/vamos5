@@ -52,6 +52,7 @@ Route::get('/menu', function() {
     return View::make('maps.menu.menu');
 });
 
+
 Route::get('/sites', function() {
     if (!Auth::check()) {
         return Redirect::to('login');

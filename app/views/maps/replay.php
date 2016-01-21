@@ -66,46 +66,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div style="position: absolute;top: 0px;left: 20%; z-index:999999;" id="testLoad">
-                            <!-- <div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;">
-                                    <nav>
-                                        <ul class="menu-hover">
-                                            <li class="list"> <a href=""> Maps </a> 
-                                                <ul class="menu-hover">
-                                                    <li class="list"><a href="../public/replay">History</a></li>
-                                                    <li class="list"><a href="../public/sites">Site Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="list"> <a href=""> Categories </a>
-                                                <ul class="menu-hover">
-                                                    <li class="list"><a href="">All jQuery </a></li>
-                                                    <li class="list"><a href="">Accordion</a></li>
-                                                    <li class="list"><a href="">All jQuery </a></li>
-                                                    <li class="list"><a href="">Accordion</a></li>
-                                                    <li class="list"><a href="">All jQuery </a></li>
-                                                    <li class="list"><a href="">Accordion</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="list"> <a href=""> jQuery Plugins </a>
-                                                <ul class="menu-hover">
-                                                    <li class="list"><a href=""> Latest </a></li>
-                                                    <li class="list"><a href=""> Additions ha ad a a</a></li>
-                                                    <li class="list"><a href="">All jQuery </a></li>
-                                                    <li class="list"><a href="">Accordion</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="list"> <a href=""> Popular </a> </li>
-                                            <li class="list"> <a href=""> Recommended </a></li>
-                                            <li class="list"> <a href=""> Publishing </a>
-                                                <ul class="menu-hover">
-                                                    <li class="list"><a href="#"> Test 1 </a></li>
-                                                    <li class="list"><a href="#"> Test 2 </a></li>
-                                                    <li class="list"><a href="#"> Test 3 </a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div> -->
-                            </div>
+                        </div>
                         </div>
                         <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
                             <img src="assets/imgs/add.png" />
