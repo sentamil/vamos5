@@ -236,7 +236,7 @@ li a label{ width:100%; display:block;}
 .bottomContent h3{ padding-top:0; margin-top:0; font-size:12px;; text-align:center;}
 /*.labels{ color:#fff;}*/
 .container01{min-width: 200px; max-width: 220px; width: 220px; height: 125px; bottom:-33px; margin: 0 auto; position:absolute;}
-.labels { color: #0d0d0d; font-size: 11px; font-weight:bold; text-align: center; white-space: nowrap;background: #f4f4f4; border: 1px solid #0d0d0d; padding: 3px; border-radius: 2px}
+.labels { color: #0d0d0d; font-size: 11px; font-weight:bold; text-align: center; white-space: nowrap;background: #f4f4f4; border: 1px solid #0d0d0d; padding: 4px; border-radius: 25px}
 ./*labels1 { color: #fff; font-size: 9px; font-weight:normal; text-align: center; white-space: nowrap;  width: 24px;}*/
 /*.labels:before {
 	content: '';
@@ -353,4 +353,8 @@ border-width: 10px;
 .dynData td{ font-size:12px; padding:5px;}
 #lastseen, #lstseendate{font-size:12px;}
 .dynData h3{ font-size:12px; margin:0; padding-left:10px; font-weight:normal;}
+#menuView {position: absolute;bottom: 30px;left: 10px; z-index:999999; background: #fff; padding: 4px; box-shadow:0px 1px 2px rgba(0, 0, 0, 0.2)  !important; border-radius : 2px; font-size: 11px;}
+#draggable {position: absolute;top: 40px;left: 130px; z-index:999999; width: 250px;padding: 7px;background: #fff;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
+#contentmin{position: absolute;top: 30px;right: 10px; z-index:999999; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}
 .dynData tbody tr:nth-child(odd){background: #efefef;}
+

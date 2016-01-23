@@ -66,7 +66,7 @@ app.filter('statusfilter', function(){
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
-	$scope.url = 'http://'+globalIP+'/vamo/public//getVehicleLocations';
+	$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations';
 	$scope.historyfor='';
 	$scope.map =  null;
 	$scope.flightpathall = []; 
@@ -84,9 +84,12 @@ app.filter('statusfilter', function(){
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
 			$scope.selected=undefined;
+			$scope.vehicle_list=[];
+			$scope.fcode=[];
 			$scope.locations02 = data;
+			listVehicleName(data);
 			if(data.length){
-				$scope.mapTable = data[0].vehicleLocations;
+				$scope.mapTable = data[$scope.gIndex].vehicleLocations;
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
 				$scope.zoomLevel = parseInt(data[$scope.gIndex].zoomLevel);
@@ -99,7 +102,7 @@ app.filter('statusfilter', function(){
 	$scope.$watch("vehicleStatus", function (val) {
 		if($scope.locations02!=undefined){
 			$scope.selected=undefined;
-			$scope.locations = $scope.statusFilter($scope.locations02[0].vehicleLocations, val);
+			$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, val);
 			$scope.initilize('map_canvas');
 		}
 	});
@@ -192,16 +195,12 @@ app.filter('statusfilter', function(){
 
 	function updateCall()
 	{
-		var url = 'http://'+globalIP+'/vamo/public//getVehicleLocations';
+		var url = 'http://'+globalIP+context+'/public//getVehicleLocations';
 		$http.get(url).success(function(response){
-			// $scope.locations02=[];
-			// $scope.locations=[];
-			// $scope.locations02 = response;
-			// $scope.locations=response;
-			for (var i = 0; i < response[0].vehicleLocations.length; i++) 
+			for (var i = 0; i < response[$scope.gIndex].vehicleLocations.length; i++) 
 			{
-				if($scope.vehicleid == response[0].vehicleLocations[i].vehicleId)
-				$scope.assignValue(response[0].vehicleLocations[i])
+				if($scope.vehicleid == response[$scope.gIndex].vehicleLocations[i].vehicleId)
+				$scope.assignValue(response[$scope.gIndex].vehicleLocations[i])
 			};
 		})
 	}
@@ -262,18 +261,22 @@ app.filter('statusfilter', function(){
 		}
 	}
 	
+
+
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.selected=undefined;
-		 $scope.dynamicvehicledetails1=false;
-		 $scope.url = 'http://'+globalIP+'/vamo/public//getVehicleLocations?group=' + groupname;
-		 $scope.gIndex = groupid;
-		 gmarkers=[];
-		 for(var i=0; i<ginfowindow.length;i++){		
-		 	ginfowindow[i].setMap(null);
-		 }
-		 ginfowindow=[];
-		 clearInterval(setintrvl);
-	//	 $scope.locations01 = vamoservice.getDataCall($scope.url);
+		$scope.selected=undefined;
+		$scope.dynamicvehicledetails1=false;
+		$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group=' + groupname;
+		$scope.gIndex = groupid;
+		
+		$scope.mapTable = $scope.locations02[groupid].vehicleLocations;
+		gmarkers=[];
+		for(var i=0; i<ginfowindow.length;i++){		
+			ginfowindow[i].setMap(null);
+		}
+		ginfowindow=[];
+		clearInterval(setintrvl);
+	 	//$scope.locations02 = vamoservice.getDataCall($scope.url);
 		 	
 	}
 	
@@ -320,14 +323,15 @@ app.filter('statusfilter', function(){
 	$scope.fcode=[];
 	$scope.final_data;
 	// for list of vehicles
-	$http.get('http://'+globalIP+'/vamo/public//getVehicleLocations').success(function(data)
+	// $http.get('http://'+globalIP+'/vamo/public//getVehicleLocations').success(function(data)
+	function listVehicleName(data)
 	{
-		for (var i = 0; i < data[0].vehicleLocations.length; i++) 
+		for (var i = 0; i < data[$scope.gIndex].vehicleLocations.length; i++) 
 		{
-			$scope.vehicle_list.push(data[0].vehicleLocations[i].vehicleId)
+			$scope.vehicle_list.push({'vehiID' : data[$scope.gIndex].vehicleLocations[i].vehicleId, 'vName' : data[$scope.gIndex].vehicleLocations[i].shortName})
 		};
-		$scope.fcode.push(data[0])
-	})
+		$scope.fcode.push(data[$scope.gIndex])
+	}
 
 
 	//split methods
@@ -353,7 +357,7 @@ app.filter('statusfilter', function(){
 	//
 	$scope.getMailIdPhoneNo = function(vehi, days)
 	{
-		console.log('inside the methods')
+		//console.log('inside the methods')
 		var mailId = document.getElementById("mail").value;
 		var phone  = document.getElementById("phone").value;
 		if(vehi == 0 && days ==0)
@@ -362,7 +366,7 @@ app.filter('statusfilter', function(){
 		{
 			$scope.split_fcode($scope.fcode[0].group);
 			var f_code = $scope.split_fcode($scope.fcode[0].group);
-			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
+			var f_code_url ='http://'+globalIP+context+'/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
 			var ecrypt_code_url = '';
 			$http.get(f_code_url).success(function(result){
 				
@@ -387,7 +391,7 @@ app.filter('statusfilter', function(){
 	$scope.addMarker= function(pos){
 	    
 	    var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
-	    var labelAnchorpos = new google.maps.Point(0, 0);	///12, 37
+	    var labelAnchorpos = new google.maps.Point(19, 0);	///12, 37
 	    $scope.marker = new MarkerWithLabel({
 			   position: myLatlng, 
 			   map: $scope.map,
@@ -453,7 +457,7 @@ app.filter('statusfilter', function(){
 	}
 	
 	$scope.enterkeypress = function(){
-		var url = 'http://'+globalIP+'/vamo/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+		var url = 'http://'+globalIP+context+'/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
 		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
 			vamoservice.getDataCall(url).then(function(data) {
 			 	document.getElementById('poival').value='';
@@ -608,7 +612,7 @@ app.filter('statusfilter', function(){
 				}else if($scope.nearbyflag==true){
 					$('#status02').show(); 
 					$('#preloader02').show(); 
-					var tempurl = 'http://'+globalIP+'/vamo/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
+					var tempurl = 'http://'+globalIP+context+'/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
 					
 					$http.get(tempurl).success(function(data){
 						$scope.nearbyLocs = data;
@@ -668,10 +672,11 @@ app.filter('statusfilter', function(){
 	//click and resolve address
 	$scope.address_click = function(data, ind)
 	{
-		var urlAddress 		=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
-		$http.get(urlAddress).success(function(response)
-		{
-			data.address 	=	response.results[0].formatted_address;
+		console.log(' inside the address function')
+		var tdurl 		=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
+		vamoservice.getDataCall(tdurl).then(function(response) {
+			console.log(response)
+			// data.address 	=	response.results[0].formatted_address;
 			// var t 			= 	vamo_sysservice.geocodeToserver(data.latitude,data.longitude,response.results[0].formatted_address);
 		});
 	}
@@ -699,7 +704,7 @@ app.filter('statusfilter', function(){
 					ginfowindow[j].close();
 				}
 				ginfowindow[i].open($scope.map,gmarkers[i]);
-				var url = 'http://'+globalIP+'/vamo/public//getGeoFenceView?vehicleId='+$scope.vehicleno;
+				var url = 'http://'+globalIP+context+'/public//getGeoFenceView?vehicleId='+$scope.vehicleno;
 				$scope.createGeofence(url);
 				
 			}
@@ -721,7 +726,7 @@ app.filter('statusfilter', function(){
 	}
 
 	//return home
-	function home ()
+	function homeMap ()
 	{
 		$("#listImg").show();
 		$("#homeImg").hide();
@@ -740,7 +745,7 @@ app.filter('statusfilter', function(){
 				listMap();
 				break;
 			case 'home' :
-				home();
+				homeMap();
 				break;
 			default:
 		   		break;
@@ -750,33 +755,15 @@ app.filter('statusfilter', function(){
 	//mouse over in list view table
 	$scope.mouseJump  = function(user)
 	{
-		console.log(' inside the mouseJump '+user)
-		var myLatlng = new google.maps.LatLng(user.latitude,user.longitude);
-	    var labelAnchorpos = new google.maps.Point(12, 37);
-	    var geolat;
-	    var geolng;
-	    var listLat 	=	latlngSlice(user.latitude);
-	    var listLan		=	latlngSlice(user.longitude);
 		for(var i = 0; i <gmarkers.length; i++)
 		{
-	   		geolat 		= 	latlngSlice(gmarkers[i].getPosition().lat());
-	   		geolng  	= 	latlngSlice(gmarkers[i].getPosition().lng());
-	   		if(listLat == geolat && listLan == geolng)
-	   		{
-	   			gmarkers[i].setAnimation(google.maps.Animation.BOUNCE);
-	   			gmarkers[i].setAnimation(null);
-	   		}
+	   		if(gmarkers[i].labelContent == user.shortName)
+	   		gmarkers[i].setAnimation(google.maps.Animation.BOUNCE);
+	   		gmarkers[i].setAnimation(null);
+	   		
 	   }
 	}
-
-	function latlngSlice(val)
-	{
-		var num = val.toString();
-		num = num.slice(0, (num.indexOf("."))+7)
-		num = Number(num);
-		return num;
-	}
-
+		
 	$scope.infowindowshowFunc = function(){
 		for(var j=0; j<ginfowindow.length;j++){
 			ginfowindow[j].close();
@@ -824,7 +811,8 @@ app.filter('statusfilter', function(){
 				vamoservice.getDataCall(scope.url).then(function(data) {
 					if(data.length){
 						scope.selected=undefined;
-						scope.locations02 = data;
+						// scope.locations02 = data;
+						// scope.mapTable = data[0].vehicleLocations;
 						//scope.vehiname	= data[scope.gIndex].vehicleLocations[scope.selected].vehicleId;
 						scope.locations = scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
 						scope.zoomLevel = scope.zoomLevel;

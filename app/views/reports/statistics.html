@@ -57,7 +57,7 @@ background-color: #ffffff;
                 </li> -->
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.vehicleId}} ({{loc.shortName}})</a></li>
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
                     </ul>
                 </li>
             </ul>
@@ -80,7 +80,7 @@ background-color: #ffffff;
                     	<span class="pull-right"><a href="performance"><input class="btn btn-xs btn-danger pull-right" type="button" value="Performance"></a></span></div> -->
 		            <div class="box-tools pull-right">
 
-		                <a href="downloadstatistics?sid={{data1.group}}&rid={{downloadid}}&vid={{vid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
+		                <!-- <a href="downloadstatistics?sid={{data1.group}}&rid={{downloadid}}&vid={{vid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a> -->
 		                <img style="cursor: pointer;" ng-click="exportData(downloadid)"  src="../app/views/reports/image/xls.png" />
 		            	<img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV(downloadid)"  src="../app/views/reports/image/csv.jpeg" />
 
@@ -161,7 +161,7 @@ background-color: #ffffff;
 		        	 <!-- // print '	<!-- Tabset -->
 					 <tabset class="nav-tabs-custom">
 
-			   			 <tab select="alertMe('executive')" heading="Executive" > <!-- active="tabActive" disabled="test" -->
+			   			 <tab select="alertMe('executive')" heading="Executive"  active="tabActive"> <!-- active="tabActive" disabled="test" -->
 			   				 <h4 style="margin:0" class="page-header">Executive</h4>
 			   				 <div id='executive'>
 			   				  <table class="table table-bordered table-condensed table-hover table-striped">
@@ -180,8 +180,8 @@ background-color: #ffffff;
 										<td width="10%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo Close Reading</td>
 										<td width="7%" class="id" custom-sort order="'topSpeed'" sort="sort" style="text-align:center;">Top Speed</td>	
 										<td width="10%" class="id" custom-sort order="'topSpeedTime'" sort="sort" style="text-align:center;">Top Speed Time</td>
-										<td width="10%" class="id" custom-sort order="'topSpeedGeoLocation'" sort="sort" style="text-align:center;">Top Location</td>
-										<td width="11%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Address</td>
+										<!-- <td width="10%" class="id" custom-sort order="'topSpeedGeoLocation'" sort="sort" style="text-align:center;">Top Location</td> -->
+										<td width="21%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</td>
 									</tr>
 									<tr ng-repeat="user in execGroupReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
 										<!-- <td><a href="history?vid={{user.vehicleId}}">{{user.vehicleId}}</a></td> -->
@@ -194,7 +194,7 @@ background-color: #ffffff;
 										<td>{{user.odoClosingReading}}</td>
 										<td>{{user.topSpeed}}</td>	
 										<td>{{user.topSpeedTime}}</td>
-										<td get-geo geo={{user.topSpeedGeoLocation}}>{{user.topSpeedGeoLocation}}</td>
+										<td get-geo geo={{user.topSpeedGeoLocation}} ng-hide="true">{{user.topSpeedGeoLocation}}</td>
 										<td ng-if="user.address!=null">{{user.address}}</td>
 										<td style="cursor: pointer;" get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]==null">Click Me</td>
 										<td get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]!=null">{{maddress[$index]}}</td>

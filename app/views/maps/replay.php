@@ -44,7 +44,7 @@
                 <!--
                  <li class="settings"><a href="../public/settings"><div></div><label>Settings</label></a></li>
                  -->
-		    <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
+		        <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;">
@@ -56,7 +56,7 @@
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak>{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.vehicleId}} ({{loc.shortName}}) </a></li>
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.shortName}}</a></li>
                     </ul>
                 </li>
             </ul>
@@ -75,7 +75,7 @@
                                  <table cellpadding="0" cellspacing="0" class="dynData">
                                         	<tbody>
                                                 <tr>
-                                                	<td style="text-align:center; font-weight:bold;">Vehicle ID</td>
+                                                	<td style="text-align:center; font-weight:bold;">Vehicle Name</td>
                                                     <td id="vehiid" style="text-align:center; font-weight:bold !important;"><h3></h3></td>
                                                     
                                                 </tr>

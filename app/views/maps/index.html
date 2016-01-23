@@ -93,7 +93,7 @@
                         <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
                             <img src="assets/imgs/add.png" />
                         </div>
-                        <div id="menuView" style="position: absolute;bottom: 30px;left: 10px; z-index:999999; background: #fff; padding: 4px; box-shadow:0px 1px 2px rgba(0, 0, 0, 0.2)  !important; border-radius : 2px; font-size: 11px;">
+                        <div id="menuView">
 
                             <!-- <input type="button" name="mapClick" value="mapList" > List &amp; Map -->
                             <span id="listImg" ng-click="mapView('listMap')" title="List and Map"><img src="assets/imgs/list.png" /></span>
@@ -104,7 +104,7 @@
                         <div id="minmaxMarker" style="position: absolute;top: 10px;left: 120px; z-index:999999" title="Maps Marker Details">
                             <img src="assets/imgs/add.png" />
                         </div>
-                        <div id="draggable" style="position: absolute;top: 40px;left: 130px; z-index:999999; width: 250px;padding: 7px;background: #fff;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;">
+                        <div id="draggable">
                                <div class="legendlist">
                                     <h3><b>Vehicle Status</b></h3>
                                     <div>
@@ -133,20 +133,20 @@
                                 </div>
                         </div>
 
-                        <div id="contentmin" class="rightsection" style="position: absolute;top: 30px;right: 10px; z-index:999999; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
+                        <div id="contentmin" class="rightsection">
                                <input type="button" id="traffic" ng-click="check()" value="Traffic" />
                                <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>
                                <input type="text" id="distanceVal" value="0" disabled/> <span style="font-size:12px;">Kms</span>
                                
                                <input type="button" value="Near by Vehicles" id="nearbyVeh" ng-click="nearBy();"/>
-                               <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Live Tracking</div>
+                               <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Live Tracking <div id="google_translate_element"></div></div>
                                <div>
                                 
                               
                                
                                <select ng-model="days1" style="width:100%; font-weight: bold; font-size: 12px; padding : 3px">
                                     <option value = "0">Vehicle Id</option>
-                                    <option ng-repeat="vehi in vehicle_list" ng-value="">{{vehi}}</option>
+                                    <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
                                 </select>
                                 <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px">
                                 <select id="Days" ng-model="days" style="height: 18px;">
@@ -369,7 +369,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/highcharts-more.js"></script>
     <script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
@@ -382,6 +382,13 @@
     <script src="assets/js/custom.js"></script>
     <script>
     
+
+
+    function googleTranslateElementInit() 
+    {
+         new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+
     //menu loading
     $("#testLoad").load("../public/menu");
     var logo =document.location.host;

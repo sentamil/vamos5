@@ -66,9 +66,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	}
 
 
-	function as(ff)
+	function eventButton(eventdate)
 	{
-		$scope.buttonClick = ff;
+		$scope.buttonClick = eventdate;
 		serviceCallEvent();
 	}
 
@@ -84,7 +84,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     	var speedEvent 		= 	document.getElementById ("overspeed1").value
     	var locEvent 		=   document.getElementById ("location").checked;
     	var siteEvent 		= 	document.getElementById ("site").checked;
-    	var urlEvent 	= "http://"+getIP+"/vamo/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+stoppage+"&stopMints="+stopMints+"&idle="+idleEvent+"&idleMints="+idleMints+"&notReachable="+notReachable+"&notReachableMints="+notReachMints+"&overspeed="+overspeedEvent+"&speed="+speedEvent+"&location="+locEvent+"&site="+siteEvent;
+    	var urlEvent 	= "http://"+getIP+context+"/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+stoppage+"&stopMints="+stopMints+"&idle="+idleEvent+"&idleMints="+idleMints+"&notReachable="+notReachable+"&notReachableMints="+notReachMints+"&overspeed="+overspeedEvent+"&speed="+speedEvent+"&location="+locEvent+"&site="+siteEvent;
     	//console.log(' inside the method '+ urlEvent)
 
     	$http.get(urlEvent).success(function(eventRes){
@@ -157,7 +157,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
   
    	$scope.$watch(prodId, function() {
    		$scope.id	=	prodId;
-   		var histurl	=	"http://"+getIP+"/vamo/public/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval;
+   		var histurl	=	"http://"+getIP+context+"/public/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval;
    		$scope.loading	=	true;
 		$http.get(histurl).success(function(data){
 			$scope.loading			=	false;
@@ -502,7 +502,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	    return marktimestr;
     };
 	
-	$scope.url = 'http://'+getIP+'/vamo/public//getVehicleLocations';	
+	$scope.url = 'http://'+getIP+context+'/public//getVehicleLocations';	
 	$scope.$watch("url", function (val) {
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
@@ -517,7 +517,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		});
 	
 	$scope.groupSelection = function(groupname, groupid){
-		$scope.url = 'http://'+getIP+'/vamo/public//getVehicleLocations?group='+groupname;
+		$scope.url = 'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
 		
 	};
 	
@@ -606,7 +606,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     $scope.plotHist			=	function() {
     	$scope.loading		=	true;
     	var valueas 		=   $('#txtv').val();
-		var histurl			=	"http://"+getIP+"/vamo/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
+		var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
 		if($scope.downloadid == 'eventReport')
 		{
 
@@ -615,7 +615,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			$scope.buttonClick 	= true;
 			$scope.eventReportData=[];
 			$scope.loading	=	false;
-			as($scope.buttonClick);
+			eventButton($scope.buttonClick);
 			
 			//console.log(' value '+$scope.eventReportData.length)
 			
@@ -636,7 +636,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    
      //pdf method
      $scope.pdfHist			=		function() {  	
-		var histurl	=	"http://"+getIP+"/vamo/public//getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;			
+		var histurl	=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;			
 		//console.log(histurl);		
 
 		$http.get(histurl).success(function(data){
