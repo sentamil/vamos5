@@ -267,8 +267,21 @@ background-color: #ffffff;
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.distanceCovered}}</td>
 										<td>{{user.speed}}</td>
-										<td>{{user.position}}</td>
-										<td>{{user.status}}</td>
+										<td ng-switch on="user.position">
+			                                <span ng-switch-when="S"><img title="Vehicle Standing" src="assets/imgs/orange.png"/></span>
+			                                <span ng-switch-when="M"><img title="Vehicle Moving" src="assets/imgs/green.png"/></span>
+			                                <span ng-switch-when="P"><img title="Vehicle Parked" src="assets/imgs/flag.png"/></span>
+			                                <span ng-switch-when="U"><img title="Vehicle NoData" src="assets/imgs/gray.png"/></span>
+			                            </td>
+			                            <td ng-switch on="user.status">
+			                                <span ng-switch-when="OFF"><img title="GPS OFF" src="assets/imgs/gof.png"/></span>
+			                                <span ng-switch-when="ON"><img title="GPS ON" src="assets/imgs/gon.png"/></span>
+			                            </td>
+			                            <!-- <td ng-switch on="user.ignitionStatus">
+			                                <span ng-switch-when="OFF"><img src="assets/imgs/no.png"/></span>
+			                                <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
+			                                          
+			                            </td> -->
 										<td>{{user.latitude}}, {{user.longitude}}</td>
 										<td ng-if="user.address!=null" ng-click="address_click(user, $index)">{{user.address}}</td>
 										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
