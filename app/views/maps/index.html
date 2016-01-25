@@ -90,20 +90,46 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
+                       <!--  <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
                             <img src="assets/imgs/add.png" />
-                        </div>
+                        </div> -->
                         <div id="menuView">
 
-                            <!-- <input type="button" name="mapClick" value="mapList" > List &amp; Map -->
-                            <span id="listImg" ng-click="mapView('listMap')" title="List and Map"><img src="assets/imgs/list.png" /></span>
-                            <span id="homeImg" ng-click="mapView('home')"><img src="assets/imgs/home.png" /></span>
+                            <!-- Side Menu -->
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div title="Live Details" id="viewMap"><img id="minmax" src="assets/imgs/ply.png" /></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div title="Maps Marker Details" id="viewMap"><img id="minmaxMarker"  src="assets/imgs/i.png" /></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div id="viewMap">
+                                             <span title="List and Maps" id="listImg" ng-click="mapView('listMap')" title="List and Map"><img src="assets/imgs/lis.png" /></span>
+                                            <span title="Home" id="homeImg" ng-click="mapView('home')"><img src="assets/imgs/hom.png" /></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="padding: 5px 1px 5px 1px" title="Full Screen"><a href="../public/liveTrack" id="fullscreen" target="_blank"><img id="minmaxMarker"  src="assets/imgs/full.png" /></a></div>
+                                    </td>
+                                </tr>   
+                            </table>    
+                            
+                            
+                            
 
                             <!-- <input type="radio" name="mapClick" value="mapList" ng-click="mapView('home')"> Home -->
                         </div>
-                        <div id="minmaxMarker" style="position: absolute;top: 10px;left: 120px; z-index:999999" title="Maps Marker Details">
+                        <!-- <div id="minmaxMarker" style="position: absolute;top: 10px;left: 120px; z-index:999999" title="Maps Marker Details">
                             <img src="assets/imgs/add.png" />
-                        </div>
+                        </div> -->
                         <div id="draggable">
                                <div class="legendlist">
                                     <h3><b>Vehicle Status</b></h3>
@@ -162,8 +188,9 @@
                                     <option value = "9">9</option>
                                     <option value = "10">10</option>
                                 </select>
-                                <button type="button" data-toggle="modal" data-target="#myModal" style="height: 19px; background: #3398ff; color: #ffffff; border-radius: 5px">Get Url</button>
-                                <a href="../public/liveTrack" id="fullscreen" target="_blank">Full Screen</a>
+                                <input type="button" id="traffic" data-toggle="modal" data-target="#myModal" ng-click="check()" value="Get Url" />
+                                <!-- <button type="button" data-toggle="modal" data-target="#myModal" style="height: 19px; background: #3398ff; color: #ffffff; border-radius: 5px">Get Url</button> -->
+                                <!-- <a href="../public/liveTrack" id="fullscreen" target="_blank">Full Screen</a> -->
                                <!--  <a ng-href= "#"  target="myModal">Get Url</a> -->
                                 <!-- ng-click="clicked(days1, days)" -->
                                 </div>
@@ -311,12 +338,12 @@
                             <th style="text-align:center;"><div style="width: 100px;">Vehicle Name</div></th>
                             <th style="text-align:center;"><div style="width: 100px;">Regn No</div></th>
                             <th style="text-align:center;"><div style="width: 100px;">Driver Name</div></th>
-                            <th style="text-align:center;"><div style="width: 100px;">Last Seen</div></th>
-                            <th style="text-align:center;"><div style="width: 50px;">KM</div></th>
-                            <th style="text-align:center;"><div style="width: 70px;">Speed</div></th>
                             <th style="text-align:center;"><div style="width: 70px;">Position</div></th>
                             <th style="text-align:center;"><div style="width: 70px;">GPS</div></th>
                             <th style="text-align:center;"><div style="width: 70px;">Ignition</div></th>
+                            <th style="text-align:center;"><div style="width: 100px;">Last Seen</div></th>
+                            <th style="text-align:center;"><div style="width: 50px;">KM</div></th>
+                            <th style="text-align:center;"><div style="width: 70px;">Speed</div></th>
                             <th style="text-align:center;"><div style="width: 300px;">Nearest Location</div></th>
                                    
                         </tr>
@@ -324,19 +351,25 @@
                             <td>{{user.shortName}}</td>
                             <td>{{user.regNo}}</td>
                             <td>{{user.driverName}}</td>
-                            <td>{{user.lastSeen}}</td>
-                            <td>{{user.distanceCovered}}</td>
-                            <td>{{user.speed}}</td>
-                            <td>{{user.position}}</td>
+                            <td ng-switch on="user.position">
+                                <span ng-switch-when="S"><img title="Vehicle Standing" src="assets/imgs/orange.png"/></span>
+                                <span ng-switch-when="M"><img title="Vehicle Moving" src="assets/imgs/green.png"/></span>
+                                <span ng-switch-when="P"><img title="Vehicle Parked" src="assets/imgs/flag.png"/></span>
+                                <span ng-switch-when="U"><img title="Vehicle NoData" src="assets/imgs/gray.png"/></span>
+                            </td>
                             <td ng-switch on="user.status">
-                                <span ng-switch-when="OFF"><img src="assets/imgs/gof.png"/></span>
-                                <span ng-switch-when="ON"><img src="assets/imgs/gon.png"/></span>
+                                <span ng-switch-when="OFF"><img title="GPS OFF" src="assets/imgs/gof.png"/></span>
+                                <span ng-switch-when="ON"><img title="GPS ON" src="assets/imgs/gon.png"/></span>
                             </td>
                             <td ng-switch on="user.ignitionStatus">
                                 <span ng-switch-when="OFF"><img src="assets/imgs/no.png"/></span>
                                 <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
                                           
                             </td>
+                            <td>{{user.lastSeen}}</td>
+                            <td>{{user.distanceCovered}}</td>
+                            <td>{{user.speed}}</td>
+                            
                             <td ng-click="address_click(user, $index)">{{user.address}}</td>
                             <!-- <td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
                             <td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
