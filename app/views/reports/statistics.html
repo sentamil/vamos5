@@ -192,8 +192,14 @@ background-color: #ffffff;
 										<td>{{user.overSpeedInstances}}</td>
 										<td>{{user.odoOpeningReading}}</td>
 										<td>{{user.odoClosingReading}}</td>
-										<td>{{user.topSpeed}}</td>	
-										<td>{{user.topSpeedTime}}</td>
+										<td>
+											<p ng-if="user.topSpeed==0">--</p>
+											<p ng-if="user.topSpeed!=0">{{user.topSpeed}}</p>
+										</td>	
+										<td>
+											<p ng-if="user.topSpeed==0">--</p>
+											<p ng-if="user.topSpeed!=0">{{user.topSpeedTime}}</p>
+										</td>
 										<td get-geo geo={{user.topSpeedGeoLocation}} ng-hide="true">{{user.topSpeedGeoLocation}}</td>
 										<td ng-if="user.address!=null">{{user.address}}</td>
 										<td style="cursor: pointer;" get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]==null">Click Me</td>

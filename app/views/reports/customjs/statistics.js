@@ -21,6 +21,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
     $scope.tt	 			= 	getParameterByName('tt');
    	$scope.cid 				=	getParameterByName('cid');
    	$scope.valTab 			= 	'executive';
+   	$scope.texecGroupReportData = [];
 
    	$scope.getTodayDate  =	function(date) {
      	var date = new Date(date);
@@ -47,7 +48,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	}
 	
 	$scope.$watch('sid', function() {
-		 //alert(1);
+		 alert(1+sid);
 		if($scope.rid=='executive') {
 			$scope.loading			=	true;
    		 	var gurl				=	'http://'+getIP+context+'/public//getExecutiveReport?groupId='+$scope.sid+'&fromDate='+$scope.fd+'&toDate='+$scope.td;
@@ -116,6 +117,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			$scope.fromtime			=	formatAMPM($scope.fromNowTS);
    			$scope.totime			=	formatAMPM($scope.toNowTS);
 			$scope.plotHist();
+			// console.log(' 2 ')
 			
 		}).error(function(){ /*alert('error'); */});
 	});
@@ -123,14 +125,17 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	$scope.groupSelection 	= function(groupname, groupid){
 		 $scope.vid 		= "";
 		 $scope.tabActive 	= true;
-		 $scope.donut	  	= false;
+		 
 		 $scope.bar		  	= true;
-		 $scope.valeBool = false;
+		 $scope.valeBool 	= false;
+		 if($scope.whichdata)
+		 $scope.donut	  	= false;
 		 // $scope.whichdata 	= true;
 		 
 		 $scope.url 		= 'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
 		 $scope.gIndex 		= groupid;
 		 $scope.plotHist();
+		 // console.log(' 3 ')
 		 // $scope.alertMe($scope.valTab);
 	}
 	
@@ -176,10 +181,15 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 		else {		
 			var gurl		=	'http://'+getIP+context+'/public//getPoiHistory?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 			//console.log(gurl);
-			$scope.geofencedata=[];
-			$scope.whichdata	=		false;				
+			//$scope.geofencedata=[];
+			$scope.whichdata	=		false;
+			// $scope.execGroupReportData=[];				
 			if(!$scope.sid) {
-				$scope.loading			=	true; 
+				$scope.loading			=	true;
+				// $scope.execGroupReportData	=	($filter('filter')($scope.execGroupReportData, {'vehicleId':$scope.vid}));
+				// $scope.texecGroupReportData		=	$scope.execGroupReportData;	
+				console.log(' data ::'+$scope.execGroupReportData)
+				console.log(' data ::'+$scope.texecGroupReportData) 
 				$http.get(gurl).success(function(gdata){
 
 				//console.log(gdata);	
@@ -338,6 +348,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			$scope.dataGeofence(gdata.gfTrip);
 			$scope.loading			=	false;
 		});
+		$scope.plotHist();
 	}
 	
 	$scope.dataGeofence 		= 		function(data) {
@@ -347,29 +358,23 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	$scope.alertMe		=	function(data) {	
 		switch(data) {
 			case 'executive':
-				// $scope.geofencedata=[];			
-				// $scope.donut		=		false;
-				// $scope.bar			=		true;
-				// console.log($scope.valeBool)
-				// if($scope.valeBool)
-				// {
+				if($scope.valeBool)
+				{
 					
-				// 	$scope.donut		=		true;
-				// 	$scope.bar			=		false;
-				// }
-				// else
-				// {
+					$scope.donut		=		true;
+					$scope.bar			=		false;
+				}
+				else
+				{
 					$scope.donut		=		false;
 					$scope.bar			=		true;
-				// }
-				// if($scope.vid!=null) {
-				// 	$scope.donutLoad($scope.texecGroupReportData);
-				// }
+				}
 				$scope.timeslot		=		true;
 				$scope.whichdata	=		true;
 				$scope.downloadid	=		'executive';
 				$scope.valTab       =       'executive';
 				$scope.plotHist();
+				console.log(' 1 ')
 				break;
 			case 'geofence':
 				if($scope.vid==null) {
@@ -386,10 +391,11 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 				$scope.loading			=	true; 
 				$http.get(gurl).success(function(gdata)
 				{
+					//if(gdata!=null)
 					$scope.dataGeofence(gdata.history);	
 					$scope.loading			=	false;
 				});
-					
+				 $scope.plotHist();
 				break;			
 			default:
 				break;

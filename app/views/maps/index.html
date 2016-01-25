@@ -328,8 +328,15 @@
                             <td>{{user.distanceCovered}}</td>
                             <td>{{user.speed}}</td>
                             <td>{{user.position}}</td>
-                            <td>{{user.status}}</td>
-                            <td>{{user.ignitionStatus}}</td>
+                            <td ng-switch on="user.status">
+                                <span ng-switch-when="OFF"><img src="assets/imgs/gof.png"/></span>
+                                <span ng-switch-when="ON"><img src="assets/imgs/gon.png"/></span>
+                            </td>
+                            <td ng-switch on="user.ignitionStatus">
+                                <span ng-switch-when="OFF"><img src="assets/imgs/no.png"/></span>
+                                <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
+                                          
+                            </td>
                             <td ng-click="address_click(user, $index)">{{user.address}}</td>
                             <!-- <td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
                             <td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
