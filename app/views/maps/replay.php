@@ -116,6 +116,7 @@
                             		<input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="speedval" value="200" type="radio" /><span>Slow</span>
                             		<input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="100" /><span>Normal</span>
                             		<input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="20" /><span>Fast</span>
+                                    <button ng-click="plotting()" style="width:75px;">Plot</button>
                             	</div>
                             	<div class=""  style="padding-top: 5px; float:left;">
                                     <button ng-click="playhis()" id="playButton" style="display:none"><i class="glyphicon glyphicon-play"></i></button>
@@ -124,11 +125,17 @@
                                     <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
                                      
                                 </div>
-                                <div class="form-group" style="width:75px; margin-top: 5px; margin-left:10px; float:left;">
-                                         <button ng-click="plotting()" style="width:75px;">Plot</button>
-                                     </div>
+                                <div style="padding: 5px; float:left;">
+                                        <label>Stops :</label>
+                                        <select id="traffic" title="Suggested Stops" style="width: 120px;height: 25px;" ng-model="geoStops" ng-change="goeValueChange()" ng-options="geo.stopName as geo.stopName for geo in geoStop.geoFence">
+                                           <!-- <option ng-repeat="geo in geoStop.geoFence" value="{{geo.stopName}}">{{geo.stopName}}</option> -->
+                                        </select> 
+                                </div>
+                                   
                                 <div>
+
                                     <h3 style="font-size:14px; clear:both; text-align:center;"><b>Vehicle Details</b></h3>
+                                    
                                     <table cellpadding="0" cellspacing="0" class="dynData">
                                     	<tbody>
                                              <tr>
@@ -158,6 +165,7 @@
                             <div id="lastseen"></div><div id="lstseendate"></div>
                         
                                 <div class="legendlist">
+
                                 	<h3><b>Vehicle Status</b></h3>
                                     <div>
                                     	<table cellpadding="0" cellspacing="0">
@@ -268,7 +276,7 @@
         $('#minmax').click(function(){
             $('#contentmin').animate({
                 height: 'toggle'
-            },2000);
+            },500);
         });
     });
 		$("#menu-toggle").click(function(e) {
