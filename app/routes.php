@@ -145,6 +145,14 @@ Route::get('/getOverallVehicleHistory', function() {
 });
 
 
+Route::get('/getSiteReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getSiteReport');
+    return View::make('vls.getSiteReport');
+});
+
 Route::get('/getVehicleExp', function() {
     if (!Auth::check()) {
         return Redirect::to('login');

@@ -357,5 +357,5 @@ border-width: 10px;
 #draggable {position: absolute;top: 40px;left: 130px; z-index:999999; width: 250px;padding: 7px;background: #fff;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
 #contentmin{position: absolute;top: 30px;right: 10px; z-index:999999; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}
 .dynData tbody tr:nth-child(odd){background: #efefef;}
-#viewMap{padding: 5px 1px 5px 1px; width: 100%; border-bottom-style: solid; border-bottom-color: #bfbfbf; border-width: 0.1em;}
+#viewMap{cursor: pointer; padding: 5px 1px 5px 1px; width: 100%; border-bottom-style: solid; border-bottom-color: #bfbfbf; border-width: 0.1em;}
 

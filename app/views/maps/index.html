@@ -99,6 +99,14 @@
                             <table>
                                 <tr>
                                     <td>
+                                        <div id="viewMap">
+                                             <span title="List and Maps" id="listImg" ng-click="mapView('listMap')" title="List and Map"><img src="assets/imgs/lis.png" /></span>
+                                            <span title="Home" id="homeImg" ng-click="mapView('home')"><img src="assets/imgs/hom.png" /></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <div title="Live Details" id="viewMap"><img id="minmax" src="assets/imgs/ply.png" /></div>
                                     </td>
                                 </tr>
@@ -109,15 +117,13 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div id="viewMap">
-                                             <span title="List and Maps" id="listImg" ng-click="mapView('listMap')" title="List and Map"><img src="assets/imgs/lis.png" /></span>
-                                            <span title="Home" id="homeImg" ng-click="mapView('home')"><img src="assets/imgs/hom.png" /></span>
-                                        </div>
+                                        <div title="Near by Vehicles" id="viewMap" ng-click="nearBy();"><img src="assets/imgs/near.png" />
+                                        <!-- <input type="button" value="Near by Vehicles" id="nearbyVeh" /></div> -->
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div style="padding: 5px 1px 5px 1px" title="Full Screen"><a href="../public/liveTrack" id="fullscreen" target="_blank"><img id="minmaxMarker"  src="assets/imgs/full.png" /></a></div>
+                                        <div style="padding: 5px 1px 5px 1px; cursor:pointer;" title="Full Screen"><a href="../public/liveTrack" id="fullscreen" target="_blank"><img id="minmaxMarker"  src="assets/imgs/full.png" /></a></div>
                                     </td>
                                 </tr>   
                             </table>    
@@ -163,8 +169,6 @@
                                <input type="button" id="traffic" ng-click="check()" value="Traffic" />
                                <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>
                                <input type="text" id="distanceVal" value="0" disabled/> <span style="font-size:12px;">Kms</span>
-                               
-                               <input type="button" value="Near by Vehicles" id="nearbyVeh" ng-click="nearBy();"/>
                                <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Live Tracking <div id="google_translate_element"></div></div>
                                <div>
                                 
@@ -347,7 +351,7 @@
                             <th style="text-align:center;"><div style="width: 300px;">Nearest Location</div></th>
                                    
                         </tr>
-                        <tr ng-repeat="user in mapTable" style="text-align:center" ng-mouseover="mouseJump(user)">
+                        <tr ng-repeat="user in mapTable" style="text-align:center; cursor: pointer" ng-mouseover="mouseJump(user)" ng-click="tabletd(user)">
                             <td>{{user.shortName}}</td>
                             <td>{{user.regNo}}</td>
                             <td>{{user.driverName}}</td>
@@ -414,6 +418,7 @@
     <script src="http://code.highcharts.com/highcharts-more.js"></script>
     <script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
+   <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/infobubble.js"  type="text/javascript"></script>
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
@@ -439,7 +444,7 @@
         $('#minmax').click(function(){
             $('#contentmin').animate({
                 height: 'toggle'
-            },2000);
+            },500);
         });
     });
 
@@ -453,7 +458,7 @@
              //$('#draggable').toggled();
               $('#draggable').animate({
                 height: 'toggle'
-            },2000);
+            },500);
         });
     
 

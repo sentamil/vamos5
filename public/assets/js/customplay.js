@@ -254,6 +254,7 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		return textVal.split(":")[0].trim();
 	}
 	$scope.createGeofence=function(url){
+		console.log('--->'+url)
 		if($scope.cityCirclecheck==false){
 			$scope.cityCirclecheck=true;
 		}
@@ -268,9 +269,10 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		}
 		var defdata = $q.defer();
 		$http.get(url).success(function(data){
-			
+			console.log(' url '+data)
 			$scope.geoloc = defdata.resolve(data);
-			
+			$scope.geoStop = data;
+			geomarker=[];
 			if (typeof(data.geoFence) !== 'undefined' ) {	
 				
 				if(data.geoFence!=null){
@@ -314,14 +316,59 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		}
 		});
 	}
+	$scope.goeValueChange = function()
+	{
+		//$scope.geoStops;
+		//console.log(' ---- >'+$scope.geoStops)
+		$scope.map.setZoom(13)
+		if($scope.geoStops!=0)
+		{
+			for(var i = 0; i < $scope.geoStop.geoFence.length; i++)
+			{
+				if($scope.geoStops==$scope.geoStop.geoFence[i].stopName)
+				{
+					//$scope.map.setZoom(18);
+					$scope.map.setCenter(geomarker[i].getPosition());
+					animateMapZoomTo($scope.map, 20);
+			 	}
+			}
+		}
+	}
+
+
+function animateMapZoomTo(map, targetZoom) {
+    var currentZoom = arguments[2] || map.getZoom();
+    if (currentZoom != targetZoom) {
+        google.maps.event.addListenerOnce(map, 'zoom_changed', function (event) {
+            animateMapZoomTo(map, targetZoom, currentZoom + (targetZoom > currentZoom ? 1 : -1));
+        });
+        setTimeout(function(){ map.setZoom(currentZoom) }, 80);
+    }
+}
+
+
+	function smoothZoom (map, max, cnt) {
+    if (cnt >= max) {
+            return;
+        }
+    else {
+        z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+            google.maps.event.removeListener(z);
+            smoothZoom(map, max, cnt + 1);
+        });
+        setTimeout(function(){map.setZoom(cnt)}, 80);
+    }
+}  
 	$scope.infowin = function(data){
 		
 		var centerPosition = new google.maps.LatLng(data.latitude, data.longitude);
 					var labelText = data.poiName;
+					var stop = data.stopName;
 					var image = 'assets/imgs/busgeo.png';
 				  
 				  	var beachMarker = new google.maps.Marker({
 				      position: centerPosition,
+				      title: stop,
 				      map: $scope.map,
 				      icon: image
 				  	});
@@ -790,6 +837,11 @@ if($scope.markerstart){
 		$('#playButton').show();	
 		 window.clearInterval(id);
 		 $scope.gscount = $scope.gcount;
+		 console.log(' val '+$scope.gscount)
+
+		 // google.maps.event.addListener($scope.map, "click", function(e) {
+			 console.log(" maps "+$scope.path)
+		 //  })
 	}
 	
 	$scope.speedchange=function(){

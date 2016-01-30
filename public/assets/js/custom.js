@@ -92,7 +92,7 @@ app.filter('statusfilter', function(){
 				$scope.mapTable = data[$scope.gIndex].vehicleLocations;
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
-				$scope.zoomLevel = parseInt(data[$scope.gIndex].zoomLevel);
+				$scope.zoomLevel = 6;
 				$scope.support = data[$scope.gIndex].supportDetails;
 				$scope.initilize('map_canvas');
 			}
@@ -276,7 +276,7 @@ app.filter('statusfilter', function(){
 		}
 		ginfowindow=[];
 		clearInterval(setintrvl);
-	 	//$scope.locations02 = vamoservice.getDataCall($scope.url);
+		//$scope.locations02 = vamoservice.getDataCall($scope.url);
 		 	
 	}
 	
@@ -341,7 +341,6 @@ app.filter('statusfilter', function(){
 		while(strFine.charAt(0)===':')
 		strFine = strFine.substr(1);
 		return strFine;
-
 	}
 	
 	//encryt url
@@ -411,6 +410,7 @@ app.filter('statusfilter', function(){
 			});		
 		}
 		gmarkers.push($scope.marker);
+		// $scope.marl.push($scope.marker);
 		google.maps.event.addListener(gmarkers[gmarkers.length-1], "click", function(e){	
 			
 			$scope.vehicleno = pos.data.vehicleId;
@@ -578,7 +578,9 @@ app.filter('statusfilter', function(){
 				 });	
 			 }
 			 //$scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);
-		 }	 	
+		 }	
+		var mcOptions = {gridSize: 50, maxZoom: 15};
+		var markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions) 	
 		if($scope.selected!=undefined){
 			$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
 		}
@@ -667,6 +669,8 @@ app.filter('statusfilter', function(){
 		$(document).on('pageshow', '#maploc', function(e){       
         	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
    		});
+   		var mcOptions = {gridSize: 50, maxZoom: 15};
+		var markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions)
 	}
 	
 	//click and resolve address
@@ -763,7 +767,23 @@ app.filter('statusfilter', function(){
 	   		
 	   }
 	}
-		
+	
+	// table td click 
+	$scope.tabletd = function(val)
+	{
+		for (var i = 0; i <gmarkers.length; i++) 
+		{
+
+			if(gmarkers[i].labelContent == val.shortName)
+			{
+				$scope.map.setZoom(19);
+				$scope.map.setCenter(gmarkers[i].getPosition());
+				gmarkers[i].setAnimation(google.maps.Animation.BOUNCE);
+	   			gmarkers[i].setAnimation(null);
+			}
+		};
+	}
+
 	$scope.infowindowshowFunc = function(){
 		for(var j=0; j<ginfowindow.length;j++){
 			ginfowindow[j].close();

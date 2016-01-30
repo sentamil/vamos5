@@ -103,19 +103,31 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	
 	$scope.eventCall 		= 		function()
     {
-    	document.getElementById ("stop").checked 				= false;
-    	document.getElementById ("idle").checked 				= false;
-    	document.getElementById ("notreach").checked 			= false;
-    	document.getElementById ("overspeed").checked			= false;
-    	document.getElementById ("stop1").defaultValue 			= 0;
-    	document.getElementById ("idle1").defaultValue 			= 0;
-    	document.getElementById ("notreach1").defaultValue 		= 0;
-    	document.getElementById ("overspeed1").defaultValue		= 0;
-    	document.getElementById ("location").checked 			= true;
-    	document.getElementById ("site").checked 	 			= true;
+    	document.getElementById ("stop").checked 				= true;
+    	document.getElementById ("idle").checked 				= true;
+    	document.getElementById ("notreach").checked 			= true;
+    	document.getElementById ("overspeed").checked			= true;
+    	document.getElementById ("stop1").defaultValue 			= 10;
+    	document.getElementById ("idle1").defaultValue 			= 10;
+    	document.getElementById ("notreach1").defaultValue 		= 10;
+    	document.getElementById ("overspeed1").defaultValue		= 60;
+    	document.getElementById ("location").checked 			= false;
+    	document.getElementById ("site").checked 	 			= false;
     	//buttonClick = false;
     	serviceCallEvent();
     	// return $scope.eventReportData;
+    }
+
+    //site web service
+    $scope.siteCall       =     function()
+    {
+    	var url ="http://"+getIP+context+"/public/getSiteReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&site=true";
+    	console.log(' asd '+url);
+    	$http.get(url).success(function(siteval){
+    		$scope.siteReport=[];
+    		$scope.siteReport = siteval;
+    		console.log(' reports '+$scope.siteReport)
+    	});
     }
     $scope.$watch($scope.repId, function() {
     		$scope.id							=	$scope.vvid
@@ -149,6 +161,11 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		   			$scope.tableTitle			=	'Event Report';
 		   			$scope.downloadid           =   'eventReport';
 		   			break;
+		   		case 'sitereport':
+		   			$scope.idlereport			= 	true;
+		   			$scope.tableTitle			=	'Site Report';
+		   			$scope.downloadid           =   'sitereport';
+		   			break;
 		   		default:
 		   			break;		
 		   }
@@ -175,8 +192,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			$scope.fromdate			=	$scope.getTodayDate($scope.fromNowTS);
 			$scope.todate			=	$scope.getTodayDate($scope.toNowTS);
 			$scope.eventCall();
-			console.log(" value "+$scope.eventReportData)
-			
+			$scope.siteCall();
 		});   
    	});
    	
@@ -569,10 +585,14 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 				$scope.recursiveIdle($scope.idlereport,0);
 				break;
 			case 'eventReport':
-	   			$scope.downloadid    =   'eventReport';
+	   			$scope.downloadid    =  'eventReport';
 	   			$scope.overallEnable = 	true;
 	   			$scope.recursiveEvent($scope.eventReportData,0);
 	   			break;
+	   		case 'sitereport':
+	   			$scope.overallEnable = 	true;
+	   			$scope.downloadid    =  'sitereport';
+		   		break;
 			default:
 				break;
 		}
@@ -604,6 +624,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     //submit button click function
     $scope.buttonClick;
     $scope.plotHist			=	function() {
+    	$scope.siteCall();
     	$scope.loading		=	true;
     	var valueas 		=   $('#txtv').val();
 		var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
@@ -619,6 +640,10 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			
 			//console.log(' value '+$scope.eventReportData.length)
 			
+		}
+		else if($scope.downloadid == 'sitereport')
+		{
+			 $scope.siteCall();
 		} 
 		else
 		{

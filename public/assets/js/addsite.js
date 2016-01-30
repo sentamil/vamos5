@@ -194,7 +194,6 @@ app.controller('mainCtrl',function($scope, $http){
       $scope.dropValue    = user.siteType;
       $scope.orgID        = user.orgId;
       var split           = user.latLng.split(",");
-
       drawlineJoin(split);
   }
 
@@ -213,7 +212,7 @@ app.controller('mainCtrl',function($scope, $http){
       sp = list[0].split(":");
       pointToPoint(sp[0], sp[1]);
       $scope.map.setCenter(new google.maps.LatLng(sp[0], sp[1])); 
-      $scope.map.setZoom(17);
+      $scope.map.setZoom(11);
       
     }
   }
