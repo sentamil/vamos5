@@ -48,7 +48,7 @@ background-color: #ffffff;
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.vehicleId}} ({{loc.shortName}})</a></li>
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
                     </ul>
                 </li>
             </ul>
@@ -69,8 +69,7 @@ background-color: #ffffff;
 		            <h3 class="box-title">History Reports </h3>
 		            <div class="box-tools pull-right">
                                <span class="pull-right"><a href="reports"><input class="btn btn-xs btn-danger pull-right" type="button" value="Reports"></a></span>        
-                                       
-                                    </div>
+                    </div>
 		            <div ng-hide="true" class="box-tools pull-right">
 		                <a href="downloadhistory?vid={{id}}&rid={{downloadid}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
 		                <img style="cursor: pointer;" ng-click="exportData(downloadid)"  src="../app/views/reports/image/xls.png" />
@@ -140,8 +139,8 @@ background-color: #ffffff;
 								   	<tr style="text-align:center; font-weight: bold;">
 									  	<td colspan="2">Vehicle Group</td>
 									  	<td>{{vgroup}}</td>
-									  	<td colspan="1">Vehicle ID</td>
-									  	<td colspan="3">{{hist.vehicleId}}</td>					
+									  	<td colspan="1">Vehicle Name</td>
+									  	<td colspan="3">{{hist.shortName}}</td>					
 								  	</tr>
 								  	<tr style="text-align:center;font-weight: bold;">
 									  	<td colspan="2">Regn No</td>
@@ -211,8 +210,8 @@ background-color: #ffffff;
 								   	<tr style="text-align:center; font-weight: bold;" >
 									  	<td colspan="3"><b>Vehicle Group</b></td>
 									  	<td>{{vgroup}}</td>
-									  	<td colspan="2"><b>Vehicle ID</b></td>
-									  	<td>{{hist.vehicleId}}</td>	
+									  	<td colspan="2"><b>Vehicle Name</b></td>
+									  	<td>{{hist.shortName}}</td>	
 								  	</tr>
 								  	<tr style="text-align:center; font-weight: bold;">
 									  	<td colspan="3"><b>Regn No</b></td>
@@ -279,8 +278,8 @@ background-color: #ffffff;
 								   	<tr style="text-align:center; font-weight: bold;">
 									  	<td colspan="1"><b>Vehicle Group</b></td>
 									  	<td>{{vgroup}}</td>
-									  	<td colspan="1"><b>Vehicle ID</b></td>
-									  	<td colspan="1">{{hist.vehicleId}}</td>
+									  	<td colspan="1"><b>Vehicle Name</b></td>
+									  	<td colspan="1">{{hist.shortName}}</td>
 									  	<!-- <td ng-hide="true" colspan="2"><b>Register No</b></td>
 								       	<td ng-hide="true">{{hist.regNo}}</td>	 -->			
 								  	</tr>
@@ -320,8 +319,8 @@ background-color: #ffffff;
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
 				   			 	 			<td>Vehicle Group</td>
 										  	<td>{{vgroup}}</td>
-										  	<td>Vehicle ID</td>
-										  	<td>{{hist.vehicleId}}</td>	
+										  	<td>Vehicle Name</td>
+										  	<td>{{hist.shortName}}</td>	
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="4"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
@@ -378,8 +377,8 @@ background-color: #ffffff;
 			   			 	 		<tr style="text-align:center; font-weight: bold;">
 				   			 	 			<td>Vehicle Group</td>
 										  	<td>{{vgroup}}</td>
-										  	<td colspan="2">Vehicle ID</td>
-										  	<td>{{hist.vehicleId}}</td>	
+										  	<td colspan="2">Vehicle Name</td>
+										  	<td>{{hist.shortName}}</td>	
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="5"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
@@ -410,8 +409,41 @@ background-color: #ffffff;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
+			   			 <tab select="alertMe('sitereport')" heading="Site Report">
+			   			 	 <p style="margin:0" class="page-header">Site Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	 <div class="box-body table-responsive" id="sitereport">
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 		<thead>
+			   			 	 			<tr style="text-align:center; font-weight: bold;">
+				   			 	 			<td>Vehicle Group</td>
+										  	<td>{{vgroup}}</td>
+										  	<td>Vehicle Name</td>
+										  	<td>{{hist.shortName}}</td>	
+			   			 	 			</tr>
+			   			 	 			<tr><td colspan="4"></td></tr>
+			   			 	 			<tr style="text-align:center;font-weight: bold;">
+											<th width="13%" class="id" style="text-align:center;">Start Time</th>
+											<!-- <th width="10%" class="id" style="text-align:center;">G-Map</th> -->
+											<th colspan="2" width="40%" class="id" style="text-align:center;">Nearest Location</th>
+											<th width="15%" class="id" style="text-align:center;">State</th>
+										</tr>
+								</thead>
+			   			 	 	<tbody>
+			   			 	 		<tr ng-repeat="user in siteReport" class="active" style="text-align:center">
+			   			 	 			<td>{{user.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+			   			 	 			<td colspan="2">{{user.address}}</td>
+										<td>{{user.state}}</td>
+			   			 	 		</tr>
+			   			 	 		<tr ng-if="siteReport==null">
+										<td colspan="4">No Records Found Choose some other date</td>
+									</tr>
+			   			 	 	</tbody>
+			   			 	 	</table>
+			   			 	</div>
+			   				 
+			   			 </tab>
 			   			<div class="pull-right">
-		                <a href="downloadhistory?vvid={{id}}&rid={{downloadid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}&dvg={{vgroup}}&interval={{interval}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
+		                <!-- <a href="downloadhistory?vvid={{id}}&rid={{downloadid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}&dvg={{vgroup}}&interval={{interval}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a> -->
 		                <img style="cursor: pointer;" ng-click="exportData(downloadid)"  src="../app/views/reports/image/xls.png" />
 		                <img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV(downloadid)"  src="../app/views/reports/image/csv.jpeg" />
 		            </div>

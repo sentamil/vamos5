@@ -67,7 +67,7 @@ app.filter('statusfilter', function(){
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
-	$scope.url = 'http://'+globalIP+'/vamo/public/getVehicleLocations';
+	$scope.url = 'http://'+globalIP+context+'/public/getVehicleLocations';
 	$scope.historyfor='';
 	$scope.map =  null;
 	$scope.flightpathall = []; 
@@ -85,10 +85,13 @@ app.filter('statusfilter', function(){
 	}				
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
+			$scope.tableValue=[];
+			dataTableList=[];
 			$scope.selected       =  undefined;
 			$scope.locations02    =  data;
+			$scope.locations      =  data[$scope.gIndex].vehicleLocations;
 			$scope.initMethod(data);
-			$scope.groupOverall          =  data[0].group;
+			$scope.groupOverall          =  data[$scope.gIndex].group;
 		});	
 	});
 	
@@ -150,7 +153,7 @@ app.filter('statusfilter', function(){
 		$scope.gSingle		=	groupname;
 		$scope.iSingle		=	index;
 		$scope.tableValue=[];
-		var dataTableList=[];
+		dataTableList=[];
 		$scope.monthYear($scope.month,$scope.year);
 		$scope.single=true;
 		$scope.group=false;
@@ -161,7 +164,7 @@ app.filter('statusfilter', function(){
 		var sparkAlarm=[];
 		var kiloMeter=[];
 		var timestamp=0;
-		$scope.tableValue=[];
+		
 		var monthList="";
 		
 		months=[];
@@ -176,7 +179,7 @@ app.filter('statusfilter', function(){
 				monthIndex = 11;
 			}
 		}
-		var tempurl='http://'+globalIP+'/vamo/public/getIndividualDriverPerformance?groupId='+groupname+'&vehicleId='+vehicleno+'&month='+$scope.month+'&year='+$scope.year;
+		var tempurl='http://'+globalIP+context+'/public/getIndividualDriverPerformance?groupId='+groupname+'&vehicleId='+vehicleno+'&month='+$scope.month+'&year='+$scope.year;
 		$http.get(tempurl).success(function(data){
 		//console.log(tempurl)
 		for(var i=0; i<data.length; i++)
@@ -280,12 +283,12 @@ app.filter('statusfilter', function(){
 	$scope.initMethod= function (group)
 	{
 		$scope.tableValue=[];
-		var dataTableList=[];
+		dataTableList=[];
 		$scope.single=false;
 		$scope.group=true;
 		$scope.monthYear($scope.month,$scope.year);
-		$scope.groupName=group[0].group;
-		var tempurl1='http://'+globalIP+'/vamo/public/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
+		$scope.groupName=group[$scope.gIndex].group;
+		var tempurl1='http://'+globalIP+context+'/public/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
 		OverallDriverPerformance(tempurl1)
 	}
 
@@ -294,7 +297,7 @@ app.filter('statusfilter', function(){
 		if($scope.group == true)
 		{
 			$scope.monthYear($scope.month,$scope.year);
-			var urlOver = 'http://'+globalIP+'/vamo/public/getOverallDriverPerformance?groupId='+$scope.groupOverall+'&month='+$scope.month+'&year='+$scope.year;
+			var urlOver = 'http://'+globalIP+context+'/public/getOverallDriverPerformance?groupId='+$scope.groupOverall+'&month='+$scope.month+'&year='+$scope.year;
 			OverallDriverPerformance(urlOver);	
 		}
 		else
@@ -309,6 +312,7 @@ app.filter('statusfilter', function(){
 
 	var OverallDriverPerformance = function(tempurl1)
 	{
+
 		var totalsuddenBreak=[];
 		var SuddenAcc=[];
 		var OverSpeed=[];
@@ -319,8 +323,11 @@ app.filter('statusfilter', function(){
 		var viewTable=false;
 		var i=0;
 		//console.log('inside the url')
+		$scope.tableValue=[];
+		dataTableList=[];
 		$http.get(tempurl1).success(function(data)
 		{
+
 			$scope.value=data;
 			for(i; i<data.length; i++)
 			{
@@ -421,20 +428,26 @@ app.filter('statusfilter', function(){
 	// click the group 
 	$scope.groupSelection1 = function(groupname, groupid, index)
 	{
-		$scope.tableValue=[];
-		var dataTableList=[];
-		var totalsuddenBreak=[];
-		var SuddenAcc=[];
-		var OverSpeed=[];
-		var sparkAlarm=[];
-		var vehiclename=[];
-		var kiloMeter=[];
-		$scope.value=[];
+		$scope.gIndex=groupid;
+		$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupname;
+		// $scope.tableValue=[];
+		// dataTableList=[];
+		// var totalsuddenBreak=[];
+		// var SuddenAcc=[];
+		// var OverSpeed=[];
+		// var sparkAlarm=[];
+		// var vehiclename=[];
+		// var kiloMeter=[];
+		// $scope.value=[];
 		$scope.monthYear($scope.month,$scope.year);
-		tempurl1='http://'+globalIP+'/vamo/public/getOverallDriverPerformance?groupId='+groupname+'&month='+$scope.month+'&year='+$scope.year;
-		OverallDriverPerformance(tempurl1);
+		tempurl1='http://'+globalIP+context+'/public/getOverallDriverPerformance?groupId='+groupname+'&month='+$scope.month+'&year='+$scope.year;
+		//OverallDriverPerformance(tempurl1);
 		$scope.single=false;
 		$scope.group=true;
+		if($scope.groupOverall = groupname)
+		{
+			OverallDriverPerformance(tempurl1);
+		}
 		
 		
 	};

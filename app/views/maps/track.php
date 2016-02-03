@@ -45,7 +45,7 @@
                     <div class="rightSection" id="contentmin">
                         <table cellpadding="0" cellspacing="0" style="font-size:12px;" class="trackDetails">
                             <tr>
-                                <td style="width:50%">Vehicle ID</td>
+                                <td style="width:50%">Vehicle Name</td>
                                 <td id="vehiid" style="width:50%"><span></span></td>
                             </tr>
                             <tr>
