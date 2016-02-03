@@ -304,7 +304,10 @@ class VdmDealersController extends \BaseController {
               $val = $redis->hget ( 'H_UserId_Cust_Map', $dealerId . ':fcode' );
               $val1= $redis->sismember ( 'S_Dealers_' . $fcode, $dealerId );
 		}
-		
+		if (strpos($dealerId, 'admin') !== false || strpos($dealerId, 'ADMIN') !== false) 
+		{
+			return Redirect::to ( 'vdmDealers/create' )->withErrors ( 'Name with admin not acceptable' );
+		}
 		if($val1==1 || isset($val)) {
 			Log::info('---------------already prsent:--------------');
 			Session::flash ( 'message', $dealerId . ' already exist. Please use different id ' . '!' );
