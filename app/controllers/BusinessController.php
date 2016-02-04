@@ -436,16 +436,29 @@ class BusinessController extends \BaseController {
 					}
 					else{
 							$v=idate("d") ;
+							$monthTemp=idate("m") ;
+							log::info($monthTemp.'------monthTemp---------- ');
 							$paymentmonth=12;
 							if($v>15)
 							{
 								log::info('inside if');
 								$paymentmonth=$paymentmonth+1;		
 							}
+							if($monthTemp==1)
+							{
+								if($v==29 || $v==30 || $v==31)
+								{
+									$paymentmonth=0;	
+									$new_date = 'February '.(date('Y', strtotime("0 month"))+1);
+									$new_date2 = 'February'.(date('Y', strtotime("0 month"))+1);
+									log::info($new_date.'------new_date feb---------- '.$new_date2);
+								}
+							}
 							for ($i = 1; $i <=$paymentmonth; $i++){
 
-								$new_date = date('F Y', strtotime("+$i month"));
+								$new_date = date('F Y', strtotime("$i month"));
 									$new_date2 = date('FY', strtotime("$i month"));
+									log::info($new_date.'------ownership---------- '.$i);
 								}
 								$new_date1 = date('F d Y', strtotime("+0 month"));
 								

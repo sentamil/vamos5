@@ -176,15 +176,18 @@ class DashBoardController extends \BaseController {
 			}
 			else if(Session::get('cur')=='admin')
 			{
-						
+				log::info( 'else if--->' . count($vehiclesExpire));		
 							
 					foreach($vehiclesExpire as $orgPre) {
-					$vehicleListIdPre='S_Vehicles_Admin_'.$fcode;
+					$vehicleListIdPre='S_Vehicles_'.$fcode;
 					$valuePre=$redis->SISMEMBER($vehicleListIdPre,$orgPre);
 			
 					if($valuePre==1)
 					{
 						$vechilePre = array_add($vechilePre, $orgPre, $orgPre);
+					}
+					else{
+						log::info( 'else if--->' . $orgPre);
 					}
 												
 							
