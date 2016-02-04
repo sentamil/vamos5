@@ -81,7 +81,7 @@ background-color: #ffffff;
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.vehicleId}} ({{loc.shortName}})</a></li>
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
                     </ul>
                 </li>
             </ul>
@@ -105,6 +105,7 @@ background-color: #ffffff;
 		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
 		        	
 		            <h5 class="box-title">Current Status Report</h5>
+<<<<<<< HEAD
 
 		            <div id="google_translate_element"></div><script type="text/javascript">
 function googleTranslateElementInit() {
@@ -114,8 +115,11 @@ function googleTranslateElementInit() {
 
 
 		            
+=======
+		            <div id="google_translate_element"></div>
+>>>>>>> b974b5776ee9f31788d1aea609c0be9ce4895b11
 		            <div class="box-tools pull-right">
-		                <a href="downloadreport?vid={{data1.group}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
+		               <!--  <a href="downloadreport?vid={{data1.group}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a> -->
 		                <img style="cursor: pointer;" ng-click="exportData('statusreport')"  src="../app/views/reports/image/xls.png" />
 		            	<img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV('statusreport')"  src="../app/views/reports/image/csv.jpeg" />
 		            </div>
@@ -252,7 +256,7 @@ function googleTranslateElementInit() {
 								      	<td></td>
 								    </tr>
 									<tr style="text-align:center">
-										<th width="10%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">Vehicle ID</th>
+										<th width="10%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">Vehicle Name</th>
 										<th ng-hide="true" style="text-align:center;">Vehicle Name</th>
 										<th width="5%" style="text-align:center;">Regn No</th>
 										<th width="5%" style="text-align:center;">Driver Name</th>
@@ -267,7 +271,7 @@ function googleTranslateElementInit() {
 										<th width="5%" style="text-align:center;">G-Map</th>
 									</tr>
 									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
-										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.vehicleId}}</a></td>
+										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.shortName}}</a></td>
 										<td ng-hide="true"></td>
 										<td>{{user.regNo}}</td>
 										<td>{{user.driverName}}</td>
@@ -275,8 +279,21 @@ function googleTranslateElementInit() {
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.distanceCovered}}</td>
 										<td>{{user.speed}}</td>
-										<td>{{user.position}}</td>
-										<td>{{user.status}}</td>
+										<td ng-switch on="user.position">
+			                                <span ng-switch-when="S"><img title="Vehicle Standing" src="assets/imgs/orange.png"/></span>
+			                                <span ng-switch-when="M"><img title="Vehicle Moving" src="assets/imgs/green.png"/></span>
+			                                <span ng-switch-when="P"><img title="Vehicle Parked" src="assets/imgs/flag.png"/></span>
+			                                <span ng-switch-when="U"><img title="Vehicle NoData" src="assets/imgs/gray.png"/></span>
+			                            </td>
+			                            <td ng-switch on="user.status">
+			                                <span ng-switch-when="OFF"><img title="GPS OFF" src="assets/imgs/gof.png"/></span>
+			                                <span ng-switch-when="ON"><img title="GPS ON" src="assets/imgs/gon.png"/></span>
+			                            </td>
+			                            <!-- <td ng-switch on="user.ignitionStatus">
+			                                <span ng-switch-when="OFF"><img src="assets/imgs/no.png"/></span>
+			                                <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
+			                                          
+			                            </td> -->
 										<td>{{user.latitude}}, {{user.longitude}}</td>
 										<td ng-if="user.address!=null" ng-click="address_click(user, $index)">{{user.address}}</td>
 										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
@@ -300,7 +317,7 @@ function googleTranslateElementInit() {
 		        	
 		            <h5 class="box-title">Consolidated Report</h5>
 		            <div class="box-tools pull-right">
-		                <a href="" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a>
+		                <!-- <a href="" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a> -->
 		                <img style="cursor: pointer;" ng-click="exportData('conreport')"  src="../app/views/reports/image/xls.png" />
 		            	<img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV('conreport')"  src="../app/views/reports/image/csv.jpeg" />
 		            </div>
@@ -350,54 +367,53 @@ function googleTranslateElementInit() {
 		                    </div>
 		                   
 		                </div>
-		                <div class="box-body" id="conreport">
-
-		                <table class="table table-striped table-bordered table-condensed table-hover" id = "myTable">
-		           				  <tbody ng-repeat="user in consoldateData">
-		           				  	<tr style="text-align:center">
-										<td colspan="2"><b>Vehicle Id : {{user.vehicleId}}</b></td>
-										<td colspan="4"><b>From : {{fromdate1}}:{{fromTime}}, &nbsp;&nbsp; To : {{todate1}}:{{totime}}</b></td>
-										<td colspan="3"><b>Trip : {{user.totalTripLength}} Km</b></td>
-									</tr>
-									<tr style="text-align:center">
-										<td colspan="2"><b>Moving : {{msToTime(user.totalMovingTime)}}</b></td>
-										<td colspan="2"><b>Parked : {{msToTime(user.totalParkedTime)}}</b></td>
-										<td><b>Idle : {{msToTime(user.totalIdleTime)}}</b></td>
-										<td colspan="1"><b>Speed hike : {{user.topSpeed}} Km</b></td>
-										<td colspan="1"><b>Avg speed : {{user.averageSpeed}} Km</b></td>
-									</tr>
-									<tr><td colspan="7" bgcolor="black"></td><tr>
-									<tr class="active" style="text-align:center">
-										<td rowspan="2"><b>Status</b></td>
-										<td rowspan="2"><b>Start</b></td>
-										<td rowspan="2"><b>End</b></td>
-										<td rowspan="2"><b>Duration</b></td>
-										<td width="40%" colspan="3"><b>Stop position</b></td>
-									</tr>
-									<tr class="active" style="text-align:center">
-										<td><b>Length</b></td>
-										<td><b>Speed Hike</b></td>
-										<td><b>Speed Avg</b></td>
-									</tr>
-									<tr ng-repeat="subdata in user.historyConsilated" style="text-align:center">
-										<td ng-switch on="subdata.state">
-											<span ng-switch-when="S">Idle</span>
-											<span ng-switch-when="M">Moving</span>
-											<span ng-switch-when="P">Parked</span>
-										</td>
-										<td>{{subdata.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-										<td>{{subdata.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-										<td>{{msToTime(subdata.duration)}}</td>
-										<td ng-if="subdata.averageSpeed ==null" colspan="3">
-											<p> {{subdata.address}} </p>
-											<p ng-if="subdata.address == null"><img src="assets/imgs/loader.gif" align="middle"></p>
-										</td>
-										<td ng-if="subdata.latitude ==null">{{subdata.tripDistance}} Km</td>
-										<td ng-if="subdata.latitude ==null">{{subdata.topSpeed}} Km</td>
-										<td ng-if="subdata.latitude ==null">{{subdata.averageSpeed}} Km</td>
-									</tr>
-								</tbody>
-							</table>
+		                <div class="box-body" id="conreport" ng-repeat="user in consoldateData">
+		                	<!--  -->
+			           					<table class="table table-striped table-bordered table-condensed table-hover">
+				           				  	<tr style="text-align:center">
+												<td colspan="2"><b>Vehicle Name : {{user.vehicleId}}</b></td>
+												<td colspan="4"><b>From : {{fromdate1}}:{{fromTime}}, &nbsp;&nbsp; To : {{todate1}}:{{totime}}</b></td>
+												<td colspan="3"><b>Trip : {{user.totalTripLength}} Km</b></td>
+											</tr>
+											<tr style="text-align:center">
+												<td colspan="2"><b>Moving : {{msToTime(user.totalMovingTime)}}</b></td>
+												<td colspan="2"><b>Parked : {{msToTime(user.totalParkedTime)}}</b></td>
+												<td><b>Idle : {{msToTime(user.totalIdleTime)}}</b></td>
+												<td colspan="1"><b>Speed hike : {{user.topSpeed}} Km</b></td>
+												<td colspan="1"><b>Avg speed : {{user.averageSpeed}} Km</b></td>
+											</tr>
+											<tr><td colspan="7" bgcolor="black"></td><tr>
+											<tr class="active" style="text-align:center">
+												<td rowspan="2"><b>Status</b></td>
+												<td rowspan="2"><b>Start</b></td>
+												<td rowspan="2"><b>End</b></td>
+												<td rowspan="2"><b>Duration</b></td>
+												<td width="40%" colspan="3"><b>Stop position</b></td>
+											</tr>
+											<tr class="active" style="text-align:center">
+												<td><b>Length</b></td>
+												<td><b>Speed Hike</b></td>
+												<td><b>Speed Avg</b></td>
+											</tr>
+											<tr ng-repeat="subdata in user.historyConsilated" style="text-align:center">
+												<td ng-switch on="subdata.state">
+													<span ng-switch-when="S">Idle</span>
+													<span ng-switch-when="M">Moving</span>
+													<span ng-switch-when="P">Parked</span>
+												</td>
+												<td>{{subdata.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+												<td>{{subdata.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+												<td>{{msToTime(subdata.duration)}}</td>
+												<td ng-if="subdata.averageSpeed ==null" colspan="3">
+													<p> {{subdata.address}} </p>
+													<p ng-if="subdata.address == null"><img src="assets/imgs/loader.gif" align="middle"></p>
+												</td>
+												<td ng-if="subdata.latitude ==null">{{subdata.tripDistance}} Km</td>
+												<td ng-if="subdata.latitude ==null">{{subdata.topSpeed}} Km</td>
+												<td ng-if="subdata.latitude ==null">{{subdata.averageSpeed}} Km</td>
+											</tr>
+										</table>
+								<!--  -->
 						</div>
 					</div>
 				<div id="preloader" >
@@ -414,6 +430,7 @@ function googleTranslateElementInit() {
     <script src="assets/js/static.js"></script>
 	<script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
     <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
     <script src="../app/views/reports/customjs/html5csv.js"></script>
@@ -423,8 +440,20 @@ function googleTranslateElementInit() {
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
     <script src="../app/views/reports/customjs/reports.js"></script>
 	
+						
+						
+						
     <!-- script src="assets/js/custom.js"></script -->   
     <script>
+
+
+
+    function googleTranslateElementInit() 
+    {
+		 new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+	}
+
+
 	     var logo =document.location.host;
     var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
     $('#imagesrc').attr('src', imgName);

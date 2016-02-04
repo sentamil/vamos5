@@ -126,7 +126,10 @@ class VdmUserController extends \BaseController {
               $val = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
               $val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
 		}
-		
+		if (strpos($userId, 'admin') !== false || strpos($userId, 'ADMIN') !== false) 
+		{
+			return Redirect::to ( 'vdmUsers/create' )->withErrors ( 'Name with admin not acceptable' );
+		}
 		if($val1==1 || isset($val)) {
 			Session::flash ( 'message', $userId . ' already exist. Please use different id ' . '!' );
 			return Redirect::to ( 'vdmUsers/create' );

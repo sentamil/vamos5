@@ -65,7 +65,7 @@ app.filter('statusfilter', function(){
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
-	$scope.url = 'http://'+globalIP+'/vamo/public//getVehicleLocations';
+	$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations';
 	$scope.historyfor='';
 	$scope.map =  null;
 	$scope.flightpathall = []; 
@@ -213,7 +213,7 @@ $scope.vehicleStatus ="ALL";
 	$scope.groupSelection = function(groupname, groupid){
 		 $scope.selected=undefined;
 		 $scope.dynamicvehicledetails1=false;
-		 $scope.url = 'http://'+globalIP+'/vamo/public//getVehicleLocations?group=' + groupname;
+		 $scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
 		 gmarkers=[];
 		 for(var i=0; i<ginfowindow.length;i++){		
@@ -268,7 +268,7 @@ $scope.vehicleStatus ="ALL";
 	$scope.fcode=[];
 	$scope.final_data;
 	// for list of vehicles
-	$http.get('http://'+globalIP+'/vamo/public//getVehicleLocations').success(function(data)
+	$http.get('http://'+globalIP+context+'/public//getVehicleLocations').success(function(data)
 	{
 		for (var i = 0; i < data[0].vehicleLocations.length; i++) 
 		{
@@ -310,7 +310,7 @@ $scope.vehicleStatus ="ALL";
 		{
 			$scope.split_fcode($scope.fcode[0].group);
 			var f_code = $scope.split_fcode($scope.fcode[0].group);
-			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days;
+			var f_code_url ='http://'+globalIP+context+'/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days;
 			var ecrypt_code_url = '';
 			$http.get(f_code_url).success(function(result){
 				//console.log(' result '+result)
@@ -399,7 +399,7 @@ console.log(dataVal);
 	}
 	
 	$scope.enterkeypress = function(){
-		var url = 'http://'+globalIP+'/vamo/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+		var url = 'http://'+globalIP+context+'/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
 		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
 			vamoservice.getDataCall(url).then(function(data) {
 			 	document.getElementById('poival').value='';
@@ -554,7 +554,7 @@ console.log(dataVal);
 				}else if($scope.nearbyflag==true){
 					$('#status02').show(); 
 					$('#preloader02').show(); 
-					var tempurl = 'http://'+globalIP+'/vamo/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
+					var tempurl = 'http://'+globalIP+context+'/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
 					
 					$http.get(tempurl).success(function(data){
 						$scope.nearbyLocs = data;
@@ -634,7 +634,7 @@ console.log(dataVal);
 					ginfowindow[j].close();
 				}
 				ginfowindow[i].open($scope.map,gmarkers[i]);
-				var url = 'http://'+globalIP+'/vamo/public//getGeoFenceView?vehicleId='+$scope.vehicleno;
+				var url = 'http://'+globalIP+context+'/public//getGeoFenceView?vehicleId='+$scope.vehicleno;
 				$scope.createGeofence(url);
 				
 			}

@@ -11,12 +11,13 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
 	$scope.newAddr      = 	{};
-	$scope.url 			= 	'http://'+getIP+'/vamo/public/getVehicleLocations';
+	$scope.groupId 		=   0;
+	$scope.url 			= 	'http://'+getIP+context+'/public/getVehicleLocations';
 	
 	$scope.getTodayDate1  =	function(date) {
      	var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
-    };
+    };	
 
     function format24hrs(date)
     {
@@ -43,7 +44,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 
 	
 
-	$scope.url 			  =   'http://'+getIP+'/vamo/public//getVehicleLocations';
+	$scope.url 			  =   'http://'+getIP+context+'/public//getVehicleLocations';
 	$scope.fromTime       =   '00:00:00';
 	$scope.vehigroup;
 	$scope.consoldateData =   [];
@@ -57,10 +58,10 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
   		$scope.loading	=	true;
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
-			$scope.vehigroup    =   data[0].group;
-			$scope.consoldate(data[0].group);
+			$scope.vehigroup    =   data[$scope.groupId].group;
+			$scope.consoldate(data[$scope.groupId].group);
 			if(data.length)
-				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
+				$scope.vehiname		=	data[$scope.groupId].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {
 				   if(value.totalVehicles) {
 				  		$scope.data1		=	data[key];
@@ -135,7 +136,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		$scope.fromTime    =  document.getElementById("timeFrom").value;
 		$scope.todate1     =  document.getElementById("dateTo").value;
 		$scope.totime      =  document.getElementById("timeTo").value;
-		var conUrl1        =  'http://'+getIP+'/vamo/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
+		var conUrl1        =  'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
 		service(conUrl1);
 	}
 
@@ -146,7 +147,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		$scope.fromdate1		=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
 		$scope.todate1			=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
 		$scope.totime		    =	format24hrs($scope.fromNowTS1);
-		var conUrl              =   'http://'+getIP+'/vamo/public/getOverallVehicleHistory?group='+group+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
+		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+group+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
 		service(conUrl);
 	}
 		
@@ -268,7 +269,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	};
 	
 	$scope.getStatusReport		=		function() {
-		 $scope.url = 'http://'+getIP+'/vamo/public//getVehicleLocations?group='+$scope.vvid;
+		 $scope.url = 'http://'+getIP+context+'/public//getVehicleLocations?group='+$scope.vvid;
 	}
 	
 	$scope.getTodayDate		=		function() {
@@ -300,7 +301,8 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	
 	
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.url = 'http://'+getIP+'/vamo/public//getVehicleLocations?group='+groupname;
+		 $scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
+		 $scope.groupId 	= 	groupid;
 		
 	}
 	

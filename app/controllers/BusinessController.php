@@ -179,7 +179,6 @@ class BusinessController extends \BaseController {
 	}
 	
 	
-	
 	public function adddevice() {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
@@ -291,7 +290,29 @@ class BusinessController extends \BaseController {
 		
 		
 	}
-	
+	public function deviceDetails() {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+								
+		$devicesList=$redis->smembers( 'S_Device_' . $fcode);
+		log::info( '------device list size---------- '.count($devicesList));
+		$temp=0;
+		$deviceMap=array();
+		for($i =0;$i<count($devicesList);$i++){
+			$vechicle=$redis->hget ( 'H_Vehicle_Device_Map_' . $fcode, $devicesList[$i] );
+			$deviceMap = array_add($deviceMap,$i,$vechicle.','.$devicesList[$i]);
+			$temp++;
+		}
+		log::info( '------device map---------- '.count($deviceMap));
+		return View::make ( 'vdm.business.device', array (
+				'deviceMap' => $deviceMap ) );
+		
+	}
 	
 	public function batchSale()
 	{
@@ -360,7 +381,9 @@ class BusinessController extends \BaseController {
 					log::info('id already exist '.$userId);
 					return Redirect::to ( 'Business' )->withErrors ( 'User Id already exist' );
 				}
-
+				if (strpos($userId, 'admin') !== false || strpos($userId, 'ADMIN') !== false) {
+					return Redirect::to ( 'Business' )->withErrors ( 'Name with admin not acceptable' );
+				}
 
 			    $mobArr = explode(',', $mobileNo);
 				foreach($mobArr as $mob){
@@ -413,16 +436,29 @@ class BusinessController extends \BaseController {
 					}
 					else{
 							$v=idate("d") ;
+							$monthTemp=idate("m") ;
+							log::info($monthTemp.'------monthTemp---------- ');
 							$paymentmonth=12;
 							if($v>15)
 							{
 								log::info('inside if');
 								$paymentmonth=$paymentmonth+1;		
 							}
+							if($monthTemp==1)
+							{
+								if($v==29 || $v==30 || $v==31)
+								{
+									$paymentmonth=0;	
+									$new_date = 'February '.(date('Y', strtotime("0 month"))+1);
+									$new_date2 = 'February'.(date('Y', strtotime("0 month"))+1);
+									log::info($new_date.'------new_date feb---------- '.$new_date2);
+								}
+							}
 							for ($i = 1; $i <=$paymentmonth; $i++){
 
-								$new_date = date('F Y', strtotime("+$i month"));
+								$new_date = date('F Y', strtotime("$i month"));
 									$new_date2 = date('FY', strtotime("$i month"));
+									log::info($new_date.'------ownership---------- '.$i);
 								}
 								$new_date1 = date('F d Y', strtotime("+0 month"));
 								
@@ -615,7 +651,15 @@ class BusinessController extends \BaseController {
 						$redis->sadd ( $userId, $groupId . ':' . $fcode );
 						$redis->sadd ( 'S_Users_' . $fcode, $userId );
 					
-						
+						if(Session::get('cur')=='dealer')
+						{
+							log::info( '------login 1---------- '.Session::get('cur'));
+							$OWN=$username;
+						}
+						else if(Session::get('cur')=='admin')
+						{
+							$OWN='admin';
+						}
 						
 						if($type1=='new')
 						{
@@ -625,7 +669,7 @@ class BusinessController extends \BaseController {
 							{
 								$password='awesome';
 							}
-							$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password,$userId.':OWN','admin');
+							$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password,$userId.':OWN',$OWN);
 							
 							$user = new User;
 							
@@ -664,7 +708,7 @@ class BusinessController extends \BaseController {
 									$password='awesome';
 							}
 
-							$redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.' :email',$email,$mob.':password',$password,$mob.':OWN','admin');
+							$redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.' :email',$email,$mob.':password',$password,$mob.':OWN',$OWN);
 
 							$user = new User;
 

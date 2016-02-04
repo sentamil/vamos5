@@ -62,7 +62,7 @@
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
                     <ul class="nav nav-second-level">
-                    <li style="cursor: pointer;" ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(location.group, loc.vehicleId, $index)">{{loc.vehicleId}} ({{loc.shortName}})</a></li>
+                    <li style="cursor: pointer;" ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(location.group, loc.vehicleId, $index)">{{loc.shortName}}</a></li>
                     </ul>
                 </li>
             </ul>

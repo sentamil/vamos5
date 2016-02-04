@@ -9,7 +9,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
         reverse : false
     };
 	$scope.gIndex = 0;
-    $scope.url 				= 	'http://'+getIP+'/vamo/public//getVehicleLocations';
+    $scope.url 				= 	'http://'+getIP+context+'/public//getVehicleLocations';
     $scope.sid 				= 	getParameterByName('sid');
     
     $scope.rid 				= 	getParameterByName('rid');
@@ -20,6 +20,8 @@ app.controller('mainCtrl',function($scope, $http, $filter){
     $scope.td 				= 	getParameterByName('td');
     $scope.tt	 			= 	getParameterByName('tt');
    	$scope.cid 				=	getParameterByName('cid');
+   	$scope.valTab 			= 	'executive';
+   	$scope.texecGroupReportData = [];
 
    	$scope.getTodayDate  =	function(date) {
      	var date = new Date(date);
@@ -46,10 +48,10 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	}
 	
 	$scope.$watch('sid', function() {
-		 //alert(1);
+		 alert(1+sid);
 		if($scope.rid=='executive') {
 			$scope.loading			=	true;
-   		 	var gurl				=	'http://'+getIP+'/vamo/public//getExecutiveReport?groupId='+$scope.sid+'&fromDate='+$scope.fd+'&toDate='+$scope.td;
+   		 	var gurl				=	'http://'+getIP+context+'/public//getExecutiveReport?groupId='+$scope.sid+'&fromDate='+$scope.fd+'&toDate='+$scope.td;
 			
 			$http.get(gurl).success(function(gdata){
 				$scope.loading			=	false;
@@ -63,7 +65,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 
    		 	if($scope.vvid) {
    		 		//console.log(1)
-	   		 	var gurl		=	'http://'+getIP+'/vamo/public//getPoiHistory?vehicleId='+$scope.vvid+'&fromDate='+$scope.fd+'&toDate='+$scope.td;
+	   		 	var gurl		=	'http://'+getIP+context+'/public//getPoiHistory?vehicleId='+$scope.vvid+'&fromDate='+$scope.fd+'&toDate='+$scope.td;
 	   		 	//console.log('----pio------>'+gurl)
 				$scope.vid		=	$scope.vvid;
 				$scope.loading	=	true;
@@ -94,6 +96,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			});
 		}
 	}
+
    	$scope.$watch("url", function (val) {
    		$scope.loading	=	true;
 	 	$http.get($scope.url).success(function(data){
@@ -114,15 +117,26 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			$scope.fromtime			=	formatAMPM($scope.fromNowTS);
    			$scope.totime			=	formatAMPM($scope.toNowTS);
 			$scope.plotHist();
+			// console.log(' 2 ')
+			
 		}).error(function(){ /*alert('error'); */});
 	});
 	
-	$scope.groupSelection = function(groupname, groupid){
-		 $scope.tabActive = true;
-		 $scope.donut		=	false;
-		 $scope.bar			=	true;
-		 $scope.url = 'http://'+getIP+'/vamo/public//getVehicleLocations?group='+groupname;
-		 $scope.gIndex = groupid;
+	$scope.groupSelection 	= function(groupname, groupid){
+		 $scope.vid 		= "";
+		 $scope.tabActive 	= true;
+		 
+		 $scope.bar		  	= true;
+		 $scope.valeBool 	= false;
+		 if($scope.whichdata)
+		 $scope.donut	  	= false;
+		 // $scope.whichdata 	= true;
+		 
+		 $scope.url 		= 'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
+		 $scope.gIndex 		= groupid;
+		 $scope.plotHist();
+		 // console.log(' 3 ')
+		 // $scope.alertMe($scope.valTab);
 	}
 	
 	$scope.getLocation	=	function(lat,lon) {	
@@ -147,8 +161,9 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	};
 	
 	$scope.plotHist			=		function() {
-		if($scope.whichdata) {	
-			var gurl		=	'http://'+getIP+'/vamo/public//getExecutiveReport?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+		if($scope.whichdata) {
+			// $scope.geofencedata=[];	
+			var gurl		=	'http://'+getIP+context+'/public//getExecutiveReport?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 			$scope.loading			=	true;
 			$http.get(gurl).success(function(gdata){	
 				//console.log(gurl)
@@ -164,11 +179,19 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			});
 		}
 		else {		
-			var gurl		=	'http://'+getIP+'/vamo/public//getPoiHistory?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-			//console.log(gurl);			
+			var gurl		=	'http://'+getIP+context+'/public//getPoiHistory?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+			//console.log(gurl);
+			//$scope.geofencedata=[];
+			$scope.whichdata	=		false;
+			// $scope.execGroupReportData=[];				
 			if(!$scope.sid) {
-				$scope.loading			=	true; 
+				$scope.loading			=	true;
+				// $scope.execGroupReportData	=	($filter('filter')($scope.execGroupReportData, {'vehicleId':$scope.vid}));
+				// $scope.texecGroupReportData		=	$scope.execGroupReportData;	
+				console.log(' data ::'+$scope.execGroupReportData)
+				console.log(' data ::'+$scope.texecGroupReportData) 
 				$http.get(gurl).success(function(gdata){
+
 				//console.log(gdata);	
 					$scope.dataGeofence(gdata.history);	
 					$scope.loading			=	false;
@@ -308,17 +331,15 @@ app.controller('mainCtrl',function($scope, $http, $filter){
     };
     
     $scope.genericFunction = function(vehicleno, index){ 	
-    	//$scope.tabActive	= 	false;
-    	//$scope.test			= 	true;
     	$scope.execGroupReportData			=	($filter('filter')($scope.texecGroupReportData, {'vehicleId':vehicleno}));
     	$scope.vid							=	vehicleno;
     	$scope.vehiclenull					=	vehicleno;
-    	
+    	$scope.valeBool = true;
     	if($scope.downloadid=='executive'){
     		$scope.donut					=	true;
     		$scope.bar						=	false;  	
     	}
-    	var gurl			=	'http://'+getIP+'/vamo/public//getGeoFenceReport?vehicleId='+vehicleno+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime);
+    	var gurl			=	'http://'+getIP+context+'/public//getGeoFenceReport?vehicleId='+vehicleno+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime);
 		//console.log(gurl);
 		$scope.loading			=	true;
 		$http.get(gurl).success(function(gdata){	
@@ -327,6 +348,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 			$scope.dataGeofence(gdata.gfTrip);
 			$scope.loading			=	false;
 		});
+		$scope.plotHist();
 	}
 	
 	$scope.dataGeofence 		= 		function(data) {
@@ -335,15 +357,24 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	
 	$scope.alertMe		=	function(data) {	
 		switch(data) {
-			case 'executive':			
-				$scope.donut		=		false;
-				$scope.bar			=		true;
-				/*if($scope.vid!=null) {
-					$scope.donutLoad($scope.texecGroupReportData);
-				}*/
+			case 'executive':
+				if($scope.valeBool)
+				{
+					
+					$scope.donut		=		true;
+					$scope.bar			=		false;
+				}
+				else
+				{
+					$scope.donut		=		false;
+					$scope.bar			=		true;
+				}
 				$scope.timeslot		=		true;
 				$scope.whichdata	=		true;
 				$scope.downloadid	=		'executive';
+				$scope.valTab       =       'executive';
+				$scope.plotHist();
+				console.log(' 1 ')
 				break;
 			case 'geofence':
 				if($scope.vid==null) {
@@ -353,16 +384,18 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 				$scope.whichdata	=		false;
 				$scope.donut		=		true;
 				$scope.bar			=		true;
+				$scope.valTab       =       'geofence';
 				$scope.downloadid	=		'geofencereport';
-				var gurl		=	'http://'+getIP+'/vamo/public//getPoiHistory?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+				var gurl		=	'http://'+getIP+context+'/public//getPoiHistory?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 				console.log(gurl);			
 				$scope.loading			=	true; 
 				$http.get(gurl).success(function(gdata)
 				{
+					//if(gdata!=null)
 					$scope.dataGeofence(gdata.history);	
 					$scope.loading			=	false;
 				});
-					
+				 $scope.plotHist();
 				break;			
 			default:
 				break;
@@ -370,21 +403,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 		//console.log($scope.downloadid);
 	};
 	
-
-	// $scope.poi      =    function()
-	// {
-	// 	console.log('date---->'+$scope.data1.group+'------>'+$scope.fromdate)
-	// 	var gurl		=	'http://'+getIP+'/vamo/public//getPoiHistory?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-	// 	console.log(gurl)
-	// 	$http.get(url).success(function(data)
-	// 	{
-
-	// 	})
-	// }
-
-
-
-
+	
 	function convert_to_24h(time_str) {
  		
  		var str		=	time_str.split(' ');
@@ -409,72 +428,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	    return marktimestr;
 	};
 	
-	// bar stacked high charts...
-	//$.getJSON("arun.json", function(data)
-	// {
-		// var lsit1=[];
-		// //lsit1=(data.time.suddenBreakList);
-		// console.log("data hot code --->"+data.suddenBreakList.ahan1.historySuddenBrk[0])
-		// var getjson = data.suddenBreakList.ahan1.historySuddenBrk[0];
-		// var split=getjson.split(',')
-		// var latitude = split[0]
-		// var longutide = split[1]
-		// var tempurl1	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
-		// $http.get(tempurl1).success(function(data){
-			// //$scope.loading			=	false;
-			// $scope.locationname = data.results[0].formatted_address;
-		// });
-		// var url1= 'http://localhost/vamo/public/getIndividualDriverPerformance?vehicleId=CV-1044';
-		// $http.get(url1).success(function(data)
-		// {
-			
-			// var overSpeed=[];
-			// var suddenBreak=[];
-			// var suddenAcc=[];
-			// var sparkAlarm=[];
-			// var temp=[];
-			// for(var i=0; i<12; i++)
-			// {
-				// overSpeed.push(data[i].topSpeed);
-				
-				// //console.log("for loop---1--->"+$scope.list[0].suddenBreakList)
-				// suddenBreak.push(data[i].presentStarSudBrk);
-				// suddenAcc.push(data[i].totalSudAccelStar);
-				// sparkAlarm.push(data[i].topSpeedAlarm);
-				
-			// }
-			// //temp=temp.push(data[0].suddenBreakList[0].length)
-			// // console.log("total 1-q--->"+data.suddenBreakList)
-			
-			
-			// // console.log("value----->----"+overSpeed+"--------"+suddenBreak)
-			
 	
-	// $scope.$watch("cid",function () 
-	// {
-	// 	$http.get($scope.url).success(function(data)
-	// 	{
-	// 		$scope.fromDateNow    =   new Date();
-	// 		$scope.toDateBefore   =   new Date().getTime() - 86400000;
-	// 		$scope.fromdate       =   $scope.getTodayDate($scope.fromDateNow.setDate($scope.fromDateNow.getDate()-7));
-	// 		$scope.todate         =   $scope.getTodayDate($scope.toDateBefore);
-	// 		$scope.groupName      =   data[0].group;
-	// 		var gurl		=	'http://'+getIP+'/vamo/public//getExecutiveReport?groupId='+$scope.groupName+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-	// 		$http.get(gurl).success(function(info)
-	// 		{
-	// 			$scope.barChart=[];
-	// 			$scope.loading=false;
-	// 			console.log(gurl+'--->'+info.length)
-	// 			if(info.length)
-	// 			angular.forEach(JSON.parse(info.distanceCoveredAnalytics),function(value, key)
-	// 			{
-	// 				$scope.barChart.push([key, value]);
-	// 			})
-	// 			//console.log(gurl)
-				
-	// 		});		
-	// 	});
-	// });
 });
 
 app.directive("getLocation", function () {
