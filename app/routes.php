@@ -44,6 +44,24 @@ Route::get('/settings', function() {
     return View::make('maps.settings');
 });
 
+View::addExtension('html', 'php');
+Route::get('/menu', function() {
+    // if (!Auth::check()) {
+    //     return Redirect::to('login');
+    // }
+    return View::make('maps.menu.menu');
+});
+
+
+Route::get('/sites', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.siteDetails');
+});
+
+
+
 
 View::addExtension('html', 'php');
 Route::get('/reports', function() {
@@ -108,6 +126,16 @@ Route::get('/getVehicleLocations', function() {
     Log::info('get Vehicle Locations');
     return View::make('vls.getVehicleLocations');
 });
+
+Route::get('/getActionReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get Vehicle Locations');
+    return View::make('vls.getActionReport');
+});
+
+
 Route::get('/getOverallVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -116,6 +144,14 @@ Route::get('/getOverallVehicleHistory', function() {
     return View::make('vls.getOverallVehicleHistory');
 });
 
+
+Route::get('/getSiteReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getSiteReport');
+    return View::make('vls.getSiteReport');
+});
 
 Route::get('/getVehicleExp', function() {
     if (!Auth::check()) {
@@ -222,6 +258,15 @@ Route::get('/getVehicleHistory', function() {
     return View::make('vls.getVehicleHistory');
 });
 
+Route::get('/getActionReport', function() {     
+    if (!Auth::check()) {       
+        return Redirect::to('login');       
+    }       
+    Log::info('get Vehicle Locations');     
+    return View::make('vls.getActionReport');       
+});     
+
+
 Route::get('/admin', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -240,8 +285,12 @@ Route::get('register', function() {
     return View::make('pages.register');
 });
 
-Route::get('example', function() {
-    return View::make('example');
+Route::get('register', function() {
+    return View::make('pages.register');
+});
+
+Route::get('viewSite', function() {
+    return View::make('vls.viewSite');
 });
 
 // route to show the login form
@@ -317,7 +366,8 @@ Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeControl
 
 Route::group(array('before' => 'adminauth'), function(){   //admin auth starts here
     
-
+Route::get('vdmVehicles/calibrateOil/{param}', array('uses' => 'VdmVehicleController@calibrate'));
+Route::post('vdmVehicles/updateCalibration', array('uses' => 'VdmVehicleController@updateCalibration'));
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
 Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dealerSearch'));
 
@@ -326,6 +376,10 @@ Route::post('vdmVehicles/findDealerList', array('uses' => 'VdmVehicleController@
 Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleController@stops'));
 //ramB/{param}/C/{param1?
 Route::get('vdmVehicles/dashboard', array('uses' => 'VdmVehicleController@dashboard'));
+
+Route::get('vdmVehicles/{param}/edit1', array('uses' => 'VdmVehicleController@edit1'));
+Route::post('vdmVehicles/update1', array('uses' => 'VdmVehicleController@update1'));
+
 
 Route::get('vdmVehicles/migration/{param1}', array('uses' => 'VdmVehicleController@migration'));
 
@@ -354,7 +408,7 @@ Route::resource('Business', 'BusinessController');
 Route::post('Business/adddevice', array('uses' => 'BusinessController@adddevice'));
 
 Route::post('Business/batchSale', array('uses' => 'BusinessController@batchSale'));
-
+Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
 
 Route::resource('vdmDealers', 'VdmDealersController');
@@ -378,13 +432,17 @@ Route::get('vdmOrganization/{param}/poiDelete', array('uses' => 'VdmOrganization
 
 Route::get('vdmOrganization/{param}/getSmsReport', array('uses' => 'VdmOrganizationController@getSmsReport'));
 Route::resource('vdmOrganization', 'VdmOrganizationController');
-
+Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleController@analogCalibrate'));
 
 
 
 
 });   //admin auth ends here
-
+Route::post('vdmVehicles/updateLive/{param}', array('uses' => 'VdmVehicleController@updateLive'));
+Route::post('AddSiteController/store', array('uses' => 'AddSiteController@store'));
+Route::post('AddSiteController/update', array('uses' => 'AddSiteController@update'));
+Route::post('AddSiteController/delete', array('uses' => 'AddSiteController@delete'));
+Route::resource('AddSite', 'AddSiteController');
 Route::get('vdmSmsReportFilter', array('uses' => 'VdmSmsController@filter'));
 
 Route::post('vdmSmsReport', array('uses' => 'VdmSmsController@show'));

@@ -54,6 +54,7 @@ app.filter('statusfilter', function(){
 .controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $http, vamoservice, $filter, statusfilter){
 	$scope.locations = [];
 	$scope.nearbyLocs =[];
+	$scope.mapTable =[];
 	$scope.val = 5;	
 	$scope.gIndex = 0;
 	$scope.alertstrack = 0;
@@ -65,7 +66,7 @@ app.filter('statusfilter', function(){
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
-	$scope.url = 'http://'+globalIP+'/vamo/public//getVehicleLocations';
+	$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations';
 	$scope.historyfor='';
 	$scope.map =  null;
 	$scope.flightpathall = []; 
@@ -83,20 +84,25 @@ app.filter('statusfilter', function(){
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
 			$scope.selected=undefined;
+			$scope.vehicle_list=[];
+			$scope.fcode=[];
 			$scope.locations02 = data;
+			listVehicleName(data);
 			if(data.length){
+				$scope.mapTable = data[$scope.gIndex].vehicleLocations;
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
-				$scope.zoomLevel = parseInt(data[$scope.gIndex].zoomLevel);
+				$scope.zoomLevel = 6;
 				$scope.support = data[$scope.gIndex].supportDetails;
 				$scope.initilize('map_canvas');
 			}
 		});	
 	});
+	// console.log($scope.locations02)
 	$scope.$watch("vehicleStatus", function (val) {
 		if($scope.locations02!=undefined){
 			$scope.selected=undefined;
-			$scope.locations = $scope.statusFilter($scope.locations02[0].vehicleLocations, val);
+			$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, val);
 			$scope.initilize('map_canvas');
 		}
 	});
@@ -150,9 +156,55 @@ app.filter('statusfilter', function(){
 	$scope.genericFunction = function(vehicleno, index){
 		$scope.selected = index;
 		$scope.removeTask(vehicleno);
-		
+		editableValue();
 	}
-	
+	//for edit details in the right side div
+	document.getElementById("inputEdit").disabled = true;
+	function editableValue()
+	{
+		document.getElementById("inputEdit").disabled = false;
+	}
+
+	//update function in the right side div
+	$scope.updateDetails	= 	function()
+	{
+		var URL_ROOT = "vdmVehicles/"; 
+		$.post( URL_ROOT+'updateLive/'+$scope.vehicleid, {
+        '_token': $('meta[name=csrf-token]').attr('content'),
+  		'shortName':$scope.vehShort,
+        'odoDistance': $scope.ododis,
+  	    'overSpeedLimit':$scope.spLimit,
+        'driverName': $scope.driName,
+        'regNo': $scope.refname,
+		'vehicleType':$scope.vehType,
+		})
+	    .done(function(data) {
+    	updateCall();
+        console.log("Sucess");
+	    })
+	    .fail(function() {
+ 		updateCall();
+        console.log("fail");
+ 	    });
+ 	    
+		document.getElementById("inputEdit").disabled = false;
+		$("#editable").hide();
+		$("#viewable").show();
+	}
+
+
+	function updateCall()
+	{
+		var url = 'http://'+globalIP+context+'/public//getVehicleLocations';
+		$http.get(url).success(function(response){
+			for (var i = 0; i < response[$scope.gIndex].vehicleLocations.length; i++) 
+			{
+				if($scope.vehicleid == response[$scope.gIndex].vehicleLocations[i].vehicleId)
+				$scope.assignValue(response[$scope.gIndex].vehicleLocations[i])
+			};
+		})
+	}
+
 	$scope.check = function(){
 		if($scope.checkVal==false){
 			$scope.trafficLayer.setMap($scope.map);
@@ -209,18 +261,22 @@ app.filter('statusfilter', function(){
 		}
 	}
 	
+
+
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.selected=undefined;
-		 $scope.dynamicvehicledetails1=false;
-		 $scope.url = 'http://'+globalIP+'/vamo/public//getVehicleLocations?group=' + groupname;
-		 $scope.gIndex = groupid;
-		 gmarkers=[];
-		 for(var i=0; i<ginfowindow.length;i++){		
-		 	ginfowindow[i].setMap(null);
-		 }
-		 ginfowindow=[];
-		 clearInterval(setintrvl);
-	//	 $scope.locations01 = vamoservice.getDataCall($scope.url);
+		$scope.selected=undefined;
+		$scope.dynamicvehicledetails1=false;
+		$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group=' + groupname;
+		$scope.gIndex = groupid;
+		
+		$scope.mapTable = $scope.locations02[groupid].vehicleLocations;
+		gmarkers=[];
+		for(var i=0; i<ginfowindow.length;i++){		
+			ginfowindow[i].setMap(null);
+		}
+		ginfowindow=[];
+		clearInterval(setintrvl);
+		//$scope.locations02 = vamoservice.getDataCall($scope.url);
 		 	
 	}
 	
@@ -233,7 +289,7 @@ app.filter('statusfilter', function(){
 			var classVal = 'red';
 		}
 			var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
-		+'<div><b style="width:100px; display:inline-block;">Vehicle ID</b> - '+vehicleID+'<span style="font-weight:bold;">('+data.shortName+')</span></div>'
+		+'<div><b style="width:100px; display:inline-block;">Vehicle Name</b> - <span style="font-weight:bold;">'+data.shortName+'</span></div>'
 		
 		+'<div><b style="width:100px; display:inline-block;">ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 		+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
@@ -267,14 +323,15 @@ app.filter('statusfilter', function(){
 	$scope.fcode=[];
 	$scope.final_data;
 	// for list of vehicles
-	$http.get('http://'+globalIP+'/vamo/public//getVehicleLocations').success(function(data)
+	// $http.get('http://'+globalIP+'/vamo/public//getVehicleLocations').success(function(data)
+	function listVehicleName(data)
 	{
-		for (var i = 0; i < data[0].vehicleLocations.length; i++) 
+		for (var i = 0; i < data[$scope.gIndex].vehicleLocations.length; i++) 
 		{
-			$scope.vehicle_list.push(data[0].vehicleLocations[i].vehicleId)
+			$scope.vehicle_list.push({'vehiID' : data[$scope.gIndex].vehicleLocations[i].vehicleId, 'vName' : data[$scope.gIndex].vehicleLocations[i].shortName})
 		};
-		$scope.fcode.push(data[0])
-	})
+		$scope.fcode.push(data[$scope.gIndex])
+	}
 
 
 	//split methods
@@ -284,7 +341,6 @@ app.filter('statusfilter', function(){
 		while(strFine.charAt(0)===':')
 		strFine = strFine.substr(1);
 		return strFine;
-
 	}
 	
 	//encryt url
@@ -300,7 +356,7 @@ app.filter('statusfilter', function(){
 	//
 	$scope.getMailIdPhoneNo = function(vehi, days)
 	{
-		console.log('inside the methods')
+		//console.log('inside the methods')
 		var mailId = document.getElementById("mail").value;
 		var phone  = document.getElementById("phone").value;
 		if(vehi == 0 && days ==0)
@@ -309,7 +365,7 @@ app.filter('statusfilter', function(){
 		{
 			$scope.split_fcode($scope.fcode[0].group);
 			var f_code = $scope.split_fcode($scope.fcode[0].group);
-			var f_code_url ='http://'+globalIP+'/vamo/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
+			var f_code_url ='http://'+globalIP+context+'/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
 			var ecrypt_code_url = '';
 			$http.get(f_code_url).success(function(result){
 				
@@ -334,17 +390,17 @@ app.filter('statusfilter', function(){
 	$scope.addMarker= function(pos){
 	    
 	    var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
-	    var labelAnchorpos = new google.maps.Point(12, 37);	
-		$scope.marker = new MarkerWithLabel({
-		   position: myLatlng, 
-		   map: $scope.map,
-		   icon: vamoservice.iconURL(pos.data),
-		   labelContent: pos.data.shortName,
-		   labelAnchor: labelAnchorpos,
-		   labelClass: "labels", 
-		   labelInBackground: false
-		 });
-		
+	    var labelAnchorpos = new google.maps.Point(19, 0);	///12, 37
+	    $scope.marker = new MarkerWithLabel({
+			   position: myLatlng, 
+			   map: $scope.map,
+			   icon: vamoservice.iconURL(pos.data),
+			   labelContent: pos.data.shortName,
+			   labelAnchor: labelAnchorpos,
+			   labelClass: "labels", 
+			   labelInBackground: false
+			});
+	    
 		if(pos.data.vehicleId==$scope.vehicleno){
 			$scope.assignValue(pos.data);
 		    $scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
@@ -354,10 +410,12 @@ app.filter('statusfilter', function(){
 			});		
 		}
 		gmarkers.push($scope.marker);
+		// $scope.marl.push($scope.marker);
 		google.maps.event.addListener(gmarkers[gmarkers.length-1], "click", function(e){	
 			
 			$scope.vehicleno = pos.data.vehicleId;
 			$scope.assignValue(pos.data);
+			editableValue();
 			$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
 				$('#lastseen').text(count); 
 				var t = vamoservice.geocodeToserver(pos.data.latitude,pos.data.longitude,count);
@@ -370,15 +428,22 @@ app.filter('statusfilter', function(){
 	}
 	
 	$scope.assignValue=function(dataVal){
-		$('#vehiid span').text(dataVal.vehicleId + " (" +dataVal.shortName+")");
-		$('#toddist span').text(dataVal.distanceCovered);
-		$('#vehstat span').text(dataVal.position);
+		$scope.vehicleid = dataVal.vehicleId;
+		$scope.vehShort  = dataVal.shortName;
+		$scope.ododis 	 = dataVal.odoDistance;
+		$scope.spLimit   = dataVal.overSpeedLimit;
+		$scope.driName 	 = dataVal.driverName;
+		$scope.refname 	 = dataVal.regNo;
+		$scope.vehType   = dataVal.vehicleType;
+		$('#vehiid #val').text(dataVal.shortName);
+		$('#toddist #val').text(dataVal.distanceCovered);
+		$('#vehstat #val').text(dataVal.position);
 		total = parseInt(dataVal.speed);
-		$('#vehdevtype span').text(dataVal.odoDistance);
-		$('#mobno span').text(dataVal.overSpeedLimit);
-		$('#positiontime').text(vamoservice.statusTime(dataVal).tempcaption);
-		$('#regno span').text(vamoservice.statusTime(dataVal).temptime);
-		
+		$('#vehdevtype #val').text(dataVal.odoDistance);
+		$('#mobno #val').text(dataVal.overSpeedLimit);
+		$('#positiontime #val').text(vamoservice.statusTime(dataVal).tempcaption);
+		$('#regno #val').text(vamoservice.statusTime(dataVal).temptime);
+		$('#driverName #val').text(dataVal.driverName);
 		//var t0 = new Date(utcdateConvert(dataVal.date)).toString();
 		// var t1 = Date.parse(t0.toUTCString().replace('GMT', ''));
     	//var t2 = (2 * t0) - t1;
@@ -392,7 +457,7 @@ app.filter('statusfilter', function(){
 	}
 	
 	$scope.enterkeypress = function(){
-		var url = 'http://'+globalIP+'/vamo/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+		var url = 'http://'+globalIP+context+'/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
 		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
 			vamoservice.getDataCall(url).then(function(data) {
 			 	document.getElementById('poival').value='';
@@ -513,7 +578,9 @@ app.filter('statusfilter', function(){
 				 });	
 			 }
 			 //$scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);
-		 }	 	
+		 }	
+		var mcOptions = {gridSize: 50, maxZoom: 15};
+		var markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions) 	
 		if($scope.selected!=undefined){
 			$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
 		}
@@ -547,7 +614,7 @@ app.filter('statusfilter', function(){
 				}else if($scope.nearbyflag==true){
 					$('#status02').show(); 
 					$('#preloader02').show(); 
-					var tempurl = 'http://'+globalIP+'/vamo/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
+					var tempurl = 'http://'+globalIP+context+'/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
 					
 					$http.get(tempurl).success(function(data){
 						$scope.nearbyLocs = data;
@@ -602,8 +669,22 @@ app.filter('statusfilter', function(){
 		$(document).on('pageshow', '#maploc', function(e){       
         	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
    		});
+   		var mcOptions = {gridSize: 50, maxZoom: 15};
+		var markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions)
 	}
 	
+	//click and resolve address
+	$scope.address_click = function(data, ind)
+	{
+		console.log(' inside the address function')
+		var tdurl 		=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
+		vamoservice.getDataCall(tdurl).then(function(response) {
+			console.log(response)
+			// data.address 	=	response.results[0].formatted_address;
+			// var t 			= 	vamo_sysservice.geocodeToserver(data.latitude,data.longitude,response.results[0].formatted_address);
+		});
+	}
+
 	$scope.removeTask=function(vehicleno){
 		$scope.vehicleno = vehicleno;
 		var temp = $scope.locations;
@@ -627,14 +708,82 @@ app.filter('statusfilter', function(){
 					ginfowindow[j].close();
 				}
 				ginfowindow[i].open($scope.map,gmarkers[i]);
-				var url = 'http://'+globalIP+'/vamo/public//getGeoFenceView?vehicleId='+$scope.vehicleno;
+				var url = 'http://'+globalIP+context+'/public//getGeoFenceView?vehicleId='+$scope.vehicleno;
 				$scope.createGeofence(url);
 				
 			}
 		}
 	};
+	$('#mapTable-mapList').hide()
+	$("#homeImg").hide();
+	$("#listImg").show();
+	//list view
+	function listMap ()
+	{
+		$("#listImg").hide();
+		$("#homeImg").show();
+		$('#mapTable-mapList').show(1000);
+		$("#contentmin").hide(500);
+		$("#sidebar-wrapper").hide(500);
+		
+		document.getElementById("wrapper").setAttribute("id", "mapList");
+	}
+
+	//return home
+	function homeMap ()
+	{
+		$("#listImg").show();
+		$("#homeImg").hide();
+		$('#mapTable-mapList').hide(500);
+		$("#contentmin").show(1000);
+		$("#sidebar-wrapper").show(500);
+		
+		document.getElementById("mapList").setAttribute("id", "wrapper");
+	}
+
+	//view map
+	$scope.mapView 	=	function(value)
+	{
+		switch(value){
+			case 'listMap' :
+				listMap();
+				break;
+			case 'home' :
+				homeMap();
+				break;
+			default:
+		   		break;
+		}
+	}
+
+	//mouse over in list view table
+	$scope.mouseJump  = function(user)
+	{
+		for(var i = 0; i <gmarkers.length; i++)
+		{
+	   		if(gmarkers[i].labelContent == user.shortName)
+	   		gmarkers[i].setAnimation(google.maps.Animation.BOUNCE);
+	   		gmarkers[i].setAnimation(null);
+	   		
+	   }
+	}
 	
-	
+	// table td click 
+	$scope.tabletd = function(val)
+	{
+		for (var i = 0; i <gmarkers.length; i++) 
+		{
+
+			if(gmarkers[i].labelContent == val.shortName)
+			{
+				$scope.map.setZoom(19);
+				$scope.map.setCenter(gmarkers[i].getPosition());
+				gmarkers[i].setAnimation(google.maps.Animation.BOUNCE);
+	   			gmarkers[i].setAnimation(null);
+			}
+		};
+	}
+
 	$scope.infowindowshowFunc = function(){
 		for(var j=0; j<ginfowindow.length;j++){
 			ginfowindow[j].close();
@@ -682,7 +831,8 @@ app.filter('statusfilter', function(){
 				vamoservice.getDataCall(scope.url).then(function(data) {
 					if(data.length){
 						scope.selected=undefined;
-						scope.locations02 = data;
+						// scope.locations02 = data;
+						// scope.mapTable = data[0].vehicleLocations;
 						//scope.vehiname	= data[scope.gIndex].vehicleLocations[scope.selected].vehicleId;
 						scope.locations = scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
 						scope.zoomLevel = scope.zoomLevel;

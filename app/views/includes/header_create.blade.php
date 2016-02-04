@@ -95,7 +95,9 @@
 					 <li>
                 <a href="../Business/create"> <span class="nav-label">Add Device</span></a>
             </li>
-			
+			 <li>
+                <a href="../Device"> <span class="nav-label">Onboard Devices</span></a>
+            </li>
 			@endif 
 			
 		<li><a href="../Business"> <span class="nav-label">Device List</span> <span class="label label-success pull-right">v.2</span> </a></li>	
@@ -112,16 +114,18 @@
 			<a href="Routes"> <span class="nav-label">Vehicles</span><span class="fa arrow"></span></a>
 			
 			 <ul class="nav nav-second-level">
-                     
+                     <!--
 					 <li>
                <a href="../vdmVehicles/create"> <span class="nav-label">Add Vehicles</span></a>
             </li>
+            -->
 			<li><a href="../vdmVehicles"> <span class="nav-label">Vehicles List</span> <span class="label label-success pull-right">v.2</span> </a></li>
-			<li>
+			<!--
+            <li>
                 <a href="../vdmVehicles/multi"> <span class="nav-label">Add Multiple Vehicles</span></a>
                 
             </li>
-			
+			-->
                 </ul>
 			
 			

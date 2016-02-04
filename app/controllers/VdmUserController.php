@@ -126,7 +126,10 @@ class VdmUserController extends \BaseController {
               $val = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
               $val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
 		}
-		
+		if (strpos($userId, 'admin') !== false || strpos($userId, 'ADMIN') !== false) 
+		{
+			return Redirect::to ( 'vdmUsers/create' )->withErrors ( 'Name with admin not acceptable' );
+		}
 		if($val1==1 || isset($val)) {
 			Session::flash ( 'message', $userId . ' already exist. Please use different id ' . '!' );
 			return Redirect::to ( 'vdmUsers/create' );
@@ -149,10 +152,12 @@ class VdmUserController extends \BaseController {
 			{
 				log::info( '------login 1---------- '.Session::get('cur'));
 				$redis->sadd('S_Users_Dealer_'.$username.'_'.$fcode,$userId);
+				$OWN=$username;
 			}
 			else if(Session::get('cur')=='admin')
 			{
 				$redis->sadd('S_Users_Admin_'.$fcode,$userId);
+				$OWN='admin';
 			}
 			
 			$password=Input::get ( 'password' );
@@ -160,8 +165,7 @@ class VdmUserController extends \BaseController {
 			{
 				$password='awesome';
 			}
-			
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password,$userId.':OWN',$OWN);
 			$user = new User;
 			
 			$user->name = $userId;
@@ -309,7 +313,7 @@ class VdmUserController extends \BaseController {
 			$vehicleGroups = Input::get ( 'vehicleGroups' );
 			
 			$mobileNo = Input::get ( 'mobileNo' );
-			$email = Input::get ( 'mobileNo' );
+			$email = Input::get ( 'email' );
 			$redis->del ( $userId );
 			foreach ( $vehicleGroups as $grp ) {
 				$redis->sadd ( $userId, $grp );
@@ -361,7 +365,7 @@ class VdmUserController extends \BaseController {
          $redis->del('S_Orgs_' .$userId . '_' . $fcode);
 
 		$email=$redis->hget('H_UserId_Cust_Map',$userId.':email');
-		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email');
+		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email',$userId.':password');
 		
 		Log::info(" about to delete user" .$userId);
 		

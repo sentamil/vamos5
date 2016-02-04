@@ -179,7 +179,6 @@ class BusinessController extends \BaseController {
 	}
 	
 	
-	
 	public function adddevice() {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
@@ -214,6 +213,7 @@ class BusinessController extends \BaseController {
 			for($i =1;$i<=Session::get('numberofdevice');$i++)
 			{
 				$deviceid = Input::get ( 'deviceid'.$i);
+				$deviceid=trim($deviceid," ");
 				log::info( '--------inside deviceid in  ::----------'.$deviceid);
 				$deviceidtype=Input::get('deviceidtype'.$i);
 				log::info( '--------inside deviceidtype in  ::----------'.$deviceidtype);
@@ -290,7 +290,29 @@ class BusinessController extends \BaseController {
 		
 		
 	}
-	
+	public function deviceDetails() {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+								
+		$devicesList=$redis->smembers( 'S_Device_' . $fcode);
+		log::info( '------device list size---------- '.count($devicesList));
+		$temp=0;
+		$deviceMap=array();
+		for($i =0;$i<count($devicesList);$i++){
+			$vechicle=$redis->hget ( 'H_Vehicle_Device_Map_' . $fcode, $devicesList[$i] );
+			$deviceMap = array_add($deviceMap,$i,$vechicle.','.$devicesList[$i]);
+			$temp++;
+		}
+		log::info( '------device map---------- '.count($deviceMap));
+		return View::make ( 'vdm.business.device', array (
+				'deviceMap' => $deviceMap ) );
+		
+	}
 	
 	public function batchSale()
 	{
@@ -318,6 +340,10 @@ class BusinessController extends \BaseController {
 			if($type1=='existing')
 			{
 				$userId      = Input::get('userIdtemp');
+				if($userId==null)
+				{
+					return Redirect::to ( 'Business' )->withErrors ( 'Invalid user Id' );
+				}
 				
 				
 			}
@@ -355,7 +381,9 @@ class BusinessController extends \BaseController {
 					log::info('id already exist '.$userId);
 					return Redirect::to ( 'Business' )->withErrors ( 'User Id already exist' );
 				}
-
+				if (strpos($userId, 'admin') !== false || strpos($userId, 'ADMIN') !== false) {
+					return Redirect::to ( 'Business' )->withErrors ( 'Name with admin not acceptable' );
+				}
 
 			    $mobArr = explode(',', $mobileNo);
 				foreach($mobArr as $mob){
@@ -402,7 +430,7 @@ class BusinessController extends \BaseController {
 						$deviceDataJson = json_encode ( $deviceDataArr );
 					$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 					$back=$redis->hget($vehicleDeviceMapId, $deviceId);
-					if($back!=null)
+					if($back!==null)
 					{
 						$vehicleId=$back;
 					}
@@ -480,10 +508,25 @@ class BusinessController extends \BaseController {
 								
 								
 								
-								$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+							
+								$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+							$franchiseDetails=json_decode($franDetails_json,true);
+							$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+							if(isset($franchiseDetails['fullAddress'])==1)
+							{
+								$fullAddress=$franchiseDetails['fullAddress'];
+								$data_arr = BusinessController::geocode($fullAddress);
+							  if($data_arr){         
+									$latitude = $data_arr[0];
+									$longitude = $data_arr[1];
+									log::info( '------lat lang---------- '.$latitude.','.$longitude);
+									$tmpPositon =  $latitude.','.$longitude.',0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+							  }
+							}
+							log::info( '------prodata---------- '.$tmpPositon);
 								$redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
 						}
-								if($ownerShip!='OWN')
+								if($ownerShip!=='OWN')
 								{
 									log::info( '------login 1---------- '.Session::get('cur'));
 									$redis->sadd('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
@@ -595,7 +638,15 @@ class BusinessController extends \BaseController {
 						$redis->sadd ( $userId, $groupId . ':' . $fcode );
 						$redis->sadd ( 'S_Users_' . $fcode, $userId );
 					
-						
+						if(Session::get('cur')=='dealer')
+						{
+							log::info( '------login 1---------- '.Session::get('cur'));
+							$OWN=$username;
+						}
+						else if(Session::get('cur')=='admin')
+						{
+							$OWN='admin';
+						}
 						
 						if($type1=='new')
 						{
@@ -605,7 +656,8 @@ class BusinessController extends \BaseController {
 							{
 								$password='awesome';
 							}
-							$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
+							$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password,$userId.':OWN',$OWN);
+							
 							$user = new User;
 							
 							$user->name = $userId;
@@ -616,11 +668,17 @@ class BusinessController extends \BaseController {
 							$user->save();
 							
 							 foreach($mobArr as $mob){
-
+								 
+								 if($mob!=='')
+							{
+								
+							
+								 
+							log::info( '------mobile number---------- '.$mob);
 						  if($ownerShip!='OWN')
                            {
                                    log::info( '------login 1---------- '.Session::get('cur'));
-                                                                $redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$mob);
+                                   $redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$mob);
                            }
 						  else if($ownerShip=='OWN')
 								{
@@ -636,7 +694,9 @@ class BusinessController extends \BaseController {
 							{
 									$password='awesome';
 							}
-							$redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.' :email',$email );
+
+							$redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.' :email',$email,$mob.':password',$password,$mob.':OWN',$OWN);
+
 							$user = new User;
 
 							$user->name = $mob;
@@ -645,6 +705,7 @@ class BusinessController extends \BaseController {
 							$user->mobileNo=$mobileNo;
 							$user->password=Hash::make($password);
 							$user->save();
+							}
                          }
 							
 						}
@@ -661,6 +722,55 @@ class BusinessController extends \BaseController {
  			return Redirect::to('Business');
 	 		
 	}
+	
+	
+	public static function geocode($address){
+ 
+    // url encode the address
+    $address = urlencode($address);
+     
+    // google map geocode api url
+    $url = "http://maps.google.com/maps/api/geocode/json?address={$address}";
+ 
+    // get the json response
+    $resp_json = file_get_contents($url);
+     
+    // decode the json
+    $resp = json_decode($resp_json, true);
+ 
+    // response status will be 'OK', if able to geocode given address 
+    if($resp['status']=='OK'){
+ 
+        // get the important data
+        $lati = $resp['results'][0]['geometry']['location']['lat'];
+        $longi = $resp['results'][0]['geometry']['location']['lng'];
+        $formatted_address = $resp['results'][0]['formatted_address'];
+         
+        // verify if data is complete
+        if($lati && $longi && $formatted_address){
+         
+            // put the data in the array
+            $data_arr = array();            
+             
+            array_push(
+                $data_arr, 
+                    $lati, 
+                    $longi, 
+                    $formatted_address
+                );
+             
+            return $data_arr;
+             
+        }else{
+            return false;
+        }
+         
+    }else{
+        return false;
+    }
+}
+	
+	
 	
 	 protected function schedule(Schedule $schedule)
     	{

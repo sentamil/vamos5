@@ -66,6 +66,14 @@
 		{{ Form::text('otherDetails', $otherDetails, array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
+		{{ Form::label('website', 'website ') }}
+		{{ Form::text('website', $website, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('smsSender', 'smsSender ') }}
+		{{ Form::text('smsSender', $smsSender, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
 		{{ Form::label('numberofLicence', 'Number of Licence') }}
 		{{ Form::text('numberofLicence', $numberofLicence, array('class' => 'form-control','disabled' => 'disabled')) }}
 	</div>

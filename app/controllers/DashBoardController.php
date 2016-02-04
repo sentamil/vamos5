@@ -24,8 +24,9 @@ class DashBoardController extends \BaseController {
 		$count=0;
 		$new_date = date('FY', strtotime("+1 month"));
 		$expireData=$redis->hget ( 'H_Expire_' . $fcode, $new_date);
+		
 		$vechile=array();$temp=array();
-		if($expireData!=null)
+		if($expireData!==null)
 		{
 			
 			$vehiclesExpire = explode(',',$expireData);
@@ -94,6 +95,31 @@ class DashBoardController extends \BaseController {
 		}
 		Log::info('count');
 		Log::info(count($vechile));
+		$new_date1 = date('FY', strtotime("+12 month"));
+		$presentMonth=$redis->hget ( 'H_Expire_' . $fcode, $new_date1);
+		log::info($presentMonth.'month '.$new_date1);
+		
+		$prsentMonthCount=DashBoardController::getCount($presentMonth,$fcode,$username);
+		Log::info('count present '.$prsentMonthCount);
+		$new_date2 = date('FY', strtotime("+13 month"));
+		$nextMonth=$redis->hget ( 'H_Expire_' . $fcode, $new_date2);
+		log::info($nextMonth.'month '.$new_date2);
+		$nextMonthCount=DashBoardController::getCount($nextMonth,$fcode,$username);
+		Log::info('next count '.$nextMonthCount);
+		
+		
+		$new_date3 = date('FY', strtotime("+11 month"));
+		$prevMonth=$redis->hget ( 'H_Expire_' . $fcode, $new_date3);
+		log::info($prevMonth.'month '.$new_date3);
+		$prevMonthCount=DashBoardController::getCount($prevMonth,$fcode,$username);
+		Log::info('prev count '.$prevMonthCount);
+		
+		
+		
+		
+		
+		
+		
 		if(Session::get('cur')=='dealer')
 		{
 			$vehicleListId='S_Vehicles_Dealer_'.$username.'_'.$fcode;
@@ -124,7 +150,50 @@ class DashBoardController extends \BaseController {
 			$vehicleListId = 'S_Vehicles_' . $fcode;
 		}
 		
-		return View::make ( 'vdm.vehicles.dashboard')->with('count',$count)->with('dealerId',$dealerId)->with('vechile',$vechile)->with('temp',$temp)->with('vechileEx',$vechileEx)->with('vechileEx1',$vechileEx1);
+		return View::make ( 'vdm.vehicles.dashboard')->with('count',$count)->with('dealerId',$dealerId)->with('vechile',$vechile)->with('temp',$temp)->with('vechileEx',$vechileEx)->with('vechileEx1',$vechileEx1)->with('prsentMonthCount',$prsentMonthCount)->with('nextMonthCount',$nextMonthCount)->with('prevMonthCount',$prevMonthCount);
+	}
+	
+	
+	public function getCount($presentData,$fcode,$username)
+	{
+		$redis = Redis::connection ();
+		$vechilePre=array();$tempPre=array();
+		if($presentData!==null)
+		{
+			
+			$vehiclesExpire = explode(',',$presentData);
+			if(Session::get('cur')=='dealer')
+			{
+				foreach($vehiclesExpire as $orgPre) {
+					$vehicleListIdPre='S_Vehicles_Dealer_'.$username.'_'.$fcode;
+					$valuePre=$redis->SISMEMBER($vehicleListIdPre,$orgPre);
+					if($valuePre==1)
+					{
+						log::info( 'value if--->' . $valuePre);
+						$vechilePre = array_add($vechilePre, $orgPre, $orgPre);
+					}
+				}
+			}
+			else if(Session::get('cur')=='admin')
+			{
+						
+							
+					foreach($vehiclesExpire as $orgPre) {
+					$vehicleListIdPre='S_Vehicles_Admin_'.$fcode;
+					$valuePre=$redis->SISMEMBER($vehicleListIdPre,$orgPre);
+			
+					if($valuePre==1)
+					{
+						$vechilePre = array_add($vechilePre, $orgPre, $orgPre);
+					}
+												
+							
+					
+			}
+			}
+				
+		}
+		return count($vechilePre);
 	}
 	
 	 protected function schedule(Schedule $schedule)

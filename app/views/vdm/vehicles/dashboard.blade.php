@@ -18,11 +18,21 @@
 					<div claa="col-sm-12">
 					<div class="form-group">
 					<div class="row">
+					
 					<div class="col-sm-12">
 					<font face="tahoma" size="3" style="color:green"> {{ Form::label('vechileEx', 'Number of Vehicles Expires Next Month') }}
 
 					   {{ Form::label('l', count($vechile), array('class' => 'form-control')) }}</font>
 					 </div></br><br>
+					 
+					<div class="col-sm-12">
+					<font face="tahoma" size="3" style="color:green"> {{ Form::label('num', 'Onboarded Details') }}
+<br/></font>
+					   previous month :{{ Form::label('0', $prevMonthCount, array('class' => 'form-control')) }}
+					   present month :{{ Form::label('0', $prsentMonthCount, array('class' => 'form-control')) }}
+					    next month :{{ Form::label('0', $nextMonthCount, array('class' => 'form-control')) }}
+					 </div></br><br>
+					 
 					<div class="col-sm-12">
 			                <font face="tahoma" size="3" color="blue"> {{ Form::label('vechileEx', 'Vehicles Details :') }}</font>
 					</br><br>

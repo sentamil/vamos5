@@ -35,7 +35,7 @@ app.directive('map', function($http, vamoservice) {
 				
 			   	scope.speedval.push(data.speed);
            		scope.path.push(new google.maps.LatLng(data.latitude, data.longitude));
-				var labelAnchorpos = new google.maps.Point(12, 37);
+				var labelAnchorpos = new google.maps.Point(0, 0);
 				var myLatlng = new google.maps.LatLng(data.latitude, data.longitude);
 				
 				scope.startlatlong = new google.maps.LatLng(data.latitude, data.longitude);
@@ -84,7 +84,7 @@ app.directive('map', function($http, vamoservice) {
 						mapTypeId: google.maps.MapTypeId.ROADMAP
 	            	};
             		
-            		$('#vehiid span').text(locs.vehicleId + " (" +locs.shortName+")");
+            		$('#vehiid span').text(locs.shortName);
 					$('#toddist span span').text(locs.distanceCovered);
 					$('#vehstat span').text(locs.position);
 					total = parseInt(locs.speed);
@@ -105,7 +105,7 @@ app.directive('map', function($http, vamoservice) {
 					 	var latLngBounds = new google.maps.LatLngBounds();
 						latLngBounds.extend(scope.path[scope.path.length-1]);
 					}
-					var labelAnchorpos = new google.maps.Point(12, 37);
+					var labelAnchorpos = new google.maps.Point(0, 0);
 					
 					var myLatlng = new google.maps.LatLng(data.latitude, data.longitude);
 					scope.marker.setMap(null);
@@ -148,7 +148,7 @@ app.directive('map', function($http, vamoservice) {
 app.controller('mainCtrl',function($scope, $http, vamoservice){ 
 	var res = document.location.href.split("?");
 	$scope.vehicleno = res[1].trim();
-	$scope.url = 'http://'+globalIP+'/vamo/public//getSelectedVehicleLocation?'+res[1];
+	$scope.url = 'http://'+globalIP+context+'/public//getSelectedVehicleLocation?'+res[1];
 	$scope.path = [];
 	$scope.speedval =[];
 	$scope.inter = 0;
@@ -156,7 +156,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 	$scope.cityCirclecheck=false;
 	vamoservice.getDataCall($scope.url).then(function(data) {
 		$scope.locations = data;
-		var url = 'http://'+globalIP+'/vamo/public//getGeoFenceView?'+res[1];
+		var url = 'http://'+globalIP+context+'/public//getGeoFenceView?'+res[1];
 				$scope.createGeofence(url)
 	});
     $scope.addMarker= function(pos){
@@ -182,7 +182,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 		  });
     };
 	$scope.enterkeypress = function(){
-		var url = 'http://'+globalIP+'/vamo/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+		var url = 'http://'+globalIP+context+'/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
 		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
 			vamoservice.getDataCall(url).then(function(data) {
 			 	document.getElementById('poival').value='';

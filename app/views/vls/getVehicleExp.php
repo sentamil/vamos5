@@ -8,7 +8,7 @@ $ipaddress = $redis->get('ipaddress');
 
 
 
-$username = '';
+$username = Auth::user ()->username;
 
 //TODO - this hardcoding should be removed
 //$username='demouser1';

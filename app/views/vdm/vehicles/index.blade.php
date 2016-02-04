@@ -31,10 +31,6 @@
 							<td>{{ array_get($deviceList, $value)}}</td>
 					        <td>{{ array_get($mobileNoList, $value)}}</td>    
 							<td>
-								{{ Form::open(array('url' => 'vdmVehicles/' . $value, 'class' => 'btn-sm pull-right','onsubmit' => 'return ConfirmDelete()')) }}
-									{{ Form::hidden('_method', 'DELETE') }}
-									{{ Form::submit('Remove', array('class' => 'btn btn-sm btn-danger')) }}
-								{{ Form::close() }}
 								
 								<a  class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value,'normal') }}" >Show Stops</a>
 								

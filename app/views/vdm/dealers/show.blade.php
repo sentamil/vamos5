@@ -12,5 +12,8 @@
 		<p>
 				<strong><br/>Email Id: </strong><br/><br/> {{ $email }}<br>
 		</p>
+		<p>
+				<strong><br/>Website: </strong><br/><br/> {{ $website }}<br>
+		</p>
 	</div>
 @stop
