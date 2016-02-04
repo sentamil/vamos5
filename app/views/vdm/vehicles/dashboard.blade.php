@@ -5,7 +5,7 @@
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
-                   <h4> Dash Board</h4>
+                   <h4><b><font color="blue"> Dash Board </font></b></h4>
                 </div>
                 <div class="panel-body">
                 <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6">
@@ -19,7 +19,7 @@
 					<div class="form-group">
 					<div class="row">
 					<div class="col-sm-12">
-					<font face="tahoma" size="3" style="color:green"> {{ Form::label('vechileEx', 'Number of Vehicles Expires this month') }}
+					<font face="tahoma" size="3" style="color:green"> {{ Form::label('vechileEx', 'Number of Vehicles Expires Next Month') }}
 
 					   {{ Form::label('l', count($vechile), array('class' => 'form-control')) }}</font>
 					 </div></br><br>
