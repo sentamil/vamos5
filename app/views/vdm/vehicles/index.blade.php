@@ -17,6 +17,7 @@
 							<th style="text-align: center;">ID</th>
 							<th style="text-align: center;">Vehicle ID</th>
 							<th style="text-align: center;">Short Name</th>
+							<th style="text-align: center;">Org Name</th>
 							<th style="text-align: center;">Device ID</th>
 							<th style="text-align: center;">Mobile No</th>
 							<th style="text-align: center;">Actions</th>
@@ -28,6 +29,7 @@
 							<td>{{ ++$key }}</td>
 							<td>{{ $value }}</td>
 							<td>{{ array_get($shortNameList, $value)}}</td>
+							<td>{{ array_get($orgIdList, $value)}}</td>
 							<td>{{ array_get($deviceList, $value)}}</td>
 					        <td>{{ array_get($mobileNoList, $value)}}</td>    
 							<td>

@@ -47,7 +47,7 @@ class VdmVehicleController extends \BaseController {
         $portNoList = null;
         $mobileNo =null;
         $mobileNoList = null;
-        
+        $orgIdList = null;
 		foreach ( $vehicleList as $vehicle ) {
 			
 		      Log::info('$vehicle ' .$vehicle);
@@ -69,7 +69,10 @@ class VdmVehicleController extends \BaseController {
             $portNo=isset($vehicleRefData['portNo'])?$vehicleRefData['portNo']:9964; 
             $portNoList = array_add($portNoList,$vehicle,$portNo);
              $mobileNo=isset($vehicleRefData['gpsSimNo'])?$vehicleRefData['gpsSimNo']:99999; 
+			 
             $mobileNoList = array_add($mobileNoList,$vehicle,$mobileNo);
+			$orgId=isset($vehicleRefData['orgId'])?$vehicleRefData['orgId']:'Default'; 
+			$orgIdList = array_add($orgIdList,$vehicle,$orgId);
 		}
 		$demo='ahan';
 		$user=null;
@@ -79,7 +82,7 @@ class VdmVehicleController extends \BaseController {
 		
 		return View::make ( 'vdm.vehicles.index', array (
 				'vehicleList' => $vehicleList 
-		) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user );
+		) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList );
 	}
 	
 	
@@ -817,7 +820,7 @@ class VdmVehicleController extends \BaseController {
         
         
 		$rules = array (
-				'shortName' => 'required|alpha_dash',
+				'shortName' => 'required',
 				'regNo' => 'required',
 				'vehicleType' => 'required',
 			//	'oprName' => 'required',
