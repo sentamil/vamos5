@@ -76,7 +76,10 @@ app.filter('statusfilter', function(){
 	$scope.checkVal=false;
 	$scope.clickflagVal =0;
 	$scope.nearbyflag = false;
+	$scope.groupMap=false;
 	var tempdistVal = 0;
+	var mcOptions={};
+	var markerCluster;
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
@@ -226,6 +229,14 @@ app.filter('statusfilter', function(){
 		}
 	}
 	
+	// clusterMarker 
+	$scope.clusterMarker = function()
+	{
+		$scope.groupMap=true;
+		var mcOptions = {gridSize: 50,maxZoom: 15}
+		var markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions)	
+	}
+
 	$scope.getLocation = function(lat,lon, callback){
 		geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(lat, lon);
@@ -542,6 +553,8 @@ app.filter('statusfilter', function(){
 		var movingCount = 0;
 		var idleCount = 0;
 		var overspeedCount = 0;
+		
+		
 
 		for (var i = 0; i < $scope.locations02[$scope.gIndex].vehicleLocations.length; i++) {
 			if($scope.locations02[$scope.gIndex].vehicleLocations[i].position=="P"){
@@ -561,7 +574,7 @@ app.filter('statusfilter', function(){
 		$scope.idleCount  = idleCount;
 		$scope.overspeedCount = overspeedCount;
 		
-		 for (var i = 0; i < gmarkers.length; i++) {
+		for (var i = 0; i < gmarkers.length; i++) {
 			var temp = $scope.locations[i];	 
 			 var lat = temp.latitude;
 			 var lng =  temp.longitude;
@@ -578,9 +591,18 @@ app.filter('statusfilter', function(){
 				 });	
 			 }
 			 //$scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);
-		 }	
-		var mcOptions = {gridSize: 50, maxZoom: 15};
-		var markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions) 	
+		}	
+		 markerCluster.clearMarkers();
+		if($scope.groupMap==true)
+		{
+			
+			mcOptions = {gridSize: 50, maxZoom: 15};
+			markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions) 	
+		}
+		// else if($scope.groupMap == false)
+		// {
+		// 	markerCluster.clearMarkers(null);
+		// }
 		if($scope.selected!=undefined){
 			$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
 		}
@@ -669,8 +691,42 @@ app.filter('statusfilter', function(){
 		$(document).on('pageshow', '#maploc', function(e){       
         	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
    		});
-   		var mcOptions = {gridSize: 50, maxZoom: 15};
-		var markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions)
+   		// var mcOptions = {gridSize: 50, maxZoom: 15};
+//    		var mcOptions = {styles: [{
+// height: 100,
+// url: "assets/imgs/c1.png",
+// width: 100
+// },
+// {
+// height: 100,
+// url: "assets/imgs/c2.png",
+// width: 100
+// },
+// {
+// height: 100,
+// url: "assets/imgs/c3.png",
+// width: 100
+// },
+// {
+// height: 100,
+// url: "assets/imgs/c4.png",
+// width: 100
+// },
+// {
+// height: 100,
+// url: "assets/imgs/c5.png",
+// width: 100
+// }]}
+	// if($scope.groupMap==true)
+	// 		{
+	// 			var mcOptions={};
+	// 			var markerCluster = null;
+	// 			markerCluster.setMap(null);
+	// 			markerCluster.setGmarkers(null);
+	// 			mcOptions = {gridSize: 50, maxZoom: 15};
+	// 			markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions) 	
+	// 		}
+		
 	}
 	
 	//click and resolve address
@@ -741,6 +797,34 @@ app.filter('statusfilter', function(){
 		document.getElementById("mapList").setAttribute("id", "wrapper");
 	}
 
+	$("#single").hide();
+	$("#cluster").show();
+	// clusterMarker 
+	function clusterMarker()
+	{
+		$("#cluster").hide();
+		$("#single").show();
+		$scope.groupMap=true;
+		// markerCluster 	= new MarkerClusterer($scope.map, null, null)
+
+		mcOptions = {gridSize: 50,maxZoom: 15}
+		markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions)	
+	}
+
+	//sigle
+	function sigleMarker()
+	{
+		$("#single").hide();
+		$("#cluster").show();
+		$scope.groupMap=false;
+		markerCluster.clearMarkers();
+		console.log(gmarkers.length)
+		for(var i=0; i<gmarkers.length; i++)
+		{
+			gmarkers[i].setMap($scope.map);
+		}
+	}
+
 	//view map
 	$scope.mapView 	=	function(value)
 	{
@@ -750,6 +834,12 @@ app.filter('statusfilter', function(){
 				break;
 			case 'home' :
 				homeMap();
+				break;
+			case 'cluster' :
+				clusterMarker();
+			 	break;
+			case 'single' :
+				sigleMarker();
 				break;
 			default:
 		   		break;
@@ -833,7 +923,7 @@ app.filter('statusfilter', function(){
 						scope.selected=undefined;
 						// scope.locations02 = data;
 						// scope.mapTable = data[0].vehicleLocations;
-						//scope.vehiname	= data[scope.gIndex].vehicleLocations[scope.selected].vehicleId;
+						
 						scope.locations = scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
 						scope.zoomLevel = scope.zoomLevel;
 						//scope.initial02();
@@ -842,7 +932,7 @@ app.filter('statusfilter', function(){
 						scope.initial02();
 					}
 				}); 
-			},60000);
+			},600000);
 	  	}); 
 	    }
 	};
