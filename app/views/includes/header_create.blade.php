@@ -95,7 +95,9 @@
 					 <li>
                 <a href="../Business/create"> <span class="nav-label">Add Device</span></a>
             </li>
-			
+			 <li>
+                <a href="../Device"> <span class="nav-label">Onboard Devices</span></a>
+            </li>
 			@endif 
 			
 		<li><a href="../Business"> <span class="nav-label">Device List</span> <span class="label label-success pull-right">v.2</span> </a></li>	

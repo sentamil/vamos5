@@ -99,7 +99,14 @@
 		
     </div>
 	<br><br><br>
-	
+	<div class="col-md-6"> 
+        {{ Form::label('sosAlert', 'SOS Alert :') }}
+		</div>
+								<div class="col-md-6">
+         {{ Form::select('sosAlert',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('sosAlert'), array('class' => 'form-control')) }} 
+		
+    </div>
+	<br><br><br>
     <div class="col-md-6"> 
         {{ Form::label('overspeedalert', 'Over Speed Alert :') }}
 		</div>

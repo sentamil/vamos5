@@ -36,7 +36,11 @@
 		 {{ Form::select('idleAlert',  array( 'no' => 'No','yes' => 'Yes' ), $idleAlert, array('class' => 'form-control')) }} 
 		
     </div>
-	
+	<div class="form-group">
+        {{ Form::label('sosAlert', 'SOS Alert') }}
+		 {{ Form::select('sosAlert',  array( 'no' => 'No','yes' => 'Yes' ), $sosAlert, array('class' => 'form-control')) }} 
+		
+    </div>
 	
 	<div class="form-group">
         {{ Form::label('overspeedalert', 'Over Speed Alert') }}

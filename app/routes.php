@@ -408,7 +408,7 @@ Route::resource('Business', 'BusinessController');
 Route::post('Business/adddevice', array('uses' => 'BusinessController@adddevice'));
 
 Route::post('Business/batchSale', array('uses' => 'BusinessController@batchSale'));
-
+Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
 
 Route::resource('vdmDealers', 'VdmDealersController');
