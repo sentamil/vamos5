@@ -932,7 +932,7 @@ app.filter('statusfilter', function(){
 						scope.initial02();
 					}
 				}); 
-			},6000);
+			},600000);
 	  	}); 
 	    }
 	};
