@@ -375,8 +375,19 @@ class BusinessController extends \BaseController {
 				}else {
 					  $val = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
 					  $val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
+					  $valOrg= $redis->sismember('S_Organisations_'. $fcode, $userId);	
+					   $valOrg1=$redis->sismember('S_Organisations_Admin_'.$fcode,$userId);
+					   $valGroup=$redis->sismember('S_Groups_' . $fcode, $userId . ':' . $fcode);
+					   $valGroup1=$redis->sismember('S_Groups_Admin_'.$fcode,$userId . ':' . $fcode);
 				}
-				
+				if($valGroup==1 || $valGroup1==1 ) {
+					log::info('id group exist '.$userId);
+					return Redirect::to ( 'Business' )->withErrors ( 'Name already exist' );
+				}
+				if($valOrg==1 || $valOrg1==1 ) {
+					log::info('id org exist '.$userId);
+					return Redirect::to ( 'Business' )->withErrors ( 'Name already exist' );
+				}
 				if($val1==1 || isset($val)) {
 					log::info('id already exist '.$userId);
 					return Redirect::to ( 'Business' )->withErrors ( 'User Id already exist' );
