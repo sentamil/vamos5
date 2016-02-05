@@ -923,7 +923,7 @@ app.filter('statusfilter', function(){
 						scope.selected=undefined;
 						// scope.locations02 = data;
 						// scope.mapTable = data[0].vehicleLocations;
-						//scope.vehiname	= data[scope.gIndex].vehicleLocations[scope.selected].vehicleId;
+						
 						scope.locations = scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
 						scope.zoomLevel = scope.zoomLevel;
 						//scope.initial02();
