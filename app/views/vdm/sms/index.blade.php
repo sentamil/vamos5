@@ -37,7 +37,7 @@
 											</div>
 								<div class="col-md-6">
 										<!--{{ Form::text('Date', Input::old('Date'), array('bday' => 'bday'), array('class' => 'form-control')) }} -->
-								     <input type="date" name="bday">
+								     <input type="date" name="date">
 										
 									</div>
                                     <br><br><br>

@@ -9,7 +9,7 @@
 <div class="row">
 		<div class="col-md-4">
 	<div class="form-group">
-		{{ Form::label('vehicleId', 'Vehicle Id :')  }}
+		{{ Form::label('vehicleId', 'AssetID :')  }}
 		 {{ Form::hidden('vehicleId', $vehicleId, array('class' => 'form-control')) }}
 		 {{ Form::text('vehicleId1', $vehicleId, array('class' => 'form-control','disabled' => 'disabled')) }}
 	</div>
