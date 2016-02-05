@@ -100,7 +100,7 @@
                                 <tr>
                                     <td>
                                         <div id="viewMap">
-                                             <span title="List and Maps" id="listImg" ng-click="mapView('listMap')" title="List and Map"><img src="assets/imgs/lis.png" /></span>
+                                             <span title="List and Maps" id="listImg" ng-click="mapView('listMap')"><img src="assets/imgs/lis.png" /></span>
                                             <span title="Home" id="homeImg" ng-click="mapView('home')"><img src="assets/imgs/hom.png" /></span>
                                         </div>
                                     </td>
@@ -115,10 +115,18 @@
                                         <div title="Maps Marker Details" id="viewMap"><img id="minmaxMarker"  src="assets/imgs/i.png" /></div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>
                                         <div title="Near by Vehicles" id="viewMap" ng-click="nearBy();"><img src="assets/imgs/near.png" />
-                                        <!-- <input type="button" value="Near by Vehicles" id="nearbyVeh" /></div> -->
+                                        
+                                    </td>
+                                </tr> -->
+                                <tr>
+                                    <td>
+                                        <span title="Cluster Marker" id="cluster" ng-click="mapView('cluster')"><img src="assets/imgs/group.png" /></span>
+                                        <span title="Single Marker" id="single" ng-click="mapView('single')"><img src="assets/imgs/single.png" /></span>
+                                        <!-- <div title="Cluster" id="viewMap" ng-click="clusterMarker();"><img src="assets/imgs/group.png" /> -->
+                                        
                                     </td>
                                 </tr>
                                 <tr>
@@ -131,7 +139,7 @@
                             
                             
 
-                            <!-- <input type="radio" name="mapClick" value="mapList" ng-click="mapView('home')"> Home -->
+                            
                         </div>
                         <!-- <div id="minmaxMarker" style="position: absolute;top: 10px;left: 120px; z-index:999999" title="Maps Marker Details">
                             <img src="assets/imgs/add.png" />
