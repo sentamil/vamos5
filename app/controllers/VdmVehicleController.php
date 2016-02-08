@@ -1406,7 +1406,8 @@ class VdmVehicleController extends \BaseController {
 			else if($vehicleId==Session::get('vehicleId') && $deviceId!==Session::get('deviceId'))
 			{
 				log::info('-----------inside same vehicleid and different device Id ');
-				$deviceIdTemp = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
+				$deviceIdTemp = $redis->hget ( $vehicleDeviceMapId, $deviceId );
+				log::info('-----------inside same vehicleid and different device Id '.$deviceIdTemp);
 				if($deviceIdTemp!==null)
 				{
 					Session::flash ( 'message', 'Device Id Already Present ' .'!' );
@@ -1441,7 +1442,7 @@ class VdmVehicleController extends \BaseController {
 					return View::make ( 'vdm.vehicles.migration', array (
 					'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 				}
-				$deviceIdTemp = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
+				$deviceIdTemp = $redis->hget ( $vehicleDeviceMapId, $deviceId );
 				if($deviceIdTemp!==null)
 				{
 					Session::flash ( 'message', 'Device Id Already Present ' . '!' );
