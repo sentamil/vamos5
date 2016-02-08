@@ -105,7 +105,19 @@ background-color: #ffffff;
 		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
 		        	
 		            <h5 class="box-title">Current Status Report</h5>
+
+
+		            <div id="google_translate_element"></div><script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}
+</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+		            
+
 		            <div id="google_translate_element"></div>
+
 		            <div class="box-tools pull-right">
 		               <img style="cursor: pointer;" ng-click="exportData('statusreport')"  src="../app/views/reports/image/xls.png" />
 		            	<img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV('statusreport')"  src="../app/views/reports/image/csv.jpeg" />
@@ -121,7 +133,7 @@ background-color: #ffffff;
 		        	</table>
 		        	<input class="btn btn-xs btn-danger pull-right" type="button" value="More" ng-click="toggle = !toggle" >
 		        	<br><br>
-		        	<div ng-hide="toggle" class="col-md-3">
+      	<div ng-hide="toggle" class="col-md-3">
 			        	<div class="small-box bg-aqua">
 	                        <div class="inner">
 	                            <h3>{{data1.distance|number:0}}</h3>
