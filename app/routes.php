@@ -253,7 +253,7 @@ Route::get('getDistanceTimeFuelReport', function(){
         return Redirect::to('login');
     }
     return View::make('vls.getDistanceTimeFuelReport');
-})
+});
 
 
 Route::get('/getIndividualDriverPerformance', function() {
