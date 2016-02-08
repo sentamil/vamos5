@@ -71,6 +71,13 @@ Route::get('/reports', function() {
     return View::make('reports.current');
 });
 
+Route::get('/fuel', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    return View::make('reports.fuel');
+});
+
 View::addExtension('html', 'php');
 Route::get('/downloadreport', function() {
     if (!Auth::check()) {
@@ -241,6 +248,13 @@ Route::get('/getExecutiveReport', function() {
     return View::make('vls.getExecutiveReport');
 });
 
+Route::get('getDistanceTimeFuelReport', function(){
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('vls.getDistanceTimeFuelReport');
+});
+
 
 Route::get('/getIndividualDriverPerformance', function() {
     if (!Auth::check()) {
@@ -292,6 +306,8 @@ Route::get('register', function() {
 Route::get('viewSite', function() {
     return View::make('vls.viewSite');
 });
+
+;
 
 // route to show the login form
 //Route::get('register', array('uses' => 'RegisterController@showRegister'));			//Reg

@@ -109,7 +109,6 @@
 	</tr></table>
 	 @endforeach
 	
-	 
     <div>
     <ul id="itemsort"> 
 	</br>
