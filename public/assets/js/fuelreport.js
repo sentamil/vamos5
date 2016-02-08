@@ -151,6 +151,17 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		var distanceUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent;
 		serviceCall(distanceUrl);
 	}
+	$scope.genericFunction = function(single, index)
+	{
+		var stoppage 		= 	document.getElementById ("stop").checked;
+    	var idleEvent 		= 	document.getElementById ("idle").checked;
 
+    	var fromd 		= 	document.getElementById ("dateFrom").value;
+    	var fromt 		= 	document.getElementById ("timeFrom").value
+    	var tod 		=   document.getElementById ("dateTo").value;
+    	var tot 		=   document.getElementById ("timeTo").value;
+		var distanceUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+single+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent;
+		serviceCall(distanceUrl);
+	}
 
 });
