@@ -62,7 +62,7 @@ class VdmSmsController extends \BaseController {
         $tripType = Input::get('tripType');
         $date = Input::get('date');
         $vehicleId = Input::get('vehicleId');
-
+	Log::info(" date  @ show".$date);
         $username = Auth::user() -> username;
         $redis = Redis::connection();
         $fcode = $redis -> hget('H_UserId_Cust_Map', $username . ':fcode');

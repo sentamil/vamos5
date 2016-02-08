@@ -335,7 +335,7 @@ class BusinessController extends \BaseController {
 			$password      = Input::get('password');
 			$type      = Input::get('type');
 			$type1      = Input::get('type1');
-			log::info($ownerShip.'type ----------->'.$type);
+			log::info($ownerShip.'type ----------->'.$type1);
 			log::info($ownerShip.'valuse ----------->'.Input::get('userIdtemp'));
 			if($type1=='existing')
 			{
@@ -351,17 +351,18 @@ class BusinessController extends \BaseController {
 			
 			if($type=='Sale' && Session::get('cur')!='dealer')
 			{
+				log::info($ownerShip.'1 ----------->'.$type);
 				$ownerShip      = 'OWN';
 			}
 			if(Session::get('cur')=='dealer')
-			{	
+			{	log::info($ownerShip.'2 --a--------->'.Session::get('cur'));
 					$type='Sale';
 					$ownerShip = $username;
 					    $mobArr = explode(',', $mobileNo);
 			}
-			else if($type=='Sale' && $type1=='new')
+			 if($type=='Sale' && $type1=='new')
 			{
-				
+				log::info($ownerShip.'3----a------->'.Session::get('cur'));
 				 $rules = array (
 				'userId' => 'required|alpha_dash',
 				'email' => 'required|email',
