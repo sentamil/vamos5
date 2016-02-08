@@ -385,6 +385,7 @@ Route::group(array('before' => 'adminauth'), function(){   //admin auth starts h
 Route::get('vdmVehicles/calibrateOil/{param}', array('uses' => 'VdmVehicleController@calibrate'));
 Route::post('vdmVehicles/updateCalibration', array('uses' => 'VdmVehicleController@updateCalibration'));
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
+Route::get('vdmVehicles/index1', array('uses' => 'VdmVehicleController@index1'));
 Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dealerSearch'));
 
 Route::post('vdmVehicles/findDealerList', array('uses' => 'VdmVehicleController@findDealerList'));
@@ -414,8 +415,9 @@ Route::post('vdmVehicles/migrationUpdate', array('uses' => 'VdmVehicleController
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
 
 Route::resource('vdmGroups', 'VdmGroupController');
-Route::get('vdmVehicles/create1/{param1}', array('uses' => 'VdmVehicleController@create1'));
 Route::resource('vdmVehicles', 'VdmVehicleController');
+Route::resource('vdmVehiclesView', 'VdmVehicleViewController');
+
 Route::resource('DashBoard', 'DashBoardController');
 
 

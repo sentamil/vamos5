@@ -33,27 +33,16 @@ class VdmSmsController extends \BaseController {
             $orgsArr = array_add($orgsArr, $org, $org);
 
         }
-        
-        //why routeNo is not used -- because multiple vechiles can have same routes
-        
-        //route list == S_School_Route_CVSM_fcode
-        //TODO -- bring in ajax request ---to send route List 
-       /* 
-        $routes = $redis -> smembers('S_School_Route_CVSM_' . $fcode);  //TODO -- CVSM hardcoding should be removed
-        $routeList = array();
-         foreach ($routes as $route) {
-            $routeList = array_add($routeList, $route, $route);
-
-        }
-        
-        */
-        
+			
+		
         return View::make('vdm.sms.index') -> with('orgsArr', $orgsArr);
 
 
 
     }
 
+	
+	
     public function show() {
 
         Log::info(" VdmSmsController @ show");

@@ -1,4 +1,4 @@
-@include('includes.header_index')
+@include('includes.header_create')
 <div id="wrapper">
 <div class="content animate-panel">
 <div class="row">
@@ -19,15 +19,8 @@
 							<th style="text-align: center;">Vehicle Name</th>
 							<th style="text-align: center;">Org Name</th>
 							<th style="text-align: center;">Device ID</th>
-							
-								@if(Session::get('vCol')=='2')
-									<th style="text-align: center;">Device Model</th>
-								<th style="text-align: center;">Expire Date</th>
-								<th style="text-align: center;">Mobile No</th>
-									@endif 
-							@if(Session::get('vCol')=='1')
+							<th style="text-align: center;">Mobile No</th>
 							<th style="text-align: center;">Actions</th>
-							@endif 
 						</tr>
 					</thead>
 					<tbody>
@@ -38,13 +31,7 @@
 							<td>{{ array_get($shortNameList, $value)}}</td>
 							<td>{{ array_get($orgIdList, $value)}}</td>
 							<td>{{ array_get($deviceList, $value)}}</td>
-					        
-							@if(Session::get('vCol')=='2')
-							<td>{{ array_get($deviceModelList, $value)}}</td>
-						 <td>{{ array_get($expiredList, $value)}}</td>
-					        <td>{{ array_get($mobileNoList, $value)}}</td> 	
-							@endif 							
-							@if(Session::get('vCol')=='1')
+					        <td>{{ array_get($mobileNoList, $value)}}</td>    
 							<td>
 								
 								<a  class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value,'normal') }}" >Show Stops</a>
@@ -63,10 +50,10 @@
 								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Edit</a>
 								
 								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/calibrateOil/' . $value) }}">Calibrate</a>
-							
+				
 			
 				
-							</td>@endif 
+							</td>
 						</tr>
 						@endforeach
 						
@@ -90,6 +77,6 @@
 </div>
 </div>
 </div>
-@include('includes.js_index')
+@include('includes.js_create')
 </body>
 </html>

@@ -31,7 +31,6 @@
 							<th style="text-align: center;">Device ID</th>
 							<th style="text-align: center;">Vehicle Id</th>
 							
-							
 						</tr>
 					</thead>
 					<tbody>
@@ -44,7 +43,6 @@
 							<td>{{ $key }}</td>
 							<td>{{ explode (',' ,$value )[1]  }}</td>
 							<td>{{ explode (',' ,$value )[0]  }}</td>
-							
 						</tr>
 						@endforeach
 					 @endif
