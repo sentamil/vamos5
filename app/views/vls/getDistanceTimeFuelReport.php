@@ -11,7 +11,7 @@ if (! Auth::check ()) {
 }
 
 $username = Auth::user ()->username;
-//TODO - this hardcoding should be removed
+
 //$username='demouser1';
 
 $parameters='?userId='. $username;
