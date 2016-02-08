@@ -9,7 +9,7 @@
 <div class="row">
 		<div class="col-md-4">
 	<div class="form-group">
-		{{ Form::label('vehicleId', 'Vehicle Id :')  }}
+		{{ Form::label('vehicleId', 'AssetID :')  }}
 		 {{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control','disabled' => 'disabled')) }}
 	</div>
 	<div class="form-group">
@@ -19,7 +19,7 @@
 
 	</div>
 	<div class="form-group">
-		{{ Form::label('shortName', 'Short Name') }}
+		{{ Form::label('shortName', 'Vehicle Name') }}
 		{{ Form::text('shortName', $refData['shortName'], array('class' => 'form-control')) }}
 	</div>
 	
@@ -124,7 +124,7 @@
 
     </div>
 	<div class="form-group">
-        {{ Form::label('altShort', 'Alternate Short Name') }}
+        {{ Form::label('altShort', 'Alternate Vehicle Name') }}
       {{ Form::text('altShortName',$refData['altShortName'], array('class' => 'form-control')) }}           
 
     </div>

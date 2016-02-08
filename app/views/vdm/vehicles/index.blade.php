@@ -15,8 +15,8 @@
                		 <thead>
 						<tr>
 							<th style="text-align: center;">ID</th>
-							<th style="text-align: center;">Vehicle ID</th>
-							<th style="text-align: center;">Short Name</th>
+							<th style="text-align: center;">AssetID </th>
+							<th style="text-align: center;">Vehicle Name</th>
 							<th style="text-align: center;">Org Name</th>
 							<th style="text-align: center;">Device ID</th>
 							<th style="text-align: center;">Mobile No</th>
