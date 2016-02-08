@@ -8,10 +8,10 @@
     <meta name="author" content="Satheesh">
     <title>GPS</title>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <link href="assets/css/site.css" rel="stylesheet">
+    <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     <!-- <link href="assets/css/jVanilla.css" rel="stylesheet"> -->
     
-    <!-- <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet"> -->
+    <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
     <style type="text/css">
         #map_canvas{
             width:100%;
@@ -20,8 +20,8 @@
     </style>
 </head>
 <body ng-app="mapApp">
-    <div id="wrapper" ng-controller="mainCtrl">
-        <div id="sidebar-wrapper">
+    <div id="wrapper-site" ng-controller="mainCtrl">
+        <div id="sidebar-wrapper-site">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
                 <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
@@ -65,7 +65,7 @@
                                         </td>
                                         <td>
                                             <select style="width:100%; font-weight: bold; font-size: 12px; padding : 3px" ng-model="orgID">
-                                                <option ng-repeat="org in dropDownList">{{org}}</option>
+                                                <option ng-repeat="org in dropDownList.orgIds">{{org}}</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -123,7 +123,7 @@
     <script src="assets/js/services.js"></script>
     <script src="assets/js/addsite.js"></script>
     <script>
-
+    
     //menu loading
     $("#testLoad").load("../public/menu");
     var logo =document.location.host;

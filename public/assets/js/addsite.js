@@ -102,27 +102,15 @@ app.controller('mainCtrl',function($scope, $http){
      
       mergeList       = [];
       dropDown=[];
-      $scope.dropDownList=[];
+      $scope.dropDownList=response;
       for(var i = 0; response.siteParent.length>i; i++)
       {
-        //console.log(i)
-        dropDown.push(response.orgIds[i])
-        $scope.dropDownList = dropDown;
         if(response.siteParent[i]!=undefined)
         {
-          //console.log(response.siteParent)
-          // try 
-          // {
-            // if()
-            //   {
-                for(var j = 0; response.siteParent[i].site.length>j; j++)
-                {
-                  mergeList.push({'siteName': response.siteParent[i].site[j].siteName, 'siteType' : response.siteParent[i].site[j].siteType, 'latLng' : response.siteParent[i].site[j].latLng, 'orgId' : response.siteParent[i].site[j].orgId})
-                }
-              // } 
-          // }
-          // catch(err) 
-          // {mergeList =null;}
+          for(var j = 0; response.siteParent[i].site.length>j; j++)
+            {
+              mergeList.push({'siteName': response.siteParent[i].site[j].siteName, 'siteType' : response.siteParent[i].site[j].siteType, 'latLng' : response.siteParent[i].site[j].latLng, 'orgId' : response.siteParent[i].site[j].orgId})
+            }
         }
       }
       $scope.orgIdlist    = mergeList;
