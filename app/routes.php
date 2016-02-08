@@ -252,7 +252,6 @@ Route::get('getDistanceTimeFuelReport', function(){
     if (!Auth::check()) {
         return Redirect::to('login');
     }
-    log::info('fuel');
     return View::make('vls.getDistanceTimeFuelReport');
 });
 
