@@ -30,7 +30,7 @@
 							
 							<th style="text-align: center;">Device ID</th>
 							<th style="text-align: center;">Vehicle Id</th>
-							
+							<th style="text-align: center;">Device Type</th>
 							
 						</tr>
 					</thead>
@@ -44,7 +44,7 @@
 							<td>{{ $key }}</td>
 							<td>{{ explode (',' ,$value )[1]  }}</td>
 							<td>{{ explode (',' ,$value )[0]  }}</td>
-							
+							<td>{{ explode (',' ,$value )[2]  }}</td>
 						</tr>
 						@endforeach
 					 @endif

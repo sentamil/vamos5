@@ -19,8 +19,15 @@
 							<th style="text-align: center;">Vehicle Name</th>
 							<th style="text-align: center;">Org Name</th>
 							<th style="text-align: center;">Device ID</th>
-							<th style="text-align: center;">Mobile No</th>
+							
+								@if(Session::get('vCol')=='2')
+									<th style="text-align: center;">Device Model</th>
+								<th style="text-align: center;">Expire Date</th>
+								<th style="text-align: center;">Mobile No</th>
+									@endif 
+							@if(Session::get('vCol')=='1')
 							<th style="text-align: center;">Actions</th>
+							@endif 
 						</tr>
 					</thead>
 					<tbody>
@@ -31,7 +38,13 @@
 							<td>{{ array_get($shortNameList, $value)}}</td>
 							<td>{{ array_get($orgIdList, $value)}}</td>
 							<td>{{ array_get($deviceList, $value)}}</td>
-					        <td>{{ array_get($mobileNoList, $value)}}</td>    
+					        
+							@if(Session::get('vCol')=='2')
+							<td>{{ array_get($deviceModelList, $value)}}</td>
+						 <td>{{ array_get($expiredList, $value)}}</td>
+					        <td>{{ array_get($mobileNoList, $value)}}</td> 	
+							@endif 							
+							@if(Session::get('vCol')=='1')
 							<td>
 								
 								<a  class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value,'normal') }}" >Show Stops</a>
@@ -50,10 +63,10 @@
 								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Edit</a>
 								
 								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/calibrateOil/' . $value) }}">Calibrate</a>
-				
+							
 			
 				
-							</td>
+							</td>@endif 
 						</tr>
 						@endforeach
 						

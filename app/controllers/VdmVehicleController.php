@@ -14,7 +14,7 @@ class VdmVehicleController extends \BaseController {
 		
 		log::info( 'User name  ::' . $username);
 		Session::forget('page');
-		
+		Session::put('vCol',1);
 		$redis = Redis::connection ();
 		log::info( 'User 1  ::' );
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -48,6 +48,8 @@ class VdmVehicleController extends \BaseController {
         $mobileNo =null;
         $mobileNoList = null;
         $orgIdList = null;
+		$deviceModelList = null;
+		$expiredList = null;
 		foreach ( $vehicleList as $vehicle ) {
 			
 		      Log::info('$vehicle ' .$vehicle);
@@ -73,16 +75,19 @@ class VdmVehicleController extends \BaseController {
             $mobileNoList = array_add($mobileNoList,$vehicle,$mobileNo);
 			$orgId=isset($vehicleRefData['orgId'])?$vehicleRefData['orgId']:'Default'; 
 			$orgIdList = array_add($orgIdList,$vehicle,$orgId);
+			$deviceModel=isset($vehicleRefData['deviceModel'])?$vehicleRefData['deviceModel']:'nill'; 
+			$deviceModelList = array_add($deviceModelList,$vehicle,$deviceModel);
+			$expiredPeriod=isset($vehicleRefData['expiredPeriod'])?$vehicleRefData['expiredPeriod']:'nill'; 
+			$expiredList = array_add($expiredList,$vehicle,$expiredPeriod);
 		}
 		$demo='ahan';
 		$user=null;
 		
 		$user1= new VdmDealersController;
 		$user=$user1->checkuser();
-		
 		return View::make ( 'vdm.vehicles.index', array (
 				'vehicleList' => $vehicleList 
-		) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList );
+		) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList );
 	}
 	
 	
