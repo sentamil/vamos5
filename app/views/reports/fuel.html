@@ -126,7 +126,7 @@
                                     <th><input type="checkbox"  id="stop"><b> Distance </b></th>
                                     <th><input type="textbox" id="plotin" style="height: 20px; width:25px; border-radius: 3px" value="10"/>(Kms)</th>
                                     <th><input type="checkbox" id="idle"><b> Interval </b></th>
-                                    <th colspan="2"><input type="textbox" id="plotin" style="height: 20px; width:25px; border-radius: 3px" value="10"/>(mins)</th> 
+                                    <th><input type="textbox" id="plotin" style="height: 20px; width:25px; border-radius: 3px" value="10"/>(mins)</th> 
                                      <!-- <th>xxxx</th>  -->
                                   </tr>
                                 </thead>
@@ -136,26 +136,26 @@
                             <table class="table table-bordered table-striped table-condensed table-hover">
                               <thead>
                                 <tr>
-                                  <th colspan="5">Distance</th>
+                                  <th colspan="4">Distance</th>
                                 </tr>
                                 <tr>
                                 
-                                  <th>Time</th>
-                                  <th>Trip</th>
-                                  <th>Consume</th>
-                                  <th>Starting</th> 
-                                  <th>Ending</th>
+                                  <th colspan="2">Time</th>
+                                  <th>Trip(Kms)</th>
+                                  <th>Consume(Ltrs)</th>
+                                  <!-- <th>Starting</th> 
+                                  <th>Ending</th> -->
                                   </tr>
                                   
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr ng-repeat="rep in fuelValue">
-                                  <td>{{rep.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                  <td colspan="2">{{rep.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                   <td>{{rep.tripDistance}}</td>
                                   <td>{{rep.fuelConsume}}</td>
-                                  <td>{{rep.fuelFrom}}</td>
-                                  <td>{{rep.fuelTo}}</td>
+                                  <!-- <td>{{rep.fuelFrom}}</td>
+                                  <td>{{rep.fuelTo}}</td> -->
                                 </tr>
                               </tbody>
                               
@@ -164,15 +164,15 @@
                             <table class="table table-bordered table-striped table-condensed table-hover">
                               <thead>
                                 <tr style="text-align: center">
-                                  <th colspan="6">Fuel</th>
+                                  <th colspan="4">Fuel</th>
                                 </tr>
                                 <tr>
                                     <td>Start</td>
                                     <td>End</td>
                                     <td>Duration</td>
                                     <td>Consume</td> 
-                                    <td>Starting</td> 
-                                    <td>Ending</td> 
+                                    <!-- <td>Starting</td> 
+                                    <td>Ending</td>  -->
                                   </tr>
                                   <tr ng-repeat="val in fuelTime">
                                     
@@ -180,8 +180,8 @@
                                       <td>{{val.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                       <td>{{msToTime(val.duration)}}</td>
                                       <td>{{val.fuelConsume}}</td> 
-                                      <td>{{val.fuelFrom}}</td>
-                                      <td>{{val.fuelTo}}</td>
+                                      <!-- <td>{{val.fuelFrom}}</td>
+                                      <td>{{val.fuelTo}}</td> -->
                                   </tr>
                                   
                                 </tr>
