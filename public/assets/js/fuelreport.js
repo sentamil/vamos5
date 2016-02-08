@@ -93,9 +93,9 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	});
 
 	//function for group selection
-	$scope.groupSelection =	function(val)
+	$scope.groupSelection =	function(groupname)
 	{
-		$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group='+val;
+		$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupname;
 	}
 
 	function distanceTime()
@@ -110,18 +110,46 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	{
 		var stoppage 		= 	document.getElementById ("stop").checked;
     	var idleEvent 		= 	document.getElementById ("idle").checked;
+
+    	// var fromd 		= 	document.getElementById ("dateFrom").value;
+    	// var fromt 		= 	document.getElementById ("timeFrom").value
+    	// var tod 		=   document.getElementById ("dateTo").value;
+    	// var tot 		=   document.getElementById ("timeTo").value;
+
+
 		var distanceTimeUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent;
-		$http.get(distanceTimeUrl).success(function(data)
+		serviceCall(distanceTimeUrl);
+	}
+
+	function serviceCall(url)
+	{
+		$http.get(url).success(function(data)
 		{
-			$scope.fuelValue = data[0].distanceHistory;
-			$scope.fuelTime	= data[0].timeHistory;
+			if(data.length>0)
+			{
+				$scope.fuelValue = data[0].distanceHistory;
+				$scope.fuelTime	= data[0].timeHistory;
+			}
+			else
+			{
+				$scope.fuelValue=[];
+				$scope.fuelTime=[];
+			}
+			
 		})
 	}
 
-
 	$scope.plotHist = function()
 	{
-		servicereport();
+		var stoppage 		= 	document.getElementById ("stop").checked;
+    	var idleEvent 		= 	document.getElementById ("idle").checked;
+
+    	var fromd 		= 	document.getElementById ("dateFrom").value;
+    	var fromt 		= 	document.getElementById ("timeFrom").value
+    	var tod 		=   document.getElementById ("dateTo").value;
+    	var tot 		=   document.getElementById ("timeTo").value;
+		var distanceUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent;
+		serviceCall(distanceUrl);
 	}
 
 
