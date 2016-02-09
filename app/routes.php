@@ -183,8 +183,8 @@ Route::get('/getFuelDropFillReport', function(){
         return Redirect::to('login');
     }
     Log::info('getFuelDropFillReport');
-    return View::make('vls.getFuelDropFillReport')
-})
+    return View::make('vls.getFuelDropFillReport');
+});
 
 
 Route::get('/liveTrack', function() {
