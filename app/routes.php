@@ -387,7 +387,7 @@ Route::post('vdmVehicles/updateCalibration', array('uses' => 'VdmVehicleControll
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
 Route::get('vdmVehicles/index1', array('uses' => 'VdmVehicleController@index1'));
 Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dealerSearch'));
-
+Route::get('vdmVehicles/migration/{param1}', array('uses' => 'VdmVehicleController@migration'));
 Route::post('vdmVehicles/findDealerList', array('uses' => 'VdmVehicleController@findDealerList'));
 
 Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleController@stops'));
@@ -398,7 +398,7 @@ Route::get('vdmVehicles/{param}/edit1', array('uses' => 'VdmVehicleController@ed
 Route::post('vdmVehicles/update1', array('uses' => 'VdmVehicleController@update1'));
 
 
-Route::get('vdmVehicles/migration/{param1}', array('uses' => 'VdmVehicleController@migration'));
+
 
 Route::get('vdmVehicles/removeStop/{param}/{param1}', array('uses' => 'VdmVehicleController@removeStop'));
 
@@ -415,6 +415,7 @@ Route::post('vdmVehicles/migrationUpdate', array('uses' => 'VdmVehicleController
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
 
 Route::resource('vdmGroups', 'VdmGroupController');
+Route::get('vdmVehicles/create1/{param1}', array('uses' => 'VdmVehicleController@create1'));
 Route::resource('vdmVehicles', 'VdmVehicleController');
 Route::resource('vdmVehiclesView', 'VdmVehicleViewController');
 
