@@ -921,9 +921,6 @@ app.filter('statusfilter', function(){
 				vamoservice.getDataCall(scope.url).then(function(data) {
 					if(data.length){
 						scope.selected=undefined;
-						// scope.locations02 = data;
-						// scope.mapTable = data[0].vehicleLocations;
-						
 						scope.locations = scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
 						scope.zoomLevel = scope.zoomLevel;
 						//scope.initial02();
