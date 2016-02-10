@@ -1,11 +1,14 @@
 var app = angular.module('fuelapp', ['ui.bootstrap']);
 
 app.controller('mainFuel', function($scope, $http, $filter){
-	console.log('  inside the js file  ')
+	
+	// console.log('  inside the js file  ')
 
 	$scope.url 				= 	'http://'+globalIP+context+'/public//getVehicleLocations';
-	$scope.gIndex = 0;
-	
+	$scope.gIndex 			=	0;
+	$scope.alertData 		=	'time';
+	// $scope.hrs    = 1;
+	// $scope.kms 	  = 10;
 
 
 	function formatAMPM(date) {
@@ -63,6 +66,8 @@ app.controller('mainFuel', function($scope, $http, $filter){
 			//console.log(data[0].vehicleLocations[0].vehicleId);
 			if(data.length)
 				$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
+				$scope.shortName    =   data[$scope.gIndex].vehicleLocations[0].shortName;
+				$scope.gName 		= 	data[$scope.gIndex].group;
 			angular.forEach(data, function(value, key) {			  
 				  if(value.totalVehicles) {
 				  		$scope.data1		=	data[key];
@@ -78,90 +83,122 @@ app.controller('mainFuel', function($scope, $http, $filter){
 			$scope.todate			=	$scope.getTodayDate($scope.fromNowTS);
 			distanceTime();
 			});				
-			// $scope.loading			=	false;	
-			// $scope.fromNowTS		=	new Date();
-			// $scope.toNowTS			=	new Date().getTime() - 86400000;
 			
-			// $scope.fromdate			=	$scope.getTodayDate($scope.fromNowTS.setDate($scope.fromNowTS.getDate()-7));
-			// $scope.todate			=	$scope.getTodayDate($scope.toNowTS);
-			// $scope.fromtime			=	formatAMPM($scope.fromNowTS);
-   			// $scope.totime			=	formatAMPM($scope.toNowTS);
-			// $scope.plotHist();
-			// console.log(' 2 ')
 			
 		}).error(function(){ /*alert('error'); */});
 	});
 
 	//function for group selection
-	$scope.groupSelection =	function(groupname)
+	$scope.groupSelection 	=	function(groupname)
 	{
-		$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupname;
+		$scope.gName 		= 	groupname;
+		$scope.url 		 	= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupname;
 	}
 
+	//page loaded function
 	function distanceTime()
-	{
-		
+	{	
+		// $('#perloader').show();
+		// $('#preloader02').show();
+		$("#fill").hide();
+    	$("#eventReport").show();
 		document.getElementById ("stop").checked = true;
     	document.getElementById ("idle").checked = true;
-    	servicereport();
-		
-	}
-	function servicereport()
-	{
-		var stoppage 		= 	document.getElementById ("stop").checked;
+    	var stoppage 		= 	document.getElementById ("stop").checked;
     	var idleEvent 		= 	document.getElementById ("idle").checked;
-
-    	// var fromd 		= 	document.getElementById ("dateFrom").value;
-    	// var fromt 		= 	document.getElementById ("timeFrom").value
-    	// var tod 		=   document.getElementById ("dateTo").value;
-    	// var tot 		=   document.getElementById ("timeTo").value;
-
-
-		var distanceTimeUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent;
+    	var kms 			=   document.getElementsByClassName("kms")[0].value;
+    	var hrs 			=   document.getElementsByClassName("hrs")[0].value;
+		var distanceTimeUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms;
 		serviceCall(distanceTimeUrl);
+		// $('#status02').fadeOut(); 
+		// $('#preloader02').delay(350).fadeOut('slow');
 	}
-
+	
+	// service call
 	function serviceCall(url)
 	{
+		$('#perloader').show();
+		$('#preloader02').show();
 		$http.get(url).success(function(data)
 		{
+			$('#status02').fadeOut(); 
+			$('#preloader02').delay(350).fadeOut('slow');
 			if(data.length>0)
-			{
-				$scope.fuelValue = data[0].distanceHistory;
-				$scope.fuelTime	= data[0].timeHistory;
-			}
+				$scope.fuelTotal 	= data;
 			else
-			{
-				$scope.fuelValue=[];
-				$scope.fuelTime=[];
-			}
-			
+				$scope.fuelTotal=[];
+				
 		})
+		
 	}
 
-	$scope.plotHist = function()
+	
+	//button click event
+	$scope.plotHist 		= function()
+	{
+		
+		$scope.getValue('button');
+		
+	}
+
+	$scope.genericFunction  = function(single, index, shortname)
+	{
+		$scope.shortName 	= 	shortname;
+		$scope.vehiname 	= 	single;
+		$scope.getValue('vehicle');
+	}
+	
+	$scope.getValue 	= function(data)
+	{	
+		switch(data)
+		{
+			case 'vehicle':
+				console.log('vehicle');
+				$scope.seperate();
+				break;
+			case 'button':
+				console.log('button');
+				$scope.seperate();
+				break;
+			default:
+				break;
+
+		}
+	}
+	
+	$scope.seperate 	= function()
 	{
 		var stoppage 		= 	document.getElementById ("stop").checked;
     	var idleEvent 		= 	document.getElementById ("idle").checked;
-
-    	var fromd 		= 	document.getElementById ("dateFrom").value;
-    	var fromt 		= 	document.getElementById ("timeFrom").value
-    	var tod 		=   document.getElementById ("dateTo").value;
-    	var tot 		=   document.getElementById ("timeTo").value;
-		var distanceUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent;
-		serviceCall(distanceUrl);
+    	var fill 			= 	document.getElementById ("fillfuel").checked;
+    	var drop 			= 	document.getElementById ("drop").checked;
+    	var fromd 			= 	document.getElementById ("dateFrom").value;
+    	var fromt 			= 	document.getElementById ("timeFrom").value
+    	var tod 			=   document.getElementById ("dateTo").value;
+    	var tot 			=   document.getElementById ("timeTo").value;
+    	$scope.report 		=	document.getElementById	("fuelValue").value
+    	var kms 			=   document.getElementsByClassName("kms")[0].value;
+    	var hrs 			=   document.getElementsByClassName("hrs")[0].value;
+    	if($scope.report=="distance")
+    	{
+    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms;
+    		serviceCall(distanceUrl);
+    		$("#fill").hide(1000);
+    		$("#eventReport").show(1000);
+    		
+    	}
+    	else if($scope.report == "fill")
+    	{
+    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&fuelDrop='+drop+'&fuelFill='+fill;
+    		serviceCall(distanceUrl);
+    		$("#eventReport").hide(1000);
+    		$("#fill").show(1000);
+    	}
 	}
-	$scope.genericFunction = function(single, index)
-	{
-		var stoppage 		= 	document.getElementById ("stop").checked;
-    	var idleEvent 		= 	document.getElementById ("idle").checked;
-
-    	var fromd 		= 	document.getElementById ("dateFrom").value;
-    	var fromt 		= 	document.getElementById ("timeFrom").value
-    	var tod 		=   document.getElementById ("dateTo").value;
-    	var tot 		=   document.getElementById ("timeTo").value;
-		var distanceUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+single+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent;
-		serviceCall(distanceUrl);
-	}
-
+	$(window).load(function() {
+		$('#status').hide(); 
+		$('#preloader').hide('slow');
+		// $('body').delay(350).css({'overflow':'visible'});
+});
+	
 });
