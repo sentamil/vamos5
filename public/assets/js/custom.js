@@ -796,12 +796,12 @@ app.filter('statusfilter', function(){
 	function homeMap ()
 	{
 		setId();
-		$("#listImg").show();
-		$("#homeImg").hide();
-		$("#efullscreen").hide();
-		$("#fullscreen").show();
-		$('#mapTable-mapList').hide(500);
-		$("#contentmin").show(1000);
+		$("#listImg").show(500);
+		$("#homeImg").hide(1000);
+		$("#efullscreen").hide(1000);
+		$("#fullscreen").show(500);
+		$('#mapTable-mapList').hide(1000);
+		$("#contentmin").show(500);
 		$("#sidebar-wrapper").show(500);
 		document.getElementById($scope.idinvoke).setAttribute("id", "wrapper");
 	}
@@ -836,8 +836,8 @@ app.filter('statusfilter', function(){
 	function fullScreen()
 	{
 		setId();
-		$("#fullscreen").hide();
-		$("#efullscreen").show();
+		$("#fullscreen").hide(1000);
+		$("#efullscreen").show(500);
 
 		document.getElementById($scope.idinvoke).setAttribute("id", "sidebar-fullscreen");
 		$("#contentmin").hide(1000);
@@ -847,13 +847,13 @@ app.filter('statusfilter', function(){
 	function exitScreen()
 	{
 		setId();
-		$("#efullscreen").hide();
-		$("#fullscreen").show();
+		$("#efullscreen").hide(1000);
+		$("#fullscreen").show(500);
 		// $("#listImg").show();
 		// $("#homeImg").hide();
 		document.getElementById($scope.idinvoke).setAttribute("id", "wrapper");
-		$("#contentmin").show(1000);
-		$("#sidebar-wrapper").show(500);
+		$("#contentmin").show(500);
+		$("#sidebar-wrapper").show(1000);
 	}
 
 	function setId()
