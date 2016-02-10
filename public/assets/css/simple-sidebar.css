@@ -252,14 +252,14 @@ margin-right:0;
 }
 li a label{ width:100%; display:block;}
 .track a>div, .track a:hover>div{ background:url('../imgs/track.png') no-repeat center center; width:100%; height:30px;}
-.history a>div, .history a:hover>div{ background:url('../imgs/history.png') no-repeat center center; width:100%; height:30px;}
+.history a>div, .history a:hover>div{ background:url('../imgs/fuel.png') no-repeat center center; width:100%; height:30px;}
 .alert01 a>div, .alert01 a:hover>div{ background:url('../imgs/alert.png') no-repeat center center; width:100%; height:30px;}
 .settings a>div, .settings a:hover>div{ background:url('../imgs/settings.png') no-repeat center center; width:100%; height:32px;}
 .stastics a>div, .stastics a.hover>div{ background:url('../imgs/stastics.png') no-repeat center center; width:100%; height:32px;}
 .admin a>div, .admin a.hover>div{ background:url('../imgs/admin.png') no-repeat center center; width:100%; height:32px;}
 
 .track a.active>div{ background:url('../imgs/trackActive.png') no-repeat center center; width:100%; height:30px;}
-.history a.active>div{ background:url('../imgs/historyActive.png') no-repeat center center; width:100%; height:30px;}
+.history a.active>div{ background:url('../imgs/fuelactive.png') no-repeat center center; width:100%; height:30px;}
 .alert01 a.active>div{ background:url('../imgs/alertActive.png') no-repeat center center; width:100%; height:30px;}
 .settings a.active>div{ background:url('../imgs/settingsActive.png') no-repeat center center; width:100%; height:32px;}
 .stastics a.active>div{ background:url('../imgs/stasticsActive.png') no-repeat center center; width:100%; height:32px;}
@@ -394,7 +394,7 @@ border-width: 10px;
 .trackDetails td{ padding:5px;}
 .trackDetails tr:nth-child(odd){background: #efefef;}
 .dynData{ width:100%; margin-top:5px; margin-bottom:10px; }
-.dynData td{ font-size:12px; padding:4px; color: #f7f7f7}
+.dynData td{ font-size:12px; padding:4px; color: #2a2a2a}
 #lastseen, #lstseendate{font-size:12px;}
 .dynData h3{ font-size:12px; margin:0; padding-left:10px; font-weight:normal;}
 #menuView {position: absolute;top: 150px;left: 10px; z-index:999999; background: #fff; padding: 5px; box-shadow:0px 1px 2px rgba(0, 0, 0, 0.2)  !important; border-radius : 2px; font-size: 11px;}
@@ -525,3 +525,13 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
     background: #ccc;
 }
+
+/*button*/
+
+#button
+{margin-left: -100%; padding: 5px; padding-right: 10px; padding-left:10px; cursor: pointer;  border-radius: 4px; background-color: #357ebd; color: #fff;}
+#button:hover{margin-left: -100%; padding: 5px; padding-right: 10px; padding-left:10px; cursor: pointer;  border-radius: 4px; border: 1px solid #cecece;background-color: #fff; color: #000;}
+
+.nulltd{color: #f56954}
+
+
