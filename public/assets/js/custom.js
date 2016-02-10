@@ -842,6 +842,7 @@ app.filter('statusfilter', function(){
 		document.getElementById($scope.idinvoke).setAttribute("id", "sidebar-fullscreen");
 		$("#contentmin").hide(1000);
 		$("#sidebar-wrapper").hide(500);
+		$("#sidebar-fullscreen").show(500);
 	}
 
 	function exitScreen()
@@ -854,7 +855,7 @@ app.filter('statusfilter', function(){
 		document.getElementById($scope.idinvoke).setAttribute("id", "wrapper");
 		$("#contentmin").show(1000);
 		$("#sidebar-wrapper").show(500);
-		
+
 	}
 
 	function setId()
