@@ -773,32 +773,40 @@ app.filter('statusfilter', function(){
 	$('#mapTable-mapList').hide()
 	$("#homeImg").hide();
 	$("#listImg").show();
+	$("#single").hide();
+	$("#cluster").show();
+	$("#efullscreen").hide();
+	$("#fullscreen").show();
+	// $scope.idinvoke;
 	//list view
 	function listMap ()
 	{
+		setId();
 		$("#listImg").hide();
 		$("#homeImg").show();
+		$("#efullscreen").hide();
+		$("#fullscreen").show();
 		$('#mapTable-mapList').show(1000);
 		$("#contentmin").hide(500);
 		$("#sidebar-wrapper").hide(500);
-		
-		document.getElementById("wrapper").setAttribute("id", "mapList");
+		document.getElementById($scope.idinvoke).setAttribute("id", "mapList");
 	}
 
 	//return home
 	function homeMap ()
 	{
+		setId();
 		$("#listImg").show();
 		$("#homeImg").hide();
+		$("#efullscreen").hide();
+		$("#fullscreen").show();
 		$('#mapTable-mapList').hide(500);
 		$("#contentmin").show(1000);
 		$("#sidebar-wrapper").show(500);
-		
-		document.getElementById("mapList").setAttribute("id", "wrapper");
+		document.getElementById($scope.idinvoke).setAttribute("id", "wrapper");
 	}
 
-	$("#single").hide();
-	$("#cluster").show();
+	
 	// clusterMarker 
 	function clusterMarker()
 	{
@@ -825,6 +833,41 @@ app.filter('statusfilter', function(){
 		}
 	}
 
+	function fullScreen()
+	{
+		setId();
+		$("#fullscreen").hide();
+		$("#efullscreen").show();
+
+		document.getElementById($scope.idinvoke).setAttribute("id", "sidebar-fullscreen");
+		$("#contentmin").hide(1000);
+		$("#sidebar-wrapper").hide(500);
+	}
+
+	function exitScreen()
+	{
+		setId();
+		$("#efullscreen").hide();
+		$("#fullscreen").show();
+		// $("#listImg").show();
+		// $("#homeImg").hide();
+		document.getElementById($scope.idinvoke).setAttribute("id", "wrapper");
+		$("#contentmin").show(1000);
+		$("#sidebar-wrapper").show(500);
+	}
+
+	function setId()
+	{
+		if(document.getElementById("wrapper")!=null)
+			$scope.idinvoke = document.getElementById("wrapper").id;
+		else if(document.getElementById("sidebar-fullscreen")!=null)
+			$scope.idinvoke = document.getElementById("sidebar-fullscreen").id;
+		else if(document.getElementById("mapList")!==null)
+			$scope.idinvoke = document.getElementById("mapList").id;
+
+
+	}
+
 	//view map
 	$scope.mapView 	=	function(value)
 	{
@@ -840,6 +883,12 @@ app.filter('statusfilter', function(){
 			 	break;
 			case 'single' :
 				sigleMarker();
+				break;
+			case 'fscreen' :
+				fullScreen();
+				break;
+			case 'escreen':
+				exitScreen();
 				break;
 			default:
 		   		break;
