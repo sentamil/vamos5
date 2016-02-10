@@ -39,7 +39,7 @@
 
                 </li>
                 <li class="track"><a href="javascript:void(0);" class="active"><div></div><label>Track</label></a></li>
-                <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
+                <li class="history"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
                 <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
@@ -90,9 +90,9 @@
                                 </div>
                             </div>
                         </div>
-                       <!--  <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
+                        <div id="minmax" style="position: absolute;top: 2px;right: 10px; z-index:999999; background-color: #fff; padding-right: 2px; padding-left: 2px; padding-top:2px;padding-bottom:2px; border-radius: 2px; cursor: pointer; title: Live Details">
                             <img src="assets/imgs/add.png" />
-                        </div> -->
+                        </div>
                         <div id="menuView">
 
                             <!-- Side Menu -->
@@ -101,15 +101,15 @@
                                     <td>
                                         <div id="viewMap">
                                              <span title="List and Maps" id="listImg" ng-click="mapView('listMap')"><img src="assets/imgs/lis.png" /></span>
-                                            <span title="Home" id="homeImg" ng-click="mapView('home')"><img src="assets/imgs/hom.png" /></span>
+                                            <span title="Home" id="homeImg" ng-click="mapView('home')"><img src="assets/imgs/back.png" /></span>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                               <!--  <tr>
                                     <td>
                                         <div title="Live Details" id="viewMap"><img id="minmax" src="assets/imgs/ply.png" /></div>
                                     </td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td>
                                         <div title="Maps Marker Details" id="viewMap"><img id="minmaxMarker"  src="assets/imgs/i.png" /></div>
@@ -124,21 +124,29 @@
                                 <tr>
                                     <td>
                                         <div id="viewMap">
-                                        <span title="Cluster Marker" id="cluster" ng-click="mapView('cluster')"><img src="assets/imgs/group.png" /></span>
-                                        <span title="Spread Marker" id="single" ng-click="mapView('single')"><img src="assets/imgs/single.png" /></span>
-
-
+                                            <span title="Cluster Marker" id="cluster" ng-click="mapView('cluster')"><img src="assets/imgs/group.png" /></span>
+                                            <span title="Spread Marker" id="single" ng-click="mapView('single')"><img src="assets/imgs/single.png" /></span>
                                         </div>
-
-                                        <!-- <div title="Cluster" id="viewMap" ng-click="clusterMarker();"><img src="assets/imgs/group.png" /> -->
-                                        
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div style="padding: 5px 1px 5px 1px; cursor:pointer;" title="Full Screen"><a href="../public/liveTrack" id="fullscreen" target="_blank"><img id="minmaxMarker"  src="assets/imgs/full.png" /></a></div>
+                                        <div id="viewMap" title="Full Screen">
+                                           <span id="fullscreen" ng-click="mapView('fscreen')"><img id="minmaxMarker"  src="assets/imgs/full.png" /></span>
+                                            <span title="Exit FullScreen" id="efullscreen" ng-click="mapView('escreen')"><img src="assets/imgs/exit_full.png" /></span>
+                                        </div>
                                     </td>
                                 </tr>   
+                                <tr>
+                                    <td>
+                                        <div style="padding: 5px 1px 5px 1px; cursor:pointer;">
+                                            <span ng-click="mapView('home')">
+                                                <img src="assets/imgs/hom.png" />
+                                            </span>
+                                            
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>    
                             
                             
@@ -147,7 +155,7 @@
                             
                         </div>
                         <!-- <div id="minmaxMarker" style="position: absolute;top: 10px;left: 120px; z-index:999999" title="Maps Marker Details">
-                            <img src="assets/imgs/add.png" />
+                            <img src="assets/imgs/add.png" /> <a href="../public/liveTrack" id="fullscreen" target="_blank"><img id="minmaxMarker"  src="assets/imgs/full.png" /></a>
                         </div> -->
                         <div id="draggable">
                                <div class="legendlist">
