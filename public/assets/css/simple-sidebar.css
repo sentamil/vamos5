@@ -252,14 +252,14 @@ margin-right:0;
 }
 li a label{ width:100%; display:block;}
 .track a>div, .track a:hover>div{ background:url('../imgs/track.png') no-repeat center center; width:100%; height:30px;}
-.history a>div, .history a:hover>div{ background:url('../imgs/fuel.png') no-repeat center center; width:100%; height:30px;}
+.history a>div, .history a:hover>div{ background:url('../imgs/history.png') no-repeat center center; width:100%; height:30px;}
 .alert01 a>div, .alert01 a:hover>div{ background:url('../imgs/alert.png') no-repeat center center; width:100%; height:30px;}
 .settings a>div, .settings a:hover>div{ background:url('../imgs/settings.png') no-repeat center center; width:100%; height:32px;}
 .stastics a>div, .stastics a.hover>div{ background:url('../imgs/stastics.png') no-repeat center center; width:100%; height:32px;}
 .admin a>div, .admin a.hover>div{ background:url('../imgs/admin.png') no-repeat center center; width:100%; height:32px;}
 
 .track a.active>div{ background:url('../imgs/trackActive.png') no-repeat center center; width:100%; height:30px;}
-.history a.active>div{ background:url('../imgs/fuelactive.png') no-repeat center center; width:100%; height:30px;}
+.history a.active>div{ background:url('../imgs/historyActive.png') no-repeat center center; width:100%; height:30px;}
 .alert01 a.active>div{ background:url('../imgs/alertActive.png') no-repeat center center; width:100%; height:30px;}
 .settings a.active>div{ background:url('../imgs/settingsActive.png') no-repeat center center; width:100%; height:32px;}
 .stastics a.active>div{ background:url('../imgs/stasticsActive.png') no-repeat center center; width:100%; height:32px;}
