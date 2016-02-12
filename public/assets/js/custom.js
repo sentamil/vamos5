@@ -782,27 +782,29 @@ app.filter('statusfilter', function(){
 	function listMap ()
 	{
 		setId();
+		// $("#homeImg").show();
 		$("#listImg").hide();
 		$("#homeImg").show();
-		$("#efullscreen").hide();
 		$("#fullscreen").show();
 		$('#mapTable-mapList').show(1000);
-		$("#contentmin").hide(500);
-		$("#sidebar-wrapper").hide(500);
+		// 
 		document.getElementById($scope.idinvoke).setAttribute("id", "mapList");
+		if(document.getElementById('talist')!=null)
+		document.getElementById('talist').setAttribute("id", "mapTable-mapList");
 	}
 
 	//return home
 	function homeMap ()
 	{
 		setId();
-		$("#listImg").show(500);
-		$("#homeImg").hide(1000);
-		$("#efullscreen").hide(1000);
-		$("#fullscreen").show(500);
-		$('#mapTable-mapList').hide(1000);
-		$("#contentmin").show(500);
+		// $("#listImg").show();
+		$("#homeImg").hide();
+		$("#listImg").show();
+		$("#fullscreen").show();
+		
+		$("#contentmin").show(1000);
 		$("#sidebar-wrapper").show(500);
+		// document.getElementById($scope.idinvoke).setAttribute("id", "mapList")
 		document.getElementById($scope.idinvoke).setAttribute("id", "wrapper");
 	}
 
@@ -836,38 +838,74 @@ app.filter('statusfilter', function(){
 	function fullScreen()
 	{
 		setId();
-		$("#fullscreen").hide(1000);
-		$("#efullscreen").show(500);
-
+		$("#efullscreen").show();
+		$("#contentmin").show(1000);
+		$("#sidebar-fullscreen").show(500);
 		document.getElementById($scope.idinvoke).setAttribute("id", "sidebar-fullscreen");
-		$("#contentmin").hide(1000);
-		$("#sidebar-wrapper").hide(500);
+		
 	}
 
 	function exitScreen()
 	{
 		setId();
-		$("#efullscreen").hide(1000);
-		$("#fullscreen").show(500);
+		
+		$("#fullscreen").show();
+
 		// $("#listImg").show();
 		// $("#homeImg").hide();
+		$("#contentmin").show(1000);
+		$("#sidebar-wrapper").show(500);
 		document.getElementById($scope.idinvoke).setAttribute("id", "wrapper");
-		$("#contentmin").show(500);
-		$("#sidebar-wrapper").show(1000);
+
+		
+
 	}
 
 	function setId()
 	{
+		$("#minmax").show();
+		// $("#efullscreen").hide();
+		// $("#sidebar-wrapper").hide(500);
+		$("#fullscreen").hide();
+
+		$("#efullscreen").hide();
+		$('#mapTable-mapList').hide(500);
+		// $("#efullscreen").hide();
+		
+		$("#contentmin").hide(500);
+		$("#sidebar-wrapper").hide(500);
 		if(document.getElementById("wrapper")!=null)
 			$scope.idinvoke = document.getElementById("wrapper").id;
 		else if(document.getElementById("sidebar-fullscreen")!=null)
 			$scope.idinvoke = document.getElementById("sidebar-fullscreen").id;
-		else if(document.getElementById("mapList")!==null)
+		else if(document.getElementById("mapList")!=null)
 			$scope.idinvoke = document.getElementById("mapList").id;
-
+		else if(document.getElementById("mapTable-mapList")!=null)
+			$scope.idinvoke = document.getElementById("mapTable-mapList").id;
+		else if(document.getElementById("tablelist")!=null)
+			$scope.idinvoke = document.getElementById("tablelist").id;
 
 	}
 
+	function fulltable()
+	{
+		setId();
+		$("#minmax").hide();
+		document.getElementById($scope.idinvoke).setAttribute("id", "tablelist");
+		// $("#contentmin").show(1000);
+		// $("#sidebar-wrapper").hide(500);
+		// $("#sidebar-fullscreen").hide(500);
+		// $('#mapTable-mapList').show(1000);
+		// document.getElementById('menuView').setAttribute("id", "menuView");
+		// $('#menuView').show(1000);
+
+		document.getElementById('mapTable-mapList').setAttribute("id", "talist");
+		
+		$('#talist').show(500);
+
+		// $("#contentmin").show(1000);
+		// $("#sidebar-wrapper").show(500);
+	}
 	//view map
 	$scope.mapView 	=	function(value)
 	{
@@ -889,6 +927,9 @@ app.filter('statusfilter', function(){
 				break;
 			case 'escreen':
 				exitScreen();
+				break;
+			case 'tablefull' :
+				fulltable();
 				break;
 			default:
 		   		break;

@@ -90,7 +90,7 @@ background-color: #ffffff;
 		        				<div class="col-md-1" align="center"></div>
                     			<div class="col-md-2" align="center">
                                 	<div class="form-group">
-                                    	<div class="input-group datecomp">
+                                    	<div class="input-group datecomp" id="dateFromh">
                                             <input type="text" ng-model="fromdate" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                     	</div>
@@ -106,7 +106,7 @@ background-color: #ffffff;
                                 </div> -->
                                 <div  class="col-md-2" align="center">
                                 	<div class="form-group">
-                                    	<div class="input-group datecomp">
+                                    	<div class="input-group datecomp" id="dateToh">
                                           	<input type="text" min-date="fromdate" ng-model="todate" class="form-control placholdercolor" id="dateTo" placeholder="To date">
                                           	<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                     	</div>
@@ -293,34 +293,36 @@ background-color: #ffffff;
     <script src="../app/views/reports/c3chart/d3.js"></script>
     <script src="assets/js/highcharts_statistics.js"></script>
     <script src="../app/views/reports/c3chart/c3.min.js"></script>
+     <script src="assets/js/unique.js"></script>
 	<script src="../app/views/reports/customjs/statistics.js"></script>
 	<!-- <script src="../app/views/reports/customjs/history.js"></script> -->
 	<!-- // <script src="assets/js/performance.js"></script> -->
     <!-- script src="assets/js/custom.js"></script -->   
     <script>
     
-    var logo =document.location.host;
-    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    $('#imagesrc').attr('src', imgName);
+    // var logo =document.location.host;
+    // var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    // $('#imagesrc').attr('src', imgName);
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
     
-    $(function () {
-                $('#dateFrom, #dateTo').datetimepicker({
-					format:'YYYY-MM-DD',
-					useCurrent:true,
-					pickTime: false
-				});
-				$('#timeFrom').datetimepicker({
-					pickDate: false
-				});
-				$('#timeTo').datetimepicker({
-					useCurrent:true,
-					pickDate: false
-				});
-        });      
+    // $(function () {
+    //             $('#dateFromh, #dateToh').datetimepicker({
+				// 	format:'YYYY-MM-DD',
+				// 	useCurrent:true,
+				// 	pickTime: false
+				// });
+				// $('#timeFromh').datetimepicker({
+				// 	useCurrent:true,
+				// 	pickDate: false
+				// });
+				// $('#timeToh').datetimepicker({
+				// 	useCurrent:true,
+				// 	pickDate: false
+				// });
+    //     });      
  	
  	
  	
