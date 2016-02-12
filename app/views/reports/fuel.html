@@ -104,13 +104,13 @@
   <div class="col-md-12">
          <div class="box box-primary">
           <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
-            <h3 class="box-title">Fuel &amp; Load</h3>
+            <h4 class="box-title">Fuel &amp; Load</h4>
           </div>
           <div class="row">
            <div class="col-md-1" align="center"></div>
            <div class="col-md-2" align="center">
              <div class="form-group">
-               <div class="input-group datecomp">
+               <div class="input-group datecomp" id="dateFromh">
                 <input type="text" ng-model="fromdate" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
               </div>
@@ -118,7 +118,7 @@
           </div>
           <div class="col-md-2" align="center">
            <div class="form-group">
-             <div class="input-group datecomp">
+             <div class="input-group datecomp" id="timeFromh">
               <input type="text" ng-model="fromtime" class="form-control placholdercolor" id="timeFrom" placeholder="From time">
               <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
             </div>
@@ -126,7 +126,7 @@
         </div>
         <div class="col-md-2" align="center">
          <div class="form-group">
-           <div class="input-group datecomp">
+           <div class="input-group datecomp" id="dateToh">
              <input type="text" ng-model="todate" class="form-control placholdercolor" id="dateTo" placeholder="To date">
              <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
            </div>
@@ -134,7 +134,7 @@
        </div>
        <div class="col-md-2" align="center">
          <div class="form-group">
-           <div class="input-group datecomp">
+           <div class="input-group datecomp" id="timeToh">
              <input type="text" ng-model="totime" class="form-control placholdercolor" id="timeTo" placeholder="To time">
              <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
            </div>
@@ -151,8 +151,10 @@
          </div>
        </div>
      </div>
-     <div class="col-md-1" align="center">
+      <div class="col-md-1" align="center">
+         
       <span ng-click="plotHist()" id="button">Submit</span>
+    
     </div>
   </div>
 
@@ -182,12 +184,12 @@
                               </div>
                             </th>
                             <th  colspan="1" style="text-align: center">
-                              <input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px" value="10" class="kms" />(kms)</th>
+                              <input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px" value="10" class="kms" />(km)</th>
                           </tr>
                           <tr>
                             <th colspan="2">Date &amp; Time</th>
-                            <th>Trip(Kms)</th>
-                            <th>Consume(Ltrs)</th>
+                            <th>Trip(Km)</th>
+                            <th>Consume(ltr)</th>
                           </tr>
                           </tr>
                         </thead>
@@ -210,11 +212,11 @@
                             <th>Fuel Time</th>
                             <th colspan="2" style="text-align: center">
                               <div style="display: flex; -webkit-flex; -ms-flex: 1;">
-                                <div class="squaredFour" style="width: 15%">
+                                <div class="squaredFour" style="width: 15%;">
                                   <input type="checkbox" value="None" id="idle" name="check"/>
                                   <label for="idle"></label>
                                 </div>
-                                <div style="float: left; width: 45%">Interval</div> 
+                                <div style="float: left; width: 30%">Interval</div> 
                               </div>
                             </th>
                             <th style="text-align: center"><input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px" value="1" class="hrs"/>(hrs)</th>
@@ -256,17 +258,17 @@
                                   <input type="checkbox" value="None" id="fillfuel" name="check" checked/>
                                   <label for="fillfuel"></label>
                                 </div>
-                                <div style="float: left; width: 60%">Fuel Drop</div> 
+                                <div style="float: left; width: 60%">Drop</div> 
                               </div>
                             </th>
                             <th>Drop Total :</th>
-                            <th>{{fuelTotal[0].totalFuel}}</th>
+                            <th>{{fuelTotal[0].totalFuel}} (ltr)</th>
                           </tr>
                           <tr>
                             <th>Loaction</th>
-                            <th>Trip(Kms)</th>
-                            <th>Start(ltrs)</th>
-                            <th>End(ltrs)</th>
+                            <th>Trip(Km)</th>
+                            <th>Start(ltr)</th>
+                            <th>End(ltr)</th>
                           </tr>
                           </tr>
                         </thead>
@@ -294,11 +296,11 @@
                                   <input type="checkbox" value="None" id="drop" name="check" checked/>
                                   <label for="drop"></label>
                                 </div>
-                                <div style="float: left; width: 45%">Interval</div> 
+                                <div style="float: left; width: 45%">Fill</div> 
                               </div>
                             </th>
                             <th>Drop Total :</th>
-                            <th>{{fuelTotal[1].totalFuel}}</th>
+                            <th>{{fuelTotal[1].totalFuel}} (ltr)</th>
                           <tr>
                             <th>Date &amp; Time</th>
                             <th>End</th>
@@ -333,39 +335,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
-
     <script src="../app/views/reports/customjs/moment.js"></script>
-
-
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
-
+    <script src="assets/js/unique.js"></script>
     <script src="assets/js/fuelreport.js"></script>
     <script>
 
-    //menu loading
-    $("#testLoad").load("../public/menu");
-    //logo img
-    var logo =document.location.host;
-    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    $('#imagesrc').attr('src', imgName);
+    
 
 
-    $(function () {
-      $('#dateFrom, #dateTo').datetimepicker({
-        format:'YYYY-MM-DD',
-        useCurrent:true,
-        pickTime: false
-      });
-      $('#timeFrom').datetimepicker({
-        pickDate: false,
-        useCurrent:true
-      });
-      $('#timeTo').datetimepicker({
-        pickDate: false,
-        useCurrent:true,
-
-      });
-    });      
+    
     </script>
   </body>
   </html>

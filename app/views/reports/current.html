@@ -316,7 +316,7 @@ background-color: #ffffff;
 		            		<div class="col-md-1" align="center"></div>
 		    				<div class="col-md-2" align="center">
 		                    	<div class="form-group">
-		                        	<div class="input-group datecomp">
+		                        	<div class="input-group datecomp" id="dateFromh" >
 		                                <input type="text" ng-model="fromdate1" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
 		                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div></input>
 		                        	</div>
@@ -333,7 +333,7 @@ background-color: #ffffff;
 		                    </div>
 		                    <div class="col-md-2" align="center">
 		                    	<div class="form-group">
-		                        	<div class="input-group datecomp">
+		                        	<div class="input-group datecomp" id="dateToh">
 		                              	<input type="text" ng-model="todate1" class="form-control placholdercolor" id="dateTo" placeholder="To date">
 		                              	<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
 		                        	</div>
@@ -341,7 +341,7 @@ background-color: #ffffff;
 		                    </div>
 		                    <div class="col-md-2" align="center">
 		                    	<div class="form-group">
-		                        	<div class="input-group datecomp">
+		                        	<div class="input-group datecomp" id="timeToh">
 		                              	<input type="text" ng-model="totime" class="form-control placholdercolor" id="timeTo" placeholder="To time">
 		                              	<div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
 		                        	</div>
@@ -429,6 +429,7 @@ background-color: #ffffff;
     <script src="../app/views/reports/customjs/FileSaver.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
+    <script src="assets/js/unique.js"></script>
     <script src="../app/views/reports/customjs/reports.js"></script>
 	
 						
@@ -439,37 +440,37 @@ background-color: #ffffff;
 
 
 
-    function googleTranslateElementInit() 
-    {
-		 new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
-	}
+ //    function googleTranslateElementInit() 
+ //    {
+	// 	 new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+	// }
 
 
-	     var logo =document.location.host;
-    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    $('#imagesrc').attr('src', imgName);
-	    $("#example1").dataTable();
+	   //   var logo =document.location.host;
+    // var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    // $('#imagesrc').attr('src', imgName);
+	   //  $("#example1").dataTable();
 	      
 		$("#menu-toggle").click(function(e) {
 			e.preventDefault();
 			$("#wrapper").toggleClass("toggled");
 		});
 		
-        $(function () {
-                $('#dateFrom, #dateTo').datetimepicker({
-					format:'YYYY-MM-DD',
-					useCurrent:true,
-					pickTime: false
-				});
-				$('#timeFrom').datetimepicker({
-					pickDate: false,
-					format: 'HH:mm:ss'
-				});
-				$('#timeTo').datetimepicker({
-					pickDate: false,
-					format: 'HH:mm:ss'
-				});
-		});      
+  //       $(function () {
+  //               $('#dateFromh, #dateToh').datetimepicker({
+		// 			format:'YYYY-MM-DD',
+		// 			useCurrent:true,
+		// 			pickTime: false
+		// 		});
+		// 		$('#timeFromh').datetimepicker({
+		// 			pickDate: false,
+		// 			format: 'HH:mm:ss'
+		// 		});
+		// 		$('#timeToh').datetimepicker({
+		// 			pickDate: false,
+		// 			format: 'HH:mm:ss'
+		// 		});
+		// });      
         $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");

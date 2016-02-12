@@ -138,7 +138,7 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 		        				<div class="col-md-1" align="center"></div>
                     			<div class="col-md-2" align="center">
                                 	<div class="form-group">
-										<div class="input-group datecomp">
+										<div class="input-group datecomp" id="dateFromm">
 												<input type="text" ng-model="fromdate" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
 												<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
 										</div>
@@ -506,9 +506,9 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
     });
     
     $(function () {
-                $('#dateFrom').datetimepicker({
+                $('#dateFromm').datetimepicker({
 					// format:'MMM,YYYY',
-					// useCurrent:true,
+					useCurrent:true,
 					pickTime: false,
 					format: "MMM,YYYY",
 					viewMode: "months", 
