@@ -1,7 +1,7 @@
 @extends('includes.vdmheader')
 @section('mainContent')
 
-<h1><font color="blue">Edit Dealer</font></h1>
+<h2><font color="blue">Edit Dealer</font></h2>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
@@ -27,7 +27,7 @@
 		{{ Form::text('email', $email, array('class' => 'form-control')) }}
 	</div>
 <div class="form-group">
-		{{ Form::label('website', 'EMail :') }}
+		{{ Form::label('website', 'Website :') }}
 		{{ Form::text('website', $website, array('class' => 'form-control')) }}
 	</div>
 		 
