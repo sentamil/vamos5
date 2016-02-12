@@ -90,7 +90,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="minmax" style="position: absolute;top: 2px;right: 10px; z-index:999999; background-color: #fff; padding-right: 2px; padding-left: 2px; padding-top:2px;padding-bottom:2px; border-radius: 2px; cursor: pointer; title: Live Details">
+                        <div id="minmax">
                             <img src="assets/imgs/add.png" />
                         </div>
                         <div id="menuView">
@@ -101,7 +101,7 @@
                                     <td>
                                         <div id="viewMap">
                                              <span title="List and Maps" id="listImg" ng-click="mapView('listMap')"><img src="assets/imgs/lis.png" /></span>
-                                            <span title="Home" id="homeImg" ng-click="mapView('home')"><img src="assets/imgs/back.png" /></span>
+                                            <span title="Home" id="homeImg" ng-click="mapView('tablefull')"><img src="assets/imgs/back.png" /></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -357,7 +357,16 @@
             </div>
         </div>
         <div id="mapTable-mapList">
-            <div style="width: 100%; height: 100%; overflow: auto;">
+            <div id="flexcolor">
+                <div style="float: left; width: 50%; ">
+                    <div style=" width: 40px; height: 40px; background-color: #858585; cursor: pointer" ng-click="mapView('home')">
+                        <img src="assets/imgs/arrowback.png"/>
+                    </div>
+                </div>
+                <div style="text-align: center;"><h5><b>Current Vehicle Details</b></h5> </div>
+                
+            </div>
+            <div id="scrollTable">
                    <table class="table table-striped table-bordered table-condensed table-hover">
                         <tr style="text-align:center">
                             <th style="text-align:center;"><div style="width: 100px;">Vehicle Name</div></th>
