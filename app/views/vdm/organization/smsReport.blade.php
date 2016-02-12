@@ -6,25 +6,25 @@
     		<div class="col-lg-12">
         		<div class="hpanel">
                 <div class="panel-heading">
-                   SMS Report 
+                   <h4><font color="blue"><b>SMS Report</b></font></h4> 
                 </div>
                 <div class="panel-body">
                 	<div class="row">
+					<div class="col-md-9">
                 		{{ HTML::ul($errors->all()) }}
 						{{ Form::open(array('url' => 'vdmOrganization/addpoi')) }}
   	              				<div class="row">
-  	              				
-								
-                				
-								</div>
+  	              				<div class="col-md-9">
+					
 								<hr> 
 			              <table id="example1" class="table table-bordered dataTable"> 	
 			              		<thead>
-			                		<tr>
-			                			<th>{{ Form::label('report', ' SMS Report:') }}</th>
-			                		</tr>
+			                		
+			                			<td>{{ Form::label('report', ' SMS Report:') }}</td>
+			                		
 			                	</thead>
-			                	<tbody>	
+								
+											                	<tbody>	
 								@if(isset($details))
 									
 								@foreach($details as $key => $value)
@@ -32,11 +32,11 @@
 			                			<td>
 				                			
 											{{ Form::label($key) }}
-											</br>
+											
 											@foreach($value as $key1 => $value1)
-											{{ Form::label($key1) }} :
-											{{ Form::label($value1) }}
-											</br>
+											<th>{{ Form::label($key1) }} :
+											{{ Form::label($value1) }}</th>
+											
 											@endforeach
 											@endforeach
 			                			</td>	
