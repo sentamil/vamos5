@@ -5,7 +5,7 @@
 			<div class="col-lg-12">
 				<div class="hpanel">
 					<div class="panel-heading">
-						Vehicles Create
+						<h4><font color="blue"><b>Vehicles Create</b></font></h4>
 					</div>
 					<div class="panel-body">
 						<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
@@ -18,9 +18,9 @@
 
 					                  			<div class="col-md-4">
 										<div class="form-group">
-											{{ Form::label('orgId', 'org Id') }}
+											{{ Form::label('OrgId', 'Org Id') }}
 										
-											{{ Form::select('orgId', $orgList,Input::old('orgId'),array('class' => 'form-control')) }}
+											{{ Form::select('OrgId', $orgList,Input::old('orgId'),array('class' => 'form-control')) }}
 										</div></br>
 										<br>
 										<div class="form-group">

@@ -1,7 +1,7 @@
 @extends('includes.vdmheader')
 @section('mainContent')
 
-<h2><b><font color="blue">Edit Group</font></b></h2>
+<h2><font color="blue">Edit Group</font></h2>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}

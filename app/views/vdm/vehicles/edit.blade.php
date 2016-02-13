@@ -1,6 +1,6 @@
 @extends('includes.vdmEditHeader')
 @section('mainContent')
-<h1><font color="blue">Edit Vehicle</font></h1>
+<h2><font color="blue">Edit Vehicle</font></h2>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
