@@ -15,7 +15,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.saddressStop 	=   [];
 	$scope.eventReportData 	= 	[];
 	$scope.location	    	=	[];
-	$scope.interval	    	=	getParameterByName('interval')?getParameterByName('interval'):1;
+	$scope.interval	    	=	getParameterByName('interval')?getParameterByName('interval'):10;
 	$scope.sort = {       
                 sortingOrder : 'id',
                 reverse : false
@@ -52,7 +52,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
      	var date = new Date(date);
     	return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };
-    
+    $scope.trimColon = function(textVal){
+		return textVal.split(":")[0].trim();
+	}
     function formatAMPM(date) {
     	  var date = new Date(date);
 		  var hours = date.getHours();
@@ -122,7 +124,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     $scope.siteCall       =     function()
     {
     	var url ="http://"+getIP+context+"/public/getSiteReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&site=true";
-    	console.log(' asd '+url);
+    	// console.log(' asd '+url);
     	$http.get(url).success(function(siteval){
     		$scope.siteReport=[];
     		$scope.siteReport = siteval;
@@ -166,6 +168,11 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		   			$scope.tableTitle			=	'Site Report';
 		   			$scope.downloadid           =   'sitereport';
 		   			break;
+		   		case 'loadreport':
+		   			$scope.loadreport			= 	true;
+		   			$scope.tableTitle 			=	'Load Report';
+		   			$scope.downloadid 			= 	'loadreport';
+		   			break;
 		   		default:
 		   			break;		
 		   }
@@ -201,7 +208,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
-		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
+		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
+		$scope.loadreport 		= 	($filter('filter')(data, {'totalWeight': "!undefined"}))
 		$scope.recursive1($scope.movementdata,0);
 		//console.log(' data----> '+$scope.downloadid)
    	};
@@ -212,6 +220,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
+		$scope.loadreport 		= 	($filter('filter')(data, {'totalWeight': "!undefined"}))
 		$scope.alertMe_click($scope.downloadid);
    	};
 
@@ -233,6 +242,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    			case 'eventReport':
    				$scope.recursiveEvent($scope.eventReportData,0);
    				break;
+
    			default:
    				break;
    		}
@@ -593,6 +603,10 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	   			$scope.overallEnable = 	true;
 	   			$scope.downloadid    =  'sitereport';
 		   		break;
+		   	case 'loadreport':
+		   		$scope.downloadid    =  'loadreport';
+	   			$scope.overallEnable = 	true;
+	   			break;
 			default:
 				break;
 		}
@@ -644,6 +658,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		else if($scope.downloadid == 'sitereport')
 		{
 			 $scope.siteCall();
+			 $scope.loading	=	false;
 		} 
 		else
 		{

@@ -7,6 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
 <title>GPS</title>
+
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
@@ -18,9 +19,10 @@
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 <link href="../app/views/reports/c3chart/c3.css" rel="stylesheet" type="text/css">
 
+
 </head>
 <style>
-	.box > .loading-img {
+    .box > .loading-img {
 z-index: 1020;
 background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
 }
@@ -32,30 +34,30 @@ background-color: #ffffff;
 </style>
 
 <body ng-app="mapApp">
-	<div id="wrapper" ng-controller="mainCtrl"> 
+    <div id="wrapper" ng-controller="mainCtrl"> 
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
                 <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
                 <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
-				<li class="stastics"><a href="../public/statistics" class="active"><div></div><label>Statistics</label></a></li>
+                <li class="stastics"><a href="../public/statistics" class="active"><div></div><label>Statistics</label></a></li>
                 <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
                 <li style="padding-left:25px;">
-                	<div class="right-inner-addon" align="center"> 
+                    <div class="right-inner-addon" align="center"> 
                     <i class="fa fa-search"></i>
                     <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
                     </div>
                 </li>
                  <!-- <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    	<li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.vehicleId}} ({{loc.shortName}}) </a></li>
+                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.vehicleId}} ({{loc.shortName}}) </a></li>
                     </ul>
                 </li> -->
-                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
+                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
                     <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
                     </ul>
@@ -64,61 +66,61 @@ background-color: #ffffff;
         </div>
         <div id="page-content-wrapper">
             <div class="container-fluid">
-            	<div class="panel panel-default">
-            	</div>   		
-        	</div>
+                <div class="panel panel-default">
+                </div>          
+            </div>
         <!-- /#page-content-wrapper -->
-    	</div>
+        </div>
  
     <!-- AdminLTE css box-->
    
        <div class="col-md-12">
-	       	<div class="box box-primary">
-		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
-		            <h3 class="box-title">Executive Summary Report</h3>
-		           <!--  <div class="box-tools pull-right">
-                    	<span class="pull-right"><a href="performance"><input class="btn btn-xs btn-danger pull-right" type="button" value="Performance"></a></span></div> -->
-		            <div class="box-tools pull-right">
+            <div class="box box-primary">
+                <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
+                    <h3 class="box-title">Executive Summary Report</h3>
+                   <!--  <div class="box-tools pull-right">
+                        <span class="pull-right"><a href="performance"><input class="btn btn-xs btn-danger pull-right" type="button" value="Performance"></a></span></div> -->
+                    <div class="box-tools pull-right">
 
-		                <!-- <a href="downloadstatistics?sid={{data1.group}}&rid={{downloadid}}&vid={{vid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a> -->
-		                <img style="cursor: pointer;" ng-click="exportData(downloadid)"  src="../app/views/reports/image/xls.png" />
-		            	<img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV(downloadid)"  src="../app/views/reports/image/csv.jpeg" />
+                        <!-- <a href="downloadstatistics?sid={{data1.group}}&rid={{downloadid}}&vid={{vid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a> -->
+                        <img style="cursor: pointer;" ng-click="exportData(downloadid)"  src="../app/views/reports/image/xls.png" />
+                        <img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV(downloadid)"  src="../app/views/reports/image/csv.jpeg" />
 
-		            </div>
-		        </div>
-		        <div class="row">
-		        				<div class="col-md-1" align="center"></div>
-                    			<div class="col-md-2" align="center">
-                                	<div class="form-group">
-                                    	<div class="input-group datecomp" id="dateFromh">
+                    </div>
+                </div>
+                <div class="row">
+                                <div class="col-md-1" align="center"></div>
+                                <div class="col-md-2" align="center">
+                                    <div class="form-group">
+                                        <div class="input-group datecomp">
                                             <input type="text" ng-model="fromdate" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                    	</div>
-                                  	</div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!-- <div ng-hide="timeslot" class="col-md-2" align="center">
-                                	<div class="form-group">
-                                    	<div class="input-group datecomp">
+                                    <div class="form-group">
+                                        <div class="input-group datecomp">
                                             <input type="text" ng-model="fromtime" class="form-control placholdercolor" id="timeFrom" placeholder="From time">
                                             <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
-                                    	</div>
-                                  	</div>
+                                        </div>
+                                    </div>
                                 </div> -->
                                 <div  class="col-md-2" align="center">
-                                	<div class="form-group">
-                                    	<div class="input-group datecomp" id="dateToh">
-                                          	<input type="text" min-date="fromdate" ng-model="todate" class="form-control placholdercolor" id="dateTo" placeholder="To date">
-                                          	<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                    	</div>
-                                  	</div>
+                                    <div class="form-group">
+                                        <div class="input-group datecomp">
+                                            <input type="text" min-date="fromdate" ng-model="todate" class="form-control placholdercolor" id="dateTo" placeholder="To date">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!-- <div ng-hide="timeslot" class="col-md-2" align="center">
-                                	<div class="form-group">
-                                    	<div class="input-group datecomp">
-                                          	<input type="text" ng-model="totime" class="form-control placholdercolor" id="timeTo" placeholder="To time">
-                                          	<div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
-                                    	</div>
-                                  	</div>
+                                    <div class="form-group">
+                                        <div class="input-group datecomp">
+                                            <input type="text" ng-model="totime" class="form-control placholdercolor" id="timeTo" placeholder="To time">
+                                            <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                                        </div>
+                                    </div>
                                 </div> -->
                                 <div class="col-md-2" align="center">
                                     <button ng-click="plotHist()">Submit</button>
@@ -133,7 +135,7 @@ background-color: #ffffff;
                             <!-- Danger box -->
                            <div id="container" style="width:100%; height: 400px;"></div>
                               
-						</div>
+                        </div>
                  
                  <div class="row">     
                         
@@ -153,137 +155,137 @@ background-color: #ffffff;
                     </div>
                     
                     
-		        <div class="box-body" ng-class="overallEnable?'col-md-9':'col-md-12'" id="statusreport">
-		        	
-		        	
-    		 		 
-		        	
-		        	 <!-- // print '	<!-- Tabset -->
-					 <tabset class="nav-tabs-custom">
+                <div class="box-body" ng-class="overallEnable?'col-md-9':'col-md-12'" id="statusreport">
+                    
+                    
+                     
+                    
+                     <!-- // print '    <!-- Tabset -->
+                     <tabset class="nav-tabs-custom">
 
-			   			 <tab select="alertMe('executive')" heading="Executive"  active="tabActive"> <!-- active="tabActive" disabled="test" -->
-			   				 <h4 style="margin:0" class="page-header">Executive</h4>
-			   				 <div id='executive'>
-			   				  <table class="table table-bordered table-condensed table-hover table-striped">
-								   	<tr ng-hide="true" style="font-weight: bold;">
-									  	<td>Vehicle Group : {{data1.group}}</td>					  
-									  	<td style="text-align: right;">Report Date : {{fromdate}} - {{todate}}</td>				
-								  	</tr>
-								   
-									<tr style="text-align:center; font-weight: bold;">
-										<td width="6%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">Vehicle ID</td>
-										<td width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date</td>
-										<td width="8%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">Distance Today</td>
-										<td width="8%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">Parking Count</td>
-										<td width="10%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">Overspeed Instances</td>
-										<td width="10%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Open Reading</td>
-										<td width="10%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo Close Reading</td>
-										<td width="7%" class="id" custom-sort order="'topSpeed'" sort="sort" style="text-align:center;">Top Speed</td>	
-										<td width="10%" class="id" custom-sort order="'topSpeedTime'" sort="sort" style="text-align:center;">Top Speed Time</td>
-										<!-- <td width="10%" class="id" custom-sort order="'topSpeedGeoLocation'" sort="sort" style="text-align:center;">Top Location</td> -->
-										<td width="21%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</td>
-									</tr>
-									<tr ng-repeat="user in execGroupReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
-										<!-- <td><a href="history?vid={{user.vehicleId}}">{{user.vehicleId}}</a></td> -->
-										<td>{{user.vehicleId}}</td>
-										<td>{{user.date}}</td>
-										<td>{{user.distanceToday}}</td>
-										<td>{{user.parkingCount}}</td>
-										<td>{{user.overSpeedInstances}}</td>
-										<td>{{user.odoOpeningReading}}</td>
-										<td>{{user.odoClosingReading}}</td>
-										<td>
-											<p ng-if="user.topSpeed==0">--</p>
-											<p ng-if="user.topSpeed!=0">{{user.topSpeed}}</p>
-										</td>	
-										<td>
-											<p ng-if="user.topSpeed==0">--</p>
-											<p ng-if="user.topSpeed!=0">{{user.topSpeedTime}}</p>
-										</td>
-										<td get-geo geo={{user.topSpeedGeoLocation}} ng-hide="true">{{user.topSpeedGeoLocation}}</td>
-										<td ng-if="user.address!=null">{{user.address}}</td>
-										<td style="cursor: pointer;" get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]==null">Click Me</td>
-										<td get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]!=null">{{maddress[$index]}}</td>
-										<!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} title="{{locationname}}">{{user.latitude}},{{user.longitude}}</td>
-										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>						
-									 --></tr>
-								</table>
-							</div>
-			   			 </tab>
-			   			 <tab select="alertMe('geofence')" heading="POI"> <!-- active="!tabActive" poi-->
-			   				 <h4 style="margin:0" class="page-header">Place of Intrest</h4>
-			   				  <div id='geofencereport'>
-			   				 <table class="table table-bordered table-striped table-condensed table-hover table-striped">
-			   				 	<thead>
-								   	<!-- <tr style="text-align:center; font-weight: bold;">
-									  	<td colspan="2">Regn No</td>
-									  	<td colspan="2">{{hist.regNo}}</td>
-									  	<td colspan="2">Vehicle ID</td>
-									  	<td colspan="2">{{hist.vehicleId}}</td>					
-								  	</tr> -->
-								  	<!-- <tr style="text-align:center; font-weight: bold;">
-									  	<td colspan="1">GeoFenceId</td>
-								       	<td>{{geofencedata[0].geoFenceId}}</td>
-								      	<td colspan="1">GeoFenceType</td>
-								      	<td>{{geofencedata[0].geoFenceType}}</td>
-								    </tr> -->
-								    <tr ng-hide="true" style="font-weight: bold;">
-									  	<td>Vehicle Group : {{data1.group}}</td>					  
-									  	<td style="text-align: right;">Report Date : {{fromdate}} {{fromtime}} - {{todate}} {{totime}}</td>				
-								  	</tr>
-									<tr style="text-align:center" >
-										<th class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">vehicleId</th>
-										<th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;">Date</th>
-										<th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;">Time</th>
-										<th class="id" custom-sort order="'place'" sort="sort" style="text-align:center;">Place</th>
-										<!-- <th class="id" custom-sort order="'odoInReading'" sort="sort" style="text-align:center;">Group</th> -->
-										<th class="id" custom-sort order="''" sort="sort" style="text-align:center;">G-Map</th>
-										<!-- <th class="id" custom-sort order="'geoLocation'" sort="sort" style="text-align:center;">Location</th> -->
-										<!-- <th class="id" custom-sort order="'proximity'" sort="sort" style="text-align:center;">Proximity</th>
-										<th class="id" custom-sort order="'dangling'" sort="sort" style="text-align:center;">Dangling</th> -->
-									</tr></thead>
-									<tr ng-repeat="user in geofencedata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
-										<td>{{user.vehicleId}}</td>
-										<td>{{user.time | date:'yyyy-MM-dd'}}</td>
-										<td>{{user.time | date:'HH:mm:ss'}}</td>
-										<td>{{user.place}}</td>
-										<!-- <td>{{user.fcode}}</td> -->
-										<td><a href="https://www.google.com/maps?q=loc:{{user.latandlng}}" target="_blank">Link</a></td>
-										<!-- <td>{{user.geoLocation}}</td> -->
-										<!-- <td>{{user.proximity}}</td>
-										<td>{{user.dangling}}</td> -->
-									</tr>
-									<tr ng-if="vehiclenull==null&&geofencedata==null">
-										<td colspan="8">Choose Individual Vehicle ID</td>
-									</tr>
-									<tr ng-if="vehiclenull!=null&&geofencedata==null">
-										<td colspan="8">No Records Found Choose some other date</td>
-									</tr>			
-							</table>
-							<!-- <pagination boundary-links="true" 
-									    max-size="3" 
-									    items-per-page="itemsPerPage"
-									    total-items="geofencedata.length" 
-									    ng-model="currentPage" 
-									    ng-change="pageChanged()"></pagination>			 -->
-							</div>
-			   			 </tab>
-		    		 </tabset>
-    		 		<!-- End Tabset -->
-    		 		 
-    		 		
-		        </div><!-- /.box-body -->
-				 <div ng-show="loading" class="overlay"></div>
-	   <div ng-show="loading" class="loading-img"></div>
-		    </div>	
+                         <tab select="alertMe('executive')" heading="Executive"  active="tabActive"> <!-- active="tabActive" disabled="test" -->
+                             <h4 style="margin:0" class="page-header">Executive</h4>
+                             <div id='executive'>
+                              <table class="table table-bordered table-condensed table-hover table-striped">
+                                    <tr ng-hide="true" style="font-weight: bold;">
+                                        <td>Vehicle Group : {{data1.group}}</td>                      
+                                        <td style="text-align: right;">Report Date : {{fromdate}} - {{todate}}</td>             
+                                    </tr>
+                                   
+                                    <tr style="text-align:center; font-weight: bold;">
+                                        <td width="6%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">Vehicle ID</td>
+                                        <td width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date</td>
+                                        <td width="8%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">Distance Today</td>
+                                        <td width="8%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">Parking Count</td>
+                                        <td width="10%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">Overspeed Instances</td>
+                                        <td width="10%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Open Reading</td>
+                                        <td width="10%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo Close Reading</td>
+                                        <td width="7%" class="id" custom-sort order="'topSpeed'" sort="sort" style="text-align:center;">Top Speed</td>  
+                                        <td width="10%" class="id" custom-sort order="'topSpeedTime'" sort="sort" style="text-align:center;">Top Speed Time</td>
+                                        <!-- <td width="10%" class="id" custom-sort order="'topSpeedGeoLocation'" sort="sort" style="text-align:center;">Top Location</td> -->
+                                        <td width="21%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</td>
+                                    </tr>
+                                    <tr ng-repeat="user in execGroupReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+                                        <!-- <td><a href="history?vid={{user.vehicleId}}">{{user.vehicleId}}</a></td> -->
+                                        <td>{{user.vehicleId}}</td>
+                                        <td>{{user.date}}</td>
+                                        <td>{{user.distanceToday}}</td>
+                                        <td>{{user.parkingCount}}</td>
+                                        <td>{{user.overSpeedInstances}}</td>
+                                        <td>{{user.odoOpeningReading}}</td>
+                                        <td>{{user.odoClosingReading}}</td>
+                                        <td>
+                                            <p ng-if="user.topSpeed==0">--</p>
+                                            <p ng-if="user.topSpeed!=0">{{user.topSpeed}}</p>
+                                        </td>   
+                                        <td>
+                                            <p ng-if="user.topSpeed==0">--</p>
+                                            <p ng-if="user.topSpeed!=0">{{user.topSpeedTime}}</p>
+                                        </td>
+                                        <td get-geo geo={{user.topSpeedGeoLocation}} ng-hide="true">{{user.topSpeedGeoLocation}}</td>
+                                        <td ng-if="user.address!=null">{{user.address}}</td>
+                                        <td style="cursor: pointer;" get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]==null">Click Me</td>
+                                        <td get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]!=null">{{maddress[$index]}}</td>
+                                        <!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} title="{{locationname}}">{{user.latitude}},{{user.longitude}}</td>
+                                        <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>                      
+                                     --></tr>
+                                </table>
+                            </div>
+                         </tab>
+                         <tab select="alertMe('geofence')" heading="POI"> <!-- active="!tabActive" poi-->
+                             <h4 style="margin:0" class="page-header">Place of Intrest</h4>
+                              <div id='geofencereport'>
+                             <table class="table table-bordered table-striped table-condensed table-hover table-striped">
+                                <thead>
+                                    <!-- <tr style="text-align:center; font-weight: bold;">
+                                        <td colspan="2">Regn No</td>
+                                        <td colspan="2">{{hist.regNo}}</td>
+                                        <td colspan="2">Vehicle ID</td>
+                                        <td colspan="2">{{hist.vehicleId}}</td>                 
+                                    </tr> -->
+                                    <!-- <tr style="text-align:center; font-weight: bold;">
+                                        <td colspan="1">GeoFenceId</td>
+                                        <td>{{geofencedata[0].geoFenceId}}</td>
+                                        <td colspan="1">GeoFenceType</td>
+                                        <td>{{geofencedata[0].geoFenceType}}</td>
+                                    </tr> -->
+                                    <tr ng-hide="true" style="font-weight: bold;">
+                                        <td>Vehicle Group : {{data1.group}}</td>                      
+                                        <td style="text-align: right;">Report Date : {{fromdate}} {{fromtime}} - {{todate}} {{totime}}</td>             
+                                    </tr>
+                                    <tr style="text-align:center" >
+                                        <th class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">vehicleId</th>
+                                        <th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;">Date</th>
+                                        <th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;">Time</th>
+                                        <th class="id" custom-sort order="'place'" sort="sort" style="text-align:center;">Place</th>
+                                        <!-- <th class="id" custom-sort order="'odoInReading'" sort="sort" style="text-align:center;">Group</th> -->
+                                        <th class="id" custom-sort order="''" sort="sort" style="text-align:center;">G-Map</th>
+                                        <!-- <th class="id" custom-sort order="'geoLocation'" sort="sort" style="text-align:center;">Location</th> -->
+                                        <!-- <th class="id" custom-sort order="'proximity'" sort="sort" style="text-align:center;">Proximity</th>
+                                        <th class="id" custom-sort order="'dangling'" sort="sort" style="text-align:center;">Dangling</th> -->
+                                    </tr></thead>
+                                    <tr ng-repeat="user in geofencedata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+                                        <td>{{user.vehicleId}}</td>
+                                        <td>{{user.time | date:'yyyy-MM-dd'}}</td>
+                                        <td>{{user.time | date:'HH:mm:ss'}}</td>
+                                        <td>{{user.place}}</td>
+                                        <!-- <td>{{user.fcode}}</td> -->
+                                        <td><a href="https://www.google.com/maps?q=loc:{{user.latandlng}}" target="_blank">Link</a></td>
+                                        <!-- <td>{{user.geoLocation}}</td> -->
+                                        <!-- <td>{{user.proximity}}</td>
+                                        <td>{{user.dangling}}</td> -->
+                                    </tr>
+                                    <tr ng-if="vehiclenull==null&&geofencedata==null">
+                                        <td colspan="8">Choose Individual Vehicle ID</td>
+                                    </tr>
+                                    <tr ng-if="vehiclenull!=null&&geofencedata==null">
+                                        <td colspan="8">No Records Found Choose some other date</td>
+                                    </tr>           
+                            </table>
+                            <!-- <pagination boundary-links="true" 
+                                        max-size="3" 
+                                        items-per-page="itemsPerPage"
+                                        total-items="geofencedata.length" 
+                                        ng-model="currentPage" 
+                                        ng-change="pageChanged()"></pagination>          -->
+                            </div>
+                         </tab>
+                     </tabset>
+                    <!-- End Tabset -->
+                     
+                    
+                </div><!-- /.box-body -->
+                 <div ng-show="loading" class="overlay"></div>
+       <div ng-show="loading" class="loading-img"></div>
+            </div>  
         </div>
        
                  
-	<script src="assets/js/jquery-1.11.0.js"></script>
+    <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
     <script data-require="angular-ui-bootstrap@0.11.0" data-semver="0.11.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-	<script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
     <script src="../app/views/reports/customjs/FileSaver.js"></script>
     <script src="../app/views/reports/customjs/moment.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
@@ -293,39 +295,37 @@ background-color: #ffffff;
     <script src="../app/views/reports/c3chart/d3.js"></script>
     <script src="assets/js/highcharts_statistics.js"></script>
     <script src="../app/views/reports/c3chart/c3.min.js"></script>
-     <script src="assets/js/unique.js"></script>
-	<script src="../app/views/reports/customjs/statistics.js"></script>
-	<!-- <script src="../app/views/reports/customjs/history.js"></script> -->
-	<!-- // <script src="assets/js/performance.js"></script> -->
+    <script src="../app/views/reports/customjs/statistics.js"></script>
+    <!-- <script src="../app/views/reports/customjs/history.js"></script> -->
+    <!-- // <script src="assets/js/performance.js"></script> -->
     <!-- script src="assets/js/custom.js"></script -->   
     <script>
     
-    // var logo =document.location.host;
-    // var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    // $('#imagesrc').attr('src', imgName);
+    var logo =document.location.host;
+    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    $('#imagesrc').attr('src', imgName);
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
     
-    // $(function () {
-    //             $('#dateFromh, #dateToh').datetimepicker({
-				// 	format:'YYYY-MM-DD',
-				// 	useCurrent:true,
-				// 	pickTime: false
-				// });
-				// $('#timeFromh').datetimepicker({
-				// 	useCurrent:true,
-				// 	pickDate: false
-				// });
-				// $('#timeToh').datetimepicker({
-				// 	useCurrent:true,
-				// 	pickDate: false
-				// });
-    //     });      
- 	
- 	
- 	
+    $(function () {
+                $('#dateFrom, #dateTo').datetimepicker({
+                    format:'YYYY-MM-DD',
+                    useCurrent:true,
+                    pickTime: false
+                });
+                $('#timeFrom').datetimepicker({
+                    pickDate: false
+                });
+                $('#timeTo').datetimepicker({
+                    useCurrent:true,
+                    pickDate: false
+                });
+        });      
+    
+    
+    
     </script>
    
 </body>

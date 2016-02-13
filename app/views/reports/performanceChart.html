@@ -7,6 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
 <title>GPS</title>
+
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -72,6 +73,7 @@ z-index: 1020;
 background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
 }
 </style>
+
 </head>
 
 <body ng-app="mapApp">
@@ -138,7 +140,7 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 		        				<div class="col-md-1" align="center"></div>
                     			<div class="col-md-2" align="center">
                                 	<div class="form-group">
-										<div class="input-group datecomp" id="dateFromm">
+										<div class="input-group datecomp">
 												<input type="text" ng-model="fromdate" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
 												<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
 										</div>
@@ -506,9 +508,9 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
     });
     
     $(function () {
-                $('#dateFromm').datetimepicker({
+                $('#dateFrom').datetimepicker({
 					// format:'MMM,YYYY',
-					useCurrent:true,
+					// useCurrent:true,
 					pickTime: false,
 					format: "MMM,YYYY",
 					viewMode: "months", 

@@ -29,6 +29,9 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
     	return hrs+':'+min+':'+sec;
     }
 
+    $scope.trimColon = function(textVal){
+		return textVal.split(":")[0].trim();
+	}
    
      function formatAMPM(date) {
     	  var date = new Date(date);

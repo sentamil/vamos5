@@ -28,6 +28,9 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };
     
+    $scope.trimColon = function(textVal){
+		return textVal.split(":")[0].trim();
+	}
     function formatAMPM(date) {
     	  var date = new Date(date);
 		  var hours = date.getHours();
