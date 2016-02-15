@@ -287,6 +287,15 @@ Route::get('/getActionReport', function() {
 });     
 
 
+Route::get('/getSelectedVehicleLocation1', function(){
+    if(!Auth::check())
+    {
+        return Redirect::to('login');
+    }
+    Log::info('getSelectedVehicleLocation1');
+    return View::make('vls.getSelectedVehicleLocation1');
+});
+
 Route::get('/admin', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
