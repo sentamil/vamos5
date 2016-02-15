@@ -146,6 +146,8 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	
 	$scope.consoldate =  function(group)
 	{
+		$('#preloader').show(); 
+		$('#preloader02').show();
 		$scope.fromNowTS1		=	new Date();
 		$scope.fromdate1		=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
 		$scope.todate1			=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));

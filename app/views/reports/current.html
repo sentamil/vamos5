@@ -31,10 +31,10 @@
     margin-left: auto;
     text-align: left;
     padding: 10px 10px;
-    font-size: 22px;
+    *font-size: 22px;
     height: 25px;
     max-height: 25px;
-    width: 400px;
+    *width: 400px;
     background: rgba(51, 51, 51, 0);
     cursor: pointer;
     border: 1px solid black;
@@ -79,7 +79,7 @@ background-color: #ffffff;
                     <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
                     </div>
                 </li>
-                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
                     <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
                     </ul>
@@ -255,7 +255,7 @@ background-color: #ffffff;
 										<th width="5%" style="text-align:center;">Current Speed</th>
 										<th width="5%" style="text-align:center;">Current Position</th>
 										<th width="5%" style="text-align:center;">GPS Status</th>
-										<th width="5%" style="text-align:center;">Current Location</th>
+										<th width="5%" style="text-align:center;">Total Load</th>
 										<th width="40%" style="text-align:center;">Nearest Location</th>
 										<th width="5%" style="text-align:center;">G-Map</th>
 									</tr>
@@ -283,7 +283,7 @@ background-color: #ffffff;
 			                                <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
 			                                          
 			                            </td> -->
-										<td>{{user.latitude}}, {{user.longitude}}</td>
+										<td>{{user.totalTruck}}</td>
 										<td ng-if="user.address!=null" ng-click="address_click(user, $index)">{{user.address}}</td>
 										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
 										<td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
@@ -316,7 +316,7 @@ background-color: #ffffff;
 		            		<div class="col-md-1" align="center"></div>
 		    				<div class="col-md-2" align="center">
 		                    	<div class="form-group">
-		                        	<div class="input-group datecomp" id="dateFromh" >
+		                        	<div class="input-group datecomp">
 		                                <input type="text" ng-model="fromdate1" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
 		                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div></input>
 		                        	</div>
@@ -333,7 +333,7 @@ background-color: #ffffff;
 		                    </div>
 		                    <div class="col-md-2" align="center">
 		                    	<div class="form-group">
-		                        	<div class="input-group datecomp" id="dateToh">
+		                        	<div class="input-group datecomp">
 		                              	<input type="text" ng-model="todate1" class="form-control placholdercolor" id="dateTo" placeholder="To date">
 		                              	<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
 		                        	</div>
@@ -341,7 +341,7 @@ background-color: #ffffff;
 		                    </div>
 		                    <div class="col-md-2" align="center">
 		                    	<div class="form-group">
-		                        	<div class="input-group datecomp" id="timeToh">
+		                        	<div class="input-group datecomp">
 		                              	<input type="text" ng-model="totime" class="form-control placholdercolor" id="timeTo" placeholder="To time">
 		                              	<div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
 		                        	</div>
@@ -429,7 +429,6 @@ background-color: #ffffff;
     <script src="../app/views/reports/customjs/FileSaver.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
-    <script src="assets/js/unique.js"></script>
     <script src="../app/views/reports/customjs/reports.js"></script>
 	
 						
@@ -440,37 +439,37 @@ background-color: #ffffff;
 
 
 
- //    function googleTranslateElementInit() 
- //    {
-	// 	 new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
-	// }
+    function googleTranslateElementInit() 
+    {
+		 new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+	}
 
 
-	   //   var logo =document.location.host;
-    // var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    // $('#imagesrc').attr('src', imgName);
-	   //  $("#example1").dataTable();
+	     var logo =document.location.host;
+    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    $('#imagesrc').attr('src', imgName);
+	    $("#example1").dataTable();
 	      
 		$("#menu-toggle").click(function(e) {
 			e.preventDefault();
 			$("#wrapper").toggleClass("toggled");
 		});
 		
-  //       $(function () {
-  //               $('#dateFromh, #dateToh').datetimepicker({
-		// 			format:'YYYY-MM-DD',
-		// 			useCurrent:true,
-		// 			pickTime: false
-		// 		});
-		// 		$('#timeFromh').datetimepicker({
-		// 			pickDate: false,
-		// 			format: 'HH:mm:ss'
-		// 		});
-		// 		$('#timeToh').datetimepicker({
-		// 			pickDate: false,
-		// 			format: 'HH:mm:ss'
-		// 		});
-		// });      
+        $(function () {
+                $('#dateFrom, #dateTo').datetimepicker({
+					format:'YYYY-MM-DD',
+					useCurrent:true,
+					pickTime: false
+				});
+				$('#timeFrom').datetimepicker({
+					pickDate: false,
+					format: 'HH:mm:ss'
+				});
+				$('#timeTo').datetimepicker({
+					pickDate: false,
+					format: 'HH:mm:ss'
+				});
+		});      
         $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");

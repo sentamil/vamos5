@@ -209,7 +209,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
-		$scope.loadreport 		= 	($filter('filter')(data, {'totalWeight': "!undefined"}))
+		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}))
 		$scope.recursive1($scope.movementdata,0);
 		//console.log(' data----> '+$scope.downloadid)
    	};
@@ -220,7 +220,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
-		$scope.loadreport 		= 	($filter('filter')(data, {'totalWeight': "!undefined"}))
+		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}))
 		$scope.alertMe_click($scope.downloadid);
    	};
 

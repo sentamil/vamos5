@@ -451,29 +451,33 @@ background-color: #ffffff;
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<td>Vehicle Group</td>
+				   			 	 			<td colspan="2">Vehicle Group</td>
 										  	<td>{{vgroup}}</td>
-										  	<td>Vehicle Name</td>
+										  	<td colspan="2">Vehicle Name</td>
 										  	<td>{{hist.shortName}}</td>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="4"></td></tr>
+			   			 	 			<tr><td colspan="6"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th class="id" style="text-align:center;">Alert Time</th>
+											<th class="id" style="text-align:center;" width="20%">Alert Time</th>
 											<!-- <th width="10%" class="id" style="text-align:center;">G-Map</th> -->
-											<th class="id" style="text-align:center;">Total Weight</th>
-											<th class="id" style="text-align:center;">Axes Weight</th>
-											<th class="id" style="text-align: center;">Loaction</th>
+											<th class="id" style="text-align:center;">Load Truck</th>
+											<th class="id" style="text-align:center;">Load Trailer</th>
+											<th class="id" style="text-align:center;">Total Truck</th>
+											<th class="id" style="text-align:center;">Total Trailer</th>
+											<th class="id" style="text-align: center;" width="30%">Loaction</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
-			   			 	 		<tr class="active" style="text-align:center" ng-repeat="load in loadreport">
-			   			 	 			<td ng-if="load.totalWeight!='nill'">{{load.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-			   			 	 			<td ng-if="load.totalWeight!='nill'">{{load.totalWeight}}</td>
-			   			 	 			<td ng-if="load.axesWeight!='nill'">{{load.axesWeight}}</td>
-										<td ng-if="load.totalWeight!='nill'">{{load.address}}</td>
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="load in loadreport" ng-if="load.loadTruck!=='nill' && load.loadTrailer!=='nill' && load.totalTruck!=='nill' && load.totalTrailer!=='nill'">
+			   			 	 			<td>{{load.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+			   			 	 			<td>{{load.loadTruck}}</td>
+			   			 	 			<td>{{load.loadTrailer}}</td>
+			   			 	 			<td>{{load.totalTruck}}</td>
+			   			 	 			<td>{{load.totalTrailer}}</td>
+										<td>{{load.address}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr>
-										<td ng-if="loadreport==null" colspan="4">No Records Found Choose some other date</td>
+										<td ng-if="loadreport==null" colspan="6">No Records Found Choose some other date</td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
