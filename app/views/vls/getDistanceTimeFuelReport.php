@@ -12,7 +12,7 @@ if (! Auth::check ()) {
 
 $username = Auth::user ()->username;
 
-//$username='demouser1';
+
 
 $parameters='?userId='. $username;
 foreach ($input as $key => $value) {
