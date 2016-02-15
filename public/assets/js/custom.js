@@ -843,6 +843,7 @@ app.filter('statusfilter', function(){
 		$("#sidebar-fullscreen").show(500);
 		document.getElementById($scope.idinvoke).setAttribute("id", "sidebar-fullscreen");
 		
+		
 	}
 
 	function exitScreen()
