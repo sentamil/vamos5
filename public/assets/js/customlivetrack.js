@@ -338,7 +338,7 @@ $scope.vehicleStatus ="ALL";
 	$scope.addMarker= function(pos){
 	    
 	    var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
-	    var labelAnchorpos = new google.maps.Point(12, 37);	
+	    var labelAnchorpos = new google.maps.Point(19, 0);	
 		$scope.marker = new MarkerWithLabel({
 		   position: myLatlng, 
 		   map: $scope.map,
