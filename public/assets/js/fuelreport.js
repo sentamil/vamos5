@@ -22,6 +22,9 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		  var strTime = hours + ':' + minutes + ' ' + ampm;
 		  return strTime;
 	}
+	$scope.trimColon = function(textVal){
+		return textVal.split(":")[0].trim();
+	}
 
 	function convert_to_24h(time_str) {
 		console.log(time_str);
