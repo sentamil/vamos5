@@ -177,7 +177,6 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 				//alert('No results found');
 			  }
 			} else {
-			//  alert('Geocoder failed due to: ' + status);
 			}
 		  });
     };
