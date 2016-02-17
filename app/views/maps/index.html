@@ -7,6 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
 <title>GPS</title>
+<!-- <link rel="shortcut icon" href="assets/imgs/tab.ico"> -->
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
@@ -375,11 +376,16 @@
                             <th style="text-align:center;"><div style="width: 70px;">Position</div></th>
                             <th style="text-align:center;"><div style="width: 70px;">GPS</div></th>
                             <th style="text-align:center;"><div style="width: 70px;">Ignition</div></th>
+                            <th style="text-align:center;"><div style="width: 100px;">Load</div></th>
+                            <th style="text-align:center;"><div style="width: 100px;">Fuel</div></th>
+                            <th style="text-align:center;"><div style="width: 100px;">Temperature</div></th>
+                            <th style="text-align:center;"><div style="width: 100px;">Hire Status</div></th>
                             <th style="text-align:center;"><div style="width: 100px;">Last Seen</div></th>
                             <th style="text-align:center;"><div style="width: 50px;">KM</div></th>
                             <th style="text-align:center;"><div style="width: 70px;">Speed</div></th>
                             <th style="text-align:center;"><div style="width: 300px;">Nearest Location</div></th>
-                                   
+                            <th style="text-align:center;"><div style="width: 70px;">G-Link</div></th>
+                            <th></th>
                         </tr>
                         <tr ng-repeat="user in mapTable" style="text-align:center; cursor: pointer" ng-mouseover="mouseJump(user)" ng-click="tabletd(user)">
                             <td>{{user.shortName}}</td>
@@ -400,11 +406,24 @@
                                 <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
                                           
                             </td>
+                            
+                            <td ng-switch on="user.totalTruck">
+                                <span ng-switch-when="nill">--</span>
+                                <span ng-switch-when="!nill">{{user.totalTruck}}</span>
+                                
+                            </td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td ng-switch on="user.vehicleBusy">
+                                <span ng-switch-when="yes" style="color: #ff0045">Busy</span>
+                                <span ng-switch-when="no" style="color: #00ce2f">Available</span>
+                            </td>
                             <td>{{user.lastSeen}}</td>
                             <td>{{user.distanceCovered}}</td>
                             <td>{{user.speed}}</td>
                             
                             <td ng-click="address_click(user, $index)">{{user.address}}</td>
+                            <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
                             <!-- <td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
                             <td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
                             <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td> -->                                                      

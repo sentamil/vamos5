@@ -51,6 +51,7 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 background-color: #ffffff;
 }
 	  
+
 </style>
 </head>
 <!-- <div id="preloader" >
@@ -79,7 +80,7 @@ background-color: #ffffff;
                     <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
                     </div>
                 </li>
-                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{location.group}}</a>
+                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
                     <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
                     </ul>
@@ -99,7 +100,7 @@ background-color: #ffffff;
    
        <div class="col-md-12">
 	       	<tabset class="nav-tabs-custom">
-			   			 <tab heading="Current Status Report">
+			   			 <tab heading="Current Status Report" id="tabs">
 			   			 	<div class="box box-primary1">
 
 		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
@@ -123,7 +124,7 @@ background-color: #ffffff;
 		        	</table>
 		        	<input class="btn btn-xs btn-danger pull-right" type="button" value="More" ng-click="toggle = !toggle" >
 		        	<br><br>
-      	<div ng-hide="toggle" class="col-md-3">
+      				<div ng-hide="toggle" class="col-md-3">
 			        	<div class="small-box bg-aqua">
 	                        <div class="inner">
 	                            <h3>{{data1.distance|number:0}}</h3>
@@ -252,10 +253,11 @@ background-color: #ffffff;
 										<th ng-hide="true">Mobile Number</th>
 										<th width="10%" style="text-align:center;">Last Seen</th>
 										<th width="5%" style="text-align:center;">KM today</th>
-										<th width="5%" style="text-align:center;">Current Speed</th>
-										<th width="5%" style="text-align:center;">Current Position</th>
+										<th width="5%" style="text-align:center;">Speed</th>
+										<th width="5%" style="text-align:center;">Position</th>
 										<th width="5%" style="text-align:center;">GPS Status</th>
 										<th width="5%" style="text-align:center;">Total Load</th>
+										<th width="10%" style="text-align:center;">Hire Status</th>
 										<th width="40%" style="text-align:center;">Nearest Location</th>
 										<th width="5%" style="text-align:center;">G-Map</th>
 									</tr>
@@ -283,7 +285,12 @@ background-color: #ffffff;
 			                                <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
 			                                          
 			                            </td> -->
-										<td>{{user.totalTruck}}</td>
+										<td ng-if="user.totalTruck=='nill'">--</td>
+										<td ng-if="user.totalTruck!='nill'">{{user.totalTruck}}</td>
+										<td ng-switch on="user.vehicleBusy">
+			                                <span ng-switch-when="yes" style="color: #ff0045">Busy</span>
+			                                <span ng-switch-when="no" style="color: #00ce2f">Available</span>
+			                            </td>
 										<td ng-if="user.address!=null" ng-click="address_click(user, $index)">{{user.address}}</td>
 										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
 										<td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
@@ -298,7 +305,7 @@ background-color: #ffffff;
 		        <div ng-show="loading" class="loading-img"></div> -->
 		    </div>	
     		</tab>
-    		<tab heading="Consolidated Report"> 
+    		<tab heading="Consolidated Report" active="actTab"> 
     			
     			<div class="box box-primary1">
     				
@@ -417,7 +424,7 @@ background-color: #ffffff;
         </tabset>
 	       	
         </div>
-      
+      </div>
     <script src="assets/js/static.js"></script>
 	<script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -437,15 +444,13 @@ background-color: #ffffff;
     <!-- script src="assets/js/custom.js"></script -->   
     <script>
 
-
-
     function googleTranslateElementInit() 
     {
 		 new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
 	}
 
 
-	     var logo =document.location.host;
+	var logo =document.location.host;
     var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
     $('#imagesrc').attr('src', imgName);
 	    $("#example1").dataTable();
@@ -474,7 +479,9 @@ background-color: #ffffff;
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
-    </script>
+
+
+  </script>
     
 </body>
 </html>
