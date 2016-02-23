@@ -375,7 +375,7 @@
                             <th style="text-align:center;"><div style="width: 70px;">GPS</div></th>
                             <th style="text-align:center;"><div style="width: 70px;">Ignition</div></th>
                             <th style="text-align:center;"><div style="width: 100px;">Load</div></th>
-                            <th style="text-align:center;"><div style="width: 100px;">Fuel</div></th>
+                            <th style="text-align:center;"><div style="width: 100px;">Fuel Litre</div></th>
                             <th style="text-align:center;"><div style="width: 100px;">Temperature</div></th>
                             <th style="text-align:center;"><div style="width: 100px;">Hire Status</div></th>
                             <th style="text-align:center;"><div style="width: 100px;">Last Seen</div></th>
@@ -404,13 +404,9 @@
                                 <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
                                           
                             </td>
+                            <td>{{valueCheck(user.totalTruck)}}</td>
+                            <td>{{valueCheck(user.fuelLitre)}}</td>
                             
-                            <td ng-switch on="user.totalTruck">
-                                <span ng-switch-when="nill">--</span>
-                                <span ng-switch-when="!nill">{{user.totalTruck}}</span>
-                                
-                            </td>
-                            <td>--</td>
                             <td>--</td>
                             <td ng-switch on="user.vehicleBusy">
                                 <span ng-switch-when="yes" style="color: #ff0045">Busy</span>

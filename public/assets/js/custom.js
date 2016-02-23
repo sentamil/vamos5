@@ -163,7 +163,7 @@ app.filter('statusfilter', function(){
 			$scope.initilize('map_canvas');
 		}
 	});
-	
+		
 	$scope.statusFilter = function(obj, param){
 	 	var out = [];
 	   	if(param=='ALL'){
@@ -210,6 +210,13 @@ app.filter('statusfilter', function(){
 		$('#distanceVal').val(tempdistVal.toFixed(2));
 	}
 	
+
+	$scope.valueCheck = function(vale)
+	{
+		if(vale == 'nill' || vale == '0.0')return '--';
+		else if (vale !='nill' || vale != '0.0')return vale;
+	}
+
 	$scope.genericFunction = function(vehicleno, index){
 		$scope.selected = index;
 		$scope.removeTask(vehicleno);

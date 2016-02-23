@@ -310,10 +310,13 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	
 	
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
-		 $scope.groupId 	= 	groupid;
-		
-	}
+		$scope.groupId 	= 	groupid;
+		$scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
+		// $scope.consoldate1();
+		var id = $(".nav-tabs-custom #consoldate").attr("id");
+		if(id=='consoldate')
+			$scope.consoldate1();
+		}
 	
 	
 	
