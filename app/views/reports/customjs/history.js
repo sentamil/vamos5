@@ -230,6 +230,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
 		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}))
+		$scope.fuelValue=[];
+		if(data)
 		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!undefined"}));
 		$scope.alertMe_click($scope.downloadid);
    	};
@@ -732,8 +734,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     	$('#status').show();
     	$('#preloader').show();
     	var valueas 		=   $('#txtv').val();
-		var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
-		console.log(histurl)
+		
+		// console.log(histurl)
 		if($scope.downloadid == 'eventReport')
 		{
 
@@ -754,6 +756,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		} 
 		else
 		{
+			var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
 			$http.get(histurl).success(function(data){
 				
 				$scope.loading			=	false;
