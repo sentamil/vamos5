@@ -68,13 +68,21 @@ color: #fff;
 .menu-hover .menu-hover .list a:hover {
 background: #4b545f;
 }
-/*.menu-hover .menu-hover .menu-hover {
+
+.menu-hover .menu-hover .menu-hover {
 position: absolute;
 left: 100%;
 top: 0;
-}*/
-/*.js-enabled .menu-hover .list:hover > .menu-hover {
+color: #fff
+}
+
+.menu-hover .menu-hover .menu-hover {
+position: absolute;
+left: 100%;
+top: 0;
+color: #fff
+}
+.js-enabled .menu-hover .list:hover > .menu-hover {
 list-style-type: none;	
 display: none;
 }
-*/

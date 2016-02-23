@@ -25,6 +25,169 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
 	}
+	// $scope.fuelCon 		= 	[];
+	// $scope.trip 		= 	[];
+	// $scope.duration 	= 	[];
+	// $scope.timeList		=	[];
+	function graphList(list)
+	{	
+		$scope.fuelCon 		= 	[];
+		$scope.trip 		= 	[];
+		$scope.duration 	= 	[];
+		$scope.timeList		=	[];
+		var a = Math.max(list[0].distanceHistory.length, list[0].timeHistory.length)
+		for (var i = 0; i < a; i++) {
+			//console.log(i)
+			if(list[0].distanceHistory.length>i)
+			{
+				$scope.fuelCon.push(list[0].distanceHistory[i].fuelConsume)
+				$scope.trip.push(list[0].distanceHistory[i].tripDistance)
+				//console.log('push'+i)	
+			}
+			if(list[0].timeHistory.length>i)
+			{
+				$scope.duration.push(list[0].timeHistory[i].fuelConsume)
+				$scope.timeList.push($scope.msToTime(list[0].timeHistory[i].duration))
+			}
+				
+		};
+	}
+
+	function graphData(val){
+		graphList(val);
+		//console.log($scope.fuelCon)
+		//console.log($scope.trip)
+    $(function () {
+   
+        $('#container1').highcharts({
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: ''
+            },
+          
+             xAxis: {
+            categories: $scope.timeList
+        		},
+            
+            yAxis: {
+                title: {
+                    text: 'Fuel'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Fuel Consume',
+                data: $scope.duration
+            }]
+        });
+
+});
+	 $('#container').highcharts({
+        chart: {
+            zoomType: 'xy'
+        },
+        title: {
+            text: ''
+        },
+       
+       xAxis: {
+                labels:
+                {
+                    enabled: false
+                }
+            },
+        yAxis: [{ // Primary yAxis
+            labels: {
+                format: '{value} ltr',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            title: {
+                text: 'Fuel',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            }
+        }, { // Secondary yAxis
+            title: {
+                text: 'Trip',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            labels: {
+                format: '{value} kms',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            opposite: true
+        }],
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            x: 120,
+            verticalAlign: 'top',
+            y: 100,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+        },
+        series: [{
+            name: 'Trip',
+            type: 'column',
+            yAxis: 1,
+            data: $scope.trip,
+            tooltip: {
+                valueSuffix: ' kms'
+            }
+
+        }, {
+            name: 'Fuel',
+            type: 'spline',
+            data: $scope.fuelCon,
+            tooltip: {
+                valueSuffix: 'ltr'
+            }
+        }]
+    });
+}
+
 
 	function convert_to_24h(time_str) {
 		console.log(time_str);
@@ -117,6 +280,8 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		// $('#preloader02').delay(350).fadeOut('slow');
 	}
 	
+
+	
 	// service call
 	function serviceCall(url)
 	{
@@ -127,9 +292,17 @@ app.controller('mainFuel', function($scope, $http, $filter){
 			$('#status02').fadeOut(); 
 			$('#preloader02').delay(350).fadeOut('slow');
 			if(data.length>0)
+			{
 				$scope.fuelTotal 	= data;
+				graphData(data);
+			}
+				
 			else
-				$scope.fuelTotal=[];
+			{
+				$scope.fuelTotal	= [];
+				graphData([]);
+			}
+				
 				
 		})
 		
@@ -139,9 +312,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	//button click event
 	$scope.plotHist 		= function()
 	{
-		
 		$scope.getValue('button');
-		
 	}
 
 	$scope.genericFunction  = function(single, index, shortname)
@@ -202,6 +373,12 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		$('#status').hide(); 
 		$('#preloader').hide('slow');
 		// $('body').delay(350).css({'overflow':'visible'});
-});
-	
+	});
+
+	$('#minus').click(function(){
+		$('#chart1').toggle(1000);
+	})
+	$('#minus1').click(function(){
+		$('#chart2').toggle(1000);
+	})
 });

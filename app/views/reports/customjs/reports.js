@@ -8,6 +8,10 @@ var app = angular.module('mapApp',['ui.bootstrap']);
 //var ginfowindow=[];
 app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_sysservice){
 	
+	var getUrl  =   document.location.href;
+	var index   =   getUrl.split("=")[1];
+	if(index)
+	$scope.actTab 	=	true;
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
 	$scope.newAddr      = 	{};
@@ -18,7 +22,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
      	var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };	
-
+    
     function format24hrs(date)
     {
     	var date1 = new Date(date);
@@ -306,10 +310,13 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	
 	
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
-		 $scope.groupId 	= 	groupid;
-		
-	}
+		$scope.groupId 	= 	groupid;
+		$scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
+		// $scope.consoldate1();
+		var id = $(".nav-tabs-custom #consoldate").attr("id");
+		if(id=='consoldate')
+			$scope.consoldate1();
+		}
 	
 	
 	

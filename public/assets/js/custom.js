@@ -80,6 +80,8 @@ app.filter('statusfilter', function(){
 	var tempdistVal = 0;
 	var mcOptions={};
 	var markerCluster;
+	var vehicleids=[];
+	//var menuVid;
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
@@ -91,8 +93,12 @@ app.filter('statusfilter', function(){
 			$scope.fcode=[];
 			$scope.locations02 = data;
 			listVehicleName(data);
+			// menuGroup(data);
 			if(data.length){
+
+				sessionStorage.setItem('user', JSON.stringify(data));
 				$scope.mapTable = data[$scope.gIndex].vehicleLocations;
+				// console.log(document.getElementById('one').innerText)
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
 				$scope.zoomLevel = 6;
@@ -101,6 +107,54 @@ app.filter('statusfilter', function(){
 			}
 		});	
 	});
+
+	var ls = sessionStorage.getItem("user")
+	function menuGroup(res)
+	{
+		
+		for (var i = 0; i < res.length; i++) {
+			$('[id="listGrop"]').append('<li class="list" id="lsit"><a href="#">'+$scope.trimColon(res[i].group)+'</a></li>');
+// 			  document.getElementById('#lsit');
+// console.log(document.getElementById('#lsit'))
+			//console.log(' val ')
+    	};
+		$('[id="lsit"]').mouseenter(function(event) {
+    	//console.log(' val 1'+event.target.innerText)
+    	vehiCall(event.target.innerText);
+    	});
+		
+	} 
+
+	var vehiCall 	= 	function(groupid)
+	{
+		
+		if(vehicleids.length)
+			console.log(' length true')
+		else
+		{
+			var groupurl = localGroup(groupid);
+			// $.getJSON(groupurl, function(data) {
+			// 	for (var i = 0; i < data.length; i++) {
+			// 		if(data[i].vehicleLocations.length)
+			// 			for (var j = 0; j < data[i].vehicleLocations.length; j++) {
+			// 				$('[id="lsit"]').append('<ul class="menu-hover" id="listVehi"><li class="list"><a href="#">'+data[i].vehicleLocations[j].vehicleId+'</a></li></ul>')
+			// 			};
+			// 	};
+			// });
+  		}
+			
+	}
+
+	function localGroup(halfgroup)
+	{	
+		var split_vid 	= 	$scope.locations02[0].group.split(":")[1];
+
+		var gName 	 	= 	halfgroup.trim()+':'+split_vid;
+		var groupUrl1= 'http://'+globalIP+context+'/public//getVehicleLocations?group='+gName;
+		console.log(groupUrl1);
+		return groupUrl1;
+	}
+
 	// console.log($scope.locations02)
 	$scope.$watch("vehicleStatus", function (val) {
 		if($scope.locations02!=undefined){
@@ -109,7 +163,7 @@ app.filter('statusfilter', function(){
 			$scope.initilize('map_canvas');
 		}
 	});
-	
+		
 	$scope.statusFilter = function(obj, param){
 	 	var out = [];
 	   	if(param=='ALL'){
@@ -156,6 +210,13 @@ app.filter('statusfilter', function(){
 		$('#distanceVal').val(tempdistVal.toFixed(2));
 	}
 	
+
+	$scope.valueCheck = function(vale)
+	{
+		if(vale == 'nill' || vale == '0.0')return '--';
+		else if (vale !='nill' || vale != '0.0')return vale;
+	}
+
 	$scope.genericFunction = function(vehicleno, index){
 		$scope.selected = index;
 		$scope.removeTask(vehicleno);
@@ -341,7 +402,8 @@ app.filter('statusfilter', function(){
 		{
 			$scope.vehicle_list.push({'vehiID' : data[$scope.gIndex].vehicleLocations[i].vehicleId, 'vName' : data[$scope.gIndex].vehicleLocations[i].shortName})
 		};
-		$scope.fcode.push(data[$scope.gIndex])
+		$scope.fcode.push(data[$scope.gIndex]);
+
 	}
 
 
@@ -547,6 +609,7 @@ app.filter('statusfilter', function(){
 	
 	$scope.initial02 = function(){
 		//console.log(' marker click ')
+		
 		$scope.assignHeaderVal($scope.locations02);
 		var locs = $scope.locations;
 	 	var parkedCount = 0;
@@ -554,8 +617,6 @@ app.filter('statusfilter', function(){
 		var idleCount = 0;
 		var overspeedCount = 0;
 		
-		
-
 		for (var i = 0; i < $scope.locations02[$scope.gIndex].vehicleLocations.length; i++) {
 			if($scope.locations02[$scope.gIndex].vehicleLocations[i].position=="P"){
 				parkedCount=parkedCount+1;
@@ -567,6 +628,7 @@ app.filter('statusfilter', function(){
 			if($scope.locations02[$scope.gIndex].vehicleLocations[i].isOverSpeed=='Y'){
 				overspeedCount=overspeedCount+1;
 			}
+
 		}
 		
 		$scope.parkedCount = parkedCount;
@@ -591,11 +653,14 @@ app.filter('statusfilter', function(){
 				 });	
 			 }
 			 //$scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);
-		}	
-		 markerCluster.clearMarkers();
+		}
+		if($scope.selected!=undefined){
+			$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
+		}
+		
 		if($scope.groupMap==true)
 		{
-			
+			markerCluster.clearMarkers();
 			mcOptions = {gridSize: 50, maxZoom: 15};
 			markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions) 	
 		}
@@ -603,9 +668,8 @@ app.filter('statusfilter', function(){
 		// {
 		// 	markerCluster.clearMarkers(null);
 		// }
-		if($scope.selected!=undefined){
-			$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
-		}
+		
+		
 	}
 	
 	$scope.initilize = function(ID){
@@ -634,14 +698,14 @@ app.filter('statusfilter', function(){
 						$scope.firstLoc = event.latLng;
 					}
 				}else if($scope.nearbyflag==true){
-					$('#status02').show(); 
-					$('#preloader02').show(); 
+					// $('#status02').show(); 
+					// $('#preloader02').show(); 
 					var tempurl = 'http://'+globalIP+context+'/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
 					
 					$http.get(tempurl).success(function(data){
 						$scope.nearbyLocs = data;
-						$('#status02').fadeOut(); 
-						$('#preloader02').delay(350).fadeOut('slow');
+						// $('#status02').fadeOut(); 
+						// $('#preloader02').delay(350).fadeOut('slow');
 						if($scope.nearbyLocs.fromAddress==''){}else{
 							$('.nearbyTable').delay(350).show();
 						}
@@ -691,43 +755,7 @@ app.filter('statusfilter', function(){
 		$(document).on('pageshow', '#maploc', function(e){       
         	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
    		});
-   		// var mcOptions = {gridSize: 50, maxZoom: 15};
-//    		var mcOptions = {styles: [{
-// height: 100,
-// url: "assets/imgs/c1.png",
-// width: 100
-// },
-// {
-// height: 100,
-// url: "assets/imgs/c2.png",
-// width: 100
-// },
-// {
-// height: 100,
-// url: "assets/imgs/c3.png",
-// width: 100
-// },
-// {
-// height: 100,
-// url: "assets/imgs/c4.png",
-// width: 100
-// },
-// {
-// height: 100,
-// url: "assets/imgs/c5.png",
-// width: 100
-// }]}
-	// if($scope.groupMap==true)
-	// 		{
-	// 			var mcOptions={};
-	// 			var markerCluster = null;
-	// 			markerCluster.setMap(null);
-	// 			markerCluster.setGmarkers(null);
-	// 			mcOptions = {gridSize: 50, maxZoom: 15};
-	// 			markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions) 	
-	// 		}
-		
-	}
+   	}
 	
 	//click and resolve address
 	$scope.address_click = function(data, ind)
@@ -988,6 +1016,11 @@ app.filter('statusfilter', function(){
 		$scope.attention  =data[$scope.gIndex].attention;
 		$scope.vehicleOnline =data[$scope.gIndex].online;
 	}
+	$(window).load(function() {
+		$('#status').fadeOut(); 
+		$('#preloader').delay(350).fadeOut('slow');
+		$('body').delay(350).css({'overflow':'visible'});
+});
 }])
 
 .directive('ngEnter', function () {
@@ -1014,13 +1047,11 @@ app.filter('statusfilter', function(){
 						scope.selected=undefined;
 						scope.locations = scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
 						scope.zoomLevel = scope.zoomLevel;
-						//scope.initial02();
 						scope.loading	=	true;
-						//scope.initilize('map_canvas');
 						scope.initial02();
 					}
 				}); 
-			},600000);
+			},60000);
 	  	}); 
 	    }
 	};
