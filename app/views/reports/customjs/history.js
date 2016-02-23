@@ -15,6 +15,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.saddressStop 	=   [];
 	$scope.eventReportData 	= 	[];
 	$scope.location	    	=	[];
+	$scope.ltrs 			= 	[];
+	$scope.fuelDate 		= 	[];
+	
 	$scope.interval	    	=	getParameterByName('interval')?getParameterByName('interval'):10;
 	$scope.sort = {       
                 sortingOrder : 'id',
@@ -173,6 +176,11 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		   			$scope.tableTitle 			=	'Load Report';
 		   			$scope.downloadid 			= 	'loadreport';
 		   			break;
+		   		case 'fuel':
+		   			$scope.loadreport			= 	true;
+		   			$scope.tableTitle 			=	'Fuel Report';
+		   			$scope.downloadid 			= 	'fuel';
+		   			break;
 		   		default:
 		   			break;		
 		   }
@@ -209,7 +217,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
-		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}))
+		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}));
+		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!undefined"}));
 		$scope.recursive1($scope.movementdata,0);
 		//console.log(' data----> '+$scope.downloadid)
    	};
@@ -221,6 +230,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
 		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}))
+		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!undefined"}));
 		$scope.alertMe_click($scope.downloadid);
    	};
 
@@ -242,7 +252,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    			case 'eventReport':
    				$scope.recursiveEvent($scope.eventReportData,0);
    				break;
-
+   			case 'fuel':
+   				$scope.fuelChart($scope.fuelValue);
+   				break;
    			default:
    				break;
    		}
@@ -481,7 +493,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	{
 		var index4 = 0;
 		angular.forEach(locationEvent, function(value ,primaryKey){
-			console.log(' primaryKey '+primaryKey)
+			//console.log(' primaryKey '+primaryKey)
 			index4 = primaryKey;
 			if(locationEvent[index4].address == undefined)
 			{
@@ -607,11 +619,88 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		   		$scope.downloadid    =  'loadreport';
 	   			$scope.overallEnable = 	true;
 	   			break;
+	   		case 'fuel':
+	   			$scope.downloadid    =  'fuel';
+	   			$scope.overallEnable = 	true;
+	   			$scope.fuelChart($scope.fuelValue);
+	   			break;
 			default:
 				break;
 		}
 	};
 	
+
+	$scope.fuelChart 	= 	function(data){
+		var ltrs 		=	[];
+		var fuelDate 	=	[];
+		for (var i = 0; i < data.length; i++) {
+			if(data[i].fuelLitre !='0' || data[i].fuelLitre !='0.0')
+			{
+				ltrs.push(data[i].fuelLitre);
+				var dar = $filter('date')(data[i].date, "dd/MM/yyyy HH:mm:ss");
+				fuelDate.push(dar)
+			}
+			
+		};
+		 $(function () {
+   
+        $('#container').highcharts({
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Fuel Report'
+            },
+          
+             xAxis: {
+            categories: fuelDate
+        		},
+            
+            yAxis: {
+                title: {
+                    text: 'Fuel'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Fuel Consume',
+                data: ltrs
+            }]
+        });
+
+});
+	}
+
 	$scope.exportData = function (data) {
 		console.log(data);
 		var blob = new Blob([document.getElementById(data).innerHTML], {
@@ -644,6 +733,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     	$('#preloader').show();
     	var valueas 		=   $('#txtv').val();
 		var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
+		console.log(histurl)
 		if($scope.downloadid == 'eventReport')
 		{
 
@@ -665,12 +755,13 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		else
 		{
 			$http.get(histurl).success(function(data){
+				
 				$scope.loading			=	false;
 				$scope.hist				=	data;
 				$scope.topspeedtime		=	data.topSpeedTime;
 				$scope.dataArray_click(data.vehicleLocations);
 				$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');	
+				$('#preloader').delay(350).fadeOut('slow');	
 			});
 			// $scope.loading	=	false;
 		}

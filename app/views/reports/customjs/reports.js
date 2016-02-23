@@ -313,9 +313,9 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		$scope.groupId 	= 	groupid;
 		$scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
 		// $scope.consoldate1();
-		var id = $(".nav-tabs-custom #consoldate").attr("id");
-		if(id=='consoldate')
-			$scope.consoldate1();
+		// var id = $(".nav-tabs-custom #consoldate").attr("id");
+		// if(id=='consoldate')
+		// 	$scope.consoldate1();
 		}
 	
 	
