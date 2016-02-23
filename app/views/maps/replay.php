@@ -10,6 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
 <title>GPS</title>
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
@@ -29,6 +30,9 @@
   
 </style>
 </head>
+<div id="preloader" >
+    <div id="status">&nbsp;</div>
+</div>
 <div id="preloader02" >
     <div id="status02">&nbsp;</div>
 </div>
@@ -41,10 +45,7 @@
                 <li class="history"><a href="../public/replay" class="active"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-                <!--
-                 <li class="settings"><a href="../public/settings"><div></div><label>Settings</label></a></li>
-                 -->
-            <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
+                <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;">
@@ -65,8 +66,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div style="position: absolute;top: 0px;left: 20%; z-index:999999;" id="testLoad">
-                        </div>
+                        <div style="position: absolute;top: 0px;left: 20%; z-index:999999;" id="testLoad"></div>
                         </div>
                         <div id="minmax">
                             <img src="assets/imgs/add.png" />
@@ -226,8 +226,6 @@
                                   </div>
                               </div>
                           </div>
-                          <div ng-show="loading" class="overlay"></div>
-              <div ng-show="loading" class="loading-img"></div>
                     </div>
                 </div>
             </div>

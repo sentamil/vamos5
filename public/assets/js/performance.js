@@ -149,6 +149,8 @@ app.filter('statusfilter', function(){
 	$scope.iSingle		=	'';
 	$scope.genericFunction1 = function(vehicleno, groupname, index)
 	{
+		$('#status').show(); 
+		$('#preloader').show();
 		$scope.vSingle		=	vehicleno;
 		$scope.gSingle		=	groupname;
 		$scope.iSingle		=	index;
@@ -192,6 +194,8 @@ app.filter('statusfilter', function(){
 			dataTableList.push({'month': months[i],'data': data[i]});
 			//console.log('value----->'+data[i].weightedBreakAnalysis)
 		}
+		$('#status').fadeOut(); 
+		$('#preloader').delay(350).fadeOut('slow');
 		$scope.tableValue=dataTableList;
 		$('#container').highcharts({
 			
@@ -312,7 +316,8 @@ app.filter('statusfilter', function(){
 
 	var OverallDriverPerformance = function(tempurl1)
 	{
-
+		$('#status').show(); 
+		$('#preloader').show();
 		var totalsuddenBreak=[];
 		var SuddenAcc=[];
 		var OverSpeed=[];
@@ -340,6 +345,8 @@ app.filter('statusfilter', function(){
 				dataTableList.push({'month':data[i].vehicleId,'data': data[i]});
 			}
 			$scope.tableValue=dataTableList;
+			$('#status').fadeOut(); 
+			$('#preloader').delay(350).fadeOut('slow');
 			//console.log($scope.tableValue[1])
 			//group value charts
 			$('#container1').highcharts({
@@ -757,11 +764,11 @@ app.filter('statusfilter', function(){
     };
 })
 
-$(window).load(function() {
-		$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');
-		$('body').delay(350).css({'overflow':'visible'});
-});
+// $(window).load(function() {
+// 		$('#status').fadeOut(); 
+// 		$('#preloader').delay(350).fadeOut('slow');
+// 		$('body').delay(350).css({'overflow':'visible'});
+// });
 $(document).ready(function(e) {
     $('.contentClose').click(function(){
 		$('.topContent').fadeOut(100);

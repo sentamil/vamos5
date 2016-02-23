@@ -3,6 +3,11 @@ var app = angular.module('mapApp',['ui.bootstrap']);
 app.controller('mainCtrl',function($scope, $http, $filter){
 	//$scope.tabActive = true;
 	
+	var getUrl  =   document.location.href;
+	var index   =   getUrl.split("=")[1];
+	if(index)
+	$scope.actTab 	=	true;
+	
 	$scope.maddress	=	[];
 	$scope.sort = {       
         sortingOrder : 'id',
@@ -166,38 +171,36 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	$scope.plotHist			=		function() {
 		if($scope.whichdata) {
 			// $scope.geofencedata=[];	
+			$('#status').show(); 
+			$('#preloader').show();
 			var gurl		=	'http://'+getIP+context+'/public//getExecutiveReport?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 			$scope.loading			=	true;
 			$http.get(gurl).success(function(gdata){	
-				//console.log(gurl)
 				$scope.execGroupReportData	=	gdata.execReportData;
 				if($scope.vid)
 				$scope.execGroupReportData	=	($filter('filter')($scope.execGroupReportData, {'vehicleId':$scope.vid}));
 				$scope.texecGroupReportData		=	$scope.execGroupReportData;	
-				//console.log(gurl)			
 				$scope.donutLoad(gdata);
 				$scope.barLoad($scope.vid);
 				$scope.loading			=	false;
-				$scope.recursive($scope.execGroupReportData,0);	
+				$scope.recursive($scope.execGroupReportData,0);
+				$('#status').fadeOut(); 
+				$('#preloader').delay(350).fadeOut('slow');
+				$('body').delay(350).css({'overflow':'visible'});	
 			});
 		}
-		else {		
+		else {
+			$('#status').show(); 
+			$('#preloader').show();		
 			var gurl		=	'http://'+getIP+context+'/public//getPoiHistory?groupId='+$scope.data1.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-			//console.log(gurl);
-			//$scope.geofencedata=[];
 			$scope.whichdata	=		false;
-			// $scope.execGroupReportData=[];				
 			if(!$scope.sid) {
 				$scope.loading			=	true;
-				// $scope.execGroupReportData	=	($filter('filter')($scope.execGroupReportData, {'vehicleId':$scope.vid}));
-				// $scope.texecGroupReportData		=	$scope.execGroupReportData;	
-				console.log(' data ::'+$scope.execGroupReportData)
-				console.log(' data ::'+$scope.texecGroupReportData) 
 				$http.get(gurl).success(function(gdata){
-
-				//console.log(gdata);	
 					$scope.dataGeofence(gdata.history);	
-					$scope.loading			=	false;
+					$('#status').fadeOut(); 
+				$('#preloader').delay(350).fadeOut('slow');
+				$('body').delay(350).css({'overflow':'visible'});	
 				});
 			}
 			
@@ -431,7 +434,9 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 	    return marktimestr;
 	};
 	
-	
+// 	$(window).load(function() {
+		
+// });
 });
 
 app.directive("getLocation", function () {

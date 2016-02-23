@@ -8,6 +8,7 @@
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
 <title>GPS</title>
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
@@ -40,13 +41,13 @@
     border: 1px solid black;
 
 }
-
+/*
 .box > .loading-img {
 z-index: 1020;
 background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
 }
 #status1, #status102 {width: 200px;height: 200px;position: absolute;left: 50%;top: 50%;background-image: url(../app/views/reports/ajax-loader1.gif);background-repeat: no-repeat;background-position: center;background-color:transparent;margin: -100px 0 0 -100px;}
-	
+*/	
 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
 background-color: #ffffff;
 }
@@ -54,12 +55,12 @@ background-color: #ffffff;
 
 </style>
 </head>
-<!-- <div id="preloader" >
+<div id="preloader" >
 				    <div class="overlay">&nbsp;</div>
 				</div>
 				<div id="preloader02" >
 				    <div class="loading-img">&nbsp;</div>
-				</div> -->
+				</div>
 
 <body ng-app="mapApp">
 	<div id="wrapper" ng-controller="mainCtrl">
@@ -70,7 +71,7 @@ background-color: #ffffff;
                 <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="javascript:void(0);" class="active"><div></div><label>Reports</label></a></li>
 		 		<li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-                <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
+                <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
             <ul class="sidebar-subnav ">
@@ -86,9 +87,14 @@ background-color: #ffffff;
                     </ul>
                 </li>
             </ul>
+        	
         </div>
+        
+     	<div style="position: absolute;top: 0px;left: 40%; z-index:999999;" id="testLoad"></div>
         <div id="page-content-wrapper">
-            <div class="container-fluid">
+        	 <div class="container-fluid">
+        	
+           
         		<div class="panel panel-default">
 				 
 				</div>   
@@ -414,12 +420,12 @@ background-color: #ffffff;
 						</div>
 					</div>
 					</div>
-				<div id="preloader" >
+				<!-- <div id="preloader" >
 	    			<div id="status1">&nbsp;</div>
 				</div>
 				<div id="preloader02" >
 			    	<div id="status102">&nbsp;</div>
-				</div>
+				</div> -->
 		    </tab>
         </tabset>
 	       	
@@ -449,7 +455,7 @@ background-color: #ffffff;
 		 new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
 	}
 
-
+	$("#testLoad").load("../public/menu");
 	var logo =document.location.host;
     var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
     $('#imagesrc').attr('src', imgName);

@@ -7,7 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
 <title>GPS</title>
-
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
@@ -22,17 +22,22 @@
 
 </head>
 <style>
-    .box > .loading-img {
+   /* .box > .loading-img {
 z-index: 1020;
-background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
-}
+background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
+}*/
 
 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
 background-color: #ffffff;
 }
 
 </style>
-
+<div id="preloader" >
+    <div id="status">&nbsp;</div>
+</div>
+<div id="preloader02" >
+    <div id="status02">&nbsp;</div>
+</div>
 <body ng-app="mapApp">
     <div id="wrapper" ng-controller="mainCtrl"> 
         <div id="sidebar-wrapper">
@@ -42,7 +47,7 @@ background-color: #ffffff;
                 <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics" class="active"><div></div><label>Statistics</label></a></li>
-                <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
+                <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
@@ -71,7 +76,7 @@ background-color: #ffffff;
             </div>
         <!-- /#page-content-wrapper -->
         </div>
- 
+        <div style="position: absolute;top: 0px;left: 40%; z-index:999999;" id="testLoad"></div>
     <!-- AdminLTE css box-->
    
        <div class="col-md-12">
@@ -212,7 +217,7 @@ background-color: #ffffff;
                                 </table>
                             </div>
                          </tab>
-                         <tab select="alertMe('geofence')" heading="POI"> <!-- active="!tabActive" poi-->
+                         <tab select="alertMe('geofence')" heading="POI" active="actTab"> <!-- active="!tabActive" poi-->
                              <h4 style="margin:0" class="page-header">Place of Intrest</h4>
                               <div id='geofencereport'>
                              <table class="table table-bordered table-striped table-condensed table-hover table-striped">
@@ -275,8 +280,7 @@ background-color: #ffffff;
                      
                     
                 </div><!-- /.box-body -->
-                 <div ng-show="loading" class="overlay"></div>
-       <div ng-show="loading" class="loading-img"></div>
+             
             </div>  
         </div>
        
@@ -297,7 +301,7 @@ background-color: #ffffff;
     <script src="../app/views/reports/c3chart/c3.min.js"></script>
     <script src="../app/views/reports/customjs/statistics.js"></script>
     <script>
-    
+    $("#testLoad").load("../public/menu");
     var logo =document.location.host;
     var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
     $('#imagesrc').attr('src', imgName);

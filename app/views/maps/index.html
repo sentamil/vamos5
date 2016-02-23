@@ -7,7 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
 <title>GPS</title>
-<!-- <link rel="shortcut icon" href="assets/imgs/tab.ico"> -->
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
@@ -43,7 +43,7 @@
                 <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-                <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
+                <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
@@ -69,9 +69,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div style="position: absolute;top: 0px;left: 20%; z-index:999999;" id="testLoad">
-
-                         </div>
+                        <div style="position: absolute;top: 0px;left: 20%; z-index:999999;" id="testLoad"></div>
                         <div class="topContent" style="visibility: hidden">
                             <div class="row">
                                 <div class="col-md-2" align="center" id="totalvehicles">
@@ -344,7 +342,7 @@
                                     </div>
                                     <div id="container-speed"></div>
                                     <h3>Support details</h3>
-                                    <div align="center"><p>{{support}}</p></div>
+                                    <div align="center" style="word-wrap: break-word;"><p>{{support}}</p></div>
                                 </div>
                         </div>
                         <a href="javascript:void(0);" class="contentexpand"><img src="assets/imgs/add.png"/></a>
