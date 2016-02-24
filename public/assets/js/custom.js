@@ -339,14 +339,15 @@ app.filter('statusfilter', function(){
 		$scope.selected=undefined;
 		$scope.dynamicvehicledetails1=false;
 		$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group=' + groupname;
+		
 		$scope.gIndex = groupid;
 		
 		$scope.mapTable = $scope.locations02[groupid].vehicleLocations;
-		gmarkers=[];
+		// gmarkers=[];
 		for(var i=0; i<ginfowindow.length;i++){		
 			ginfowindow[i].setMap(null);
 		}
-		ginfowindow=[];
+		// ginfowindow=[];
 		clearInterval(setintrvl);
 		//$scope.locations02 = vamoservice.getDataCall($scope.url);
 		 	
