@@ -31,33 +31,39 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	// $scope.timeList		=	[];
 	function graphList(list)
 	{	
-		$scope.fuelCon 		= 	[];
-		$scope.trip 		= 	[];
-		$scope.duration 	= 	[];
-		$scope.timeList		=	[];
-		var a = Math.max(list[0].distanceHistory.length, list[0].timeHistory.length)
-		for (var i = 0; i < a; i++) {
+		
+		if(list)
+		{
+			var a = Math.max(list[0].distanceHistory.length, list[0].timeHistory.length)
+			for (var i = 0; i < a; i++) {
 			//console.log(i)
-			if(list[0].distanceHistory.length>i)
-			{
-				$scope.fuelCon.push(list[0].distanceHistory[i].fuelConsume)
-				$scope.trip.push(list[0].distanceHistory[i].tripDistance)
-				//console.log('push'+i)	
-			}
-			if(list[0].timeHistory.length>i)
-			{
-				$scope.duration.push(list[0].timeHistory[i].fuelConsume)
-				$scope.timeList.push($scope.msToTime(list[0].timeHistory[i].duration))
-			}
+				if(list[0].distanceHistory.length>i)
+				{
+					$scope.fuelCon.push(list[0].distanceHistory[i].fuelConsume)
+					$scope.trip.push(list[0].distanceHistory[i].tripDistance)
+					//console.log('push'+i)	
+				}
+				if(list[0].timeHistory.length>i)
+				{
+					$scope.duration.push(list[0].timeHistory[i].fuelConsume)
+					$scope.timeList.push($scope.msToTime(list[0].timeHistory[i].duration))
+				}
 				
-		};
+			};
+		}
+		else
+		{
+			$scope.fuelCon 		= 	[];
+			$scope.trip 		= 	[];
+			$scope.duration 	= 	[];
+			$scope.timeList		=	[];
+		}
+		
 	}
 
 	function graphData(val){
 		graphList(val);
-		//console.log($scope.fuelCon)
-		//console.log($scope.trip)
-    $(function () {
+	$(function () {
    
         $('#container1').highcharts({
             chart: {
@@ -285,8 +291,8 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	// service call
 	function serviceCall(url)
 	{
-		$('#perloader').show();
-		$('#preloader02').show();
+		// $('#perloader').show();
+		// $('#preloader02').show();
 		$http.get(url).success(function(data)
 		{
 			$('#status02').fadeOut(); 
@@ -299,11 +305,8 @@ app.controller('mainFuel', function($scope, $http, $filter){
 				
 			else
 			{
+				graphData(null);
 				$scope.fuelTotal	= 	[];
-				$scope.fuelCon 		= 	[];
-				$scope.trip 		= 	[];
-				$scope.duration 	= 	[];
-				$scope.timeList		=	[];
 			}
 				
 				
@@ -326,7 +329,8 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	}
 	
 	$scope.getValue 	= function(data)
-	{	
+	{	$('#status02').show(); 
+		$('#preloader02').show(); 
 		switch(data)
 		{
 			case 'vehicle':
@@ -375,7 +379,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	$(window).load(function() {
 		$('#status').hide(); 
 		$('#preloader').hide('slow');
-		// $('body').delay(350).css({'overflow':'visible'});
+		$('body').delay(350).css({'overflow':'visible'});
 	});
 
 	$('#minus').click(function(){
