@@ -74,9 +74,12 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 				  		$scope.data1		=	data[key];
 				  }
 			});				
-		// $scope.loading	=	false;
-		$('#preloader').fadeOut(); 
-		$('#preloader02').delay(350).fadeOut('slow');
+		// // $scope.loading	=	false;
+		// if($('#consoldate.active'))
+		console.log($('#consoldate').attr('id'));
+		// if(!$("#consoldate").css('visibility') === 'hidden'){
+				$('#preloader').fadeOut(); 
+				$('#preloader02').delay(350).fadeOut('slow');
 		$scope.recursive($scope.data1.vehicleLocations,0);
 		}).error(function(){ /*alert('error'); */});
 	});
@@ -126,6 +129,20 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	  	};
 	}());
 
+    // web service call in the consoldate report
+	var service = function(conUrl)
+	{
+		$http.get(conUrl).success(function(data)
+		{
+			$scope.consoldateData = data;
+			$('#preloader').fadeOut(); 
+			$('#preloader02').delay(350).fadeOut('slow');
+
+
+			// To get the address details from Google API
+			$scope.selectMe($scope.consoldateData);
+		});
+	}
 
 	$scope.getAddressFromGAPI = function(url, index1, index2, lat, lan) {
 		$http.get(url).success(function(data) {
@@ -162,21 +179,6 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		service(conUrl);
 	}
 		
-	// web service call in the consoldate report
-	var service = function(conUrl)
-	{
-		$http.get(conUrl).success(function(data)
-		{
-			$scope.consoldateData = data;
-			$('#preloader').fadeOut(); 
-			$('#preloader02').delay(350).fadeOut('slow');
-
-
-			// To get the address details from Google API
-			$scope.selectMe($scope.consoldateData);
-		});
-	}
-
 	$scope.exportData = function (data) {
 		var blob = new Blob([document.getElementById(data).innerHTML], {
            	type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
@@ -314,11 +316,17 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	
 	$scope.groupSelection = function(groupname, groupid){
 		$scope.groupId 	= 	groupid;
-		$scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
-		// $scope.consoldate1();
-		// var id = $(".nav-tabs-custom #consoldate").attr("id");
-		// if(id=='consoldate')
-		// 	$scope.consoldate1();
+		$scope.vehigroup = groupname;
+		$scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+$scope.vehigroup;
+		if($('#consoldate').attr('id')=='consoldate')
+		{
+			$('#preloader').show(); 
+			$('#preloader02').show();
+			$scope.consoldate1();
+			
+		}
+			
+	
 		}
 	
 	
