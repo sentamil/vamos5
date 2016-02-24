@@ -293,14 +293,17 @@ app.controller('mainFuel', function($scope, $http, $filter){
 			$('#preloader02').delay(350).fadeOut('slow');
 			if(data.length>0)
 			{
-				$scope.fuelTotal 	= data;
+				$scope.fuelTotal 	= 	data;
 				graphData(data);
 			}
 				
 			else
 			{
-				$scope.fuelTotal	= [];
-				graphData([]);
+				$scope.fuelTotal	= 	[];
+				$scope.fuelCon 		= 	[];
+				$scope.trip 		= 	[];
+				$scope.duration 	= 	[];
+				$scope.timeList		=	[];
 			}
 				
 				
