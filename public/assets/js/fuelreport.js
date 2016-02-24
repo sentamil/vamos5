@@ -31,7 +31,10 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	// $scope.timeList		=	[];
 	function graphList(list)
 	{	
-		
+		$scope.fuelCon 		= 	[];
+			$scope.trip 		= 	[];
+			$scope.duration 	= 	[];
+			$scope.timeList		=	[];
 		if(list)
 		{
 			var a = Math.max(list[0].distanceHistory.length, list[0].timeHistory.length)
@@ -51,13 +54,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 				
 			};
 		}
-		else
-		{
-			$scope.fuelCon 		= 	[];
-			$scope.trip 		= 	[];
-			$scope.duration 	= 	[];
-			$scope.timeList		=	[];
-		}
+		
 		
 	}
 
