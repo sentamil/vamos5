@@ -53,7 +53,7 @@
   }
 
 
-  #plotin{height: 25px; width:50px; background-color:transparent;  font-size:11px; border:1px solid #aaa; color: gray}
+  #plotin{height: 25px; width:100px; background-color:transparent;  font-size:11px; border:1px solid #fff; color: #080808}
   #plotin:hover{
     background-color: #626262; border: none; color: #f4f4f4; font-size:12px; -moz-transform: scale(1); -webkit-transform: scale(1); transform: scale(1);
   }
@@ -209,7 +209,13 @@
                               </div>
                             </th>
                             <th  colspan="1" style="text-align: center">
-                              <input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px;" value="25" class="kms" />(km)</th>
+                              <select title="Suggested Stops" id="plotin" class="kms">
+                                <option value="25">25 (kms)</option>
+                                <option value="50">50 (kms)</option>
+                                <option value="75">75 (kms)</option>
+                                <option value="100">100 (kms)</option>
+                              </select>
+                              <!-- <input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px;" value="25" class="kms" />(km)</th> -->
                           </tr>
                           <tr>
                             <th colspan="2">Date &amp; Time</th>
@@ -235,7 +241,7 @@
                         <thead style="background-color: #a6a6a6; color: #323232">
                          <tr>
                             <th>Fuel Time</th>
-                            <th colspan="2" style="text-align: center">
+                            <th colspan="1" style="text-align: center">
                               <div style="display: flex; -webkit-flex; -ms-flex: 1;">
                                 <div class="squaredFour" style="width: 15%;">
                                   <input type="checkbox" value="None" id="idle" name="check"/>
@@ -244,11 +250,18 @@
                                 <div style="float: left; width: 30%">Interval</div> 
                               </div>
                             </th>
-                            <th style="text-align: center"><input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px" value="2" class="hrs"/>(hrs)</th>
+                            <th style="text-align: center"><!-- <input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px" value="2" class="hrs"/>(hrs) -->
+                              <select title="Suggested Stops" id="plotin" class="hrs">
+                                <option value="2">2 (hrs)</option>
+                                <option value="3">3 (hrs)</option>
+                                <option value="4">4 (hrs)</option>
+                                <option value="5">5 (hrs)</option>
+                              </select>
+                            </th>
                           <tr>
                             <th>Start Time</th>
                             <th>End Time</th>
-                            <th>Duration</th>
+                            <!-- <th>Duration</th> -->
                             <th>Consume (ltr)</th> 
                           </tr>
                         </thead>
@@ -256,11 +269,11 @@
                           <tr ng-repeat="val in fuelTotal[0].timeHistory">
                             <td>{{val.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                             <td>{{val.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                            <td>{{msToTime(val.duration)}}</td>
+                            <!-- <td>{{msToTime(val.duration)}}</td> -->
                             <td>{{val.fuelConsume}}</td> 
                           </tr>
                           <tr ng-if="fuelTotal[0].timeHistory==null">
-                            <td colspan="4" class="nulltd">choose some other date</td>
+                            <td colspan="3" class="nulltd">choose some other date</td>
                           </tr>
                         </tbody>
                       </table>

@@ -41,13 +41,7 @@
     border: 1px solid black;
 
 }
-/*
-.box > .loading-img {
-z-index: 1020;
-background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
-}
-#status1, #status102 {width: 200px;height: 200px;position: absolute;left: 50%;top: 50%;background-image: url(../app/views/reports/ajax-loader1.gif);background-repeat: no-repeat;background-position: center;background-color:transparent;margin: -100px 0 0 -100px;}
-*/	
+	
 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
 background-color: #ffffff;
 }
@@ -56,11 +50,11 @@ background-color: #ffffff;
 </style>
 </head>
 <div id="preloader" >
-				    <div class="overlay">&nbsp;</div>
-				</div>
-				<div id="preloader02" >
-				    <div class="loading-img">&nbsp;</div>
-				</div>
+    <div id="status">&nbsp;</div>
+</div>
+<div id="preloader02" >
+    <div id="status02">&nbsp;</div>
+</div>
 
 <body ng-app="mapApp">
 	<div id="wrapper" ng-controller="mainCtrl">
@@ -306,12 +300,10 @@ background-color: #ffffff;
 										<td colspan="13">No Records Found Choose some other date</td>
 									</tr>
 								</table>		
-		        </div><!-- /.box-body -->
-		        <!-- <div ng-show="loading" class="overlay"></div>
-		        <div ng-show="loading" class="loading-img"></div> -->
+		        </div>
 		    </div>	
     		</tab>
-    		<tab heading="Consolidated Report" active="actTab" id="consoldate"> 
+    		<tab heading="Consolidated Report" active="actTab" id="consoldate" ng-click="consoldate()"> 
     			
     			<div class="box box-primary1">
     				
@@ -420,12 +412,7 @@ background-color: #ffffff;
 						</div>
 					</div>
 					</div>
-				<!-- <div id="preloader" >
-	    			<div id="status1">&nbsp;</div>
-				</div>
-				<div id="preloader02" >
-			    	<div id="status102">&nbsp;</div>
-				</div> -->
+				
 		    </tab>
         </tabset>
 	       	

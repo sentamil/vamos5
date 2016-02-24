@@ -66,7 +66,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
 			$scope.vehigroup    =   data[$scope.groupId].group;
-			$scope.consoldate(data[$scope.groupId].group);
+			// $scope.consoldate(data[$scope.groupId].group);
 			if(data.length)
 				$scope.vehiname		=	data[$scope.groupId].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {
@@ -74,7 +74,9 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 				  		$scope.data1		=	data[key];
 				  }
 			});				
-		$scope.loading	=	false;
+		// $scope.loading	=	false;
+		$('#preloader').fadeOut(); 
+		$('#preloader02').delay(350).fadeOut('slow');
 		$scope.recursive($scope.data1.vehicleLocations,0);
 		}).error(function(){ /*alert('error'); */});
 	});
@@ -148,7 +150,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	}
 
 	
-	$scope.consoldate =  function(group)
+	$scope.consoldate =  function()
 	{
 		$('#preloader').show(); 
 		$('#preloader02').show();
@@ -156,7 +158,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		$scope.fromdate1		=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
 		$scope.todate1			=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
 		$scope.totime		    =	format24hrs($scope.fromNowTS1);
-		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+group+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
+		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
 		service(conUrl);
 	}
 		
@@ -168,6 +170,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 			$scope.consoldateData = data;
 			$('#preloader').fadeOut(); 
 			$('#preloader02').delay(350).fadeOut('slow');
+
 
 			// To get the address details from Google API
 			$scope.selectMe($scope.consoldateData);
