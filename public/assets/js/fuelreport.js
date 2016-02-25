@@ -35,11 +35,11 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		$scope.trip 		= 	[];
 		$scope.duration 	= 	[];
 		$scope.timeList		=	[];
-		if(list)
+		if(list[0])
 		{
-			if(list[0].timeHistory==undefined)
+			if(undefined==list[0].timeHistory)
    				list[0].timeHistory =[];
-   			if(list[0].distanceHistory==undefined)
+   			if(undefined==list[0].distanceHistory)
    				list[0].distanceHistory=[];
    			var getLength = Math.max(list[0].distanceHistory.length, list[0].timeHistory.length)
 			for (var i = 0; i < getLength; i++) {
@@ -61,6 +61,18 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		
 		
 	}
+
+
+	//check undefined
+	function isUndefined(isUndef){
+		try{
+			if(isUndef)
+				return false;
+		} catch (err){
+			return true;
+		}
+	}
+
 
 	function graphData(val){
 		graphList(val);
