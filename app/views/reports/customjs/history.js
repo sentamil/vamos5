@@ -94,6 +94,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 
     	$http.get(urlEvent).success(function(eventRes){
     		$scope.eventReportData 		=	eventRes;
+    		$('#status').fadeOut(); 
+			$('#preloader').delay(350).fadeOut('slow');
     		if($scope.buttonClick==true)
     		{
     			$scope.alertMe_click($scope.downloadid);
@@ -131,7 +133,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     	$http.get(url).success(function(siteval){
     		$scope.siteReport=[];
     		$scope.siteReport = siteval;
-    		console.log(' reports '+$scope.siteReport)
+    		$('#status').fadeOut(); 
+			$('#preloader').delay(350).fadeOut('slow');
     	});
     }
     $scope.$watch($scope.repId, function() {
@@ -695,7 +698,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 
             series: [{
                 type: 'area',
-                name: 'Fuel Consume',
+                name: 'Fuel Level',
                 data: ltrs
             }]
         });

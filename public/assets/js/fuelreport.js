@@ -32,13 +32,17 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	function graphList(list)
 	{	
 		$scope.fuelCon 		= 	[];
-			$scope.trip 		= 	[];
-			$scope.duration 	= 	[];
-			$scope.timeList		=	[];
+		$scope.trip 		= 	[];
+		$scope.duration 	= 	[];
+		$scope.timeList		=	[];
 		if(list)
 		{
-			var a = Math.max(list[0].distanceHistory.length, list[0].timeHistory.length)
-			for (var i = 0; i < a; i++) {
+			if(list[0].timeHistory==undefined)
+   				list[0].timeHistory =[];
+   			if(list[0].distanceHistory==undefined)
+   				list[0].distanceHistory=[];
+   			var getLength = Math.max(list[0].distanceHistory.length, list[0].timeHistory.length)
+			for (var i = 0; i < getLength; i++) {
 			//console.log(i)
 				if(list[0].distanceHistory.length>i)
 				{
