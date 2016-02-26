@@ -99,8 +99,8 @@
                                 <tr>
                                     <td>
                                         <div id="viewMap">
-                                             <span title="List and Maps" id="listImg" ng-click="mapView('listMap')"><img src="assets/imgs/lis.png" /></span>
-                                            <span title="Home" id="homeImg" ng-click="mapView('tablefull')"><img src="assets/imgs/back.png" /></span>
+                                             <span title="List and Maps" id="listImg" ng-click="mapView('listMap')"><img style="width: 20px; height: 20px" src="assets/imgs/lis.png" /></span>
+                                            <span id="homeImg" ng-click="mapView('tablefull')"><img style="width: 20px; height: 20px" src="assets/imgs/back.png" /></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -111,7 +111,7 @@
                                 </tr> -->
                                 <tr>
                                     <td>
-                                        <div title="Maps Marker Details" id="viewMap"><img id="minmaxMarker"  src="assets/imgs/i.png" /></div>
+                                        <div title="Maps Marker Details" id="viewMap"><img id="minmaxMarker" style="width: 20px; height: 20px" src="assets/imgs/i.png" /></div>
                                     </td>
                                 </tr>
                                 <!-- <tr>
@@ -123,24 +123,24 @@
                                 <tr>
                                     <td>
                                         <div id="viewMap">
-                                            <span title="Cluster Marker" id="cluster" ng-click="mapView('cluster')"><img src="assets/imgs/group.png" /></span>
-                                            <span title="Spread Marker" id="single" ng-click="mapView('single')"><img src="assets/imgs/single.png" /></span>
+                                            <span title="Cluster Marker" id="cluster" ng-click="mapView('cluster')"><img style="width: 20px; height: 20px" src="assets/imgs/group.png" /></span>
+                                            <span title="Marker View" id="single" ng-click="mapView('single')"><img style="width: 20px; height: 20px" src="assets/imgs/single.png" /></span>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div id="viewMap" title="Full Screen">
-                                           <span id="fullscreen" ng-click="mapView('fscreen')"><img id="minmaxMarker"  src="assets/imgs/full.png" /></span>
-                                            <span title="Exit FullScreen" id="efullscreen" ng-click="mapView('escreen')"><img src="assets/imgs/exit_full.png" /></span>
+                                           <span id="fullscreen" ng-click="mapView('fscreen')"><img id="minmaxMarker" style="width: 20px; height: 20px" src="assets/imgs/full.png" /></span>
+                                            <span title="Exit FullScreen" id="efullscreen" ng-click="mapView('escreen')"><img style="width: 20px; height: 20px" src="assets/imgs/exit_full.png" /></span>
                                         </div>
                                     </td>
                                 </tr>   
                                 <tr>
                                     <td>
-                                        <div style="padding: 5px 1px 5px 1px; cursor:pointer;">
+                                        <div id="viewMap">
                                             <span ng-click="mapView('home')">
-                                                <img src="assets/imgs/hom.png" />
+                                                <img style="width: 20px; height: 20px" src="assets/imgs/hom.png" />
                                             </span>
                                             
                                         </div>
@@ -455,7 +455,6 @@
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/highcharts-more.js"></script>
@@ -489,6 +488,10 @@
                 height: 'toggle'
             },500);
         });
+    });
+
+    $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
     });
 
     $("#editable").hide();

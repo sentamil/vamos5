@@ -162,7 +162,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
             }
         }, { // Secondary yAxis
             title: {
-                text: 'Trip',
+                text: 'Distance',
                 style: {
                     color: Highcharts.getOptions().colors[0]
                 }
@@ -188,7 +188,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
             backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
         },
         series: [{
-            name: 'Trip',
+            name: 'Distance',
             type: 'column',
             yAxis: 1,
             data: $scope.trip,
@@ -360,6 +360,16 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		}
 	}
 	
+	$scope.exportData = function (data) {
+    var blob = new Blob([document.getElementById(data).innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, data+".xls");
+    };
+    $scope.exportDataCSV = function (data) {
+    CSV.begin('#'+data).download(data+'.csv').go();
+    };
+
 	$scope.seperate 	= function()
 	{
 		var stoppage 		= 	document.getElementById ("stop").checked;

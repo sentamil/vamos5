@@ -12,6 +12,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	var index   =   getUrl.split("=")[1];
 	if(index)
 	$scope.actTab 	=	true;
+	$scope.tab 		=true;
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
 	$scope.newAddr      = 	{};
@@ -137,13 +138,10 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 			$scope.consoldateData = data;
 			$('#preloader').fadeOut(); 
 			$('#preloader02').delay(350).fadeOut('slow');
-
-
-			// To get the address details from Google API
 			$scope.selectMe($scope.consoldateData);
 		});
 	}
-
+  	 
 	$scope.getAddressFromGAPI = function(url, index1, index2, lat, lan) {
 		$http.get(url).success(function(data) {
     		
@@ -169,6 +167,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	
 	$scope.consoldate =  function()
 	{
+		
 		$('#preloader').show(); 
 		$('#preloader02').show();
 		$scope.fromNowTS1		=	new Date();
@@ -178,7 +177,14 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
 		service(conUrl);
 	}
+	
+
+	$scope.dialogBox 	=	function()
+	{
+		$scope.tab = false;
 		
+	}
+
 	$scope.exportData = function (data) {
 		var blob = new Blob([document.getElementById(data).innerHTML], {
            	type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"

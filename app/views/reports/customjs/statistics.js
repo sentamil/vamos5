@@ -142,7 +142,7 @@ app.controller('mainCtrl',function($scope, $http, $filter){
 		 
 		 $scope.url 		= 'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
 		 $scope.gIndex 		= groupid;
-		 $scope.plotHist();
+		 // $scope.plotHist();
 		 // console.log(' 3 ')
 		 // $scope.alertMe($scope.valTab);
 	}

@@ -154,8 +154,7 @@ app.filter('statusfilter', function(){
 		$scope.vSingle		=	vehicleno;
 		$scope.gSingle		=	groupname;
 		$scope.iSingle		=	index;
-		$scope.tableValue=[];
-		dataTableList=[];
+		
 		$scope.monthYear($scope.month,$scope.year);
 		$scope.single=true;
 		$scope.group=false;
@@ -184,6 +183,8 @@ app.filter('statusfilter', function(){
 		var tempurl='http://'+globalIP+context+'/public/getIndividualDriverPerformance?groupId='+groupname+'&vehicleId='+vehicleno+'&month='+$scope.month+'&year='+$scope.year;
 		$http.get(tempurl).success(function(data){
 		//console.log(tempurl)
+		$scope.tableValue=[];
+		dataTableList=[];
 		for(var i=0; i<data.length; i++)
 		{
 			totalsuddenBreak.push(data[i].weightedBreakAnalysis);
@@ -328,11 +329,11 @@ app.filter('statusfilter', function(){
 		var viewTable=false;
 		var i=0;
 		//console.log('inside the url')
-		$scope.tableValue=[];
-		dataTableList=[];
+		
 		$http.get(tempurl1).success(function(data)
 		{
-
+			$scope.tableValue=[];
+			dataTableList=[];
 			$scope.value=data;
 			for(i; i<data.length; i++)
 			{
