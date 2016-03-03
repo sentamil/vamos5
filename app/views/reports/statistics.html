@@ -62,7 +62,7 @@ background-color: #ffffff;
                         <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.vehicleId}} ({{loc.shortName}}) </a></li>
                     </ul>
                 </li> -->
-                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+                <li ng-repeat="location in vehicleList" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
                     <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
                     </ul>
@@ -138,27 +138,38 @@ background-color: #ffffff;
                         
                         <div class="col-md-12" ng-hide="donut">
                             <!-- Danger box -->
-                           <div id="container" style="width:90%; height: 400px;"></div>
+                           <div id="container" style="min-width:600px; height: 350px;"></div>
                               
                         </div>
                  
-                 <div class="row">     
+                <!--  <div>   -->   
                         
-                        <div class="col-md-12" ng-hide="bar">
+                       <!--  <div ng-hide="bar" style="width:100%; display: flex; background-color: green">
                            
                                 
-                                <div class="col-md-6">
-                                    <div id="chart3"></div>
+                                <div style=" height: 350px; float: left; width: 45%;">
+                                    <div id="chart3" ></div>
                                                                         
                                 </div>
-                                <div class="col-md-6">
+                                <div style="height: 350px; float: left; width: 45%;">
                                     <div id="chart4"></div>                                                                     
                                 </div>
                            
-                        </div><!-- /.col -->
+                        </div> --><!-- /.col -->
                         
+                   <!--  </div> -->
+                    
+                     <div id="singleDiv" class="row">     
+                        <div class="col-md-5">
+                            <div style="min-width:300px; height: 350px;" id="chart3" ></div>
+                        </div>
+                        <div class="col-md-5">
+                            <div style="min-width:300px; height: 350px;" id="chart4"></div>     
+                        </div>
                     </div>
                     
+
+
                     
                 <div class="box-body" ng-class="overallEnable?'col-md-9':'col-md-12'" id="statusreport">
                     
@@ -178,22 +189,22 @@ background-color: #ffffff;
                                     </tr>
                                    
                                     <tr style="text-align:center; font-weight: bold;">
-                                        <td width="6%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">Vehicle Name</td>
-                                        <td width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date</td>
-                                        <td width="8%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">Distance Today</td>
-                                        <td width="8%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">Parking Count</td>
-                                        <td width="10%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">Overspeed Instances</td>
-                                        <td width="10%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Open Reading</td>
-                                        <td width="10%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo Close Reading</td>
-                                        <td width="7%" class="id" custom-sort order="'topSpeed'" sort="sort" style="text-align:center;">Top Speed</td>  
-                                        <td width="10%" class="id" custom-sort order="'topSpeedTime'" sort="sort" style="text-align:center;">Top Speed Time</td>
+                                        <td width="6%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">VehicleName</td>
+                                       <!--  <td width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date</td> -->
+                                        <td width="8%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">Today(Kms)</td>
+                                        <td width="8%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">ParkCount</td>
+                                        <td width="10%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">AcrossSpeed</td>
+                                        <td width="7%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Start</td>
+                                        <td width="7%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo End</td>
+                                        <td width="7%" class="id" custom-sort order="'topSpeed'" sort="sort" style="text-align:center;">TopSpeed</td>  
+                                        <td width="10%" class="id" custom-sort order="'topSpeedTime'" sort="sort" style="text-align:center;">Date&amp;Time</td>
                                         <!-- <td width="10%" class="id" custom-sort order="'topSpeedGeoLocation'" sort="sort" style="text-align:center;">Top Location</td> -->
-                                        <td width="21%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Top Speed Location</td>
+                                        <td width="24%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">NearestLocation</td>
                                     </tr>
-                                    <tr ng-repeat="user in execGroupReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+                                    <tr ng-repeat="user in execGroupReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 12px">
                                         <!-- <td><a href="history?vid={{user.vehicleId}}">{{user.vehicleId}}</a></td> -->
                                         <td>{{user.vehicleId}}</td>
-                                        <td>{{user.date}}</td>
+                                        <!-- <td>{{user.date}}</td> -->
                                         <td>{{user.distanceToday}}</td>
                                         <td>{{user.parkingCount}}</td>
                                         <td>{{user.overSpeedInstances}}</td>
@@ -209,31 +220,20 @@ background-color: #ffffff;
                                         </td>
                                         <td get-geo geo={{user.topSpeedGeoLocation}} ng-hide="true">{{user.topSpeedGeoLocation}}</td>
                                         <td ng-if="user.address!=null">{{user.address}}</td>
-                                        <td style="cursor: pointer;" get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]==null">Click Me</td>
-                                        <td get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]!=null">{{maddress[$index]}}</td>
+                                        <td ng-if="user.address==null">--</td>
+                                        <!-- <td style="cursor: pointer;" get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]==null">Click Me</td> -->
+                                        <!-- <td get-geo geo={{user.topSpeedGeoLocation}} index={{$index}} ng-if="user.address==null && maddress[$index]!=null">{{maddress[$index]}}</td> -->
                                         <!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} title="{{locationname}}">{{user.latitude}},{{user.longitude}}</td>
                                         <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>                      
                                      --></tr>
                                 </table>
                             </div>
                          </tab>
-                         <tab select="alertMe('geofence')" heading="POI" active="actTab"> <!-- active="!tabActive" poi-->
+                         <tab select="alertMe('poi')" heading="POI" active="actTab"> <!-- active="!tabActive" poi-->
                              <h4 style="margin:0" class="page-header">Place of Intrest</h4>
-                              <div id='geofencereport'>
+                              <div id='poi'>
                              <table class="table table-bordered table-striped table-condensed table-hover table-striped">
                                 <thead>
-                                    <!-- <tr style="text-align:center; font-weight: bold;">
-                                        <td colspan="2">Regn No</td>
-                                        <td colspan="2">{{hist.regNo}}</td>
-                                        <td colspan="2">Vehicle ID</td>
-                                        <td colspan="2">{{hist.vehicleId}}</td>                 
-                                    </tr> -->
-                                    <!-- <tr style="text-align:center; font-weight: bold;">
-                                        <td colspan="1">GeoFenceId</td>
-                                        <td>{{geofencedata[0].geoFenceId}}</td>
-                                        <td colspan="1">GeoFenceType</td>
-                                        <td>{{geofencedata[0].geoFenceType}}</td>
-                                    </tr> -->
                                     <tr ng-hide="true" style="font-weight: bold;">
                                         <td>Vehicle Group : {{data1.group}}</td>                      
                                         <td style="text-align: right;">Report Date : {{fromdate}} {{fromtime}} - {{todate}} {{totime}}</td>             
@@ -260,11 +260,11 @@ background-color: #ffffff;
                                         <!-- <td>{{user.proximity}}</td>
                                         <td>{{user.dangling}}</td> -->
                                     </tr>
-                                    <tr ng-if="vehiclenull==null&&geofencedata==null">
+                                    <!-- <tr ng-if="vehiclenull==null&&geofencedata==null">
                                         <td colspan="8">Choose Individual Vehicle ID</td>
-                                    </tr>
-                                    <tr ng-if="vehiclenull!=null&&geofencedata==null">
-                                        <td colspan="8">No Records Found Choose some other date</td>
+                                    </tr> -->
+                                    <tr ng-if="geofencedata==null">
+                                        <td colspan="5">No Records Found Choose some other date</td>
                                     </tr>           
                             </table>
                             <!-- <pagination boundary-links="true" 
@@ -299,6 +299,8 @@ background-color: #ffffff;
     <script src="../app/views/reports/c3chart/d3.js"></script>
     <script src="assets/js/highcharts_statistics.js"></script>
     <script src="../app/views/reports/c3chart/c3.min.js"></script>
+    <script src="assets/js/vamoApp.js"></script>
+    <script src="assets/js/services.js"></script>
     <script src="../app/views/reports/customjs/statistics.js"></script>
     <script>
     $("#testLoad").load("../public/menu");

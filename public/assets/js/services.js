@@ -28,8 +28,8 @@ app.factory('vamoservice', function($http, $q){
 		},
 		geocodeToserver: function (lat, lng, address) {
 		  try { 
-				var reversegeourl = 'http://'+globalIP+context+'/public/store?geoLocation='+lat+','+lng+'&geoAddress='+address;
-			    return this.getDataCall(reversegeourl);
+				// var reversegeourl = 'http://'+globalIP+context+'/public/store?geoLocation='+lat+','+lng+'&geoAddress='+address;
+			 //    return this.getDataCall(reversegeourl);
 			}
 			catch(err){ console.log(err); }
 		  
@@ -38,11 +38,13 @@ app.factory('vamoservice', function($http, $q){
         	var defdata = $q.defer();
         	$http.get(url).success(function(data){
             	 defdata.resolve(data);
-			}).error(function() {
+            }).error(function() {
                     defdata.reject("Failed to get data");
             });
 			return defdata.promise;
         },
+
+        
         statusTime:function(arrVal){
         	var posTime={};
         	var temptime = 0;
