@@ -5,4 +5,5 @@ var gmarkers=[];
 var ginfowindow=[];
 var geomarker=[];
 var geoinfo=[];
-var app = angular.module('mapApp',[]);
+var app = angular.module('mapApp',['ui.bootstrap']);
+
