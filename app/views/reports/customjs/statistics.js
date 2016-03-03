@@ -52,7 +52,7 @@ $scope.$watch("url", function(val){
 		$scope.fromtime			=	formatAMPM($scope.fromNowTS);
    		$scope.totime			=	formatAMPM($scope.toNowTS);
 		angular.forEach(data, function(value, key){
-			console.log(value)
+			//console.log(value)
 			if(value.totalVehicles) {
 				$scope.viewGroup = 	value;
 				serviceCall();
@@ -249,7 +249,7 @@ function serviceCall(){
 		$scope.donut 		= 	true;
 		$scope.bar 			= 	true;
 		$('#singleDiv').hide();
-		var poiUrl 			=	'http://'+getIP+context+'/public//getPoiHistory?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+		var poiUrl 			=	'http://'+globalIP+context+'/public//getPoiHistory?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 		vamoservice.getDataCall(poiUrl).then(function(responsePoi){
 			$scope.geofencedata			=		[];
 			if(responsePoi.history.length>0)
