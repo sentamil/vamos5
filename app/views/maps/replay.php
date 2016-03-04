@@ -1,6 +1,3 @@
-
-<!-- ../public/vdmVehicles/{{trackVehID}}/edit -->
-
 <!DOCTYPE html>
 <html lang="en" ng-app="mapApp">
 <head>
@@ -265,9 +262,9 @@
     <script src="assets/js/customplay.js"></script>
     <script>
 
-    var logo =document.location.host;
-    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    $('#imagesrc').attr('src', imgName);
+    // var logo =document.location.host;
+    // var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    // $('#imagesrc').attr('src', imgName);
     
     $(document).ready(function(){
         $('#minmax').click(function(){
