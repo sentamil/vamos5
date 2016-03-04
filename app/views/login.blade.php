@@ -16,7 +16,20 @@
         <img id="imagesrc"/>
         <script>
           var logo =document.location.host;
-          if(Number(logo)>0 && Number(logo)<255) {
+
+          function ValidateIPaddress(ipaddress)   
+          {  
+           var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;  
+            if(ipaddress.match(ipformat)) {
+              return (true)  
+            }  
+          // alert("You have entered an invalid IP address!")  
+          return (false)  
+          }  
+
+
+
+          if(ValidateIPaddress(logo)) {
             var parser    =   document.createElement('a');
             parser.href   =   document.location.ancestorOrigins[0];
             logo      =   parser.host;
