@@ -95,20 +95,20 @@ class DashBoardController extends \BaseController {
 		}
 		Log::info('count');
 		Log::info(count($vechile));
-		$new_date1 = date('FY', strtotime("+12 month"));
+		$new_date1 = date('FY', strtotime("+11 month"));
 		$presentMonth=$redis->hget ( 'H_Expire_' . $fcode, $new_date1);
 		log::info($presentMonth.'month '.$new_date1);
 		
 		$prsentMonthCount=DashBoardController::getCount($presentMonth,$fcode,$username);
 		Log::info('count present '.$prsentMonthCount);
-		$new_date2 = date('FY', strtotime("+13 month"));
+		$new_date2 = date('FY', strtotime("+12 month"));
 		$nextMonth=$redis->hget ( 'H_Expire_' . $fcode, $new_date2);
 		log::info($nextMonth.'month '.$new_date2);
 		$nextMonthCount=DashBoardController::getCount($nextMonth,$fcode,$username);
 		Log::info('next count '.$nextMonthCount);
 		
 		
-		$new_date3 = date('FY', strtotime("+11 month"));
+		$new_date3 = date('FY', strtotime("+10 month"));
 		$prevMonth=$redis->hget ( 'H_Expire_' . $fcode, $new_date3);
 		log::info($prevMonth.'month '.$new_date3);
 		$prevMonthCount=DashBoardController::getCount($prevMonth,$fcode,$username);

@@ -364,8 +364,35 @@ class VdmDealersController extends \BaseController {
 		$mobileNo=$redis->hget('H_UserId_Cust_Map',$userId.':mobileNo');
 		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
 		
-		
-		Log::info(" about to delete user" .$userId);
+		$vehicles=$redis->smembers('S_Vehicles_Dealer_'.$userId.'_'.$fcode);
+		foreach ($vehicles as $key => $value) {
+			Log::info(" vehicle " .$value);
+			$redis->srem('S_Vehicles_Dealer_'.$userId.'_'.$fcode,$value);
+			$redis->sadd('S_Vehicles_Admin_'.$fcode,$value);
+			//$redis->sadd ( 'S_Vehicles_' . $fcode, $vehicle );
+		}
+
+		$groups=$redis->smembers('S_Groups_Dealer_'.$userId.'_'.$fcode);
+		foreach ($groups as $key => $value1) {
+			Log::info(" group " .$value1);
+			$redis->srem('S_Groups_Dealer_'.$userId.'_'.$fcode,$value1);
+			$redis->sadd('S_Groups_Admin_'.$fcode,$value1);
+		}
+
+		$orgDel=$redis->smembers('S_Organisations_Dealer_'.$userId.'_'.$fcode);
+		foreach ($orgDel as $key => $value2) {
+			Log::info(" org " .$value2);
+			$redis->srem('S_Organisations_Dealer_'.$userId.'_'.$fcode,$value2);
+			$redis->sadd('S_Organisations_Admin_'.$fcode,$value2);
+		}
+
+		$users=$redis->smembers('S_Users_Dealer_'.$userId.'_'.$fcode);
+		foreach ($users as $key => $value3) {
+			Log::info(" user " .$value3);
+			$redis->srem('S_Users_Dealer_'.$userId.'_'.$fcode,$value3);
+			$redis->sadd('S_Users_Admin_'.$fcode,$value3);
+		}
+		Log::info(" about to delete dealer" .$userId);
 		
 		DB::table('users')->where('username', $userId)->delete();
 		

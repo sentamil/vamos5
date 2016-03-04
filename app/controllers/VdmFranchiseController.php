@@ -45,6 +45,150 @@ class VdmFranchiseController extends \BaseController {
 		return View::make ( 'vdm.franchise.create' );
 	}
 	
+
+
+	public function fransearch()
+	{
+		  Log::info('------- inside fransearch--------');
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $username = Auth::user ()->username;
+        $redis = Redis::connection ();
+        $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        Log::info(' inside multi ' );
+       
+        $fransId = $redis->smembers('S_Franchises');
+       
+     
+       
+        $orgArr = array();
+        foreach($fransId as $org) {
+            $orgArr = array_add($orgArr, $org,$org);
+        }
+        $fransId = $orgArr;
+     
+                 
+ 
+                 
+        return View::make ( 'vdm.franchise.frans' )->with('fransId',$fransId);       
+       
+	}
+
+
+
+
+public function users()
+	{
+		  Log::info('------- inside fransearch--------');
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $username = Auth::user ()->username;
+        $redis = Redis::connection ();
+        $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        Log::info(' inside multi ' );
+       
+        $userId = $redis->smembers('S_Franchises');
+       
+     
+       
+        $orgArr = array();
+        foreach($userId as $org) {
+        	$temp=$redis->smembers( 'S_Users_' . $org);
+        	foreach ($temp as $key) {
+        		 $orgArr = array_add($orgArr, $key,$key);
+        	}
+
+           
+        }
+        $userId = $orgArr;
+     
+                 
+ 
+                 
+        return View::make ( 'vdm.franchise.users' )->with('userId',$userId);       
+       
+	}
+
+		public function findFransList() {
+                                log::info( '-----------List----------- ::');
+                                if (! Auth::check () ) {
+                                                return Redirect::to ( 'login' );
+                                }
+                                 $redis = Redis::connection ();
+                               $username = Input::get ( 'frans' );
+							$franDetails_json = $redis->hget ( 'H_Franchise', $username);
+							$franchiseDetails=json_decode($franDetails_json,true);
+						
+								if(isset($franchiseDetails['userId'])==1)
+									$username=$franchiseDetails['userId'];
+								else
+									$username=null;
+
+					          if($username==null)
+                                {
+                                                log::info( '--------use one----------' );
+                                                $username = Session::get('page');
+                                }
+                                else{
+                                                log::info( '--------use two----------'.$username);
+                                                Session::put('page',$username);
+                                }
+                                               
+                                                try{
+                                                                 $user=User::where('username', '=', $username)->firstOrFail();
+												log::info( '--------new name----------' .$user);
+					                                Auth::login($user);
+                                                }catch(\Exception $e)
+								                   {
+								                                return Redirect::to ( 'vdmFranchises/fransearch' ); 
+								                   }
+                                 //$user = User::find(10);
+                               
+                               
+                               
+                               
+                                return Redirect::to ( 'Business' );
+                }
+
+
+
+
+
+                public function findUsersList() {
+                                log::info( '-----------List----------- ::');
+                                if (! Auth::check () ) {
+                                                return Redirect::to ( 'login' );
+                                }
+                                 $redis = Redis::connection ();
+                               $username = Input::get ( 'users' );
+
+					          if($username==null)
+                                {
+                                                log::info( '--------use one----------' );
+                                                $username = Session::get('page');
+                                }
+                                else{
+                                                log::info( '--------use two----------'.$username);
+                                                Session::put('page',$username);
+                                }
+                                               
+                                                try{
+                                                                 $user=User::where('username', '=', $username)->firstOrFail();
+												log::info( '--------new name----------' .$user);
+					                                Auth::login($user);
+                                                }catch(\Exception $e)
+								                   {
+								                                return Redirect::to ( 'vdmFranchises/users' ); 
+								                   }
+                                 //$user = User::find(10);
+                               
+                               
+                               
+                               
+                                return Redirect::to ( 'Business' );
+                }
 	/**
 
 		Frabchise is created by VAMOS Admin
@@ -157,11 +301,12 @@ class VdmFranchiseController extends \BaseController {
 			$redis->hmset ( 'H_Franchise', $fcode,$detailsJson);
 			
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo1,$userId.':email',$email1 );
+			$password='awesome';
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo1,$userId.':email',$email1 ,$userId.':password',$password,$userId.':OWN','admin');
 			
 
 			
-			$password='awesome';
+			
 			
 			$user = new User;
 			

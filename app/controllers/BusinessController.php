@@ -450,7 +450,7 @@ class BusinessController extends \BaseController {
 							$v=idate("d") ;
 							$monthTemp=idate("m") ;
 							log::info($monthTemp.'------monthTemp---------- ');
-							$paymentmonth=12;
+							$paymentmonth=11;
 							if($v>15)
 							{
 								log::info('inside if');

@@ -18,6 +18,8 @@
 
 	</div>
 	<ul class="nav navbar-nav">
+		<li><a href="{{ URL::to('vdmFranchises/fransearch') }}">Switch Login</a></li>
+		<li><a href="{{ URL::to('vdmFranchises/users') }}">Switch Login users</a></li>
 		<li><a href="{{ URL::to('vdmFranchises') }}">View All Franchises</a></li>
 		<li><a href="{{ URL::to('vdmFranchises/create') }}">Add a Franchise</a>
 		<li><a href="{{ URL::to('ipAddressManager') }}">IPAddressManager</a>
