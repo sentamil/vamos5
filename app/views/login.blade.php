@@ -16,6 +16,11 @@
         <img id="imagesrc"/>
         <script>
           var logo =document.location.host;
+          if(Number(logo)>0 && Number(logo)<255) {
+            var parser    =   document.createElement('a');
+            parser.href   =   document.location.ancestorOrigins[0];
+            logo      =   parser.host;
+          }
           var imgName= '/vamo/public/assets/imgs/'+logo+'.png';
           //cons
           $('#imagesrc').attr('src', imgName);
