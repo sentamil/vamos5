@@ -1,5 +1,4 @@
-var app = angular.module('fuelapp', ['ui.bootstrap']);
-
+// var app = angular.module('fuelapp',['ui.bootstrap']);
 app.controller('mainFuel', function($scope, $http, $filter){
 	
 	// console.log('  inside the js file  ')

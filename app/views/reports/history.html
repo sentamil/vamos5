@@ -14,9 +14,6 @@
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
-<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
-<link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css">
-<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
 </head>
 <div id="preloader" >
@@ -35,7 +32,7 @@ background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
 background-color: #ffffff;
 }
 </style>
-<body ng-app="hist">
+<body ng-app="mapApp">
 	<div id="wrapper" ng-controller="histCtrl">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -194,7 +191,7 @@ background-color: #ffffff;
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.speed}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
-										<td ng-click="address_click(user, $index)">
+										<td>
 											<p ng-if="user.address!=null">{{user.address}}</p>
 											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && maddress1[$index]!=null">{{maddress1[$index]}}</p>
 											<p ng-if="user.address==null && maddress1[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
@@ -259,7 +256,7 @@ background-color: #ffffff;
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.speed}}</td>
 										<td colspan="2"><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
-										<td ng-click="address_click(user, $index)">
+										<td>
 											<p ng-if="user.address!=null">{{user.address}}</p>
 											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && oaddress[$index]!=null">{{oaddress[$index]}}</p>
 											<p ng-if="user.address==null && oaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
@@ -307,7 +304,7 @@ background-color: #ffffff;
 										
 										<td>{{user.lastSeen}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
-										<td ng-click="address_click(user, $index)"> 
+										<td> 
 											<p ng-if="user.address!=null">{{user.address}}</p>
 											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && saddressStop[$index]!=null">{{saddressStop[$index]}}</p>
 											<p ng-if="user.address==null && saddressStop[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
@@ -344,7 +341,7 @@ background-color: #ffffff;
 			   			 	 		<tr ng-repeat="user in idlereport" class="active" style="text-align:center">
 			   			 	 			<td>{{user.lastSeen}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
-			   			 	 			<td ng-click="address_click(user, $index)">
+			   			 	 			<td>
 			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
 			   			 	 				<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && addressIdle[$index]!=null">{{addressIdle[$index]}}</p>
 			   			 	 				<p ng-if="user.address==null && addressIdle[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
@@ -405,7 +402,7 @@ background-color: #ffffff;
 											<p ng-if="user.duration!=null">{{msToTime(user.duration)}}</p>
 											<p ng-if="user.duration==null">--</p>
 										</td>
-			   			 	 			<td colspan="2" ng-click="address_click(user, $index)">
+			   			 	 			<td colspan="2">
 			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
 			   			 	 				<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && addressEvent[$index]!=null">{{addressEvent[$index]}}</p>
 			   			 	 				<p ng-if="user.address==null && addressEvent[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
@@ -458,33 +455,33 @@ background-color: #ffffff;
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<td colspan="2">Vehicle Group</td>
+				   			 	 			<td>Vehicle Group</td>
 										  	<td>{{vgroup}}</td>
-										  	<td colspan="2">Vehicle Name</td>
+										  	<td>Vehicle Name</td>
 										  	<td>{{hist.shortName}}</td>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="6"></td></tr>
+			   			 	 			<tr><td colspan="4"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
 											<th class="id" style="text-align:center;" width="20%">Alert Time</th>
 											<!-- <th width="10%" class="id" style="text-align:center;">G-Map</th> -->
 											<th class="id" style="text-align:center;">Load Truck</th>
-											<th class="id" style="text-align:center;">Load Trailer</th>
-											<th class="id" style="text-align:center;">Total Truck</th>
-											<th class="id" style="text-align:center;">Total Trailer</th>
-											<th class="id" style="text-align: center;" width="30%">Loaction</th>
+											<th ng-hide="true" class="id" style="text-align:center;">Load Trailer</th>
+											<th ng-hide="true" class="id" style="text-align:center;">Total Truck</th>
+											<th ng-hide="true" class="id" style="text-align:center;">Total Trailer</th>
+											<th colspan="2" class="id" style="text-align: center;" width="30%">Loaction</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
 			   			 	 		<tr class="active" style="text-align:center" ng-repeat="load in loadreport" ng-if="load.loadTruck!=='nill' && load.loadTrailer!=='nill' && load.totalTruck!=='nill' && load.totalTrailer!=='nill'">
 			   			 	 			<td>{{load.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{load.loadTruck}}</td>
-			   			 	 			<td>{{load.loadTrailer}}</td>
-			   			 	 			<td>{{load.totalTruck}}</td>
-			   			 	 			<td>{{load.totalTrailer}}</td>
+			   			 	 			<td ng-hide="true">{{load.loadTrailer}}</td>
+			   			 	 			<td ng-hide="true">{{load.totalTruck}}</td>
+			   			 	 			<td ng-hide="true">{{load.totalTrailer}}</td>
 										<td>{{load.address}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr>
-										<td ng-if="loadreport==null" colspan="6">No Records Found Choose some other date</td>
+										<td ng-if="loadreport==null" colspan="4">No Records Found Choose some other date</td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
@@ -602,7 +599,7 @@ background-color: #ffffff;
 		    </div>	
         </div>
        
-                 
+    <script src="assets/js/static.js"></script>        
 	<script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
@@ -611,16 +608,17 @@ background-color: #ffffff;
     <script src="assets/js/highcharts.js"></script>
     <script src="../app/views/reports/customjs/moment.js"></script>
     <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    <script src="../app/views/reports/customjs/html5csv.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
-    <script src="assets/js/static.js"></script>
-    <script src="../app/views/reports/customjs/html5csv.js"></script>
+    <script src="assets/js/vamoApp.js"></script>
+    
     <script src="../app/views/reports/customjs/history.js"></script>
 	
 	
 
 	<script>
-	    $("#testLoad").load("../public/menu");
+	   
 	    var logo =document.location.host;
     	var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
     	$('#imagesrc').attr('src', imgName);

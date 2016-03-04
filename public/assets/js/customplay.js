@@ -1,4 +1,4 @@
-var app = angular.module('mapApp', []);
+// var app = angular.module('mapApp', []);
 var gmarkers=[];
 var ginfowindow=[];
 var gsmarker=[];

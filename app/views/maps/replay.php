@@ -253,12 +253,14 @@
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,places&sensor=false" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/infobubble.js" type="text/javascript"></script>
     <script src="assets/js/moment.js" type="text/javascript"></script>
     <script src="assets/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
+    <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/unique.js"></script>
     <script src="assets/js/customplay.js"></script>
     <script>

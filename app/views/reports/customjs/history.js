@@ -1,6 +1,6 @@
 //alert(globalIP);
 var getIP	=	globalIP;
-var app = angular.module('hist',['ui.bootstrap']);
+//var app = angular.module('hist',['ui.bootstrap']);
 
 app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	//$scope.getLocation1(13.0401945,80.2153889);
