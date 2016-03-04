@@ -1,12 +1,6 @@
 //comment by satheesh ++...
-//var total = 0;
-//var chart = null;
-//http://128.199.175.189/
 var getIP	=	globalIP;
-
-//var gmarkers=[];
-//var ginfowindow=[];
-app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_sysservice){
+app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	
 	 $("#testLoad").load("../public/menu");
 	var getUrl  =   document.location.href;
@@ -149,7 +143,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
     		// Declare the new property address to the existing list
 			$scope.consoldateData[index1].historyConsilated[index2].address = " ";
 			$scope.consoldateData[index1].historyConsilated[index2].address = data.results[0].formatted_address;
-			var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
     	})
 	};
 
@@ -202,7 +196,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		$http.get(urlAddress).success(function(response)
 		{
 			data.address 	=	response.results[0].formatted_address;
-			var t 			= 	vamo_sysservice.geocodeToserver(data.latitude,data.longitude,response.results[0].formatted_address);
+			// var t 			= 	vamo_sysservice.geocodeToserver(data.latitude,data.longitude,response.results[0].formatted_address);
 		});
 	}
 
@@ -274,7 +268,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
     		
     		// Declare the new property address to the existing list
 			$scope.mainlist[index1]= data.results[0].formatted_address;
-			var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
     	})
 	};
 	$scope.getLocation	=	function(lat,lon,ind) {
@@ -285,7 +279,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 			$scope.locationname = data.results[0].formatted_address;
 			$scope.mainlist[ind]=	data.results[0].formatted_address;
 			$scope.loading	=	false;
-			var t = vamo_sysservice.geocodeToserver(lat, lon, data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(lat, lon, data.results[0].formatted_address);
 		});
 	};
 	
@@ -369,28 +363,6 @@ app.directive("getLocation", function () {
     }
   };
 });
-app.factory('vamo_sysservice', function($http, $q){
-	return {
-		geocodeToserver: function (lat, lng, address) {
-		  try { 
-				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'&geoAddress='+address;
-			    return this.getDataCall(reversegeourl);
-			}
-			catch(err){ console.log(err); }
-		  
-		},
-        getDataCall: function(url){
-        	var defdata = $q.defer();
-        	$http.get(url).success(function(data){
-            	 defdata.resolve(data);
-			}).error(function() {
-                    defdata.reject("Failed to get data");
-            });
-			return defdata.promise;
-        }
-    }
-});
-
 
 app.directive("customSort", function() {
 return {

@@ -2,10 +2,13 @@ app.controller('mainCtrl', ['$scope', '$filter','vamoservice', function($scope, 
 
 // tab view
 var getUrl  =   document.location.href;
+var tabId 	= 	'executive';
 var index   =   getUrl.split("=")[1];
-	if(index)
-	$scope.actTab 	=	true;
-
+	if(index) {
+		tabId 		= 	'poi';
+		$scope.actTab 	=	true;
+	}
+	
 
 //Global Variable declaration 
 $scope.url 			= 	'http://'+globalIP+context+'/public//getVehicleLocations';
@@ -14,7 +17,7 @@ $scope.donut 		= 	false;
 $scope.bar 			=	true;
 $('#singleDiv').hide();
 var avoidOnload		=	false;
-var tabId 			= 	'executive';
+
 $scope.downloadid 	= 	'executive';
 var vehicleSelected =	'';
 
@@ -245,7 +248,7 @@ function serviceCall(){
 			}
 			stopLoading();
 		})
-	}else if(tabId == 'poi'){
+	}else if(tabId == 'poi' || $scope.actTab == true){
 		$scope.donut 		= 	true;
 		$scope.bar 			= 	true;
 		$('#singleDiv').hide();
