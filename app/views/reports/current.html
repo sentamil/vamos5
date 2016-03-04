@@ -109,7 +109,7 @@ background-color: #ffffff;
 		            <h5 class="box-title">Current Status Report</h5>
 		            <!-- language -->
 		            <div id="google_translate_element"></div>
-
+		           
 		            <div class="box-tools pull-right">
 		               <img style="cursor: pointer;" ng-click="exportData('statusreport')"  src="../app/views/reports/image/xls.png" />
 		            	<img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV('statusreport')"  src="../app/views/reports/image/csv.jpeg" />
@@ -257,7 +257,7 @@ background-color: #ffffff;
 										<th width="5%" style="text-align:center;">Speed</th>
 										<th width="5%" style="text-align:center;">Position</th>
 										<th width="5%" style="text-align:center;">GPS Status</th>
-										<th width="5%" style="text-align:center;">Total Load</th>
+										<th width="5%" style="text-align:center;">Load Truck</th>
 										<th width="10%" style="text-align:center;">Hire Status</th>
 										<th width="40%" style="text-align:center;">Nearest Location</th>
 										<th width="5%" style="text-align:center;">G-Map</th>
@@ -286,13 +286,13 @@ background-color: #ffffff;
 			                                <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
 			                                          
 			                            </td> -->
-										<td ng-if="user.totalTruck=='nill'">--</td>
-										<td ng-if="user.totalTruck!='nill'">{{user.totalTruck}}</td>
+										<td ng-if="user.loadTruck=='nill'">--</td>
+										<td ng-if="user.loadTruck!='nill'">{{user.loadTruck}}</td>
 										<td ng-switch on="user.vehicleBusy">
 			                                <span ng-switch-when="yes" style="color: #ff0045">Busy</span>
 			                                <span ng-switch-when="no" style="color: #00ce2f">Available</span>
 			                            </td>
-										<td ng-if="user.address!=null" ng-click="address_click(user, $index)">{{user.address}}</td>
+										<td ng-if="user.address!=null">{{user.address}}</td>
 										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
 										<td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>														
@@ -481,6 +481,7 @@ background-color: #ffffff;
     <script src="../app/views/reports/customjs/FileSaver.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
+    <script src="assets/js/vamoApp.js"></script>
     <script src="../app/views/reports/customjs/reports.js"></script>
 	
 						

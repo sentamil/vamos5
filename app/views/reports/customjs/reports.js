@@ -3,11 +3,12 @@
 //var chart = null;
 //http://128.199.175.189/
 var getIP	=	globalIP;
-var app = angular.module('mapApp',['ui.bootstrap']);
+
 //var gmarkers=[];
 //var ginfowindow=[];
 app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_sysservice){
 	
+	 $("#testLoad").load("../public/menu");
 	var getUrl  =   document.location.href;
 	var index   =   getUrl.split("=")[1];
 	if(index)
