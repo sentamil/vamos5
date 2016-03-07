@@ -50,8 +50,9 @@ app.filter('statusfilter', function(){
 			}
 		}
 	}
-})
-.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $http, vamoservice, $filter, statusfilter){
+});
+
+app.controller('mainCtrl',['$scope', '$http','vamoservice','$rootScope', function($scope, $http, vamoservice, $filter, statusfilter, $rootScope){
 	$scope.locations = [];
 	$scope.nearbyLocs =[];
 	$scope.mapTable =[];
@@ -96,10 +97,10 @@ app.filter('statusfilter', function(){
 			// menuGroup(data);
 			if(data.length){
 
-				sessionStorage.setItem('user', JSON.stringify(data));
 				$scope.mapTable = data[$scope.gIndex].vehicleLocations;
 				// console.log(document.getElementById('one').innerText)
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
+				sessionStorage.setItem('user', JSON.stringify($scope.vehiname));
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
 				$scope.zoomLevel = 6;
 				$scope.support = data[$scope.gIndex].supportDetails;
@@ -1045,10 +1046,11 @@ app.filter('statusfilter', function(){
 			setintrvl = setInterval(function(){
 				vamoservice.getDataCall(scope.url).then(function(data) {
 					if(data.length){
-						scope.selected=undefined;
-						scope.locations = scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
-						scope.zoomLevel = scope.zoomLevel;
-						scope.loading	=	true;
+						scope.selected 		= undefined;
+						scope.locations02	= data;
+						scope.locations 	= scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
+						scope.zoomLevel 	= scope.zoomLevel;
+						scope.loading		=	true;
 						scope.initial02();
 					}
 				}); 
