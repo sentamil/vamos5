@@ -744,7 +744,7 @@ function polygenDrawFunction(list){
 
 	// polygen draw function
 	function polygenFunction(getVehicle){
-		console.log(' getVehicle ')
+		//console.log(' getVehicle ')
 		var polygenOrgs 	=	[];
 		var unique 			= 	new Set();
 		polygenOrgs			=	($filter('filter')(getVehicle[$scope.gIndex].vehicleLocations, {'live': 'yes'}));
@@ -761,12 +761,15 @@ function polygenDrawFunction(list){
 
 	//jump marker
 	$scope.markerJump = function(getDat){
-		console.log(' val '+gmarkers.length)
+		//console.log(' val '+gmarkers.length)
 		angular.forEach(gmarkers, function(val, key){
-			if(getDat[key].insideGeoFence=='N')
-				gmarkers[key].setAnimation(google.maps.Animation.BOUNCE);
-			else if(getDat[key].insideGeoFence=='Y')
-			 	gmarkers[key].setAnimation(null);
+			if(getDat[key].live=='yes')
+				if(getDat[key].insideGeoFence=='N')
+					gmarkers[key].setAnimation(google.maps.Animation.BOUNCE);
+				else if(getDat[key].insideGeoFence=='Y')
+				 	gmarkers[key].setAnimation(null);
+			else
+				gmarkers[key].setAnimation(null);
 			gmarkers[key].setMap($scope.map);
 		})
 	}

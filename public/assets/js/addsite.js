@@ -167,6 +167,7 @@ app.controller('mainCtrl',function($scope, $http){
       {
           sp    = list[i].split(":");
           polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
+          latlanList.push(sp[0]+":"+sp[1]);
           seclat        = sp[0];
           seclan        = sp[1];
       }
@@ -234,7 +235,7 @@ app.controller('mainCtrl',function($scope, $http){
     var text        = $scope.textValue;
     var drop        = $scope.dropValue;
     var org         = $scope.orgID;
-    console.log(' old value '+oldName)
+    //console.log(' old value '+oldName)
     // post request for update
     if(text && drop && latlanList.length>=3 && org && oldName)
     {
