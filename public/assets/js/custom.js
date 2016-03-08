@@ -702,10 +702,10 @@ function polygenDrawFunction(list){
       }
       var polygenColor = new google.maps.Polygon({
             path: polygenList,
-            strokeColor: "#282828",
-            strokeWeight: 1,
-            fillColor: '#808080',
-            fillOpacity: 0.50,
+            strokeColor: "#fd5954",
+            strokeWeight: 0.8,
+            fillColor: '#fe716d',
+            fillOpacity: 0.1,
             map: $scope.map
         });
       
