@@ -167,6 +167,8 @@ app.controller('mainCtrl',function($scope, $http){
       {
           sp    = list[i].split(":");
           polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
+          seclat        = sp[0];
+          seclan        = sp[1];
       }
       polygenColor = new google.maps.Polygon({
             path: polygenList,
