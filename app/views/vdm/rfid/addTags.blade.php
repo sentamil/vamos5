@@ -21,8 +21,6 @@
 													<div class="row">
 <div>Org Name</div>
 <div>{{ Form::select('org' , $orgList, Input::old('orgname'),array('id' => 'orgid')) }}</div>
-<div>{{ Form::label('ahan', $ahan) }}</div>
-<div><input id='ahan' type='text'></input></div>
 <div>Belongs To</div>
 <div>{{ Form::select('belongsTo', $vehList, Input::old('belongsTo'),array('id' => 'belongsTo')) }}</div>
 
