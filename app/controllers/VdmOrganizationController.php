@@ -390,6 +390,7 @@ public function addpoi()
 		 }
             $organizationId = Input::get('organizationId');
             $organizationId=str_replace(' ', '', $organizationId);
+             $organizationId=str_replace('.', '_', $organizationId);
             $description      = Input::get('description');
             $email      = Input::get('email');
             $description      = Input::get('description');

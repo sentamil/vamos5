@@ -592,13 +592,8 @@ public function edit($id) {
         $orgList=array_add($orgList,'Default','Default');
         foreach ( $tmpOrgList as $org ) {
             $orgList = array_add($orgList,''.$org,$org);
-            log::info( '------success 1---------- '.$org);
-
         }
-        foreach ($orgList as $key => $value) {
-           log::info( $value.'------success 2---------- '.$key);
-        }
-//  var_dump($refData);
+        
         return View::make ( 'vdm.vehicles.edit', array (
             'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList );
     }catch(\Exception $e)
