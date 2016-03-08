@@ -393,6 +393,7 @@ public function addpoi()
             $email      = Input::get('email');
             $description      = Input::get('description');
             $address      = Input::get('address');
+            $live=Input::get('live');
             $mobile      = Input::get('mobile');
 			$atc= Input::get('atc');
 			$etc=Input::get('etc');
@@ -427,6 +428,7 @@ public function addpoi()
 					'radius'=>$radius,
 					'smsSender'=>$smsSender,
 					'sosAlert'=>$sosAlert,
+					'live'=>$live,
 					
             );
 			 $redis = Redis::connection();
@@ -730,6 +732,7 @@ public function addpoi()
 		$radius=isset($orgDataArr['radius'])?$orgDataArr['radius']:'';
 		$smsSender=isset($orgDataArr['smsSender'])?$orgDataArr['smsSender']:'';
 		$sosAlert=isset($orgDataArr['sosAlert'])?$orgDataArr['sosAlert']:'';
+		$live=isset($orgDataArr['live'])?$orgDataArr['live']:'no';
         log::info( 'time1 ::' . $time1);
          log::info( 'time2 ::' . $time2);
 		$address1=array();
@@ -757,7 +760,7 @@ public function addpoi()
 		$i=0;
 		$j=0;$k=0;$m=0;
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
-        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius)->with('smsSender',$smsSender)->with('sosAlert',$sosAlert);   
+        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius)->with('smsSender',$smsSender)->with('sosAlert',$sosAlert)->with('live',$live);   
         
     }
     
@@ -822,7 +825,7 @@ public function addpoi()
             $email      = Input::get('email');
             $description      = Input::get('description');
             $address      = Input::get('address');
-           
+           	$live=Input::get('live');
 			$atc= Input::get('atc');
 			$etc=Input::get('etc');
 			$mtc=Input::get('mtc');
@@ -834,6 +837,7 @@ public function addpoi()
 			$overspeedalert=Input::get('overspeedalert');
 			$sendGeoFenceSMS=Input::get('sendGeoFenceSMS');
 			$smsSender=Input::get('smsSender');
+			$live=Input::get('live');
 					$startTime =$time1;
 			$endTime=$time2;
             $orgDataArr = array (
@@ -856,6 +860,7 @@ public function addpoi()
 					'radius'=>$radius,
 					'smsSender'=>$smsSender,
 					'sosAlert'=>$sosAlert,
+					'live'=>$live,
             );
             
             $orgDataJson = json_encode ( $orgDataArr );
