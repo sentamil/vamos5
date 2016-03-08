@@ -25,21 +25,22 @@
 			                	</thead>
 								
 											                	<tbody>	
+																
 								@if(isset($details))
 									
 								@foreach($details as $key => $value)
-			                		<tr class="col-md-2">
-			                			<td>
+								
+			                		<tr class="col-md-5">
 				                			
-											{{ Form::label($key) }}
+											<th>{{ Form::label($key) }}</th>
 											
 											@foreach($value as $key1 => $value1)
 											<th>{{ Form::label($key1) }} :
-											{{ Form::label($value1) }}</th>
+											{{ Form::label($value1) }} </th>
 											
 											@endforeach
 											@endforeach
-			                			</td>	
+			                				
 			                		</tr>
 								
 								@endif
