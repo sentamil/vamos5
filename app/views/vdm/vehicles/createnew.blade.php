@@ -92,7 +92,9 @@
 														{{ Form::label('overSpeedLimit', 'OverSpeed Limit') }}
 													</div>
 													<div class="col-md-6">
-														{{ Form::text('overSpeedLimit', Input::old('overSpeedLimit'), array('class' => 'form-control')) }}
+														
+														{{ Form::select('overSpeedLimit',  array( '60' => '60','70' => '70','80' => '80','90' => '90','100' => '100','110' => '110','120' => '120','130' => '130','140' => '140','150' => '150' ), Input::old('overSpeedLimit'), array('class' => 'form-control')) }} 
+
 													</div>
 												</div>
 											</div>

@@ -348,7 +348,7 @@ public function addpoi()
         }
         $username = Auth::user()->username;
         $rules = array(
-                'organizationId'       => 'required|alpha_dash',
+                'organizationId'       => 'required',
                 'mobile' => 'required'
         );
         $validator = Validator::make(Input::all(), $rules);
@@ -388,7 +388,8 @@ public function addpoi()
             
         }
 		 }
-            $organizationId       = Input::get('organizationId');
+            $organizationId = Input::get('organizationId');
+            $organizationId=str_replace(' ', '', $organizationId);
             $description      = Input::get('description');
             $email      = Input::get('email');
             $description      = Input::get('description');

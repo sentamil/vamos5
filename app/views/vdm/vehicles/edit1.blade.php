@@ -27,7 +27,7 @@
 
 		<div class="form-group">
 			{{ Form::label('deviceModel', 'Device Model') }}
-			{{ Form::text('deviceModel', $refData['deviceModel'], array('class' => 'form-control')) }}
+			{{ Form::select('deviceModel',array( 'GT06N' => 'GT06N (9964)', 'FM1202' => 'FM1202 (9975)','FM1120' => 'FM1120 (9975)', 'TR02' => 'TR02 (9965)', 'GT03A' => 'GT03A (9969)', 'VTRACK2' => 'VTRACK2 (9964)','ET01'=>'ET01 (9971)','ET02'=>'ET02 (9962)'), $refData['deviceModel'], array('class' => 'form-control')) }}
 		</div>
 
 		<div class="form-group">
@@ -42,7 +42,7 @@
 
 		<div class="form-group">
 			{{ Form::label('overSpeedLimit', 'OverSpeed Limit') }}
-			{{ Form::text('overSpeedLimit', $refData['overSpeedLimit'], array('class' => 'form-control')) }}
+			{{ Form::select('overSpeedLimit', array( '60' => '60','70' => '70','80' => '80','90' => '90','100' => '100','110' => '110','120' => '120','130' => '130','140' => '140','150' => '150' ),$refData['overSpeedLimit'], array('class' => 'form-control')) }}
 		</div>
 
 
