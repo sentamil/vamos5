@@ -441,12 +441,13 @@ class RfidController extends \BaseController {
                     {
                         $swipevalue=implode(",",$swipedBy);
                     }
-                    $redis->sadd('S_Rfid_Tags_' . $fcode,$tagid);
+                    
                      $redis->srem('S_Rfid_Tags_' . $fcode,$tagidtemp);
-                    $redis->hset('H_Rfid_Map',$tagid,$fcode);
+                    $redis->sadd('S_Rfid_Tags_' . $fcode,$tagid);
                     $redis->hdel('H_Rfid_Map',$tagidtemp);
-                    $redis->sadd('S_Rfid_Org_'.$org.'_' . $fcode,$tagid);
+                    $redis->hset('H_Rfid_Map',$tagid,$fcode);
                     $redis->srem('S_Rfid_Org_'.$org.'_' . $fcode,$tagidtemp);
+                    $redis->sadd('S_Rfid_Org_'.$org.'_' . $fcode,$tagid);
 
                         $refDataArr = array (
                                         'tagid' => $tagid,
@@ -460,13 +461,15 @@ class RfidController extends \BaseController {
 
                     if(Session::get('cur')=='dealer')
                     {             
-                        $redis->hset('H_Rfid_Dealer_'.$username.'_'.$fcode,$tagid,$refDataJson); 
+                       
                         $redis->hdel('H_Rfid_Dealer_'.$username.'_'.$fcode,$tagidtemp);   
+                        $redis->hset('H_Rfid_Dealer_'.$username.'_'.$fcode,$tagid,$refDataJson); 
                     }
                     else if(Session::get('cur')=='admin')
                     {
-                        $redis->hset('H_Rfid_Admin_'.$fcode,$tagid,$refDataJson);
+                       
                         $redis->hdel('H_Rfid_Admin_'.$fcode,$tagidtemp); 
+                         $redis->hset('H_Rfid_Admin_'.$fcode,$tagid,$refDataJson);
                     }       
 
 
