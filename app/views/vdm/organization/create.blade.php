@@ -154,7 +154,14 @@
 		
     </div>
 	
-	
+	<br><br><br>
+	<div class="col-md-6"> 
+        {{ Form::label('live', 'Show Live Site') }}
+		</div>
+								<div class="col-md-6">
+        {{ Form::select('live',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('live'), array('class' => 'form-control')) }} 
+		
+    </div>
 	<br><br><br>
 	<div class="col-md-6"> 
         {{ Form::label('address', 'Address :') }}

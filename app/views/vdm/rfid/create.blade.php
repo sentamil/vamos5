@@ -6,31 +6,29 @@
     		<div class="col-lg-12">
        			 <div class="hpanel">
                		 <div class="panel-heading">
-                   		 <h4><b><font color="blue">ADD DEVICE</font></b></h4>
+                   		 <h4><b><font color="blue">ADD Tags</font></b></h4>
                 	 </div>
                 	<div class="panel-body">
-					<h4><font color="green">Available licence :  {{$availableLincence}}
-					</font></h4>
+					
 					</br>
 					<br>
                 		<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                 			<div class="row">
                 				<div class="col-sm-12">
 			                		{{ HTML::ul($errors->all()) }}
-									{{ Form::open(array('url' => 'Business')) }}
+									{{ Form::open(array('url' => 'rfid')) }}
 									<div class="row">
 										<div class="col-md-12">
 											<div class="col-md-6">
 												<div class="row">
 
 													<div class="col-md-3">
-														{{ Form::label('numberofdevice', 'Number Of Device :') }}
+														{{ Form::label('tags', 'Number Of Rfid Tags :') }}
 
 													</div>
 													
 													<div class="col-md-6">
-														{{ Form::text('numberofdevice', Input::old('numberofdevice'), array('class' => 'form-control')) }}
-														{{ Form::hidden('availableLincence', $availableLincence, array('class' => 'form-control')) }}
+														{{ Form::text('tags', Input::old('tags'), array('class' => 'form-control')) }}
 													</div>
 												</div>
 											</div>

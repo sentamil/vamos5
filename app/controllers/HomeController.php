@@ -133,6 +133,8 @@ class HomeController extends BaseController {
 		return View::make('livelogin');
 	}
 
+
+	
 	public function doLogin()
 	{
 		// validate the info, create rules for the inputs

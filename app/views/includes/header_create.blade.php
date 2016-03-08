@@ -122,6 +122,9 @@
 			<li><a href="../vdmVehicles"> <span class="nav-label">Vehicles List</span> <span class="label label-success pull-right">v.2</span> </a></li>
 			
 			<li><a href="../vdmVehiclesView"> <span class="nav-label">View Vehicles</span> <span class="label label-success pull-right">v.2</span> </a></li>
+
+            <li><a href="../rfid/create"> <span class="nav-label">Add Tags</span> <span class="label label-success pull-right"></span> </a></li>
+             <li><a href="../rfid"> <span class="nav-label">View Tags</span> <span class="label label-success pull-right"></span> </a></li>
 			<!--
             <li>
                 <a href="../vdmVehicles/multi"> <span class="nav-label">Add Multiple Vehicles</span></a>

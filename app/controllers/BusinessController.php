@@ -103,7 +103,7 @@ class BusinessController extends \BaseController {
 				$availableLincence=$franchiseDetails['availableLincence'];
 			else
 				$availableLincence='0';
-			Session::put('availableLincence',$availableLincence);
+			//Session::put('availableLincence',$availableLincence);
 			return View::make ( 'vdm.business.business')->with('devices',$devices)->with('devicestypes',$devicestypes)->with('dealerId',$dealerId)->with('userList',$userList)->with('availableLincence',$availableLincence);
 		}
 	}
@@ -128,14 +128,19 @@ class BusinessController extends \BaseController {
 			{
 				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$fcode);
 			}
-		$lincence=Session::get('availableLincence');
+			$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+			$franchiseDetails=json_decode($franDetails_json,true);
+			if(isset($franchiseDetails['availableLincence'])==1)
+				$availableLincence=$franchiseDetails['availableLincence'];
+			else
+				$availableLincence='0';
         $orgList=null;
 		$orgList=array_add($orgList,'Default','Default');
         foreach ( $tmpOrgList as $org ) {
                 $orgList = array_add($orgList,$org,$org);
                 
             }
-		return View::make ( 'vdm.business.create' )->with ( 'orgList', $orgList )->with ( 'lincence', $lincence );
+		return View::make ( 'vdm.business.create' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence );
 	}
 	
 	
@@ -164,13 +169,12 @@ class BusinessController extends \BaseController {
 			$numberofdevice = Input::get ( 'numberofdevice' );
 			// store
 			
-			
-			if($numberofdevice>Session::get('availableLincence'))
+			$availableLincence=Input::get ( 'availableLincence' );
+			log::info( '-------- av license in  ::----------'.$availableLincence);
+			if($numberofdevice>$availableLincence)
 			{
 				return Redirect::to ( 'Business/create' )->withErrors ( "Your license count is less" );
 			}
-			
-			Session::put('numberofdevice',$numberofdevice);
 			log::info( '--------inside store in  ::----------');
 			return View::make ( 'vdm.business.addDevice')->with ( 'numberofdevice', $numberofdevice );
 		}
@@ -210,7 +214,9 @@ class BusinessController extends \BaseController {
 			else
 				$availableLincence='0';
 			$count=0;
-			for($i =1;$i<=Session::get('numberofdevice');$i++)
+			$numberofdevice = Input::get ( 'numberofdevice1' );
+			log::info( '--------number of  device::----------'.$numberofdevice);
+			for($i =1;$i<=$numberofdevice;$i++)
 			{
 				$deviceid = Input::get ( 'deviceid'.$i);
 				$deviceid=trim($deviceid," ");
@@ -450,7 +456,7 @@ class BusinessController extends \BaseController {
 							$v=idate("d") ;
 							$monthTemp=idate("m") ;
 							log::info($monthTemp.'------monthTemp---------- ');
-							$paymentmonth=12;
+							$paymentmonth=11;
 							if($v>15)
 							{
 								log::info('inside if');
@@ -482,7 +488,7 @@ class BusinessController extends \BaseController {
 									'deviceId' => $myArray[0],					
 									'deviceModel' => $myArray[1],
 									'shortName' => $shortName,
-									'regNo' => 'regNo',
+									'regNo' => 'XXXX',
 									'orgId'=>$orgId,
 									'vehicleType' => 'Truck',
 									'oprName' => 'Airtel',
@@ -492,7 +498,7 @@ class BusinessController extends \BaseController {
 									'date' =>$new_date1,
 									'paymentType'=>'yearly',
 									'expiredPeriod'=>$new_date,					
-									'overSpeedLimit' => '50',					
+									'overSpeedLimit' => '60',					
 									'driverName' => '',					
 									'email' => '',
 									'altShortName'=>'Default',

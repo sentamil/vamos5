@@ -96,6 +96,12 @@
         {{ Form::text('smsSender', $smsSender, array('class' => 'form-control')) }}
 		
     </div>
+    <div class="form-group"> 
+        {{ Form::label('live', 'Show Live Site') }}
+        
+        {{ Form::select('live',  array( 'no' => 'No','yes' => 'Yes' ), $live, array('class' => 'form-control')) }} 
+        
+    </div>
     <div>
 	{{ Form::label('poi', 'Place Of interest') }}
 	</br>
