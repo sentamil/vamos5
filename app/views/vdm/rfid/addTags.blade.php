@@ -19,16 +19,16 @@
 											<div class="col-md-12">
 												<div class="col-md-6">
 													<div class="row">
-<div>Org Name</div>
-<div>{{ Form::select('org' , $orgList, Input::old('orgname'),array('id' => 'orgid')) }}</div>
-<div>Belongs To</div>
-<div>{{ Form::select('belongsTo', $vehList, Input::old('belongsTo'),array('id' => 'belongsTo')) }}</div>
+<div><b>Org Name</b></div>
+<div>{{ Form::select('org' , $orgList, Input::old('orgname'),array('id' => 'orgid')) }}</div></br>
+<div><b>Belongs To</b></div>
+<div>{{ Form::select('belongsTo', $vehList, Input::old('belongsTo'),array('id' => 'belongsTo')) }}</div></br>
 
-<div>Swiped by</div>
+<div><b>Swiped by</b></div>
 
 <div>{{Form::select('swipedBy', $vehRfidYesList, array('swipedBy'), array('multiple','name'=>'sports'.'[]','id' => 'swi')
 
-)}}</div>
+)}}</div></br>
 														<table id="example1" class="table table-bordered dataTable">
 															<thead>
 																<tr>
@@ -65,11 +65,11 @@
 
 													</div>
 												</div>
-												<div class="col-md-6">
+												<div class="col-md-9">
 													<div class="row">
-														<div class="col-md-6">	
+														<div class="col-md-9">	
 														</div>
-														<div class="col-md-6">
+														<div class="col-md-9">
 															{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}{{ Form::close() }}
 														</div>	
 													</div>

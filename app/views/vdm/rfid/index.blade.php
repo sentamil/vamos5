@@ -5,7 +5,7 @@
 			<div class="col-lg-12">
 				<div class="hpanel">
 					<div class="panel-heading">
-						<h4> <b><font color="blue">Ahan ram </font></b></h4>
+						<h4> <b><font color="blue">Tags List</font></b></h4>
 					</div>
 					<div class="panel-body">
 						{{ HTML::ul($errors->all()) }}
@@ -16,7 +16,7 @@
 
 								<div class="form-group">
 
-									<h4><font color="green">
+									<h4>
 										
 										<br/>
 										<br/>
