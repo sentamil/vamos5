@@ -9,7 +9,8 @@
                    		 <h4><b><font color="blue">ADD DEVICE</font></b></h4>
                 	 </div>
                 	<div class="panel-body">
-					<h4><font color="green">Available licence :  {{Session::get('availableLincence')}}</font></h4>
+					<h4><font color="green">Available licence :  {{$availableLincence}}
+					</font></h4>
 					</br>
 					<br>
                 		<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
@@ -29,6 +30,7 @@
 													
 													<div class="col-md-6">
 														{{ Form::text('numberofdevice', Input::old('numberofdevice'), array('class' => 'form-control')) }}
+														{{ Form::hidden('availableLincence', $availableLincence, array('class' => 'form-control')) }}
 													</div>
 												</div>
 											</div>

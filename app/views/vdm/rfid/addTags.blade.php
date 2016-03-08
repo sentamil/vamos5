@@ -45,7 +45,7 @@
 							
 
 
-
+{{ Form::hidden('tags', $tags) }}
 
 																@for($i=1;$i<=$tags;$i++)
 																<tr style="text-align: center;">

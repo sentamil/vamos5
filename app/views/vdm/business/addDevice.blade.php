@@ -19,7 +19,7 @@
 											<div class="col-md-6">
 												<div class="row">
 												
-												
+												{{ Form::hidden('numberofdevice1', $numberofdevice, array('class' => 'form-control')) }}
 												<table id="example1" class="table table-bordered dataTable">
                		 <thead>
 						<tr>

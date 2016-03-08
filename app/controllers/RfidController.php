@@ -86,7 +86,7 @@ class RfidController extends \BaseController {
         } 
         else{ 
             $tags = Input::get ( 'tags' );
-            Session::put('tags',$tags);
+           // Session::put('tags',$tags);
             log::info( '--------inside tag add in  ::----------');
             
             $orgListId = 'S_Organisations_' . $fcode;
@@ -138,7 +138,8 @@ class RfidController extends \BaseController {
 
 // store
         $tagArray=null;
-        for($i =1;$i<=Session::get('tags');$i++)
+        $tags=Input::get ( 'tags' );
+        for($i =1;$i<=$tags;$i++)
         {
             $tagid = Input::get ( 'tagid'.$i);
 
@@ -150,7 +151,7 @@ class RfidController extends \BaseController {
             // log::info( '--------inside tagname in  ::----------'.$tagname);
             if($tagid!==null && $tagid!=='' && $belongsTo!==null && $belongsTo!=='' && $belongsTo!=='select' && $org!==null && $org!=='' && $org!=='select')
             {
-                log::info( '-------- add test  ::----------'.Session::get('tags'));
+                log::info( '-------- add test  ::----------'.$tags);
                 $val=$redis->sismember ( 'S_Rfid_Tags_' . $fcode, $tagid);
                 $val1=$redis->hget('H_Rfid_Map',$tagid);
                 if($val==1 || $val1!==null)
