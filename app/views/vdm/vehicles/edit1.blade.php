@@ -72,7 +72,7 @@
 			{{ Form::label('orgId', 'Org/College Name') }}
 
 
-			{{ Form::select('orgId', $orgList, $refData['orgId'], array('class' => 'form-control')) }}
+			{{ Form::select('orgId', array($orgList), $refData['orgId'], array('class' => 'form-control')) }}
 		</div>
 
 		<div class="form-group">

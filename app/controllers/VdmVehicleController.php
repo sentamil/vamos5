@@ -591,11 +591,13 @@ public function edit($id) {
         $orgList=null;
         $orgList=array_add($orgList,'Default','Default');
         foreach ( $tmpOrgList as $org ) {
-            $orgList = array_add($orgList,$org,$org);
+            $orgList = array_add($orgList,''.$org,$org);
             log::info( '------success 1---------- '.$org);
 
         }
-        
+        foreach ($orgList as $key => $value) {
+           log::info( $value.'------success 2---------- '.$key);
+        }
 //  var_dump($refData);
         return View::make ( 'vdm.vehicles.edit', array (
             'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList );
@@ -891,6 +893,7 @@ public function update($id) {
 
         $refDataJson = json_encode ( $refDataArr );
 // H_RefData
+         Log::info($vehicleId.'--------------------org--------------------------------'.$orgId);
 $refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);//ram
 $refDataJson1=json_decode($refDataJson1,true);
 
