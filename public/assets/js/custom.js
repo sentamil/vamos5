@@ -154,7 +154,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 
 		var gName 	 	= 	halfgroup.trim()+':'+split_vid;
 		var groupUrl1= 'http://'+globalIP+context+'/public//getVehicleLocations?group='+gName;
-		console.log(groupUrl1);
+		//console.log(groupUrl1);
 		return groupUrl1;
 	}
 
@@ -676,7 +676,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 		// {
 		// 	markerCluster.clearMarkers(null);
 		// }
-		
+		$scope.markerJump($scope.locations02[$scope.gIndex].vehicleLocations);
 		
 	}
 
@@ -702,7 +702,7 @@ function polygenDrawFunction(list){
       }
       var polygenColor = new google.maps.Polygon({
             path: polygenList,
-            strokeColor: "#fd5954",
+            strokeColor: "#7e7e7e",
             strokeWeight: 0.8,
             fillColor: '#fe716d',
             fillOpacity: 0.1,
@@ -756,6 +756,19 @@ function polygenDrawFunction(list){
 				//service call to site details
 				siteInvoke(value);
 			});
+	}
+
+
+	//jump marker
+	$scope.markerJump = function(getDat){
+		console.log(' val '+gmarkers.length)
+		angular.forEach(gmarkers, function(val, key){
+			if(getDat[key].insideGeoFence=='N')
+				gmarkers[key].setAnimation(google.maps.Animation.BOUNCE);
+			else if(getDat[key].insideGeoFence=='Y')
+			 	gmarkers[key].setAnimation(null);
+			gmarkers[key].setMap($scope.map);
+		})
 	}
 
 	$scope.initilize = function(ID){
@@ -841,6 +854,10 @@ function polygenDrawFunction(list){
 		$(document).on('pageshow', '#maploc', function(e){       
         	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
    		});
+
+		//marker jump
+		$scope.markerJump(location02[$scope.gIndex].vehicleLocations);
+
 		//for the polygen draw
 		polygenFunction(location02);
 
