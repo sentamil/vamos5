@@ -2,9 +2,9 @@ var getIP = globalIP;
 
 app.controller('mainCtrl',function($scope, $http){
 
-	var line;
-	var lineList 		    = [];
-	var lineSymbol 	    = {path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW};
+  var line;
+  var lineList        = [];
+  var lineSymbol      = {path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW};
   var text;
   var drop;
   $scope.textValue    = '';
@@ -17,43 +17,45 @@ app.controller('mainCtrl',function($scope, $http){
   var latlanList      = [];
   var mergeList       = [];
   var dropDown        = [];
+  var polygenList     = [];
+  var polygenColor;
   var oldName         = '';
   $scope.url          = 'http://'+getIP+'/vamo/public/viewSite';
-  var myOptions		    = {
-          								zoom: 7,
-          								center: new google.maps.LatLng(12.993803, 80.193075),
-          								mapTypeId: google.maps.MapTypeId.ROADMAP
-          						   };
+  var myOptions       = {
+                          zoom: 7,
+                          center: new google.maps.LatLng(12.993803, 80.193075),
+                          mapTypeId: google.maps.MapTypeId.ROADMAP
+                         };
 
-  $scope.map 		     = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  $scope.map         = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
   var list  =[];
   $scope.$watch('url', function(){
     serviceCall()
   });
   
   //create button click
-  $scope.drawline 	= 	function()
+  $scope.drawline   =   function()
   {
-  	var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
-  	var text 		    = $scope.textValue;
-  	var drop 		    = $scope.dropValue;
+    var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
+    var text        = $scope.textValue;
+    var drop        = $scope.dropValue;
     var org         = $scope.orgID;
     // post request
     if(text && drop && latlanList.length>=3 && org)
     {
       $.post( URL_ROOT+'store', {
-  			'_token': $('meta[name=csrf-token]').attr('content'),
-  			'siteName': text,
-  			'siteType': drop,
+        '_token': $('meta[name=csrf-token]').attr('content'),
+        'siteName': text,
+        'siteType': drop,
         'org':org,
-  			'latLng': latlanList,
-  	  })
-    	.done(function(data) {
-    		console.log("Sucess");
-    	})
-    	.fail(function() {
-    		console.log("fail");
-    	});
+        'latLng': latlanList,
+      })
+      .done(function(data) {
+        console.log("Sucess");
+      })
+      .fail(function() {
+        console.log("fail");
+      });
      
     }else{
       
@@ -69,8 +71,6 @@ app.controller('mainCtrl',function($scope, $http){
 
     var url_site          = 'http://'+getIP+'/vamo/public/viewSite';
     $http.get(url_site).success(function(response){
-      
-     
       mergeList       = [];
       dropDown=[];
       $scope.dropDownList=response;
@@ -91,58 +91,106 @@ app.controller('mainCtrl',function($scope, $http){
 
   //direct map click 
   google.maps.event.addListener($scope.map, 'click', function(event) {
-	  var latClick	 = event.latLng.lat();
-	  var lanclick	 = event.latLng.lng();
-	  pointToPoint(latClick, lanclick);
+    var latClick   = event.latLng.lat();
+    var lanclick   = event.latLng.lng();
+    pointToPoint(latClick, lanclick);
   });
 
 
   // draw two lat lan as line in map function
- 	function pointToPoint(lat, lan)
- 	{	
- 		latlanList.push(lat+":"+lan);
- 		var firstlat 	= lat;
- 		var firstlan 	= lan;
- 		var latlan 		= lat+","+lan;
- 		if(seclan && seclan)
- 		{
- 			line = new google.maps.Polyline({
-				    path: [
-				        new google.maps.LatLng(seclat, seclan), 
-				        new google.maps.LatLng(firstlat, firstlan)
-				    ],
-				    strokeColor: "#008000",
-				    strokeOpacity: 1.0,
-				    strokeWeight: 3,
-				    icons: [{
-				      icon: lineSymbol,
-				      offset: '100%'
-				    }],
-				    map: $scope.map
-				});
-		 lineList.push(line);
- 		}
- 		seclat 		= firstlat;
- 		seclan 		= firstlan;
- 	}
+  function pointToPoint(lat, lan)
+  { 
+    latlanList.push(lat+":"+lan);
+    var firstlat  = lat;
+    var firstlan  = lan;
+    var latlan    = lat+","+lan;
+    if(seclan && seclan)
+    {
+      line = new google.maps.Polyline({
+            path: [
+                new google.maps.LatLng(seclat, seclan), 
+                new google.maps.LatLng(firstlat, firstlan)
+            ],
+            strokeColor: "#008000",
+            strokeOpacity: 1.0,
+            strokeWeight: 3,
+            icons: [{
+              icon: lineSymbol,
+              offset: '100%'
+            }],
+            map: $scope.map
+        });
+     lineList.push(line);
+    }
+    seclat    = firstlat;
+    seclan    = firstlan;
+  }
 
 
   //clear button on map
- 	$scope.clearline 	= 	function()
- 	{
- 		if (lineList){
-     	for (var i=0; i<lineList.length; i++){
-    		lineList[i].setMap(null);
+  $scope.clearline  =   function()
+  {
+    if($scope.marker)
+      $scope.marker.setMap(null);
+    if(polygenColor)
+      polygenColor.setMap(null);
+    if (lineList){
+      for (var i=0; i<lineList.length; i++){
+        lineList[i].setMap(null);
        }
- 		}
+    }
     latlanList    = [];
+    polygenList   = [];
     seclat        = '';
     seclan        = '';
     // $scope.textValue    = '';
     // $scope.dropValue    = '';
     // $scope.orgID        = '';
 
- 	}
+  }
+  function centerMarker(listMarker){
+    var bounds = new google.maps.LatLngBounds();
+    for (i = 0; i < listMarker.length; i++) {
+          bounds.extend(listMarker[i]);
+      }
+    return bounds.getCenter()
+  }
+ 
+
+  function polygenFunction(list){
+    
+    if(list.length>0){
+      var sp;
+      polygenList   = [];
+      $scope.clearline();
+      for(var i = 0; list.length>i; i++)
+      {
+          sp    = list[i].split(":");
+          polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
+      }
+      polygenColor = new google.maps.Polygon({
+            path: polygenList,
+            strokeColor: "#282828",
+            strokeWeight: 1,
+            fillColor: '#808080',
+            fillOpacity: 0.50,
+            map: $scope.map
+        });
+      
+      var labelAnchorpos = new google.maps.Point(19, 0);  ///12, 37
+      $scope.marker = new MarkerWithLabel({
+         position: centerMarker(polygenList), 
+         map: $scope.map,
+         icon: 'assets/imgs/area_img.png',
+         labelContent: $scope.textValue,
+         labelAnchor: labelAnchorpos,
+         labelClass: "labels", 
+         labelInBackground: false
+      });
+      $scope.map.setCenter(centerMarker(polygenList)); 
+      $scope.map.setZoom(14);  
+    }
+  }
 
   
   //inside the table td click function
@@ -153,7 +201,7 @@ app.controller('mainCtrl',function($scope, $http){
       $scope.dropValue    = user.siteType;
       $scope.orgID        = user.orgId;
       var split           = user.latLng.split(",");
-      drawlineJoin(split);
+      polygenFunction(split);
   }
 
   //join the add site function

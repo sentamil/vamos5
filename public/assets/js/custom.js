@@ -52,7 +52,8 @@ app.filter('statusfilter', function(){
 	}
 });
 
-app.controller('mainCtrl',['$scope', '$http','vamoservice','$rootScope', function($scope, $http, vamoservice, $filter, statusfilter, $rootScope){
+app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope', function($scope, $http, vamoservice, $filter, statusfilter, $rootScope){
+	//console.log($rootScope.test)
 	$scope.locations = [];
 	$scope.nearbyLocs =[];
 	$scope.mapTable =[];
@@ -82,6 +83,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$rootScope', functio
 	var mcOptions={};
 	var markerCluster;
 	var vehicleids=[];
+	var polygenList=[];
 	//var menuVid;
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
@@ -337,6 +339,8 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$rootScope', functio
 
 
 	$scope.groupSelection = function(groupname, groupid){
+		$('#status').show();
+    	$('#preloader').show();
 		$scope.selected=undefined;
 		$scope.dynamicvehicledetails1=false;
 		$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group=' + groupname;
@@ -351,7 +355,9 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$rootScope', functio
 		// ginfowindow=[];
 		clearInterval(setintrvl);
 		//$scope.locations02 = vamoservice.getDataCall($scope.url);
-		 	
+		$('#status').fadeOut(); 
+		$('#preloader').delay(350).fadeOut('slow');
+		$('body').delay(350).css({'overflow':'visible'});
 	}
 	
 
@@ -673,7 +679,85 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$rootScope', functio
 		
 		
 	}
-	
+
+function centerMarker(listMarker){
+    var bounds = new google.maps.LatLngBounds();
+    for (i = 0; i < listMarker.length; i++) {
+          bounds.extend(listMarker[i]);
+      }
+    return bounds.getCenter()
+  }
+// var polygenColor;
+//draw polygen in map function
+function polygenDrawFunction(list){
+    
+    	// if(list.length=>0){
+      var sp;
+      polygenList   = [];
+      var split     = list.latLng.split(",");
+      for(var i = 0; split.length>i; i++)
+      {
+          sp    = split[i].split(":");
+          polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
+      }
+      var polygenColor = new google.maps.Polygon({
+            path: polygenList,
+            strokeColor: "#282828",
+            strokeWeight: 1,
+            fillColor: '#808080',
+            fillOpacity: 0.50,
+            map: $scope.map
+        });
+      
+      var labelAnchorpos = new google.maps.Point(19, 0);  ///12, 37
+      $scope.marker = new MarkerWithLabel({
+         position: centerMarker(polygenList), 
+         map: $scope.map,
+         icon: 'assets/imgs/area_img.png',
+         labelContent: list.siteName,
+         labelAnchor: labelAnchorpos,
+         labelClass: "labels", 
+         labelInBackground: false
+      });
+      $scope.map.setCenter(centerMarker(polygenList)); 
+      $scope.map.setZoom(14);  
+    // }
+ }
+
+
+	function siteInvoke(val){
+		var url_site          = 'http://'+globalIP+context+'/public/viewSite';
+		vamoservice.getDataCall(url_site).then(function(data) {
+			console.log(data)
+			if(data.siteParent)
+			 	angular.forEach(data.siteParent, function(value, key){
+					//console.log(' value'+key)
+					angular.forEach(value.site, function(vals, keys){
+						//console.log('inside the for loop')
+						polygenDrawFunction(vals);
+					})
+					
+			 });
+		})
+	}
+
+
+	// polygen draw function
+	function polygenFunction(getVehicle){
+		console.log(' getVehicle ')
+		var polygenOrgs 	=	[];
+		var unique 			= 	new Set();
+		polygenOrgs			=	($filter('filter')(getVehicle[$scope.gIndex].vehicleLocations, {'live': 'yes'}));
+		for (var i=0; polygenOrgs.length > i; i++) {
+			unique.add(polygenOrgs[i].orgId)
+		};
+		if(unique.size>0)
+			angular.forEach(unique, function(value, key) {
+				//service call to site details
+				siteInvoke(value);
+			});
+	}
+
 	$scope.initilize = function(ID){
 		
 	//	vamoservice.getDataCall($scope.url).then(function(location02) {
@@ -757,6 +841,12 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$rootScope', functio
 		$(document).on('pageshow', '#maploc', function(e){       
         	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
    		});
+		//for the polygen draw
+		polygenFunction(location02);
+
+   		$('#status').fadeOut(); 
+		$('#preloader').delay(350).fadeOut('slow');
+		$('body').delay(350).css({'overflow':'visible'});
    	}
 	
 	//click and resolve address
@@ -1018,11 +1108,11 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$rootScope', functio
 		$scope.attention  =data[$scope.gIndex].attention;
 		$scope.vehicleOnline =data[$scope.gIndex].online;
 	}
-	$(window).load(function() {
-		$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');
-		$('body').delay(350).css({'overflow':'visible'});
-});
+// 	$(window).load(function() {
+// 		$('#status').fadeOut(); 
+// 		$('#preloader').delay(350).fadeOut('slow');
+// 		$('body').delay(350).css({'overflow':'visible'});
+// });
 }])
 
 .directive('ngEnter', function () {
@@ -1059,11 +1149,11 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$rootScope', functio
 	    }
 	};
 });
-$(window).load(function() {
-		$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');
-		$('body').delay(350).css({'overflow':'visible'});
-});
+// $(window).load(function() {
+// 		$('#status').fadeOut(); 
+// 		$('#preloader').delay(350).fadeOut('slow');
+// 		$('body').delay(350).css({'overflow':'visible'});
+// });
 $(document).ready(function(e) {
     $('.contentClose').click(function(){
 		$('.topContent').fadeOut(100);
