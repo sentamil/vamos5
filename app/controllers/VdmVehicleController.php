@@ -1358,6 +1358,10 @@ public function migrationUpdate() {
     }
     $vehicleId = Input::get ( 'vehicleId' );
     $deviceId = Input::get ( 'deviceId' );
+    $vehicleIdOld= Input::get ( 'vehicleIdOld' );
+    $deviceIdOld = Input::get ( 'deviceIdOld' );
+     $expiredPeriodOld = Input::get ( 'expiredPeriodOld' );
+    
     $username = Auth::user ()->username;
     $redis = Redis::connection ();
     $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -1377,16 +1381,16 @@ public function migrationUpdate() {
     } else {
 // store
 
-        if($vehicleId==Session::get('vehicleId') && $deviceId==Session::get('deviceId'))
+        if($vehicleId==$vehicleIdOld && $deviceId==$deviceIdOld)
         {
             log::info('-----------inside same vehicleid and device Id no change');
             Session::flash ( 'message', 'Same vehicle Id and device Id no change' .'!' );
-            $deviceId= Session::get('deviceId');
-            $vehicleId= Session::get('vehicleId');
+            $deviceId= $deviceIdOld;
+            $vehicleId= $vehicleIdOld;
             return View::make ( 'vdm.vehicles.migration', array (
                 'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
         }
-        else if($vehicleId==Session::get('vehicleId') && $deviceId!==Session::get('deviceId'))
+        else if($vehicleId==$vehicleIdOld && $deviceId!==$deviceIdOld)
         {
             log::info('-----------inside same vehicleid and different device Id ');
             $deviceIdTemp = $redis->hget ( $vehicleDeviceMapId, $deviceId );
@@ -1394,34 +1398,34 @@ public function migrationUpdate() {
             if($deviceIdTemp!==null)
             {
                 Session::flash ( 'message', 'Device Id Already Present ' .'!' );
-                $deviceId= Session::get('deviceId');
-                $vehicleId= Session::get('vehicleId');
+                $deviceId= $deviceIdOld;
+                $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
                     'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
             }
         }
-        else if($vehicleId!==Session::get('vehicleId') && $deviceId==Session::get('deviceId'))
+        else if($vehicleId!==$vehicleIdOld && $deviceId==$deviceIdOld)
         {
             log::info('-----------inside different vehicleid and same device Id');
             $vehicleIdTemp = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
             if($vehicleIdTemp!==null)
             {
                 Session::flash ( 'message', 'Vehicle Id Already Present ' .'!' );
-                $deviceId= Session::get('deviceId');
-                $vehicleId= Session::get('vehicleId');
+                $deviceId= $deviceIdOld;
+                $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
                     'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
             }
         }
-        else if($vehicleId!==Session::get('vehicleId') && $deviceId!==Session::get('deviceId'))
+        else if($vehicleId!==$vehicleIdOld && $deviceId!==$deviceIdOld)
         {
             log::info('-----------inside different vehicleid and different device Id ');
             $vehicleIdTemp = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
             if($vehicleIdTemp!==null)
             {
                 Session::flash ( 'message', 'Vehicle Id Already Present ' .'!' );
-                $deviceId= Session::get('deviceId');
-                $vehicleId= Session::get('vehicleId');
+                $deviceId= $deviceIdOld;
+                $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
                     'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
             }
@@ -1429,37 +1433,37 @@ public function migrationUpdate() {
             if($deviceIdTemp!==null)
             {
                 Session::flash ( 'message', 'Device Id Already Present ' . '!' );
-                $deviceId= Session::get('deviceId');
-                $vehicleId= Session::get('vehicleId');
+                $deviceId= $deviceIdOld;
+                $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
                     'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
             }
             if($deviceIdTemp!==null && $vehicleIdTemp!==null)
             {
                 Session::flash ( 'message', 'Device Id and Vehicle Id Already Present ' . '!' );
-                $deviceId= Session::get('deviceId');
-                $vehicleId= Session::get('vehicleId');
+                $deviceId= $deviceIdOld;
+                $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
                     'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
             }
 
         }
 
-        $redis->hdel ( $vehicleDeviceMapId, Session::get('vehicleId') );                               
-        $redis->hdel ( $vehicleDeviceMapId, Session::get('deviceId') );                                
+        $redis->hdel ( $vehicleDeviceMapId, $vehicleIdOld );                               
+        $redis->hdel ( $vehicleDeviceMapId, $deviceIdOld );                                
         $redis->hset ( $vehicleDeviceMapId, $vehicleId, $deviceId );                     
         $redis->hset ( $vehicleDeviceMapId, $deviceId ,$vehicleId);
 
 
 //            $redis->hdel ( 'H_RefData_' . $fcode, $vehicleId );
 
-        $redis->hdel('H_Device_Cpy_Map',Session::get('deviceId'));
+        $redis->hdel('H_Device_Cpy_Map',$deviceIdOld);
 
         $redis->hset('H_Device_Cpy_Map',$deviceId, $fcode);
 
         $cpyDeviceSet = 'S_Device_' . $fcode;
 
-        $redis->srem ( $cpyDeviceSet, Session::get('deviceId') );
+        $redis->srem ( $cpyDeviceSet, $deviceIdOld );
 
         $redis->sadd ( $cpyDeviceSet, $deviceId );
 
@@ -1469,7 +1473,7 @@ public function migrationUpdate() {
 
 
 
-        $refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, Session::get('vehicleId'));
+        $refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleIdOld);
         $refDataJson1=json_decode($refDataJson1,true);
 
         $orgId=isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default';
@@ -1500,7 +1504,7 @@ public function migrationUpdate() {
                 $temp=null;
                 foreach ( $details as $gr ) {
 
-                    if($gr==Session::get('vehicleId'))
+                    if($gr==$vehicleIdOld)
                     {
                         $gr=$vehicleId;
                     }
@@ -1524,24 +1528,24 @@ public function migrationUpdate() {
         unset($refDataJson1['vehicleId']);
         $refDataJson1= array_add($refDataJson1, 'deviceId',$deviceId);
         $refDataJson1= array_add($refDataJson1, 'vehicleId',$vehicleId);
-        $redis->hdel ( 'H_RefData_' . $fcode, Session::get('vehicleId') );
-        $expiredPeriod=$redis->hget('H_Expire_'.$fcode,Session::get('expiredPeriod'));
-        log::info(' expire---->'.Session::get('expiredPeriod'));
+        $redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
+        $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
+        log::info(' expire---->'.$expiredPeriodOld);
         if(!$expiredPeriod==null)
         {
             log::info('inside expire---->'.$expiredPeriod);
-            $expiredPeriod=str_replace(Session::get('vehicleId'), $vehicleId, $expiredPeriod);
-            $redis->hset('H_Expire_'.$fcode,Session::get('expiredPeriod'),$expiredPeriod);
+            $expiredPeriod=str_replace($vehicleIdOld, $vehicleId, $expiredPeriod);
+            $redis->hset('H_Expire_'.$fcode,$expiredPeriodOld,$expiredPeriod);
         }
         $refDataJson1 = json_encode ( $refDataJson1 );
 
         $redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson1 );
 
-        $redis->srem ( 'S_Vehicles_' . $fcode, Session::get('vehicleId')  );
+        $redis->srem ( 'S_Vehicles_' . $fcode, $vehicleIdOld );
 
         $redis->sadd ( 'S_Vehicles_' . $fcode, $vehicleId );
 
-        $redis->srem ( 'S_Vehicles_' . $orgId.'_'.$fcode, Session::get('vehicleId'));
+        $redis->srem ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleIdOld);
         $redis->sadd ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleId);
 
 
@@ -1551,9 +1555,9 @@ public function migrationUpdate() {
         $groupList = $redis->smembers('S_Groups_' . $fcode);
 
         foreach ( $groupList as $group ) {
-            if($redis->sismember($group,Session::get('vehicleId'))==1)
+            if($redis->sismember($group,$vehicleIdOld)==1)
             {
-                $result = $redis->srem($group,Session::get('vehicleId'));
+                $result = $redis->srem($group,$vehicleIdOld);
                 $redis->sadd($group,$vehicleId);
             }
 
@@ -1565,21 +1569,21 @@ public function migrationUpdate() {
         if(Session::get('cur')=='dealer')
         {
             log::info('-----------inside dealer-----------');
-            $redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,Session::get('vehicleId'));
+            $redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Dealer_'.$username.'_' . $fcode);
         }
         else if(Session::get('cur')=='admin')
         {
             log::info('-----------inside admin-----------');
-            $redis->srem('S_Vehicles_Admin_'.$fcode,Session::get('vehicleId'));
+            $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Admin_'.$fcode);
         }
         foreach ( $groupList1 as $group ) {
-            if($redis->sismember($group,Session::get('vehicleId'))==1)
+            if($redis->sismember($group,$vehicleIdOld)==1)
             {
-                $result = $redis->srem($group,Session::get('vehicleId'));
+                $result = $redis->srem($group,$vehicleIdOld);
                 $redis->sadd($group,$vehicleId);
             }
 
@@ -1589,10 +1593,8 @@ public function migrationUpdate() {
 
     }
 
-    log::info('device id--->'.$deviceId);
-    log::info('vechicle id-->'.$vehicleId);
-    Session::put('vehicleId',$vehicleId);
-    Session::put('deviceId',$deviceId);
+    // log::info('device id--->'.$deviceId);
+    // log::info('vechicle id-->'.$vehicleId);
     Session::flash ( 'message', 'Successfully updated ' . '!' );
     return Redirect::to ( 'vdmVehicles' );
 
@@ -1901,13 +1903,11 @@ public function migration($id)
     $expiredPeriod =isset($refDataFromDB['expiredPeriod'])?$refDataFromDB['expiredPeriod']:'NotAvailabe';
     $expiredPeriod=str_replace(' ', '', $expiredPeriod);
     log::info( '------expiredPeriod ---------- '.$expiredPeriod);
-    Session::put('expiredPeriod',$expiredPeriod);
+
     $refData = array_add($refData, 'orgId', $orgId);
     $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
     $refData= array_add($refData,'parkingAlert',$parkingAlert);
     $tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
-    Session::put('vehicleId',$vehicleId);
-    Session::put('deviceId',$refData['deviceId']);
     log::info( '------migration 1---------- '.Session::get('cur'));
     if(Session::get('cur')=='dealer')
     {
@@ -1928,7 +1928,7 @@ public function migration($id)
     $deviceId=$refData['deviceId'];
 //  var_dump($refData);
     return View::make ( 'vdm.vehicles.migration', array (
-        'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
+        'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriod);
 
 
 }

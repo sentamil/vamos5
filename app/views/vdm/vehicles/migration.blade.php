@@ -13,9 +13,23 @@
 		 {{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
+		
+		 {{ Form::hidden('vehicleIdOld', $vehicleId, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		
+		 {{ Form::hidden('expiredPeriodOld', $expiredPeriod, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
 		{{ Form::label('deviceId', 'Edit Device Id') }}
 		<br/>
 		{{ Form::text('deviceId', $deviceId, array('class' => 'form-control')) }}
+
+	</div>
+	<div class="form-group">
+		{{ Form::label('deviceId', 'Edit Device Id') }}
+		<br/>
+		{{ Form::hidden('deviceIdOld', $deviceId, array('class' => 'form-control')) }}
 
 	</div>
 	
