@@ -7,7 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
 <title>GPS</title>
-
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -47,7 +47,7 @@
   -moz-transform: translate(-50%, -50%);
 
   background-color: #fff;
-  <!-- box-shadow: 4px 4px 80px #000; -->
+   box-shadow: 4px 4px 80px #000; -->
 }
 .ng-modal-dialog-content {
   padding:10px;
@@ -68,14 +68,19 @@
     max-height: calc(100vh - 210px);
     overflow-y: auto;
 }
-.box > .loading-img {
+/*.box > .loading-img {
 z-index: 1020;
-background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
-}
+background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
+}*/
 </style>
 
 </head>
-
+<div id="preloader" >
+    <div id="status">&nbsp;</div>
+</div>
+<div id="preloader02" >
+    <div id="status02">&nbsp;</div>
+</div>
 <body ng-app="mapApp">
 	<div id="wrapper" ng-controller="mainCtrl">
         <div id="sidebar-wrapper">
@@ -85,11 +90,8 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
                 <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-                <!--
-				<li class="settings"><a href="../public/settings"><div></div><label>Settings</label></a></li>
-				-->
-				<li class="admin"><a href="../public/performance" class="active"><div></div><label>Performance</label></a></li>
-                <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
+                <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
+				<li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
 			
 			
@@ -129,7 +131,7 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
         <!-- /#page-content-wrapper -->
     	</div>
  
-		
+		<div style="position: absolute;top: 0px;left: 40%; z-index:999999;" id="testLoad"></div>
 		<div class="col-md-12">
 	       	<div class="box box-primary">
 				<div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
@@ -162,12 +164,7 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 			<div ng-hide="group">
 				<div id="container"></div>
 			</div>
-		<div id="preloader" >
-    <div id="status1">&nbsp;</div>
-</div>
-<div id="preloader02" >
-    <div id="status102">&nbsp;</div>
-</div>
+		
 		
 		<!--Vehicle chart-->
 		<hr>
@@ -458,8 +455,8 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 				
 			</div>
 			
-			<div ng-show="loading" class="overlay"></div>
-	   		<div ng-show="loading" class="loading-img"></div>
+			<!-- <div ng-show="loading" class="overlay"></div>
+	   		<div ng-show="loading" class="loading-img"></div> -->
 		</div>
 				
 		</div>
@@ -489,9 +486,10 @@ background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-
 		.addClass('table table-striped table-bordered');
 </script>
 	<script>
-     var logo =document.location.host;
-    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    $('#imagesrc').attr('src', imgName);
+	// $("#testLoad").load("../public/menu");
+ //    var logo =document.location.host;
+ //    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+ //    $('#imagesrc').attr('src', imgName);
     
     $("#menu-toggle").click(function(e) {
         e.preventDefault();

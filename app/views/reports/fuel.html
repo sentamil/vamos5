@@ -1,12 +1,13 @@
 <!DOCTYPE>
 <html lang="en">
 <head>
-	<title>GPS</title>
-	<link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
-	<link href="assets/css/bootstrap.css" rel="stylesheet">
-	<link href="assets/css/simple-sidebar.css" rel="stylesheet">
-	<link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
-	<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+  <title>GPS</title>
+  <link rel="shortcut icon" href="assets/imgs/tab.ico">
+  <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
+  <link href="assets/css/bootstrap.css" rel="stylesheet">
+  <link href="assets/css/simple-sidebar.css" rel="stylesheet">
+  <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
+  <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
   <style>
   .squaredFour {
     width: 20px;
@@ -52,13 +53,13 @@
   }
 
 
-  #plotin{height: 25px; width:50px; background-color:transparent;  font-size:11px; border:1px solid #aaa; color: gray}
+  #plotin{height: 25px; width:100px; background-color:transparent;  font-size:11px; border:1px solid #fff; color: #080808}
   #plotin:hover{
     background-color: #626262; border: none; color: #f4f4f4; font-size:12px; -moz-transform: scale(1); -webkit-transform: scale(1); transform: scale(1);
   }
-  #perloader{
+  /*#perloader{
     z-index: 1020;
-    background: transparent url('assets/imgs/loader.gif') 50% 50% no-repeat;
+    background: transparent url('assets/imgs/loader.gif') 50% 50% no-repeat;*/
 }
   }
   </style>
@@ -69,19 +70,19 @@
 <div id="preloader02" >
     <div id="status02">&nbsp;</div>
 </div>
-<body ng-app="fuelapp">
-	<div id="wrapper" ng-controller="mainFuel">
-		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav">
-				<li class="sidebar-brand"><a href=""><img id="imagesrc" src=""/></a></li>
-				<li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
-				<li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
-				<li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
-				<li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-				<li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
-				<li><a href="../public/logout"><img src="assets/imgs/logout.png"></a></li>
-			</ul>
-			<ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
+<body ng-app="mapApp">
+  <div id="wrapper" ng-controller="mainFuel">
+    <div id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <li class="sidebar-brand"><a href=""><img id="imagesrc" src=""/></a></li>
+        <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
+        <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
+        <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
+        <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
+        <li class="admin"><a href="../public/fuel"  class="active"><div></div><label>Fuel</label></a></li>
+        <li><a href="../public/logout"><img src="assets/imgs/logout.png"></a></li>
+      </ul>
+      <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
         <li style="padding-left:25px;">
          <div class="right-inner-addon" align="center"> 
           <i class="fa fa-search"></i>
@@ -98,13 +99,14 @@
 
   <div id="page-content-wrapper">
     <div class="container-fluid">
-        <div class="panel panel-default"></div>   		
+        <div class="panel panel-default"></div>       
       </div>
   </div>
+  <div style="position: absolute;top: 0px;left: 40%; z-index:999999;" id="testLoad"></div>
   <div class="col-md-12">
          <div class="box box-primary">
           <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
-            <h4 class="box-title">Fuel &amp; Load</h4>
+            <h4 class="box-title">Fuel Analytics</h4>
           </div>
           <div class="row">
            <div class="col-md-1" align="center"></div>
@@ -144,9 +146,9 @@
          <div class="form-group">
            <div class="input-group datecomp">
             <select class="input-sm form-control" id="fuelValue">
-             <option value="0">Interval</option>
+             <!-- <option value="0">Select</option> -->
              <option value="distance" selected>Distance &amp; Time</option>
-             <option value="fill">Drop &amp; Fill</option>
+             <option value="fill">Fuel Fill</option>
            </select>
          </div>
        </div>
@@ -159,19 +161,49 @@
   </div>
 
 
-          <div id="page-content-wrapper">
+          <div id="page-content-wrapper" style="background-color: #f4f4f4">
             <div class="container-fluid">
               <div class="panel panel-default">
                 <div class="col-md-12">
-                  <div class="box-body" id="eventReport" style="width: 100%; height: 100%;">
+                  <div class="box-body" id="eventReport" style="width: 100%; height: 100%; ">
                     <div style="display: flex; -webkit-flex; -ms-flex: 1; background-color: #f4f4f4; padding-left: 30px" class="box box-info">
                       <div class="squaredFour" style="width: 30%"><h5>Group Name : {{gName}}</h5></div>
-                      <div style="float: left; width: 45%"><h5>Vehicle ID : {{shortName}}</h5></div> 
+                      <div style="float: left; width: 45%"><h5>Vehicle Name : {{shortName}}</h5></div> 
                     </div>
+
+                    <div style="display: flex; -webkit-flex; -ms-flex: 1; background-color: #f4f4f4; padding-left: 30px" class="box box-info">
+                      <div style="width: 95%"><h5>Distance Vs Fuel Consume</h5></div>
+                      <div style="width: 5%; padding: 5px"><span id="minus"><img src="assets/imgs/minus.png"></span></div> 
+                    </div>
+
+                   <!--  <div class="box box-info">
+                    <div style="padding: 5 px; width: 100%; border-radius: 3px" ><h5 style="float: left">Trip Vs Fuel Consume</h5>
+                        <span id="minus"><img src="assets/imgs/minus.png"></span>
+                      </div>
+                    </div> -->
+                    <div style="height: 310px;" id="chart1">
+                      <div style="width: 100wh; height: 300px;" id="container"></div>
+                    </div>
+                    <div style="display: flex; -webkit-flex; -ms-flex: 1; background-color: #f4f4f4; padding-left: 30px" class="box box-info">
+                      <div style="width: 95%"><h5>Duration Vs Fuel Consume</h5></div>
+                      <div style="width: 5%; padding: 5px"><span id="minus1"><img src="assets/imgs/minus.png"></span></div> 
+                    </div>
+
+                    <div style="height: 310px;" id="chart2">
+                      <div style="width: 100wh; height: 300px" id="container1"></div> 
+                    </div>
+
                     <!-- </b></th> -->
-                      <div style="width: 50%; float: left; padding-right: 2%; text-align: center">
+                      <div style="width: 50%; float: left; padding-right: 2%; text-align: center" id="fuelCons">
                         <table class="table table-striped table-condensed table-hover" style="font-size: 14px">
-                          <thead style="background-color: #f4f4f4; color: #323232">
+                          <thead style="background-color: #a6a6a6; color: #323232">
+                            <th colspan="3">Distance Vs Fuel</th>
+                            <th>
+                              <div class="pull-right">
+                                <img src="../app/views/reports/image/xls.png" ng-click="exportData('fuelCons')"/>
+                                <img src="../app/views/reports/image/csv.png" ng-click="exportDataCSV('fuelCons')"/>
+                              </div>
+                            </th>
                             <tr>
                              <th>Fuel Distance</th>
                              <th colspan="2">
@@ -184,11 +216,17 @@
                               </div>
                             </th>
                             <th  colspan="1" style="text-align: center">
-                              <input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px" value="10" class="kms" />(km)</th>
+                              <select title="Suggested Stops" id="plotin" class="kms">
+                                <option value="25">25 (kms)</option>
+                                <option value="50">50 (kms)</option>
+                                <option value="75">75 (kms)</option>
+                                <option value="100">100 (kms)</option>
+                              </select>
+                              <!-- <input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px;" value="25" class="kms" />(km)</th> -->
                           </tr>
                           <tr>
                             <th colspan="2">Date &amp; Time</th>
-                            <th>Trip(Km)</th>
+                            <th>Distance(Km)</th>
                             <th>Consume(ltr)</th>
                           </tr>
                           </tr>
@@ -205,12 +243,19 @@
                         </tbody>
                       </table>
                     </div>
-                    <div style="width: 50%; float: left; text-align: center">
+                    <div style="width: 50%; float: left; text-align: center" id="fueltime">
                       <table class="table table-striped table-condensed table-hover" style="font-size: 14px">
-                        <thead style="background-color: #f4f4f4; color: #323232">
+                        <thead style="background-color: #a6a6a6; color: #323232">
+                          <th colspan="2">Duration Vs Fuel</th>
+                            <th>
+                              <div class="pull-right">
+                                <img style="cursor: pointer;" src="../app/views/reports/image/xls.png" ng-click="exportData('fueltime')"/>
+                                <img width=30 height=30 style="cursor: pointer;" src="../app/views/reports/image/csv.png" ng-click="exportDataCSV('fueltime')"/>
+                              </div>
+                            </th>
                          <tr>
                             <th>Fuel Time</th>
-                            <th colspan="2" style="text-align: center">
+                            <th colspan="1" style="text-align: center">
                               <div style="display: flex; -webkit-flex; -ms-flex: 1;">
                                 <div class="squaredFour" style="width: 15%;">
                                   <input type="checkbox" value="None" id="idle" name="check"/>
@@ -219,23 +264,30 @@
                                 <div style="float: left; width: 30%">Interval</div> 
                               </div>
                             </th>
-                            <th style="text-align: center"><input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px" value="1" class="hrs"/>(hrs)</th>
+                            <th style="text-align: center"><!-- <input type="textbox" id="plotin" style="height: 20px; width:40px; border-radius: 3px" value="2" class="hrs"/>(hrs) -->
+                              <select title="Suggested Stops" id="plotin" class="hrs">
+                                <option value="2">2 (hrs)</option>
+                                <option value="3">3 (hrs)</option>
+                                <option value="4">4 (hrs)</option>
+                                <option value="5">5 (hrs)</option>
+                              </select>
+                            </th>
                           <tr>
                             <th>Start Time</th>
                             <th>End Time</th>
-                            <th>Duration</th>
-                            <th>Consume</th> 
+                            <!-- <th>Duration</th> -->
+                            <th>Consume (ltr)</th> 
                           </tr>
                         </thead>
                         <tbody>
                           <tr ng-repeat="val in fuelTotal[0].timeHistory">
                             <td>{{val.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                             <td>{{val.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                            <td>{{msToTime(val.duration)}}</td>
+                            <!-- <td>{{msToTime(val.duration)}}</td> -->
                             <td>{{val.fuelConsume}}</td> 
                           </tr>
                           <tr ng-if="fuelTotal[0].timeHistory==null">
-                            <td colspan="4" class="nulltd">choose some other date</td>
+                            <td colspan="3" class="nulltd">choose some other date</td>
                           </tr>
                         </tbody>
                       </table>
@@ -243,11 +295,11 @@
                   </div>
                   <div id="fill">
                     <div class="box-body" id="eventReport" style="width: 100%; height: 100%;">
-                    <div style="display: flex; -webkit-flex; -ms-flex: 1; background-color: #f4f4f4; padding-left: 30px" class="box box-info">
+                    <div style="display: flex; -webkit-flex; -ms-flex: 1; background-color: #f4f4f4; padding-left: 30px" class="box box-info" ng-show="hide">
                       <div class="squaredFour" style="width: 30%"><h5>Group Name : {{gName}}</h5></div>
                       <div style="float: left; width: 45%"><h5>Vehicle ID : {{shortName}}</h5></div> 
                     </div>
-                      <div style="width: 50%; float: left; padding-right: 2%; margin-top: 5px; text-align: center">
+                       <div style="width: 50%; float: left; padding-right: 2%; margin-top: 5px; text-align: center" ng-show="hide">
                         <table class="table table-striped table-condensed table-hover" style="font-size: 14px" >
                           <thead style="background-color: #1affc2; color: #323232">
                             <tr>
@@ -278,39 +330,48 @@
                             <td>{{rep.fuelConsume}}</td>
                             <td>{{rep.fuelFrom}}</td>
                             <td>{{rep.fuelTo}}</td>
-                          </tr>
+                          </tr> 
                           <tr ng-if="fuelTotal[0].fuelDrop==null">
                             <td colspan="4" class="nulltd">choose some other date</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    <div style="width: 50%; float: left;  margin-top: 5px; text-align: center">
+                    <div style="width: 50%; float: left;  margin-top: 5px; text-align: center" id="fuelfill">
                       <table class="table table-striped table-condensed table-hover" style="font-size: 14px">
                         <thead style="background-color: #1affc2; color: #323232">
+                          <th colspan="3">Fuel Fill Analytics</th>
+                            <th colspan="2">
+                              <div class="pull-right">
+                                <img style="cursor: pointer;" src="../app/views/reports/image/xls.png" ng-click="exportData('fuelfill')"/>
+                                <img width=30 height=30 style="cursor: pointer;" src="../app/views/reports/image/csv.png" ng-click="exportDataCSV('fuelfill')"/>
+                              </div>
+                            </th>
                          <tr>
                             <th>Fuel Fill</th>
                             <th>
                               <div style="display: flex;">
-                                <div class="squaredFour" style="width: 20%">
+                                <div class="squaredFour" style="width: 50%">
                                   <input type="checkbox" value="None" id="drop" name="check" checked/>
                                   <label for="drop"></label>
                                 </div>
-                                <div style="float: left; width: 45%">Fill</div> 
+                               <!--  <div style="float: left; width: 45%">Fill</div>  -->
                               </div>
                             </th>
-                            <th>Drop Total :</th>
+                            <th colspan="2">Cumulative Fuel :</th>
                             <th>{{fuelTotal[1].totalFuel}} (ltr)</th>
                           <tr>
                             <th>Date &amp; Time</th>
-                            <th>End</th>
-                            <th>Duration</th>
-                            <th>Consume</th> 
+                            <th>G-Link</th>
+                            <th>Filling (ltr)</th>
+                            <th>Begining (ltr)</th>
+                            <th>Ending (ltr)</th> 
                           </tr>
                         </thead>
                         <tbody>
                           <tr ng-repeat="rep in fuelTotal[1].fuelFill">
-                            <td>{{rep.latitude}},{{rep.longitude}}</td>
+                            <td>{{rep.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td><a href="https://www.google.com/maps?q=loc:{{rep.latitude}},{{rep.longitude}}" target="_blank">Link</td>
                             <td>{{rep.fuelConsume}}</td>
                             <td>{{rep.fuelFrom}}</td>
                             <td>{{rep.fuelTo}}</td>
@@ -333,10 +394,15 @@
 
     <script src="assets/js/static.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
+    <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    <script src="../app/views/reports/customjs/html5csv.js"></script>
+    <script src="assets/js/highcharts.js"></script>
     <script src="../app/views/reports/customjs/moment.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
+    <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/unique.js"></script>
     <script src="assets/js/fuelreport.js"></script>
     <script>

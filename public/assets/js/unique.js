@@ -1,12 +1,12 @@
 //menu loading
 
-$("#testLoad").load("../public/menu");
+// $("#testLoad").load("../public/menu");
     
 //logo img
 
-var logo =document.location.host;
-var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-$('#imagesrc').attr('src', imgName);
+// var logo =document.location.host;
+// var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+// $('#imagesrc').attr('src', imgName);
 
 // date and time function
 
@@ -41,3 +41,4 @@ function googleTranslateElementInit()
  //            },500);
  //        });
  //    });   
+

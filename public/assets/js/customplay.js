@@ -1,4 +1,4 @@
-var app = angular.module('mapApp', []);
+// var app = angular.module('mapApp', []);
 var gmarkers=[];
 var ginfowindow=[];
 var gsmarker=[];
@@ -895,4 +895,9 @@ if($scope.markerstart){
             window.clearInterval(id);
         }   
 	}
+	$(window).load(function() {
+		$('#status').fadeOut(); 
+		$('#preloader').delay(350).fadeOut('slow');
+		$('body').delay(350).css({'overflow':'visible'});
+});
 });

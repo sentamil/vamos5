@@ -1,6 +1,3 @@
-
-<!-- ../public/vdmVehicles/{{trackVehID}}/edit -->
-
 <!DOCTYPE html>
 <html lang="en" ng-app="mapApp">
 <head>
@@ -10,6 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
 <title>GPS</title>
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
@@ -29,6 +27,9 @@
   
 </style>
 </head>
+<div id="preloader" >
+    <div id="status">&nbsp;</div>
+</div>
 <div id="preloader02" >
     <div id="status02">&nbsp;</div>
 </div>
@@ -41,10 +42,7 @@
                 <li class="history"><a href="../public/replay" class="active"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-                <!--
-                 <li class="settings"><a href="../public/settings"><div></div><label>Settings</label></a></li>
-                 -->
-            <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
+                <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;">
@@ -65,8 +63,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div style="position: absolute;top: 0px;left: 20%; z-index:999999;" id="testLoad">
-                        </div>
+                        <div style="position: absolute;top: 0px;left: 20%; z-index:999999;" id="testLoad"></div>
                         </div>
                         <div id="minmax">
                             <img src="assets/imgs/add.png" />
@@ -226,8 +223,6 @@
                                   </div>
                               </div>
                           </div>
-                          <div ng-show="loading" class="overlay"></div>
-              <div ng-show="loading" class="loading-img"></div>
                     </div>
                 </div>
             </div>
@@ -255,19 +250,21 @@
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,places&sensor=false" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/infobubble.js" type="text/javascript"></script>
     <script src="assets/js/moment.js" type="text/javascript"></script>
     <script src="assets/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
+    <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/unique.js"></script>
     <script src="assets/js/customplay.js"></script>
     <script>
 
-    var logo =document.location.host;
-    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    $('#imagesrc').attr('src', imgName);
+    // var logo =document.location.host;
+    // var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    // $('#imagesrc').attr('src', imgName);
     
     $(document).ready(function(){
         $('#minmax').click(function(){

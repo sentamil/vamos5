@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Satheesh">
     <title>GPS</title>
+    <link rel="shortcut icon" href="assets/imgs/tab.ico">
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
@@ -142,6 +143,7 @@
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/highcharts-more.js"></script>
 	<script src="http://code.highcharts.com/modules/solid-gauge.js"></script>

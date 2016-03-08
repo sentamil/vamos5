@@ -1,13 +1,13 @@
 //comment by satheesh ++...
-//var total = 0;
-//var chart = null;
-//http://128.199.175.189/
 var getIP	=	globalIP;
-var app = angular.module('mapApp',['ui.bootstrap']);
-//var gmarkers=[];
-//var ginfowindow=[];
-app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_sysservice){
+app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	
+	 $("#testLoad").load("../public/menu");
+	var getUrl  =   document.location.href;
+	var index   =   getUrl.split("=")[1];
+	if(index)
+	$scope.actTab 	=	true;
+	$scope.tab 		=true;
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
 	$scope.newAddr      = 	{};
@@ -18,7 +18,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
      	var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };	
-
+    
     function format24hrs(date)
     {
     	var date1 = new Date(date);
@@ -62,7 +62,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	 	$http.get($scope.url).success(function(data){
 			$scope.locations 	= 	data;
 			$scope.vehigroup    =   data[$scope.groupId].group;
-			$scope.consoldate(data[$scope.groupId].group);
+			// $scope.consoldate(data[$scope.groupId].group);
 			if(data.length)
 				$scope.vehiname		=	data[$scope.groupId].vehicleLocations[0].vehicleId;
 			angular.forEach(data, function(value, key) {
@@ -70,7 +70,12 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 				  		$scope.data1		=	data[key];
 				  }
 			});				
-		$scope.loading	=	false;
+		// // $scope.loading	=	false;
+		// if($('#consoldate.active'))
+		console.log($('#consoldate').attr('id'));
+		// if(!$("#consoldate").css('visibility') === 'hidden'){
+				$('#preloader').fadeOut(); 
+				$('#preloader02').delay(350).fadeOut('slow');
 		$scope.recursive($scope.data1.vehicleLocations,0);
 		}).error(function(){ /*alert('error'); */});
 	});
@@ -120,14 +125,25 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	  	};
 	}());
 
-
+    // web service call in the consoldate report
+	var service = function(conUrl)
+	{
+		$http.get(conUrl).success(function(data)
+		{
+			$scope.consoldateData = data;
+			$('#preloader').fadeOut(); 
+			$('#preloader02').delay(350).fadeOut('slow');
+			$scope.selectMe($scope.consoldateData);
+		});
+	}
+  	 
 	$scope.getAddressFromGAPI = function(url, index1, index2, lat, lan) {
 		$http.get(url).success(function(data) {
     		
     		// Declare the new property address to the existing list
 			$scope.consoldateData[index1].historyConsilated[index2].address = " ";
 			$scope.consoldateData[index1].historyConsilated[index2].address = data.results[0].formatted_address;
-			var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
     	})
 	};
 
@@ -144,30 +160,24 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	}
 
 	
-	$scope.consoldate =  function(group)
+	$scope.consoldate =  function()
 	{
+		
 		$('#preloader').show(); 
 		$('#preloader02').show();
 		$scope.fromNowTS1		=	new Date();
 		$scope.fromdate1		=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
 		$scope.todate1			=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
 		$scope.totime		    =	format24hrs($scope.fromNowTS1);
-		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+group+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
+		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
 		service(conUrl);
 	}
-		
-	// web service call in the consoldate report
-	var service = function(conUrl)
-	{
-		$http.get(conUrl).success(function(data)
-		{
-			$scope.consoldateData = data;
-			$('#preloader').fadeOut(); 
-			$('#preloader02').delay(350).fadeOut('slow');
+	
 
-			// To get the address details from Google API
-			$scope.selectMe($scope.consoldateData);
-		});
+	$scope.dialogBox 	=	function()
+	{
+		$scope.tab = false;
+		
 	}
 
 	$scope.exportData = function (data) {
@@ -186,7 +196,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 		$http.get(urlAddress).success(function(response)
 		{
 			data.address 	=	response.results[0].formatted_address;
-			var t 			= 	vamo_sysservice.geocodeToserver(data.latitude,data.longitude,response.results[0].formatted_address);
+			// var t 			= 	vamo_sysservice.geocodeToserver(data.latitude,data.longitude,response.results[0].formatted_address);
 		});
 	}
 
@@ -258,7 +268,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
     		
     		// Declare the new property address to the existing list
 			$scope.mainlist[index1]= data.results[0].formatted_address;
-			var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
     	})
 	};
 	$scope.getLocation	=	function(lat,lon,ind) {
@@ -269,7 +279,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 			$scope.locationname = data.results[0].formatted_address;
 			$scope.mainlist[ind]=	data.results[0].formatted_address;
 			$scope.loading	=	false;
-			var t = vamo_sysservice.geocodeToserver(lat, lon, data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(lat, lon, data.results[0].formatted_address);
 		});
 	};
 	
@@ -306,10 +316,19 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval, vamo_syss
 	
 	
 	$scope.groupSelection = function(groupname, groupid){
-		 $scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
-		 $scope.groupId 	= 	groupid;
-		
-	}
+		$scope.groupId 	= 	groupid;
+		$scope.vehigroup = groupname;
+		$scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+$scope.vehigroup;
+		if($('#consoldate').attr('id')=='consoldate')
+		{
+			$('#preloader').show(); 
+			$('#preloader02').show();
+			$scope.consoldate1();
+			
+		}
+			
+	
+		}
 	
 	
 	
@@ -344,28 +363,6 @@ app.directive("getLocation", function () {
     }
   };
 });
-app.factory('vamo_sysservice', function($http, $q){
-	return {
-		geocodeToserver: function (lat, lng, address) {
-		  try { 
-				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'&geoAddress='+address;
-			    return this.getDataCall(reversegeourl);
-			}
-			catch(err){ console.log(err); }
-		  
-		},
-        getDataCall: function(url){
-        	var defdata = $q.defer();
-        	$http.get(url).success(function(data){
-            	 defdata.resolve(data);
-			}).error(function() {
-                    defdata.reject("Failed to get data");
-            });
-			return defdata.promise;
-        }
-    }
-});
-
 
 app.directive("customSort", function() {
 return {

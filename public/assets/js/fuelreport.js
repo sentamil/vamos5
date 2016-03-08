@@ -1,5 +1,4 @@
-var app = angular.module('fuelapp', ['ui.bootstrap']);
-
+// var app = angular.module('fuelapp',['ui.bootstrap']);
 app.controller('mainFuel', function($scope, $http, $filter){
 	
 	// console.log('  inside the js file  ')
@@ -25,6 +24,188 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
 	}
+	// $scope.fuelCon 		= 	[];
+	// $scope.trip 		= 	[];
+	// $scope.duration 	= 	[];
+	// $scope.timeList		=	[];
+	function graphList(list)
+	{	
+		$scope.fuelCon 		= 	[];
+		$scope.trip 		= 	[];
+		$scope.duration 	= 	[];
+		$scope.timeList		=	[];
+		if(list[0])
+		{
+			if(undefined==list[0].timeHistory)
+   				list[0].timeHistory =[];
+   			if(undefined==list[0].distanceHistory)
+   				list[0].distanceHistory=[];
+   			var getLength = Math.max(list[0].distanceHistory.length, list[0].timeHistory.length)
+			for (var i = 0; i < getLength; i++) {
+			//console.log(i)
+				if(list[0].distanceHistory.length>i)
+				{
+					$scope.fuelCon.push(list[0].distanceHistory[i].fuelConsume)
+					$scope.trip.push(list[0].distanceHistory[i].tripDistance)
+					//console.log('push'+i)	
+				}
+				if(list[0].timeHistory.length>i)
+				{
+					$scope.duration.push(list[0].timeHistory[i].fuelConsume)
+					$scope.timeList.push($scope.msToTime(list[0].timeHistory[i].duration))
+				}
+				
+			};
+		}
+		
+		
+	}
+
+
+	//check undefined
+	function isUndefined(isUndef){
+		try{
+			if(isUndef)
+				return false;
+		} catch (err){
+			return true;
+		}
+	}
+
+
+	function graphData(val){
+		graphList(val);
+	$(function () {
+   
+        $('#container1').highcharts({
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: ''
+            },
+          
+             xAxis: {
+            categories: $scope.timeList
+        		},
+            
+            yAxis: {
+                title: {
+                    text: 'Fuel'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Fuel Consume',
+                data: $scope.duration
+            }]
+        });
+
+});
+	 $('#container').highcharts({
+        chart: {
+            zoomType: 'xy'
+        },
+        title: {
+            text: ''
+        },
+       
+       xAxis: {
+                labels:
+                {
+                    enabled: false
+                }
+            },
+        yAxis: [{ // Primary yAxis
+            labels: {
+                format: '{value} ltr',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            title: {
+                text: 'Fuel',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            }
+        }, { // Secondary yAxis
+            title: {
+                text: 'Distance',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            labels: {
+                format: '{value} kms',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            opposite: true
+        }],
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            x: 120,
+            verticalAlign: 'top',
+            y: 100,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+        },
+        series: [{
+            name: 'Distance',
+            type: 'column',
+            yAxis: 1,
+            data: $scope.trip,
+            tooltip: {
+                valueSuffix: ' kms'
+            }
+
+        }, {
+            name: 'Fuel',
+            type: 'spline',
+            data: $scope.fuelCon,
+            tooltip: {
+                valueSuffix: 'ltr'
+            }
+        }]
+    });
+}
+
 
 	function convert_to_24h(time_str) {
 		console.log(time_str);
@@ -117,19 +298,29 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		// $('#preloader02').delay(350).fadeOut('slow');
 	}
 	
+
+	
 	// service call
 	function serviceCall(url)
 	{
-		$('#perloader').show();
-		$('#preloader02').show();
+		// $('#perloader').show();
+		// $('#preloader02').show();
 		$http.get(url).success(function(data)
 		{
 			$('#status02').fadeOut(); 
 			$('#preloader02').delay(350).fadeOut('slow');
 			if(data.length>0)
-				$scope.fuelTotal 	= data;
+			{
+				$scope.fuelTotal 	= 	data;
+				graphData(data);
+			}
+				
 			else
-				$scope.fuelTotal=[];
+			{
+				graphData(null);
+				$scope.fuelTotal	= 	[];
+			}
+				
 				
 		})
 		
@@ -139,9 +330,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	//button click event
 	$scope.plotHist 		= function()
 	{
-		
 		$scope.getValue('button');
-		
 	}
 
 	$scope.genericFunction  = function(single, index, shortname)
@@ -152,7 +341,8 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	}
 	
 	$scope.getValue 	= function(data)
-	{	
+	{	$('#status02').show(); 
+		$('#preloader02').show(); 
 		switch(data)
 		{
 			case 'vehicle':
@@ -169,6 +359,16 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		}
 	}
 	
+	$scope.exportData = function (data) {
+    var blob = new Blob([document.getElementById(data).innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, data+".xls");
+    };
+    $scope.exportDataCSV = function (data) {
+    CSV.begin('#'+data).download(data+'.csv').go();
+    };
+
 	$scope.seperate 	= function()
 	{
 		var stoppage 		= 	document.getElementById ("stop").checked;
@@ -201,7 +401,13 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	$(window).load(function() {
 		$('#status').hide(); 
 		$('#preloader').hide('slow');
-		// $('body').delay(350).css({'overflow':'visible'});
-});
-	
+		$('body').delay(350).css({'overflow':'visible'});
+	});
+
+	$('#minus').click(function(){
+		$('#chart1').toggle(1000);
+	})
+	$('#minus1').click(function(){
+		$('#chart2').toggle(1000);
+	})
 });

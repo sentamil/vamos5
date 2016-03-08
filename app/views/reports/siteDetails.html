@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Satheesh">
     <title>GPS</title>
+    <link rel="shortcut icon" href="assets/imgs/tab.ico">
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     <!-- <link href="assets/css/jVanilla.css" rel="stylesheet"> -->
@@ -25,10 +26,10 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
                 <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
-                <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
+                <li class="history"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-                <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
+                <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
                 <!-- <li class="settings"><a href="../public/settings"  class="active"><div></div><label>Settings</label></a></li>
                 <li class="admin"><a href="javascript:void(0);"><div></div><label>Admin</label></a></li> -->
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
@@ -110,15 +111,17 @@
                         </div>       
                     </div>
                 <div id="maploc">
-                    <map id="map_canvas" style="height:100vh; width:100%;"></map>
+                    <div id="map_canvas" style="height:100vh; width:100%;"></div>
                 </div>
             </div>
         </div>
     </div>
     <script src="assets/js/static.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
     <script src="assets/js/addsite.js"></script>

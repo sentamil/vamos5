@@ -1772,7 +1772,7 @@ body > .header .logo .icon {
 }
 .box > .loading-img {
   z-index: 1020;
-  background: transparent url('../img/ajax-loader1.gif') 50% 50% no-repeat;
+  background: transparent url('../img/status.gif') 50% 50% no-repeat;
 }
 /*
 Component: timeline
@@ -3541,3 +3541,4 @@ fieldset[disabled] .btn-vk.active {
   color: #587ea3;
   background-color: #ffffff;
 }
+

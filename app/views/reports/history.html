@@ -9,27 +9,30 @@
 <meta name="description" content="">
 <meta name="author" content="Satheesh">
 <title>GPS</title>
-
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
-<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
-<link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css">
-<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
 </head>
+<div id="preloader" >
+    <div id="status">&nbsp;</div>
+</div>
+<div id="preloader02" >
+    <div id="status02">&nbsp;</div>
+</div>
 <style>
-	.box > .loading-img {
+	/*.box > .loading-img {
 z-index: 1020;
-background: transparent url('../app/views/reports/ajax-loader1.gif') 50% 50% no-repeat;
-}
+background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
+}*/
 
 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
 background-color: #ffffff;
 }
 </style>
-<body ng-app="hist">
+<body ng-app="mapApp">
 	<div id="wrapper" ng-controller="histCtrl">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -38,7 +41,7 @@ background-color: #ffffff;
                 <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports" class="active"><div></div><label>Reports</label></a></li>
 		 		<li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-                  <li class="admin"><a href="../public/performance"><div></div><label>Performance</label></a></li>
+                <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
             <ul class="sidebar-subnav ">
@@ -55,6 +58,7 @@ background-color: #ffffff;
                 </li>
             </ul>
         </div>
+        <div style="position: absolute;top: 0px;left: 40%; z-index:999999;" id="testLoad"></div>
         <div id="page-content-wrapper">
             <div class="container-fluid">
             	<div class="panel panel-default">
@@ -187,7 +191,7 @@ background-color: #ffffff;
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.speed}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
-										<td ng-click="address_click(user, $index)">
+										<td>
 											<p ng-if="user.address!=null">{{user.address}}</p>
 											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && maddress1[$index]!=null">{{maddress1[$index]}}</p>
 											<p ng-if="user.address==null && maddress1[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
@@ -205,7 +209,7 @@ background-color: #ffffff;
 							<!-- <pagination boundary-links="true" max-size="3" items-per-page="itemsPerPage" total-items="movementdata.length" ng-model="currentPage" ng-change="pageChanged()"></pagination>	
 							 --></div>
 			   			 </tab>
-			   			 <tab select="alertMe('Overspeed')" heading="Overspeed">
+			   			 <tab select="alertMe('Overspeed')" heading="Overspeed" selected>
 			   				 <p style="margin:0" class="page-header">Overspeed Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   				 <div class="box-body table-responsive" id='overspeedreport'>
 			   				 <table class="table table-bordered table-striped table-condensed table-hover">
@@ -252,7 +256,7 @@ background-color: #ffffff;
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.speed}}</td>
 										<td colspan="2"><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
-										<td ng-click="address_click(user, $index)">
+										<td>
 											<p ng-if="user.address!=null">{{user.address}}</p>
 											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && oaddress[$index]!=null">{{oaddress[$index]}}</p>
 											<p ng-if="user.address==null && oaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
@@ -300,7 +304,7 @@ background-color: #ffffff;
 										
 										<td>{{user.lastSeen}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
-										<td ng-click="address_click(user, $index)"> 
+										<td> 
 											<p ng-if="user.address!=null">{{user.address}}</p>
 											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && saddressStop[$index]!=null">{{saddressStop[$index]}}</p>
 											<p ng-if="user.address==null && saddressStop[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
@@ -337,7 +341,7 @@ background-color: #ffffff;
 			   			 	 		<tr ng-repeat="user in idlereport" class="active" style="text-align:center">
 			   			 	 			<td>{{user.lastSeen}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
-			   			 	 			<td ng-click="address_click(user, $index)">
+			   			 	 			<td>
 			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
 			   			 	 				<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && addressIdle[$index]!=null">{{addressIdle[$index]}}</p>
 			   			 	 				<p ng-if="user.address==null && addressIdle[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
@@ -398,7 +402,7 @@ background-color: #ffffff;
 											<p ng-if="user.duration!=null">{{msToTime(user.duration)}}</p>
 											<p ng-if="user.duration==null">--</p>
 										</td>
-			   			 	 			<td colspan="2" ng-click="address_click(user, $index)">
+			   			 	 			<td colspan="2">
 			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
 			   			 	 				<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && addressEvent[$index]!=null">{{addressEvent[$index]}}</p>
 			   			 	 				<p ng-if="user.address==null && addressEvent[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
@@ -425,10 +429,10 @@ background-color: #ffffff;
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="4"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th width="13%" class="id" style="text-align:center;">Start Time</th>
+											<th width="20%" class="id" style="text-align:center;">Start Time</th>
 											<!-- <th width="10%" class="id" style="text-align:center;">G-Map</th> -->
-											<th colspan="2" width="40%" class="id" style="text-align:center;">Nearest Location</th>
-											<th width="15%" class="id" style="text-align:center;">State</th>
+											<th colspan="2" class="id" style="text-align:center;">Nearest Location</th>
+											<th width="20%" class="id" style="text-align:center;">State</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
@@ -451,37 +455,42 @@ background-color: #ffffff;
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<td colspan="2">Vehicle Group</td>
+				   			 	 			<td>Vehicle Group</td>
 										  	<td>{{vgroup}}</td>
-										  	<td colspan="2">Vehicle Name</td>
+										  	<td>Vehicle Name</td>
 										  	<td>{{hist.shortName}}</td>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="6"></td></tr>
+			   			 	 			<tr><td colspan="4"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
 											<th class="id" style="text-align:center;" width="20%">Alert Time</th>
 											<!-- <th width="10%" class="id" style="text-align:center;">G-Map</th> -->
 											<th class="id" style="text-align:center;">Load Truck</th>
-											<th class="id" style="text-align:center;">Load Trailer</th>
-											<th class="id" style="text-align:center;">Total Truck</th>
-											<th class="id" style="text-align:center;">Total Trailer</th>
-											<th class="id" style="text-align: center;" width="30%">Loaction</th>
+											<th ng-hide="true" class="id" style="text-align:center;">Load Trailer</th>
+											<th ng-hide="true" class="id" style="text-align:center;">Total Truck</th>
+											<th ng-hide="true" class="id" style="text-align:center;">Total Trailer</th>
+											<th colspan="2" class="id" style="text-align: center;" width="30%">Loaction</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
 			   			 	 		<tr class="active" style="text-align:center" ng-repeat="load in loadreport" ng-if="load.loadTruck!=='nill' && load.loadTrailer!=='nill' && load.totalTruck!=='nill' && load.totalTrailer!=='nill'">
 			   			 	 			<td>{{load.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{load.loadTruck}}</td>
-			   			 	 			<td>{{load.loadTrailer}}</td>
-			   			 	 			<td>{{load.totalTruck}}</td>
-			   			 	 			<td>{{load.totalTrailer}}</td>
+			   			 	 			<td ng-hide="true">{{load.loadTrailer}}</td>
+			   			 	 			<td ng-hide="true">{{load.totalTruck}}</td>
+			   			 	 			<td ng-hide="true">{{load.totalTrailer}}</td>
 										<td>{{load.address}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr>
-										<td ng-if="loadreport==null" colspan="6">No Records Found Choose some other date</td>
+										<td ng-if="loadreport==null" colspan="4">No Records Found Choose some other date</td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
 			   			 	</div>
+			   			 </tab>
+			   			 <tab heading="Fuel" select="alertMe('fuel')">
+			   			 
+			   			 		<div style="width: 700px; height: 300px" id="container"></div> 
+			   			 
 			   			 </tab>
 			   			<div class="pull-right">
 		                <!-- <a href="downloadhistory?vvid={{id}}&rid={{downloadid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}&dvg={{vgroup}}&interval={{interval}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a> -->
@@ -492,8 +501,8 @@ background-color: #ffffff;
     		 		<!-- End Tabset -->
     		 		 
 		        </div><!-- /.box-body -->
-		        <div ng-show="loading" class="overlay"></div>
-		        <div ng-show="loading" class="loading-img"></div>
+		        <!-- <div ng-show="loading" class="overlay"></div>
+		        <div ng-show="loading" class="loading-img"></div> -->
 		        <!--<div ng-show="true" class="overlay"></div>
 		        <div ng-show="true" class="loading-img"></div> -->
 		        <div class="box-body col-md-3" ng-show="overallEnable">
@@ -590,27 +599,29 @@ background-color: #ffffff;
 		    </div>	
         </div>
        
-                 
+    <script src="assets/js/static.js"></script>        
 	<script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
     <script data-require="angular-ui-bootstrap@0.11.0" data-semver="0.11.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="assets/js/highcharts.js"></script>
     <script src="../app/views/reports/customjs/moment.js"></script>
     <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    <script src="../app/views/reports/customjs/html5csv.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
-    <script src="assets/js/static.js"></script>
-    <script src="../app/views/reports/customjs/html5csv.js"></script>
+    <script src="assets/js/vamoApp.js"></script>
+    
     <script src="../app/views/reports/customjs/history.js"></script>
 	
 	
 
 	<script>
+	   
+		
+
 	    
-	    var logo =document.location.host;
-    	var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    	$('#imagesrc').attr('src', imgName);
 	    $("#example1").dataTable();
 	      
 		$("#menu-toggle").click(function(e) {
