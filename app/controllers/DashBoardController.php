@@ -50,7 +50,7 @@ class DashBoardController extends \BaseController {
 						{$temp3=0;
 							$vechile1 =array();
 								foreach($vehiclesExpire as $org) {
-								$vehicleListId='S_Vehicles_Admin_'.$fcode;
+								$vehicleListId='S_Vehicles_'.$fcode;
 								$value=$redis->SISMEMBER($vehicleListId,$org);
 						
 								if($value==1)
