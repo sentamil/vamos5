@@ -550,7 +550,7 @@ public function edit($id) {
         $refData = array_add($refData, 'mobileNo', '0123456789');
         $refData = array_add($refData, 'overSpeedLimit', '50');
         $refData = array_add($refData, 'driverName', '');
-        $refData = array_add($refData, 'gpsSimNo', '');
+        $refData = array_add($refData, 'gpsSimNo', '0123456789');
         $refData = array_add($refData, 'email', ' ');
         $refData = array_add($refData, 'odoDistance', '0');
         $refData = array_add($refData, 'sendGeoFenceSMS', 'no');
@@ -1501,7 +1501,7 @@ public function migrationUpdate() {
         log::info( '------prodata---------- '.$tmpPositon);
         $redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
         try{
-            $expiredPeriod=$refDataJson1['expiredPeriod'];
+            $expiredPeriod=isset($refDataJson1['expiredPeriod'])?$refDataJson1['expiredPeriod']:'expiredPeriod';
             $vec=$redis->hget('H_Expire_'.$fcode,$expiredPeriod);
             if($vec!==null)
             {
@@ -1528,12 +1528,11 @@ public function migrationUpdate() {
         {
 
         }
-
         unset($refDataJson1['deviceId']);
         unset($refDataJson1['vehicleId']);
         $refDataJson1= array_add($refDataJson1, 'deviceId',$deviceId);
         $refDataJson1= array_add($refDataJson1, 'vehicleId',$vehicleId);
-        $redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
+       
         $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
         log::info(' expire---->'.$expiredPeriodOld);
         if(!$expiredPeriod==null)
@@ -1542,6 +1541,7 @@ public function migrationUpdate() {
             $expiredPeriod=str_replace($vehicleIdOld, $vehicleId, $expiredPeriod);
             $redis->hset('H_Expire_'.$fcode,$expiredPeriodOld,$expiredPeriod);
         }
+        $redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
         $refDataJson1 = json_encode ( $refDataJson1 );
 
         $redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson1 );
