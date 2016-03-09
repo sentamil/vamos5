@@ -732,6 +732,7 @@ function polygenDrawFunction(list){
 			if(data.siteParent)
 			 	angular.forEach(data.siteParent, function(value, key){
 					//console.log(' value'+key)
+					if(val == value.orgId)
 					angular.forEach(value.site, function(vals, keys){
 						//console.log('inside the for loop')
 						polygenDrawFunction(vals);
