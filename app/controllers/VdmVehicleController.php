@@ -66,12 +66,11 @@ public function index() {
         $deviceId = $vehicleRefData['deviceId'];
 
         $deviceList = array_add ( $deviceList, $vehicle,$deviceId );
-        $shortName = $vehicleRefData['shortName'];
+        $shortName = isset($vehicleRefData['shortName'])?$vehicleRefData['shortName']:'nill';
         $shortNameList = array_add($shortNameList,$vehicle,$shortName);
         $portNo=isset($vehicleRefData['portNo'])?$vehicleRefData['portNo']:9964;
         $portNoList = array_add($portNoList,$vehicle,$portNo);
         $mobileNo=isset($vehicleRefData['gpsSimNo'])?$vehicleRefData['gpsSimNo']:99999;
-
         $mobileNoList = array_add($mobileNoList,$vehicle,$mobileNo);
         $orgId=isset($vehicleRefData['orgId'])?$vehicleRefData['orgId']:'Default';
         $orgIdList = array_add($orgIdList,$vehicle,$orgId);
