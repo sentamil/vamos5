@@ -360,7 +360,7 @@ class BusinessController extends \BaseController {
 				log::info($ownerShip.'1 ----------->'.$type);
 				$ownerShip      = 'OWN';
 			}
-			if(Session::get('cur')=='dealer')
+			if(Session::get('cur')=='dealer' && $type!==null)
 			{	log::info($ownerShip.'2 --a--------->'.Session::get('cur'));
 					$type='Sale';
 					$ownerShip = $username;
