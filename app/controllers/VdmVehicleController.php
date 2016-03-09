@@ -1393,7 +1393,7 @@ public function migrationUpdate() {
             $deviceId= $deviceIdOld;
             $vehicleId= $vehicleIdOld;
             return View::make ( 'vdm.vehicles.migration', array (
-                'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
+                'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
         }
         else if($vehicleId==$vehicleIdOld && $deviceId!==$deviceIdOld)
         {
@@ -1406,7 +1406,7 @@ public function migrationUpdate() {
                 $deviceId= $deviceIdOld;
                 $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
-                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
+                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
             }
         }
         else if($vehicleId!==$vehicleIdOld && $deviceId==$deviceIdOld)
@@ -1419,7 +1419,7 @@ public function migrationUpdate() {
                 $deviceId= $deviceIdOld;
                 $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
-                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
+                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
             }
         }
         else if($vehicleId!==$vehicleIdOld && $deviceId!==$deviceIdOld)
@@ -1432,7 +1432,7 @@ public function migrationUpdate() {
                 $deviceId= $deviceIdOld;
                 $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
-                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
+                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
             }
             $deviceIdTemp = $redis->hget ( $vehicleDeviceMapId, $deviceId );
             if($deviceIdTemp!==null)
@@ -1441,7 +1441,7 @@ public function migrationUpdate() {
                 $deviceId= $deviceIdOld;
                 $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
-                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
+                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
             }
             if($deviceIdTemp!==null && $vehicleIdTemp!==null)
             {
@@ -1449,7 +1449,7 @@ public function migrationUpdate() {
                 $deviceId= $deviceIdOld;
                 $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
-                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
+                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
             }
 
         }
