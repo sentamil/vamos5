@@ -702,8 +702,8 @@ function polygenDrawFunction(list){
       }
       var polygenColor = new google.maps.Polygon({
             path: polygenList,
-            strokeColor: "#7e7e7e",
-            strokeWeight: 0.8,
+            strokeColor: "#000",   //7e7e7e
+            strokeWeight: 0.7,
             fillColor: '#fe716d',
             fillOpacity: 0.1,
             map: $scope.map
