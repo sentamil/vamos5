@@ -361,7 +361,7 @@ class BusinessController extends \BaseController {
 				$ownerShip      = 'OWN';
 			}
 			if(Session::get('cur')=='dealer' ){
-				if($type!==null)
+				if($type==null)
 				{
 					return Redirect::to ( 'Business' )->withErrors ( 'select the sale' );
 				}
