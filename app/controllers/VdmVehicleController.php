@@ -556,6 +556,7 @@ public function edit($id) {
         $refData= array_add($refData, 'expiredPeriod',' ');
         $refData= array_add($refData, 'fuel', 'no');
         $refData= array_add($refData, 'isRfid', 'no');
+        $refData= array_add($refData, 'shortName', 'nill');
 //            $refData= array_add($refData, 'fuelType', 'digital');
         $refDataFromDB = json_decode ( $details, true );
 
