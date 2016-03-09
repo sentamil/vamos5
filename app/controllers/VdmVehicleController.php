@@ -542,6 +542,12 @@ public function edit($id) {
         $details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
 
         $refData=null;
+        $refData = array_add($refData, 'deviceModel', 'nill');
+        $refData = array_add($refData, 'regNo', 'nill');
+        $refData = array_add($refData, 'vehicleMake', ' ');
+        $refData = array_add($refData, 'vehicleType', ' ');
+        $refData = array_add($refData, 'oprName', ' ');
+        $refData = array_add($refData, 'mobileNo', '0123456789');
         $refData = array_add($refData, 'overSpeedLimit', '50');
         $refData = array_add($refData, 'driverName', '');
         $refData = array_add($refData, 'gpsSimNo', '');
