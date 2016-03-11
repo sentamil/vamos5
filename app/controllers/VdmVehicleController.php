@@ -1531,7 +1531,7 @@ public function migrationUpdate() {
         $shortName = isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill';
         $regNo = isset($refDataJson1['regNo'])?$refDataJson1['regNo']:'XXXXX';
         $vehicleMake =  isset($refDataJson1['vehicleMake'])?$refDataJson1['vehicleMake']:' ';
-        $vehicleType =  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:' ';I
+        $vehicleType =  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:'Bus';
         $oprName =  isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel';I
         $oprName = isset($refDataJson1['oprName'])?$refDataJson1['oprName']:' ';
         $mobileNo = isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789';
