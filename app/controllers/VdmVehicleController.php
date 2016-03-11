@@ -1528,61 +1528,61 @@ public function migrationUpdate() {
         {
 
         }
-        $shortName = isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill';
-        $regNo = isset($refDataJson1['regNo'])?$refDataJson1['regNo']:'XXXXX';
-        $vehicleMake =  isset($refDataJson1['vehicleMake'])?$refDataJson1['vehicleMake']:' ';
-        $vehicleType =  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:'Bus';
-        $opname =  isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel';I
-        $mobileN = isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789';
-        $overSpeedLimit = isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60';
-        $deviceModel =isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:'GT06N'; 
-        $email = isset($refDataJson1['email'])?$refDataJson1['email']:' '; 
-        $orgId = isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default'; 
-        $sendGeoFenceSMS = isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:'no'; 
-        $gpsSimNo = isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'0123456789'; 
-        $odoDistance = isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0'; 
-        $morningTripStartTime = isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' '; 
-        $eveningTripStartTime = isset($refDataJson1['eveningTripStartTime'])?$refDataJson1['eveningTripStartTime']:' '; 
-        $parkingAlert = isset($refDataJson1['parkingAlert'])?$refDataJson1['parkingAlert']:'no'; 
-        $fuel=isset($refDataJson1['fuel'])?$refDataJson1['fuel']:'no';
-        $altShortName=isset($refDataJson1['altShortName'])?$refDataJson1['altShortName']:'nill'; 
-        $fuelType=isset($refDataJson1['fuelType'])?$refDataJson1['fuelType']:' '; 
-        $isRfid=isset($refDataJson1['isRfid'])?$refDataJson1['isRfid']:'no'; 
+        // $shortName = isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill';
+        // $regNo = isset($refDataJson1['regNo'])?$refDataJson1['regNo']:'XXXXX';
+        // $vehicleMake =  isset($refDataJson1['vehicleMake'])?$refDataJson1['vehicleMake']:' ';
+        // $vehicleType =  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:'Bus';
+        // $opname =  isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel';I
+        // $mobileN = isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789';
+        // $overSpeedLimit = isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60';
+        // $deviceModel =isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:'GT06N'; 
+        // $email = isset($refDataJson1['email'])?$refDataJson1['email']:' '; 
+        // $orgId = isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default'; 
+        // $sendGeoFenceSMS = isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:'no'; 
+        // $gpsSimNo = isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'0123456789'; 
+        // $odoDistance = isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0'; 
+        // $morningTripStartTime = isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' '; 
+        // $eveningTripStartTime = isset($refDataJson1['eveningTripStartTime'])?$refDataJson1['eveningTripStartTime']:' '; 
+        // $parkingAlert = isset($refDataJson1['parkingAlert'])?$refDataJson1['parkingAlert']:'no'; 
+        // $fuel=isset($refDataJson1['fuel'])?$refDataJson1['fuel']:'no';
+        // $altShortName=isset($refDataJson1['altShortName'])?$refDataJson1['altShortName']:'nill'; 
+        // $fuelType=isset($refDataJson1['fuelType'])?$refDataJson1['fuelType']:' '; 
+        // $isRfid=isset($refDataJson1['isRfid'])?$refDataJson1['isRfid']:'no'; 
       
-        try{
-            $date=isset($refDataJson1['date'])?$refDataJson1['date']:' '; 
-            $paymentType=isset($refDataJson1['paymentType'])?$refDataJson1['paymentType']:' '; 
-            $expiredPeriod=isset($refDataJson1['expiredPeriod'])?$refDataJson1['expiredPeriod']:' '; 
-        }catch(\Exception $e)
-        {
+        // try{
+        //     $date=isset($refDataJson1['date'])?$refDataJson1['date']:' '; 
+        //     $paymentType=isset($refDataJson1['paymentType'])?$refDataJson1['paymentType']:' '; 
+        //     $expiredPeriod=isset($refDataJson1['expiredPeriod'])?$refDataJson1['expiredPeriod']:' '; 
+        // }catch(\Exception $e)
+        // {
             
-        }
+        // }
         $refDataArr = array (
             'deviceId' => $deviceId,
-            'shortName' => $shortName,
-            'deviceModel' => $deviceModel,
-            'regNo' => $regNo,
-            'vehicleMake' => $vehicleMake,
-            'vehicleType' => $vehicleType,
-            'oprName' => $opname,
-            'mobileNo' => $mobileN,
-            'overSpeedLimit' => $overSpeedLimit,
-            'odoDistance' => $odoDistance,
+            'shortName' => isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill',
+            'deviceModel' => isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:'GT06N',
+            'regNo' => isset($refDataJson1['regNo'])?$refDataJson1['regNo']:'XXXXX',
+            'vehicleMake' => isset($refDataJson1['vehicleMake'])?$refDataJson1['vehicleMake']:' ',
+            'vehicleType' =>  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:'Bus',
+            'oprName' => isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel',
+            'mobileNo' =>isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789',
+            'overSpeedLimit' => isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60',
+            'odoDistance' => isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0',
             'driverName' => $driverName,
-            'gpsSimNo' => $gpsSimNo,
-            'email' => $email,
-            'orgId' =>$orgId,
-            'sendGeoFenceSMS' => $sendGeoFenceSMS,
-            'morningTripStartTime' => $morningTripStartTime,
-            'eveningTripStartTime' => $eveningTripStartTime,
-            'parkingAlert' => $parkingAlert,
-            'altShortName'=>$altShortName,
-            'date' =>$date,
-            'paymentType'=>$paymentType,
-            'expiredPeriod'=>$expiredPeriod,
-            'fuel'=>$fuel,
-            'fuelType'=>$fuelType,
-            'isRfid'=>$isRfid,
+            'gpsSimNo' => isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'0123456789',
+            'email' => isset($refDataJson1['email'])?$refDataJson1['email']:' ',
+            'orgId' =>isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default',
+            'sendGeoFenceSMS' => isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:'no',
+            'morningTripStartTime' => isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' ',
+            'eveningTripStartTime' => isset($refDataJson1['eveningTripStartTime'])?$refDataJson1['eveningTripStartTime']:' ',
+            'parkingAlert' => isset($refDataJson1['parkingAlert'])?$refDataJson1['parkingAlert']:'no',
+            'altShortName'=>isset($refDataJson1['altShortName'])?$refDataJson1['altShortName']:'nill',
+            'date' =>isset($refDataJson1['date'])?$refDataJson1['date']:' ',
+            'paymentType'=>isset($refDataJson1['paymentType'])?$refDataJson1['paymentType']:' ',
+            'expiredPeriod'=>isset($refDataJson1['expiredPeriod'])?$refDataJson1['expiredPeriod']:' ',
+            'fuel'=>isset($refDataJson1['fuel'])?$refDataJson1['fuel']:'no',
+            'fuelType'=>isset($refDataJson1['fuelType'])?$refDataJson1['fuelType']:' ',
+            'isRfid'=>isset($refDataJson1['isRfid'])?$refDataJson1['isRfid']:'no',
             );
 
         $refDataJson = json_encode ( $refDataArr );
