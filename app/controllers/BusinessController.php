@@ -353,8 +353,9 @@ class BusinessController extends \BaseController {
 				
 				
 			}
-			if($type==null && Session::get('cur')='admin')
-			{return Redirect::to ( 'Business' )->withErrors ( 'select the sale' );
+			if($type==null && Session::get('cur')=='admin')
+			{
+				return Redirect::to ( 'Business' )->withErrors ( 'select the sale' );
 			}
 			
 			if($type=='Sale' && Session::get('cur')!='dealer')
