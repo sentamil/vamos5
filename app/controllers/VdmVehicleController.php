@@ -1528,23 +1528,67 @@ public function migrationUpdate() {
         {
 
         }
-        unset($refDataJson1['deviceId']);
-        unset($refDataJson1['vehicleId']);
-        $refDataJson1= array_add($refDataJson1, 'deviceId',$deviceId);
-        $refDataJson1= array_add($refDataJson1, 'vehicleId',$vehicleId);
-       
-        $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
-        log::info(' expire---->'.$expiredPeriodOld);
-        if(!$expiredPeriod==null)
+        $shortName = isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill';
+        $regNo = isset($refDataJson1['regNo'])?$refDataJson1['regNo']:'XXXXX';
+        $vehicleMake =  isset($refDataJson1['vehicleMake'])?$refDataJson1['vehicleMake']:' ';
+        $vehicleType =  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:' ';I
+        $oprName = isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel';
+        $mobileNo = isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789';
+        $overSpeedLimit = isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60';
+        $deviceModel =isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:' '; 
+        $email = isset($refDataJson1['email'])?$refDataJson1['email']:' '; 
+        $orgId = isset($refDataJson1['orgId'])?$refDataJson1['orgId']:' '; 
+        $sendGeoFenceSMS = isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:' '; 
+        $gpsSimNo = isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'0123456789'; 
+        $odoDistance = isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0'; 
+        $morningTripStartTime = isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' '; 
+        $eveningTripStartTime = isset($refDataJson1['eveningTripStartTime'])?$refDataJson1['eveningTripStartTime']:' '; 
+        $parkingAlert = isset($refDataJson1['parkingAlert'])?$refDataJson1['parkingAlert']:'no'; 
+        $fuel=isset($refDataJson1['fuel'])?$refDataJson1['fuel']:'no';
+        $altShortName=isset($refDataJson1['altShortName'])?$refDataJson1['altShortName']:'nill'; 
+        $fuelType=isset($refDataJson1['fuelType'])?$refDataJson1['fuelType']:' '; 
+        $isRfid=isset($refDataJson1['isRfid'])?$refDataJson1['isRfid']:'no'; 
+      
+        try{
+            $date=isset($refDataJson1['date'])?$refDataJson1['date']:' '; 
+            $paymentType=isset($refDataJson1['paymentType'])?$refDataJson1['paymentType']:' '; 
+            $expiredPeriod=isset($refDataJson1['expiredPeriod'])?$refDataJson1['expiredPeriod']:' '; 
+        }catch(\Exception $e)
         {
-            log::info('inside expire---->'.$expiredPeriod);
-            $expiredPeriod=str_replace($vehicleIdOld, $vehicleId, $expiredPeriod);
-            $redis->hset('H_Expire_'.$fcode,$expiredPeriodOld,$expiredPeriod);
+            
         }
-        $redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
-        $refDataJson1 = json_encode ( $refDataJson1 );
+        $refDataArr = array (
+            'deviceId' => $deviceId,
+            'shortName' => $shortName,
+            'deviceModel' => $deviceModel,
+            'regNo' => $regNo,
+            'vehicleMake' => $vehicleMake,
+            'vehicleType' => $vehicleType,
+            'oprName' => $oprName,
+            'mobileNo' => $mobileNo,
+            'overSpeedLimit' => $overSpeedLimit,
+            'odoDistance' => $odoDistance,
+            'driverName' => $driverName,
+            'gpsSimNo' => $gpsSimNo,
+            'email' => $email,
+            'orgId' =>$orgId,
+            'sendGeoFenceSMS' => $sendGeoFenceSMS,
+            'morningTripStartTime' => $morningTripStartTime,
+            'eveningTripStartTime' => $eveningTripStartTime,
+            'parkingAlert' => $parkingAlert,
+            'altShortName'=>$altShortName,
+            'date' =>$date,
+            'paymentType'=>$paymentType,
+            'expiredPeriod'=>$expiredPeriod,
+            'fuel'=>$fuel,
+            'fuelType'=>$fuelType,
+            'isRfid'=>$isRfid,
+            );
 
-        $redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson1 );
+        $refDataJson = json_encode ( $refDataArr );
+        
+        $redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
+        $redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
 
         $redis->srem ( 'S_Vehicles_' . $fcode, $vehicleIdOld );
 
@@ -1569,7 +1613,14 @@ public function migrationUpdate() {
 //            Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
         }
 
-
+        $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
+        log::info(' expire---->'.$expiredPeriodOld);
+        if(!$expiredPeriod==null)
+        {
+            log::info('inside expire---->'.$expiredPeriod);
+            $expiredPeriod=str_replace($vehicleIdOld, $vehicleId, $expiredPeriod);
+            $redis->hset('H_Expire_'.$fcode,$expiredPeriodOld,$expiredPeriod);
+        }
 
         if(Session::get('cur')=='dealer')
         {
