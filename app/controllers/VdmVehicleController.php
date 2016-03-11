@@ -1532,14 +1532,14 @@ public function migrationUpdate() {
         $regNo = isset($refDataJson1['regNo'])?$refDataJson1['regNo']:'XXXXX';
         $vehicleMake =  isset($refDataJson1['vehicleMake'])?$refDataJson1['vehicleMake']:' ';
         $vehicleType =  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:'Bus';
-        $oprName =  isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel';I
+        $opname =  isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel';I
         $oprName = isset($refDataJson1['oprName'])?$refDataJson1['oprName']:' ';
         $mobileNo = isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789';
         $overSpeedLimit = isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60';
-        $deviceModel =isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:' '; 
+        $deviceModel =isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:'GT06N'; 
         $email = isset($refDataJson1['email'])?$refDataJson1['email']:' '; 
-        $orgId = isset($refDataJson1['orgId'])?$refDataJson1['orgId']:' '; 
-        $sendGeoFenceSMS = isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:' '; 
+        $orgId = isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default'; 
+        $sendGeoFenceSMS = isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:'no'; 
         $gpsSimNo = isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'0123456789'; 
         $odoDistance = isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0'; 
         $morningTripStartTime = isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' '; 
@@ -1565,7 +1565,7 @@ public function migrationUpdate() {
             'regNo' => $regNo,
             'vehicleMake' => $vehicleMake,
             'vehicleType' => $vehicleType,
-            'oprName' => $oprName,
+            'oprName' => $opname,
             'mobileNo' => $mobileNo,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
