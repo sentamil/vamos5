@@ -1568,7 +1568,7 @@ public function migrationUpdate() {
             'mobileNo' =>isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789',
             'overSpeedLimit' => isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60',
             'odoDistance' => isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0',
-            'driverName' => $driverName,
+            'driverName' => isset($refDataJson1['driverName'])?$refDataJson1['driverName']:'XXX',
             'gpsSimNo' => isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'0123456789',
             'email' => isset($refDataJson1['email'])?$refDataJson1['email']:' ',
             'orgId' =>isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default',
