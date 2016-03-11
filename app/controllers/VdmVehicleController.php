@@ -1533,7 +1533,6 @@ public function migrationUpdate() {
         $vehicleMake =  isset($refDataJson1['vehicleMake'])?$refDataJson1['vehicleMake']:' ';
         $vehicleType =  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:'Bus';
         $opname =  isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel';I
-        $oprName = isset($refDataJson1['oprName'])?$refDataJson1['oprName']:' ';
         $mobileNo = isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789';
         $overSpeedLimit = isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60';
         $deviceModel =isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:'GT06N'; 
