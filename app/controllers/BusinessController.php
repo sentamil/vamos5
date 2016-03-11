@@ -361,10 +361,15 @@ class BusinessController extends \BaseController {
 			if($type=='Sale' && Session::get('cur')!='dealer')
 			{
 				log::info($ownerShip.'1 ----------->'.$type);
+
 				$ownerShip      = 'OWN';
 			}
 			if(Session::get('cur')=='dealer' ){
 				log::info($ownerShip.'2 --a--------->'.Session::get('cur'));
+				if($type1==null)
+				{
+					return Redirect::to ( 'Business' )->withErrors ( 'select the sale' );
+				}
 					$type='Sale';
 					$ownerShip = $username;
 					    $mobArr = explode(',', $mobileNo);
