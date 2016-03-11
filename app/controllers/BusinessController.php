@@ -353,7 +353,9 @@ class BusinessController extends \BaseController {
 				
 				
 			}
-			
+			if($type==null && Session::get('cur')='admin')
+			{return Redirect::to ( 'Business' )->withErrors ( 'select the sale' );
+			}
 			
 			if($type=='Sale' && Session::get('cur')!='dealer')
 			{
@@ -361,10 +363,6 @@ class BusinessController extends \BaseController {
 				$ownerShip      = 'OWN';
 			}
 			if(Session::get('cur')=='dealer' ){
-				if($type1==null)
-				{
-					return Redirect::to ( 'Business' )->withErrors ( 'select the sale' );
-				}
 				log::info($ownerShip.'2 --a--------->'.Session::get('cur'));
 					$type='Sale';
 					$ownerShip = $username;
