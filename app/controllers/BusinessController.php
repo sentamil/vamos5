@@ -374,7 +374,7 @@ class BusinessController extends \BaseController {
 					$ownerShip = $username;
 					    $mobArr = explode(',', $mobileNo);
 			}
-			if($type=='Sale' && ($type1!='new' || $type1!='existing'))
+			if($type=='Sale' && $type1==null)
 			{
 				return Redirect::to ( 'Business' )->withErrors ( 'Select the user' );
 			}
