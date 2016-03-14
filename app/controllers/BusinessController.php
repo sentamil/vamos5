@@ -374,6 +374,12 @@ class BusinessController extends \BaseController {
 					$ownerShip = $username;
 					    $mobArr = explode(',', $mobileNo);
 			}
+			if($type=='Sale' && ($type1!='new' || $type1!='existing'))
+			{
+				return Redirect::to ( 'Business' )->withErrors ( 'Select the user' );
+			}
+
+
 			 if($type=='Sale' && $type1=='new')
 			{
 				log::info($ownerShip.'3----a------->'.Session::get('cur'));
