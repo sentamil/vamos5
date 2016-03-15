@@ -101,6 +101,14 @@ Route::get('/downloadhistory', function() {
     }
     return View::make('reports.downloadhistory');
 });
+
+
+Route::get('/printStops', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.stops');
+});
  
 View::addExtension('html', 'php');
 Route::get('/statistics', function() {

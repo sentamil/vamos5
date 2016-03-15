@@ -54,7 +54,7 @@
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak>{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.shortName}}</a></li>
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index, loc.shortName)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.shortName}}</a></li>
                     </ul>
                 </li>
             </ul>
@@ -124,9 +124,11 @@
                                 </div>
                                 <div style="padding: 5px; float:left;">
                                         <label>Stops :</label>
-                                        <select id="traffic" title="Suggested Stops" style="width: 120px;height: 25px;" ng-model="geoStops" ng-change="goeValueChange()" ng-options="geo.stopName as geo.stopName for geo in geoStop.geoFence">
+                                        <select id="traffic" title="Suggested Stops" style="width: 70px;height: 25px;" ng-model="geoStops" ng-change="goeValueChange()" ng-options="geo.stopName as geo.stopName for geo in geoStop.geoFence">
                                            <!-- <option ng-repeat="geo in geoStop.geoFence" value="{{geo.stopName}}">{{geo.stopName}}</option> -->
-                                        </select> 
+                                        </select>
+                                        <a href="../public/printStops?vName={{shortVehiId}}&vid={{trackVehID}}" target="_blank">Print</a>
+                                        
                                 </div>
                                    
                                 <div>
