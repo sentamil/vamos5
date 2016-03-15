@@ -223,7 +223,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
 		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}));
-		$scope.fuelValue 		= 	($filter('filter')(data, {'tankSize': !0}));
+		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': !0}));
 		$scope.recursive1($scope.movementdata,0);
 		//console.log(' data----> '+$scope.downloadid)
    	};
@@ -237,7 +237,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}))
 		$scope.fuelValue=[];
 		if(data)
-		$scope.fuelValue 		= 	($filter('filter')(data, {'tankSize': !0}));
+		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': !0}));
 		$scope.alertMe_click($scope.downloadid);
    	};
 
