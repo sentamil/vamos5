@@ -1,4 +1,6 @@
 var total = 0;
+var tankSize=0;
+var fuelLtr=0;
 var chart = null;
 
 //menu loading
@@ -23,7 +25,7 @@ function ValidateIPaddress(ipaddress)
 if(ValidateIPaddress(logo)) {
 	var parser    =   document.createElement('a');
 	parser.href   =   document.location.ancestorOrigins[0];
-	logo      =   parser.host;
+	logo      	  =   parser.host;
 }
 var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
 
@@ -34,7 +36,3 @@ var geomarker=[];
 var geoinfo=[];
 var app = angular.module('mapApp',['ui.bootstrap']);
 
-app.run(function($rootScope) {
-    $rootScope.test = new Date();
-    console.log($rootScope.test)
-});
