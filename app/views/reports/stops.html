@@ -33,7 +33,7 @@ td {
 			   				 		<td>Stop No</td>
 			   				 		<td>Stop Name</td>
 								</thead>
-								<tr style="text-align:center;" ng-repeat="stop in geoStops">
+								<tr style="text-align:center;" ng-repeat="stop in geoStops" ng-hide="$first">
 									<td>{{stop.rowId}}</td>
 									<td>{{stop.stopName | uppercase}}</td>
 								</tr>
