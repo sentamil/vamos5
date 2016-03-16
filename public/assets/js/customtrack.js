@@ -17,7 +17,7 @@ app.directive('map', function($http, vamoservice) {
 								scope.clickedLatlng = event.latLng.lat() +','+ event.latLng.lng();
 								$('#latinput').val(scope.clickedLatlng);
 							});
-				$('#vehiid span').text(locs.vehicleId + " (" +locs.shortName+")");
+				$('#vehiid span').text(locs.shortName);
 				$('#toddist span span').text(locs.distanceCovered);
 				total = parseInt(locs.speed);
 				$('#vehdevtype span').text(locs.odoDistance);
