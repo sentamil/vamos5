@@ -14,24 +14,7 @@ td {
     font-weight: bold;
 }
 </style>
-<!-- <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
-
-<link href="assets/css/bootstrap.css" rel="stylesheet">
-<link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
-<link href="assets/css/simple-sidebar.css" rel="stylesheet">
-<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
-<link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css"> -->
-
 </head>
-
-<style>
-
-
-.table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
-background-color: #ffffff;
-}
-
-</style>
 <body ng-app="mapApp">
 	<div ng-controller="printHtml" text-align="center">
        	
@@ -39,10 +22,10 @@ background-color: #ffffff;
 					 		<center><h3><b>Route No {{vehicleName}}</b></h3>
 					 		<div style="margin: 0 auto; line-height: 200%; width: 600px" align="left">
 					 		Please send SMS to 9212148888 in the following format.<br>
-					 		<b>VTS START,CVSM,RouteNo,stopNo</b><br>
-					 		For instance, if you're boarding at stop No 1, please send SMS as follows <br>
-					 		<b>VTS START,CVSM,R17A,1 </b>(this is just a sample, please change the route no. and stop no. as per your route and stop)<br>
-					 		To STOP receiving sms, please send following SMS format, <b>VTS STOP</b> to 9212148888. <br>
+					 		<b>VTS START,CVSM,RouteNo,StopNo</b><br>
+					 		For instance, if you're boarding at Stop No 1, please send SMS as follows <br>
+					 		<b>VTS START,CVSM,R17A,1 </b>(This is just a sample, Please change the Route No and Stop No as per your route and stop)<br>
+					 		To STOP receiving SMS, please send following SMS format, <b>VTS STOP</b> to 9212148888. <br>
 					 		</div>
 			   				<br>
 			   				 <table>
@@ -52,7 +35,7 @@ background-color: #ffffff;
 								</thead>
 								<tr style="text-align:center;" ng-repeat="stop in geoStops">
 									<td>{{stop.rowId}}</td>
-									<td>{{stop.stopName}}</td>
+									<td>{{stop.stopName | uppercase}}</td>
 								</tr>
 							</table>
 						</b></h4></center>
