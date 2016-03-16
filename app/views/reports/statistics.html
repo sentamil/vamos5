@@ -189,21 +189,21 @@ background-color: #ffffff;
                                     </tr>
                                    
                                     <tr style="text-align:center; font-weight: bold;">
-                                        <td width="6%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">VehicleName</td>
+                                        <td width="6%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">VehicleName</td>
                                        <!--  <td width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date</td> -->
-                                        <td width="8%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">Today(Kms)</td>
-                                        <td width="8%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">ParkCount</td>
-                                        <td width="10%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">AcrossSpeed</td>
-                                        <td width="7%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Start</td>
-                                        <td width="7%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo End</td>
-                                        <td width="7%" class="id" custom-sort order="'topSpeed'" sort="sort" style="text-align:center;">TopSpeed</td>  
-                                        <td width="10%" class="id" custom-sort order="'topSpeedTime'" sort="sort" style="text-align:center;">Date&amp;Time</td>
+                                        <td width="8%" class="id" sort="sort" style="text-align:center;">Today(Kms)</td>
+                                        <td width="8%" class="id" sort="sort" style="text-align:center;">ParkCount</td>
+                                        <td width="10%" class="id" sort="sort" style="text-align:center;">OverSpeed Count</td>
+                                        <td width="7%" class="id" sort="sort" style="text-align:center;">Odo Start</td>
+                                        <td width="7%" class="id" sort="sort" style="text-align:center;">Odo End</td>
+                                        <td width="7%" class="id" sort="sort" style="text-align:center;">TopSpeed</td>  
+                                        <td width="10%" class="id" sort="sort" style="text-align:center;">Date&amp;Time</td>
                                         <!-- <td width="10%" class="id" custom-sort order="'topSpeedGeoLocation'" sort="sort" style="text-align:center;">Top Location</td> -->
                                         <td width="24%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">NearestLocation</td>
                                     </tr>
                                     <tr ng-repeat="user in execGroupReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 12px">
                                         <!-- <td><a href="history?vid={{user.vehicleId}}">{{user.vehicleId}}</a></td> -->
-                                        <td>{{user.vehicleId}}</td>
+                                        <td>{{user.shortName}}</td>
                                         <!-- <td>{{user.date}}</td> -->
                                         <td>{{user.distanceToday}}</td>
                                         <td>{{user.parkingCount}}</td>
@@ -239,7 +239,7 @@ background-color: #ffffff;
                                         <td style="text-align: right;">Report Date : {{fromdate}} {{fromtime}} - {{todate}} {{totime}}</td>             
                                     </tr>
                                     <tr style="text-align:center" >
-                                        <th class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">vehicleId</th>
+                                        <th class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">vehicleName</th>
                                         <th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;">Date</th>
                                         <th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;">Time</th>
                                         <th class="id" custom-sort order="'place'" sort="sort" style="text-align:center;">Place</th>
@@ -250,7 +250,7 @@ background-color: #ffffff;
                                         <th class="id" custom-sort order="'dangling'" sort="sort" style="text-align:center;">Dangling</th> -->
                                     </tr></thead>
                                     <tr ng-repeat="user in geofencedata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
-                                        <td>{{user.vehicleId}}</td>
+                                        <td>{{user.shortName}}</td>
                                         <td>{{user.time | date:'yyyy-MM-dd'}}</td>
                                         <td>{{user.time | date:'HH:mm:ss'}}</td>
                                         <td>{{user.place}}</td>

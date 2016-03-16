@@ -181,7 +181,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		   			$scope.tableTitle 			=	'Load Report';
 		   			$scope.downloadid 			= 	'loadreport';
 		   			break;
-		   		case 'fuel':
+		   		case 'fuelreport':
 		   			$scope.loadreport			= 	true;
 		   			$scope.tableTitle 			=	'Fuel Report';
 		   			$scope.downloadid 			= 	'fuelreport';
@@ -216,6 +216,35 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		});   
    	});
    	
+   	$scope.alertMe_click		=	function(value){
+   		switch(value){
+   			case 'movementreport':
+   				$scope.recursive1($scope.movementdata,0);
+   				break;
+   			case 'overspeedreport':
+   				$scope.recursive($scope.overspeeddata,0);
+   				break;
+   			case 'stoppedparkingreport':
+   				$scope.recursiveStop($scope.parkeddata,0);
+   				break;
+   			case 'idlereport':
+   				$scope.recursiveIdle($scope.idlereport,0);
+   				break;
+   			case 'eventReport':
+   				$scope.recursiveEvent($scope.eventReportData,0);
+   				break;
+   			case 'loadreport':
+   				$scope.recursiveLoad($scope.loadreport,0);
+   				break;
+   			case 'fuelreport':
+   				$scope.fuelChart($scope.fuelValue);
+   				$scope.recursiveFuel($scope.fuelValue,0);
+   				break;
+   			default:
+   				break;
+   		}
+   	}
+
    	//for initial loading
    	$scope.dataArray			=	function(data) {
    		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
@@ -242,34 +271,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    	};
 
 
-   	$scope.alertMe_click		=	function(value){
-   		switch(value){
-   			case 'movementreport':
-   				$scope.recursive1($scope.movementdata,0);
-   				break;
-   			case 'overspeedreport':
-   				$scope.recursive($scope.overspeeddata,0);
-   				break;
-   			case 'stoppedparkingreport':
-   				$scope.recursiveStop($scope.parkeddata,0);
-   				break;
-   			case 'idlereport':
-   				$scope.recursiveIdle($scope.idlereport,0);
-   				break;
-   			case 'eventReport':
-   				$scope.recursiveEvent($scope.eventReportData,0);
-   				break;
-   			case 'loadreport':
-   				$scope.recursiveLoad($scope.loadreport,0);
-   				break;
-   			case 'fuel':
-   				$scope.fuelChart($scope.fuelValue);
-   				$scope.recursiveFuel($scope.fuelValue,0);
-   				break;
-   			default:
-   				break;
-   		}
-   	}
+   	
 
    	$scope.recursive   = function(location_over,index){
    		var indexs = 0;
@@ -566,8 +568,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	function google_api_call_Load(tempurlLoad, index5, latLoad, lonLoad) {
 		$http.get(tempurlLoad).success(function(data){
 			$scope.addressLoad[index5] = data.results[0].formatted_address;
-			//console.log(' address '+$scope.addressEvent[index5])
-			//var t = vamo_sysservice.geocodeToserver(latEvent,lonEvent,data.results[0].formatted_address);
+			
 		})
 	};
 
@@ -730,7 +731,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	   			$scope.overallEnable = 	true;
 	   			$scope.recursiveLoad($scope.loadreport,0);
 	   			break;
-	   		case 'fuel':
+	   		case 'fuelreport':
 	   			$scope.downloadid    =  'fuelreport';
 	   			$scope.overallEnable = 	true;
 	   			$scope.fuelChart($scope.fuelValue);
@@ -745,16 +746,21 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.fuelChart 	= 	function(data){
 		var ltrs 		=	[];
 		var fuelDate 	=	[];
-		if(data.length)
-		for (var i = 0; i < data.length; i++) {
-			if(data[i].fuelLitre !='0' || data[i].fuelLitre !='0.0')
-			{
-				ltrs.push(data[i].fuelLitre);
-				var dar = $filter('date')(data[i].date, "dd/MM/yyyy HH:mm:ss");
-				fuelDate.push(dar)
-			}
-			
-		};
+		try{
+			if(data.length)
+				for (var i = 0; i < data.length; i++) {
+					if(data[i].fuelLitre !='0' || data[i].fuelLitre !='0.0')
+					{
+						ltrs.push(data[i].fuelLitre);
+						var dar = $filter('date')(data[i].date, "dd/MM/yyyy HH:mm:ss");
+						fuelDate.push(dar)
+					}
+				};
+		}
+		catch (err){
+			console.log(err.message)
+		}
+		
 	$(function () {
    
         $('#container').highcharts({

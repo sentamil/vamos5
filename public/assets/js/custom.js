@@ -223,6 +223,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 	$scope.genericFunction = function(vehicleno, index){
 		$scope.selected = index;
 		$scope.removeTask(vehicleno);
+		$('#graphsId').show(500);
 		editableValue();
 	}
 	//for edit details in the right side div
@@ -496,6 +497,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 			
 			$scope.vehicleno = pos.data.vehicleId;
 			$scope.assignValue(pos.data);
+			$('#graphsId').show(500);
 			editableValue();
 			$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
 				$('#lastseen').text(count); 
@@ -1056,7 +1058,7 @@ function polygenDrawFunction(list){
 
 	function graphView()
 	{
-		$('#graphsId').toggle(500)
+		$('#graphsId').toggle(500);
 	}
 
 
