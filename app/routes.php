@@ -255,6 +255,15 @@ Route::get('/getExecutiveReport', function() {
     Log::info('getExecutiveReport');
     return View::make('vls.getExecutiveReport');
 });
+
+
+Route::get('/getFuelDropFillReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getFuelDropFillReport');
+    return View::make('vls.getFuelDropFillReport');
+});
  
 Route::get('getDistanceTimeFuelReport', function(){
     if (!Auth::check()) {

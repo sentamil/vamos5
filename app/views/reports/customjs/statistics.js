@@ -175,10 +175,19 @@ function barLoad(vehicleId) {
 //group level graph 
 
 function donutLoad(data) {
-	$scope.barArray	=		[];
+	$scope.barArray	=	[];
+	var vehiName='';
 	angular.forEach(JSON.parse(data.distanceCoveredAnalytics), function(value, key) {
-			$scope.barArray.push([key, value]);
-		}); 
+		angular.forEach(data.execReportData, function(val, key1){
+			if(val.vehicleId == key)
+			{
+				vehiName = val.shortName;
+				//console.log(' inside the for loop ---->'+key+'--->'+val.vehicleId)
+				return;
+			}
+		})	
+		$scope.barArray.push([vehiName, value]);
+	}); 
 	$('#container').highcharts({
         chart: {
             type: 'column'

@@ -337,13 +337,13 @@ app.filter('statusfilter', function(){
 			$scope.value=data;
 			for(i; i<data.length; i++)
 			{
-				vehiclename.push(data[i].vehicleId);
+				vehiclename.push(data[i].shortName);
 				totalsuddenBreak.push(data[i].weightedBreakAnalysis);
 				SuddenAcc.push(data[i].weightedAccelAnalysis);
 				OverSpeed.push(data[i].weightedSpeedAnalysis);
 				sparkAlarm.push(data[i].weightedShockAlarmAnalysis);
 				kiloMeter.push(data[i].distance);
-				dataTableList.push({'month':data[i].vehicleId,'data': data[i]});
+				dataTableList.push({'month':data[i].shortName,'data': data[i]});
 			}
 			$scope.tableValue=dataTableList;
 			$('#status').fadeOut(); 
@@ -483,7 +483,7 @@ app.filter('statusfilter', function(){
 		$scope.aggressive=[];
 		$scope.aggressiveCount=0;
 		$scope.harsh=[];
-		$scope.id=$scope.detailedView.data.vehicleId;
+		$scope.id=$scope.detailedView.data.shortName;
 		$scope.harshCount=0;
 		$scope.normal=0;
 		$scope.locationname='';
@@ -595,7 +595,7 @@ app.filter('statusfilter', function(){
 		var splitValue='';
 		$scope.id='';
 		$scope.modalShown1 = !$scope.modalShown1;
-		$scope.id=user.data.vehicleId;
+		$scope.id=user.data.shortName;
 		//$scope.topSpeed=user.topSpeed;
 		$scope.excellentCount=user.data.historySpeedAnalysis.Excellent.split(',')[0];
 		$scope.excellentSpeed=user.data.historySpeedAnalysis.Excellent.split(',')[1];
@@ -629,7 +629,7 @@ app.filter('statusfilter', function(){
 		$scope.redlinerCount=0;
 		$scope.redlinerSpeed=0;
 		$scope.modalShown2 = !$scope.modalShown2;
-		$scope.id=user.data.vehicleId;
+		$scope.id=user.data.shortName;
 		//$scope.topSpeed=user.data.topSpeedAlarm;
 		$scope.excellentCount=user.data.historyShockAlarm.Excellent.split(',')[0];
 		$scope.excellentSpeed=user.data.historyShockAlarm.Excellent.split(',')[1];
@@ -665,7 +665,7 @@ app.filter('statusfilter', function(){
 		$scope.aggressiveCount=0;
 		$scope.harsh=[];
 		//console.log(1)
-		$scope.id=$scope.detailedView.data.vehicleId;
+		$scope.id=$scope.detailedView.data.shortName;
 		$scope.harshCount=0;
 		$scope.normal=0;
 		$scope.locationname='';
