@@ -425,17 +425,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 		return strFine;
 	}
 	
-	//encryt url
-	function encrypt_window(url)
-	{
-		$http.get(url).success(function(data){
-				// console.log('---->'+url)
-				// console.log(' encript code '+data)
-				// //$scope.final_data = data;
-			})
-			//ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
-	}
-	//
+	
 	$scope.getMailIdPhoneNo = function(vehi, days)
 	{
 		//console.log('inside the methods')
@@ -460,14 +450,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 	}
 }
 	
-				
- //    			var url='../public/track?vehicleId='+result.trim();
-	// 			window.open(url,'_blank');
-	// 			//$('body').append(atag);
-	// 			//$('#sam').trigger('click');
-	// 			//document.location.href="/live_track?encyID="+result;
-	// 			//encrypt_window(ecrypt_code_url);
-	// 		})
+
 	
 	$scope.addMarker= function(pos){
 	    
@@ -710,8 +693,8 @@ function polygenDrawFunction(list){
             path: polygenList,
             strokeColor: "#000",   //7e7e7e
             strokeWeight: 0.7,
-            fillColor: '#fe716d',
-            fillOpacity: 0.1,
+            fillColor: '#' + Math.floor(Math.random()*16777215).toString(16),//'#fe716d',
+            //fillOpacity: ,
             map: $scope.map
         });
       
@@ -720,6 +703,7 @@ function polygenDrawFunction(list){
          position: centerMarker(polygenList), 
          map: $scope.map,
          icon: 'assets/imgs/area_img.png',
+         color: '#fff',
          labelContent: list.siteName,
          labelAnchor: labelAnchorpos,
          labelClass: "labels", 

@@ -631,7 +631,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	}
 	
 	function convert_to_24h(time_str) {
-		console.log(time_str);
+		//console.log(time_str);
  		var str		=	time_str.split(' ');
  		var stradd	=	str[0].concat(":00");
  		var strAMPM	=	stradd.concat(' '+str[1]);

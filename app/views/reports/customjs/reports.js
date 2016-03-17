@@ -2,7 +2,7 @@
 var getIP	=	globalIP;
 app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	
-	 $("#testLoad").load("../public/menu");
+	//$("#testLoad").load("../public/menu");
 	var getUrl  =   document.location.href;
 	var index   =   getUrl.split("=")[1];
 	if(index)
@@ -19,6 +19,27 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };	
     
+    function convert_to_24h(time_str) {
+		//console.log(time_str);
+ 		var str		=	time_str.split(' ');
+ 		var stradd	=	str[0].concat(":00");
+ 		var strAMPM	=	stradd.concat(' '+str[1]);
+ 		var time = strAMPM.match(/(\d+):(\d+):(\d+) (\w)/);
+	    var hours = Number(time[1]);
+	    var minutes = Number(time[2]);
+	    var seconds = Number(time[2]);
+	    var meridian = time[4].toLowerCase();
+	
+	    if (meridian == 'p' && hours < 12) {
+	      hours = hours + 12;
+	    }
+	    else if (meridian == 'a' && hours == 12) {
+	      hours = hours - 12;
+	    }	    
+	    var marktimestr	=	''+hours+':'+minutes+':'+seconds;	    
+	    return marktimestr;
+    };
+
     function format24hrs(date)
     {
     	var date1 = new Date(date);
@@ -48,7 +69,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	
 
 	$scope.url 			  =   'http://'+getIP+context+'/public//getVehicleLocations';
-	$scope.fromTime       =   '00:00:00';
+	$scope.fromTime       =   '12:00 AM';
 	$scope.vehigroup;
 	$scope.consoldateData =   [];
 
@@ -133,6 +154,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 			$scope.consoldateData = data;
 			$('#preloader').fadeOut(); 
 			$('#preloader02').delay(350).fadeOut('slow');
+			if($scope.consoldateData)
 			$scope.selectMe($scope.consoldateData);
 		});
 	}
@@ -155,7 +177,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		$scope.fromTime    =  document.getElementById("timeFrom").value;
 		$scope.todate1     =  document.getElementById("dateTo").value;
 		$scope.totime      =  document.getElementById("timeTo").value;
-		var conUrl1        =  'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
+		var conUrl1        =  'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime);
 		service(conUrl1);
 	}
 
@@ -168,8 +190,8 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		$scope.fromNowTS1		=	new Date();
 		$scope.fromdate1		=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
 		$scope.todate1			=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
-		$scope.totime		    =	format24hrs($scope.fromNowTS1);
-		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+$scope.fromTime+'&toDate='+$scope.todate1+'&toTime='+$scope.totime;
+		$scope.totime		    =	$scope.fromNowTS1.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime);
 		service(conUrl);
 	}
 	
