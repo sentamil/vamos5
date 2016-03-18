@@ -463,12 +463,13 @@ background-color: #ffffff;
 			   			 	 			<tr><td colspan="4"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
 											<th class="id" style="text-align:center;" width="20%">Alert Time</th>
-											<!-- <th width="10%" class="id" style="text-align:center;">G-Map</th> -->
-											<th class="id" style="text-align:center;">Load Truck</th>
+											
+											<th class="id" style="text-align:center;" width="20%">Load Truck</th>
 											<th ng-hide="true" class="id" style="text-align:center;">Load Trailer</th>
 											<th ng-hide="true" class="id" style="text-align:center;">Total Truck</th>
 											<th ng-hide="true" class="id" style="text-align:center;">Total Trailer</th>
-											<th colspan="2" class="id" style="text-align: center;" width="30%">Loaction</th>
+											<th class="id" style="text-align: center;" width="30%">Nearest Location</th>
+											<th width="10%" class="id" style="text-align:center;">G-Map</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
@@ -478,7 +479,12 @@ background-color: #ffffff;
 			   			 	 			<td ng-hide="true">{{load.loadTrailer}}</td>
 			   			 	 			<td ng-hide="true">{{load.totalTruck}}</td>
 			   			 	 			<td ng-hide="true">{{load.totalTrailer}}</td>
-										<td>{{load.address}}</td>
+										<td>
+											<p ng-if="load.address!=null">{{load.address}}</p>
+											<p ng-if="load.address==null && addressLoad[$index]!=null">{{addressLoad[$index]}}</p>
+											<p ng-if="load.address==null && addressLoad[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+										</td>
+										<td><a href="https://www.google.com/maps?q=loc:{{load.latitude}},{{load.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
 			   			 	 		<tr>
 										<td ng-if="loadreport==null" colspan="4">No Records Found Choose some other date</td>
@@ -487,10 +493,43 @@ background-color: #ffffff;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-			   			 <tab heading="Fuel" select="alertMe('fuel')">
-			   			 
-			   			 		<div style="width: 700px; height: 300px" id="container"></div> 
-			   			 
+			   			 <tab heading="Fuel" select="alertMe('fuelreport')">
+			   			 	<p style="margin:0" class="page-header">Fuel Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	<div style="width: 700px; height: 300px" id="container"></div> 
+			   			 	<div class="box-body table-responsive" id="fuelreport">
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 		<thead>
+			   			 	 			<tr style="text-align:center; font-weight: bold;">
+				   			 	 			<td>Vehicle Group</td>
+										  	<td>{{vgroup}}</td>
+										  	<td>Vehicle Name</td>
+										  	<td>{{hist.shortName}}</td>	
+			   			 	 			</tr>
+			   			 	 			<tr><td colspan="3"></td></tr>
+			   			 	 			<tr style="text-align:center;font-weight: bold;">
+											<th class="id" style="text-align:center;" width="25%">Date &amp; Time</th>
+											<th class="id" style="text-align:center;" width="20%">Fuel (ltr)</th>
+											<th class="id" style="text-align: center;" width="35%">Nearest Location</th>
+											<th class="id" style="text-align: center;" width="15%">G-Map</th>
+										</tr>
+								</thead>
+			   			 	 	<tbody>
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="fuel in fuelValue">
+			   			 	 			<td>{{fuel.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+			   			 	 			<td>{{fuel.fuelLitre}}</td>
+			   			 	 			<td> 
+			   			 	 				<p ng-if="fuel.address!=null">{{fuel.address}}</p>
+											<p ng-if="fuel.address==null && addressFuel[$index]!=null">{{addressFuel[$index]}}</p>
+											<p ng-if="fuel.address==null && addressFuel[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+										</td> 
+			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{fuel.latitude}},{{fuel.longitude}}" target="_blank">Link</a></td>
+			   			 	 		</tr>
+			   			 	 		<tr>
+										<td ng-if="fuelValue==null" colspan="4">No Records Found Choose some other date</td>
+									</tr>
+			   			 	 	</tbody>
+			   			 	 	</table>
+			   			 	</div>
 			   			 </tab>
 			   			<div class="pull-right">
 		                <!-- <a href="downloadhistory?vvid={{id}}&rid={{downloadid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}&dvg={{vgroup}}&interval={{interval}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a> -->

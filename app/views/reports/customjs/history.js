@@ -14,6 +14,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.addressEvent  	=   [];
 	$scope.saddressStop 	=   [];
 	$scope.eventReportData 	= 	[];
+	$scope.addressLoad 		= 	[];
+	$scope.addressFuel 		= 	[];
 	$scope.location	    	=	[];
 	$scope.ltrs 			= 	[];
 	$scope.fuelDate 		= 	[];
@@ -179,10 +181,10 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		   			$scope.tableTitle 			=	'Load Report';
 		   			$scope.downloadid 			= 	'loadreport';
 		   			break;
-		   		case 'fuel':
+		   		case 'fuelreport':
 		   			$scope.loadreport			= 	true;
 		   			$scope.tableTitle 			=	'Fuel Report';
-		   			$scope.downloadid 			= 	'fuel';
+		   			$scope.downloadid 			= 	'fuelreport';
 		   			break;
 		   		default:
 		   			break;		
@@ -214,32 +216,6 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		});   
    	});
    	
-   	//for initial loading
-   	$scope.dataArray			=	function(data) {
-   		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
-		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
-		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
-		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
-		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}));
-		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!undefined"}));
-		$scope.recursive1($scope.movementdata,0);
-		//console.log(' data----> '+$scope.downloadid)
-   	};
-
-   	// for submit button click
-   	$scope.dataArray_click		=	function(data) {
-   		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
-		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
-		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
-		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
-		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}))
-		$scope.fuelValue=[];
-		if(data)
-		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!undefined"}));
-		$scope.alertMe_click($scope.downloadid);
-   	};
-
-
    	$scope.alertMe_click		=	function(value){
    		switch(value){
    			case 'movementreport':
@@ -257,13 +233,45 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    			case 'eventReport':
    				$scope.recursiveEvent($scope.eventReportData,0);
    				break;
-   			case 'fuel':
+   			case 'loadreport':
+   				$scope.recursiveLoad($scope.loadreport,0);
+   				break;
+   			case 'fuelreport':
    				$scope.fuelChart($scope.fuelValue);
+   				$scope.recursiveFuel($scope.fuelValue,0);
    				break;
    			default:
    				break;
    		}
    	}
+
+   	//for initial loading
+   	$scope.dataArray			=	function(data) {
+   		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
+		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
+		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
+		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
+		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}));
+		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!0"}));
+		$scope.recursive1($scope.movementdata,0);
+		//console.log(' data----> '+$scope.downloadid)
+   	};
+
+   	// for submit button click
+   	$scope.dataArray_click		=	function(data) {
+   		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
+		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
+		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
+		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
+		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}))
+		$scope.fuelValue=[];
+		if(data)
+		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!0"}));
+		$scope.alertMe_click($scope.downloadid);
+   	};
+
+
+   	
 
    	$scope.recursive   = function(location_over,index){
    		var indexs = 0;
@@ -425,6 +433,48 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	  	};
 	}());
 
+	var delayed5 = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
+
+	var delayed6 = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
+
 	$scope.address_click = function(data, ind)
 	{
 		var urlAddress 		=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
@@ -494,6 +544,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     	})
 	}
 
+
 	$scope.recursiveEvent 	= 	function(locationEvent, indexEvent)
 	{
 		var index4 = 0;
@@ -507,12 +558,67 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 				var tempurlEvent =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
 				delayed4(2000, function (index4) {
 				      return function () {
-				        google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent);
+				        google_api_call_Load(tempurlEvent, index4, latEvent, lonEvent);
 				      };
 				    }(index4));
 			}
 		})
 	}
+
+	function google_api_call_Load(tempurlLoad, index5, latLoad, lonLoad) {
+		$http.get(tempurlLoad).success(function(data){
+			$scope.addressLoad[index5] = data.results[0].formatted_address;
+			
+		})
+	};
+
+	$scope.recursiveLoad 	= 	function(locationLoad, indexLoad)
+	{
+		var index5 = 0;
+		angular.forEach(locationLoad, function(value ,primaryKey){
+			//console.log(' primaryKey '+primaryKey)
+			index5 = primaryKey;
+			if(locationLoad[index5].address == undefined)
+			{
+				var latLoad		 =	locationLoad[index5].latitude;
+			 	var lonLoad		 =	locationLoad[index5].longitude;
+				var tempurlLoad =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latLoad+','+lonLoad+"&sensor=true";
+				delayed5(2000, function (index5) {
+				      return function () {
+				        google_api_call_Load(tempurlLoad, index5, latLoad, lonLoad);
+				      };
+				    }(index5));
+			}
+		})
+	}
+
+	function google_api_call_Fuel(tempurlFuel, index6, latFuel, lonFuel) {
+		$http.get(tempurlFuel).success(function(data){
+			$scope.addressFuel[index6] = data.results[0].formatted_address;
+		})
+	};
+
+	$scope.recursiveFuel 	= 	function(locationFuel, indexFuel)
+	{
+		var index6 = 0;
+		angular.forEach(locationFuel, function(value ,primaryKey){
+			//console.log(' primaryKey '+primaryKey)
+			index6 = primaryKey;
+			if(locationFuel[index6].address == undefined)
+			{
+				var latFuel		 =	locationFuel[index6].latitude;
+			 	var lonFuel		 =	locationFuel[index6].longitude;
+				var tempurlFuel =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latFuel+','+lonFuel+"&sensor=true";
+				delayed6(2000, function (index6) {
+				      return function () {
+				        google_api_call_Fuel(tempurlFuel, index6, latFuel, lonFuel);
+				      };
+				    }(index6));
+			}
+		})
+	}
+
+	
 	$scope.getParkedCorrectHours	=	function(data) {
 			return $scope.msToTime(data);
    	}
@@ -525,7 +631,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	}
 	
 	function convert_to_24h(time_str) {
-		console.log(time_str);
+		//console.log(time_str);
  		var str		=	time_str.split(' ');
  		var stradd	=	str[0].concat(":00");
  		var strAMPM	=	stradd.concat(' '+str[1]);
@@ -623,11 +729,13 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		   	case 'loadreport':
 		   		$scope.downloadid    =  'loadreport';
 	   			$scope.overallEnable = 	true;
+	   			$scope.recursiveLoad($scope.loadreport,0);
 	   			break;
-	   		case 'fuel':
-	   			$scope.downloadid    =  'fuel';
+	   		case 'fuelreport':
+	   			$scope.downloadid    =  'fuelreport';
 	   			$scope.overallEnable = 	true;
 	   			$scope.fuelChart($scope.fuelValue);
+	   			$scope.recursiveFuel($scope.fuelValue, 0);
 	   			break;
 			default:
 				break;
@@ -638,16 +746,22 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.fuelChart 	= 	function(data){
 		var ltrs 		=	[];
 		var fuelDate 	=	[];
-		for (var i = 0; i < data.length; i++) {
-			if(data[i].fuelLitre !='0' || data[i].fuelLitre !='0.0')
-			{
-				ltrs.push(data[i].fuelLitre);
-				var dar = $filter('date')(data[i].date, "dd/MM/yyyy HH:mm:ss");
-				fuelDate.push(dar)
-			}
-			
-		};
-		 $(function () {
+		try{
+			if(data.length)
+				for (var i = 0; i < data.length; i++) {
+					if(data[i].fuelLitre !='0' || data[i].fuelLitre !='0.0')
+					{
+						ltrs.push(data[i].fuelLitre);
+						var dar = $filter('date')(data[i].date, "dd/MM/yyyy HH:mm:ss");
+						fuelDate.push(dar)
+					}
+				};
+		}
+		catch (err){
+			console.log(err.message)
+		}
+		
+	$(function () {
    
         $('#container').highcharts({
             chart: {

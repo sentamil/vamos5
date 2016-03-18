@@ -18,7 +18,8 @@
 <![endif]-->
 <style type="text/css">
      #map_canvas{ width:100%; height:100%;}  
-     #container-speed{  width: 240px; height: 120px;}
+     #container-speed{  width: 170px; height: 100px;}
+     #container-fuel{  width: 170px; height: 100px;}
 
      [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
         display: none !important;
@@ -146,6 +147,16 @@
                                         </div>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <div id="viewMap" title="Graphs">
+                                            <span ng-click="mapView('graphs')" id="graphsCharts">
+                                                <img style="width: 20px; height: 20px" src="assets/imgs/graphs.png" />
+                                            </span>
+                                            
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>    
                             
                             
@@ -185,6 +196,16 @@
                                 </div>
                         </div>
 
+                        <div id="graphsId">
+                            <div>
+                                <div>Speed - <label id="speed"></label>&nbsp;Km/h</div>
+                                <div id="container-speed"></div>
+                            </div>
+                            <div>
+                                <div>Tank Size - <label id="fuel"></label>&nbsp;Ltr</div>
+                                <div id="container-fuel"></div>
+                            </div>
+                        </div>
                         <div id="contentmin" class="rightsection">
                                <input type="button" id="traffic" ng-click="check()" value="Traffic" />
                                <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>
@@ -340,7 +361,7 @@
                                     <div align="center" id="lstseendate">
                                        
                                     </div>
-                                    <div id="container-speed"></div>
+                                    <!-- <div id="container-speed"></div> -->
                                     <h3>Support details</h3>
                                     <div align="center" style="word-wrap: break-word;"><p>{{support}}</p></div>
                                 </div>

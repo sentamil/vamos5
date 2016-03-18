@@ -223,6 +223,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 	$scope.genericFunction = function(vehicleno, index){
 		$scope.selected = index;
 		$scope.removeTask(vehicleno);
+		$('#graphsId').show(500);
 		editableValue();
 	}
 	//for edit details in the right side div
@@ -424,17 +425,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 		return strFine;
 	}
 	
-	//encryt url
-	function encrypt_window(url)
-	{
-		$http.get(url).success(function(data){
-				// console.log('---->'+url)
-				// console.log(' encript code '+data)
-				// //$scope.final_data = data;
-			})
-			//ecrypt_code_url = 'http://'+globalIP+'/vamo/public/getPublicTracking?enryptedID='+result;
-	}
-	//
+	
 	$scope.getMailIdPhoneNo = function(vehi, days)
 	{
 		//console.log('inside the methods')
@@ -459,14 +450,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 	}
 }
 	
-				
- //    			var url='../public/track?vehicleId='+result.trim();
-	// 			window.open(url,'_blank');
-	// 			//$('body').append(atag);
-	// 			//$('#sam').trigger('click');
-	// 			//document.location.href="/live_track?encyID="+result;
-	// 			//encrypt_window(ecrypt_code_url);
-	// 		})
+
 	
 	$scope.addMarker= function(pos){
 	    
@@ -496,6 +480,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 			
 			$scope.vehicleno = pos.data.vehicleId;
 			$scope.assignValue(pos.data);
+			$('#graphsId').show(500);
 			editableValue();
 			$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
 				$('#lastseen').text(count); 
@@ -519,7 +504,11 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 		$('#vehiid #val').text(dataVal.shortName);
 		$('#toddist #val').text(dataVal.distanceCovered);
 		$('#vehstat #val').text(dataVal.position);
-		total = parseInt(dataVal.speed);
+		$('#graphsId #speed').text(dataVal.speed);
+		$('#graphsId #fuel').text(dataVal.tankSize);
+		tankSize 		 = parseInt(dataVal.tankSize);
+		fuelLtr 		 = parseInt(dataVal.fuelLitre);
+		total  			 = parseInt(dataVal.speed);
 		$('#vehdevtype #val').text(dataVal.odoDistance);
 		$('#mobno #val').text(dataVal.overSpeedLimit);
 		$('#positiontime #val').text(vamoservice.statusTime(dataVal).tempcaption);
@@ -704,8 +693,8 @@ function polygenDrawFunction(list){
             path: polygenList,
             strokeColor: "#000",   //7e7e7e
             strokeWeight: 0.7,
-            fillColor: '#fe716d',
-            fillOpacity: 0.1,
+            fillColor: '#' + Math.floor(Math.random()*16777215).toString(16),//'#fe716d',
+            //fillOpacity: ,
             map: $scope.map
         });
       
@@ -714,6 +703,7 @@ function polygenDrawFunction(list){
          position: centerMarker(polygenList), 
          map: $scope.map,
          icon: 'assets/imgs/area_img.png',
+         color: '#fff',
          labelContent: list.siteName,
          labelAnchor: labelAnchorpos,
          labelClass: "labels", 
@@ -918,6 +908,7 @@ function polygenDrawFunction(list){
 	$("#cluster").show();
 	$("#efullscreen").hide();
 	$("#fullscreen").show();
+	$('#graphsId').hide();
 	// $scope.idinvoke;
 	//list view
 	function listMap ()
@@ -1048,6 +1039,13 @@ function polygenDrawFunction(list){
 		// $("#contentmin").show(1000);
 		// $("#sidebar-wrapper").show(500);
 	}
+
+	function graphView()
+	{
+		$('#graphsId').toggle(500);
+	}
+
+
 	//view map
 	$scope.mapView 	=	function(value)
 	{
@@ -1072,6 +1070,9 @@ function polygenDrawFunction(list){
 				break;
 			case 'tablefull' :
 				fulltable();
+				break;
+			case 'graphs': 
+				graphView();
 				break;
 			default:
 		   		break;
@@ -1186,15 +1187,123 @@ $(document).ready(function(e) {
 	});
 	$('.contentbClose').click(function(){ $('.bottomContent').fadeOut(100); });
 	
+
+
+	$('#container-speed').highcharts({
+	
+	    chart: {
+	        type: 'gauge',
+	        plotBackgroundColor: null,
+	        plotBackgroundImage: null,
+	        plotBorderWidth: 0,
+	        plotShadow: false,
+	        spacingBottom: 10,
+	        spacingTop: -60,
+	        spacingLeft: -20,
+	        spacingRight: -20,
+	    },
+	    
+	    title: {
+	        text: ''
+	    },
+	    
+	    pane: {
+	        startAngle: -90,
+	        endAngle: 90,
+	        center:['50%', '100%'],
+	        size: '100%',
+	        background: [{
+	            backgroundColor: {
+	                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+	                stops: [
+	                    [0, '#FFF'],
+	                    [1, '#333']
+	                ]
+	            },
+	            borderWidth: 0,
+	            outerRadius: '109%'
+	        }, {
+	            backgroundColor: {
+	                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+	                stops: [
+	                    [0, '#333'],
+	                    [1, '#FFF']
+	                ]
+	            },
+	            borderWidth: 1,
+	            outerRadius: '107%'
+	        }, {
+	            // default background
+	        }, {
+	            backgroundColor: '#DDD',
+	            borderWidth: 0,
+	            outerRadius: '105%',
+	            innerRadius: '103%'
+	        }]
+	    },
+	    credits: { enabled: false },
+	    // the value axis
+	    yAxis: {
+	        min: 0,
+	        max: 200,
+	        
+	        minorTickInterval: 'auto',
+	        minorTickWidth: 1,
+	        minorTickLength: 10,
+	        minorTickPosition: 'inside',
+	        minorTickColor: '#666',
+	
+	        tickPixelInterval: 30,
+	        tickWidth: 2,
+	        tickPosition: 'inside',
+	        tickLength: 10,
+	        tickColor: '#666',
+	        labels: {
+	            step: 2,
+	            rotation: 'auto'
+	        },
+	        title: {
+	            // text: 'km/h'
+	        },
+	        plotBands: [{
+	            from: 0,
+	            to: 120,
+	            color: '#55BF3B' // green
+	        }, {
+	            from: 120,
+	            to: 160,
+	            color: '#DDDF0D' // yellow
+	        }, {
+	            from: 160,
+	            to: 200,
+	            color: '#DF5353' // red
+	        }]        
+	    },
+	
+	    series: [{
+	        name: 'Speed',
+	        data: [total],
+	        tooltip: {
+	            valueSuffix: ' km/h'
+	        }
+	    }]
+	
+	});
+
+
     var gaugeOptions = {
         chart: {
             type: 'solidgauge',
-            backgroundColor:'rgba(255, 255, 255, 0)'
+            // backgroundColor:'rgba(255, 255, 255, 0)',
+            spacingBottom: -10,
+	        spacingTop: -40,
+	        spacingLeft: 0,
+	        spacingRight: 0,
         },
         title: null,
         pane: {
             center: ['50%', '90%'],
-            size: '180%',
+            size: '110%',
             startAngle: -90,
             endAngle: 90,
             background: {
@@ -1234,21 +1343,21 @@ $(document).ready(function(e) {
         }
     };
 
-    $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
+    $('#container-fuel').highcharts(Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 120,
+            max: 300,
             title: { text: '' }
         },
         credits: { enabled: false },
         series: [{
             name: 'Speed',
-            data: [total],
+            data: [fuelLtr],
             dataLabels: {
-                format: '<div style="text-align:center"><span style="font-size:12px; font-weight:normal;color: #196481'+ '">Speed - {y} km</span><br/>',
-                 y: 25
+                format: '<div style="text-align:center"><span style="font-size:12px; font-weight:normal;color: #196481'+ '">Fuel - {y} Ltr</span><br/>',
+                 // y: 25
             },
-            tooltip: { valueSuffix: ' km/h'}
+            tooltip: { valueSuffix: ' Ltr'}
         }]
     }));
     setInterval(function () {
@@ -1256,6 +1365,17 @@ $(document).ready(function(e) {
         if (chart) {
             point = chart.series[0].points[0];
             point.update(total);
+        }
+       var chartFuel = $('#container-fuel').highcharts(), point;
+        if (chartFuel) {
+            point = chartFuel.series[0].points[0];
+            point.update(fuelLtr);
+            if(tankSize==0)
+            	tankSize =200;
+            chartFuel.yAxis[0].update({
+			    max: tankSize,
+			}); 
+
         }
     }, 1000);
 });

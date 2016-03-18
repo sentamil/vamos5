@@ -74,7 +74,13 @@ app.controller('mainFuel', function($scope, $http, $filter){
 
 
 	function graphData(val){
-		graphList(val);
+		try{
+			graphList(val);
+		}
+		catch (err){
+			console.log('No Data'+err)
+		}
+		
 	$(function () {
    
         $('#container1').highcharts({

@@ -217,7 +217,7 @@ app.directive('map', function($http) {
         }
     };
 });
-app.controller('mainCtrl',function($scope, $http, $q){ 
+app.controller('mainCtrl',function($scope, $http, $q){
 	$scope.locations = [];
 	$scope.path = [];
 	$scope.polylinearr=[];
@@ -236,6 +236,7 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		$scope.locations = data;
 		if(location.href.split("=")[1]==undefined || location.href.split("=")[1].trim().length==0){
 			$scope.trackVehID =$scope.locations[0].vehicleLocations[0].vehicleId;
+			$scope.shortVehiId =$scope.locations[0].vehicleLocations[0].shortName;
 			$scope.selected=0;
 		}else{
 			$scope.trackVehID =location.href.split("=")[1].trim();
@@ -269,7 +270,7 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		}
 		var defdata = $q.defer();
 		$http.get(url).success(function(data){
-			console.log(' url '+data)
+			//console.log(' url '+data)
 			$scope.geoloc = defdata.resolve(data);
 			$scope.geoStop = data;
 			geomarker=[];
@@ -408,12 +409,13 @@ function animateMapZoomTo(map, targetZoom) {
 		
 	}
 	
-	$scope.genericFunction = function(a,b){
+	$scope.genericFunction = function(a,b,shortName){
 		$scope.path = [];
 		gmarkers=[];
 		ginfowindow=[];
 		contentString = [];
 		$scope.trackVehID = a;
+		$scope.shortVehiId = shortName;
 		$scope.selected = b;
 		$scope.plotting();
 		

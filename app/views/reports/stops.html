@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+
+<title>GPS</title>
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
+<style type="text/css">
+td { 
+    padding: 10px;
+    font-weight: bold;
+}
+</style>
+</head>
+<body ng-app="mapApp">
+	<div ng-controller="printHtml" text-align="center">
+       	
+		        	
+					 		<center><h3><b>Route No {{vehicleName}}</b></h3>
+					 		<div style="margin: 0 auto; line-height: 200%; width: 600px" align="left">
+					 		Please send SMS to 9212148888 in the following format.<br>
+					 		<b>VTS START,CVSM,RouteNo,StopNo</b><br>
+					 		For instance, if you're boarding at Stop No 1, please send SMS as follows <br>
+					 		<b>VTS START,CVSM,R17A,1 </b>(This is just a sample, Please change the Route No and Stop No as per your route and stop)<br>
+					 		To STOP receiving SMS, please send following SMS format, <b>VTS STOP</b> to 9212148888. <br>
+					 		</div>
+			   				<br>
+			   				 <table>
+			   				 	<thead style="text-align: center; font-weight: bold; color: ">
+			   				 		<td>Stop No</td>
+			   				 		<td>Stop Name</td>
+								</thead>
+								<tr style="text-align:center;" ng-repeat="stop in geoStops" ng-hide="$first">
+									<td>{{stop.rowId}}</td>
+									<td>{{stop.stopName | uppercase}}</td>
+								</tr>
+							</table>
+						</b></h4></center>
+			   			
+			  
+		</div>
+
+	<script src="assets/js/static.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
+	<script src="assets/js/vamoApp.js"></script>
+    <script src="assets/js/printDownload.js"></script>
+	 <!-- <script src="assets/js/jquery-1.11.0.js"></script>
+ //    <script src="assets/js/bootstrap.min.js"></script>
+ //    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
+ //    <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+ //    <script src="../app/views/reports/customjs/moment.js"></script>
+ //    <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
+ //    <script src="assets/js/static.js"></script>
+	// <script src="../app/views/reports/customjs/history.js"></script> -->
+	<script>
+	    
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+	</script>
+</body>
+</html>
+

@@ -101,6 +101,14 @@ Route::get('/downloadhistory', function() {
     }
     return View::make('reports.downloadhistory');
 });
+
+
+Route::get('/printStops', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.stops');
+});
  
 View::addExtension('html', 'php');
 Route::get('/statistics', function() {
@@ -246,6 +254,15 @@ Route::get('/getExecutiveReport', function() {
     }
     Log::info('getExecutiveReport');
     return View::make('vls.getExecutiveReport');
+});
+
+
+Route::get('/getFuelDropFillReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getFuelDropFillReport');
+    return View::make('vls.getFuelDropFillReport');
 });
  
 Route::get('getDistanceTimeFuelReport', function(){
