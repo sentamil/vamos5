@@ -33,12 +33,7 @@ public function index() {
         $vehicleListId = 'S_Vehicles_' . $fcode;
     }
 
-
-
-    Log::info('vehicleListId=' . $vehicleListId);
-
     $vehicleList = $redis->smembers ( $vehicleListId);
-
     $deviceList = null;
     $deviceId = null;
     $shortName =null;
@@ -50,9 +45,9 @@ public function index() {
     $orgIdList = null;
     $deviceModelList = null;
     $expiredList = null;
-    foreach ( $vehicleList as $vehicle ) {
+    foreach ( $vehicleList as $key => $vehicle  ) {
 
-        Log::info('$vehicle ' .$vehicle);
+        Log::info($key.'$vehicle ' .$vehicle);
         $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicle );
 
         if(isset($vehicleRefData)) {
@@ -60,11 +55,14 @@ public function index() {
         }else {
             continue;
         }
-
         $vehicleRefData=json_decode($vehicleRefData,true);
 
         $deviceId = $vehicleRefData['deviceId'];
 
+        if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.$username.'_'.$fcode, $deviceId)==0) || Session::get('cur')=='admin')
+        {
+             
+            Log::info(Session::get('cur').'in side ' .$redis->sismember('S_Pre_Onboard_Dealer_'.$username.'_'.$fcode, $deviceId));
         $deviceList = array_add ( $deviceList, $vehicle,$deviceId );
         $shortName = isset($vehicleRefData['shortName'])?$vehicleRefData['shortName']:'nill';
         $shortNameList = array_add($shortNameList,$vehicle,$shortName);
@@ -78,6 +76,13 @@ public function index() {
         $deviceModelList = array_add($deviceModelList,$vehicle,$deviceModel);
         $expiredPeriod=isset($vehicleRefData['expiredPeriod'])?$vehicleRefData['expiredPeriod']:'nill';
         $expiredList = array_add($expiredList,$vehicle,$expiredPeriod);
+        }
+        else
+        {
+             Log::info('$inside remove ' .$vehicle);
+            unset($vehicleList[$key]);
+        }
+       
     }
     $demo='ahan';
     $user=null;

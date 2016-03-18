@@ -1,10 +1,71 @@
-@include('includes.header_index')
 <!-- Main Wrapper -->
 <div id="wrapper">
-<div class="content animate-panel">
-<div class="row">
-<div class="col-lg-12">
+	<div class="content animate-panel">
+		<div class="row">
+    		<div class="col-lg-12">
+       			 <div class="hpanel">
+       			 <h6><b><font color="red"> {{ HTML::ul($errors->all()) }}</font></b></h6>
+               		 <div class="panel-heading">
+                   		 <h4><b><font color="blue">ADD DEVICE</font></b></h4>
+                	 </div>
+                	<div class="panel-body">
+					<h4><font color="green">Available licence :  {{$availableLincence}}
+					</font></h4>
+					</br>
+					<br>
+                		<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                			<div class="row">
+                				<div class="col-sm-12">
+			                		
+									{{ Form::open(array('url' => 'Business')) }}
+									<div class="row">
+										<div class="col-md-12">
+											<div class="col-md-6">
+												<div class="row">
+
+													<div class="col-md-3">
+														{{ Form::label('numberofdevice', 'Number Of Device :') }}
+
+													</div>
+													
+													<div class="col-md-6">
+														{{ Form::text('numberofdevice', Input::old('numberofdevice'), array('class' => 'form-control')) }}
+														{{ Form::hidden('availableLincence', $availableLincence, array('class' => 'form-control')) }}
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+											<div class="row">
+												<div class="col-md-6">	
+													</div>
+												<div class="col-md-6">
+													{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}{{ Form::close() }}
+												</div>	
+											</div>
+										</div>
+								</div>
+                			</div>
+            		</div>
+        		</div>
+    	  </div>
+	</div>
+</div>
+
+</div>
+</div>
+
+
+
+
+
+<!-- ahan index
+ -->
+
+
+
+
 <div class="hpanel">
+
 <div class="panel-heading">
 <h4><font color="blue"><b>Tags Create </b></font><h4> 
 </div>
@@ -12,7 +73,7 @@
 <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
 <div class="row">
 <div class="col-sm-12">
-{{ HTML::ul($errors->all()) }}
+
 {{ Form::open(array('url' => 'Business/adddevice')) }}
 <div class="row">
 <div class="col-md-12">
@@ -20,12 +81,13 @@
 <div class="row">
 
 {{ Form::hidden('numberofdevice1', $numberofdevice, array('class' => 'form-control')) }}
+{{ Form::hidden('availableLincence', $availableLincence, array('class' => 'form-control')) }}
 
 <h5><font color="green">{{ Form::label('Business','BUSINESS :') }}</font></h5>
 	        <font color="blue">
 	       
-	        	<table><tr><td id="hide">{{ Form::radio('type', 'Move',array( 'required')) }}</td><td width=20></td><td>Batch Move</td><td width=20></td><td id="p1">{{ Form::select('dealerId', array($dealerId), array('class' => 'form-control')) }}</td></tr>
-	        		<tr><td id="show">{{ Form::radio('type', 'Sale',array( 'required')) }}</td><td width=20></td><td>Batch Sale</td>
+	        	<table><tr><td id="hide">{{ Form::radio('type', 'Move') }}</td><td width=20></td><td>Batch Move</td><td width=20></td><td id="p1">{{ Form::select('dealerId', array($dealerId), array('class' => 'form-control')) }}</td></tr>
+	        		<tr><td id="show">{{ Form::radio('type', 'Sale') }}</td><td width=20></td><td>Batch Sale</td>
 
 	        			<td></td>
 	        		</tr></table>
@@ -41,9 +103,13 @@
 	        		<table ><tr>
 
 	        			<td id="t">
-	        				{{ Form::select('userIdtemp', array($userList), array('class' => 'form-control')) }}
-
-	        			</td>
+	        				{{ Form::select('userIdtemp', array($userList),'0', array('id'=>'userIdtemp1')) }}
+	        				<br/>
+	        				<br/>
+	        				
+	        							{{ Form::label('Group', 'Group name') }}
+	        						
+	        						{{ Form::select('groupname', array(null),Input::old('groupname'), array('id'=>'groupname')) }}
 	        			<td id="t1">
 	        				<p>
 	        					<div class="row">
@@ -141,6 +207,30 @@ $('#error').text(data.error);
 
 
 
+$('#userIdtemp1').on('change', function() {
+console.log('test vamos');
+var data = {
+'id': $(this).val()
+
+};
+console.log('ahan'+data);
+$.post('{{ route("ajax.getGroup") }}', data, function(data, textStatus, xhr) {
+
+ 			 $('#groupname').empty();
+ 			 //onsole.log('ahan1'+data.groups);
+			$.each(data.groups, function(key, value) {   
+			     $('#groupname')
+			         .append($("<option></option>")
+			         .attr("value",key)
+			         .text(value)); 
+			});
+
+
+});
+//alert("The text has been changeded.");
+});
+
+
 $('#submitp').on('onclick', function() {
 console.log('ahan1');
 // var data = {
@@ -193,33 +283,7 @@ console.log('ahan1');
 //alert("The text has been changeded.");
 });
 
-		$("#hide").click(function(){
-    			$("#p").hide();
-    			$("#p1").show();
-    			$("#t").hide();
-    			$("#t1").hide();
-    			$('#hide').attr('disabled', true);
-    		});
-    		$("#show").click(function(){
-    			$("#p").show();
-    			$("#p1").hide();
-    			$('#show').attr('disabled', true);
-    		});
-    		$("#hide1").click(function(){
-    			$("#t").hide();
-    			$("#t1").show();
-    			$('#hide1').attr('disabled', true);
-    		});
-    		$("#show1").click(function(){
-    			$("#t").show();
-    			$("#t1").hide();
-    			$('#show1').attr('disabled', true);
-    		});
-
-    		$("#p").hide();
-    		$("#p1").hide();
-    		$("#t").hide();
-    		$("#t1").hide();
+		
 
 }
 
@@ -342,7 +406,7 @@ console.log('ahan1');
 <div class="col-md-6">	
 </div>
 <div class="col-md-6">
-{{ Form::submit('Submit', array('id' => 'submitp'),array('id' => 'submitp')) }}{{ Form::close() }}
+{{ Form::submit('Submit', array('id' => 'submitp')) }}{{ Form::close() }}
 </div>	
 </div>
 </div>
@@ -351,12 +415,39 @@ console.log('ahan1');
 </div>
 </div>
 </div>
-</div>
-</div>
 
 
-</div>
-</div>
-@include('includes.js_index')
-</body>
-</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+
+<script>
+$("#hide").click(function(){
+    			$("#p").hide();
+    			$("#p1").show();
+    			$("#t").hide();
+    			$("#t1").hide();
+    			$('#hide').attr('disabled', true);
+    		});
+    		$("#show").click(function(){
+    			$("#p").show();
+    			$("#p1").hide();
+    			$('#show').attr('disabled', true);
+    		});
+    		$("#hide1").click(function(){
+    			$("#t").hide();
+    			$("#t1").show();
+    			$('#hide1').attr('disabled', true);
+    		});
+    		$("#show1").click(function(){
+    			$("#t").show();
+    			$("#t1").hide();
+    			$('#show1').attr('disabled', true);
+    		});
+
+    		$("#p").hide();
+    		$("#p1").hide();
+    		$("#t").hide();
+    		$("#t1").hide();
+
+</script>
