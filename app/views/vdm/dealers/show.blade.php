@@ -15,5 +15,18 @@
 		<p>
 				<strong><br/>Website: </strong><br/><br/> {{ $website }}<br>
 		</p>
+		<p>
+				<strong><br/>SmsSender: </strong><br/><br/> {{ $smsSender }}<br>
+		</p>
+		<p>
+				<strong><br/>SmsProvider: </strong><br/><br/> {{ $smsProvider }}<br>
+		</p>
+		<p>
+				<strong><br/>ProviderUserName: </strong><br/><br/> {{ $providerUserName }}<br>
+		</p>
+		<p>
+				<strong><br/>ProviderPassword: </strong><br/><br/> {{ $providerPassword }}<br>
+		</p>
+
 	</div>
 @stop

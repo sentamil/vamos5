@@ -61,7 +61,8 @@ class VdmDealersController extends \BaseController {
 		
 		$user1= new VdmDealersController;
 		$user=$user1->checkuser();
-		return View::make ( 'vdm.dealers.create' )->with ( 'vehicleGroups', $vehicleGroups )->with('user',$user);
+		return View::make ( 'vdm.dealers.create' )->with ( 'vehicleGroups', $vehicleGroups )->with('user',$user)
+		->with('smsP',VdmFranchiseController::smsP());
 	}
 	
 	
@@ -131,13 +132,29 @@ class VdmDealersController extends \BaseController {
 			$website=$detail['website'];
 		else
 			$website='';
+		if(isset($detail['smsSender'])==1)
+			$smsSender=$detail['smsSender'];
+		else
+			$smsSender='';
+		if(isset($detail['smsProvider'])==1)
+			$smsProvider=$detail['smsProvider'];
+		else
+			$smsProvider='nill';
+		if(isset($detail['providerUserName'])==1)
+			$providerUserName=$detail['providerUserName'];
+		else
+			$providerUserName='';
+		if(isset($detail['providerPassword'])==1)
+			$providerPassword=$detail['providerPassword'];
+		else
+			$providerPassword='';		
 		$vehicleGroups = $redis->smembers ( $userId );
 		
 		
 		
 		return View::make ( 'vdm.dealers.show', array (
 				'userId' => $userId 
-		) )->with('mobileNo',$mobileNo)->with('email',$email)->with('website',$website);
+		) )->with('mobileNo',$mobileNo)->with('email',$email)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword);
 	}
 	
 	/**
@@ -174,11 +191,27 @@ class VdmDealersController extends \BaseController {
 		if(isset($detail['website'])==1)
 			$website=$detail['website'];
 		else
-			$website='';		
+			$website='';	
+		if(isset($detail['smsSender'])==1)
+			$smsSender=$detail['smsSender'];
+		else
+			$smsSender='';
+		if(isset($detail['smsProvider'])==1)
+			$smsProvider=$detail['smsProvider'];
+		else
+			$smsProvider='nill';
+		if(isset($detail['providerUserName'])==1)
+			$providerUserName=$detail['providerUserName'];
+		else
+			$providerUserName='';
+		if(isset($detail['providerPassword'])==1)
+			$providerPassword=$detail['providerPassword'];
+		else
+			$providerPassword='';			
 		return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email)->with('website',$website);
+		with('email',$email)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
 		 
 	 }
 	 
@@ -205,11 +238,27 @@ class VdmDealersController extends \BaseController {
 		if(isset($detail['website'])==1)
 			$website=$detail['website'];
 		else
-			$website='';		
+			$website='';
+		if(isset($detail['smsSender'])==1)
+			$smsSender=$detail['smsSender'];
+		else
+			$smsSender='';
+		if(isset($detail['smsProvider'])==1)
+			$smsProvider=$detail['smsProvider'];
+		else
+			$smsProvider='nill';
+		if(isset($detail['providerUserName'])==1)
+			$providerUserName=$detail['providerUserName'];
+		else
+			$providerUserName='';
+		if(isset($detail['providerPassword'])==1)
+			$providerPassword=$detail['providerPassword'];
+		else
+			$providerPassword='';		
 		return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email)->with('website',$website);
+		with('email',$email)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
 	}
 	
 	/**
@@ -248,10 +297,18 @@ class VdmDealersController extends \BaseController {
 			$mobileNo = Input::get ( 'mobileNo' );
 			$email = Input::get ( 'email' );
 			$website=Input::get ( 'website' );
+			$smsSender=Input::get ( 'smsSender' );
+			$smsProvider=Input::get ( 'smsProvider' );
+			$providerUserName=Input::get ( 'providerUserName' );
+			$providerPassword=Input::get ( 'providerPassword' );
 			$detail=array(
 			'email'	=> $email,
 			'mobileNo' => $mobileNo,
 			'website' => $website,
+			'smsSender'=>$smsSender,
+			'smsProvider'=>$smsProvider,
+			'providerUserName'=>$providerUserName,
+			'providerPassword'=>$providerPassword,
 			);
 			
 			$detailJson=json_encode($detail);
@@ -320,11 +377,19 @@ class VdmDealersController extends \BaseController {
 			$email = Input::get ( 'email' );
 			$mobileNo = Input::get ( 'mobileNo' );
            $website=Input::get ( 'website' );
+           $smsSender=Input::get ( 'smsSender' );
+           $smsProvider=Input::get ( 'smsProvider' );
+           $providerUserName=Input::get ( 'providerUserName' );
+             $providerPassword=Input::get ( 'providerPassword' );
 			// ram
 			$detail=array(
 			'email'	=> $email,
 			'mobileNo' => $mobileNo,
 			'website'=>$website,
+			'smsSender'=>$smsSender,
+			'smsProvider'=>$smsProvider,
+			'providerUserName'=>$providerUserName,
+			'providerPassword'=>$providerPassword,
 			);
 			
 			$detailJson=json_encode($detail);

@@ -74,6 +74,22 @@
 		{{ Form::text('smsSender', $smsSender, array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
+		{{ Form::label('smsProvider', 'SMS Provider') }}
+		  {{ Form::select('smsProvider',  array( $smsP), $smsProvider, array('class' => 'form-control')) }} 
+	</div>
+	<div class="form-group">
+		{{ Form::label('providerUserName', 'SMS Provider User Name') }}
+		{{ Form::text('providerUserName', $providerUserName, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('providerPassword', 'SMS Provider Password') }}
+		{{ Form::text('providerPassword', $providerPassword, array('class' => 'form-control')) }}
+	</div>
+
+
+
+
+	<div class="form-group">
 		{{ Form::label('numberofLicence', 'Number of Licence') }}
 		{{ Form::text('numberofLicence', $numberofLicence, array('class' => 'form-control','disabled' => 'disabled')) }}
 	</div>

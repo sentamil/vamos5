@@ -58,6 +58,41 @@
 									{{ Form::text('website', Input::old('website'), array('class' => 'form-control')) }}
 								</div>
 							</div>
+
+
+ <br />
+								<div class="row">
+								<div class="col-md-3">
+							{{ Form::label('smsSender', 'SMS Sender') }}
+							</div>
+							<div class="col-md-6">
+							{{ Form::text('smsSender', Input::old('smsSender'), array('class' => 'form-control')) }}
+								</div>
+						</div> <br />
+						<div class="row">
+								<div class="col-md-3">
+		{{ Form::label('smsProvider', 'SMS Provider') }}
+			</div><div class="col-md-6">
+		 		{{ Form::select('smsProvider',  array( $smsP), Input::old('smsProvider'), array('class' => 'form-control')) }} 
+			</div>
+			</div> <br />
+							<div class="row">
+								<div class="col-md-3">
+		{{ Form::label('providerUserName', 'SMS Provider User Name') }}
+		</div><div class="col-md-6">
+		{{ Form::text('providerUserName', Input::old('providerUserName'), array('class' => 'form-control')) }}
+		</div>
+	</div> <br />
+	<div class="row">
+								<div class="col-md-3">
+		{{ Form::label('providerPassword', 'SMS Provider Password') }}</div>
+		<div class="col-md-6">
+		{{ Form::text('providerPassword', Input::old('providerPassword'), array('class' => 'form-control')) }}
+		</div>
+	</div>
+
+
+
 								</br/>
 								</br/>
 							<div style="text-align: right">

@@ -75,6 +75,19 @@
 		{{ Form::label('smsSender', 'SMS Sender') }}
 		{{ Form::text('smsSender', Input::old('smsSender'), array('class' => 'form-control')) }}
 	</div>
+	<div class="form-group">
+		{{ Form::label('smsProvider', 'SMS Provider') }}
+		 {{ Form::select('smsProvider',  array( $smsP), Input::old('smsProvider'), array('class' => 'form-control')) }} 
+	</div>
+	<div class="form-group">
+		{{ Form::label('providerUserName', 'SMS Provider User Name') }}
+		{{ Form::text('providerUserName', Input::old('providerUserName'), array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('providerPassword', 'SMS Provider Password') }}
+		{{ Form::text('providerPassword', Input::old('providerPassword'), array('class' => 'form-control')) }}
+	</div>
+
 	
 	{{ Form::submit('Add the Franchise!', array('class' => 'btn btn-primary')) }}
 

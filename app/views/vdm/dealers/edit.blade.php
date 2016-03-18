@@ -30,6 +30,22 @@
 		{{ Form::label('website', 'Website :') }}
 		{{ Form::text('website', $website, array('class' => 'form-control')) }}
 	</div>
+	<div class="form-group">
+		{{ Form::label('smsSender', 'Sms Sender  :') }}
+		{{ Form::text('smsSender', $smsSender, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('smsProvider', 'SMS Provider :') }}
+		{{ Form::select('smsProvider',  array( $smsP), $smsProvider, array('class' => 'form-control')) }} 
+	</div>
+	<div class="form-group">
+		{{ Form::label('providerUserName', 'Provider UserName :') }}
+		{{ Form::text('providerUserName', $providerUserName, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('providerPassword', 'Provider Password :') }}
+		{{ Form::text('providerPassword', $providerPassword, array('class' => 'form-control')) }}
+	</div>
 		 
 		</br/>
 		</br>

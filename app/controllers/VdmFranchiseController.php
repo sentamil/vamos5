@@ -42,10 +42,18 @@ class VdmFranchiseController extends \BaseController {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
-		return View::make ( 'vdm.franchise.create' );
+		$smsP=VdmFranchiseController::smsP();
+		return View::make ( 'vdm.franchise.create' )->with('smsP',$smsP);
 	}
 	
-
+public static function smsP()
+{
+		$smsP=array();
+		$smsP=array_add($smsP, 'nill','Nill');
+		$smsP=array_add($smsP, 'kap','Kap');
+		$smsP=array_add($smsP, 'mvaayoo','Mvaayoo');
+	return $smsP;
+}
 
 	public function fransearch()
 	{
@@ -263,6 +271,9 @@ public function users()
 			$otherDetails = Input::get ('otherDetails');
 			$numberofLicence = Input::get ('numberofLicence');
 			$smsSender=Input::get ('smsSender');
+			$smsProvider=Input::get ('smsProvider');
+			$providerUserName=Input::get ('providerUserName');
+			$providerPassword=Input::get ('providerPassword');
 	
 			
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
@@ -292,6 +303,9 @@ public function users()
 					'availableLincence'=>$numberofLicence,
 					'website'=>$website,
 					'smsSender'=>$smsSender,
+					'smsProvider'=>$smsProvider,
+					'providerUserName'=>$providerUserName,
+					'providerPassword'=>$providerPassword,
 					
 					
 					
@@ -452,6 +466,22 @@ public function users()
 			$smsSender=$franchiseDetails['smsSender'];
 		else
 			$smsSender='';
+		if(isset($franchiseDetails['smsProvider'])==1)
+			$smsProvider=$franchiseDetails['smsProvider'];
+		else
+			$smsProvider='nill';
+		if(isset($franchiseDetails['providerUserName'])==1)
+			$providerUserName=$franchiseDetails['providerUserName'];
+		else
+			$providerUserName='';
+		if(isset($franchiseDetails['providerPassword'])==1)
+			$providerPassword=$franchiseDetails['providerPassword'];
+		else
+			$providerPassword='';
+
+
+
+
 		Session::put('available',$availableLincence);
 		Session::put('numberofLicence',$numberofLicence);
 		return View::make ( 'vdm.franchise.edit', array (
@@ -469,7 +499,11 @@ public function users()
 		->with('numberofLicence',$numberofLicence)
 		->with('availableLincence',$availableLincence)
 		->with('website',$website)
-		->with('smsSender',$smsSender);
+		->with('smsSender',$smsSender)
+		->with('smsProvider',$smsProvider)
+		->with('providerUserName',$providerUserName)
+		->with('providerPassword',$providerPassword)
+		->with('smsP',VdmFranchiseController::smsP());
 	
 
 	}
@@ -520,6 +554,9 @@ public function users()
 			$numberofLicence = Input::get ('addLicence');	
 			$website= Input::get ('website');
 			$smsSender=Input::get ('smsSender');
+			$smsProvider=Input::get ('smsProvider');
+			$providerUserName=Input::get ('providerUserName');
+			$providerPassword=Input::get ('providerPassword');
 			$redis = Redis::connection ();
 				
 				if($numberofLicence==null)
@@ -576,11 +613,10 @@ public function users()
 					'availableLincence'=>$availableLincence,
 					'website'=>$website,
 					'smsSender'=>$smsSender,
-					
-					
-					
+					'smsProvider'=>$smsProvider,
+					'providerUserName'=>$providerUserName,
+					'providerPassword'=>$providerPassword,		
 			);
-			
 			$detailsJson = json_encode ( $details );
 			$redis->hmset ( 'H_Franchise', $fcode,$detailsJson);
 			
