@@ -401,7 +401,7 @@ $("#td{{$i}}").toggle(500);
 <div class="col-md-6">	
 </div>
 <div class="col-md-6">
-{{ Form::submit('Add Device', array('class' => 'btn btn-primary')) }}{{ Form::close() }}
+{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}{{ Form::close() }}
 </div>	
 </div>
 </div>

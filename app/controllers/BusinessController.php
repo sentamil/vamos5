@@ -645,7 +645,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 
 	$deviceModel=$deviceidtype;
 	$shortName=Input::get ( 'shortName'.$i);
-	$shortName=!empty($shortName) ? $shortName : 'nill';				
+	$shortName=!empty($shortName) ? $shortName : $vehicleId;				
 	$regNo=Input::get ( 'regNo'.$i);	
 	$regNo=!empty($regNo) ? $regNo : 'XXXX';
 	
