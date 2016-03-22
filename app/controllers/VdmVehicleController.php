@@ -1443,6 +1443,15 @@ public function migrationUpdate() {
                 return View::make ( 'vdm.vehicles.migration', array (
                     'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
             }
+            $tempDeviceCheck=$redis->hget('H_Device_Cpy_Map',$deviceId);
+        if( $tempDeviceCheck!==null)
+        {
+            Session::flash ( 'message', 'Device Id already present ' . '!' );
+                $deviceId= $deviceIdOld;
+                $vehicleId= $vehicleIdOld;
+            return View::make ( 'vdm.vehicles.migration', array (
+                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
+        }
         }
         else if($vehicleId!==$vehicleIdOld && $deviceId==$deviceIdOld)
         {
@@ -1486,11 +1495,7 @@ public function migrationUpdate() {
                 return View::make ( 'vdm.vehicles.migration', array (
                     'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
             }
-
-        }
-
-
-        $tempDeviceCheck=$redis->hget('H_Device_Cpy_Map',$deviceId);
+            $tempDeviceCheck=$redis->hget('H_Device_Cpy_Map',$deviceId);
         if( $tempDeviceCheck!==null)
         {
             Session::flash ( 'message', 'Device Id already present ' . '!' );
@@ -1499,6 +1504,11 @@ public function migrationUpdate() {
             return View::make ( 'vdm.vehicles.migration', array (
                     'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
         }
+
+        }
+
+
+        
 
         $redis->hdel ( $vehicleDeviceMapId, $vehicleIdOld );                               
         $redis->hdel ( $vehicleDeviceMapId, $deviceIdOld );                                
