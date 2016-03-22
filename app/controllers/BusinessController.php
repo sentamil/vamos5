@@ -14,10 +14,7 @@ class BusinessController extends \BaseController {
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
        
-
-       if(Session::get('cur')=='admin')
-		{
-			$tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
+		$tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
 		
 		if(Session::get('cur')=='dealer')
 			{
@@ -28,20 +25,25 @@ class BusinessController extends \BaseController {
 			{
 				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$fcode);
 			}
+			$orgList=null;
+			$orgList=array_add($orgList,'','select');
+		$orgList=array_add($orgList,'Default','Default');
+        foreach ( $tmpOrgList as $org ) {
+                $orgList = array_add($orgList,$org,$org);
+                
+            }
+       if(Session::get('cur')=='admin')
+		{
+			
 			$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
 			$franchiseDetails=json_decode($franDetails_json,true);
 			if(isset($franchiseDetails['availableLincence'])==1)
 				$availableLincence=$franchiseDetails['availableLincence'];
 			else
 				$availableLincence='0';
-        $orgList=null;
-		$orgList=array_add($orgList,'Default','Default');
-        foreach ( $tmpOrgList as $org ) {
-                $orgList = array_add($orgList,$org,$org);
-                
-            }
+        
             $numberofdevice=0;$dealerId=null;$userList=null;
-		return View::make ( 'vdm.business.createCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList );
+		return View::make ( 'vdm.business.deviceAddCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList );
 		}
 		else if(Session::get('cur')=='dealer')
 		{
@@ -99,10 +101,12 @@ class BusinessController extends \BaseController {
 			$redisUserCacheId = 'S_Users_Admin_'.$fcode;
 		}
 	
-		//$userList = $redis->smembers ( $redisUserCacheId);
+		$userList = $redis->smembers ( $redisUserCacheId);
 		//get the intersection of users set and groups set
-		$userList=$redis->sinter($redisUserCacheId,'S_Organisations_'.$fcode);
+		//$userList=$redis->sinter($redisUserCacheId,'S_Organisations_'.$fcode);
+		
 		$orgArra = array();
+		$orgArra =array_add($orgArra, 'select','select');
       foreach($userList as $org) {
             $orgArra = array_add($orgArra, $org,$org);
 			
@@ -110,7 +114,7 @@ class BusinessController extends \BaseController {
 			$userList=$orgArra;
 		
 		
-			return View::make ( 'vdm.business.business1')->with('devices',$devices)->with('devicestypes',$devicestypes)->with('dealerId',$dealerId)->with('userList',$userList);
+			return View::make ( 'vdm.business.business1')->with('devices',$devices)->with('devicestypes',$devicestypes)->with('dealerId',$dealerId)->with('userList',$userList)->with ( 'orgList', $orgList );
 		
 		}
         
@@ -149,9 +153,54 @@ class BusinessController extends \BaseController {
                 
             }
             $numberofdevice=0;$dealerId=null;$userList=null;
-		return View::make ( 'vdm.business.create' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList );
+		return View::make ( 'vdm.business.deviceAdd' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList );
 	}
-	
+	public function checkUser()
+	{
+		log::info( 'ahan'.'-------- laravel test ::----------'.Input::get('id'));
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$error=' ';
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+
+		$userId = Input::get ( 'id');
+		
+		  $val = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
+		  $val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
+		  $valOrg= $redis->sismember('S_Organisations_'. $fcode, $userId);	
+		   $valOrg1=$redis->sismember('S_Organisations_Admin_'.$fcode,$userId);
+		   $valGroup=$redis->sismember('S_Groups_' . $fcode, $userId . ':' . $fcode);
+		   $valGroup1=$redis->sismember('S_Groups_Admin_'.$fcode,$userId . ':' . $fcode);
+				
+				if($valGroup==1 || $valGroup1==1 ) {
+					log::info('id group exist '.$userId);
+					$error= 'Name already exist' ;
+				}
+				if($valOrg==1 || $valOrg1==1 ) {
+					log::info('id org exist '.$userId);
+					$error='Name already exist' ;
+				}
+				if($val1==1 || isset($val)) {
+					log::info('id already exist '.$userId);
+					$error= 'User Id already exist' ;
+				}
+				if (strpos($userId, 'admin') !== false || strpos($userId, 'ADMIN') !== false) {
+					$error= 'Name with admin not acceptable' ;
+				}
+
+				$refDataArr = array (
+
+			'error' => $error
+
+			);
+		$refDataJson = json_encode ( $refDataArr );
+
+		log::info('changes value '.$error);            
+		return Response::json($refDataArr);	
+	}
 	public function checkDevice()
 	{
 		log::info( 'ahan'.'-------- laravel test ::----------'.Input::get('id'));
@@ -229,7 +278,7 @@ public function getGroup()
 
 		$userId = Input::get ( 'id');
 log::info( $fcode.'-------- laravel test1 ::----------'.$userId);
-$vehRfidYesList=null;
+$vehRfidYesList=array();
 	$vehicleGroups = $redis->smembers ( $userId );
 		
 		//$vehicleGroups = implode ( '<br/>', $vehicleGroups );
@@ -237,13 +286,16 @@ $vehRfidYesList=null;
 
  foreach ( $vehicleGroups as $vehicle ) {
 $vehRfidYesList = array_add($vehRfidYesList,$vehicle,$vehicle);
- }
-
+ }$error=' ';
+if(count($vehicleGroups)==0)
+{
+	$error='No groups available ,Please select another user';
+}
 
 		$refDataArr = array (
 
 			'groups' => $vehRfidYesList,
-
+			'error'=>$error,
 			);
 
 	$refDataJson = json_encode ( $refDataArr );
@@ -269,7 +321,7 @@ $vehRfidYesList = array_add($vehRfidYesList,$vehicle,$vehicle);
 		log::info( '-------- store in  ::----------');
         $availableLincence=Input::get ( 'availableLincence' );
 		if ($validator->fails ()) {
-			return View::make ( 'vdm.business.createCopy' )->withErrors ( $validator )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', null )->with ( 'dealerId', null )->with ( 'userList', null );
+			return View::make ( 'vdm.business.deviceAddCopy' )->withErrors ( $validator )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', null )->with ( 'dealerId', null )->with ( 'userList', null )->with('orgList',null);
 		} 
 		else{
 			
@@ -280,7 +332,7 @@ $vehRfidYesList = array_add($vehRfidYesList,$vehicle,$vehicle);
 			log::info( '-------- av license in  ::----------'.$availableLincence);
 			if($numberofdevice>$availableLincence)
 			{
-				return View::make ( 'vdm.business.createCopy' )->withErrors ( "Your license count is less" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', null )->with ( 'dealerId', null )->with ( 'userList', null );
+				return View::make ( 'vdm.business.deviceAddCopy' )->withErrors ( "Your license count is less" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', null )->with ( 'dealerId', null )->with ( 'userList', null )->with('orgList',null);
 			}
 		$dealerId = $redis->smembers('S_Dealers_'. $fcode);  
         $orgArr = array();
@@ -298,7 +350,25 @@ $vehRfidYesList = array_add($vehRfidYesList,$vehicle,$vehicle);
 			//$orgArr = array_add($orgArr, 'OWN','OWN');
 			$dealerId = $orgArr;
 		}
-		$redisUserCacheId = 'S_Users_' . $fcode; //dummy installation
+		$userList=array();
+		$userList=BusinessController::getUser();
+		$orgList=array();
+		$orgList=BusinessController::getOrg();
+
+		 return View::make ( 'vdm.business.createCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
+		}
+		
+		
+	}
+
+
+
+public static function getUser()
+{
+	$username = Auth::user ()->username;
+			$redis = Redis::connection ();
+			$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+	$redisUserCacheId = 'S_Users_' . $fcode; //dummy installation
 		$redisGrpCacheId='S_Users_';
 		
 		if(Session::get('cur')=='dealer')
@@ -312,21 +382,75 @@ $vehRfidYesList = array_add($vehRfidYesList,$vehicle,$vehicle);
 		{
 			$redisUserCacheId = 'S_Users_Admin_'.$fcode;
 		}
-		$userList=$redis->sinter($redisUserCacheId,'S_Organisations_'.$fcode);
+		$userList=$redis->smembers($redisUserCacheId);
 		$orgArra = array();
-      foreach($userList as $org) {
+		$orgArra = array_add($orgArra, 'select','select');
+      foreach($userList as $key => $org) {
             $orgArra = array_add($orgArra, $org,$org);
 			
         }
 			$userList=$orgArra;
-		$orgList=null;
-		log::info( $numberofdevice.'--------inside decice in  ::----------'.$availableLincence);
-		 return View::make ( 'vdm.business.createCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList );
+
+			return $userList;
+}
+
+public static function getdealer()
+{
+	$username = Auth::user ()->username;
+			$redis = Redis::connection ();
+			$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+	$dealerId = $redis->smembers('S_Dealers_'. $fcode);  
+        $orgArr = array();
+		        // $orgArr = array_add($orgArr, 'OWN','OWN');
+		if($dealerId!=null)
+		{
+			foreach($dealerId as $org) {
+            $orgArr = array_add($orgArr, $org,$org);
+			
+        }
+		$dealerId = $orgArr;
 		}
-		
-		
-	}
-	
+		else{
+			$dealerId=null;
+			//$orgArr = array_add($orgArr, 'OWN','OWN');
+			$dealerId = $orgArr;
+		}
+
+		return $dealerId;
+}
+
+
+
+
+public static function getOrg()
+{
+	$username = Auth::user ()->username;
+			$redis = Redis::connection ();
+			$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+	$orgList=null;
+			$orgListId = 'S_Organisations_' . $fcode;
+			if(Session::get('cur')=='dealer')
+			{
+				log::info( '------login 1---------- '.Session::get('cur'));
+				 $orgListId = 'S_Organisations_Dealer_'.$username.'_'.$fcode;
+			}
+			else if(Session::get('cur')=='admin')
+			{
+				 $orgListId = 'S_Organisations_Admin_'.$fcode;
+			}
+        Log::info('orgListId=' . $orgListId);
+        $orgList = $redis->smembers ( $orgListId);
+        $orgArray = array();  
+        $orgArray = array_add($orgArray, '','select');
+        foreach ( $orgList as $org ) {
+            
+            $orgArray = array_add($orgArray, $org,$org);
+        }
+        
+        $orgList=$orgArray;
+
+return $orgList;
+}	
 
 public function adddevice() {
 			if (! Auth::check ()) {
@@ -345,14 +469,23 @@ public function adddevice() {
 			$type1      = Input::get('type1');
 			log::info($ownerShip.'type ----------->'.$type1);
 			$numberofdevice = Input::get ( 'numberofdevice1' );
+			$orgList=array();
+			$orgList=BusinessController::getOrg();
+
 			 $availableLincence=Input::get ( 'availableLincence' );
+			 $userList=array();
+			$userList=BusinessController::getUser();
+			$orgList=array();
+			$orgList=BusinessController::getOrg();
+			$dealerId=array();
+			$dealerId=BusinessController::getdealer();
 			if($type1=='existing')
 			{
 				$userId      = Input::get('userIdtemp');
-				if($userId==null)
+				if($userId==null ||$userId=='select')
 				{
 					Session::flash ( 'message', 'Invalid user Id !' );
-					//return Redirect::to ( 'Business' )->withErrors ( 'Invalid user Id' );
+					return Redirect::to ( 'Business' )->withErrors ( 'Invalid user Id' );
 				}	
 			}
 			if($type==null && Session::get('cur')=='admin')
@@ -361,7 +494,7 @@ public function adddevice() {
 				Session::flash ( 'message', 'select the sale!' );
 				//return View::make ( 'vdm.business.store');
 				//return Redirect::back()->withErrors('select the sale!');
-				return View::make ( 'vdm.business.create' )->withErrors ( "select the sale!" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', null )->with ( 'userList', null );
+				return View::make ( 'vdm.business.create' )->withErrors ( "select the sale!" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
 
 			}	
 			if($type=='Sale' && Session::get('cur')!='dealer')
@@ -408,16 +541,17 @@ public function adddevice() {
 					   $valGroup1=$redis->sismember('S_Groups_Admin_'.$fcode,$userId . ':' . $fcode);
 				}
 				if($valGroup==1 || $valGroup1==1 || $valOrg==1 || $valOrg1==1 ) {
-					return View::make ( 'vdm.business.create' )->withErrors ( "Name already exist" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', null )->with ( 'userList', null );
+					return View::make ( 'vdm.business.create' )->withErrors ( "Name already exist" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
 				}
 				if($val1==1 || isset($val)) {
-					return View::make ( 'vdm.business.create' )->withErrors ( "User Id already exist" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', null )->with ( 'userList', null );
+					return View::make ( 'vdm.business.create' )->withErrors ( "User Id already exist" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
 				}
 				if (strpos($userId, 'admin') !== false || strpos($userId, 'ADMIN') !== false) {
 					//return Redirect::back()->withErrors ( 'Name with admin not acceptable' );
 
-					return View::make ( 'vdm.business.create' )->withErrors ( "Name with admin not acceptable" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', null )->with ( 'userList', null );
+					return View::make ( 'vdm.business.create' )->withErrors ( "Name with admin not acceptable" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
 				}
+				
 
 			    $mobArr = explode(',', $mobileNo);
 				foreach($mobArr as $mob){
@@ -427,12 +561,26 @@ public function adddevice() {
                 	log::info('id alreasy exist '.$mob);
                 	//return Redirect::back()->withErrors ( );
 
-                	return View::make ( 'vdm.business.create' )->withErrors ( $mob . ' User Id already exist')->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', null )->with ( 'userList', null );
+                	return View::make ( 'vdm.business.create' )->withErrors ( $mob . ' User Id already exist')->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
                  }
 				}	
 
 
 			}
+				if($type=='Sale')
+				{
+					
+					$groupname      = Input::get('groupname');
+					log::info($userId.'-------------- groupname- 1-------------'.$groupname);
+					if($type1=='existing' && ($groupname==null || $groupname=='' || $groupname=='0'))
+					{
+						
+						return View::make ( 'vdm.business.create' )->withErrors ( ' Invalid groupname')->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
+					}
+
+					
+					
+				}
 			log::info('value type---->'.$type);
 			$organizationId=$userId;
 			$orgId=$organizationId;
@@ -466,7 +614,7 @@ public function adddevice() {
 
 
 
-$deviceidarray=null;
+
 $franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
 $franchiseDetails=json_decode($franDetails_json,true);
 if(isset($franchiseDetails['availableLincence'])==1)
@@ -476,6 +624,13 @@ $availableLincence='0';
 $count=0;
 $numberofdevice = Input::get ( 'numberofdevice1' );
 log::info( '--------number of  device::----------'.$numberofdevice);
+$vehicleIdarray=array();
+$deviceidarray=array();
+if($type=='Sale' && $type1!=='new')
+{
+	$orgId=Input::get ( 'orgId');
+}
+
 for($i =1;$i<=$numberofdevice;$i++)
 {
 	$deviceid = Input::get ( 'deviceid'.$i);
@@ -493,8 +648,12 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$shortName=!empty($shortName) ? $shortName : 'nill';				
 	$regNo=Input::get ( 'regNo'.$i);	
 	$regNo=!empty($regNo) ? $regNo : 'XXXX';
-	$orgId=Input::get ( 'orgId'.$i);
-	$orgId=!empty($orgId) ? $orgId : $groupId;
+	
+	$orgId=!empty($orgId) ? $orgId : 'Default';
+	if($ownerShip!=='OWN')
+	{
+		$orgId='Default';
+	}
 	$vehicleType=Input::get ( 'vehicleType'.$i);	
 	$vehicleType=!empty($vehicleType) ? $vehicleType : 'Bus';
 	$oprName=Input::get ( 'oprName'.$i);
@@ -527,6 +686,17 @@ for($i =1;$i<=$numberofdevice;$i++)
 	{
 
 		$dev=$redis->hget('H_Device_Cpy_Map',$deviceid);
+		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
+		$back=$redis->hget($vehicleDeviceMapId, $deviceid);
+		$back = $redis->sismember('S_Vehicles_' . $fcode, $vehicleId);
+		
+		
+		if($back==1)
+		{
+			log::info('------temp-----a----- ');
+			
+			$vehicleIdarray=array_add($vehicleIdarray,$vehicleId,$vehicleId);
+		}
 		if(Session::get('cur')=='dealer')
 		{					
 			$tempdev=$redis->hget('H_Pre_Onboard_Dealer_'.$username.'_'.$fcode,$deviceid);
@@ -535,25 +705,16 @@ for($i =1;$i<=$numberofdevice;$i++)
 		{
 			$tempdev=$redis->hget('H_Pre_Onboard_Admin_'.$fcode,$deviceid);
 		}
-		if($dev==null && $tempdev==null)
+		if($dev==null && $tempdev==null && $back==0)
 		{
+			log::info('------temp---------- ');
 			$count++;
 			$deviceDataArr = array (
 				'deviceid' => $deviceid,
 				'deviceidtype' => $deviceidtype
 			);
 			$deviceDataJson = json_encode ( $deviceDataArr );
-			if(Session::get('cur')=='dealer')
-			{					
-				$redis->sadd('S_Pre_Onboard_Dealer_'.$username.'_'.$fcode,$deviceid);
-				$redis->hset('H_Pre_Onboard_Dealer_'.$username.'_'.$fcode,$deviceid,$deviceDataJson);
-			}
-			else if(Session::get('cur')=='admin')
-			{
-				$redis->sadd('S_Pre_Onboard_Admin_'.$fcode,$deviceid);
-				$redis->hset('H_Pre_Onboard_Admin_'.$fcode,$deviceid,$deviceDataJson);
-			}
-
+			
 			$deviceDataArr = array (
 					'deviceid' => $deviceid,
 					'deviceidtype' => $deviceModel,
@@ -563,10 +724,22 @@ for($i =1;$i<=$numberofdevice;$i++)
 			$back=$redis->hget($vehicleDeviceMapId, $deviceid);
 			if($back!==null)
 			{
+				log::info('------temp---------- ');
 				$vehicleId=$back;
 			}
 			else
 			{
+					if(Session::get('cur')=='dealer')
+				{					
+					$redis->sadd('S_Pre_Onboard_Dealer_'.$username.'_'.$fcode,$deviceid);
+					$redis->hset('H_Pre_Onboard_Dealer_'.$username.'_'.$fcode,$deviceid,$deviceDataJson);
+				}
+				else if(Session::get('cur')=='admin')
+				{
+					$redis->sadd('S_Pre_Onboard_Admin_'.$fcode,$deviceid);
+					$redis->hset('H_Pre_Onboard_Admin_'.$fcode,$deviceid,$deviceDataJson);
+				}
+
 					$v=idate("d") ;
 					$monthTemp=idate("m") ;
 					log::info($monthTemp.'------monthTemp---------- ');
@@ -606,6 +779,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 								'gpsSimNo' => $gpsSimNo,
 								'date' =>$new_date1,
 								'paymentType'=>'yearly',
+								'OWN'=>$ownerShip,
 								'expiredPeriod'=>$new_date,					
 								'overSpeedLimit' => $overSpeedLimit,					
 								'driverName' => $driverName,					
@@ -709,12 +883,14 @@ for($i =1;$i<=$numberofdevice;$i++)
 				{
 					
 					$groupname      = Input::get('groupname');
+					log::info($userId.'-------------- groupname- out-------------'.$groupId);
 					if($type1=='existing' && $groupname!==null && $groupname!=='')
 					{
 						
 						$groupId=explode(":",$groupname)[0];
 						log::info('-------------- groupname--------------'.$groupId);
 					}
+
 					$redis->sadd($groupId . ':' . $fcode,$vehicleId);
 					
 				}
@@ -727,7 +903,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 				{
 					$redis->srem('S_Pre_Onboard_Admin_'.$fcode,$deviceid);
 					$redis->hdel('H_Pre_Onboard_Admin_'.$fcode,$deviceid);
-					if($ownerShip!='OWN')
+					if($ownerShip!=='OWN')
 					{
 						$redis->sadd('S_Pre_Onboard_Dealer_'.$ownerShip.'_'.$fcode,$deviceid);
 						$redis->hset('H_Pre_Onboard_Dealer_'.$ownerShip.'_'.$fcode,$deviceid,$deviceDataJson);
@@ -735,6 +911,12 @@ for($i =1;$i<=$numberofdevice;$i++)
 					
 				}								
 		
+	}
+
+
+	if($dev==null && $tempdev==null)
+	{
+
 	}
 	else{
 	log::info('--------------already present--------------'.$deviceid);
@@ -795,40 +977,42 @@ if($type=='Sale' )
 		$user->mobileNo=$mobileNo;
 		$user->password=Hash::make($password);
 		$user->save();
-		foreach($mobArr as $mob)
-		{					 
-			if($mob!=='')
-			{
-				log::info( '------mobile number---------- '.$mob);
-			  if($ownerShip!='OWN')
-               {
-                       log::info( '------login 1---------- '.Session::get('cur'));
-                       $redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$mob);
-               }
-			  else if($ownerShip=='OWN')
-				{
-						$redis->sadd('S_Users_Admin_'.$fcode,$mob);
-				}
-			  log::info(' mobile number saved successfully');
-			  $redis->sadd ( $mob, $groupId . ':' . $fcode );
-              $redis->sadd ( 'S_Users_' . $fcode, $mob );   
-			  $password=Input::get ( 'password' );
-				if($password==null)
-				{
-						$password='awesome';
-				}
-				$redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.' :email',$email,$mob.':password',$password,$mob.':OWN',$OWN);
 
-							$user = new User;
+		//mobile number dont need user
+		// foreach($mobArr as $mob)
+		// {					 
+		// 	if($mob!=='')
+		// 	{
+		// 		log::info( '------mobile number---------- '.$mob);
+		// 	  if($ownerShip!='OWN')
+  //              {
+  //                      log::info( '------login 1---------- '.Session::get('cur'));
+  //                      $redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$mob);
+  //              }
+		// 	  else if($ownerShip=='OWN')
+		// 		{
+		// 				$redis->sadd('S_Users_Admin_'.$fcode,$mob);
+		// 		}
+		// 	  log::info(' mobile number saved successfully');
+		// 	  $redis->sadd ( $mob, $groupId . ':' . $fcode );
+  //             $redis->sadd ( 'S_Users_' . $fcode, $mob );   
+		// 	  $password=Input::get ( 'password' );
+		// 		if($password==null)
+		// 		{
+		// 				$password='awesome';
+		// 		}
+		// 		$redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.' :email',$email,$mob.':password',$password,$mob.':OWN',$OWN);
 
-							$user->name = $mob;
-							$user->username=$mob;
-							$user->email=$email;
-							$user->mobileNo=$mobileNo;
-							$user->password=Hash::make($password);
-							$user->save();
-				}
-            }					
+		// 					$user = new User;
+
+		// 					$user->name = $mob;
+		// 					$user->username=$mob;
+		// 					$user->email=$email;
+		// 					$user->mobileNo=$mobileNo;
+		// 					$user->password=Hash::make($password);
+		// 					$user->save();
+		// 		}
+  //           }					
 		}
 	}
 		if($count>0)
@@ -843,15 +1027,30 @@ if($type=='Sale' )
 
 		}
 		$error='';
-		if($deviceidarray!=null)
+		if(count($vehicleIdarray)!==0 || count($deviceidarray)!==0)
 		{
-			$error=implode(" ",$deviceidarray);
-			$error='These Device Id are already exist  '.$error;
+			$error2=' ';
+			$error=' ';
+			if($deviceidarray!==null)
+			{
+				$error=implode(",",$deviceidarray);
+			}
+			if($vehicleIdarray!==null)
+			{
+				$error2=implode(",", $vehicleIdarray);
+			}
+			
+		
+			$error='These names are already exist  '.$error.' '.$error2;
+		}
+		else
+		{
+			$error='successfully Added';
 		}
 
 
 
-return Redirect::to ( 'Business' );
+return Redirect::to ( 'Business' )->withErrors($error);
 
 
 	}
@@ -905,7 +1104,7 @@ return Redirect::to ( 'Business' );
 			if($type1=='existing')
 			{
 				$userId      = Input::get('userIdtemp');
-				if($userId==null)
+				if($userId==null || $userId=='select')
 				{
 					return Redirect::to ( 'Business' )->withErrors ( 'Invalid user Id' );
 				}
@@ -988,6 +1187,12 @@ return Redirect::to ( 'Business' );
 				$orgId='Default';
 				$organizationId='Default';
 			}
+			if($type=='Sale' && $type1!=='new')
+			{
+				$orgId=Input::get ( 'orgId');
+				$orgId=!empty($orgId) ? $orgId : 'Default';
+				//$organizationId=$orgId;
+			}
 			if($deviceList!=null)
 			{
 				$temp=0;
@@ -1007,20 +1212,68 @@ return Redirect::to ( 'Business' );
 							if($back!==null)
 							{
 								$vehicleId=$back;
+
+
+								$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);
+        						$refDataJson1=json_decode($refDataJson1,true);
+        						$temOrg=isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default';
+						
+
+
+        						if($temOrg=='Default' || $temOrg=='default')
+        						{
+
+
+			 $refDataArr = array (
+			            'deviceId' => $deviceId,
+			            'shortName' => isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill',
+			            'deviceModel' => isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:'GT06N',
+			            'regNo' => isset($refDataJson1['regNo'])?$refDataJson1['regNo']:'XXXXX',
+			            'vehicleMake' => isset($refDataJson1['vehicleMake'])?$refDataJson1['vehicleMake']:' ',
+			            'vehicleType' =>  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:'Bus',
+			            'oprName' => isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel',
+			            'mobileNo' =>isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789',
+			            'overSpeedLimit' => isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60',
+			            'odoDistance' => isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0',
+			            'driverName' => isset($refDataJson1['driverName'])?$refDataJson1['driverName']:'XXX',
+			            'gpsSimNo' => isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'0123456789',
+			            'email' => isset($refDataJson1['email'])?$refDataJson1['email']:' ',
+			            'orgId' =>$organizationId,
+			            'sendGeoFenceSMS' => isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:'no',
+			            'morningTripStartTime' => isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' ',
+			            'eveningTripStartTime' => isset($refDataJson1['eveningTripStartTime'])?$refDataJson1['eveningTripStartTime']:' ',
+			            'parkingAlert' => isset($refDataJson1['parkingAlert'])?$refDataJson1['parkingAlert']:'no',
+			            'altShortName'=>isset($refDataJson1['altShortName'])?$refDataJson1['altShortName']:'nill',
+			            'date' =>isset($refDataJson1['date'])?$refDataJson1['date']:' ',
+			            'paymentType'=>isset($refDataJson1['paymentType'])?$refDataJson1['paymentType']:' ',
+			            'expiredPeriod'=>isset($refDataJson1['expiredPeriod'])?$refDataJson1['expiredPeriod']:' ',
+			            'fuel'=>isset($refDataJson1['fuel'])?$refDataJson1['fuel']:'no',
+			            'fuelType'=>isset($refDataJson1['fuelType'])?$refDataJson1['fuelType']:' ',
+			            'isRfid'=>isset($refDataJson1['isRfid'])?$refDataJson1['isRfid']:'no',
+			            'OWN'=>$ownerShip,
+			            );
+
+			        $refDataJson = json_encode ( $refDataArr );
+			        
+			       // $redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
+			        $redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
+
+}
+
 							}
 									log::info( '------login 1---------- '.Session::get('cur'));
 									$redis->sadd('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
 									$redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleId);		
 												$details=$redis->hget('H_Organisations_'.$fcode,$organizationId);
 												Log::info($details.'before '.$ownerShip);
-												if($type=='Sale')
+												if($type=='Sale' && $type1=='new' && $organizationId!=='default' && $organizationId!=='Default')
 												{
 													if($details==null)
 													{
 														Log::info('new organistion going to create');
-														$redis->sadd('S_Organisations_'. $fcode, $organizationId);	
-													log::info( '------login 1---------- '.Session::get('cur'));
-													$redis->sadd('S_Organisations_Dealer_'.$ownerShip.'_'.$fcode,$organizationId);
+										$redis->sadd('S_Organisations_'. $fcode, $organizationId);	
+										log::info( '------login ---------- '.Session::get('cur'));
+										$redis->sadd('S_Organisations_Dealer_'.$ownerShip.'_'.$fcode,$organizationId);
 												
 												  $orgDataArr = array (
 													'mobile' => '1234567890',
@@ -1050,7 +1303,21 @@ return Redirect::to ( 'Business' );
 											if($type=='Sale')
 											{
 												log::info( '------sale-1--------- '.$ownerShip);
-												$redis->sadd($groupId . ':' . $fcode,$vehicleId);
+									
+
+
+												$groupname      = Input::get('groupname');
+											log::info($userId.'-------------- groupname- out-------------'.$groupId);
+											if($type1=='existing' && $groupname!==null && $groupname!=='')
+											{
+												
+												$groupId=explode(":",$groupname)[0];
+												log::info('-------------- groupname--------------'.$groupId);
+											}
+
+											$redis->sadd($groupId . ':' . $fcode,$vehicleId);
+
+
 												
 											}
 														
@@ -1091,40 +1358,40 @@ return Redirect::to ( 'Business' );
 							$user->mobileNo=$mobileNo;
 							$user->password=Hash::make($password);
 							$user->save();
-							
-							 foreach($mobArr as $mob){
+							///mobile number dont need user
+							//  foreach($mobArr as $mob){
 								 
-								 if($mob!=='')
-							{
+							// 	 if($mob!=='')
+							// {
 								
 							
 								 
-							log::info( '------mobile number---------- '.$mob);
-                                   log::info( '------login 1---------- '.Session::get('cur'));
-                                   $redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$mob);
+							// log::info( '------mobile number---------- '.$mob);
+       //                             log::info( '------login 1---------- '.Session::get('cur'));
+       //                             $redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$mob);
                            
-						  log::info(' mobile number saved successfully');
-						  $redis->sadd ( $mob, $groupId . ':' . $fcode );
-                          $redis->sadd ( 'S_Users_' . $fcode, $mob ); 
+						 //  log::info(' mobile number saved successfully');
+						 //  $redis->sadd ( $mob, $groupId . ':' . $fcode );
+       //                    $redis->sadd ( 'S_Users_' . $fcode, $mob ); 
 					    
-						  $password=Input::get ( 'password' );
-							if($password==null)
-							{
-									$password='awesome';
-							}
+						 //  $password=Input::get ( 'password' );
+							// if($password==null)
+							// {
+							// 		$password='awesome';
+							// }
 
-							$redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.' :email',$email,$mob.':password',$password,$mob.':OWN',$OWN);
+							// $redis->hmset ( 'H_UserId_Cust_Map', $mob . ':fcode', $fcode, $mob . ':mobileNo', $mobileNo,$mob.' :email',$email,$mob.':password',$password,$mob.':OWN',$OWN);
 
-							$user = new User;
+							// $user = new User;
 
-							$user->name = $mob;
-							$user->username=$mob;
-							$user->email=$email;
-							$user->mobileNo=$mobileNo;
-							$user->password=Hash::make($password);
-							$user->save();
-							}
-                         }
+							// $user->name = $mob;
+							// $user->username=$mob;
+							// $user->email=$email;
+							// $user->mobileNo=$mobileNo;
+							// $user->password=Hash::make($password);
+							// $user->save();
+							// }
+       //                   }
 							
 						}
                             

@@ -12,7 +12,7 @@ class VdmOrganizationController extends \BaseController {
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
         
         
-        return View::make('vdm.organization.create');   
+        return View::make('vdm.organization.create')->with('smsP',VdmFranchiseController::smsP());   
     }
 	
 	
@@ -411,6 +411,9 @@ public function addpoi()
 			$sosAlert = Input::get ('sosAlert');
 			$radius=0;
 			$smsSender=Input::get ('smsSender');
+			$smsProvider=Input::get ('smsProvider');
+			$providerUserName=Input::get ('providerUserName');
+			$providerPassword=Input::get ('providerPassword');
             $orgDataArr = array (
                     'description' => $description,
                     'email' => $email,
@@ -431,6 +434,9 @@ public function addpoi()
 					'smsSender'=>$smsSender,
 					'sosAlert'=>$sosAlert,
 					'live'=>$live,
+					'smsProvider'=>$smsProvider,
+					'providerUserName'=>$providerUserName,
+					'providerPassword'=>$providerPassword,
 					
             );
 			 $redis = Redis::connection();
@@ -735,6 +741,9 @@ public function addpoi()
 		$smsSender=isset($orgDataArr['smsSender'])?$orgDataArr['smsSender']:'';
 		$sosAlert=isset($orgDataArr['sosAlert'])?$orgDataArr['sosAlert']:'';
 		$live=isset($orgDataArr['live'])?$orgDataArr['live']:'no';
+		$smsProvider=isset($orgDataArr['smsProvider'])?$orgDataArr['smsProvider']:'nill';
+		$providerUserName=isset($orgDataArr['providerUserName'])?$orgDataArr['providerUserName']:'';
+		$providerPassword=isset($orgDataArr['providerPassword'])?$orgDataArr['providerPassword']:'';
         log::info( 'time1 ::' . $time1);
          log::info( 'time2 ::' . $time2);
 		$address1=array();
@@ -762,7 +771,7 @@ public function addpoi()
 		$i=0;
 		$j=0;$k=0;$m=0;
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
-        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius)->with('smsSender',$smsSender)->with('sosAlert',$sosAlert)->with('live',$live);   
+        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius)->with('smsSender',$smsSender)->with('sosAlert',$sosAlert)->with('live',$live)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());   
         
     }
     
@@ -839,6 +848,9 @@ public function addpoi()
 			$overspeedalert=Input::get('overspeedalert');
 			$sendGeoFenceSMS=Input::get('sendGeoFenceSMS');
 			$smsSender=Input::get('smsSender');
+			$smsProvider=Input::get('smsProvider');
+			$providerUserName=Input::get('providerUserName');
+			$providerPassword=Input::get('providerPassword');
 			$live=Input::get('live');
 					$startTime =$time1;
 			$endTime=$time2;
@@ -863,6 +875,9 @@ public function addpoi()
 					'smsSender'=>$smsSender,
 					'sosAlert'=>$sosAlert,
 					'live'=>$live,
+					'smsProvider'=>$smsProvider,
+					'providerUserName'=>$providerUserName,
+					'providerPassword'=>$providerPassword,
             );
             
             $orgDataJson = json_encode ( $orgDataArr );

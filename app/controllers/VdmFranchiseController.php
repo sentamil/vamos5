@@ -50,8 +50,8 @@ public static function smsP()
 {
 		$smsP=array();
 		$smsP=array_add($smsP, 'nill','Nill');
-		$smsP=array_add($smsP, 'kap','Kap');
-		$smsP=array_add($smsP, 'mvaayoo','Mvaayoo');
+		$smsP=array_add($smsP, 'KapSMS','Kap');
+		$smsP=array_add($smsP, 'Mvaayoo','Mvaayoo');
 	return $smsP;
 }
 

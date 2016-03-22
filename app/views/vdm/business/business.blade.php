@@ -82,8 +82,8 @@
 	        		</tr></table>
 	        		<br>
 	        	</p>
-	        	<table id="p"><tr><td id="hide1">{{ Form::radio('type1', 'new') }}</td><td width=20></td><td>New</td><td width=20></td><td id="p1">
-	        		<tr><td id="show1">{{ Form::radio('type1', 'existing') }}</td><td width=20></td><td>Existing</td>
+	        	<table id="p"><tr><td id="hide1">{{ Form::radio('type1', 'new') }}</td><td width=20></td><td>New User</td><td width=20></td><td id="p1">
+	        		<tr><td id="show1">{{ Form::radio('type1', 'existing') }}</td><td width=20></td><td>Existing User</td>
 
 	        			<td></td>
 	        		</tr></table>
