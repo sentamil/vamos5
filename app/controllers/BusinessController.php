@@ -1238,7 +1238,7 @@ return Redirect::to ( 'Business' )->withErrors($error);
 			            'driverName' => isset($refDataJson1['driverName'])?$refDataJson1['driverName']:'XXX',
 			            'gpsSimNo' => isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'0123456789',
 			            'email' => isset($refDataJson1['email'])?$refDataJson1['email']:' ',
-			            'orgId' =>$organizationId,
+			            'orgId' =>$orgId,
 			            'sendGeoFenceSMS' => isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:'no',
 			            'morningTripStartTime' => isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' ',
 			            'eveningTripStartTime' => isset($refDataJson1['eveningTripStartTime'])?$refDataJson1['eveningTripStartTime']:' ',
