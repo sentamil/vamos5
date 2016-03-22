@@ -52,7 +52,7 @@ app.filter('statusfilter', function(){
 	}
 });
 
-app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope', function($scope, $http, vamoservice, $filter, statusfilter, $rootScope){
+app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($scope, $http, vamoservice, $filter, statusfilter){
 	//console.log($rootScope.test)
 	$scope.locations = [];
 	$scope.nearbyLocs =[];
@@ -102,7 +102,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter','$rootScope
 				$scope.mapTable = data[$scope.gIndex].vehicleLocations;
 				// console.log(document.getElementById('one').innerText)
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
-				sessionStorage.setItem('user', JSON.stringify($scope.vehiname));
+				// sessionStorage.setItem('user', JSON.stringify($scope.vehiname));
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
 				$scope.zoomLevel = 6;
 				$scope.support = data[$scope.gIndex].supportDetails;
@@ -676,7 +676,66 @@ function centerMarker(listMarker){
       }
     return bounds.getCenter()
   }
-// var polygenColor;
+
+function colorChange(value){
+	var color ='';
+	switch(value){
+		case 'Virugambakkam' :
+			color 	= 'c17b97';
+			break;
+		case 'Kolathur' :
+			color 	= 'f76c7c';
+			break;
+		case 'Egmore(SC)' :
+			color 	= 'e746bc';
+		 	break;
+		case 'Thiyagaraya_Nagar' :
+			color 	= '277f07';
+			break;
+		case 'Saidapet' :
+			color 	= 'fad195';
+			break;
+		case 'Dr_Radhakrishnan_Nagar':
+			color 	= '28909c';
+			break;
+		case 'Perambur' :
+			color 	= 'f381a7';
+			break;
+		case 'Chepauk_Thiruvallikeni': 
+			color 	= 'a05071';
+			break;
+		case 'Thiru_Vi_Ka_Nagar_(SC)' :
+			color 	= '3d59be';
+			break;
+		case 'Harbour' :
+			color 	= 'b28d53';
+			break;
+		case 'Royapuram' :
+			color 	= '98beb6';
+		 	break;
+		case 'Mylapore' :
+			color 	= '84c8b6';
+			break;
+		case 'Velachery' :
+			color 	= '6f738d';
+			break;
+		case 'Thousand_Lights':
+			color 	= '456d4d';
+			break;
+		case 'Anna_Nagar' :
+			color 	= 'aca6b7';
+			break;
+		case 'Villivakkam': 
+			color 	= 'f22af0';
+			break;
+		default:
+			color 	= 'f22af0';
+		   	break;
+	}
+	return '#'+color;
+
+}
+
 //draw polygen in map function
 function polygenDrawFunction(list){
     
@@ -693,7 +752,7 @@ function polygenDrawFunction(list){
             path: polygenList,
             strokeColor: "#000",   //7e7e7e
             strokeWeight: 0.7,
-            fillColor: '#' + Math.floor(Math.random()*16777215).toString(16),//'#fe716d',
+            fillColor: colorChange(list.siteName),//'#' + Math.floor(Math.random()*16777215).toString(16),//'#fe716d',
             //fillOpacity: ,
             map: $scope.map
         });
