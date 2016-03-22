@@ -1489,6 +1489,17 @@ public function migrationUpdate() {
 
         }
 
+
+        $tempDeviceCheck=$redis->hget('H_Device_Cpy_Map',$deviceId);
+        if( $tempDeviceCheck!==null)
+        {
+            Session::flash ( 'message', 'Device Id already present ' . '!' );
+                $deviceId= $deviceIdOld;
+                $vehicleId= $vehicleIdOld;
+            return View::make ( 'vdm.vehicles.migration', array (
+                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
+        }
+
         $redis->hdel ( $vehicleDeviceMapId, $vehicleIdOld );                               
         $redis->hdel ( $vehicleDeviceMapId, $deviceIdOld );                                
         $redis->hset ( $vehicleDeviceMapId, $vehicleId, $deviceId );                     
