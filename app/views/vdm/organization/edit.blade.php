@@ -102,6 +102,22 @@
         {{ Form::select('live',  array( 'no' => 'No','yes' => 'Yes' ), $live, array('class' => 'form-control')) }} 
         
     </div>
+
+
+<div class="form-group">
+        {{ Form::label('smsProvider', 'SMS Provider :') }}
+        {{ Form::select('smsProvider',  array( $smsP), $smsProvider, array('class' => 'form-control')) }} 
+    </div>
+    <div class="form-group">
+        {{ Form::label('providerUserName', 'Provider UserName :') }}
+        {{ Form::text('providerUserName', $providerUserName, array('class' => 'form-control')) }}
+    </div>
+    <div class="form-group">
+        {{ Form::label('providerPassword', 'Provider Password :') }}
+        {{ Form::text('providerPassword', $providerPassword, array('class' => 'form-control')) }}
+    </div>
+
+    
     <div>
 	{{ Form::label('poi', 'Place Of interest') }}
 	</br>

@@ -310,7 +310,7 @@ class VdmDealersController extends \BaseController {
 			'providerUserName'=>$providerUserName,
 			'providerPassword'=>$providerPassword,
 			);
-			
+			Log::info('---------------Dealers 11:--------------');
 			$detailJson=json_encode($detail);
 			$redis->hset ( 'H_DealerDetails_' . $fcode, $dealerid, $detailJson );
 			$redis->hmset ( 'H_UserId_Cust_Map', $dealerid . ':fcode', $fcode, $dealerid . ':mobileNo', $mobileNo,$dealerid.':email',$email );
@@ -323,7 +323,7 @@ class VdmDealersController extends \BaseController {
 			return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email)->with('website',$website);
+		with('email',$email)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
 			}
 			
 			return Redirect::to ( 'vdmDealers' );

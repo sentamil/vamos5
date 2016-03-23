@@ -83,6 +83,40 @@
 		
     </div><br><br><br>
 	
+
+
+
+								
+								
+						
+								<div class="col-md-6">
+		{{ Form::label('smsProvider', 'SMS Provider') }}
+			</div><div class="col-md-6">
+		 		{{ Form::select('smsProvider',  array( $smsP), Input::old('smsProvider'), array('class' => 'form-control')) }} 
+			</div> <br><br><br>
+			
+							
+								<div class="col-md-6">
+		{{ Form::label('providerUserName', 'SMS Provider User Name') }}
+		</div><div class="col-md-6">
+		{{ Form::text('providerUserName', Input::old('providerUserName'), array('class' => 'form-control')) }}
+		</div> <br><br><br>
+	
+	
+								<div class="col-md-6">
+		{{ Form::label('providerPassword', 'SMS Provider Password') }}</div>
+		<div class="col-md-6">
+		{{ Form::text('providerPassword', Input::old('providerPassword'), array('class' => 'form-control')) }}
+		</div>
+	
+
+ <br><br><br>
+
+
+
+
+
+
     <div class="col-md-6"> 
         {{ Form::label('parkingAlert', 'Parking Alert :') }}
 		</div>

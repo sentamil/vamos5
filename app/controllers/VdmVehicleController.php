@@ -286,6 +286,16 @@ public function store() {
         }
         $new_date1 = date('F d Y', strtotime("+0 month"));
         log::info( $new_date);
+if(Session::get('cur')=='dealer')
+{
+   $ownership=$username;
+}
+else if(Session::get('cur')=='admin')
+{
+    $ownership='OWN';
+}
+
+
         $refDataArr = array (
             'deviceId' => $deviceId,
             'shortName' => $shortName,
@@ -311,7 +321,7 @@ public function store() {
             'expiredPeriod'=>$new_date,
             'fuel'=>$fuel,
             'isRfid'=>$isRfid,
-
+            'OWN'=>$ownership,
 
             );
 
@@ -869,6 +879,16 @@ public function update($id) {
 //    $odoDistance=$vehicleRefData['odoDistance'];
 //gpsSimNo
 //    $gpsSimNo=$vehicleRefData['gpsSimNo'];
+if(Session::get('cur')=='dealer')
+{
+   $ownership=$username;
+}
+else if(Session::get('cur')=='admin')
+{
+    $ownership='OWN';
+}
+
+
         $refDataArr = array (
             'deviceId' => $deviceId,
             'shortName' => $shortName,
@@ -895,6 +915,7 @@ public function update($id) {
             'fuel'=>$fuel,
             'fuelType'=>$fuelType,
             'isRfid'=>$isRfid,
+            'OWN'=>$ownership,
             );
 
         $refDataJson = json_encode ( $refDataArr );
@@ -1059,7 +1080,11 @@ public function updateLive($id) {
         if(isset($vehicleRefData['fuelType'])==1)
             $fuelType=$vehicleRefData['fuelType'];
         else
-            $fuelType='digital';          
+            $fuelType='digital'; 
+        if(isset($vehicleRefData['OWN'])==1)
+            $ownership=$vehicleRefData['OWN'];
+        else
+            $ownership='OWN';          
 
         $deviceId=$vehicleRefData['deviceId'];
         try{
@@ -1072,10 +1097,6 @@ public function updateLive($id) {
             $paymentType=' ';
             $expiredPeriod=' ';
         }
-
-//    $odoDistance=$vehicleRefData['odoDistance'];
-//gpsSimNo
-//    $gpsSimNo=$vehicleRefData['gpsSimNo'];
         $refDataArr = array (
             'deviceId' => $deviceId,
             'shortName' => $shortName,
@@ -1101,6 +1122,7 @@ public function updateLive($id) {
             'expiredPeriod'=>$expiredPeriod,
             'fuel'=>$fuel,
             'fuelType'=>$fuelType,
+            'OWN'=>$ownership,
             );
 
         $refDataJson = json_encode ( $refDataArr );
@@ -1254,6 +1276,14 @@ public function update1() {
         }
         $new_date1 = date('F d Y', strtotime("+0 month"));
         log::info( $new_date);
+        if(Session::get('cur')=='dealer')
+        {
+           $ownership=$username;
+        }
+        else if(Session::get('cur')=='admin')
+        {
+            $ownership='OWN';
+        }
         $refDataArr = array (
             'deviceId' => $deviceId,
             'shortName' => $shortName,
@@ -1279,7 +1309,7 @@ public function update1() {
             'expiredPeriod'=>$new_date,
             'fuel'=>$fuel,
             'isRfid'=>$isRfid,
-
+            'OWN'=>$ownership,
 
             );
         VdmVehicleController::destroy($vehicleIdTemp);
@@ -1344,8 +1374,8 @@ log::info( '------prodata---------- '.$tmpPositon);
 $redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
 // redirect
 
-Session::flash ( 'message', 'Successfully created ' . $vehicleId . '!' );
-return VdmVehicleController::edit1($vehicleId);
+Session::flash ( 'message', 'Successfully updated ' . $vehicleId . '!' );
+return Redirect::to('Business');
 }
 
 
@@ -1413,6 +1443,15 @@ public function migrationUpdate() {
                 return View::make ( 'vdm.vehicles.migration', array (
                     'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
             }
+            $tempDeviceCheck=$redis->hget('H_Device_Cpy_Map',$deviceId);
+        if( $tempDeviceCheck!==null)
+        {
+            Session::flash ( 'message', 'Device Id already present ' . '!' );
+                $deviceId= $deviceIdOld;
+                $vehicleId= $vehicleIdOld;
+            return View::make ( 'vdm.vehicles.migration', array (
+                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
+        }
         }
         else if($vehicleId!==$vehicleIdOld && $deviceId==$deviceIdOld)
         {
@@ -1456,8 +1495,20 @@ public function migrationUpdate() {
                 return View::make ( 'vdm.vehicles.migration', array (
                     'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
             }
+            $tempDeviceCheck=$redis->hget('H_Device_Cpy_Map',$deviceId);
+        if( $tempDeviceCheck!==null)
+        {
+            Session::flash ( 'message', 'Device Id already present ' . '!' );
+                $deviceId= $deviceIdOld;
+                $vehicleId= $vehicleIdOld;
+            return View::make ( 'vdm.vehicles.migration', array (
+                    'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriodOld);
+        }
 
         }
+
+
+        
 
         $redis->hdel ( $vehicleDeviceMapId, $vehicleIdOld );                               
         $redis->hdel ( $vehicleDeviceMapId, $deviceIdOld );                                
@@ -1533,7 +1584,14 @@ public function migrationUpdate() {
         {
 
         }
-       
+       if(Session::get('cur')=='dealer')
+        {
+           $ownership=$username;
+        }
+        else if(Session::get('cur')=='admin')
+        {
+            $ownership='OWN';
+        }
         $refDataArr = array (
             'deviceId' => $deviceId,
             'shortName' => isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill',
@@ -1560,6 +1618,7 @@ public function migrationUpdate() {
             'fuel'=>isset($refDataJson1['fuel'])?$refDataJson1['fuel']:'no',
             'fuelType'=>isset($refDataJson1['fuelType'])?$refDataJson1['fuelType']:' ',
             'isRfid'=>isset($refDataJson1['isRfid'])?$refDataJson1['isRfid']:'no',
+            'OWN'=>$ownership,
             );
 
         $refDataJson = json_encode ( $refDataArr );

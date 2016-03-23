@@ -450,6 +450,7 @@ Route::post('rfid/update', array('uses' => 'RfidController@update'));
  Route::post('select', array('as' => 'ajax.user_select', 'uses' => 'RfidController@getVehicle'));
  Route::post('select', array('as' => 'ajax.checkvehicle', 'uses' => 'BusinessController@checkvehicle'));
  Route::post('select1', array('as' => 'ajax.checkDevice', 'uses' => 'BusinessController@checkDevice'));
+ Route::post('select3', array('as' => 'ajax.checkUser', 'uses' => 'BusinessController@checkUser'));
   Route::post('select2', array('as' => 'ajax.getGroup', 'uses' => 'BusinessController@getGroup'));
 Route::post('Business/batchSale', array('uses' => 'BusinessController@batchSale'));
 Route::resource('Device', 'DeviceController');
