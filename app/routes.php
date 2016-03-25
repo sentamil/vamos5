@@ -159,6 +159,13 @@ Route::get('/getOverallVehicleHistory', function() {
     return View::make('vls.getOverallVehicleHistory');
 });
  
+Route::get('/getDriverPerformanceDaily', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getDriverPerformanceDaily');
+    return View::make('vls.getOverallVehicleHistory');
+});
  
 Route::get('/getSiteReport', function() {
     if (!Auth::check()) {
