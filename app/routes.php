@@ -164,7 +164,7 @@ Route::get('/getDriverPerformanceDaily', function() {
         return Redirect::to('login');
     }
     Log::info('getDriverPerformanceDaily');
-    return View::make('vls.getOverallVehicleHistory');
+    return View::make('vls.getDriverPerformanceDaily');
 });
  
 Route::get('/getSiteReport', function() {
