@@ -22,9 +22,9 @@ td {
 					 		<center><h3><b>Route No {{vehicleName}}</b></h3>
 					 		<div style="margin: 0 auto; line-height: 200%; width: 600px" align="left">
 					 		Please send SMS to 9212148888 in the following format.<br>
-					 		<b>VTS START,CVSM,RouteNo,StopNo</b><br>
+					 		<b>VTS <label>{{msg}}</label>,CVSM,RouteNo,StopNo</b><br>
 					 		For instance, if you're boarding at Stop No 1, please send SMS as follows <br>
-					 		<b>VTS START,CVSM,R17A,1 </b>(This is just a sample, Please change the Route No and Stop No as per your route and stop)<br>
+					 		<b>VTS <label>{{msg}}</label>,CVSM,R17A,1 </b>(This is just a sample, Please change the Route No and Stop No as per your route and stop)<br>
 					 		To STOP receiving SMS, please send following SMS format, <b>VTS STOP</b> to 9212148888. <br>
 					 		</div>
 			   				<br>
@@ -49,14 +49,6 @@ td {
 	<script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
 	<script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/printDownload.js"></script>
-	 <!-- <script src="assets/js/jquery-1.11.0.js"></script>
- //    <script src="assets/js/bootstrap.min.js"></script>
- //    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
- //    <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
- //    <script src="../app/views/reports/customjs/moment.js"></script>
- //    <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
- //    <script src="assets/js/static.js"></script>
-	// <script src="../app/views/reports/customjs/history.js"></script> -->
 	<script>
 	    
 		$("#menu-toggle").click(function(e) {

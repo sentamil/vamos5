@@ -10,8 +10,9 @@ app.controller('printHtml', function($scope, $http){
 
 	$scope.vehicleId			=	getParameterByName('vid');
 	$scope.vehicleName 			= 	getParameterByName('vName');
-	console.log($scope.vehicleId)
-
+	$scope.msg 					= 	'START';
+	if($scope.vehicleName.slice(0,3) =="Alt")
+	$scope.msg 					= 	'NOON';
 	var url 	=	"http://"+globalIP+context+"/public/getGeoFenceView?vehicleId="+$scope.vehicleId;
 
 	$http.get(url).success(function(data){
