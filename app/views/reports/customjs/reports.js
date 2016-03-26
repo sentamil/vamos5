@@ -86,6 +86,8 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 			// $scope.consoldate(data[$scope.groupId].group);
 			if(data.length)
 				$scope.vehiname		=	data[$scope.groupId].vehicleLocations[0].vehicleId;
+			sessionStorage.setItem('user', JSON.stringify($scope.vehiname+','+$scope.vehigroup));
+			$("#testLoad").load("../public/menu");
 			angular.forEach(data, function(value, key) {
 				   if(value.totalVehicles) {
 				  		$scope.data1		=	data[key];
@@ -333,6 +335,8 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 
 	
 	$scope.genericFunction = function(vehicleno, index){
+		sessionStorage.setItem('user', JSON.stringify(vehicleno+','+$scope.vehigroup));
+		$("#testLoad").load("../public/menu");
 	}
 	
 	
@@ -341,15 +345,13 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		$scope.groupId 	= 	groupid;
 		$scope.vehigroup = groupname;
 		$scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+$scope.vehigroup;
-		if($('#consoldate').attr('id')=='consoldate')
-		{
-			$('#preloader').show(); 
-			$('#preloader02').show();
-			$scope.consoldate1();
-			
-		}
-			
-	
+			if($('#consoldate').attr('id')=='consoldate')
+			{
+				$('#preloader').show(); 
+				$('#preloader02').show();
+				$scope.consoldate1();
+				
+			}
 		}
 	
 	

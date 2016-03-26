@@ -259,72 +259,173 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 		})
 	}          
 });
-$(document).ready(function(e) {
-	  var gaugeOptions = {
-        chart: {
-            type: 'solidgauge',
-            backgroundColor:'rgba(255, 255, 255, 0)'
-        },
-        title: null,
-        pane: {
-            center: ['50%', '90%'],
-            size: '180%',
-            startAngle: -90,
-            endAngle: 90,
-            background: {
-                innerRadius: '60%',
-                outerRadius: '100%',
-                shape: 'arc'
-            }
-        },
-        tooltip: {
-            enabled: false
-        },
-        yAxis: {
-            stops: [
-                [0.1, '#55BF3B'], 
-                [0.5, '#DDDF0D'], 
-                [0.9, '#DF5353'] 
-            ],
-            lineWidth: 0,
-            minorTickInterval: null,
-            tickPixelInterval: 400,
-            tickWidth: 0,
-            title: {
-                y: -50
-            },
-            labels: {
-                y: -100
-            }
-        },
-        plotOptions: {
-            solidgauge: {
-                dataLabels: {
-                    y: 5,
-                    borderWidth: 0,
-                    useHTML: true
-                }
-            }
-        }
-    };
 
-    $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: 120,
-            title: { text: '' }
-        },
-        credits: { enabled: false },
-        series: [{
-            name: 'Speed',
-            data: [total],
-            dataLabels: {
-                format: '<div style="text-align:center"><span style="font-size:12px; font-weight:normal;color: #196481'+ '">Speed - {y} km</span><br/>',
-                 y: 25
-            },
-            tooltip: { valueSuffix: ' km/h'}
-        }]
-    }));
+$(document).ready(function(e) {
+	$('#container-speed').highcharts({
+	
+	    chart: {
+	        type: 'gauge',
+	        plotBackgroundColor: null,
+	        plotBackgroundImage: null,
+	        plotBorderWidth: 0,
+	        plotShadow: false,
+	        spacingBottom: 10,
+	        spacingTop: -60,
+	        spacingLeft: -20,
+	        spacingRight: -20,
+	    },
+	    
+	    title: {
+	        text: ''
+	    },
+	    
+	    pane: {
+	        startAngle: -90,
+	        endAngle: 90,
+	        center:['50%', '100%'],
+	        size: '100%',
+	        background: [{
+	            backgroundColor: {
+	                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+	                stops: [
+	                    [0, '#FFF'],
+	                    [1, '#333']
+	                ]
+	            },
+	            borderWidth: 0,
+	            outerRadius: '109%'
+	        }, {
+	            backgroundColor: {
+	                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+	                stops: [
+	                    [0, '#333'],
+	                    [1, '#FFF']
+	                ]
+	            },
+	            borderWidth: 1,
+	            outerRadius: '107%'
+	        }, {
+	            // default background
+	        }, {
+	            backgroundColor: '#DDD',
+	            borderWidth: 0,
+	            outerRadius: '105%',
+	            innerRadius: '103%'
+	        }]
+	    },
+	    credits: { enabled: false },
+	    // the value axis
+	    yAxis: {
+	        min: 0,
+	        max: 200,
+	        
+	        minorTickInterval: 'auto',
+	        minorTickWidth: 1,
+	        minorTickLength: 10,
+	        minorTickPosition: 'inside',
+	        minorTickColor: '#666',
+	
+	        tickPixelInterval: 30,
+	        tickWidth: 2,
+	        tickPosition: 'inside',
+	        tickLength: 10,
+	        tickColor: '#666',
+	        labels: {
+	            step: 2,
+	            rotation: 'auto'
+	        },
+	        title: {
+	            // text: 'km/h'
+	        },
+	        plotBands: [{
+	            from: 0,
+	            to: 120,
+	            color: '#55BF3B' // green
+	        }, {
+	            from: 120,
+	            to: 160,
+	            color: '#DDDF0D' // yellow
+	        }, {
+	            from: 160,
+	            to: 200,
+	            color: '#DF5353' // red
+	        }]        
+	    },
+	
+	    series: [{
+	        name: 'Speed',
+	        data: [total],
+	        tooltip: {
+	            valueSuffix: ' km/h'
+	        }
+	    }]
+	
+	});
+	  // var gaugeOptions = {
+   //      chart: {
+   //          type: 'solidgauge',
+   //          backgroundColor:'rgba(255, 255, 255, 0)'
+   //      },
+   //      title: null,
+   //      pane: {
+   //          center: ['50%', '90%'],
+   //          size: '180%',
+   //          startAngle: -90,
+   //          endAngle: 90,
+   //          background: {
+   //              innerRadius: '60%',
+   //              outerRadius: '100%',
+   //              shape: 'arc'
+   //          }
+   //      },
+   //      tooltip: {
+   //          enabled: false
+   //      },
+   //      yAxis: {
+   //          stops: [
+   //              [0.1, '#55BF3B'], 
+   //              [0.5, '#DDDF0D'], 
+   //              [0.9, '#DF5353'] 
+   //          ],
+   //          lineWidth: 0,
+   //          minorTickInterval: null,
+   //          tickPixelInterval: 400,
+   //          tickWidth: 0,
+   //          title: {
+   //              y: -50
+   //          },
+   //          labels: {
+   //              y: -100
+   //          }
+   //      },
+   //      plotOptions: {
+   //          solidgauge: {
+   //              dataLabels: {
+   //                  y: 5,
+   //                  borderWidth: 0,
+   //                  useHTML: true
+   //              }
+   //          }
+   //      }
+   //  };
+
+    // $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
+    //     yAxis: {
+    //         min: 0,
+    //         max: 120,
+    //         title: { text: '' }
+    //     },
+    //     credits: { enabled: false },
+    //     series: [{
+    //         name: 'Speed',
+    //         data: [total],
+    //         dataLabels: {
+    //             format: '<div style="text-align:center"><span style="font-size:12px; font-weight:normal;color: #196481'+ '">Speed - {y} km</span><br/>',
+    //              y: 25
+    //         },
+    //         tooltip: { valueSuffix: ' km/h'}
+    //     }]
+    // }));
     setInterval(function () {
       var chart = $('#container-speed').highcharts(), point;
         if (chart) {

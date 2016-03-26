@@ -138,14 +138,14 @@ background-color: #ffffff;
 		        <div class="box-body" ng-class="overallEnable?'col-md-9':'col-md-12'"id="statusreport">
 		        	 <!-- Tabset -->
 					 <tabset class="nav-tabs-custom">
-					 	<tab select="alertMe('Movement')" heading="Movement">
+					 	<tab select="alertMe('Movement')" heading="Movement" active="tabmovement">
 			   				 <p style="margin:0" class="page-header">Movement Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   				 <div id='movementreport' class="box-body table-responsive">
 			   				 <table class="table table-bordered table-striped table-condensed table-hover">
 			   				 	<thead>
 								   	<tr style="text-align:center; font-weight: bold;">
 									  	<td colspan="2">Vehicle Group</td>
-									  	<td>{{vgroup}}</td>
+									  	<td>{{trimColon(vgroup)}}</td>
 									  	<td colspan="1">Vehicle Name</td>
 									  	<td colspan="3">{{hist.shortName}}</td>					
 								  	</tr>
@@ -209,14 +209,14 @@ background-color: #ffffff;
 							<!-- <pagination boundary-links="true" max-size="3" items-per-page="itemsPerPage" total-items="movementdata.length" ng-model="currentPage" ng-change="pageChanged()"></pagination>	
 							 --></div>
 			   			 </tab>
-			   			 <tab select="alertMe('Overspeed')" heading="Overspeed" selected>
+			   			 <tab select="alertMe('Overspeed')" heading="Overspeed" active="taboverspeed">
 			   				 <p style="margin:0" class="page-header">Overspeed Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   				 <div class="box-body table-responsive" id='overspeedreport'>
 			   				 <table class="table table-bordered table-striped table-condensed table-hover">
 			   				 	<thead>
 								   	<tr style="text-align:center; font-weight: bold;" >
 									  	<td colspan="3"><b>Vehicle Group</b></td>
-									  	<td>{{vgroup}}</td>
+									  	<td>{{trimColon(vgroup)}}</td>
 									  	<td colspan="2"><b>Vehicle Name</b></td>
 									  	<td>{{hist.shortName}}</td>	
 								  	</tr>
@@ -277,14 +277,14 @@ background-color: #ffffff;
 			   			 
 			   			 
 			   			 
-			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked">
+			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked">
 			   				 <p style="margin:0" class="page-header">Stopped/Parked Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   				 <div class="box-body table-responsive" id='stoppedparkingreport'>
 			   				 <table class="table table-bordered  table-striped table-condensed table-hover">
 			   				 	<thead>
 								   	<tr style="text-align:center; font-weight: bold;">
 									  	<td colspan="1"><b>Vehicle Group</b></td>
-									  	<td>{{vgroup}}</td>
+									  	<td>{{trimColon(vgroup)}}</td>
 									  	<td colspan="1"><b>Vehicle Name</b></td>
 									  	<td colspan="1">{{hist.shortName}}</td>
 									  	<!-- <td ng-hide="true" colspan="2"><b>Register No</b></td>
@@ -318,14 +318,14 @@ background-color: #ffffff;
 							</table>
 							</div>
 			   			 </tab>
-			   			 <tab select="alertMe('idlereport')" heading="Idle">
+			   			 <tab select="alertMe('idlereport')" heading="Idle" active="tabidle">
 			   			 	 <p style="margin:0" class="page-header">Idle Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="idlereport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
 				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{vgroup}}</td>
+										  	<td>{{trimColon(vgroup)}}</td>
 										  	<td>Vehicle Name</td>
 										  	<td>{{hist.shortName}}</td>	
 			   			 	 			</tr>
@@ -356,7 +356,7 @@ background-color: #ffffff;
 			   			 	</div>
 			   				 
 			   			 </tab>
-			   			 <tab select="alertMe('eventReport')" heading="Event">
+			   			 <tab select="alertMe('eventReport')" heading="Event" active="tabevent">
 			   			 	<p style="margin:0" class="page-header">Event Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="eventReport">
 			   			 	 	<table style="background-color: #cecece; color: #000" class="table table-bordered table-striped table-condensed table-hover">
@@ -383,7 +383,7 @@ background-color: #ffffff;
 			   			 	 	<thead>
 			   			 	 		<tr style="text-align:center; font-weight: bold;">
 				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{vgroup}}</td>
+										  	<td>{{trimColon(vgroup)}}</td>
 										  	<td colspan="2">Vehicle Name</td>
 										  	<td>{{hist.shortName}}</td>	
 			   			 	 			</tr>
@@ -416,14 +416,14 @@ background-color: #ffffff;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-			   			 <tab select="alertMe('sitereport')" heading="Site">
+			   			 <tab select="alertMe('sitereport')" heading="Site" active="tabsite">
 			   			 	 <p style="margin:0" class="page-header">Site Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="sitereport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
 				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{vgroup}}</td>
+										  	<td>{{trimColon(vgroup)}}</td>
 										  	<td>Vehicle Name</td>
 										  	<td>{{hist.shortName}}</td>	
 			   			 	 			</tr>
@@ -449,14 +449,14 @@ background-color: #ffffff;
 			   			 	</div>
 			   				 
 			   			 </tab>
-			   			 <tab select="alertMe('loadreport')" heading="Load">
+			   			 <tab select="alertMe('loadreport')" heading="Load" active="tabload">
 			   			 	<p style="margin:0" class="page-header">Load Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="loadreport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
 				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{vgroup}}</td>
+										  	<td>{{trimColon(vgroup)}}</td>
 										  	<td>Vehicle Name</td>
 										  	<td>{{hist.shortName}}</td>	
 			   			 	 			</tr>
@@ -493,7 +493,7 @@ background-color: #ffffff;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-			   			 <tab heading="Fuel" select="alertMe('fuelreport')">
+			   			 <tab heading="Fuel" select="alertMe('fuelreport')" active="tabfuel">
 			   			 	<p style="margin:0" class="page-header">Fuel Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   			 	<div style="width: 700px; height: 300px" id="container"></div> 
 			   			 	<div class="box-body table-responsive" id="fuelreport">
@@ -501,7 +501,7 @@ background-color: #ffffff;
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
 				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{vgroup}}</td>
+										  	<td>{{trimColon(vgroup)}}</td>
 										  	<td>Vehicle Name</td>
 										  	<td>{{hist.shortName}}</td>	
 			   			 	 			</tr>
@@ -526,6 +526,44 @@ background-color: #ffffff;
 			   			 	 		</tr>
 			   			 	 		<tr>
 										<td ng-if="fuelValue==null" colspan="4">No Records Found Choose some other date</td>
+									</tr>
+			   			 	 	</tbody>
+			   			 	 	</table>
+			   			 	</div>
+			   			 </tab>
+			   			 <tab heading="Ignition" select="alertMe('ignitionreport')" active="tabignition">
+			   			 	<p style="margin:0" class="page-header">Ignition Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	<div class="box-body table-responsive" id="ignitionreport">
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 		<thead>
+			   			 	 			<tr style="text-align:center; font-weight: bold;">
+				   			 	 			<td>Vehicle Group</td>
+										  	<td>{{trimColon(vgroup)}}</td>
+										  	<td>Vehicle Name</td>
+										  	<td>{{hist.shortName}}</td>	
+			   			 	 			</tr>
+			   			 	 			<tr><td colspan="3"></td></tr>
+			   			 	 			<tr style="text-align:center;font-weight: bold;">
+											<th class="id" style="text-align:center;" width="25%">Date &amp; Time</th>
+											<th class="id" style="text-align:center;" width="20%">Status</th>
+											<th class="id" style="text-align: center;" width="35%">Nearest Location</th>
+											<th class="id" style="text-align: center;" width="15%">G-Map</th>
+										</tr>
+								</thead>
+			   			 	 	<tbody>
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="ignition in ignitionData">
+			   			 	 			<td>{{ignition.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+			   			 	 			<td>{{ignition.ignitionStatus}}</td>
+			   			 	 			<td>
+			   			 	 			{{ignition.address}} 
+			   			 	 				<!-- <p ng-if="ignitionignitionignition.address!=null">{{ignition.address}}</p>
+											<p ng-if="ignitionignition.address==null && addressFuel[$index]!=null">{{addressFuel[$index]}}</p>
+											<p ng-if="ignition.address==null && addressFuel[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p> -->
+										</td> 
+			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ignitionignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td>
+			   			 	 		</tr>
+			   			 	 		<tr>
+										<td ng-if="ignitionData==null" colspan="4">No Records Found Choose some other date</td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>

@@ -28,6 +28,13 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	// $scope.trip 		= 	[];
 	// $scope.duration 	= 	[];
 	// $scope.timeList		=	[];
+
+	function sessionValue(vid, gname){
+		sessionStorage.setItem('user', JSON.stringify(vid+','+$scope.trimColon(gname)));
+		$("#testLoad").load("../public/menu");
+	}
+
+
 	function graphList(list)
 	{	
 		$scope.fuelCon 		= 	[];
@@ -214,7 +221,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 
 
 	function convert_to_24h(time_str) {
-		console.log(time_str);
+		
  		var str		=	time_str.split(' ');
  		var stradd	=	str[0].concat(":00");
  		var strAMPM	=	stradd.concat(' '+str[1]);
@@ -249,15 +256,17 @@ app.controller('mainFuel', function($scope, $http, $filter){
     	return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };
     $scope.interval 	=  1;
+    
 	$scope.$watch("url", function (val) {
-   		$scope.loading	=	true;
-	 	$http.get($scope.url).success(function(data){
+   		$http.get(val).success(function(data){
 			$scope.locations 	= 	data;
+
 			//console.log(data[0].vehicleLocations[0].vehicleId);
 			if(data.length)
 				$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.shortName    =   data[$scope.gIndex].vehicleLocations[0].shortName;
 				$scope.gName 		= 	data[$scope.gIndex].group;
+				sessionValue($scope.vehiname, $scope.gName)
 			angular.forEach(data, function(value, key) {			  
 				  if(value.totalVehicles) {
 				  		$scope.data1		=	data[key];
@@ -279,17 +288,23 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	});
 
 	//function for group selection
-	$scope.groupSelection 	=	function(groupname)
+	$scope.groupSelection 	=	function(groupname, gid)
 	{
 		$scope.gName 		= 	groupname;
-		$scope.url 		 	= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupname;
+		$scope.gIndex		=	gid;
+		var urlGroup 		 	= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupname;
+		$http.get(urlGroup).success(function(data){
+			$scope.locations 	= 	data;
+			$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
+			$scope.shortName    =   data[$scope.gIndex].vehicleLocations[0].shortName;
+			$scope.gName 		= 	data[$scope.gIndex].group;
+			sessionValue($scope.vehiname, $scope.gName)
+		});
 	}
 
 	//page loaded function
 	function distanceTime()
 	{	
-		// $('#perloader').show();
-		// $('#preloader02').show();
 		$("#fill").hide();
     	$("#eventReport").show();
 		document.getElementById ("stop").checked = true;
@@ -300,8 +315,6 @@ app.controller('mainFuel', function($scope, $http, $filter){
     	var hrs 			=   document.getElementsByClassName("hrs")[0].value;
 		var distanceTimeUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms;
 		serviceCall(distanceTimeUrl);
-		// $('#status02').fadeOut(); 
-		// $('#preloader02').delay(350).fadeOut('slow');
 	}
 	
 
@@ -320,7 +333,6 @@ app.controller('mainFuel', function($scope, $http, $filter){
 				$scope.fuelTotal 	= 	data;
 				graphData(data);
 			}
-				
 			else
 			{
 				graphData(null);
@@ -343,6 +355,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	{
 		$scope.shortName 	= 	shortname;
 		$scope.vehiname 	= 	single;
+		sessionValue($scope.vehiname, $scope.gName);
 		$scope.getValue('vehicle');
 	}
 	
@@ -372,7 +385,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
         saveAs(blob, data+".xls");
     };
     $scope.exportDataCSV = function (data) {
-    CSV.begin('#'+data).download(data+'.csv').go();
+    	CSV.begin('#'+data).download(data+'.csv').go();
     };
 
 	$scope.seperate 	= function()

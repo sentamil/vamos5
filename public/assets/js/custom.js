@@ -88,7 +88,14 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
-	}				
+	}
+
+
+	function sessionValue(vid, gname){
+		sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
+		$("#testLoad").load("../public/menu");
+	}
+
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
 			$scope.selected=undefined;
@@ -102,7 +109,8 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 				$scope.mapTable = data[$scope.gIndex].vehicleLocations;
 				// console.log(document.getElementById('one').innerText)
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
-				// sessionStorage.setItem('user', JSON.stringify($scope.vehiname));
+				$scope.gName 	= data[$scope.gIndex].group;
+				sessionValue($scope.vehiname, $scope.gName)
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
 				$scope.zoomLevel = 6;
 				$scope.support = data[$scope.gIndex].supportDetails;
@@ -111,7 +119,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		});	
 	});
 
-	var ls = sessionStorage.getItem("user")
+	// var ls = sessionStorage.getItem("user")
 	function menuGroup(res)
 	{
 		
@@ -223,6 +231,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	$scope.genericFunction = function(vehicleno, index){
 		$scope.selected = index;
 		$scope.removeTask(vehicleno);
+		sessionValue(vehicleno, $scope.gName)
 		$('#graphsId').show(500);
 		editableValue();
 	}
@@ -504,6 +513,9 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		$('#vehiid #val').text(dataVal.shortName);
 		$('#toddist #val').text(dataVal.distanceCovered);
 		$('#vehstat #val').text(dataVal.position);
+		$('#regNo span').text(dataVal.regNo);
+		$('#vehitype span').text(dataVal.vehicleType);
+		$('#mobNo span').text(dataVal.mobileNo);
 		$('#graphsId #speed').text(dataVal.speed);
 		$('#graphsId #fuel').text(dataVal.tankSize);
 		tankSize 		 = parseInt(dataVal.tankSize);
@@ -748,6 +760,7 @@ function polygenDrawFunction(list){
           sp    = split[i].split(":");
           polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
       }
+      var labelAnchorpos = new google.maps.Point(19, 0);
       var polygenColor = new google.maps.Polygon({
             path: polygenList,
             strokeColor: "#000",   //7e7e7e
@@ -757,17 +770,18 @@ function polygenDrawFunction(list){
             map: $scope.map
         });
       
-      var labelAnchorpos = new google.maps.Point(19, 0);  ///12, 37
-      $scope.marker = new MarkerWithLabel({
-         position: centerMarker(polygenList), 
-         map: $scope.map,
-         icon: 'assets/imgs/area_img.png',
-         color: '#fff',
-         labelContent: list.siteName,
-         labelAnchor: labelAnchorpos,
-         labelClass: "labels", 
-         labelInBackground: false
-      });
+        ///12, 37
+      // $scope.marker = new MarkerWithLabel({
+      //    position: centerMarker(polygenList), 
+      //    map: $scope.map,
+      //    icon: '',
+      //    color: '#fff',
+      //    fontSize: 2,
+      //    labelContent: list.siteName,
+      //    labelAnchor: labelAnchorpos,
+      //    labelClass: "labels", 
+      //    labelInBackground: false
+      // });
       $scope.map.setCenter(centerMarker(polygenList)); 
       $scope.map.setZoom(14);  
     // }
@@ -777,7 +791,7 @@ function polygenDrawFunction(list){
 	function siteInvoke(val){
 		var url_site          = 'http://'+globalIP+context+'/public/viewSite';
 		vamoservice.getDataCall(url_site).then(function(data) {
-			console.log(data)
+			// console.log(data)
 			if(data.siteParent)
 			 	angular.forEach(data.siteParent, function(value, key){
 					//console.log(' value'+key)

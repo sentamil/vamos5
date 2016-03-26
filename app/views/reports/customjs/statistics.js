@@ -42,6 +42,11 @@ $scope.getTodayDate  =	function(date) {
 	return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
 };
 
+function sessionValue(vid, gname){
+	sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
+	$("#testLoad").load("../public/menu");
+}
+
 
 //vehicle list
 $scope.$watch("url", function(val){
@@ -54,6 +59,10 @@ $scope.$watch("url", function(val){
 		$scope.todate			=	$scope.getTodayDate($scope.toNowTS);
 		$scope.fromtime			=	formatAMPM($scope.fromNowTS);
    		$scope.totime			=	formatAMPM($scope.toNowTS);
+   		$scope.trackVehID       =   data[0].vehicleLocations[0].vehicleId;
+   		$scope.groupname 		=	data[0].group;
+   		sessionValue($scope.trackVehID, $scope.groupname);
+
 		angular.forEach(data, function(value, key){
 			//console.log(value)
 			if(value.totalVehicles) {
@@ -74,7 +83,10 @@ $scope.groupSelection 	=	function(groupName, groupId) {
 	startLoading();
 	var groupUrl 			= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupName;
 	vamoservice.getDataCall(groupUrl).then(function(groupResponse){
-		$scope.vehicleList 	=  	groupResponse;
+		$scope.trackVehID       =   groupResponse[groupId].vehicleLocations[0].vehicleId;
+   		$scope.groupname 		=	groupName;
+   		sessionValue($scope.trackVehID, $scope.groupname)
+   		$scope.vehicleList 	=  	groupResponse;
 		serviceCall();
 		stopLoading();
 	})
@@ -85,6 +97,8 @@ $scope.groupSelection 	=	function(groupName, groupId) {
 $scope.genericFunction 	= 	function(vehicleID, index){
 	startLoading();
 	vehicleSelected		= 	vehicleID;
+	sessionValue(vehicleSelected,$scope.groupname);
+	
 	serviceCall();
 }
 

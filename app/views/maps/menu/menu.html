@@ -1,86 +1,100 @@
 <!DOCTYPE html>
 <html>
-	<head>
-        <link href="assets/css/jVanilla.css" rel="stylesheet">
-    </head>
-	   <body>
-            <div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;">
-                <nav>
+<head>
+    <link href="assets/css/jVanilla.css" rel="stylesheet">
+</head>
+<body>
+    <div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;">
+        <nav>
+            <ul class="menu-hover">
+                <li class="list"> <a href="#">Maps</a>
                     <ul class="menu-hover">
-                        <li class="list"> <a href="#">Maps</a>
-                            <ul class="menu-hover">
-                                <li class="list"><a href="../public/replay">History</a></li>
-                                <li class="list"><a href="../public/live">Track</a></li>
-                                <li class="list"> <a href="../public/sites">Site Details</a>
-                            </ul>
-                      <!--   </li> -->
-                        
-                            <!-- <ul class="menu-hover">
-                                <li class="list"><a href="">All jQuery </a></li>
-                                <li class="list"><a href="">Accordion</a></li>
-                                <li class="list"><a href="">All jQuery </a></li>
-                                <li class="list"><a href="">Accordion</a></li>
-                                <li class="list"><a href="">All jQuery </a></li>
-                                <li class="list"><a href="">Accordion</a></li>
-                            </ul> -->
-                        <!-- </li> -->
-                        <li class="list"> <a href="../public/reports">Reports</a>
+                        <li class="list"><a href="../public/replay">History</a></li>
+                        <li class="list"><a href="../public/live">Track</a></li>
+                        <li class="list"> <a href="../public/sites">Site Details</a>
+                        </ul>
+                        <li class="list"> <a href="../public/reports">Reports <img src="assets/imgs/down.png"></a>
                             <ul class="menu-hover">
                                 <li class="list"><a href="../public/reports"> Current </a></li>
                                 <li class="list"><a href="../public/reports?ind=1"> Consolidated </a></li>
-                                <!-- <li class="list"><a href="">History</a>
+                                <li class="list"><a href="#"> History &nbsp; <img src="assets/imgs/right.png"></a>
                                     <ul class="menu-hover">
-                                        <li class="list"><a href=""> Movement </a>
-                                            <ul class="menu-hover" id="listGrop"></ul>
-                                        </li>
-                                        <li class="list"><a href="" > OverSpeed </a>
-                                            <ul class="menu-hover" id="listGrop"></ul>
-                                        </li>
-                                        <li class="list"><a href=""> Parked </a>
-                                            <ul class="menu-hover" id="listGrop"></ul>
-                                        </li>
-                                        <li class="list"><a href=""> Idle </a>
-                                            <ul class="menu-hover" id="listGrop"></ul>
-                                        </li>
-                                        <li class="list"><a href=""> Event </a>
-                                            <ul class="menu-hover" id="listGrop"></ul>
-                                        </li>
-                                        <li class="list"><a href=""> Site </a>
-                                            <ul class="menu-hover" id="listGrop"></ul>
-                                        </li>
-                                        <li class="list"><a href=""> Load </a>
-                                            <ul class="menu-hover" id="listGrop"></ul>
-                                        </li>
+                                        <div>
+                                            <table style="width: 400px; height: 100px; background-color: #5f6975">
+                                                <tr>
+                                                    <td><a id="movement" href=""> Movement </a></td>
+                                                    <td><a id="overspeed" href="" > OverSpeed </a></td>
+                                                    <td><a id="parked" href=""> Parked </a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><a id="idle" href=""> Idle </a></td>
+                                                    <td><a id="event" href=""> Event </a></td>
+                                                    <td><a id="site" href=""> Site </a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><a id="load" href=""> Load </a></td>
+                                                    <td><a id="fuel" href=""> Fuel </a></td>
+                                                    <td><a id="ignition" href=""> Ignition </a></td>
+                                                </tr>
+                                            </table>
+
+                                        </div>
+                                        
+                                        
                                     </ul>
-                                </li> -->
-                               <!--  <li class="list"><a href="">All jQuery </a></li>
-                                <li class="list"><a href="">Accordion</a></li> -->
+                                </li>
                             </ul>
                         </li>
                         <li class="list"> <a href="../public/fuel">Fuel</a></li>
-                        <li class="list"> <a href="../public/statistics"> Statistics </a>
+                        <li class="list"> <a href="../public/statistics"> Statistics <img src="assets/imgs/down.png"></a>
                             <ul class="menu-hover">
                                 <li class="list"><a href="../public/statistics">Executive</a></li>
                                 <li class="list"><a href="../public/statistics?ind=1">POI</a></li>
                             </ul>
                         </li>
-                        <li class="list"> <a href="../public/performance"> Performance </a></li>
-                         <li class="list"> <a href="../public/logout"> Logout </a> 
-                        <!--     <ul class="menu-hover">
-                                <li class="list"><a href="#"> Test 1 </a></li>
-                                <li class="list"><a href="#"> Test 2 </a></li>
-                                <li class="list"><a href="#"> Test 3 </a></li>
+                        <li class="list"> <a href="../public/performance"> Performance</a>
+                           <!--  <ul class="menu-hover">
+                                <li class="list"><a href="../public/performance?tab=daily">Daily Performance</a></li>
+                                <li class="list"><a href="../public/performance">Monthly Performance</a></li>
                             </ul> -->
                         </li>
+                        <li class="list"> <a href="../public/logout"> Logout </a></li>
                     </ul>
                 </nav>
             </div>
-       <!--  // <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script> -->
-      
-       <script>
-       // var dropselvalue = sessionStorage.getItem("user");
-       // console.log(' sessionStorage '+dropselvalue)
-       // $("#one").text(dropselvalue);
-       </script>
-	</body>
+        <script>
+            var obj = JSON.parse(sessionStorage.getItem('user'));
+            var sp  = obj.split(',');
+            var vid = sp[0];
+            var gname = sp[1];
+            $("#movement").click(function() {
+               $("#movement").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement')
+           });
+            $("#overspeed").click(function() {
+                $("#overspeed").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=overspeed')
+            });
+
+            $("#parked").click(function() {
+                $("#parked").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=parked')
+            });
+            $("#idle").click(function() {
+                $("#idle").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=idle')
+            });
+            $("#event").click(function() {
+                $("#event").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=event')
+            });
+            $("#site").click(function() {
+                $("#site").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=site')
+            });
+            $("#load").click(function() {
+                $("#load").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=load')
+            });
+            $("#fuel").click(function() {
+                $("#fuel").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=fuel')
+            });
+            $("#ignition").click(function() {
+                $("#ignition").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=ignition')
+            });
+        </script>
+    </body>
 </html>
