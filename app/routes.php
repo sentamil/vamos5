@@ -296,6 +296,14 @@ Route::get('/getVehicleHistory', function() {
     return View::make('vls.getVehicleHistory');
 });
  
+Route::get('/event', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('event');
+    return View::make('reports.eventReport');
+});
+
 Route::get('/getActionReport', function() {    
     if (!Auth::check()) {      
         return Redirect::to('login');      

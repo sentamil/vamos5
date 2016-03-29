@@ -52,11 +52,11 @@
                                 <li class="list"><a href="../public/statistics?ind=1">POI</a></li>
                             </ul>
                         </li>
-                        <li class="list"> <a href="../public/performance"> Performance</a>
-                           <!--  <ul class="menu-hover">
+                        <li class="list"> <a href="../public/performance"> Performance <img src="assets/imgs/down.png"></a>
+                            <ul class="menu-hover">
                                 <li class="list"><a href="../public/performance?tab=daily">Daily Performance</a></li>
                                 <li class="list"><a href="../public/performance">Monthly Performance</a></li>
-                            </ul> -->
+                            </ul>
                         </li>
                         <li class="list"> <a href="../public/logout"> Logout </a></li>
                     </ul>
@@ -69,17 +69,19 @@
             var gname = sp[1];
             $("#movement").click(function() {
                $("#movement").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement')
-           });
+            });
             $("#overspeed").click(function() {
                 $("#overspeed").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=overspeed')
             });
-
             $("#parked").click(function() {
                 $("#parked").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=parked')
             });
             $("#idle").click(function() {
                 $("#idle").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=idle')
             });
+            // $("#event").click(function() {
+            //     $("#event").attr("href", 'event?vid='+vid+'&vg='+gname+'&tn=event')
+            // });
             $("#event").click(function() {
                 $("#event").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=event')
             });

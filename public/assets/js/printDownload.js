@@ -14,7 +14,6 @@ app.controller('printHtml', function($scope, $http){
 	if($scope.vehicleName.slice(0,3) =="Alt")
 	$scope.msg 					= 	'NOON';
 	var url 	=	"http://"+globalIP+context+"/public/getGeoFenceView?vehicleId="+$scope.vehicleId;
-
 	$http.get(url).success(function(data){
 		$scope.geoStops 	= data.geoFence;
 	})

@@ -173,7 +173,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     		case 'load':
     			$scope.tabload  			=	true;
     			break;
-    		case 'idle':
+    		case 'fuel':
     			$scope.tabfuel  			=	true;
     			break;
     		case 'ignition':

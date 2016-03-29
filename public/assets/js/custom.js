@@ -771,17 +771,17 @@ function polygenDrawFunction(list){
         });
       
         ///12, 37
-      // $scope.marker = new MarkerWithLabel({
-      //    position: centerMarker(polygenList), 
-      //    map: $scope.map,
-      //    icon: '',
-      //    color: '#fff',
-      //    fontSize: 2,
-      //    labelContent: list.siteName,
-      //    labelAnchor: labelAnchorpos,
-      //    labelClass: "labels", 
-      //    labelInBackground: false
-      // });
+      $scope.marker = new MarkerWithLabel({
+         position: centerMarker(polygenList), 
+         map: $scope.map,
+         icon: 'assets/image/area_img.png',
+         color: '#fff',
+        
+         labelContent: list.siteName,
+         labelAnchor: labelAnchorpos,
+         labelClass: "maps", 
+         labelInBackground: false
+      });
       $scope.map.setCenter(centerMarker(polygenList)); 
       $scope.map.setZoom(14);  
     // }
