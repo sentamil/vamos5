@@ -269,10 +269,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		OverallDriverPerformance(webServiceUrl);
 	}
 
-	$scope.textVal 	= function() {
-		console.log($scope.fromdate)
-	}
-
+	
 	//for group selection
 
 	$scope.groupSelection 	=	function(groupname, rowId, index){
@@ -281,6 +278,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		$scope.groupVeh		=	true;
 		var groupUrl 		= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupname;
 		vamoservice.getDataCall(groupUrl).then(function(data) {
+			sessionValue($scope.vehicleId, $scope.groupName);
 			$scope.vehicleId 	  = data[$scope.gIndex].vehicleLocations[0].vehicleId;
 			$scope.vehicleDetails =  data;
 			$scope.initMethod();
@@ -294,6 +292,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		$scope.groupName 	=	groupname;
 		$scope.vehicleId 	= 	vehiid;
 		$scope.groupVeh		=	false;
+		sessionValue($scope.vehicleId, $scope.groupName);
 		// $scope.initMethod();
 		if(status == 'monthly')
 			monthlyFunction();
@@ -446,6 +445,8 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		// try{
 			if(status == 'break') {
 				$scope.titleName = 'Sudden Breaks';
+				$scope.high = 'Speed';
+				$scope.low = 'Slow';
 				if(undefined != $scope.detailedView.data.suddenBreakList.normal)
 				{
 					obj 	= $scope.detailedView.data.suddenBreakList.normal.historySuddenBrk;
@@ -482,6 +483,8 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 				
 			} else if(status == 'accleration') {
 				$scope.titleName = 'Sudden Acceleration'
+				$scope.high = 'Slow';
+				$scope.low = 'Speed';
 				if(undefined != $scope.detailedView.data.suddenAcceleration.normal)
 				{
 					obj = $scope.detailedView.data.suddenAcceleration.normal.historySuddenAcceleration;
