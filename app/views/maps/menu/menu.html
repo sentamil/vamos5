@@ -7,7 +7,7 @@
     <div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;">
         <nav>
             <ul class="menu-hover">
-                <li class="list"> <a href="#">Maps</a>
+                <li class="list"> <a href="#">Maps <img src="assets/imgs/down.png"></a>
                     <ul class="menu-hover">
                         <li class="list"><a href="../public/replay">History</a></li>
                         <li class="list"><a href="../public/live">Track</a></li>
@@ -79,12 +79,12 @@
             $("#idle").click(function() {
                 $("#idle").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=idle')
             });
-            // $("#event").click(function() {
-            //     $("#event").attr("href", 'event?vid='+vid+'&vg='+gname+'&tn=event')
-            // });
             $("#event").click(function() {
-                $("#event").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=event')
+                $("#event").attr("href", 'event?vid='+vid+'&vg='+gname+'&tn=event')
             });
+            // $("#event").click(function() {
+            //     $("#event").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=event')
+            // });
             $("#site").click(function() {
                 $("#site").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=site')
             });
