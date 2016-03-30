@@ -127,7 +127,7 @@
                                         <select id="traffic" title="Suggested Stops" style="width: 120px;height: 25px;" ng-model="geoStops" ng-change="goeValueChange()" ng-options="geo.stopName as geo.stopName for geo in geoStop.geoFence">
                                            <!-- <option ng-repeat="geo in geoStop.geoFence" value="{{geo.stopName}}">{{geo.stopName}}</option> -->
                                         </select>
-                                        <a href="../public/printStops?vName={{shortVehiId}}&vid={{trackVehID}}" target="_blank">Print</a>
+                                        <a ng-hide="true" href="../public/printStops?vName={{shortVehiId}}&vid={{trackVehID}}" target="_blank">Print</a>
                                         
                                 </div>
                                    
