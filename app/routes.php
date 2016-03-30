@@ -304,6 +304,14 @@ Route::get('/event', function() {
     return View::make('reports.eventReport');
 });
 
+Route::get('/siteReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get Vehicle Locations');
+    return View::make('reports.sitePerVehicle');
+});
+
 Route::get('/getActionReport', function() {    
     if (!Auth::check()) {      
         return Redirect::to('login');      
