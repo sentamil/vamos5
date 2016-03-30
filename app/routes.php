@@ -308,7 +308,7 @@ Route::get('/siteReport', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
-    Log::info('get Vehicle Locations');
+    Log::info('get siteReport');
     return View::make('reports.sitePerVehicle');
 });
 
