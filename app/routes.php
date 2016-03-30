@@ -300,7 +300,7 @@ Route::get('/event', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
-    Log::info('event');
+    Log::info('event report');
     return View::make('reports.eventReport');
 });
 
@@ -308,7 +308,7 @@ Route::get('/siteReport', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
-    Log::info('get siteReport');
+    Log::info('site report');
     return View::make('reports.sitePerVehicle');
 });
 
