@@ -357,7 +357,7 @@ background-color: #ffffff;
 			   			 	</div>
 			   				 
 			   			 </tab>
-			   			 <tab select="alertMe('eventReport')" heading="Event" active="tabevent">
+			   			 <tab ng-hide="true" select="alertMe('eventReport')" heading="Event" active="tabevent">
 			   			 	<p style="margin:0" class="page-header">Event Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="eventReport">
 			   			 	 	<table style="background-color: #cecece; color: #000" class="table table-bordered table-striped table-condensed table-hover">
@@ -417,7 +417,7 @@ background-color: #ffffff;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-			   			 <tab select="alertMe('sitereport')" heading="Site" active="tabsite">
+			   			 <tab ng-hide="true" select="alertMe('sitereport')" heading="Site" active="tabsite">
 			   			 	 <p style="margin:0" class="page-header">Site Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="sitereport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
