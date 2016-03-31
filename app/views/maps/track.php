@@ -20,7 +20,8 @@
             width:100%;
             height: 100vh; 
         }
-         #container-speed{ width: 230px; height: 100px;} 
+         #container-speed{  width: 170px; height: 100px;}
+     #container-fuel{  width: 170px; height: 100px;}
          .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
     </style>
 </head>
@@ -44,7 +45,7 @@
                             <img src="assets/imgs/add.png" />
                         </div>
                     <div class="rightSection" id="contentmin">
-                        <table cellpadding="0" cellspacing="0" style="font-size:12px;" class="trackDetails">
+                        <table cellpadding="0" cellspacing="0" style="font-size:12px; word-wrap: break-word;" class="trackDetails">
                             <tr>
                                 <td style="width:50%">Vehicle Name</td>
                                 <td id="vehiid" style="width:50%"><span></span></td>
@@ -57,9 +58,9 @@
                                 <td style="width:50%">Speed Limit</td>
                                 <td id="mobno"><span></span> Km/h</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td colspan="2"><div id="container-speed"></div></td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <td style="width:50%">Today Distance</td>
                                 <td id="toddist"><span><span></span>&nbsp;Km</span></td>
@@ -82,7 +83,7 @@
                         
                     	<h3 style="font-size:14px; text-align:center; margin-top:0;">Vehicle Status</h3>
                         <div class="tracklegend">
-                        	<table cellpadding="0" cellspacing="0" style="font-size:12px;">
+                        	<table cellpadding="0" cellspacing="0" style="font-size:12px; word-wrap: break-word;">
                             	<tbody>
                                     <tr>
                                     	<td style="width:25%">Moving</td>
@@ -105,6 +106,16 @@
                             </table>
                         </div>
                     </div>
+                     <div id="graphsId">
+                            <div>
+                                <div>Speed - <label id="speed"></label>&nbsp;Km/h</div>
+                                <div id="container-speed"></div>
+                            </div>
+                            <div>
+                                <div>Tank Size - <label id="fuel"></label>&nbsp;Ltr</div>
+                                <div id="container-fuel"></div>
+                            </div>
+                        </div>
                     <!--div id="lastseentrack" style="top:0; height: auto; bottom:auto">&nbsp;</div-->
                    <!-- <div class="latlong"><label><input type="text"  style="width:265px" value="0.0" id="latinput" readonly/> POI : <input type="text" style="width:300px;" id="poival" placeholder="Enter Point of Interest" ng-enter="enterkeypress()" /> <button ng-click="enterkeypress()">Save</button></label><!--<label>Longitude : <input type="text" value="0.0" id="lnginput" readonly/></label></div>-->
                          <!-- div class="bottomContent">
@@ -147,7 +158,6 @@
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/highcharts-more.js"></script>
 	<script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
-    
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/infobox.js"  type="text/javascript"></script>

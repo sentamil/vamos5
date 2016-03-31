@@ -361,76 +361,93 @@ $(document).ready(function(e) {
 	    }]
 	
 	});
-	  // var gaugeOptions = {
-   //      chart: {
-   //          type: 'solidgauge',
-   //          backgroundColor:'rgba(255, 255, 255, 0)'
-   //      },
-   //      title: null,
-   //      pane: {
-   //          center: ['50%', '90%'],
-   //          size: '180%',
-   //          startAngle: -90,
-   //          endAngle: 90,
-   //          background: {
-   //              innerRadius: '60%',
-   //              outerRadius: '100%',
-   //              shape: 'arc'
-   //          }
-   //      },
-   //      tooltip: {
-   //          enabled: false
-   //      },
-   //      yAxis: {
-   //          stops: [
-   //              [0.1, '#55BF3B'], 
-   //              [0.5, '#DDDF0D'], 
-   //              [0.9, '#DF5353'] 
-   //          ],
-   //          lineWidth: 0,
-   //          minorTickInterval: null,
-   //          tickPixelInterval: 400,
-   //          tickWidth: 0,
-   //          title: {
-   //              y: -50
-   //          },
-   //          labels: {
-   //              y: -100
-   //          }
-   //      },
-   //      plotOptions: {
-   //          solidgauge: {
-   //              dataLabels: {
-   //                  y: 5,
-   //                  borderWidth: 0,
-   //                  useHTML: true
-   //              }
-   //          }
-   //      }
-   //  };
 
-    // $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
-    //     yAxis: {
-    //         min: 0,
-    //         max: 120,
-    //         title: { text: '' }
-    //     },
-    //     credits: { enabled: false },
-    //     series: [{
-    //         name: 'Speed',
-    //         data: [total],
-    //         dataLabels: {
-    //             format: '<div style="text-align:center"><span style="font-size:12px; font-weight:normal;color: #196481'+ '">Speed - {y} km</span><br/>',
-    //              y: 25
-    //         },
-    //         tooltip: { valueSuffix: ' km/h'}
-    //     }]
-    // }));
+
+    var gaugeOptions = {
+        chart: {
+            type: 'solidgauge',
+            // backgroundColor:'rgba(255, 255, 255, 0)',
+            spacingBottom: -10,
+	        spacingTop: -40,
+	        spacingLeft: 0,
+	        spacingRight: 0,
+        },
+        title: null,
+        pane: {
+            center: ['50%', '90%'],
+            size: '110%',
+            startAngle: -90,
+            endAngle: 90,
+            background: {
+                innerRadius: '60%',
+                outerRadius: '100%',
+                shape: 'arc'
+            }
+        },
+        tooltip: {
+            enabled: false
+        },
+        yAxis: {
+            stops: [
+                [0.1, '#55BF3B'], 
+                [0.5, '#DDDF0D'], 
+                [0.9, '#DF5353'] 
+            ],
+            lineWidth: 0,
+            minorTickInterval: null,
+            tickPixelInterval: 400,
+            tickWidth: 0,
+            title: {
+                y: -50
+            },
+            labels: {
+                y: -100
+            }
+        },
+        plotOptions: {
+            solidgauge: {
+                dataLabels: {
+                    y: 5,
+                    borderWidth: 0,
+                    useHTML: true
+                }
+            }
+        }
+    };
+
+    $('#container-fuel').highcharts(Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 300,
+            title: { text: '' }
+        },
+        credits: { enabled: false },
+        series: [{
+            name: 'Speed',
+            data: [fuelLtr],
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:12px; font-weight:normal;color: #196481'+ '">Fuel - {y} Ltr</span><br/>',
+                 // y: 25
+            },
+            tooltip: { valueSuffix: ' Ltr'}
+        }]
+    }));
     setInterval(function () {
       var chart = $('#container-speed').highcharts(), point;
         if (chart) {
             point = chart.series[0].points[0];
             point.update(total);
+        }
+       var chartFuel = $('#container-fuel').highcharts(), point;
+        if (chartFuel) {
+            point = chartFuel.series[0].points[0];
+            point.update(fuelLtr);
+            if(tankSize==0)
+            	tankSize =200;
+            chartFuel.yAxis[0].update({
+			    max: tankSize,
+			}); 
+
         }
     }, 1000);
 });
