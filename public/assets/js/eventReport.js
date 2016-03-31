@@ -117,9 +117,9 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 	    	}
 	  	};
 	}());
-   	
+
    	function google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent) {
-		$http.get(tempurlEvent).success(function(data){
+   		vamoservice.getDataCall(tempurlEvent).then(function(data) {
 			$scope.addressEvent[index4] = data.results[0].formatted_address;
 			//console.log(' address '+$scope.addressEvent[index4])
 			// var t = vamo_sysservice.geocodeToserver(latEvent,lonEvent,data.results[0].formatted_address);

@@ -70,7 +70,7 @@
                                 <td id="regno"><span></span></td>
                             </tr>
                              <tr>
-                                <td style="width:50%">Last Seen</td>
+                                <td style="width:50%">Address</td>
                                 <td id="lastseentrack"><span></span></td>
                             </tr>
                             <tr>
