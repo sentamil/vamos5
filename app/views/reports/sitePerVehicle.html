@@ -173,11 +173,12 @@ background-color: #ffffff;
               <hr>
                 <div>
                     <div class="pull-right">
-                        <img style="cursor: pointer;" ng-click="exportData('site')"  src="../app/views/reports/image/xls.png" />
-                        <img style="cursor: pointer;" ng-click="exportDataCSV('site')"  src="../app/views/reports/image/csv.jpeg" />
+                        <img style="cursor: pointer;" ng-click="exportData('sitereport')"  src="../app/views/reports/image/xls.png" />
+                        <img style="cursor: pointer;" ng-click="exportDataCSV('sitereport')"  src="../app/views/reports/image/csv.jpeg" />
                     </div>
+                    <div class="box-body" id="sitereport">
                 <div class="empty" align="center"></div> <p style="margin:0" class="page-header">Site Report <span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
-                            <div class="box-body" id="site">
+                            
                                 <table class="table table-bordered table-striped table-condensed table-hover">
                                     <thead>
                                         <tr style="text-align:center; font-weight: bold;">
@@ -229,7 +230,6 @@ background-color: #ffffff;
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
     <script src="../app/views/reports/customjs/html5csv.js"></script>
-    
     <script src="../app/views/reports/customjs/FileSaver.js"></script>
     <script src="../app/views/reports/customjs/moment.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>

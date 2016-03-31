@@ -183,12 +183,12 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		webServiceCall();
 	}
 
-	$scope.exportData = function (data) {
+	$scope.exportData = function (xlsVal) {
 		// console.log(data);
-		var blob = new Blob([document.getElementById(data).innerHTML], {
+		var blob = new Blob([document.getElementById(xlsVal).innerHTML], {
            	type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
-        saveAs(blob, data+".xls");
+        saveAs(blob, xlsVal+".xls");
     };
 
     $scope.exportDataCSV = function (data) {
