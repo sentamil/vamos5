@@ -3,18 +3,7 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 
 	//global declaration
 	$scope.uiDate 				=	{};
-	// $scope.uiValue	 			= 	{};
- //  	$scope.uiValue.stop 		= 	true;
- //  	$scope.uiValue.stopmins 	= 	10;
- //  	$scope.uiValue.speed 		= 	true;
- //  	$scope.uiValue.speedkms 	= 	60;
- //  	$scope.uiValue.notreach 	= 	true;
- //  	$scope.uiValue.notreachmins = 	10;
- //  	$scope.uiValue.idle 		=  	true;
- //  	$scope.uiValue.idlemins		= 	10;
- //  	$scope.uiValue.locat 		=	false;
- //  	$scope.uiValue.site 		= 	false;
-  	$scope.interval				= 	10;
+	$scope.interval				= 	10;
   	$scope.siteEntry 			=	0;
 	$scope.siteExit 			=	0;
 	//loading start function
@@ -30,11 +19,18 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		$('body').delay(350).css({'overflow':'visible'});
 	};
 
+
+	function getParameterByName(name) {
+    	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
 	//global declartion
 
 	$scope.locations = [];
-	$scope.url = 'http://'+globalIP+context+'/public/getVehicleLocations';
-	$scope.gIndex =0;
+	$scope.url = 'http://'+globalIP+context+'/public/getVehicleLocations?group='+getParameterByName('vg');
 
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
@@ -122,10 +118,21 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		vamoservice.getDataCall($scope.url).then(function(data) {
 			$scope.vehicle_list = data;
 			if(data.length){
-				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
-				$scope.uiGroup 	= $scope.trimColon(data[$scope.gIndex].group);
-				$scope.gName 	= data[$scope.gIndex].group;
-				$scope.shortNam	= data[$scope.gIndex].vehicleLocations[0].shortName;
+				$scope.vehiname	= getParameterByName('vid');
+				$scope.uiGroup 	= $scope.trimColon(getParameterByName('vg'));
+				$scope.gName 	= getParameterByName('vg');
+				angular.forEach(data, function(val, key){
+					if($scope.gName == val.group){
+						$scope.gIndex = val.rowId;
+						angular.forEach(data[$scope.gIndex].vehicleLocations, function(value, keys){
+							if($scope.vehiname == value.vehicleId)
+							$scope.shortNam	= value.shortName;
+						})
+						
+					}
+						
+				})
+				
 				sessionValue($scope.vehiname, $scope.gName)
 			}
 			$scope.fromNowTS		=	new Date();

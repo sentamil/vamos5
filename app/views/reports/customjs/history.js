@@ -732,20 +732,41 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	}
 
 	$("#testLoad").load("../public/menu");
-	$scope.url = 'http://'+getIP+context+'/public//getVehicleLocations';	
+	// $scope.url = 'http://'+getIP+context+'/public//getVehicleLocations';
+	$scope.url = 'http://'+getIP+context+'/public/getVehicleLocations?group='+getParameterByName('vg');
+
 	$scope.$watch("url", function (val) {
 	 	$http.get($scope.url).success(function(data){
-			$scope.locations 	= 	data;
-			if(data.length){
-				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
-				$scope.gName 		= 	data[0].group; 
-				// sessionValue($scope.vehiname, $scope.gName);
-				angular.forEach(data, function(value, key) {
-				  	if(value.totalVehicles) {
-				  		$scope.data1		=	data[key];
-				  	}
-				});		
-			}
+	 		$scope.locations 	= 	data;
+	 		$scope.vehiname	= getParameterByName('vid');
+				// $scope.uiGroup 	= $scope.trimColon(getParameterByName('vg'));
+				$scope.gName 	= getParameterByName('vg');
+				angular.forEach(data, function(val, key){
+					if($scope.gName == val.group){
+						$scope.gIndex = val.rowId;
+						angular.forEach(data[$scope.gIndex].vehicleLocations, function(value, keys){
+							if($scope.vehiname == value.vehicleId)
+							$scope.shortNam	= value.shortName;
+						})
+						
+					}
+						
+				})
+				
+				sessionValue($scope.vehiname, $scope.gName)
+
+
+			
+			// if(data.length){
+			// 	$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
+			// 	$scope.gName 		= 	data[0].group; 
+			// 	// sessionValue($scope.vehiname, $scope.gName);
+			// 	angular.forEach(data, function(value, key) {
+			// 	  	if(value.totalVehicles) {
+			// 	  		$scope.data1		=	data[key];
+			// 	  	}
+			// 	});		
+			// }
 		}).error(function(){ /*alert('error'); */ });
 	});
 	
