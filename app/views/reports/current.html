@@ -249,7 +249,7 @@ background-color: #ffffff;
 								    </tr> -->
 									<tr style="text-align:center">
 										<th width="10%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">Vehicle Name</th>
-										<th ng-hide="true" style="text-align:center;">Vehicle Name</th>
+										<!-- <th ng-hide="true" style="text-align:center;">Vehicle Name</th> -->
 										<th width="5%" style="text-align:center;">Regn No</th>
 										<th width="5%" style="text-align:center;">Driver Name</th>
 										<!-- <th ng-hide="true">Mobile Number</th> -->
@@ -265,7 +265,7 @@ background-color: #ffffff;
 									</tr>
 									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
 										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.shortName}}</a></td>
-										<td ng-hide="true"></td>
+										<!-- <td ng-hide="true"></td> -->
 										<td>{{user.regNo}}</td>
 										<td>{{user.driverName}}</td>
 										<!-- <td ng-hide="true">{{user.mobileNo}}</td> -->
