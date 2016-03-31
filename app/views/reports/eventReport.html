@@ -249,7 +249,10 @@ background-color: #ffffff;
 			   			 	 		<tr class="active" style="text-align:center" ng-repeat="ignition in eventData">
 			   			 	 			<td>{{ignition.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{ignition.state}}</td>
-			   			 	 			<td>{{msToTime(ignition.duration)}}</td>
+			   			 	 			<td>
+			   			 	 				<p ng-if="ignition.duration!=null">{{msToTime(ignition.duration)}}</p>
+											<p ng-if="ignition.duration==null">--</p>
+			   			 	 			</td>
 			   			 	 			<td>
 			   			 	 			{{ignition.address}} 
 			   			 	 				<!-- <p ng-if="ignitionignitionignition.address!=null">{{ignition.address}}</p>
