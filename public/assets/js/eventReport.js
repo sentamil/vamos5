@@ -4,6 +4,7 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 	//global declaration
 	$scope.uiDate 				=	{};
 	$scope.uiValue	 			= 	{};
+	$scope.addressEvent  		=   [];
   	$scope.uiValue.stop 		= 	true;
   	$scope.uiValue.stopmins 	= 	10;
   	$scope.uiValue.speed 		= 	true;
@@ -95,7 +96,57 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		else
 			return days+" d "+hours +" h "+minutes+" m "+seconds+" s ";
 	}
-    		
+   	
+	var delayed4 = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
+   	
+   	function google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent) {
+		$http.get(tempurlEvent).success(function(data){
+			$scope.addressEvent[index4] = data.results[0].formatted_address;
+			//console.log(' address '+$scope.addressEvent[index4])
+			// var t = vamo_sysservice.geocodeToserver(latEvent,lonEvent,data.results[0].formatted_address);
+		})
+	};
+
+	$scope.recursiveEvent 	= 	function(locationEvent, indexEvent)
+	{
+		var index4 = 0;
+		angular.forEach(locationEvent, function(value ,primaryKey){
+			//console.log(' primaryKey '+primaryKey)
+			index4 = primaryKey;
+			if(locationEvent[index4].address == undefined)
+			{
+				var latEvent		 =	locationEvent[index4].latitude;
+			 	var lonEvent		 =	locationEvent[index4].longitude;
+				var tempurlEvent =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
+				delayed4(2000, function (index4) {
+				      return function () {
+				        google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent);
+				      };
+				    }(index4));
+			}
+		})
+	}
+
+
 	function formatAMPM(date) {
     	  var date = new Date(date);
 		  var hours = date.getHours();
@@ -124,6 +175,7 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		var url 	= "http://"+globalIP+context+"/public//getActionReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.uiValue.stop+"&stopMints="+$scope.uiValue.stopmins+"&idle="+$scope.uiValue.idle+"&idleMints="+$scope.uiValue.idlemins+"&notReachable="+$scope.uiValue.notreach+"&notReachableMints="+$scope.uiValue.notreachmins+"&overspeed="+$scope.uiValue.speed+"&speed="+$scope.uiValue.speedkms+"&location="+$scope.uiValue.locat+"&site="+$scope.uiValue.site;
 		$scope.siteData = [];
 		vamoservice.getDataCall(url).then(function(responseVal){
+			$scope.recursiveEvent(responseVal, 0);
 			$scope.eventData = responseVal;
 			var entry=0,exit=0; 
 			angular.forEach(responseVal, function(val, key){

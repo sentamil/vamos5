@@ -632,7 +632,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 				var tempurlEvent =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
 				delayed4(2000, function (index4) {
 				      return function () {
-				        google_api_call_Load(tempurlEvent, index4, latEvent, lonEvent);
+				        google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent);
 				      };
 				    }(index4));
 			}

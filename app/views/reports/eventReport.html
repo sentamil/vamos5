@@ -254,10 +254,10 @@ background-color: #ffffff;
 											<p ng-if="ignition.duration==null">--</p>
 			   			 	 			</td>
 			   			 	 			<td>
-			   			 	 			{{ignition.address}} 
-			   			 	 				<!-- <p ng-if="ignitionignitionignition.address!=null">{{ignition.address}}</p>
-											<p ng-if="ignitionignition.address==null && addressFuel[$index]!=null">{{addressFuel[$index]}}</p>
-											<p ng-if="ignition.address==null && addressFuel[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p> -->
+			   			 	 			
+			   			 	 				<p ng-if="ignition.address!=null">{{ignition.address}}</p>
+											<p ng-if="ignition.address==null && addressEvent[$index]!=null">{{addressEvent[$index]}}</p>
+											<p ng-if="ignition.address==null && addressEvent[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
 										</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>

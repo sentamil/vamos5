@@ -19,9 +19,16 @@ app.directive('map', function($http, vamoservice) {
 							});
 				$('#vehiid span').text(locs.shortName);
 				$('#toddist span span').text(locs.distanceCovered);
-				total = parseInt(locs.speed);
+				// total = parseInt(locs.speed);
 				$('#vehdevtype span').text(locs.odoDistance);
 				$('#mobno span').text(locs.overSpeedLimit);
+				
+
+				$('#graphsId #speed').text(locs.speed);
+				$('#graphsId #fuel').text(locs.tankSize);
+				tankSize 		 = parseInt(locs.tankSize);
+				fuelLtr 		 = parseInt(locs.fuelLitre);
+				total  			 = parseInt(locs.speed);
 				
 				scope.getLocation(locs.latitude, locs.longitude, function(count){
 					$('#lastseentrack').text(count); 
@@ -87,10 +94,16 @@ app.directive('map', function($http, vamoservice) {
             		$('#vehiid span').text(locs.shortName);
 					$('#toddist span span').text(locs.distanceCovered);
 					$('#vehstat span').text(locs.position);
-					total = parseInt(locs.speed);
+					// total = parseInt(locs.speed);
 					$('#vehdevtype span').text(locs.odoDistance);
 					$('#mobno span').text(locs.overSpeedLimit);
 					
+					$('#graphsId #speed').text(locs.speed);
+					$('#graphsId #fuel').text(locs.tankSize);
+					tankSize 		 = parseInt(locs.tankSize);
+					fuelLtr 		 = parseInt(locs.fuelLitre);
+					total  			 = parseInt(locs.speed);
+
 					$('#positiontime').text(vamoservice.statusTime(locs).tempcaption);
 					$('#regno span').text(vamoservice.statusTime(locs).temptime);
 					scope.getLocation(locs.latitude, locs.longitude, function(count){
