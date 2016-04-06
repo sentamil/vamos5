@@ -6,7 +6,10 @@ var tabId 	= 	'executive';
 var index   =   getUrl.split("=")[1];
 	if(index) {
 		tabId 		= 	'poi';
+		$scope.downloadid = 'poi';
 		$scope.actTab 	=	true;
+	} else {
+		$scope.downloadid 	= 	'executive';
 	}
 	
 
@@ -18,7 +21,7 @@ $scope.bar 			=	true;
 $('#singleDiv').hide();
 var avoidOnload		=	false;
 
-$scope.downloadid 	= 	'executive';
+
 var vehicleSelected =	'';
 
 
