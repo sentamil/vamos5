@@ -1,4 +1,4 @@
-app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $http, vamoservice, $filter, statusfilter){
+app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $http, vamoservice){
 	console.log(' inside the controller ')
 
 	//Global Variable

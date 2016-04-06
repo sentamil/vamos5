@@ -36,6 +36,11 @@
                                                     <td><a id="fuel" href=""> Fuel </a></td>
                                                     <td><a id="ignition" href=""> Ignition </a></td>
                                                 </tr>
+                                                <tr>
+                                                    <td><a id="trip" href=""> Trip </a></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
                                             </table>
 
                                         </div>
@@ -97,6 +102,9 @@
             $("#ignition").click(function() {
                 $("#ignition").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=ignition')
             });
+            $('#trip').click(function() {
+                $('#trip').attr("href", 'trip?vid='+vid+'&vg='+gname+'&tn=trip')
+            })
         </script>
     </body>
 </html>

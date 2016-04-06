@@ -262,8 +262,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    			$scope.totime			=	formatAMPM($scope.toNowTS);
 			$scope.fromdate			=	$scope.getTodayDate($scope.fromNowTS);
 			$scope.todate			=	$scope.getTodayDate($scope.toNowTS);
-			$scope.eventCall();
-			$scope.siteCall();
+			// $scope.eventCall();
+			// $scope.siteCall();
 		});   
    	});
    	
@@ -964,37 +964,37 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     //submit button click function
     $scope.buttonClick;
     $scope.plotHist			=	function() {
-    	$scope.siteCall();
-    	$scope.loading		=	true;
+    	//$scope.siteCall();
+    	//$scope.loading		=	true;
     	$('#status').show();
     	$('#preloader').show();
     	var valueas 		=   $('#txtv').val();
 		
-		// console.log(histurl)
-		if($scope.downloadid == 'eventReport')
-		{
+		// // console.log(histurl)
+		// if($scope.downloadid == 'eventReport')
+		// {
 
-			// var eventUrl 	= "http://"+getIP+"/vamo/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.stoppage+"&stopMints="+$scope.stopMints+"&idle="+$scope.idleEvent+"&idleMints="+$scope.idleMints+"&notReachable="+$scope.notReachable+"&notReachableMints="+$scope.notReachMints+"&overspeed="+$scope.overspeedEvent+"&speed="+$scope.speedEvent+"&location="+$scope.locationEvent+"&site="+$scope.siteEvent;
-			// console.log(' inside the if '+eventUrl)
-			$scope.buttonClick 	= true;
-			$scope.eventReportData=[];
-			$scope.loading	=	false;
-			eventButton($scope.buttonClick);
+		// 	// var eventUrl 	= "http://"+getIP+"/vamo/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.stoppage+"&stopMints="+$scope.stopMints+"&idle="+$scope.idleEvent+"&idleMints="+$scope.idleMints+"&notReachable="+$scope.notReachable+"&notReachableMints="+$scope.notReachMints+"&overspeed="+$scope.overspeedEvent+"&speed="+$scope.speedEvent+"&location="+$scope.locationEvent+"&site="+$scope.siteEvent;
+		// 	// console.log(' inside the if '+eventUrl)
+		// 	$scope.buttonClick 	= true;
+		// 	$scope.eventReportData=[];
+		// 	$scope.loading	=	false;
+		// 	//eventButton($scope.buttonClick);
 			
-			//console.log(' value '+$scope.eventReportData.length)
+		// 	//console.log(' value '+$scope.eventReportData.length)
 			
-		}
-		else if($scope.downloadid == 'sitereport')
-		{
-			 $scope.siteCall();
-			 $scope.loading	=	false;
-		} 
-		else
-		{
+		// }
+		// else if($scope.downloadid == 'sitereport')
+		// {
+		// 	 //$scope.siteCall();
+		// 	 $scope.loading	=	false;
+		// } 
+		// else
+		// {
 			var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
 			$http.get(histurl).success(function(data){
 				
-				$scope.loading			=	false;
+				//$scope.loading			=	false;
 				$scope.hist				=	data;
 				$scope.topspeedtime		=	data.topSpeedTime;
 				$scope.dataArray_click(data.vehicleLocations);
@@ -1002,8 +1002,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 				$('#preloader').delay(350).fadeOut('slow');	
 			});
 			// $scope.loading	=	false;
-		}
-		console.log(' true or false  '+$scope.buttonClick)
+		// }
+		// console.log(' true or false  '+$scope.buttonClick)
      }
      
    

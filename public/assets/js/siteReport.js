@@ -31,6 +31,7 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 
 	$scope.locations = [];
 	$scope.url = 'http://'+globalIP+context+'/public/getVehicleLocations?group='+getParameterByName('vg');
+	var tab = getParameterByName('tn');
 
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
@@ -95,11 +96,16 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 	// service call for the event report
 
 	function webServiceCall(){
-		var url 	= 	"http://"+globalIP+context+"/public/getSiteReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&site=true";
+		var url;
+		if (tab == 'site')
+			url 	= 	"http://"+globalIP+context+"/public/getSiteReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&site=true";
+		else if (tab == 'trip')
+			url 	= 	"http://"+globalIP+context+"/public/getTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval;
 		$scope.siteData = [];
 		vamoservice.getDataCall(url).then(function(responseVal){
 			$scope.siteData = responseVal;
 			var entry=0,exit=0; 
+			if (tab == 'site')
 			angular.forEach(responseVal, function(val, key){
 				if(val.state == 'SiteExit')
 					exit++ 
