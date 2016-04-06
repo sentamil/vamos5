@@ -20,7 +20,7 @@ Route::get('/replay', function() {
 });
  
 Route::get('/electionCommisionTrustedClient', function() {
-    Log::info( '-------login-----' )
+    Log::info( '-------login-----' );
     $user=Input::get('userId');
     Log::info(' users name ' . $user);
     $redis = Redis::connection ();
