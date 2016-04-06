@@ -19,6 +19,25 @@ Route::get('/replay', function() {
     return View::make('maps.replay');
 });
  
+Route::get('/electionCommisionTrustedClient', function() {
+    Log::info( '-------login-----' )
+    $user=Input::get('userId');
+    Log::info(' users name ' . $user);
+    $redis = Redis::connection ();
+//ElectionCommisionUser
+    if($redis->sismember('ElectionCommisionUser', $user)=='1') {
+        $user1=User::where('username', '=', $user)->firstOrFail();
+        Log::info(' users name ' . $user1);
+        Auth::login($user1);
+        return View::make('maps.index');
+    }
+    else {
+        return Redirect::to('login');
+
+    }
+});
+
+
 Route::get('/history', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -31,6 +50,11 @@ Route::get('/track', function() {
     return View::make('maps.track');
 });
  
+Route::get('/allVehicles', function() {
+    $user = User::find(1);
+    Auth::login($user);
+    return View::make('maps.index');
+});
 // View::addExtension('html', 'php');
 // Route::get('/liveTrack', function() {
    
