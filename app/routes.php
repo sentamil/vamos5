@@ -117,7 +117,7 @@ Route::get('/trip', function(){
     }
     Log::info('trip report');
     return View::make('reports.tripReport');
-})
+});
  
 View::addExtension('html', 'php');
 Route::get('/statistics', function() {
