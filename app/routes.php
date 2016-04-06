@@ -115,8 +115,8 @@ Route::get('/trip', function(){
     if(!Auth::check()) {
         return Redirect::to('login');
     }
-    Log::info('trip report')
-    return View::make('reports.tripReport')
+    Log::info('trip report');
+    return View::make('reports.tripReport');
 })
  
 View::addExtension('html', 'php');
