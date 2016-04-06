@@ -19,7 +19,7 @@ Route::get('/replay', function() {
     return View::make('maps.replay');
 });
  
-Route::get('/electionCommisionTrustedClient', function() {
+Route::get('/ElectionCommisionTrustedClient', function() {
     Log::info( '-------login-----' );
     $user=Input::get('userId');
     Log::info(' users name ' . $user);
