@@ -167,6 +167,14 @@ Route::get('/getOverallVehicleHistory', function() {
     Log::info('get Vehicle Locations');
     return View::make('vls.getOverallVehicleHistory');
 });
+
+Route::get('/getTripReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getTripReport');
+    return View::make('vls.getTripReport');
+});
  
 Route::get('/getDriverPerformanceDaily', function() {
     if (!Auth::check()) {
