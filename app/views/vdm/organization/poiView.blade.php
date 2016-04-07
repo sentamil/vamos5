@@ -39,7 +39,7 @@
 			                		<tr class="col-md-3">
 			                			<td>
 				                			
-											{{ Form::label($key) }}
+											{{ Form::label($userplace[$key]) }}
 											
 											@endforeach
 			                			</td>	

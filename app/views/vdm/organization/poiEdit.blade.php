@@ -45,8 +45,8 @@
 	 @if(isset($userplace))		  
 		@foreach($userplace as $key => $value)
 			 <div class="col-md-3 userplace">
-			{{ Form::checkbox('poi[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field']) }}
-			{{ Form::label($key) }}			
+			{{ Form::checkbox('poi[]', $userplace[$key],  in_array($value,$selectedVehicles), ['class' => 'field']) }}
+			{{ Form::label($userplace[$key]) }}			
 			
 			</div>
 		@endforeach

@@ -29,16 +29,20 @@ class VdmOrganizationController extends \BaseController {
 		$Places = $redis->zrange('S_Places_India',0,-1);
 			
 		
-		$userplace=null;
+		$userplace=array();
 		$shortName =null;
         $shortNameList = null;
         try{
 			Log::info('-------------- $try-----------');
 			if($Places!=null)
 			{
-				Log::info('-------------- $try11-----------');
+				$t=0;
 				foreach ($Places as $key=>$value) {
-			$userplace=array_add($userplace, $value, $value);
+					
+					$userplace[$t]=$value;
+					$t++;
+					Log::info($t.'-------------- $try11-----------'.$value);
+			//$userplace=array_add($userplace, $value, $value);
             $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
             $vehicleRefData=json_decode($vehicleRefData,true);
              $shortName = $vehicleRefData['shortName']; 
@@ -60,7 +64,7 @@ class VdmOrganizationController extends \BaseController {
 			{
 				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$fcode);
 			}
-		 $orgList=array();
+		 $orgList=null;
         foreach ( $tmpOrgList as $org ) {
                 $orgList = array_add($orgList,$org,$org);
                 
@@ -71,7 +75,7 @@ class VdmOrganizationController extends \BaseController {
 		
 	   }
 	   
-       return View::make('vdm.organization.placeOfInterest')->with('userplace',$userplace)->with ( 'orgList', null ); 
+       return View::make('vdm.organization.placeOfInterest')->with('userplace',$userplace)->with ( 'orgList', $orgList ); 
     }
 public function addpoi()
 	{
@@ -192,13 +196,14 @@ public function addpoi()
 		$selectedVehicles =  $redis->zrange('S_Poi_'.$id.'_'.$fcode,0,-1);
 		      
         $shortNameList = null;
-		$placeList=null;
-		
+		$placeList=array();
+		$t=0;
 		foreach($places as $key=>$value) {
 			Log::info('-------------- $orgId in-----------'.$value);
 		    
-           
-			$placeList=array_add($placeList, $value, $value);
+           $placeList[$t]=$value;
+           $t++;
+			//$placeList=array_add($placeList, $value, $value);
 		}
 		
 		$vehicleRefData = $redis->hget ( 'H_Organisations_' . $fcode, $id );
@@ -307,7 +312,7 @@ public function addpoi()
 		$Places = $redis->zrange('S_Poi_'.$id.'_'.$fcode,0,-1);
 			
 		
-		$userplace=null;
+		$userplace=array();
 		$radius =null;
         $shortNameList = null;
         try{
@@ -315,8 +320,11 @@ public function addpoi()
 			if($Places!=null)
 			{
 				Log::info('-------------- $try11-----------');
+				$t=0;
 				foreach ($Places as $key=>$value) {
-			$userplace=array_add($userplace, $value, $value);
+					$userplace[$t]=$value;
+					$t++;
+			//$userplace=array_add($userplace, $value, $value);
             
             
 			}

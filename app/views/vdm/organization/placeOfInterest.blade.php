@@ -41,34 +41,12 @@
 									
 								@foreach($userplace as $key => $value)
 								<div class="col-md-3 userplace">
-									{{ Form::checkbox('poi[]', $key, null, ['class' => 'field']) }}
-											{{ Form::label($key) }}
+									{{ Form::checkbox('poi[]', $userplace[$key], null, ['class' => 'field']) }}
+											{{ Form::label($userplace[$key]) }}
 											</div>
 									@endforeach
 									@endif
-			            <!--  <table id="example1" class="table table-bordered dataTable"> 	
-			              		<thead>
-			                		<tr>
-			                			<th>{{ Form::label('poi', 'Select the Place of Interest:') }}</th>
-			                		</tr>
-			                	</thead>
-			                	<tbody>	
-								@if(isset($userplace))
-									
-								@foreach($userplace as $key => $value)
-			                		<tr class="col-md-2">
-			                			<td>
-				                			{{ Form::checkbox('poi[]', $key, null, ['class' => 'field']) }}
-											{{ Form::label($key) }}
-											
-											@endforeach
-			                			</td>	
-			                		</tr>
-								
-								@endif
-			                		
-               					</tbody>
-                		</table> -->
+			            
                	{{ Form::close() }}	
     		</div>
 		</div>
