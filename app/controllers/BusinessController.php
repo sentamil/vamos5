@@ -1412,6 +1412,9 @@ return Redirect::to ( 'Business' )->withErrors($error);
 	public static function geocode($address){
  
     // url encode the address
+try{
+
+
     $address = urlencode($address);
      
     // google map geocode api url
@@ -1452,6 +1455,10 @@ return Redirect::to ( 'Business' )->withErrors($error);
          
     }else{
         return false;
+    }
+     }catch(\Exception $e)
+    {
+         return false;
     }
 }
 	

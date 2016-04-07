@@ -498,7 +498,7 @@ class RfidController extends \BaseController {
 
 public function getVehicle()
 {
-    log::info( 'ahan'.'-------- laravel test ::----------'.User::find(Input::get('id')));
+    log::info( 'ahan'.'-------- laravel tet ::----------'.User::find(Input::get('id')));
     if (! Auth::check ()) {
             return Redirect::to ( 'login' );
         }

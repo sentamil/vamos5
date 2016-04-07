@@ -107,14 +107,20 @@ class VdmGroupController extends \BaseController {
 			{
 				Log::info('-------------- $try11-----------');
 				foreach ($vehicleList as $key=>$value) {
-			$userVehicles=array_add($userVehicles, $value, $value);
-            $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
+			 $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
             $vehicleRefData=json_decode($vehicleRefData,true);
+            $deviceId = $vehicleRefData['deviceId'];
+if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.$username.'_'.$fcode, $deviceId)==0) || Session::get('cur')=='admin')
+        {
+
+
+			$userVehicles=array_add($userVehicles, $value, $value);
+           
              $shortName = $vehicleRefData['shortName']; 
             $shortNameList = array_add($shortNameList,$value,$shortName);
 			}
 			
-			
+		}	
 			
             
 		}
@@ -276,9 +282,16 @@ class VdmGroupController extends \BaseController {
 			Log::info('-------------- $groupId in-----------'.$value);
 		     $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $value );
             $vehicleRefData=json_decode($vehicleRefData);
+
+$deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
+
+        if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.$username.'_'.$fcode, $deviceId)==0) || Session::get('cur')=='admin')
+        {
+
              $shortName = isset($vehicleRefData->shortName)?$vehicleRefData->shortName:""; 
             $shortNameList = array_add($shortNameList,$value,$shortName);
 			$vehicleList=array_add($vehicleList, $value, $value);
+		}
 		}
 		Log::info('-------------- $groupId 2 -----------');
 		return View::make('vdm.groups.edit',array('groupId'=>$groupId))->with('vehicleList', $vehicleList)->
