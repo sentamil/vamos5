@@ -227,11 +227,11 @@ background-color: #ffffff;
 		       
 		        <div class="box-body" id="statusreport">
 		           <table class="table table-striped table-bordered table-condensed table-hover" id="table_address">
-		           				   <tr ng-hide ="true" style="font-weight: bold;">
+		           				  <!--  <tr ng-hide ="true" style="font-weight: bold;">
 									  	<td>Vehicle Group : {{data1.group}}</td>					  
 									  	<td style="text-align: right;">Report Date : {{today}}</td>				
-								  	</tr>
-								   	<tr ng-hide ="true" style="text-align:center; font-weight: bold;">
+								  	</tr> -->
+								   	<!-- <tr ng-hide ="true" style="text-align:center; font-weight: bold;">
 									  	<td colspan="4"> Vehical Group</td>
 									  	<td >{{data1.group}}</td>
 									  	<td colspan="2">Total Vehicle</td>
@@ -246,13 +246,13 @@ background-color: #ffffff;
 								      	<td>{{data1.online}}</td>
 								      	<td colspan="3">Report Date</td>
 								      	<td></td>
-								    </tr>
+								    </tr> -->
 									<tr style="text-align:center">
 										<th width="10%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">Vehicle Name</th>
-										<th ng-hide="true" style="text-align:center;">Vehicle Name</th>
+										<!-- <th ng-hide="true" style="text-align:center;">Vehicle Name</th> -->
 										<th width="5%" style="text-align:center;">Regn No</th>
 										<th width="5%" style="text-align:center;">Driver Name</th>
-										<th ng-hide="true">Mobile Number</th>
+										<!-- <th ng-hide="true">Mobile Number</th> -->
 										<th width="10%" style="text-align:center;">Last Seen</th>
 										<th width="5%" style="text-align:center;">KM today</th>
 										<th width="5%" style="text-align:center;">Speed</th>
@@ -265,10 +265,10 @@ background-color: #ffffff;
 									</tr>
 									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
 										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.shortName}}</a></td>
-										<td ng-hide="true"></td>
+										<!-- <td ng-hide="true"></td> -->
 										<td>{{user.regNo}}</td>
 										<td>{{user.driverName}}</td>
-										<td ng-hide="true">{{user.mobileNo}}</td>
+										<!-- <td ng-hide="true">{{user.mobileNo}}</td> -->
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.distanceCovered}}</td>
 										<td>{{user.speed}}</td>
@@ -299,7 +299,7 @@ background-color: #ffffff;
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>														
 									</tr>
 									<tr ng-if="data1.vehicleLocations==null">
-										<td colspan="13">No Records Found Choose some other date</td>
+										<td colspan="12">No Records Found Choose some other date</td>
 									</tr>
 								</table>		
 		        </div>

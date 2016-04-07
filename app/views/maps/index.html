@@ -211,15 +211,15 @@
                                <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>
                                <input type="text" id="distanceVal" value="0" disabled/> <span style="font-size:12px;">Kms</span>
                                <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Live Tracking <div id="google_translate_element"></div></div>
-                               <div>
+                            
+                            <div style="display: flex">
                                 
-                              
-                               
-                               <select ng-model="days1" style="width:100%; font-weight: bold; font-size: 12px; padding : 3px">
+                                <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px">
+                                <select ng-model="days1" style="width:40%; font-weight: bold; font-size: 12px; padding : 3px">
                                     <option value = "0">Vehicle Id</option>
                                     <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
                                 </select>
-                                <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px">
+
                                 <select id="Days" ng-model="days" style="height: 18px;">
                                     <option value = "0">Days</option>
                                     <option value = "1">1</option>
@@ -234,10 +234,6 @@
                                     <option value = "10">10</option>
                                 </select>
                                 <input type="button" id="traffic" data-toggle="modal" data-target="#myModal" value="Get Url" />
-                                <!-- <button type="button" data-toggle="modal" data-target="#myModal" style="height: 19px; background: #3398ff; color: #ffffff; border-radius: 5px">Get Url</button> -->
-                                <!-- <a href="../public/liveTrack" id="fullscreen" target="_blank">Full Screen</a> -->
-                               <!--  <a ng-href= "#"  target="myModal">Get Url</a> -->
-                                <!-- ng-click="clicked(days1, days)" -->
                                 </div>
 
                                 <div class="modal fade" id="myModal" role="dialog">
@@ -306,16 +302,29 @@
                                                     <td id="driverName"><span id="val"></span></td>
                                                     
                                                 </tr>
-                                                <tr>
+                                                <!-- <tr>
                                                     <td>Today Distance</td>
                                                     <td id="toddist"><span id="val"></span> kms</td>
                                                     
-                                                </tr>
+                                                </tr> -->
                                                 <tr>
                                                     <td id="positiontime"><span></span> Time</td>
                                                     <td id="regno"><span id="val"></span></td>
                                                     
                                                 </tr>
+                                                <tr>
+                                                    <td>Vehicle Type</td>
+                                                    <td id="vehitype"><span></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mobile No</td>
+                                                    <td id="mobNo"><span></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Reg No</td>
+                                                    <td id="regNo"><span></span></td>
+                                                </tr>
+                                                
                                         </table>
                                     </div>
                                 </div>
@@ -341,14 +350,33 @@
                                                     <td id="driverName"><input id="val" type="input" ng-model="driName"/></td>
                                                     
                                                 </tr>
-                                                <tr>
+                                                <!-- <tr>
                                                     <td>Today Distance</td>
                                                     <td id="toddist"><span id="val"> kms</span></td>
                                                     
-                                                </tr>
+                                                </tr> -->
                                                 <tr>
                                                     <td id="positiontime"><span></span> Time</td>
                                                     <td id="regno"><span id="val"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Vehicle Type</td>
+                                                    <td>
+                                                        <select style="height: 18px; width: 70px">
+                                                            <option value = "0">Car</option>
+                                                            <option value = "1">Bike</option>
+                                                            <option value = "2">Bus</option>
+                                                            <option value = "3">heavy Vehicles</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mobile No</td>
+                                                    <td><input id="val" type="input"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Reg No</td>
+                                                    <td><input id="val" type="input" ng-model="refname"/></td>
                                                 </tr>
                                         </table>
                                     </div>

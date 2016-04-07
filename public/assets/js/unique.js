@@ -34,11 +34,6 @@ function googleTranslateElementInit()
        new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
   }   
 
- // $(document).ready(function(){
- //        $('#minmax').click(function(){
- //            $('#contentmin').animate({
- //                height: 'toggle'
- //            },500);
- //        });
- //    });   
+ //menu 
 
+ 

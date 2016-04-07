@@ -33,7 +33,18 @@ app.controller('mainCtrl',function($scope, $http){
     serviceCall()
   });
   
-  //create button click
+
+  var input_value   =  document.getElementById('pac-input');
+  var sbox     =  new google.maps.places.SearchBox(input_value);
+  
+  // search box function
+  sbox.addListener('places_changed', function() {
+    var places = sbox.getPlaces();
+    $scope.map.setCenter(new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()));
+    $scope.map.setZoom(13);
+  });
+
+   //create button click
   $scope.drawline   =   function()
   {
     var URL_ROOT    = "AddSiteController/";    /* Your website root URL */

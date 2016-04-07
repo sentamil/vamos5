@@ -230,10 +230,20 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
 	};
+
+	function sessionValue(vid, gname){
+		sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
+		$("#testLoad").load("../public/menu");
+	}
+
 	$scope.loading	=	true;
 	
 	$http.get($scope.url).success(function(data){
+		
 		$scope.locations = data;
+		$scope.groupname = data[0].group;
+		$scope.vehicleId = data[0].vehicleLocations[0].vehicleId;
+		sessionValue($scope.vehicleId, $scope.groupname)
 		if(location.href.split("=")[1]==undefined || location.href.split("=")[1].trim().length==0){
 			$scope.trackVehID =$scope.locations[0].vehicleLocations[0].vehicleId;
 			$scope.shortVehiId =$scope.locations[0].vehicleLocations[0].shortName;
@@ -255,7 +265,7 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		return textVal.split(":")[0].trim();
 	}
 	$scope.createGeofence=function(url){
-		console.log('--->'+url)
+		//console.log('--->'+url)
 		if($scope.cityCirclecheck==false){
 			$scope.cityCirclecheck=true;
 		}
@@ -418,7 +428,7 @@ function animateMapZoomTo(map, targetZoom) {
 		$scope.shortVehiId = shortName;
 		$scope.selected = b;
 		$scope.plotting();
-		
+		sessionValue($scope.trackVehID, $scope.groupname);
 	}
 	
 	$scope.groupSelection = function(groupname, groupid){
@@ -459,7 +469,9 @@ if($scope.markerstart){
 			$scope.locations = data;
 			if(data.length)
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
-			$scope.trackVehID =$scope.locations[$scope.gIndex].vehicleLocations[$scope.selected].vehicleId;
+			$scope.groupname 	= data[$scope.gIndex].group;
+			$scope.trackVehID 	= $scope.locations[$scope.gIndex].vehicleLocations[$scope.selected].vehicleId;
+			sessionValue($scope.trackVehID, $scope.groupname);
 			$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
 			$('.nav-second-level li').eq(0).children('a').addClass('active');
 			$scope.loading	=	false;

@@ -68,10 +68,7 @@
     max-height: calc(100vh - 210px);
     overflow-y: auto;
 }
-/*.box > .loading-img {
-z-index: 1020;
-background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
-}*/
+
 </style>
 
 </head>
@@ -93,81 +90,108 @@ background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
                 <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
 				<li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
-			
-			
-			
-            <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
-               <!--  <li style="margin-bottom: 15px;"><div class="right-inner-addon" align="center"><i class="fa fa-search"></i><input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" /></div>
-                <select ng-model="vehicleStatus" style="width:127px; margin-top: 5px; font-size: 12px;" ng-cloak>
-                	<option value="ALL">All ({{totalVehicles}})</option>
-                	<option value="ON">ON ({{vehicleOnline}})</option>
-                	<option value="OFF">OFF ({{attention}})</option>
-                	<option value="P">Parked ({{parkedCount}})</option>
-                	<option value="M">Moving ({{movingCount}})</option>
-                	<option value="S">Idle ({{idleCount}})</option>
-                	<option value="O">Overspeed ({{overspeedCount}})</option>
-                </select>
-                </li> -->
+			<ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
+             
                  <li style="padding-left:25px;">
                 	<div class="right-inner-addon" align="center"> 
                     <i class="fa fa-search"></i>
                     <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
                     </div>
                 </li>
-                <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection1(location.group, location.rowId, $index)" ng-cloak >{{trimColon(location.group)}}</a>
+                
+                 <li ng-repeat="location in vehicleDetails"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId, $index)" ng-cloak >{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    	<li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction1(loc.vehicleId,location.group, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}} </a></li>
+                    	<li ng-repeat="loc in location.vehicleLocations | filter:searchbox " ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId,location.group, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}} </a></li>
                     </ul>
                 </li>
             </ul>
         </div>
-		
-		
-		<div id="page-content-wrapper">
+
+        <div id="page-content-wrapper">
             <div class="container-fluid">
             	<div class="panel panel-default">
             	</div>   		
         	</div>
-        <!-- /#page-content-wrapper -->
-    	</div>
- 
+       	</div>
+		
+		<!-- loading menu -->
 		<div style="position: absolute;top: 0px;left: 40%; z-index:999999;" id="testLoad"></div>
+
 		<div class="col-md-12">
-	       	<div class="box box-primary">
+	       	<div class="box box-primary" ng-show="monthly">
 				<div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
-		            <h3 class="box-title">Performance Report</h3>
-		           
+		            <h3 class="box-title">Monthly Performance Report</h3>
 		        </div>
-							<div class="row">
-		        				<div class="col-md-1" align="center"></div>
-                    			<div class="col-md-2" align="center">
-                                	<div class="form-group">
-										<div class="input-group datecomp">
-												<input type="text" ng-model="fromdate" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
-												<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-										</div>
-                                  	</div>
-                                </div>
-                                <div class="col-md-1" align="center"></div>
-                                 <div class="col-md-2" align="center">
-                                    <button ng-click = "sumbitAction(fromdate)" style="margin-left: -100%; padding : 5px">Submit</button>
-                                </div>
-                            </div>
-                               
+
+			    <div class="row">
+					<div class="col-md-1" align="center"></div>
+	    			<div class="col-md-2" align="center">
+	                	<div class="form-group">
+							<div class="input-group datecomp">
+								<input type="text" ng-model="fromdate" class="form-control placholdercolor" id="dateFrom" placeholder="From date">
+								<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
 							</div>
-							<hr>
-        <!--Group chart-->
-			<div ng-hide="single">
-				<div id="container1"></div>
+	                  	</div>
+	                </div>
+	                <div class="col-md-1" align="center"></div>
+	                 <div class="col-md-2" align="center">
+	                    <button ng-click = "submitButton()" style="margin-left: -100%; padding : 5px">Submit</button>
+	                </div>
+	            </div>
+	        </div>
+
+	        <div class="box box-primary" ng-show="daily">
+				<div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
+		            <h3 class="box-title">Daily Performance Report</h3>
+		    	</div>
+				<div class="row">
+    				<div class="col-md-1" align="center"></div>
+        			<div class="col-md-2" align="center">
+                    	<div class="form-group">
+							<div class="input-group datecomp">
+								<input type="text" class="form-control placholdercolor" id="datef" ng-model="fromdateDaily" placeholder="From date">
+								<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+							</div>
+                      	</div>
+                    </div>
+                    <div class="col-md-2" align="center">
+                    	<div class="input-group datecomp">
+                            <input type="text" class="form-control placholdercolor" id="timeFrom" ng-model="fromTime"  placeholder="From time">
+                            <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                    	</div>
+                    </div>
+                    <div class="col-md-2" align="center">
+                    	<div class="form-group">
+							<div class="input-group datecomp">
+								<input type="text" class="form-control placholdercolor" id="datet" ng-model="todateDaily" placeholder="From date">
+								<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+							</div>
+                      	</div>
+                    </div>
+                    <div class="col-md-2" align="center">
+                    	<div class="input-group datecomp">
+                            <input type="text" class="form-control placholdercolor" id="timeTo" ng-model="totime" placeholder="From time">
+                            <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                    	</div>
+                    </div>
+                    <div class="col-md-1" align="center"></div>
+                     <div class="col-md-2" align="center">
+                        <button style="margin-left: -100%; padding : 5px" ng-click="submitButton()">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+             <!--Group chart-->
+			<div>
+				<!-- <div id="container1"></div>
 			</div>
 		
-			<div ng-hide="group">
+			<div ng-hide="group"> -->
 				<div id="container"></div>
 			</div>
-		
-		
-		<!--Vehicle chart-->
-		<hr>
+
+
+			<hr>
 		<div class="box-body" ng-class="overallEnable?'col-md-9':'col-md-12'" id="statusreport">
 		
 			<h4 style="margin:0" class="page-header">Performance</h4>
@@ -186,26 +210,180 @@ background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
 					<tbody>
 					<tr ng-repeat="user in tableValue" class="active" style="text-align:center">
 						<td>{{user.month}}</td>
-						<td><a ng-if="user.data.weightedBreakAnalysis != 0" ng-click="toggleModal(user)">{{user.data.weightedBreakAnalysis}}</a>
+						<td><a ng-if="user.data.weightedBreakAnalysis != 0" data-target="#myModal1" data-toggle="modal" ng-click="breakWeight(user, 'break')">{{user.data.weightedBreakAnalysis}}</a>
 							 <span ng-if="!user.data.weightedBreakAnalysis">0</span>
 						</td>
-						<td><a ng-if="user.data.weightedSpeedAnalysis != 0" ng-click="toggleModal1(user)">{{user.data.weightedSpeedAnalysis}}</a>
+						<td><a ng-if="user.data.weightedSpeedAnalysis != 0" data-target="#myModal" data-toggle="modal" ng-click="toggleSpeed(user, 'speed')">{{user.data.weightedSpeedAnalysis}}</a>
 							<span ng-if="!user.data.weightedSpeedAnalysis">0</span>
 						</td>
-						<td><a ng-if="user.data.weightedShockAlarmAnalysis != 0" ng-click="toggleModal2(user)">{{user.data.weightedShockAlarmAnalysis}}</a>
+						<td><a ng-if="user.data.weightedShockAlarmAnalysis != 0" data-target="#myModal" data-toggle="modal" ng-click="toggleSpeed(user, 'shock')">{{user.data.weightedShockAlarmAnalysis}}</a>
 							 <span ng-if="!user.data.weightedShockAlarmAnalysis">0</span>
 						</td>
-						<td><a ng-if="user.data.weightedAccelAnalysis != 0" ng-click="toggleModal3(user)">{{user.data.weightedAccelAnalysis}}</a>
+						<td><a ng-if="user.data.weightedAccelAnalysis != 0" data-target="#myModal1" data-toggle="modal" ng-click="breakWeight(user, 'accleration')">{{user.data.weightedAccelAnalysis}}</a>
 							<span ng-if="!user.data.weightedAccelAnalysis">0</span>
 						</td>
 					</tr>
 					</tbody>
-					<tr ng-if="value==null">
-						<td colspan="13">No Records Found Choose some other date</td>
+					<tr ng-if="tableValue==null">
+						<td colspan="5">No Records Found Choose some other date</td>
 					</tr>
 				</table>
+				<!-- <button type="button" class="btn btn-info btn-lg" data-target="#myModal" data-toggle="modal">Open Modal</button> -->
+				<div class="modal fade" id="myModal" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				          <h4 class="modal-title">{{titleName}} :{{id}}</h4>
+				        </div>
+				        <div class="modal-body">
+				          <table class="table table-striped table-bordered table-condensed table-hover">
+						<tr style="text-align:center">
+							<th style="text-align:center;" colspan="4">Speed Analysis</th>
+						</tr>
+						<tr style="text-align:center">
+							<th width="10%" style="text-align:center;">Status</th>
+							<th width="10%" style="text-align:center;">Count</th>
+							<th width="10%" style="text-align:center;">Speed</th>
+						</tr>
+						<tr style="text-align:center" class="active">
+							<td>Excellent</td>
+							<td>{{excellentCount}}</td>
+							<td>{{excellentSpeed}}</td>
+						</tr>
+						<tr style="text-align:center" class="active">
+							<td>Best</td>
+							<td>{{bestCount}}</td>
+							<td>{{bestSpeed}}</td>
+						</tr>
+						<tr style="text-align:center" class="active">
+							<td>Average</td>
+							<td>{{averageCount}}</td>
+							<td>{{averageSpeed}}</td>
+						</tr>
+						<tr style="text-align:center" class="active">
+							<td>Aggressive</td>
+							<td>{{worstCount}}</td>
+							<td>{{worstSpeed}}</td>
+						</tr>
+						<tr style="text-align:center" class="active">
+							<td>RedLiner</td>
+							<td>{{redlinerCount}}</td>
+							<td>{{redlinerSpeed}}</td>
+						</tr>
+					</table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        </div>
+				      </div>
+				      
+				    </div>
+				</div>
+
+
+				<div class="modal fade" id="myModal1" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				          <h4 class="modal-title">{{titleName}} :{{id}}</h4>
+				        </div>
+				        <div class="modal-body">
+				          <table class="table table-striped table-bordered table-condensed table-hover">
+						<tr style="text-align:center">
+							<th style="text-align:center;" colspan="4">Normal : {{normal}}</th>
+						</tr>
+						<tr style="text-align:center">
+							<th width="10%" style="text-align:center;">Place</th>
+							<th width="10%" style="text-align:center;">{{high}}</th>
+							<th width="10%" style="text-align:center;">{{low}}</th>
+							<th width="10%" style="text-align:center;">Time & Date</th>
+						</tr>
+						<tr ng-repeat="info in Values" style="text-align:center" class="active">
+							<td><a href="https://www.google.com/maps?q=loc:{{info.latitude}},{{info.longutide}}" target="_blank">Link</a></td>
+							<td>{{info.speed1}}</td>
+							<td>{{info.slow}}</td>
+							<td>{{info.time | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+						</tr>
+						<tr style="text-align:center">
+							<th style="text-align:center;" colspan="4">Aggressive : {{aggressiveCount}}</th>
+						</tr>
+						<tr style="text-align:center">
+							<th width="10%" style="text-align:center;">Place</th>
+							<th width="10%" style="text-align:center;">{{high}}</th>
+							<th width="10%" style="text-align:center;">{{low}}</th>
+							<th width="10%" style="text-align:center;">Time & Date</th>
+						</tr>
+						<tr ng-repeat="info in aggressive" style="text-align:center" class="active">
+							<td><a href="https://www.google.com/maps?q=loc:{{info.latitude}},{{info.longutide}}" target="_blank">Link</a></td>
+							<td>{{info.speed1}}</td>
+							<td>{{info.slow}}</td>
+							<td>{{info.time | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+						</tr>
+						<tr style="text-align:center">
+							<th style="text-align:center;" colspan="4">Harsh : {{harshCount}}</th>
+						</tr>
+						<tr style="text-align:center">
+							<th width="10%" style="text-align:center;">Place</th>
+							<th width="10%" style="text-align:center;">{{high}}</th>
+							<th width="10%" style="text-align:center;">{{low}}</th>
+							<th width="10%" style="text-align:center;">Time & Date</th>
+						</tr>
+						<tr ng-repeat="info in harsh" style="text-align:center" class="active">
+							<td><a href="https://www.google.com/maps?q=loc:{{info.latitude}},{{info.longutide}}" target="_blank">Link</a></td>
+							<td>{{info.speed1}}</td>
+							<td>{{info.slow}}</td>
+							<td>{{info.time | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+						</tr>
+						<tr style="text-align:center">
+							<th style="text-align:center;" colspan="4">Very Harsh : {{veryHarshCount}}</th>
+						</tr>
+						<tr style="text-align:center">
+							<th width="10%" style="text-align:center;">Place</th>
+							<th width="10%" style="text-align:center;">{{high}}</th>
+							<th width="10%" style="text-align:center;">{{low}}</th>
+							<th width="10%" style="text-align:center;">Time & Date</th>
+						</tr>
+						<tr ng-repeat="info in veryharsh" style="text-align:center" class="active">
+							<td><a href="https://www.google.com/maps?q=loc:{{info.latitude}},{{info.longutide}}" target="_blank">Link</a></td>
+							<td>{{info.speed1}}</td>
+							<td>{{info.slow}}</td>
+							<td>{{info.time | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+						</tr>
+						<tr style="text-align:center">
+							<th style="text-align:center;" colspan="4">Worst : {{worstCount}}</th>
+						</tr>
+						<tr style="text-align:center">
+							<th width="10%" style="text-align:center;">Place</th>
+							<th width="10%" style="text-align:center;">{{high}}</th>
+							<th width="10%" style="text-align:center;">{{low}}</th>
+							<th width="10%" style="text-align:center;">Time & Date</th>
+						</tr>
+						<tr ng-repeat="info in worst" style="text-align:center" class="active">
+							<td><a href="https://www.google.com/maps?q=loc:{{info.latitude}},{{info.longutide}}" target="_blank">Link</a></td>
+							<td>{{info.speed1}}</td>
+							<td>{{info.slow}}</td>
+							<td>{{info.time | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+						</tr>
+					</table>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        </div>
+				      </div>
+				      
+				    </div>
+				</div>
+
+
+
 				<!-- breaks -->
-				<modal-dialog show='modalShown' width='700px'>
+				<!-- <modal-dialog show='modalShown' width='700px'>
 				<h4 style="margin:0" class="page-header">Sudden Breaks :{{id}}</h4>
 				 <div class="modal-body">
 					<table class="table table-striped table-bordered table-condensed table-hover">
@@ -286,51 +464,11 @@ background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
 						</tr>
 					</table>
 					</div>
-				</modal-dialog>
-				<!-- Overspeed -->
-				<modal-dialog show='modalShown1' width='700px'>
-				<h4 style="margin:0" class="page-header">Vehicle Id :{{id}}</h4>
-				 <div class="modal-body">
-					<table class="table table-striped table-bordered table-condensed table-hover">
-						<tr style="text-align:center">
-							<th style="text-align:center;" colspan="4">Speed Analysis</th>
-						</tr>
-						<tr style="text-align:center">
-							<th width="10%" style="text-align:center;">Status</th>
-							<th width="10%" style="text-align:center;">Count</th>
-							<th width="10%" style="text-align:center;">Speed</th>
-						</tr>
-						<tr style="text-align:center" class="active">
-							<td>Excellent</td>
-							<td>{{excellentCount}}</td>
-							<td>{{excellentSpeed}}</td>
-						</tr>
-						<tr style="text-align:center" class="active">
-							<td>Best</td>
-							<td>{{bestCount}}</td>
-							<td>{{bestSpeed}}</td>
-						</tr>
-						<tr style="text-align:center" class="active">
-							<td>Average</td>
-							<td>{{averageCount}}</td>
-							<td>{{averageSpeed}}</td>
-						</tr>
-						<tr style="text-align:center" class="active">
-							<td>Aggressive</td>
-							<td>{{worstCount}}</td>
-							<td>{{worstSpeed}}</td>
-						</tr>
-						<tr style="text-align:center" class="active">
-							<td>RedLiner</td>
-							<td>{{redlinerCount}}</td>
-							<td>{{redlinerSpeed}}</td>
-						</tr>
-					</table>
-					</div>
-				</modal-dialog>
+				</modal-dialog> -->
+				
 				
 				<!-- Shock Alarm -->
-				<modal-dialog show='modalShown2' width='700px'>
+				<!-- <modal-dialog show='modalShown2' width='700px'>
 				<h4 style="margin:0" class="page-header">Shock Alarm :{{id}}</h4>
 				 <div class="modal-body">
 					<table class="table table-striped table-bordered table-condensed table-hover">
@@ -366,10 +504,10 @@ background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
 						</tr>
 					</table>
 					</div>
-				</modal-dialog>
+				</modal-dialog> -->
 				
 				<!-- Shock alarm -->
-				<modal-dialog show='modalShown3' width='700px'>
+				<!-- <modal-dialog show='modalShown3' width='700px'>
 				<h4 style="margin:0" class="page-header">Sudden Acceleration :{{id}}</h4>
 				 <div class="modal-body">
 					<table class="table table-striped table-bordered table-condensed table-hover">
@@ -450,17 +588,12 @@ background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
 						</tr>
 					</table>
 					</div>
-				</modal-dialog>
-				
-				
+				</modal-dialog> -->
 			</div>
-			
-			<!-- <div ng-show="loading" class="overlay"></div>
-	   		<div ng-show="loading" class="loading-img"></div> -->
 		</div>
-				
+
 		</div>
-		</div>
+	</div>
 		
 		
 		
@@ -484,33 +617,35 @@ background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
 	$('#example')
 		.removeClass( 'display' )
 		.addClass('table table-striped table-bordered');
-</script>
+	</script>
 	<script>
-	// $("#testLoad").load("../public/menu");
- //    var logo =document.location.host;
- //    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
- //    $('#imagesrc').attr('src', imgName);
-    
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    
-    $(function () {
-                $('#dateFrom').datetimepicker({
-					// format:'MMM,YYYY',
-					// useCurrent:true,
-					pickTime: false,
-					format: "MMM,YYYY",
-					viewMode: "months", 
-					minViewMode: "months"
-				});
-				
-        });      
- 	
- 	
- 	
-    </script>
+		$("#menu-toggle").click(function(e) {
+	        e.preventDefault();
+	        $("#wrapper").toggleClass("toggled");
+	    });
+	    
+	    $(function () {
+	        $('#dateFrom').datetimepicker({
+				pickTime: false,
+				format: "MMM,YYYY",
+				viewMode: "months", 
+				minViewMode: "months"
+			});
+
+	        $('#datef, #datet').datetimepicker({
+				format:'YYYY-MM-DD',
+				useCurrent:true,
+				pickTime: false
+			});
+			$('#timeFrom').datetimepicker({
+				pickDate: false
+			});
+			$('#timeTo').datetimepicker({
+				useCurrent:true,
+				pickDate: false
+			});
+	    });      
+ 	</script>
 	
 </body>
 </html>

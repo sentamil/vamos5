@@ -316,7 +316,8 @@ li a label{ width:100%; display:block;}
 /*.labels{ color:#fff;}*/
 .container01{min-width: 200px; max-width: 220px; width: 220px; height: 125px; bottom:-33px; margin: 0 auto; position:absolute;}
 .labels { color: #0d0d0d; font-size: 11px; font-weight:bold; text-align: center; white-space: nowrap;background: #f4f4f4; border: 1px solid #0d0d0d; padding: 4px; border-radius: 25px}
-./*labels1 { color: #fff; font-size: 9px; font-weight:normal; text-align: center; white-space: nowrap;  width: 24px;}*/
+.maps {font-size: 14px; font-weight:bold;}
+/*labels1 { color: #fff; font-size: 9px; font-weight:normal; text-align: center; white-space: nowrap;  width: 24px;}*/
 /*.labels:before {
 	content: '';
 display: block;
@@ -413,8 +414,8 @@ border-width: 10px;
   height: 100%;
 }
 .radioButt{margin-right:5px; vertical-align:baseline;}
-#container{width:80%; height:500px}
-#container1{width:80%; height:1000px}
+#container{width:80%; height:700px; max-width: 80%; max-height: 700px;}
+/*#container1{width:80%; height:1000px}*/
 .legendlist, .dynamicvehicledetails{ border:1px solid #eee ; padding-top: 0; margin-top: 5px;}
 .legendlist h3{ font-size: 12px; text-align: center; margin: 0; background:#eee; padding:7px 10px;}
 .legendlist td{ font-size: 11px; width:25%;}

@@ -4,7 +4,7 @@ var fuelLtr=0;
 var chart = null;
 
 //menu loading
-$("#testLoad").load("../public/menu");
+// $("#testLoad").load("../public/menu");
 
 //logo loading
 

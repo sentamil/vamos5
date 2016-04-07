@@ -19,7 +19,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.location	    	=	[];
 	$scope.ltrs 			= 	[];
 	$scope.fuelDate 		= 	[];
-	
+	$scope.tabactive 		=	true;
 	$scope.interval	    	=	getParameterByName('interval')?getParameterByName('interval'):10;
 	$scope.sort = {       
                 sortingOrder : 'id',
@@ -42,7 +42,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 
     $scope.downloadid	=	'movementreport';
     var prodId 			= 	getParameterByName('vid');
-   	$scope.vgroup 		= 	getParameterByName('vg');
+    var tabId 			= 	getParameterByName('tn');
+    $scope.vgroup 		= 	getParameterByName('vg');
    	$scope.dvgroup 		= 	getParameterByName('dvg');
    	$scope.vvid			=	getParameterByName('vvid');
     $scope.repId 		= 	getParameterByName('rid');
@@ -50,7 +51,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     $scope.ft 			= 	getParameterByName('ft');
     $scope.td			=	getParameterByName('td');
     $scope.tt	 		= 	getParameterByName('tt');
-  	
+  	var ignitionValue 	= 	[];
     $scope.todayhistory	=	[];
     
     $scope.getTodayDate  =	function(date) {
@@ -139,64 +140,114 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			$('#preloader').delay(350).fadeOut('slow');
     	});
     }
-    $scope.$watch($scope.repId, function() {
-    		$scope.id							=	$scope.vvid
-		   switch($scope.repId) {
-		   		case 'overspeedreport':
-		   			$scope.overspeedreport		=	true;
-		   			$scope.tableTitle			=	'Overspeed Report';
-		   			$scope.downloadid	 		=	'overspeedreport';
-		   			break;
-		   		case 'movementreport':
-		   			$scope.movementreport		=	true;
-		   			$scope.tableTitle			=	'Movement Report';
-		   			$scope.downloadid	 		=	'movementreport';
-		   			break;
-		   		case 'stoppedparkingreport':
-		   			$scope.stoppedparkingreport	=	true;
-		   			$scope.tableTitle			=	'Stopped Parking Report';
-		   			$scope.downloadid	 		=	'stoppedparkingreport';
-		   			break;
-		   		case 'geofencereport':
-		   			$scope.geofencereport		=	true;
-		   			$scope.tableTitle			=	'Geo Fence Report';
-		   			break;
-		   		case 'idlereport':
-		   			$scope.idlereport			= 	true;
-		   			$scope.tableTitle			=	'Idle Report';
-		   			$scope.downloadid           =   'idlereport';
-		   			break;
-		   		case 'eventReport':
-		   			$scope.idlereport			= 	true;
-		   			$scope.tableTitle			=	'Event Report';
-		   			$scope.downloadid           =   'eventReport';
-		   			break;
-		   		case 'sitereport':
-		   			$scope.idlereport			= 	true;
-		   			$scope.tableTitle			=	'Site Report';
-		   			$scope.downloadid           =   'sitereport';
-		   			break;
-		   		case 'loadreport':
-		   			$scope.loadreport			= 	true;
-		   			$scope.tableTitle 			=	'Load Report';
-		   			$scope.downloadid 			= 	'loadreport';
-		   			break;
-		   		case 'fuelreport':
-		   			$scope.loadreport			= 	true;
-		   			$scope.tableTitle 			=	'Fuel Report';
-		   			$scope.downloadid 			= 	'fuelreport';
-		   			break;
-		   		default:
-		   			break;		
-		   }
-		   $scope.pdfHist();
-   });
+
+    $scope.$watch(tabId, function(){
+			$scope.tabmovement 			=	false;
+			$scope.taboverspeed			=	false;
+			$scope.tabparked			=	false;
+			$scope.tabidle  			=	false;
+			$scope.tabevent 			=	false;
+			$scope.tabsite  			=	false;
+			$scope.tabload  			=	false;
+			$scope.tabfuel  			=	false;
+			$scope.tabignition 			=	false;
+    	switch(tabId){
+    		case 'movement':
+    			$scope.tabmovement 			=	true;
+    			break;
+    		case 'overspeed':
+    			$scope.taboverspeed			=	true;
+    			break;
+    		case 'parked':
+    			$scope.tabparked			=	true;
+    			break;
+    		case 'idle':
+    			$scope.tabidle  			=	true;
+    			break;
+    		case 'event':
+    			$scope.tabevent 			=	true;
+    			break;
+    		case 'site':
+    			$scope.tabsite  			=	true;
+    			break;
+    		case 'load':
+    			$scope.tabload  			=	true;
+    			break;
+    		case 'fuel':
+    			$scope.tabfuel  			=	true;
+    			break;
+    		case 'ignition':
+    			$scope.tabignition 			=	true;
+    			break;
+    		default:
+    			$scope.tabmovement 			=	true; 
+    			break;
+    	}
+    })
+
+   //  $scope.$watch($scope.repId, function() {
+   //  		$scope.id							=	$scope.vvid
+		 //   switch($scope.repId) {
+		 //   		case 'overspeedreport':
+		 //   			$scope.overspeedreport		=	true;
+		 //   			$scope.tableTitle			=	'Overspeed Report';
+		 //   			$scope.downloadid	 		=	'overspeedreport';
+		 //   			break;
+		 //   		case 'movementreport':
+		 //   			$scope.movementreport		=	true;
+		 //   			$scope.tableTitle			=	'Movement Report';
+		 //   			$scope.downloadid	 		=	'movementreport';
+		 //   			break;
+		 //   		case 'stoppedparkingreport':
+		 //   			$scope.stoppedparkingreport	=	true;
+		 //   			$scope.tableTitle			=	'Stopped Parking Report';
+		 //   			$scope.downloadid	 		=	'stoppedparkingreport';
+		 //   			break;
+		 //   		case 'geofencereport':
+		 //   			$scope.geofencereport		=	true;
+		 //   			$scope.tableTitle			=	'Geo Fence Report';
+		 //   			break;
+		 //   		case 'idlereport':
+		 //   			$scope.idlereport			= 	true;
+		 //   			$scope.tableTitle			=	'Idle Report';
+		 //   			$scope.downloadid           =   'idlereport';
+		 //   			break;
+		 //   		case 'eventReport':
+		 //   			$scope.idlereport			= 	true;
+		 //   			$scope.tableTitle			=	'Event Report';
+		 //   			$scope.downloadid           =   'eventReport';
+		 //   			break;
+		 //   		case 'sitereport':
+		 //   			$scope.idlereport			= 	true;
+		 //   			$scope.tableTitle			=	'Site Report';
+		 //   			$scope.downloadid           =   'sitereport';
+		 //   			break;
+		 //   		case 'loadreport':
+		 //   			$scope.loadreport			= 	true;
+		 //   			$scope.tableTitle 			=	'Load Report';
+		 //   			$scope.downloadid 			= 	'loadreport';
+		 //   			break;
+		 //   		case 'fuelreport':
+		 //   			$scope.loadreport			= 	true;
+		 //   			$scope.tableTitle 			=	'Fuel Report';
+		 //   			$scope.downloadid 			= 	'fuelreport';
+		 //   			break;
+		 //   		// case 'ignitionreport':
+		 //   		// 	$scope.loadreport			= 	true;
+		 //   		// 	$scope.tableTitle 			=	'Ignition report';
+		 //   		// 	$scope.downloadid 			= 	'ignitionreport';
+		 //   		// 	break;
+		 //   		default:
+		 //   			break;		
+		 //   }
+		 //   $scope.pdfHist();
+   // });
   
    	$scope.$watch(prodId, function() {
    		$scope.id	=	prodId;
    		var histurl	=	"http://"+getIP+context+"/public/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval;
    		$scope.loading	=	true;
-		$http.get(histurl).success(function(data){
+   		$http.get(histurl).success(function(data){
 			$scope.loading			=	false;
 			$scope.hist				=	data;			
 			$scope.topspeedtime		=	data.topSpeedTime;
@@ -211,8 +262,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    			$scope.totime			=	formatAMPM($scope.toNowTS);
 			$scope.fromdate			=	$scope.getTodayDate($scope.fromNowTS);
 			$scope.todate			=	$scope.getTodayDate($scope.toNowTS);
-			$scope.eventCall();
-			$scope.siteCall();
+			// $scope.eventCall();
+			// $scope.siteCall();
 		});   
    	});
    	
@@ -245,14 +296,35 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    		}
    	}
 
+
+   	function ignitionFilter(ignitionValue)
+   	{
+   		var ignitionStatus;
+   		var ignitionlist 	=	[];
+   		angular.forEach(ignitionValue, function(value, key){
+   			if(key == 0){
+   				ignitionlist.push(value);
+   				ignitionStatus = value.ignitionStatus;
+   			}
+	   		else if(ignitionStatus != value.ignitionStatus){
+	   			ignitionlist.push(value);
+   				ignitionStatus = value.ignitionStatus;
+	   		}
+	   	});
+	   	$scope.ignitionData    =	ignitionlist;
+   	}
+
+
    	//for initial loading
    	$scope.dataArray			=	function(data) {
    		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
-		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}));
+		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!nill"}));
 		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!0"}));
+		ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
+		ignitionFilter(ignitionValue);
 		$scope.recursive1($scope.movementdata,0);
 		//console.log(' data----> '+$scope.downloadid)
    	};
@@ -263,10 +335,12 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
-		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!undefined"}))
+		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!nill"}))
 		$scope.fuelValue=[];
 		if(data)
 		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!0"}));
+		ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
+		ignitionFilter(ignitionValue);
 		$scope.alertMe_click($scope.downloadid);
    	};
 
@@ -299,7 +373,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	function google_api_call_Over(tempurlOv, indexs, latOv, lonOv){
 		$http.get(tempurlOv).success(function(data){
 			$scope.oaddress[indexs] = data.results[0].formatted_address;
-			var t = vamo_sysservice.geocodeToserver(latOv,lonOv,data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(latOv,lonOv,data.results[0].formatted_address);
 		})
 	}
 
@@ -307,7 +381,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	function google_api_call(tempurlMo, index1, latMo, lonMo) {
 		$http.get(tempurlMo).success(function(data){
 			$scope.maddress1[index1] = data.results[0].formatted_address;
-			var t = vamo_sysservice.geocodeToserver(latMo,lonMo,data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(latMo,lonMo,data.results[0].formatted_address);
 		})
 	};
 	$scope.recursive1   =   function(locations, indes)
@@ -481,7 +555,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$http.get(urlAddress).success(function(response)
 		{
 			data.address 	=	response.results[0].formatted_address;
-			var t 			= 	vamo_sysservice.geocodeToserver(data.latitude,data.longitude,response.results[0].formatted_address);
+			// var t 			= 	vamo_sysservice.geocodeToserver(data.latitude,data.longitude,response.results[0].formatted_address);
 		});
 	}
 
@@ -489,7 +563,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	function google_api_call_stop(tempurlStop, index2, latStop, lonStop) {
 		$http.get(tempurlStop).success(function(data){
 			$scope.saddressStop[index2] = data.results[0].formatted_address;
-			var t = vamo_sysservice.geocodeToserver(latStop,lonStop,data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(latStop,lonStop,data.results[0].formatted_address);
 		})
 	};
 
@@ -515,14 +589,14 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	function google_api_call_Idle(tempurlIdle, index3, latIdle, lonIdle) {
 		$http.get(tempurlIdle).success(function(data){
 			$scope.addressIdle[index3] = data.results[0].formatted_address;
-			var t = vamo_sysservice.geocodeToserver(latIdle,lonIdle,data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(latIdle,lonIdle,data.results[0].formatted_address);
 		})
 	};
 	function google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent) {
 		$http.get(tempurlEvent).success(function(data){
 			$scope.addressEvent[index4] = data.results[0].formatted_address;
 			console.log(' address '+$scope.addressEvent[index4])
-			var t = vamo_sysservice.geocodeToserver(latEvent,lonEvent,data.results[0].formatted_address);
+			// var t = vamo_sysservice.geocodeToserver(latEvent,lonEvent,data.results[0].formatted_address);
 		})
 	};
 	$scope.recursiveIdle   = function(locationIdle,indexIdle){
@@ -558,7 +632,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 				var tempurlEvent =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
 				delayed4(2000, function (index4) {
 				      return function () {
-				        google_api_call_Load(tempurlEvent, index4, latEvent, lonEvent);
+				        google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent);
 				      };
 				    }(index4));
 			}
@@ -651,22 +725,63 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	    return marktimestr;
     };
 	
-	$scope.url = 'http://'+getIP+context+'/public//getVehicleLocations';	
+
+    function sessionValue(vid, gname){
+		sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
+		$("#testLoad").load("../public/menu");
+	}
+
+	$("#testLoad").load("../public/menu");
+	// $scope.url = 'http://'+getIP+context+'/public//getVehicleLocations';
+	$scope.url = 'http://'+getIP+context+'/public/getVehicleLocations?group='+getParameterByName('vg');
+
 	$scope.$watch("url", function (val) {
 	 	$http.get($scope.url).success(function(data){
-			$scope.locations 	= 	data;
-			if(data.length)
-				$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
-				angular.forEach(data, function(value, key) {
-				  	if(value.totalVehicles) {
-				  		$scope.data1		=	data[key];
-				  	}
-				});				
-			}).error(function(){ /*alert('error'); */ });
-		});
+	 		$scope.locations 	= 	data;
+	 		$scope.vehiname	= getParameterByName('vid');
+				// $scope.uiGroup 	= $scope.trimColon(getParameterByName('vg'));
+				$scope.gName 	= getParameterByName('vg');
+				angular.forEach(data, function(val, key){
+					if($scope.gName == val.group){
+						$scope.gIndex = val.rowId;
+						angular.forEach(data[$scope.gIndex].vehicleLocations, function(value, keys){
+							if($scope.vehiname == value.vehicleId)
+							$scope.shortNam	= value.shortName;
+						})
+						
+					}
+						
+				})
+				
+				sessionValue($scope.vehiname, $scope.gName)
+
+
+			
+			// if(data.length){
+			// 	$scope.vehiname		=	data[0].vehicleLocations[0].vehicleId;
+			// 	$scope.gName 		= 	data[0].group; 
+			// 	// sessionValue($scope.vehiname, $scope.gName);
+			// 	angular.forEach(data, function(value, key) {
+			// 	  	if(value.totalVehicles) {
+			// 	  		$scope.data1		=	data[key];
+			// 	  	}
+			// 	});		
+			// }
+		}).error(function(){ /*alert('error'); */ });
+	});
 	
+	$scope.genericFunction = function(vehid, index){
+		sessionValue(vehid, $scope.gName);
+	}
+
 	$scope.groupSelection = function(groupname, groupid){
-		$scope.url = 'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
+		var urlGroup = 'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
+		$http.get(urlGroup).success(function(data){
+			$scope.vehiname		=	data[groupid].vehicleLocations[0].vehicleId;
+			$scope.gName 		= 	data[groupid].group; 
+			$scope.locations 	= 	data;
+			sessionValue($scope.vehiname, $scope.gName);
+		});
 		
 	};
 	
@@ -737,12 +852,15 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	   			$scope.fuelChart($scope.fuelValue);
 	   			$scope.recursiveFuel($scope.fuelValue, 0);
 	   			break;
+	   		case 'ignitionreport':
+	   			$scope.downloadid 	=	'ignitionreport'
+	   			break;
 			default:
 				break;
 		}
 	};
 	
-
+	
 	$scope.fuelChart 	= 	function(data){
 		var ltrs 		=	[];
 		var fuelDate 	=	[];
@@ -846,37 +964,37 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     //submit button click function
     $scope.buttonClick;
     $scope.plotHist			=	function() {
-    	$scope.siteCall();
-    	$scope.loading		=	true;
+    	//$scope.siteCall();
+    	//$scope.loading		=	true;
     	$('#status').show();
     	$('#preloader').show();
     	var valueas 		=   $('#txtv').val();
 		
-		// console.log(histurl)
-		if($scope.downloadid == 'eventReport')
-		{
+		// // console.log(histurl)
+		// if($scope.downloadid == 'eventReport')
+		// {
 
-			// var eventUrl 	= "http://"+getIP+"/vamo/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.stoppage+"&stopMints="+$scope.stopMints+"&idle="+$scope.idleEvent+"&idleMints="+$scope.idleMints+"&notReachable="+$scope.notReachable+"&notReachableMints="+$scope.notReachMints+"&overspeed="+$scope.overspeedEvent+"&speed="+$scope.speedEvent+"&location="+$scope.locationEvent+"&site="+$scope.siteEvent;
-			// console.log(' inside the if '+eventUrl)
-			$scope.buttonClick 	= true;
-			$scope.eventReportData=[];
-			$scope.loading	=	false;
-			eventButton($scope.buttonClick);
+		// 	// var eventUrl 	= "http://"+getIP+"/vamo/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.stoppage+"&stopMints="+$scope.stopMints+"&idle="+$scope.idleEvent+"&idleMints="+$scope.idleMints+"&notReachable="+$scope.notReachable+"&notReachableMints="+$scope.notReachMints+"&overspeed="+$scope.overspeedEvent+"&speed="+$scope.speedEvent+"&location="+$scope.locationEvent+"&site="+$scope.siteEvent;
+		// 	// console.log(' inside the if '+eventUrl)
+		// 	$scope.buttonClick 	= true;
+		// 	$scope.eventReportData=[];
+		// 	$scope.loading	=	false;
+		// 	//eventButton($scope.buttonClick);
 			
-			//console.log(' value '+$scope.eventReportData.length)
+		// 	//console.log(' value '+$scope.eventReportData.length)
 			
-		}
-		else if($scope.downloadid == 'sitereport')
-		{
-			 $scope.siteCall();
-			 $scope.loading	=	false;
-		} 
-		else
-		{
+		// }
+		// else if($scope.downloadid == 'sitereport')
+		// {
+		// 	 //$scope.siteCall();
+		// 	 $scope.loading	=	false;
+		// } 
+		// else
+		// {
 			var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
 			$http.get(histurl).success(function(data){
 				
-				$scope.loading			=	false;
+				//$scope.loading			=	false;
 				$scope.hist				=	data;
 				$scope.topspeedtime		=	data.topSpeedTime;
 				$scope.dataArray_click(data.vehicleLocations);
@@ -884,8 +1002,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 				$('#preloader').delay(350).fadeOut('slow');	
 			});
 			// $scope.loading	=	false;
-		}
-		console.log(' true or false  '+$scope.buttonClick)
+		// }
+		// console.log(' true or false  '+$scope.buttonClick)
      }
      
    

@@ -19,6 +19,25 @@ Route::get('/replay', function() {
     return View::make('maps.replay');
 });
  
+Route::get('/ElectionCommisionTrustedClient', function() {
+    Log::info( '-------login-----' );
+    $user=Input::get('userId');
+    Log::info(' users name ' . $user);
+    $redis = Redis::connection ();
+//ElectionCommisionUser
+    if($redis->sismember('ElectionCommisionUser', $user)=='1') {
+        $user1=User::where('username', '=', $user)->firstOrFail();
+        Log::info(' users name ' . $user1);
+        Auth::login($user1);
+        return View::make('maps.index');
+    }
+    else {
+        return Redirect::to('login');
+
+    }
+});
+
+
 Route::get('/history', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -31,6 +50,11 @@ Route::get('/track', function() {
     return View::make('maps.track');
 });
  
+Route::get('/allVehicles', function() {
+    $user = User::find(1);
+    Auth::login($user);
+    return View::make('maps.index');
+});
 // View::addExtension('html', 'php');
 // Route::get('/liveTrack', function() {
    
@@ -109,6 +133,15 @@ Route::get('/printStops', function() {
     }
     return View::make('reports.stops');
 });
+
+
+Route::get('/trip', function(){
+    if(!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('trip report');
+    return View::make('reports.tripReport');
+});
  
 View::addExtension('html', 'php');
 Route::get('/statistics', function() {
@@ -158,7 +191,22 @@ Route::get('/getOverallVehicleHistory', function() {
     Log::info('get Vehicle Locations');
     return View::make('vls.getOverallVehicleHistory');
 });
+
+Route::get('/getTripReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getTripReport');
+    return View::make('vls.getTripReport');
+});
  
+Route::get('/getDriverPerformanceDaily', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getDriverPerformanceDaily');
+    return View::make('vls.getDriverPerformanceDaily');
+});
  
 Route::get('/getSiteReport', function() {
     if (!Auth::check()) {
@@ -289,6 +337,22 @@ Route::get('/getVehicleHistory', function() {
     return View::make('vls.getVehicleHistory');
 });
  
+Route::get('/event', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('event report');
+    return View::make('reports.eventReport');
+});
+
+Route::get('/siteReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('site report');
+    return View::make('reports.sitePerVehicle');
+});
+
 Route::get('/getActionReport', function() {    
     if (!Auth::check()) {      
         return Redirect::to('login');      
