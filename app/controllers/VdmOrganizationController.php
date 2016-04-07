@@ -60,7 +60,7 @@ class VdmOrganizationController extends \BaseController {
 			{
 				 $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$fcode);
 			}
-		 $orgList=null;
+		 $orgList=array();
         foreach ( $tmpOrgList as $org ) {
                 $orgList = array_add($orgList,$org,$org);
                 
@@ -71,7 +71,7 @@ class VdmOrganizationController extends \BaseController {
 		
 	   }
 	   
-       return View::make('vdm.organization.placeOfInterest')->with('userplace',$userplace)->with ( 'orgList', $orgList ); 
+       return View::make('vdm.organization.placeOfInterest')->with('userplace',$userplace)->with ( 'orgList', null ); 
     }
 public function addpoi()
 	{
