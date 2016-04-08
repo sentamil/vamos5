@@ -87,7 +87,7 @@ public function addpoi()
 		}
 		$username = Auth::user()->username;
 		$rules = array(
-				'orgId'       => 'required|alpha_dash',
+				'orgId'       => 'required',
 				'radiusrange' => 'required',
 				'poi' => 'required'
  		);

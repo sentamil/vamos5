@@ -813,7 +813,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 						$time = round($time * 1000);
 						$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
 						$franchiseDetails=json_decode($franDetails_json,true);
-						$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+						$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,N,ON,' .$odoDistance. ',S,N';
 						if(isset($franchiseDetails['fullAddress'])==1)
 						{
 							$fullAddress=$franchiseDetails['fullAddress'];
@@ -822,7 +822,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 								$latitude = $data_arr[0];
 								$longitude = $data_arr[1];
 								
-								$tmpPositon =  $latitude.','.$longitude.',0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+								$tmpPositon =  $latitude.','.$longitude.',0,N,' . $time . ',0.0,N,N,ON,' .$odoDistance. ',S,N';
 						  }
 						}	
 						$redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );

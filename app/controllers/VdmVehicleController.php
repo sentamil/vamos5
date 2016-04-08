@@ -370,7 +370,7 @@ else if(Session::get('cur')=='admin')
 }
 $franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
 $franchiseDetails=json_decode($franDetails_json,true);
-$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,N,ON,' .$odoDistance. ',S,N';
 if(isset($franchiseDetails['fullAddress'])==1)
 {
     $fullAddress=$franchiseDetails['fullAddress'];
@@ -379,7 +379,7 @@ if(isset($franchiseDetails['fullAddress'])==1)
         $latitude = $data_arr[0];
         $longitude = $data_arr[1];
         log::info( '------lat lang---------- '.$latitude.','.$longitude);
-        $tmpPositon =  $latitude.','.$longitude.',0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+        $tmpPositon =  $latitude.','.$longitude.',0,N,' . $time . ',0.0,N,N,ON,' .$odoDistance. ',S,N';
     }
 }
 log::info( '------prodata---------- '.$tmpPositon);
@@ -1358,7 +1358,7 @@ else if(Session::get('cur')=='admin')
 }
 $franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
 $franchiseDetails=json_decode($franDetails_json,true);
-$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+$tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,N,ON,' .$odoDistance. ',S,N';
 if(isset($franchiseDetails['fullAddress'])==1)
 {
     $fullAddress=$franchiseDetails['fullAddress'];
@@ -1367,7 +1367,7 @@ if(isset($franchiseDetails['fullAddress'])==1)
         $latitude = $data_arr[0];
         $longitude = $data_arr[1];
         log::info( '------lat lang---------- '.$latitude.','.$longitude);
-        $tmpPositon =  $latitude.','.$longitude.',0,N,' . $time . ',0.0,N,P,ON,' .$odoDistance. ',S,N';
+        $tmpPositon =  $latitude.','.$longitude.',0,N,' . $time . ',0.0,N,N,ON,' .$odoDistance. ',S,N';
     }
 }
 log::info( '------prodata---------- '.$tmpPositon);
@@ -1542,7 +1542,7 @@ public function migrationUpdate() {
         $time = round($time * 1000);
         $franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
         $franchiseDetails=json_decode($franDetails_json,true);
-        $tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,P,ON,0,S,N';
+        $tmpPositon =  '13.104870,80.303138,0,N,' . $time . ',0.0,N,N,ON,0,S,N';
         if(isset($franchiseDetails['fullAddress'])==1)
         {
             $fullAddress=$franchiseDetails['fullAddress'];
@@ -1551,7 +1551,7 @@ public function migrationUpdate() {
                 $latitude = $data_arr[0];
                 $longitude = $data_arr[1];
                 log::info( '------lat lang---------- '.$latitude.','.$longitude);
-                $tmpPositon =  $latitude.','.$longitude.',0,N,' . $time . ',0.0,N,P,ON,0,S,N';
+                $tmpPositon =  $latitude.','.$longitude.',0,N,' . $time . ',0.0,N,N,ON,0,S,N';
             }
         }
         log::info( '------prodata---------- '.$tmpPositon);
