@@ -167,7 +167,7 @@
                 <div class="col-md-12">
                   <div class="box-body" id="eventReport" style="width: 100%; height: 100%; ">
                     <div style="display: flex; -webkit-flex; -ms-flex: 1; background-color: #f4f4f4; padding-left: 30px" class="box box-info">
-                      <div class="squaredFour" style="width: 30%"><h5>Group Name : {{gName}}</h5></div>
+                      <div class="squaredFour" style="width: 30%"><h5>Group Name : {{groupName}}</h5></div>
                       <div style="float: left; width: 45%"><h5>Vehicle Name : {{shortName}}</h5></div> 
                     </div>
 
@@ -208,9 +208,9 @@
                              <th>Fuel Distance</th>
                              <th colspan="2">
                               <div style="display: flex; -webkit-flex; -ms-flex: 1;">
-                                <div class="squaredFour" style="width: 20%">
+                                <div style="width: 20%">
                                   <input type="checkbox" value="None" id="stop" name="check"/>
-                                  <label for="stop"></label>
+                                  <!-- <label for="stop"></label> -->
                                 </div>
                                 <div style="float: left; width: 45%">Distance</div> 
                               </div>
@@ -257,9 +257,9 @@
                             <th>Fuel Time</th>
                             <th colspan="1" style="text-align: center">
                               <div style="display: flex; -webkit-flex; -ms-flex: 1;">
-                                <div class="squaredFour" style="width: 15%;">
-                                  <input type="checkbox" value="None" id="idle" name="check"/>
-                                  <label for="idle"></label>
+                                <div style="width: 15%;">
+                                  <input type="checkbox" value="None" id="idlecheck" name="check"/>
+                                  <!-- <label for="idle"></label> -->
                                 </div>
                                 <div style="float: left; width: 30%">Interval</div> 
                               </div>
@@ -296,7 +296,7 @@
                   <div id="fill">
                     <div class="box-body" id="eventReport" style="width: 100%; height: 100%;">
                     <div style="display: flex; -webkit-flex; -ms-flex: 1; background-color: #f4f4f4; padding-left: 30px" class="box box-info" ng-show="hide">
-                      <div class="squaredFour" style="width: 30%"><h5>Group Name : {{gName}}</h5></div>
+                      <div class="squaredFour" style="width: 30%"><h5>Group Name : {{groupName}}</h5></div>
                       <div style="float: left; width: 45%"><h5>Vehicle ID : {{shortName}}</h5></div> 
                     </div>
                        <div style="width: 50%; float: left; padding-right: 2%; margin-top: 5px; text-align: center" ng-show="hide">
@@ -306,9 +306,16 @@
                              <th>Fuel Drop</th>
                              <th>
                               <div style="display: flex; -webkit-flex; -ms-flex: 1;">
-                                <div class="squaredFour" style="width: 20%">
+                                <div  style="width: 20%">
                                   <input type="checkbox" value="None" id="fillfuel" name="check" checked/>
-                                  <label for="fillfuel"></label>
+                                 <!--  <label for="fillfuel"></label> -->
+                                 
+                                </div>
+                                <div class="squaredFour">
+                                  
+                                  <input type="checkbox" value="None" id="fillfuel1" name="check" checked/>
+                                  <label for="fillfuel1"></label>
+                                 
                                 </div>
                                 <div style="float: left; width: 60%">Drop</div> 
                               </div>

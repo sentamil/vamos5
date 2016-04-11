@@ -29,6 +29,7 @@
             font-size: 12px;
             font-weight: bold;
         }
+        
     </style>
 </head>
 <body ng-app="mapApp">
@@ -46,6 +47,10 @@
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
         </div>
+
+       
+
+
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div style="position: absolute;top: 0px;left: 35%; z-index:999999;" id="testLoad">
@@ -123,10 +128,14 @@
                         </div>       
                     </div>
                 <div id="maploc">
-                    <div id="map_canvas" style="height:100vh; width:100%;"></div>
+                    <div id="map_canvas" style="height:100vh; width:100%;" center="center"></div>
                 </div>
             </div>
         </div>
+
+
+
+
     </div>
     <script src="assets/js/static.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>

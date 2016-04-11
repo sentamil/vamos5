@@ -11,7 +11,12 @@
                     <ul class="menu-hover">
                         <li class="list"><a href="../public/replay">History</a></li>
                         <li class="list"><a href="../public/live">Track</a></li>
-                        <li class="list"> <a href="../public/sites">Site Details</a>
+                        <li class="list"> <a href="../public/sites">Admin &nbsp; <img src="assets/imgs/right.png"></a></a>
+                            <ul class="menu-hover">
+                                <li class="list"><a href="../public/password_check" id="addsites">AddSites</a></li>
+                                <!-- <li class="list"><a href="../public/statistics?ind=1">POI</a></li> -->
+                            </ul>
+                        </li>
                         </ul>
                         <li class="list"> <a href="../public/reports">Reports <img src="assets/imgs/down.png"></a>
                             <ul class="menu-hover">
@@ -84,9 +89,6 @@
             $("#idle").click(function() {
                 $("#idle").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=idle')
             });
-            // $("#event").click(function() {
-            //     $("#event").attr("href", 'event?vid='+vid+'&vg='+gname+'&tn=event')
-            // });
             $("#event").click(function() {
                 $("#event").attr("href", 'event?vid='+vid+'&vg='+gname+'&tn=event')
             });
@@ -104,6 +106,12 @@
             });
             $('#trip').click(function() {
                 $('#trip').attr("href", 'trip?vid='+vid+'&vg='+gname+'&tn=trip')
+            })
+            $('#addsites').click(function(){
+                if(sessionStorage.getItem('auth') == 'sitesVal')
+                    $('#addsites').attr("href", 'sites')
+                else
+                    $('#addsites').attr("href", 'password_check') 
             })
         </script>
     </body>

@@ -119,53 +119,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		});	
 	});
 
-	// var ls = sessionStorage.getItem("user")
-	function menuGroup(res)
-	{
-		
-		for (var i = 0; i < res.length; i++) {
-			$('[id="listGrop"]').append('<li class="list" id="lsit"><a href="#">'+$scope.trimColon(res[i].group)+'</a></li>');
-// 			  document.getElementById('#lsit');
-// console.log(document.getElementById('#lsit'))
-			//console.log(' val ')
-    	};
-		$('[id="lsit"]').mouseenter(function(event) {
-    	//console.log(' val 1'+event.target.innerText)
-    	vehiCall(event.target.innerText);
-    	});
-		
-	} 
-
-	var vehiCall 	= 	function(groupid)
-	{
-		
-		if(vehicleids.length)
-			console.log(' length true')
-		else
-		{
-			var groupurl = localGroup(groupid);
-			// $.getJSON(groupurl, function(data) {
-			// 	for (var i = 0; i < data.length; i++) {
-			// 		if(data[i].vehicleLocations.length)
-			// 			for (var j = 0; j < data[i].vehicleLocations.length; j++) {
-			// 				$('[id="lsit"]').append('<ul class="menu-hover" id="listVehi"><li class="list"><a href="#">'+data[i].vehicleLocations[j].vehicleId+'</a></li></ul>')
-			// 			};
-			// 	};
-			// });
-  		}
-			
-	}
-
-	function localGroup(halfgroup)
-	{	
-		var split_vid 	= 	$scope.locations02[0].group.split(":")[1];
-
-		var gName 	 	= 	halfgroup.trim()+':'+split_vid;
-		var groupUrl1= 'http://'+globalIP+context+'/public//getVehicleLocations?group='+gName;
-		//console.log(groupUrl1);
-		return groupUrl1;
-	}
-
+	
 	// console.log($scope.locations02)
 	$scope.$watch("vehicleStatus", function (val) {
 		if($scope.locations02!=undefined){
@@ -229,11 +183,14 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	}
 
 	$scope.genericFunction = function(vehicleno, index){
-		$scope.selected = index;
-		$scope.removeTask(vehicleno);
-		sessionValue(vehicleno, $scope.gName)
-		$('#graphsId').show(500);
-		editableValue();
+		if($scope.locations.position != 'N')
+		{
+			$scope.selected = index;
+			$scope.removeTask(vehicleno);
+			sessionValue(vehicleno, $scope.gName)
+			$('#graphsId').show(500);
+			editableValue();
+		}
 	}
 	//for edit details in the right side div
 	document.getElementById("inputEdit").disabled = true;
@@ -785,7 +742,26 @@ function polygenDrawFunction(list){
       $scope.map.setCenter(centerMarker(polygenList)); 
       $scope.map.setZoom(14);  
     // }
- }
+}
+
+//locations
+
+function locat_address(locs) {
+	var googleLatAndLong = new google.maps.LatLng(locs.lat, locs.lng);
+	var labelAnchorpos = new google.maps.Point(70, 80);
+	$scope.marker = new MarkerWithLabel({
+        position: googleLatAndLong, 
+        map: $scope.map,
+        color: '#fff',
+       	labelClass: "labels1",
+       	labelContent: locs.address,
+        labelAnchor: labelAnchorpos, 
+        labelInBackground: false
+      });
+      $scope.map.setCenter(googleLatAndLong); 
+      $scope.map.setZoom(14);
+}
+
 
 
 	function siteInvoke(val){
@@ -795,12 +771,17 @@ function polygenDrawFunction(list){
 			if(data.siteParent)
 			 	angular.forEach(data.siteParent, function(value, key){
 					//console.log(' value'+key)
-					if(val == value.orgId)
-					angular.forEach(value.site, function(vals, keys){
-						//console.log('inside the for loop')
-						polygenDrawFunction(vals);
-					})
-					
+					if(val == value.orgId){
+						angular.forEach(value.site, function(vals, keys){
+							//console.log('inside the for loop')
+							polygenDrawFunction(vals);
+						})
+
+					if(value.location.length>0)
+						angular.forEach(value.location, function(locs, ind){
+							locat_address(locs);
+						})
+					}
 			 });
 		})
 	}
