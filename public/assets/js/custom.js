@@ -185,7 +185,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	$scope.genericFunction = function(vehicleno, index){
 		// angular.forEach($scope.locations, function(value, key){
 			var individualVehicle = $filter('filter')($scope.locations, { vehicleId:  vehicleno});
-			if(individualVehicle.position != 'N')
+			if(individualVehicle[0].position != 'N')
 			{
 				$scope.selected = index;
 				$scope.removeTask(vehicleno);
