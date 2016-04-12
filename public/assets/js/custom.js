@@ -895,8 +895,11 @@ function locat_address(locs) {
 			for (var i = 0; i < length; i++) {
 				var lat = locs[i].latitude;
 				var lng =  locs[i].longitude;
-				$scope.addMarker({ lat: lat, lng: lng , data: locs[i]});
-				$scope.infoBoxed($scope.map,gmarkers[i], locs[i].vehicleId, lat, lng, locs[i]);
+				if(locs[i].position != 'N')
+				{
+					$scope.addMarker({ lat: lat, lng: lng , data: locs[i]});
+					$scope.infoBoxed($scope.map,gmarkers[i], locs[i].vehicleId, lat, lng, locs[i]);	
+				}
 			}
 	//	});
 		$scope.loading	=	false;
