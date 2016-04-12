@@ -183,14 +183,18 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	}
 
 	$scope.genericFunction = function(vehicleno, index){
-		if($scope.locations.position != 'N')
-		{
-			$scope.selected = index;
-			$scope.removeTask(vehicleno);
-			sessionValue(vehicleno, $scope.gName)
-			$('#graphsId').show(500);
-			editableValue();
-		}
+		// angular.forEach($scope.locations, function(value, key){
+			var individualVehicle = $filter('filter')($scope.locations, { vehicleId:  vehicleno});
+			if(individualVehicle.position != 'N')
+			{
+				$scope.selected = index;
+				$scope.removeTask(vehicleno);
+				sessionValue(vehicleno, $scope.gName)
+				$('#graphsId').show(500);
+				editableValue();
+			}
+		// })	
+		
 	}
 	//for edit details in the right side div
 	document.getElementById("inputEdit").disabled = true;
