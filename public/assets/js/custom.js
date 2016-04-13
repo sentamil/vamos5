@@ -184,10 +184,11 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 
 	$scope.genericFunction = function(vehicleno, index){
 		// angular.forEach($scope.locations, function(value, key){
+			$scope.selected = index;
 			var individualVehicle = $filter('filter')($scope.locations, { vehicleId:  vehicleno});
 			if(individualVehicle[0].position != 'N')
 			{
-				$scope.selected = index;
+				
 				$scope.removeTask(vehicleno);
 				sessionValue(vehicleno, $scope.gName)
 				$('#graphsId').show(500);
@@ -339,38 +340,42 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	
 
 	$scope.infoBoxed = function(map, marker, vehicleID, lat, lng, data){
-		var tempoTime = vamoservice.statusTime(data);
-		if(data.ignitionStatus=='ON'){
-			var classVal = 'green';
-		}else{
-			var classVal = 'red';
-		}
-			var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
-		+'<div><b style="width:100px; display:inline-block;">Vehicle Name</b> - <span style="font-weight:bold;">'+data.shortName+'</span></div>'
 		
-		+'<div><b style="width:100px; display:inline-block;">ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
-		+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
-		+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
+			var tempoTime = vamoservice.statusTime(data);
+			if(data.ignitionStatus=='ON'){
+				var classVal = 'green';
+			}else{
+				var classVal = 'red';
+			}
+				var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
+			+'<div><b style="width:100px; display:inline-block;">Vehicle Name</b> - <span style="font-weight:bold;">'+data.shortName+'</span></div>'
+			
+			+'<div><b style="width:100px; display:inline-block;">ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
+			+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
+			+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 
-		+'<div><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a>&nbsp;&nbsp;'
-		+'</div>';
+			+'<div><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a>&nbsp;&nbsp;'
+			+'</div>';
+			
+			// var	drop1 = document.getElementById("ddlViewBy");
+			// var drop_value1= drop1.options[drop1.selectedIndex].value;
+			var infowindow = new InfoBubble({
+			maxWidth: 400,	
+			maxHeight:170,
+			 content: contentString
+			});
+
+			ginfowindow.push(infowindow);
+		  	if(marker!=undefined)
+		  	(function(marker) {
+				google.maps.event.addListener(marker, "click", function(e) {
+					for(var j=0; j<ginfowindow.length;j++){
+						ginfowindow[j].close();
+					}
+					infowindow.open(map,marker);
+		   		});	
+			})(marker);
 		
-		// var	drop1 = document.getElementById("ddlViewBy");
-		// var drop_value1= drop1.options[drop1.selectedIndex].value;
-		var infowindow = new InfoBubble({
-		maxWidth: 400,	
-		maxHeight:170,
-		 content: contentString
-		});
-		ginfowindow.push(infowindow);
-	  	(function(marker) {
-			google.maps.event.addListener(marker, "click", function(e) {
-				for(var j=0; j<ginfowindow.length;j++){
-					ginfowindow[j].close();
-				}
-				infowindow.open(map,marker);
-	   		});	
-		})(marker);
 	}
 
 	// for new window track
@@ -901,11 +906,12 @@ function locat_address(locs) {
 			for (var i = 0; i < length; i++) {
 				var lat = locs[i].latitude;
 				var lng =  locs[i].longitude;
-				if(locs[i].position != 'N')
-				{
+				
+					console.log(' lat :'+lat+'lan :'+lng+'data :'+locs[i]);
+					// console.log('marker :'+gmarkers[i]+' vehicle ID : '+ locs[i].vehicleId+'  lat  :'+ lat+'lng  :'+ lng);
 					$scope.addMarker({ lat: lat, lng: lng , data: locs[i]});
 					$scope.infoBoxed($scope.map,gmarkers[i], locs[i].vehicleId, lat, lng, locs[i]);	
-				}
+				
 			}
 	//	});
 		$scope.loading	=	false;
@@ -944,7 +950,7 @@ function locat_address(locs) {
 		var temp = $scope.locations;
 		//$scope.endlatlong = new google.maps.LatLng();
 		//$scope.startlatlong = new google.maps.LatLng();
-		$scope.map.setZoom(19);
+		$scope.map.setZoom(16);
 		$scope.dynamicvehicledetails1=true;
 		for(var i=0; i<temp.length;i++){
 			if(temp[i].vehicleId==$scope.vehicleno){
