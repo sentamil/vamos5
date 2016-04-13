@@ -193,6 +193,12 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 				$('#graphsId').show(500);
 				editableValue();
 			}
+			else
+			{
+				$('#status').fadeOut(); 
+				$('#preloader').delay(350).fadeOut('slow');
+				$('body').delay(350).css({'overflow':'visible'});
+			}
 		// })	
 		
 	}
