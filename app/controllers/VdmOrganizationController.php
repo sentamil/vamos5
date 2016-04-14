@@ -124,6 +124,12 @@ public function addpoi()
 		$idleAlert=isset($orgDataArr['idleAlert'])?$orgDataArr['idleAlert']:'';
 		$overspeedalert=isset($orgDataArr['overspeedalert'])?$orgDataArr['overspeedalert']:'';
 		$sendGeoFenceSMS=isset($orgDataArr['sendGeoFenceSMS'])?$orgDataArr['sendGeoFenceSMS']:'';
+		$smsSender=isset($orgDataArr['smsSender'])?$orgDataArr['smsSender']:'';
+		$sosAlert=isset($orgDataArr['sosAlert'])?$orgDataArr['sosAlert']:'';
+		$live=isset($orgDataArr['live'])?$orgDataArr['live']:'';
+		$smsProvider=isset($orgDataArr['smsProvider'])?$orgDataArr['smsProvider']:'';
+		$providerUserName=isset($orgDataArr['providerUserName'])?$orgDataArr['providerUserName']:'';
+		$providerPassword=isset($orgDataArr['providerPassword'])?$orgDataArr['providerPassword']:'';
 		$radius=$radiusrange;
 			 $orgDataArr = array (
                     
@@ -142,7 +148,13 @@ public function addpoi()
 					'idleDuration'=>$idleDuration,
 					'overspeedalert'=>$overspeedalert,
 					'sendGeoFenceSMS'=>$sendGeoFenceSMS,
-					'radius'=>$radiusrange
+					'radius'=>$radiusrange,
+					'smsSender'=>$smsSender,
+					'sosAlert'=>$sosAlert,
+					'live'=>$live,
+					'smsProvider'=>$smsProvider,
+					'providerUserName'=>$providerUserName,
+					'providerPassword'=>$providerPassword,
             );
             
             $orgDataJson = json_encode ( $orgDataArr );
