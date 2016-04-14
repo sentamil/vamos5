@@ -30,7 +30,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	// $scope.timeList		=	[];
 
 	function sessionValue(vid, gname){
-		sessionStorage.setItem('user', JSON.stringify(vid+','+$scope.trimColon(gname)));
+		sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
 		$("#testLoad").load("../public/menu");
 	}
 
@@ -266,6 +266,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 				$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.shortName    =   data[$scope.gIndex].vehicleLocations[0].shortName;
 				$scope.gName 		= 	data[$scope.gIndex].group;
+				$scope.groupName 	=	$scope.trimColon(data[$scope.gIndex].group);
 				sessionValue($scope.vehiname, $scope.gName)
 			angular.forEach(data, function(value, key) {			  
 				  if(value.totalVehicles) {
@@ -298,6 +299,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 			$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
 			$scope.shortName    =   data[$scope.gIndex].vehicleLocations[0].shortName;
 			$scope.gName 		= 	data[$scope.gIndex].group;
+			$scope.groupName 	=	$scope.trimColon(data[$scope.gIndex].group);
 			sessionValue($scope.vehiname, $scope.gName)
 		});
 	}
@@ -308,9 +310,9 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		$("#fill").hide();
     	$("#eventReport").show();
 		document.getElementById ("stop").checked = true;
-    	document.getElementById ("idle").checked = true;
+    	document.getElementById ("idlecheck").checked = true;
     	var stoppage 		= 	document.getElementById ("stop").checked;
-    	var idleEvent 		= 	document.getElementById ("idle").checked;
+    	var idleEvent 		= 	document.getElementById ("idlecheck").checked;
     	var kms 			=   document.getElementsByClassName("kms")[0].value;
     	var hrs 			=   document.getElementsByClassName("hrs")[0].value;
 		var distanceTimeUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms;
@@ -391,7 +393,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	$scope.seperate 	= function()
 	{
 		var stoppage 		= 	document.getElementById ("stop").checked;
-    	var idleEvent 		= 	document.getElementById ("idle").checked;
+    	var idleEvent 		= 	document.getElementById ("idlecheck").checked;
     	var fill 			= 	document.getElementById ("fillfuel").checked;
     	var drop 			= 	document.getElementById ("drop").checked;
     	var fromd 			= 	document.getElementById ("dateFrom").value;

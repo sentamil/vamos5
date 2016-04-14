@@ -84,7 +84,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 	}
 
 	function sessionValue(vid, gname){
-		sessionStorage.setItem('user', JSON.stringify(vid+','+$scope.trimColon(gname)));
+		sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
 		$("#testLoad").load("../public/menu");
 	}
 
@@ -262,6 +262,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			date.getMonth 	= 1;
 		$scope.fromdate 	=	$scope.month+','+date.getFullYear();
 		if($scope.groupVeh 	== true)	{
+
 			webServiceUrl 	= 	'http://'+globalIP+context+'/public/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
 		} else {
 			webServiceUrl 	=	'http://'+globalIP+context+'/public/getIndividualDriverPerformance?groupId='+$scope.groupName+'&vehicleId='+$scope.vehicleId+'&month='+$scope.month+'&year='+$scope.year;
@@ -317,15 +318,30 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		}
 	}
 
+	function monthYear(){
+
+		var split  = $scope.fromdate.split(',');
+		$scope.month = split[0];
+		$scope.year  = split[1]; 
+	}
+
 	$scope.submitButton 	= 	function(){
+		startLoading();
 		var webServiceUrl   = 	'';
 		if(status == 'daily')
 			webServiceUrl   	=   'http://'+globalIP+context+'/public/getDriverPerformanceDaily?vehicleId='+$scope.vehicleId+'&fromDate='+$scope.fromdateDaily+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todateDaily+'&toTime='+convert_to_24h($scope.totime);
 		else if(status == 'monthly') 
-			if($scope.groupVeh == true)  
+			if($scope.groupVeh == true)
+			{
+				monthYear();
 				webServiceUrl 	= 	'http://'+globalIP+context+'/public/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
+			}  
 			else
-				webServiceUrl 	=	'http://'+globalIP+context+'/public/getIndividualDriverPerformance?groupId='+$scope.groupName+'&vehicleId='+$scope.vehicleId+'&month='+$scope.month+'&year='+$scope.year;
+			{
+				monthYear();
+				webServiceUrl 	=	'http://'+globalIP+context+'/public/getIndividualDriverPerformance?groupId='+$scope.groupName+'&vehicleId='+$scope.vehicleId+'&month='+$scope.month+'&year='+$scope.year;		
+			}
+				
 		OverallDriverPerformance(webServiceUrl);
 	}
 

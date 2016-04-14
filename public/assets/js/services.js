@@ -74,7 +74,9 @@ app.factory('vamoservice', function($http, $q){
 				}else{
 					pinImage = 'assets/imgs/'+temp.color+'.png';
 				}
-			}else{
+			} else if(temp.position == 'N') {
+				pinImage =	'assets/imgs/trans.png'
+			} else{
 				pinImage = 'assets/imgs/'+temp.color+'_'+temp.direction+'.png';
 			}
 			return pinImage;

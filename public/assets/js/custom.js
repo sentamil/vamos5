@@ -119,53 +119,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		});	
 	});
 
-	// var ls = sessionStorage.getItem("user")
-	function menuGroup(res)
-	{
-		
-		for (var i = 0; i < res.length; i++) {
-			$('[id="listGrop"]').append('<li class="list" id="lsit"><a href="#">'+$scope.trimColon(res[i].group)+'</a></li>');
-// 			  document.getElementById('#lsit');
-// console.log(document.getElementById('#lsit'))
-			//console.log(' val ')
-    	};
-		$('[id="lsit"]').mouseenter(function(event) {
-    	//console.log(' val 1'+event.target.innerText)
-    	vehiCall(event.target.innerText);
-    	});
-		
-	} 
-
-	var vehiCall 	= 	function(groupid)
-	{
-		
-		if(vehicleids.length)
-			console.log(' length true')
-		else
-		{
-			var groupurl = localGroup(groupid);
-			// $.getJSON(groupurl, function(data) {
-			// 	for (var i = 0; i < data.length; i++) {
-			// 		if(data[i].vehicleLocations.length)
-			// 			for (var j = 0; j < data[i].vehicleLocations.length; j++) {
-			// 				$('[id="lsit"]').append('<ul class="menu-hover" id="listVehi"><li class="list"><a href="#">'+data[i].vehicleLocations[j].vehicleId+'</a></li></ul>')
-			// 			};
-			// 	};
-			// });
-  		}
-			
-	}
-
-	function localGroup(halfgroup)
-	{	
-		var split_vid 	= 	$scope.locations02[0].group.split(":")[1];
-
-		var gName 	 	= 	halfgroup.trim()+':'+split_vid;
-		var groupUrl1= 'http://'+globalIP+context+'/public//getVehicleLocations?group='+gName;
-		//console.log(groupUrl1);
-		return groupUrl1;
-	}
-
+	
 	// console.log($scope.locations02)
 	$scope.$watch("vehicleStatus", function (val) {
 		if($scope.locations02!=undefined){
@@ -229,11 +183,25 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	}
 
 	$scope.genericFunction = function(vehicleno, index){
-		$scope.selected = index;
-		$scope.removeTask(vehicleno);
-		sessionValue(vehicleno, $scope.gName)
-		$('#graphsId').show(500);
-		editableValue();
+		// angular.forEach($scope.locations, function(value, key){
+			$scope.selected = index;
+			var individualVehicle = $filter('filter')($scope.locations, { vehicleId:  vehicleno});
+			if(individualVehicle[0].position != 'N')
+			{
+				
+				$scope.removeTask(vehicleno);
+				sessionValue(vehicleno, $scope.gName)
+				$('#graphsId').show(500);
+				editableValue();
+			}
+			else
+			{
+				$('#status').fadeOut(); 
+				$('#preloader').delay(350).fadeOut('slow');
+				$('body').delay(350).css({'overflow':'visible'});
+			}
+		// })	
+		
 	}
 	//for edit details in the right side div
 	document.getElementById("inputEdit").disabled = true;
@@ -372,38 +340,42 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	
 
 	$scope.infoBoxed = function(map, marker, vehicleID, lat, lng, data){
-		var tempoTime = vamoservice.statusTime(data);
-		if(data.ignitionStatus=='ON'){
-			var classVal = 'green';
-		}else{
-			var classVal = 'red';
-		}
-			var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
-		+'<div><b style="width:100px; display:inline-block;">Vehicle Name</b> - <span style="font-weight:bold;">'+data.shortName+'</span></div>'
 		
-		+'<div><b style="width:100px; display:inline-block;">ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
-		+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
-		+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
+			var tempoTime = vamoservice.statusTime(data);
+			if(data.ignitionStatus=='ON'){
+				var classVal = 'green';
+			}else{
+				var classVal = 'red';
+			}
+				var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
+			+'<div><b style="width:100px; display:inline-block;">Vehicle Name</b> - <span style="font-weight:bold;">'+data.shortName+'</span></div>'
+			
+			+'<div><b style="width:100px; display:inline-block;">ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
+			+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
+			+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 
-		+'<div><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a>&nbsp;&nbsp;'
-		+'</div>';
+			+'<div><a href="../public/track?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a>&nbsp;&nbsp;'
+			+'</div>';
+			
+			// var	drop1 = document.getElementById("ddlViewBy");
+			// var drop_value1= drop1.options[drop1.selectedIndex].value;
+			var infowindow = new InfoBubble({
+			maxWidth: 400,	
+			maxHeight:170,
+			 content: contentString
+			});
+
+			ginfowindow.push(infowindow);
+		  	if(marker!=undefined)
+		  	(function(marker) {
+				google.maps.event.addListener(marker, "click", function(e) {
+					for(var j=0; j<ginfowindow.length;j++){
+						ginfowindow[j].close();
+					}
+					infowindow.open(map,marker);
+		   		});	
+			})(marker);
 		
-		// var	drop1 = document.getElementById("ddlViewBy");
-		// var drop_value1= drop1.options[drop1.selectedIndex].value;
-		var infowindow = new InfoBubble({
-		maxWidth: 400,	
-		maxHeight:170,
-		 content: contentString
-		});
-		ginfowindow.push(infowindow);
-	  	(function(marker) {
-			google.maps.event.addListener(marker, "click", function(e) {
-				for(var j=0; j<ginfowindow.length;j++){
-					ginfowindow[j].close();
-				}
-				infowindow.open(map,marker);
-	   		});	
-		})(marker);
 	}
 
 	// for new window track
@@ -785,7 +757,26 @@ function polygenDrawFunction(list){
       $scope.map.setCenter(centerMarker(polygenList)); 
       $scope.map.setZoom(14);  
     // }
- }
+}
+
+//locations
+
+function locat_address(locs) {
+	var googleLatAndLong = new google.maps.LatLng(locs.lat, locs.lng);
+	var labelAnchorpos = new google.maps.Point(70, 80);
+	$scope.marker = new MarkerWithLabel({
+        position: googleLatAndLong, 
+        map: $scope.map,
+        color: '#fff',
+       	labelClass: "labels1",
+       	labelContent: locs.address,
+        labelAnchor: labelAnchorpos, 
+        labelInBackground: false
+      });
+      $scope.map.setCenter(googleLatAndLong); 
+      $scope.map.setZoom(14);
+}
+
 
 
 	function siteInvoke(val){
@@ -795,12 +786,17 @@ function polygenDrawFunction(list){
 			if(data.siteParent)
 			 	angular.forEach(data.siteParent, function(value, key){
 					//console.log(' value'+key)
-					if(val == value.orgId)
-					angular.forEach(value.site, function(vals, keys){
-						//console.log('inside the for loop')
-						polygenDrawFunction(vals);
-					})
-					
+					if(val == value.orgId){
+						angular.forEach(value.site, function(vals, keys){
+							//console.log('inside the for loop')
+							polygenDrawFunction(vals);
+						})
+
+					if(value.location.length>0)
+						angular.forEach(value.location, function(locs, ind){
+							locat_address(locs);
+						})
+					}
 			 });
 		})
 	}
@@ -910,8 +906,12 @@ function polygenDrawFunction(list){
 			for (var i = 0; i < length; i++) {
 				var lat = locs[i].latitude;
 				var lng =  locs[i].longitude;
-				$scope.addMarker({ lat: lat, lng: lng , data: locs[i]});
-				$scope.infoBoxed($scope.map,gmarkers[i], locs[i].vehicleId, lat, lng, locs[i]);
+				
+					console.log(' lat :'+lat+'lan :'+lng+'data :'+locs[i]);
+					// console.log('marker :'+gmarkers[i]+' vehicle ID : '+ locs[i].vehicleId+'  lat  :'+ lat+'lng  :'+ lng);
+					$scope.addMarker({ lat: lat, lng: lng , data: locs[i]});
+					$scope.infoBoxed($scope.map,gmarkers[i], locs[i].vehicleId, lat, lng, locs[i]);	
+				
 			}
 	//	});
 		$scope.loading	=	false;
@@ -950,7 +950,7 @@ function polygenDrawFunction(list){
 		var temp = $scope.locations;
 		//$scope.endlatlong = new google.maps.LatLng();
 		//$scope.startlatlong = new google.maps.LatLng();
-		$scope.map.setZoom(19);
+		$scope.map.setZoom(16);
 		$scope.dynamicvehicledetails1=true;
 		for(var i=0; i<temp.length;i++){
 			if(temp[i].vehicleId==$scope.vehicleno){

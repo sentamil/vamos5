@@ -124,11 +124,11 @@ class AddSiteController extends \BaseController {
 		
 		
         log::info($latLng[0]. '------site name---------- ::'.$siteName);
-		 log::info(count($latLng). '------site type---------- ::'.$siteType);
-		 $orgId=Input::get ( 'org' );
-		 $ch = curl_init();
-		 $siteType= curl_escape($ch,$siteType);
-		 $url = 'http://' .$ipaddress . ':9000/saveSite?latLng=' . implode(",",$latLng) . '&fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .$siteName.'&siteType='.$siteType.'&userId='.$username;
+		log::info(count($latLng). '------site type---------- ::'.$siteType);
+		$orgId=Input::get ( 'org' );
+		$ch = curl_init();
+		$siteType= curl_escape($ch,$siteType);
+		$url = 'http://' .$ipaddress . ':9000/saveSite?latLng=' . implode(",",$latLng) . '&fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .$siteName.'&siteType='.$siteType.'&userId='.$username;
 		 
 		
 		$url=htmlspecialchars_decode($url);
@@ -275,7 +275,19 @@ class AddSiteController extends \BaseController {
 	
 	
 	
+	public function checkPwd(){
 		
+		$username 	= Auth::user ()->username;
+		$redis 		= Redis::connection ();
+		$passWord 	= Input::get('pwd');
+		$pwd 		= $redis->hget('H_UserId_Cust_Map',  $username .':password');
+		if($passWord == $pwd){
+			return 'correct';
+		} else {
+			return 'incorrect';
+		}
+		
+	}
 	
 	
 	   

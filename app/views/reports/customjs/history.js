@@ -16,7 +16,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.eventReportData 	= 	[];
 	$scope.addressLoad 		= 	[];
 	$scope.addressFuel 		= 	[];
-	$scope.location	    	=	[];
+	// $scope.location	    	=	[];
 	$scope.ltrs 			= 	[];
 	$scope.fuelDate 		= 	[];
 	$scope.tabactive 		=	true;
@@ -43,6 +43,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     $scope.downloadid	=	'movementreport';
     var prodId 			= 	getParameterByName('vid');
     var tabId 			= 	getParameterByName('tn');
+    $scope.tab_val 		=	getParameterByName('tn');
     $scope.vgroup 		= 	getParameterByName('vg');
    	$scope.dvgroup 		= 	getParameterByName('dvg');
    	$scope.vvid			=	getParameterByName('vvid');
@@ -141,7 +142,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     	});
     }
 
-    $scope.$watch(tabId, function(){
+    
+    $scope.$watch("tab_val", function (newval, oldval) {
+    // $scope.$watch("tabId", function (val) {
 			$scope.tabmovement 			=	false;
 			$scope.taboverspeed			=	false;
 			$scope.tabparked			=	false;
@@ -183,69 +186,15 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     			$scope.tabmovement 			=	true; 
     			break;
     	}
-    })
+    }, true);
 
-   //  $scope.$watch($scope.repId, function() {
-   //  		$scope.id							=	$scope.vvid
-		 //   switch($scope.repId) {
-		 //   		case 'overspeedreport':
-		 //   			$scope.overspeedreport		=	true;
-		 //   			$scope.tableTitle			=	'Overspeed Report';
-		 //   			$scope.downloadid	 		=	'overspeedreport';
-		 //   			break;
-		 //   		case 'movementreport':
-		 //   			$scope.movementreport		=	true;
-		 //   			$scope.tableTitle			=	'Movement Report';
-		 //   			$scope.downloadid	 		=	'movementreport';
-		 //   			break;
-		 //   		case 'stoppedparkingreport':
-		 //   			$scope.stoppedparkingreport	=	true;
-		 //   			$scope.tableTitle			=	'Stopped Parking Report';
-		 //   			$scope.downloadid	 		=	'stoppedparkingreport';
-		 //   			break;
-		 //   		case 'geofencereport':
-		 //   			$scope.geofencereport		=	true;
-		 //   			$scope.tableTitle			=	'Geo Fence Report';
-		 //   			break;
-		 //   		case 'idlereport':
-		 //   			$scope.idlereport			= 	true;
-		 //   			$scope.tableTitle			=	'Idle Report';
-		 //   			$scope.downloadid           =   'idlereport';
-		 //   			break;
-		 //   		case 'eventReport':
-		 //   			$scope.idlereport			= 	true;
-		 //   			$scope.tableTitle			=	'Event Report';
-		 //   			$scope.downloadid           =   'eventReport';
-		 //   			break;
-		 //   		case 'sitereport':
-		 //   			$scope.idlereport			= 	true;
-		 //   			$scope.tableTitle			=	'Site Report';
-		 //   			$scope.downloadid           =   'sitereport';
-		 //   			break;
-		 //   		case 'loadreport':
-		 //   			$scope.loadreport			= 	true;
-		 //   			$scope.tableTitle 			=	'Load Report';
-		 //   			$scope.downloadid 			= 	'loadreport';
-		 //   			break;
-		 //   		case 'fuelreport':
-		 //   			$scope.loadreport			= 	true;
-		 //   			$scope.tableTitle 			=	'Fuel Report';
-		 //   			$scope.downloadid 			= 	'fuelreport';
-		 //   			break;
-		 //   		// case 'ignitionreport':
-		 //   		// 	$scope.loadreport			= 	true;
-		 //   		// 	$scope.tableTitle 			=	'Ignition report';
-		 //   		// 	$scope.downloadid 			= 	'ignitionreport';
-		 //   		// 	break;
-		 //   		default:
-		 //   			break;		
-		 //   }
-		 //   $scope.pdfHist();
-   // });
-  
-   	$scope.$watch(prodId, function() {
+   
+  	
+   	
+   	(function initial(prodId){
+   		console.log(' new  '+prodId)
    		$scope.id	=	prodId;
-   		var histurl	=	"http://"+getIP+context+"/public/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval;
+   		var histurl	=	"http://"+getIP+context+"/public/getVehicleHistory?vehicleId="+getParameterByName('vid')+"&interval="+$scope.interval;
    		$scope.loading	=	true;
    		$http.get(histurl).success(function(data){
 			$scope.loading			=	false;
@@ -265,7 +214,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 			// $scope.eventCall();
 			// $scope.siteCall();
 		});   
-   	});
+   	}(prodId));
    	
    	$scope.alertMe_click		=	function(value){
    		switch(value){

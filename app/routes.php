@@ -84,7 +84,12 @@ Route::get('/sites', function() {
     return View::make('reports.siteDetails');
 });
  
- 
+Route::get('/password_check', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.admin_Auth');
+});
  
  
 View::addExtension('html', 'php');
@@ -511,7 +516,7 @@ Route::post('Business/adddevice', array('uses' => 'BusinessController@adddevice'
 
 Route::post('rfid/addTags', array('uses' => 'RfidController@addTags'));
 Route::post('rfid/update', array('uses' => 'RfidController@update'));
- Route::post('select4', array('as' => 'ajax.user_select', 'uses' => 'RfidController@getVehicle'));
+ Route::post('select', array('as' => 'ajax.user_select', 'uses' => 'RfidController@getVehicle'));
  Route::post('select', array('as' => 'ajax.checkvehicle', 'uses' => 'BusinessController@checkvehicle'));
  Route::post('select1', array('as' => 'ajax.checkDevice', 'uses' => 'BusinessController@checkDevice'));
  Route::post('select3', array('as' => 'ajax.checkUser', 'uses' => 'BusinessController@checkUser'));
@@ -551,12 +556,13 @@ Route::post('vdmVehicles/updateLive/{param}', array('uses' => 'VdmVehicleControl
 Route::post('AddSiteController/store', array('uses' => 'AddSiteController@store'));
 Route::post('AddSiteController/update', array('uses' => 'AddSiteController@update'));
 Route::post('AddSiteController/delete', array('uses' => 'AddSiteController@delete'));
+Route::post('AddSiteController/checkPwd', array('uses' => 'AddSiteController@checkPwd'));
 Route::resource('AddSite', 'AddSiteController');
 Route::get('vdmSmsReportFilter', array('uses' => 'VdmSmsController@filter'));
  
 Route::post('vdmSmsReport', array('uses' => 'VdmSmsController@show'));
  
- 
+
  
 Route::get('vdmGeoFence/{token}', array('uses' => 'VdmGeoFenceController@show'));
  

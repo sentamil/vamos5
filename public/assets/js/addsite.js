@@ -19,6 +19,7 @@ app.controller('mainCtrl',function($scope, $http){
   var dropDown        = [];
   var polygenList     = [];
   var polygenColor;
+  marker = new google.maps.Marker({});
   var oldName         = '';
   $scope.url          = 'http://'+getIP+'/vamo/public/viewSite';
   var myOptions       = {
@@ -39,10 +40,19 @@ app.controller('mainCtrl',function($scope, $http){
   
   // search box function
   sbox.addListener('places_changed', function() {
+    marker.setMap(null);
     var places = sbox.getPlaces();
+    marker = new google.maps.Marker({
+    position: new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()),
+    animation: google.maps.Animation.BOUNCE,
+   map: $scope.map,
+    
+  });
+  console.log(' lat lan  '+places[0].geometry.location.lat(), places[0].geometry.location.lng())
     $scope.map.setCenter(new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()));
     $scope.map.setZoom(13);
   });
+
 
    //create button click
   $scope.drawline   =   function()
@@ -141,6 +151,7 @@ app.controller('mainCtrl',function($scope, $http){
   //clear button on map
   $scope.clearline  =   function()
   {
+    marker.setMap(null);
     if($scope.marker)
       $scope.marker.setMap(null);
     if(polygenColor)

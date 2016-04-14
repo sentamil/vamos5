@@ -316,6 +316,7 @@ li a label{ width:100%; display:block;}
 /*.labels{ color:#fff;}*/
 .container01{min-width: 200px; max-width: 220px; width: 220px; height: 125px; bottom:-33px; margin: 0 auto; position:absolute;}
 .labels { color: #0d0d0d; font-size: 11px; font-weight:bold; text-align: center; white-space: nowrap;background: #f4f4f4; border: 1px solid #0d0d0d; padding: 4px; border-radius: 25px}
+.labels1 {width: 200px;  color: #0d0d0d; font-size: 11px; font-weight:bold; text-align: center; background: #f4f4f4; border: 1px solid #0d0d0d; padding: 4px; border-radius: 4px}
 .maps {font-size: 14px; font-weight:bold;}
 /*labels1 { color: #fff; font-size: 9px; font-weight:normal; text-align: center; white-space: nowrap;  width: 24px;}*/
 /*.labels:before {
