@@ -199,6 +199,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 				$('#status').fadeOut(); 
 				$('#preloader').delay(350).fadeOut('slow');
 				$('body').delay(350).css({'overflow':'visible'});
+				alert('GPS Device yet to communicated with server...!!!');
 			}
 		// })	
 		
@@ -437,7 +438,9 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	    
 	    var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
 	    var labelAnchorpos = new google.maps.Point(19, 0);	///12, 37
-	    $scope.marker = new MarkerWithLabel({
+	    if(pos.data.position != 'N')
+	    {
+	    	 $scope.marker = new MarkerWithLabel({
 			   position: myLatlng, 
 			   map: $scope.map,
 			   icon: vamoservice.iconURL(pos.data),
@@ -446,6 +449,17 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 			   labelClass: "labels", 
 			   labelInBackground: false
 			});
+	    }
+	    else 
+	    {
+	    	 $scope.marker = new MarkerWithLabel({
+			   position: myLatlng, 
+			   map: $scope.map,
+			   icon: vamoservice.iconURL(pos.data),
+			   labelInBackground: false
+			});
+	    }
+	   
 	    
 		if(pos.data.vehicleId==$scope.vehicleno){
 			$scope.assignValue(pos.data);
