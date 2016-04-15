@@ -29,6 +29,7 @@
 	 <h4><font color="green">{{ Form::label('vehicleList', 'Select the vehicles:') }} </font><br><br>
 	 {{ Form::label('Filter', 'Filter :') }}
 	  {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}} </h4>
+	  <div>{{Form::label('Select All :')}} {{Form::checkbox('$userVehicles', 'value', false, ['class' => 'check'])}}</div>
 	</div>
 
 	<div class="col-md-3">
@@ -39,7 +40,7 @@
 	 @if(isset($vehicleList))		  
 		@foreach($vehicleList as $key => $value)
 			<div class="col-md-3 vehiclelist"> 
-			{{ Form::checkbox('vehicleList[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field']) }}
+			{{ Form::checkbox('vehicleList[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field' ,'id' => 'questionCheckBox']) }}
 			{{ Form::label($value) }}
 			{{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
 			</div>
@@ -51,18 +52,9 @@
 {{ Form::close() }}
 
 <script type="text/javascript">
-$( ".searchkey" ).keyup(function() {
-  var valThis = $(this).val().toLowerCase();
-   $('.vehiclelist>input').each(function(){
-       var text = $(this).val().toLowerCase();
-       if(text.indexOf(valThis) >= 0) {
-       	$(this).parent('div').fadeIn();
-       }
-       else{
-       	$(this).parent('div').fadeOut();
-       }
+list = [];
+var value = <?php echo json_encode($vehicleList ); ?>;
 
-  });
-})</script>
-
+</script>
+@include('includes.js_footer')
 @stop

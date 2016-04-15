@@ -34,14 +34,16 @@
 								<div class="col-md-6">
 								<h4>{{ Form::label('Filter', 'Filter :')}}
 								{{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</h4>
+								<div>{{Form::label('Select All :')}} {{Form::checkbox('$userplace', 'value', false, ['class' => 'check'])}}</div>
+								
 								</div>
 								</div>
 								<br>
 								@if(isset($userplace))
 									
 								@foreach($userplace as $key => $value)
-								<div class="col-md-3 userplace">
-									{{ Form::checkbox('poi[]', $userplace[$key], null, ['class' => 'field']) }}
+								<div class="col-md-3 vehiclelist">
+									{{ Form::checkbox('poi[]', $userplace[$key], null, ['class' => 'field', 'id' => 'questionCheckBox']) }}
 											{{ Form::label($userplace[$key]) }}
 											</div>
 									@endforeach
@@ -49,6 +51,10 @@
 			            
                	{{ Form::close() }}	
     		</div>
+    		<script>
+				list = [];
+      			var value = <?php echo json_encode($userplace ); ?>;
+			</script>
 		</div>
 	</div>
 </div>

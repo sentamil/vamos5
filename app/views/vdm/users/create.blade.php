@@ -49,7 +49,7 @@
 							  <h4><font color="green">{{ Form::label('vehicleGroups', 'Select the Groups:') }}</font></h4>	
 							 <h4> {{ Form::label('Filter', 'Filter :') }}
 							  {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</h4>
-							 
+							 <div>{{Form::label('Select All :')}} {{Form::checkbox('$vehicleGroups', 'value', false, ['class' => 'check'])}}</div>
 							 </div>
 							 </div>
 							 </br>
@@ -57,7 +57,7 @@
 								            @foreach($vehicleGroups as $key => $value)
 										<div class="col-md-3 vehiclelist">
 									
-									{{ Form::checkbox('vehicleGroups[]', $key, null, ['class' => 'field']) }}
+									{{ Form::checkbox('vehicleGroups[]', $key, null, ['class' => 'field', 'id' => 'questionCheckBox']) }}
 									{{ Form::label($value) }}
 									</div>
 								@endforeach
@@ -66,6 +66,10 @@
 								
 								{{ Form::close() }}
 						</div>
+						<script>
+							list = [];
+                  			var value = <?php echo json_encode($vehicleGroups ); ?>;
+						</script>
 			</div>
 		</div>
 	</div>

@@ -17,6 +17,41 @@
 <script src="../scripts/charts.js"></script>
 
 <script type="text/javascript">
+
+
+                  
+                  
+                  
+                  $(function () {
+                      $('.check').on('click', function () {
+                        var valu = $('.check').each(function(){});
+                        var count = 0;
+                        if(list.length)
+                        {
+                          for (var a in list){
+                          if(valu[0].checked == true)
+                            $(questionCheckBox[list[a]]).each(function(){ this.checked = true; });
+                          else if (valu[0].checked != true)
+                            $(questionCheckBox[list[a]]).each(function(){ this.checked = false; });
+                        };
+                          
+                      }
+                      else
+                      {
+                        for (var a in value){
+                          if(valu[0].checked == true)
+                            $(questionCheckBox[count]).each(function(){ this.checked = true; });
+                          else if (valu[0].checked != true)
+                            $(questionCheckBox[count]).each(function(){ this.checked = false; });
+                          count++;
+                        };
+                      }
+                      }); 
+                  });
+                
+
+
+
 $( ".searchkey" ).keyup(function() {
   list = [];
   var valThis = $(this).val().toLowerCase();
@@ -36,7 +71,7 @@ $( ".searchkey" ).keyup(function() {
       $(function () {
         $("#example1").dataTable();
 
-       /* var table = $('#example1').DataTable();
+       /* var table = $('#example1').DataTable();   userplace
         var test  =   [];
         $('#example1 tbody').on('click', 'td', function () {
             $(this).closest('td').find("input").each(function() {
@@ -67,21 +102,16 @@ $( ".searchkey" ).keyup(function() {
         });*/
         
       });
-    </script>
-	<script type="text/javascript">
-$( ".searchkey" ).keyup(function() {
-  var valThis = $(this).val().toLowerCase();
-   $('.userplace>input').each(function(){
-       var text = $(this).val().toLowerCase();
-       if(text.indexOf(valThis) >= 0) {
-       	$(this).parent('div').fadeIn();
-       }
-       else{
-       	$(this).parent('div').fadeOut();
-       }
 
-  });
-})</script>
+
+
+
+
+
+
+
+    </script>
+	
 
 <script>
 

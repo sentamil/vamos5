@@ -46,41 +46,10 @@
 												
 									@endforeach
 								@endif
-								<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+								
 								<script>
 									list = [];
-									var value = <?php echo json_encode($userVehicles ); ?>;
-									
-									
-									$(function () {
-									    $('.check').on('click', function () {
-									    	var valu = $('.check').each(function(){});
-									    	var count = 0;
-
-									    	if(list.length)
-									    	{
-									    		for (var a in list){
-													if(valu[0].checked == true)
-											 			$(questionCheckBox[list[a]]).each(function(){ this.checked = true; });
-											 		else if (valu[0].checked != true)
-											 			$(questionCheckBox[list[a]]).each(function(){ this.checked = false; });
-											 	};
-										    	
-											}
-											else
-											{
-												for (var a in value){
-													if(valu[0].checked == true)
-											 			$(questionCheckBox[count]).each(function(){ this.checked = true; });
-											 		else if (valu[0].checked != true)
-											 			$(questionCheckBox[count]).each(function(){ this.checked = false; });
-											 		count++;
-												};
-											}
-									      	}); 
-									    });
-								
-
+                  					var value = <?php echo json_encode($userVehicles ); ?>;
 								</script>
 			              		
 			              		
