@@ -17,18 +17,19 @@
 <script src="../scripts/charts.js"></script>
 
 <script type="text/javascript">
-    $( ".searchkey" ).keyup(function() {
-    
-       var valThis = $(this).val().toLowerCase();
-       $('.vehiclelist>input').each(function(){
-       var text = $(this).val().toLowerCase();
-       if(text.indexOf(valThis) >= 0) {
-        $(this).parent('div').fadeIn();
-       }
-       else{
-        $(this).parent('div').fadeOut();
-       }
-       });
+$( ".searchkey" ).keyup(function() {
+  list = [];
+  var valThis = $(this).val().toLowerCase();
+  $('.vehiclelist>input').each(function(index){
+    var text = $(this).val().toLowerCase();
+    if(text.indexOf(valThis) >= 0) {
+      $(this).parent('div').fadeIn();
+      list.push(index);
+    }
+    else{
+      $(this).parent('div').fadeOut();
+    }
+  });
 })
 
 

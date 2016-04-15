@@ -25,51 +25,65 @@
 
 								<div class="row">
 									 <div class="col-md-6">
-									 <h4><font color="green">{{ Form::label('vehicleList', 'Select the vehicles:') }}</font></h4>
+									 <h4><font>{{ Form::label('vehicleList', 'Select the vehicles:') }}</font></h4>
+									
+
 									 </div>
 									 <div class="col-md-9">
 									<h4> {{ Form::label('Filter', 'Filter :') }}
-									 {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</h4>
+									 {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}  </h4>
+									 <div>{{Form::label('Select All :')}} {{Form::checkbox('$userVehicles', 'value', false, ['class' => 'check'])}}</div>
 									</div>
 								</div>
 								<br/>
 								@if(isset($userVehicles))		  
 									@foreach($userVehicles as $key => $value)
 										<div class="col-md-3 vehiclelist"> 
-										{{ Form::checkbox('vehicleList[]', $key, null, ['class' => 'field']) }}
+										{{ Form::checkbox('vehicleList[]', $key, null, ['class' => 'field', 'id' => 'questionCheckBox']) }}
 										{{ Form::label($value) }}
 										{{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
 										</div>
 												
 									@endforeach
 								@endif
-
-
-			              		<!--table id="example1" class="table table-bordered dataTable">
-
-			              		<thead>
-			                		<tr>
-			                			<th>{{ Form::label('vehicleList', 'Select the vehicles:') }}</th>
-			                			<th>{{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</th>
-			                		</tr>
-
-			                	</thead>
-			                	<tbody>	
-								@if(isset($userVehicles))
+								<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+								<script>
+									list = [];
+									var value = <?php echo json_encode($userVehicles ); ?>;
 									
-								@foreach($userVehicles as $key => $value)
-			                		<tr class="col-md-4 vehiclelist">
-			                			<td>
-				                			{{ Form::checkbox('vehicleList[]', $key, null, ['class' => 'field']) }}
-											{{ Form::label($value) }}
-											{{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
-			                			</td>	
-			                		</tr>
-								@endforeach
-								@endif
-			                	
-               					</tbody>
-                		</table -->
+									
+									$(function () {
+									    $('.check').on('click', function () {
+									    	var valu = $('.check').each(function(){});
+									    	var count = 0;
+
+									    	if(list.length)
+									    	{
+									    		for (var a in list){
+													if(valu[0].checked == true)
+											 			$(questionCheckBox[list[a]]).each(function(){ this.checked = true; });
+											 		else if (valu[0].checked != true)
+											 			$(questionCheckBox[list[a]]).each(function(){ this.checked = false; });
+											 	};
+										    	
+											}
+											else
+											{
+												for (var a in value){
+													if(valu[0].checked == true)
+											 			$(questionCheckBox[count]).each(function(){ this.checked = true; });
+											 		else if (valu[0].checked != true)
+											 			$(questionCheckBox[count]).each(function(){ this.checked = false; });
+											 		count++;
+												};
+											}
+									      	}); 
+									    });
+								
+
+								</script>
+			              		
+			              		
                	{{ Form::close() }}	
     		</div>
 		</div>
