@@ -989,5 +989,20 @@ for ($i = 0; $i < 10; $i++) {
         }
         
     }   
-           
+         
+     public function ordIdCheck()
+     {
+     	if(!Auth::check()) {
+            return Redirect::to('login');
+        }
+        $username = Auth::user()->username;
+        $organizationId = Input::get('id');
+     	$redis = Redis::connection();
+     	$organizationId = $redis->hget('H_Org_Company_Map',$organizationId);
+     	if($organizationId != null)
+     	{
+     		return 'Organistaion is already exist. Please choose another one ';
+     	}
+
+     }  
 }

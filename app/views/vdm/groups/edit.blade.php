@@ -1,60 +1,58 @@
 @extends('includes.vdmheader')
 @section('mainContent')
-
-<h2><font color="blue">Edit Group</font></h2>
-
-<!-- if there are creation errors, they will show here -->
-{{ HTML::ul($errors->all()) }}
-
-{{ Form::model($groupId, array('route' => array('vdmGroups.update', $groupId), 'method' => 'PUT')) }}
-	
-	<div class="form-group">
-		{{ Form::label('groupId', 'Group Id :')  }}
-		
-		{{ Form::label('groupId' , $groupId) }}
-	</div>
-	<hr>
-<!-- 
-	
-	<div class="form-group">
-		{{ Form::label('vehicleList', 'Vehicle List (press shift to select multiple vehicles)') }}
-		{{ Form::select('vehicleList[]', $vehicleList, Input::old('vehicleList'),  array('multiple' => true,'class' => 'form-control')) }}
-
-	</div>
-	 -->
-	 <div class="form-group">
-	 <div class="row">
-	 <div class="col-md-9">
-	 
-	 <h4><font color="green">{{ Form::label('vehicleList', 'Select the vehicles:') }} </font><br><br>
-	 {{ Form::label('Filter', 'Filter :') }}
-	  {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}} </h4>
-	  <div>{{Form::label('Select All :')}} {{Form::checkbox('$userVehicles', 'value', false, ['class' => 'check'])}}</div>
-	</div>
-
-	<div class="col-md-3">
-	 {{ Form::submit('Update the Group!', array('class' => 'btn btn-primary')) }}
-	</div>
-</div>
-	 </div>
-	 @if(isset($vehicleList))		  
-		@foreach($vehicleList as $key => $value)
-			<div class="col-md-3 vehiclelist"> 
-			{{ Form::checkbox('vehicleList[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field' ,'id' => 'questionCheckBox']) }}
-			{{ Form::label($value) }}
-			{{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
+<div id="wrapper">
+	<div class="content animate-panel">
+		<div class="row">
+		    <div class="col-lg-12">
+		        <div class="hpanel">
+		            <div class="panel-heading">
+		               <h4><b>Edit Group</b></h4>
+		            </div>
+		            <div class="panel-body">
+		            	{{ HTML::ul($errors->all()) }}{{ Form::model($groupId, array('route' => array('vdmGroups.update', $groupId), 'method' => 'PUT')) }}
+		            	<div class="row">
+		            		
+		            		<div class="col-md-1">{{ Form::label('groupId', 'Group Id :')  }}</div>
+		            		<div class="col-md-4">{{ Form::label('groupId', $groupId, array('class'=>'form-control'))  }}</div>
+		            	</div>
+		            	<hr>
+		            	<div class="row">
+		            		<div class="col-md-12"><h4><font color="#086fa1">{{ Form::label('vehicleList', 'Select the vehicles:') }} </font></div>
+		            	</div>
+		            	<div class="row">
+		            		<div class="col-md-1">{{ Form::label('Filter', 'Filter :') }}</div>
+		            		<div class="col-md-2">{{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</div>
+		            		<div class="col-md-1">{{Form::label('Select All :')}}</div>
+		            		<div class="col-md-1">{{Form::checkbox('$userVehicles', 'value', false, ['class' => 'check'])}}</div>
+		            		<div class="col-md-2"> {{ Form::submit('Update the Group!', array('class' => 'btn btn-primary')) }}</div>
+		            	</div>
+		            	<br>
+		            	<div class="row">
+		            		@if(isset($vehicleList))		  
+								@foreach($vehicleList as $key => $value)
+									<div class="col-md-3 vehiclelist"> 
+									{{ Form::checkbox('vehicleList[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field' ,'id' => 'questionCheckBox']) }}
+									{{ Form::label($value) }}
+									{{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
+									</div>
+									
+								@endforeach
+							@endif
+		            	</div>
+		            	<hr>
+		            	{{ Form::close() }}
+		            </div> 
+				</div>
 			</div>
-			
-		@endforeach
-	@endif
-		</br/>
-		</br/>
-{{ Form::close() }}
-
+		</div>
+	</div>
+</div>		
 <script type="text/javascript">
 list = [];
 var value = <?php echo json_encode($vehicleList ); ?>;
 
 </script>
 @include('includes.js_footer')
-@stop
+<div align="center">@stop
+</div>
+

@@ -13,6 +13,7 @@
 <script src="../vendor/sparkline/index.js"></script>
 <script src="../plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script> 
+<script src="../vendor/validation/js/jquery.guardian-1.0.min.js"></script>
 <script src="../scripts/homer.js"></script>
 <script src="../scripts/charts.js"></script>
 

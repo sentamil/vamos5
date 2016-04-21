@@ -371,4 +371,27 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 	}
 
 
+
+	//check the group name
+	public function groupIdCheck(){
+			
+		if(!Auth::check()){
+			return Redirect::to('login');
+		}
+		$username =	Auth::user()->username;
+		$redis = Redis::connection();
+		$newGroupId = Input::get ( 'id');
+		$fcode = $redis->hget('H_UserId_Cust_Map',$username.':fcode');
+		Log::info(' fcode '.$fcode);
+		$groupValue = $redis->SISMEMBER('S_Groups_'.$fcode, $newGroupId.':'.$fcode);
+		if($groupValue == $newGroupId)
+		{
+			return 'fail';
+		}
+		else{
+			return $newGroupId;
+		}
+		Log::info(' groupValue  '.$groupValue);
+	}
+
 }

@@ -1,47 +1,50 @@
 @extends('includes.vdmEditHeader')
 @section('mainContent')
-<h1><font color="blue">Vehicle Migration</font></h1>
 
-<!-- if there are creation errors, they will show here -->
-{{ HTML::ul($errors->all()) }}
 
-{{ Form::open(array('url' => 'vdmVehicles/migrationUpdate')) }}
-<div class="row">
-		<div class="col-md-4">
-	<div class="form-group">
-		{{ Form::label('vehicleId', 'AssetID :')  }}
-		 {{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control')) }}
-	</div>
-	<div class="form-group">
-		
-		 {{ Form::hidden('vehicleIdOld', $vehicleId, array('class' => 'form-control')) }}
-	</div>
-	<div class="form-group">
-		
-		 {{ Form::hidden('expiredPeriodOld', $expiredPeriod, array('class' => 'form-control')) }}
-	</div>
-	<div class="form-group">
-		{{ Form::label('deviceId', 'Edit Device Id') }}
-		<br/>
-		{{ Form::text('deviceId', $deviceId, array('class' => 'form-control')) }}
+<div id="wrapper">
+	<div class="content animate-panel">
+		<div class="row">
+    		<div class="col-lg-12">
+       			 <div class="hpanel">
+               		<div class="panel-heading" align="center">
+                   		<h4><font>Vehicle Migration</font></h4>
+                	</div>
+                	<hr>
+                	{{ HTML::ul($errors->all()) }}
+                	{{ Form::open(array('url' => 'vdmVehicles/migrationUpdate')) }}
+                	<div class="panel-body">
+                		<div class="row">
+                			<div class="col-md-2"></div>
+                			<div class="col-md-3">{{ Form::label('vehicleId', 'AssetID :')  }}</div>
+                			<div class="col-md-4"> {{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control')) }}</div>
+                		</div>
+                		<div class="row">
+                			<div class="col-md-2"></div>
+                			<div class="col-md-3">{{ Form::hidden('vehicleIdOld', $vehicleId, array('class' => 'form-control')) }}</div>
+                			<div class="col-md-4"></div>
+                		</div>
+                		<br>
+                		<div class="row">
+                			<div class="col-md-2"></div>
+                			<div class="col-md-3">{{ Form::label('deviceId', 'Edit Device Id') }}</div>
+                			<div class="col-md-4">{{ Form::text('deviceId', $deviceId, array('class' => 'form-control')) }}</div>
+                		</div>
+                		<br>
+                		<div class="row">
+                			<div class="col-md-2"></div>
+                			<div class="col-md-3"></div>
+                			<div class="col-md-4">	{{ Form::submit('Migrate the Vehicle!', array('class' => 'btn btn-primary')) }}</div>
+                		</div>
+                	</div>
+                	{{ Form::close() }}
+                	
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-	</div>
-	<div class="form-group">
-		{{ Form::label('deviceId', 'Edit Device Id') }}
-		<br/>
-		{{ Form::hidden('deviceIdOld', $deviceId, array('class' => 'form-control')) }}
-
-	</div>
-	
-    
-   
-	
-     </div>
-
-	
-	</div>
-
-	{{ Form::submit('Migrate the Vehicle!', array('class' => 'btn btn-primary')) }}
-
-{{ Form::close() }}
-@stop
+<div style="top: 0; left: 0;right: 0; padding-top: 150px;" align="center">
+	<hr>
+	@stop</div>

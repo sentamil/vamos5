@@ -522,6 +522,16 @@ Route::post('rfid/update', array('uses' => 'RfidController@update'));
  Route::post('select3', array('as' => 'ajax.checkUser', 'uses' => 'BusinessController@checkUser'));
   Route::post('select2', array('as' => 'ajax.getGroup', 'uses' => 'BusinessController@getGroup'));
 Route::post('Business/batchSale', array('uses' => 'BusinessController@batchSale'));
+
+// arun ajax call
+Route::post('groupId', array('as' => 'ajax.groupIdCheck', 'uses'=>'VdmGroupController@groupIdCheck'));
+Route::post('dealerId', array('as' => 'ajax.dealerCheck', 'uses'=>'VdmDealersController@dealerCheck'));
+Route::post('orgId', array('as' => 'ajax.ordIdCheck', 'uses'=>'VdmOrganizationController@ordIdCheck'));
+Route::post('userId', array('as' => 'ajax.userIdCheck', 'uses'=>'VdmUserController@userIdCheck'));
+
+
+
+
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
  

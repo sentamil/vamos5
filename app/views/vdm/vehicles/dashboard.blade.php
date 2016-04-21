@@ -1,127 +1,116 @@
 @include('includes.header_index')
 <div id="wrapper">
-<div class="content animate-panel">
-<div class="row">
-    <div class="col-lg-12">
-        <div class="hpanel">
-                <div class="panel-heading">
-                   <h4><b><font color="blue"> Dash Board </font></b></h4>
-                </div>
-                <div class="panel-body">
-                <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6">
-                <div class="col-sm-6"><div id="example2_filter" class="dataTables_filter"></div></div></div><div class="row">
-			<div class="col-sm-12">
-			<div class="form-group">
-					<font face="tahoma" size="3" style="color:orange">{{ Form::label('tnovo', 'Total Vehicles OnBoard :') }}
-					{{ Form::label('count', $count.' ') }}</font>
-					</div></br>
-					<div claa="col-sm-12">
-					<div class="form-group">
-					<div class="row">
-					<div class="col-sm-12">
-					<font face="tahoma" size="3" style="color:green"> {{ Form::label('vechileEx', 'Number of Vehicles Expires Next Month') }}
+	<div class="content animate-panel">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="hpanel">
+					<!-- <div class="panel-heading"> -->
+					<h4><b> Dash Board </b></h4>
+					<div class="panel-body">
 
-					   {{ Form::label('l', count($vechile), array('class' => 'form-control')) }}</font>
-					 </div></br><br>
-					 <div class="col-sm-12">
-					<font face="tahoma" size="3" style="color:green"> {{ Form::label('num', 'Onboarded Details') }}
-<br/></font>
-					   previous month :{{ Form::label('0', $prevMonthCount, array('class' => 'form-control')) }}
-					   present month :{{ Form::label('0', $prsentMonthCount, array('class' => 'form-control')) }}
-					    next month :{{ Form::label('0', $nextMonthCount, array('class' => 'form-control')) }}
-					 </div></br><br>
-					 
-					 
-					 
-					 
-					<div class="col-sm-12">
-			                <font face="tahoma" size="3" color="blue"> {{ Form::label('vechileEx', 'Vehicles Details :') }}</font>
-					</br><br>
-					<table id="example1" class="table table-bordered dataTable">
-					<thead>
-						<font face="tahoma" color="rose">
 
-						<tr>
-							<th style="text-align: center;">VEHICLE ID</th>
-						</tr>
-					</font>
+							
+						<div id="example2_wrapper">
+							<!-- <div class="col-sm-6">
+								<div id="example2_filter" class="dataTables_filter"></div>
+							</div> -->
+							<div class="row">
+								<div style="color: #086fa1">
+									<div class="col-sm-6">{{ Form::label('tnovo', 'Total Vehicles OnBoard :') }}</div>
+									<div class="col-sm-6">{{ Form::label('count', $count.' ',array('class' => 'form-control')) }}</div>
+									<div class="col-sm-6">{{ Form::label('vechileEx', 'Number of Vehicles Expires Next Month :') }}</div>
+									<div class="col-sm-6">{{ Form::label('0', count($vechile), array('class' => 'form-control')) }}</div>
+									<!-- <div class="col-sm-6">{{ Form::label('num', 'Onboarded Details') }}</div> -->
+									<div class="col-sm-6">{{Form::label('', 'Previous Month :')}}</div>
+									<div class="col-sm-6">{{ Form::label('0', $prevMonthCount, array('class' => 'form-control')) }}</div>
+									<div class="col-sm-6">{{Form::label('', 'Present Month :')}}</div>
+									<div class="col-sm-6">{{ Form::label('0', $prsentMonthCount, array('class' => 'form-control')) }}</div>
+									<div class="col-sm-6">{{Form::label('', 'Next Month :')}}</div>
+									<div class="col-sm-6">{{ Form::label('0', $nextMonthCount, array('class' => 'form-control')) }}</div>
+								</div>
+								<div class="col-sm-12">
+									<hr>
+									<div class="col-sm-12">
+										<div  style="color: #086fa1"> {{ Form::label('vechileEx', 'Vehicles Details :') }}</div>
+										<table id="example1" class="table table-bordered dataTable">
+											<thead>
+												<font>
 
-					</thead>
-					<tbody>
-					@if(isset($vechile))
-					@foreach($vechile as $key => $value)
-					<tr style="text-align: center;">
-					 <td>{{ Form::label('li', $key) }}</td>
-					 </tr>
-					  @endforeach
-					  </tbody>
-					  @endif
-					</table>
-					</div>
-					</div>
-					<br>
-					<div class="row">
-					<div class="col-sm-12">
-					<div class="form-group">
-       					<font face="tahoma" size="3" color="blue">{{ Form::label('vehicles', 'Vehicles OnBoard with each Dealers :') }}</font>
-					<table id="example1" class="table table-bordered dataTable">
-					<thead>
-						<tr>
-							<th style="text-align: center;">DEALER ID</th>
-							<th style="text-align: center;">NUMBER OF VEHICLES</th>
-						</tr>
-					</thead>
-					<tbody>
-					@if(isset($dealerId))
-					@foreach($dealerId as $key => $value)
-						<tr style="text-align: center;">
-							<td> {{ Form::label('li', $key) }}</td>
-							<td> {{ Form::label('l',$value .' '.' ') }}</td>
-						</tr>
-					@endforeach
-					</tbody>
-					@endif
-					</table>
-				
-					</br>
-					</div>
-					</div>
-					<div class="row">
-					<div class="col-sm-12">
-					<div class="form-group">
-					<div class="col-sm-12">
-					<font face="tahoma" size="3" style="color:blue"> {{ Form::label('vechileEx', $vechileEx) }}</font>
-					<div class="row">
-					<div class="col-sm-12">
-					<div class="form-group"> 
-					{{ Form::label('vechileEx1', $vechileEx1) }}
-					</div>
-					<table id="example1" class="table table-bordered dataTable">
-					<thead>
-						<tr>
-							<th style="text-align: center;">DEALER ID</th>
-							<th style="text-align: center;">NUMBER OF VEHICLES</th>
-						</tr>
-					</thead>
-					<tbody>
-					 @if(isset($temp))
-					@foreach($temp as $key => $value)
-					<tr style="text-align: center;">
-					<td> {{ Form::label('li', $key) }}</td>
-					<td> {{ Form::label('l', $value .'  '.' ') }}</td>
-					 </tr>
-					  @endforeach
-					  </tbody>
-					  @endif
-					</table>
-					{{ Form::close() }}
-					</div>
+													<tr>
+														<th style="text-align: center;">VEHICLE ID</th>
+													</tr>
+												</font>
+
+											</thead>
+											<tbody>
+												@if(isset($vechile))
+												@foreach($vechile as $key => $value)
+												<tr style="text-align: center;">
+													<td>{{ Form::label('li', $key) }}</td>
+												</tr>
+												@endforeach
+											</tbody>
+											@endif
+										</table>
+									</div>
+									<div class="col-sm-12">
+										<hr>
+										<div class="col-sm-12" style="color: #086fa1">
+											<div class="col-sm-6">{{ Form::label('vehicles', 'Vehicles OnBoard with each Dealers : ') }}</div>
+											<div class="col-sm-6">{{ Form::label('vechileEx', $vechileEx) }}</div>
+										</div>
+										<div class="col-sm-6">
+											<table id="example1" class="table table-bordered dataTable">
+												<thead>
+													<tr>
+														<th style="text-align: center;">DEALER ID</th>
+														<th style="text-align: center;">NUMBER OF VEHICLES</th>
+													</tr>
+												</thead>
+												<tbody>
+													@if(isset($dealerId))
+													@foreach($dealerId as $key => $value)
+													<tr style="text-align: center; font-size: 11px;">
+														<td> {{ Form::label('li', $key) }}</td>
+														<td> {{ Form::label('l',$value .' '.' ') }}</td>
+													</tr>
+													@endforeach
+												</tbody>
+												@endif
+											</table>
+										</div>
+										<div class="col-sm-6">
+											{{ Form::label('vechileEx1', $vechileEx1) }}
+											<!-- </div> -->
+											<table id="example1" class="table table-bordered dataTable">
+												<thead>
+													<tr>
+														<th style="text-align: center;">DEALER ID</th>
+														<th style="text-align: center;">NUMBER OF VEHICLES</th>
+													</tr>
+												</thead>
+												<tbody>
+													@if(isset($temp))
+													@foreach($temp as $key => $value)
+													<tr style="text-align: center; font-size: 11px">
+														<td> {{ Form::label('li', $key) }}</td>
+														<td> {{ Form::label('l', $value .'  '.' ') }}</td>
+													</tr>
+													@endforeach
+												</tbody>
+												@endif
+											</table>
+											{{ Form::close() }}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-            </div>
-    </div>
-</div>
-</div>
+			</div>
+		</div>
+	</div>
 </div>
 @include('includes.js_index')
 </body>

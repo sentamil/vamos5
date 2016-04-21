@@ -361,7 +361,7 @@ class VdmDealersController extends \BaseController {
               $val = $redis->hget ( 'H_UserId_Cust_Map', $dealerId . ':fcode' );
               $val1= $redis->sismember ( 'S_Dealers_' . $fcode, $dealerId );
 		}
-		if (strpos($dealerId, 'admin') !== false || strpos($dealerId, 'ADMIN') !== false) 
+		if (strpos($dealerId, 'admin') !== false || strpos($dealerId, 'ADMIN') !== false || strpos($newGroupId, 'Admin') !== false) 
 		{
 			return Redirect::to ( 'vdmDealers/create' )->withErrors ( 'Name with admin not acceptable' );
 		}
@@ -475,4 +475,29 @@ class VdmDealersController extends \BaseController {
 		Session::flash ( 'message', 'Successfully deleted ' . $userId . '!' );
 		return Redirect::to ( 'vdmDealers' );
 	}
+
+
+	public function dealerCheck(){
+
+		if(!Auth::check()){
+			return Redirect::to('login');
+		}
+		$username =	Auth::user()->username;
+		$redis = Redis::connection();
+		$newGroupId = Input::get ( 'id');
+		$fcode = $redis->hget('H_UserId_Cust_Map',$username.':fcode');
+		$dealerName = $redis->sismember('S_Dealers_'.$fcode, $newGroupId);
+		$dealerVal = $redis->hget ( 'H_UserId_Cust_Map', $newGroupId . ':fcode' );
+
+		
+
+		if (strpos($newGroupId, 'admin') !== false || strpos($newGroupId, 'ADMIN') !== false || strpos($newGroupId, 'Admin') !== false) 
+		{
+			return  'Name with admin not acceptable';
+		}
+		if($dealerName == 1 || isset($dealerVal)){
+			return 'Dealer Name already written !';
+		}
+	}
+
 }

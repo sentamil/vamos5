@@ -6,7 +6,7 @@
     		<div class="col-lg-12">
         		<div class="hpanel">
                 <div class="panel-heading">
-                  <h4><font color="blue"><b> Place of Interest </b> </font></h4>
+                  <h4><font><b> Place of Interest </b> </font></h4>
                 </div>
                 <div class="panel-body">
                 	<div class="row">
@@ -20,7 +20,7 @@
   	              				</div>
 								<div class="col-md-3">
   	              					{{ Form::label('radiusrange', 'Radius Range') }}
-											{{ Form::text('radiusrange', Input::old('radiusrange'), array('class' => 'form-control')) }}
+											{{ Form::Number('radiusrange', Input::old('radiusrange'), array('class' => 'form-control','placeholder'=>'Radius Range (Km)', 'min'=>'1')) }}
   	              				</div>
                 				<div class="col-md-3" style="text-align: right"><br>
                 					<h4>{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</h4>
@@ -28,13 +28,12 @@
 								</div>
 								<hr> 
 								<div class="row">
-								<div class="col-md-9">
-								<h5><font color="green">{{ Form::label('userplace', 'Select the Place Of Interest :') }}</font></h5>
+								<div class="col-md-12">
+								<h5><font color="#086fa1">{{ Form::label('userplace', 'Select the Place Of Interest :') }}</font></h5>
 								</div>
-								<div class="col-md-6">
-								<h4>{{ Form::label('Filter', 'Filter :')}}
-								{{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</h4>
-								<div>{{Form::label('Select All :')}} {{Form::checkbox('$userplace', 'value', false, ['class' => 'check'])}}</div>
+								<div class="col-md-3">{{ Form::label('Filter', 'Filter :')}}
+								{{ Form::input('text', 'searchtext', null, ['class' => 'searchkey'])}}</div><div class="col-md-3">
+								{{Form::label('Select All :')}} {{Form::checkbox('$userplace', 'value', false, ['class' => 'check'])}}</div>
 								
 								</div>
 								</div>

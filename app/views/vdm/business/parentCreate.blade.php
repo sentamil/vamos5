@@ -25,7 +25,7 @@
 <div class="hpanel">
 
 <div class="panel-heading">
-<h4><font color="blue"><b>Add Device </b></font><h4> 
+<h4><font><b>Add Device </b></font><h4> 
 </div>
 <div class="panel-body">
 <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
@@ -42,8 +42,8 @@
 {{ Form::hidden('numberofdevice1', $numberofdevice, array('class' => 'form-control')) }}
 {{ Form::hidden('availableLincence', $availableLincence, array('class' => 'form-control')) }}
 
-<h5><font color="green">{{ Form::label('Business','BUSINESS :') }}</font></h5>
-	        <font color="blue">
+<h5><font>{{ Form::label('Business','BUSINESS :') }}</font></h5>
+	        <font>
 	       
 	        	<table><tr><td id="hide">{{ Form::radio('type', 'Move') }}</td><td width=20></td><td>Batch Move</td><td width=20></td><td id="p1">{{ Form::select('dealerId', array($dealerId), array('class' => 'form-control')) }}</td></tr>
 	        		<tr><td id="show">{{ Form::radio('type', 'Sale') }}</td><td width=20></td><td>Batch Sale</td>
@@ -287,7 +287,7 @@ $("#td{{$i}}").toggle(500);
 <td>{{ Form::label('shortName', 'Vehicle Name') }}
 <br/>
 			
-				{{ Form::text('shortName'.$i, Input::old('shortName'), array('class' => 'form-control')) }} </td>
+				{{ Form::text('shortName'.$i, Input::old('shortName'), array('class' => 'form-control','placeholder'=>'Vehicle Name')) }} </td>
 <td>
 
 				{{ Form::label('regNo'.$i, 'Vehicle Reg Number') }}
