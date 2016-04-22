@@ -17,38 +17,38 @@
         	<div class="row">
         		<div class="col-md-2"></div>
         		<div class="col-md-3" >{{ Form::label('vechicle', 'Vechicle Id') }}</div>
-				<div class="col-md-4">{{ Form::label('vehicleId', $vehicleId,array('class' => 'form-control')) }}</div>
+				<div class="col-md-4">{{ Form::label('vehicleId', $vehicleId,array('class' => 'form-control')) }}{{ Form::hidden('vehicleId', $vehicleId) }}</div>
 			</div>
         	<br />
         	<div class="row">
         		<div class="col-md-2"></div>
         		<div class="col-md-3">{{ Form::label('Date', 'Date') }}</div>
-				<div class="col-md-4">{{ Form::text('date', Input::old('date'),array('placeholder' => 'dd-mm-yyyy','class' => 'form-control')) }}</div>
+				<div class="col-md-4">{{ Form::text('date', Input::old('date'),array('placeholder' => 'dd-mm-yyyy','class' => 'form-control','required'=>'required')) }}</div>
 			</div>
 			<br />
 			<div class="row">
 				<div class="col-md-2"></div>
         		<div class="col-md-3">{{ Form::label('MST', 'Morning Start Time') }}</div>
-				<div class="col-md-4">{{ Form::text('mst',   Input::old('mst'),array('placeholder' => 'hh:mm', 'class' => 'form-control')) }}</div>
+				<div class="col-md-4">{{ Form::text('mst',   Input::old('mst'),array('placeholder' => 'hh:mm', 'class' => 'form-control','required'=>'required')) }}</div>
 
         	</div>
         	<br />
         	<div class="row">
         		<div class="col-md-2"></div>
         		<div class="col-md-3">{{ Form::label('MET', 'Morning End Time') }}</div>
-        		<div class="col-md-4">{{ Form::text('met',   Input::old('met'),array('placeholder' => 'hh:mm','class' => 'form-control')) }}</div>
+        		<div class="col-md-4">{{ Form::text('met',   Input::old('met'),array('placeholder' => 'hh:mm','class' => 'form-control','required'=>'required')) }}</div>
         	</div>
         	<br />
         	<div class="row">
         		<div class="col-md-2"></div>
         		<div class="col-md-3">{{ Form::label('EST', 'Evening Start Time') }}</div>
-        		<div class="col-md-4">{{ Form::text('est',   Input::old('est'),array('placeholder' => 'hh:mm','class' => 'form-control')) }}</div>
+        		<div class="col-md-4">{{ Form::text('est',   Input::old('est'),array('placeholder' => 'hh:mm','class' => 'form-control','required'=>'required')) }}</div>
         	</div>
         	<br />
         	<div class="row">
         		<div class="col-md-2"></div>
         		<div class="col-md-3">{{ Form::label('EET', 'Evening End Time') }}</div>
-        		<div class="col-md-4">{{ Form::text('eet',   Input::old('eet'),array('placeholder' => 'hh:mm','class' => 'form-control')) }}</div>
+        		<div class="col-md-4">{{ Form::text('eet',   Input::old('eet'),array('placeholder' => 'hh:mm','class' => 'form-control','required'=>'required')) }}</div>
         	</div>
         	<br />
         	<div class="row">

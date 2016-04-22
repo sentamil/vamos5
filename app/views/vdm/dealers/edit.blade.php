@@ -26,7 +26,7 @@
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('email', 'Email * :') }}</div>
-		            		<div class="col-md-4">{{ Form::email('website', $email, array('class' => 'form-control', 'placeholder'=>'Email','required'=>'required')) }}</div>
+		            		<div class="col-md-4">{{ Form::email('email', $email, array('class' => 'form-control', 'placeholder'=>'Email','required'=>'required')) }}</div>
 		            	</div>
 		            	<br>
 		            	<div class="row">

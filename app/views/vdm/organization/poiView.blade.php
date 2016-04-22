@@ -33,7 +33,7 @@
 								<div class="row">
 									@if(isset($userplace))
 										@foreach($userplace as $key => $value)
-					                		<div class="col-md-2">{{ Form::label($userplace[$key]) }}</div>
+					                		<div class="col-md-3">{{ Form::label($userplace[$key]) }}</div>
 										@endforeach
 				                	@endif
 				                </div>

@@ -35,7 +35,7 @@
 									 </div>
 									 <div class="col-md-5">
 									<h5> {{ Form::label('Filter', 'Filter :') }}
-									 {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey','placeholder'=>'Filter','required'=>'required'])}}  </h5>
+									 {{ Form::input('text', 'searchtext', null, ['class' => 'searchkey','placeholder'=>'Filter'])}}  </h5>
 									
 									</div>
 									 <div class="col-md-5"><h5>{{Form::label('Select All :')}} {{Form::checkbox('$userVehicles', 'value', false, ['class' => 'check'])}} </h5></div>

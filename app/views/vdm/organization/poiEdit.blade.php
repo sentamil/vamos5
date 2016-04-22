@@ -34,7 +34,7 @@
 		            	<br>
 		            	<div class="row">
 		            		<div class="col-md-1">{{ Form::label('Filter', 'Filter :') }}</div>
-		            		<div class="col-md-2">{{ Form::input('text', 'searchtext', null, ['class' => 'searchkey','required'=>'required','placeholder'=>'Filter'])}}</div>
+		            		<div class="col-md-2">{{ Form::input('text', 'searchtext', null, ['class' => 'searchkey','placeholder'=>'Filter'])}}</div>
 		            		<div class="col-md-1">{{Form::label('Select All :')}} </div>
 		            		<div class="col-md-1">{{Form::checkbox('$userplace', 'value', false, ['class' => 'check'])}}</div>
 		            		<div class="col-md-3">{{ Form::submit('Update the POI!', array('class' => 'btn btn-primary')) }}</div>

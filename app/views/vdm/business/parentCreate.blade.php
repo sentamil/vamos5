@@ -292,18 +292,18 @@ $("#td{{$i}}").toggle(500);
 
 				{{ Form::label('regNo'.$i, 'Vehicle Reg Number') }}
 			<br/>
-				{{ Form::text('regNo'.$i, Input::old('regNo'), array('class' => 'form-control')) }}
+				{{ Form::text('regNo'.$i, Input::old('regNo'), array('class' => 'form-control','placeholder'=>'Reg No')) }}
 </td>
 <td>
 {{ Form::label('vehicleType'.$i, 'Vehicle Type') }}
 			<br/>
-				{{ Form::select('vehicleType'.$i, array( 'Car' => 'Car', 'Truck' => 'Truck','Bus' => 'Bus'), Input::old('vehicleType'), array('class' => 'form-control')) }}     
+				{{ Form::select('vehicleType'.$i, array( ' '=>'Vehicle Type','Car' => 'Car', 'Truck' => 'Truck','Bus' => 'Bus'), Input::old('vehicleType'), array('class' => 'form-control')) }}     
 </td>
 
 <td>
 {{ Form::label('oprName'.$i, 'Telecom Operator Name') }}
 			<br/>
-				{{ Form::select('oprName'.$i, array( 'airtel' => 'airtel', 'reliance' => 'reliance','idea' => 'idea'), Input::old('oprName'), array('class' => 'form-control')) }}
+				{{ Form::select('oprName'.$i, array(''=>'Operator', 'airtel' => 'airtel', 'reliance' => 'reliance','idea' => 'idea'), Input::old('oprName'), array('class' => 'form-control')) }}
 			
 </td>
 
@@ -316,7 +316,7 @@ $("#td{{$i}}").toggle(500);
 
 <td>{{ Form::label('fuel'.$i, 'Fuel') }}
 			<br/>
-				{{ Form::select('fuel'.$i,  array( 'no' => 'No','yes' => 'Yes' ), Input::old('fuel'), array('class' => 'form-control')) }}</td>
+				{{ Form::select('fuel'.$i,  array( 'no' => 'Fuel No','yes' => 'Fuel Yes' ), Input::old('fuel'), array('class' => 'form-control')) }}</td>
 
 </tr>
 
@@ -325,27 +325,27 @@ $("#td{{$i}}").toggle(500);
 <td>
 {{ Form::label('morningTripStartTime'.$i, 'Morning Trip Start Time') }}
 			<br/>
-				{{ Form::text('morningTripStartTime'.$i, Input::old('morningTripStartTime'), array('class' => 'form-control')) }}  
+				{{ Form::text('morningTripStartTime'.$i, Input::old('morningTripStartTime'), array('class' => 'form-control','placeholder'=>'Morning Trip Start Time')) }}  
 </td>
 <td>
 {{ Form::label('eveningTripStartTime'.$i, 'Evening Trip Start Time') }}
 			<br/>
-				{{ Form::text('eveningTripStartTime'.$i, Input::old('eveningTripStartTime'), array('class' => 'form-control')) }}
+				{{ Form::text('eveningTripStartTime'.$i, Input::old('eveningTripStartTime'), array('class' => 'form-control','placeholder'=>'Evening Trip Start Time')) }}
 </td>
 <td>
 {{ Form::label('overSpeedLimit'.$i, 'OverSpeed Limit') }}
 			<br/>
-				{{ Form::select('overSpeedLimit'.$i,  array( '10' => '10','20' => '20','30' => '30','40' => '40','50' => '50','60' => '60','70' => '70','80' => '80','90' => '90','100' => '100','110' => '110','120' => '120','130' => '130','140' => '140','150' => '150' ), Input::old('overSpeedLimit'), array('class' => 'form-control')) }} 
+				{{ Form::select('overSpeedLimit'.$i,  array( ''=>'Speed Limit','10' => '10','20' => '20','30' => '30','40' => '40','50' => '50','60' => '60','70' => '70','80' => '80','90' => '90','100' => '100','110' => '110','120' => '120','130' => '130','140' => '140','150' => '150' ), Input::old('overSpeedLimit'), array('class' => 'form-control')) }} 
 </td>
 <td>
 {{ Form::label('mobileNo'.$i, 'Mobile Number for Alerts') }}
 			<br/>
-				{{ Form::text('mobileNo'.$i, Input::old('mobileNo'), array('class' => 'form-control')) }}
+				{{ Form::text('mobileNo'.$i, Input::old('mobileNo'), array('class' => 'form-control','placeholder'=>'Alert Mobile No')) }}
 </td>
 <td>
 {{ Form::label('odoDistance'.$i, 'Odometer Reading') }}
 			<br/>
-				{{ Form::text('odoDistance'.$i, Input::old('odoDistance'), array('class' => 'form-control')) }}
+				{{ Form::text('odoDistance'.$i, Input::old('odoDistance'), array('class' => 'form-control','placeholder'=>'Odometer')) }}
 </td>
 </tr>
 
@@ -353,21 +353,21 @@ $("#td{{$i}}").toggle(500);
 <tr><td>
 {{ Form::label('driverName'.$i, 'Driver Name') }}
 			<br/>
-				{{ Form::text('driverName'.$i, Input::old('driverName'), array('class' => 'form-control')) }}
+				{{ Form::text('driverName'.$i, Input::old('driverName'), array('class' => 'form-control','placeholder'=>'Driver Name')) }}
 </td><td>
 
 				{{ Form::label('gpsSimNo'.$i, 'GPS Sim Number') }}
 			<br/>
-				{{ Form::text('gpsSimNo'.$i, Input::old('gpsSimNo'), array('class' => 'form-control')) }}
+				{{ Form::text('gpsSimNo'.$i, Input::old('gpsSimNo'), array('class' => 'form-control','placeholder'=>'Sim No')) }}
 </td>
 <td>
 {{ Form::label('email'.$i, 'Email for Alerts') }}
 			<br/>
-				{{ Form::text('email'.$i, Input::old('email'), array('class' => 'form-control')) }}
+				{{ Form::text('email'.$i, Input::old('email'), array('class' => 'form-control','placeholder'=>'Alert Email')) }}
 </td>
 <td>{{ Form::label('altShort'.$i, 'Alternate Short Name') }}
 			<br/>
-				{{ Form::text('altShortName'.$i, Input::old('altShortName'), array('class' => 'form-control')) }}</td>
+				{{ Form::text('altShortName'.$i, Input::old('altShortName'), array('class' => 'form-control','placeholder'=>'Alternate Short Name')) }}</td>
 
 
 </tr>
@@ -375,7 +375,7 @@ $("#td{{$i}}").toggle(500);
 
 				<td>{{ Form::label('isRfi'.$i, 'Is Rfid Reader') }}
 			<br/>
-				{{ Form::select('isRfid'.$i,  array( 'no' => 'No','yes' => 'Yes' ), Input::old('isRfid'), array('class' => 'form-control')) }}</td>
+				{{ Form::select('isRfid'.$i,  array( 'no' => 'Rfid No','yes' => 'Rfid Yes' ), Input::old('isRfid'), array('class' => 'form-control')) }}</td>
 
 
 				</tr>

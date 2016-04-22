@@ -69,10 +69,7 @@
 								
 								{{ Form::close() }}
 						</div>
-						<script>
-							list = [];
-                  			var value = <?php echo json_encode($vehicleGroups ); ?>;
-						</script>
+						
 			</div>
 		</div>
 	</div>
@@ -80,6 +77,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 <script type="text/javascript">
+	list = [];
+    var value = <?php echo json_encode($vehicleGroups ); ?>;
+	
 	$('#userID').on('change', function() {
 		$('#validation').text('');
 		var postValue = {

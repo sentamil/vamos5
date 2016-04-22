@@ -224,7 +224,7 @@ class VdmDealersController extends \BaseController {
 			return Redirect::to ( 'login' );
 		}
 		$userId = $id;
-		
+		Log::info(' user id  '.$userId);
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -270,7 +270,7 @@ class VdmDealersController extends \BaseController {
 	public function update($id) {
 	
 		$dealerid = $id;
-		
+		Log::info(' update id  '.$dealerid);
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
@@ -361,7 +361,7 @@ class VdmDealersController extends \BaseController {
               $val = $redis->hget ( 'H_UserId_Cust_Map', $dealerId . ':fcode' );
               $val1= $redis->sismember ( 'S_Dealers_' . $fcode, $dealerId );
 		}
-		if (strpos($dealerId, 'admin') !== false || strpos($dealerId, 'ADMIN') !== false || strpos($newGroupId, 'Admin') !== false) 
+		if (strpos($dealerId, 'admin') !== false || strpos($dealerId, 'ADMIN') !== false || strpos($dealerId, 'Admin') !== false) 
 		{
 			return Redirect::to ( 'vdmDealers/create' )->withErrors ( 'Name with admin not acceptable' );
 		}

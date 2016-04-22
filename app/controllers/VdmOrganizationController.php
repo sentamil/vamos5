@@ -101,6 +101,7 @@ public function addpoi()
 			log::info( ' url :------------');
 			$orgId  = Input::get('orgId');
 			$poi = Input::get('poi');
+			Log::info($poi);
 			$radiusrange =Input::get('radiusrange');
 			$redis = Redis::connection();
 			$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
@@ -165,6 +166,7 @@ public function addpoi()
 			$redis->del($temp);
 			foreach($poi as $place) {
 				$redis->sadd($temp,$place);
+				Log::info($place);
 			}
 			$ipaddress = $redis->get('ipaddress');
 			 $url = 'http://' .$ipaddress . ':9000/getPoiPlace?key=' . $temp;
@@ -328,7 +330,7 @@ public function addpoi()
 		$radius =null;
         $shortNameList = null;
         try{
-			Log::info('-------------- $try-----------');
+			Log::info('-------------- $try------1-----'.$Places);
 			if($Places!=null)
 			{
 				Log::info('-------------- $try11-----------');

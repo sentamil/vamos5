@@ -13,48 +13,48 @@
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('adminName', 'Admin Name')  }}</div>
-		            		<div class="col-md-4">{{ Form::label('adminName', $userId, array('class'=>'form-control'))  }}</div>
+		            		<div class="col-md-4"><label class="form-control">{{$userId}}</label></div>
 		            	</div>
 		            	<br>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('mobileNo', 'Mobile No')  }}</div>
-		            		<div class="col-md-4">{{ Form::label('mobileNo', $mobileNo, array('class'=>'form-control'))  }}</div>
+		            		<div class="col-md-4"><label class="form-control">{{$mobileNo}}</label></div>
 		            	</div>
 		            	<br>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('email', 'Email')  }}</div>
-		            		<div class="col-md-4">{{ Form::label('email', $email, array('class'=>'form-control'))  }}</div>
+		            		<div class="col-md-4"><label class="form-control">{{$email}}</label></div>
 		            	</div>
 		            	<br>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('website', 'Website')  }}</div>
-		            		<div class="col-md-4">{{ Form::label('website', $website, array('class'=>'form-control'))  }}</div>
+		            		<div class="col-md-4"><label class="form-control">{{$website}}</label></div>
 		            	</div>
 		            	<br>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('smsSender', 'Sms Sender')  }}</div>
-		            		<div class="col-md-4">{{ Form::label('smsSender', $smsSender, array('class'=>'form-control'))  }}</div>
+		            		<div class="col-md-4"><label class="form-control">{{$smsSender}}</label></div>
 		            	</div>
 		            	<br>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('smsProvider', 'Sms Provider')  }}</div>
-		            		<div class="col-md-4">{{ Form::label('smsProvider', $smsProvider, array('class'=>'form-control'))  }}</div>
+		            		<div class="col-md-4"><label class="form-control">{{$smsProvider}}</label></div>
 		            	</div><br>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('providerUserName', 'Provider Name')  }}</div>
-		            		<div class="col-md-4">{{ Form::label('providerUserName', $providerUserName, array('class'=>'form-control'))  }}</div>
+		            		<div class="col-md-4"><label class="form-control">{{$providerUserName}}</label></div>
 		            	</div>
 		            	<br>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('providerPassword', 'Provider Password')  }}</div>
-		            		<div class="col-md-4">{{ Form::label('providerPassword', $providerPassword, array('class'=>'form-control'))  }}</div>
+		            		<div class="col-md-4"><label class="form-control">{{$providerPassword}}</label></div>
 		            	</div>
 		            </div>
 		        </div>
