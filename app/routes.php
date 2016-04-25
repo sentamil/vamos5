@@ -12,6 +12,12 @@ Route::get('/live', function() {
     }
 });
  
+Route::get('/apiAcess', function() {
+    Log::info(' api acess ');
+    return View::make('maps.api');
+
+});
+
 Route::get('/replay', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -131,6 +137,13 @@ Route::get('/downloadhistory', function() {
     return View::make('reports.downloadhistory');
 });
 
+Route::get('/tripkms', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get getTripkms');
+    return View::make('reports.tripReportKms');
+});
 
 Route::get('/printStops', function() {
     if (!Auth::check()) {
@@ -178,6 +191,15 @@ Route::get('/getVehicleLocations', function() {
     }
     Log::info('get Vehicle Locations');
     return View::make('vls.getVehicleLocations');
+});
+
+
+Route::get('/getTripSummary', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get getTripSummary');
+    return View::make('vls.getTripSummary');
 });
  
 Route::get('/getActionReport', function() {
