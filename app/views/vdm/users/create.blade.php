@@ -91,7 +91,7 @@
 			.done(function(data) {
 				
 				$('#validation').text(data);
-        		console.log("Sucess-------->"+data);
+        		
         		
       		}).fail(function() {
         		console.log("fail");

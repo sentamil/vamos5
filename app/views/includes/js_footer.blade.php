@@ -6,6 +6,7 @@ $(function () {
     $('.check').on('click', function () {
         var valu = $('.check').each(function(){});
         var count = 0;
+        var counter = 0;
         if(list.length)
         {
           for (var a in list){
@@ -18,6 +19,13 @@ $(function () {
       }
       else
       {
+        
+        if($( ".searchkey" ).val())
+          for (var a in value){
+              $(questionCheckBox[counter]).each(function(){ this.checked = false; });
+            counter++;
+          }
+        else
           for (var a in value){
             if(valu[0].checked == true)
               $(questionCheckBox[count]).each(function(){ this.checked = true; });

@@ -313,7 +313,7 @@ public function addpoi()
 	 		}
 		
 	
-	public function poiView($id)
+	public function pView($id)
 	{
 		if(!Auth::check()) {
 			return Redirect::to('login');
@@ -322,20 +322,20 @@ public function addpoi()
 		$redis = Redis::connection();
 		
 		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-		
-		$Places = $redis->zrange('S_Poi_'.$id.'_'.$fcode,0,-1);
-			
+		Log::info($id.'-----'.$fcode);
+		$poiViewValue = $redis->zrange('S_Poi_'.$id.'_'.$fcode,0,-1);
+		Log::info('-----count-----'.count($poiViewValue));
 		
 		$userplace=array();
 		$radius =null;
         $shortNameList = null;
         try{
-			Log::info('-------------- $try------1-----'.$Places);
-			if($Places!=null)
+			// Log::info('-------------- $try------1-----'.$Places);
+			if($poiViewValue!=null)
 			{
 				Log::info('-------------- $try11-----------');
 				$t=0;
-				foreach ($Places as $key=>$value) {
+				foreach ($poiViewValue as $key=>$value) {
 					$userplace[$t]=$value;
 					$t++;
 			//$userplace=array_add($userplace, $value, $value);
@@ -353,8 +353,8 @@ public function addpoi()
 		
 		Log::info('-------------- $out-----------');
 		}catch(\Exception $e)
-	   {
-		
+	   {	
+		 Log::info('-------------- radius-----------'.$e);
 	   }
 	   
        return View::make('vdm.organization.poiView')->with('userplace',$userplace)->with ( 'radius', $radius )->with('orgId',$id); 

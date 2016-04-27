@@ -42,8 +42,8 @@
                                                     <td><a id="ignition" href=""> Ignition </a></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><a id="trip" href=""> Trip </a></td>
-                                                    <td></td>
+                                                    <td><a id="trip" href=""> Trip Time </a></td>
+                                                    <td><a id="tripkms" href=""> Trip Summary</a></td>
                                                     <td></td>
                                                 </tr>
                                             </table>
@@ -106,13 +106,17 @@
             });
             $('#trip').click(function() {
                 $('#trip').attr("href", 'trip?vid='+vid+'&vg='+gname+'&tn=trip')
-            })
+            });
+            $('#tripkms').click(function() {
+                console.log(' clck ')
+                $("#tripkms").attr("href", 'tripkms?vid='+vid+'&vg='+gname+'&tn=tripkms')
+            });
             $('#addsites').click(function(){
                 if(sessionStorage.getItem('auth') == 'sitesVal')
                     $('#addsites').attr("href", 'sites')
                 else
                     $('#addsites').attr("href", 'password_check') 
-            })
+            });
         </script>
     </body>
 </html>

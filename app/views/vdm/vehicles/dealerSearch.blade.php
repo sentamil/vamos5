@@ -15,9 +15,11 @@
                         <div class="row">
                             <div class="col-md-3"></div>
                             <div class="col-md-3">{{ Form::label('dealerId', 'Dealers Id') }}</div>
-                            <div class="col-md-3">{{ Form::select('dealerId', array($dealerId), array('class'=>'form-control')) }}</div>
+                            <div class="col-md-3">{{ Form::select('dealerId', array($dealerId), Input::old(''),array('class'=>'form-control')) }}</div>
                         </div>
                         <br>
+                        <br>
+                        <div class="navbar"></div>
                         <div class="row">
                             <div class="col-md-6"></div>
                             <div class="col-md-2">{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div>

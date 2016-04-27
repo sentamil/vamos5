@@ -1,97 +1,85 @@
 @extends('includes.vdmheader')
+
 @section('mainContent')
 <!-- Main Wrapper -->
 <div id="wrapper">
 	<div class="content animate-panel">
 		<div class="row">
-			<div class="col-lg-12">
-				<div class="hpanel">
-					<div class="panel-heading">
-						<h4><font color="blue"><b>Tags Create </b></font><h4> 
+    		<div class="col-lg-12">
+        		<div class="hpanel">
+               		 <div class="panel-heading" align="center">
+                  		<h4><b><font> Tags Create </font></b></h4>
+                	</div>
+               		 <div class="panel-body">
+               		 	<hr>
+						{{ HTML::ul($errors->all()) }}
+						{{ Form::open(array('url' => 'rfid/addTags')) }}
+						<div class="row">
+							<div class="col-md-3"></div>
+							<div class="col-md-3">Org Name</div>
+							<div class="col-md-3">{{ Form::select('org' , $orgList, Input::old('orgname'),array('id' => 'orgid', 'class'=>'form-control')) }}</div></br>
 						</div>
-						<div class="panel-body">
-							<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-								<div class="row">
-									<div class="col-sm-12">
-										{{ HTML::ul($errors->all()) }}
-										{{ Form::open(array('url' => 'rfid/addTags')) }}
-										<div class="row">
-											<div class="col-md-12">
-												<div class="col-md-6">
-													<div class="row">
-<div><b>Org Name</b></div>
-<div>{{ Form::select('org' , $orgList, Input::old('orgname'),array('id' => 'orgid')) }}</div></br>
-<div><b>Belongs To</b></div>
-<div>{{ Form::select('belongsTo', $vehList, Input::old('belongsTo'),array('id' => 'belongsTo')) }}</div></br>
+						<br>
+						<div class="row">
+							<div class="col-md-3"></div>
+							<div class="col-md-3">Belongs To</div>
+							<div class="col-md-3">{{ Form::select('belongsTo', $vehList, Input::old('belongsTo'),array('id' => 'belongsTo','class'=>'form-control')) }}</div></br>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-3"></div>
+							<div class="col-md-3">Swiped by</div>
+							<div class="col-md-3">{{Form::select('swipedBy', $vehRfidYesList, array('swipedBy'), array('multiple','name'=>'sports'.'[]','id' => 'swi','class'=>'form-control'))}}</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-3"></div>
+							<div class="col-md-6">
+								<table id="example1" class="table table-bordered dataTable">
+									<thead>
+										<tr>
+											<th style="text-align: center;">No</th>
+											<th style="text-align: center;">Tag Id</th>
+											<th style="text-align: center;">Tag Name</th>
+												
+											<!-- <th style="text-align: center;">Belongs To</th>
+											<th style="text-align: center;">Swiped by</th> -->
+										</tr>
+									</thead>
+									<tbody>
+										{{ Form::hidden('tags', $tags) }}
+										@for($i=1;$i<=$tags;$i++)
+										<tr style="text-align: center;">
+											<td>{{ $i }}</td>
+											<td>{{ Form::text('tagid'.$i, Input::old('tagid')) }}</td>
+											<td>{{ Form::text('tagname'.$i, Input::old('tagname')) }}</td>
+											<!-- <td>{{ Form::select('belongsTo' .$i, $vehList, Input::old('belongsTo'),array('id' => 'useri')) }}</td>
 
-<div><b>Swiped by</b></div>
+											<td>{{Form::select('swipedBy'.$i, $vehRfidYesList, array('swipedBy'.$i), array('multiple','name'=>'sports'.$i.'[]'))}}</td> -->
+										</tr>
+										@endfor
 
-<div>{{Form::select('swipedBy', $vehRfidYesList, array('swipedBy'), array('multiple','name'=>'sports'.'[]','id' => 'swi')
-
-)}}</div></br>
-														<table id="example1" class="table table-bordered dataTable">
-															<thead>
-																<tr>
-																	<th style="text-align: center;">No</th>
-																	<th style="text-align: center;">Tag Id</th>
-																	<th style="text-align: center;">Tag Name</th>
-																	
-																	<!-- <th style="text-align: center;">Belongs To</th>
-																	<th style="text-align: center;">Swiped by</th> -->
-																</tr>
-															</thead>
-															<tbody>
-
-							
-
-
-{{ Form::hidden('tags', $tags) }}
-
-																@for($i=1;$i<=$tags;$i++)
-																<tr style="text-align: center;">
-																	<td>{{ $i }}</td>
-																	<td>{{ Form::text('tagid'.$i, Input::old('tagid')) }}</td>
-																	<td>{{ Form::text('tagname'.$i, Input::old('tagname')) }}</td>
-																	<!-- <td>{{ Form::select('belongsTo' .$i, $vehList, Input::old('belongsTo'),array('id' => 'useri')) }}</td>
-
-																	<td>{{Form::select('swipedBy'.$i, $vehRfidYesList, array('swipedBy'.$i), array('multiple','name'=>'sports'.$i.'[]'))}}</td> -->
-																</tr>
-																@endfor
-
-															</tbody>
-														</table>
-
-
-
-													</div>
-												</div>
-												<div class="col-md-9">
-													<div class="row">
-														<div class="col-md-9">	
-														</div>
-														<div class="col-md-9">
-															{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}{{ Form::close() }}
-														</div>	
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
+									</tbody>
+								</table>
 							</div>
 						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-6"></div>
+							<div class="col-md-3">{{ Form::submit('Submit', array('class' => 'btn btn-primary ')) }}{{ Form::close() }}</div>	
+						</div>
 					</div>
-
 				</div>
 			</div>
-			
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
-
+		</div>
+	</div>
+</div>
+<br>
+<hr>
+<div align="center">@stop</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script type="text/javascript" >
-	
-
- $(document).ready(function() {
+ 	$(document).ready(function() {
         $('#orgid').on('change', function() {
             var data = {
                 'id': $(this).val()
@@ -122,7 +110,5 @@
     });
 
 </script>
-
-
-		</body>
-		</html>
+</body>
+</html>	

@@ -1,7 +1,9 @@
 app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, vamoservice, $filter){
-	
+
+// report summary report, 	site report trip report 
 
 	//global declaration
+	
 	$scope.uiDate 				=	{};
 	$scope.interval				= 	10;
   	$scope.siteEntry 			=	0;
@@ -18,6 +20,17 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		$('#preloader').delay(350).fadeOut('slow');
 		$('body').delay(350).css({'overflow':'visible'});
 	};
+
+	$scope.msToTime		=	function(ms) {
+		days = Math.floor(ms / (24*60*60*1000));
+	    daysms=ms % (24*60*60*1000);
+	    hours = Math.floor((daysms)/(60*60*1000));
+	    hoursms=ms % (60*60*1000);
+	    minutes = Math.floor((hoursms)/(60*1000));
+	    minutesms=ms % (60*1000);
+	    sec = Math.floor((minutesms)/(1000));
+	    return days+"d : "+hours+"h : "+minutes+"m : "+sec+"s";
+    }
 
 
 	function getParameterByName(name) {
@@ -93,14 +106,35 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 	  	
 	}
 
+
+	function urlReport(){
+		var urlWebservice;
+		switch  (tab){
+			case  'site' : 
+				urlWebservice 	= 	"http://"+globalIP+context+"/public/getSiteReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&site=true";
+				break;
+			case 'trip' :
+				urlWebservice 	= 	"http://"+globalIP+context+"/public/getTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval;
+				break;
+			case 'tripkms' :
+				urlWebservice 	= 	"http://"+globalIP+context+"/public/getTripSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				break;
+			default :
+				break;
+			}
+			return urlWebservice;
+
+	}
+
 	// service call for the event report
 
 	function webServiceCall(){
-		var url;
-		if (tab == 'site')
-			url 	= 	"http://"+globalIP+context+"/public/getSiteReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&site=true";
-		else if (tab == 'trip')
-			url 	= 	"http://"+globalIP+context+"/public/getTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval;
+		
+		// if (tab == 'site')
+		// 	url 	= 	"http://"+globalIP+context+"/public/getSiteReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&site=true";
+		// else if (tab == 'trip')
+		// 	url 	= 	"http://"+globalIP+context+"/public/getTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval;
+		var url = urlReport();		
 		$scope.siteData = [];
 		vamoservice.getDataCall(url).then(function(responseVal){
 			$scope.siteData = responseVal;
@@ -205,5 +239,116 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 	$('#minus').click(function(){
 		$('#menu').toggle(1000);
 	})
+
+	// tr click map view
+	// $scope.flightPath = new google.maps.Polyline();
+	// $scope.map =  null;
+	
+	
+	
+	
+
+
+
+// var map;
+// myLatlng = new google.maps.LatLng(32.0260053,34.8987034);
+
+
+// function initialize() {
+//     var myOptions = {
+//         zoom: 14,
+//         center: myLatlng,
+//         mapTypeId: google.maps.MapTypeId.ROADMAP
+//     };
+//         map = new google.maps.Map(document.getElementById('map_canvas'),
+//                               myOptions);        
+
+
+
+//         $("#myModal").ready(function() {
+//             $(window).resize(function() {
+//                 google.maps.event.trigger(map, 'resize');
+//             });
+            
+//             $('#myModal').modal('show');
+//             google.maps.event.trigger(map, 'resize');
+//             return map.setCenter(myLatlng);
+//         });
+    
+
+// }
+// myLatlng = new google.maps.LatLng(32.0260053,34.8987034);
+// function initialize() {
+//   var mapOptions = {
+//             zoom: 12,
+//             center: myLatlng,
+//             mapTypeId: google.maps.MapTypeId.ROADMAP
+//         };
+//     map = new google.maps.Map(document.getElementById("map_canvas"),
+//             mapOptions);
+//     $('#MyModal').on('loaded.bs.modal',function(e){
+//    setTimeOut(GoogleMap,500);
+// });
+
+        // $('#myModal').on('shown.bs.modal', function () {
+        //       google.maps.event.trigger(map, 'resize');
+        //       map.setCenter(new google.maps.LatLng(54, -2));
+        //     });
+        // $('#myModal').modal("show");
+// }
+
+
+	$scope.getInput = function(inputValue, vehicleDetails){
+		
+        var startDate, endDate, startTime, endTime;
+        startDate	= 	$filter('date')(inputValue.startTime, 'yyyy-MM-dd');
+        endDate 	= 	$filter('date')(inputValue.endTime, 'yyyy-MM-dd');
+        startTime	= 	$filter('date')(inputValue.startTime, 'HH:mm:ss');
+        endTime		= 	$filter('date')(inputValue.endTime, 'HH:mm:ss');
+        var url 	= 	"http://"+globalIP+context+"/public/getVehicleHistory?vehicleId="+vehicleDetails.vehicleId+"&fromDate="+startDate+"&fromTime="+startTime+"&toDate="+endDate+"&toTime="+$scope.endTime;
+        
+// initialize();
+// $("#contact-modal").on("shown.bs.modal", function () {
+//     google.maps.event.trigger(map, "resize");
+// });
+
+// $('#myModal').on('shown', function () {
+//     google.maps.event.trigger(map, "resize");
+// });
+
+
+
+
+
+        // vamoservice.getDataCall(url).then(function(dataGet){
+        // 	console.log(' data '+dataGet)
+        // 	angular.forEach(dataGet.vehicleLocations, function(val, key){
+        // 		$scope.drawLine(val.latitude, val.longitude);
+        // 	});
+        // });
+// $('#myModal').on('shown', function(){
+		// google.maps.event.trigger($scope.map, 'resize');
+		// $scope.map.setCenter(new google.maps.LatLng(12.993803, 80.193075));
+		
+  
+
+// 	});
+       
+    }
+
+
+
+    $scope.drawLine = function(loc1, loc2){
+		var flightPlanCoordinates = [loc1, loc2];
+		$scope.flightPath = new google.maps.Polyline({
+			path: flightPlanCoordinates,
+			geodesic: true,
+			strokeColor: "#ff0000",
+			strokeOpacity: 1.0,
+			strokeWeight:2
+		});
+		console.log(' value '+loc1+'-----'+loc2);
+	}
+	
 
 }]);

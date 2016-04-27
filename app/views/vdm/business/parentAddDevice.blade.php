@@ -1,4 +1,3 @@
-
 <div id="wrapper">
 	<div class="content animate-panel">
 		<div class="row">
