@@ -75,6 +75,7 @@
         <!-- /.social-auth-links -->
 
         <a href="#">{{ HTML::link('password/reset', 'Forgot/reset your password?', array('id' => 'linkid'), false)}} </a><br>
+        <a href="/vamo/public/apiAcess">Api Access</a><br>
 
       </div><!-- /.login-box-body -->
     </div>

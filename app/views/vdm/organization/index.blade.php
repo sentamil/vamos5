@@ -5,7 +5,7 @@
             <div class="col-lg-12">
                 <div class="hpanel">
                     <div class="panel-heading">
-                       <h4><b><font color="blue"> Organization List</font></b></h4>
+                       <h4><b><font> Organization List</font></b></h4>
                     </div>
                     <div class="panel-body">
                         <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
@@ -38,7 +38,7 @@
 
  <a class="btn btn-warning" href="{{ URL::to('vdmOrganization/' . $value . '/edit') }}">Edit Organization </a>
  
- <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/poiView') }}">View POI </a>
+ <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/pView') }}">View POI </a>
  <a class="btn btn-warning" href="{{ URL::to('vdmOrganization/' . $value . '/poiEdit') }}">Edit POI </a>
  <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/poiDelete') }}">Delete POI </a>
  <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/getSmsReport') }}">SMS Report </a>

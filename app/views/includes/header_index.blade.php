@@ -63,9 +63,9 @@
     <div id="navigation">
         <div class="profile-picture">
 	<a href="live">
-            <!--
-                <img src="assets/imgs/logo.png" class="img-circle m-b" alt="logo">
-            -->
+            
+               <!--  <img src="assets/imgs/logo.png" class="img-circle m-b" alt="logo"> -->
+            
             </a>
  <div class="stats-label text-color">
                 <span class="font-extra-bold font-uppercase">GPS ADMIN</span>

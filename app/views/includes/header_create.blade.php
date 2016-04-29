@@ -23,7 +23,11 @@
     <link rel="stylesheet" href="../fonts/pe-icon-7-stroke/css/helper.css" />
     <link rel="stylesheet" href="../styles/style.css">
 	<link href="../plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css">
-	
+
+    <!-- validation -->
+
+
+
 </head>
 <body onload="VdmDealersController.checkuser()">
 
@@ -220,7 +224,7 @@
                 <a href="../Routes"> <span class="nav-label">Routes</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                       <li><a href="../vdmBusRoutes/create">Create Bus Routes with Stops</a></li>
-\                </ul>
+                </ul>
             </li>
            
 			@if(Session::get('cur')=='admin')

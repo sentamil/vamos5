@@ -5,22 +5,24 @@
 			<div class="col-lg-12">
 				<div class="hpanel">
 					<div class="panel-heading">
-						<h4> <b><font color="blue">Tags List</font></b></h4>
+						<h4> <b>Tags List</b></h4>
 					</div>
 					<div class="panel-body">
 						{{ HTML::ul($errors->all()) }}
 						{{ Form::open(array('url' => 'Business/batchSale')) }}
-						<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6">
-							<div class="col-sm-6"><div id="example2_filter" class="dataTables_filter"></div></div></div><div class="row">
+						<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+							<div class="row">
+								<!-- <div class="col-sm-6">
+									<div class="col-sm-6">
+										<div id="example2_filter" class="dataTables_filter"></div>
+									</div>
+							</div> 
+						<div class="row">-->
 							<div class="col-sm-12">
 
-								<div class="form-group">
+								<!-- <div class="form-group"> -->
 
-									<h4>
-										
-										<br/>
-										<br/>
-                                                                               
+									                                 
 
 	                            <table id="example1" class="table table-bordered dataTable">
 
@@ -58,10 +60,10 @@
 	                            </table>
 
 
-	                        </div>
+	                       <!--  </div> -->
 
 
-	                    </div>
+	                  <!--   </div> -->
 
 
 

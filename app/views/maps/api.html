@@ -1,0 +1,599 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>API 
+</title>
+<style>
+h2,h3{
+	color: #005580;
+}
+	table,td,th{
+		border: 1px solid #000;
+		text-align: left;
+	}
+	table{
+		border-collapse: collapse;
+		width: 75%;	
+	}
+	th{
+		width: 25px;
+	}
+	th,td{
+		padding: 15px;
+	}
+</style>
+</head>
+<body> 
+<h2> Summary
+</h2>
+<p>
+This documentation is about the open API for the platform Vehicle Tracking System. Any qualified third party applications or websites may utilize this API to empower business.
+This API is based on REST standards, and is compatible with all kinds of programming languages.  Many of the fields are self explanatory.
+</p>
+<h2>Security 
+</h2>
+<p>
+For server side programming API key is not mandatory. IP Listing can be done from GPS provider side. For client side programming API Key is mandatory.
+</p>
+<h3>1. Open API Usage scenarios</h3>
+<p>a.The API is used to extend GPS functionalities of the underlying dealers' own systems.</p>
+<p>b. Accounts of dealers' own systems should be mapped to the accounts(IMEIs) of our vehicle tracking platform.</p>
+<p>c. Dealers' application servers issue API requests to get GPS data.</p>
+<h3>2. Usage Workflow</h3>
+<p>Dealer provides account and password on the vehicle tracking platform to acquire Api Key
+Dealer then uses the token on their server to access Open API for needed data.
+</p>
+<p>The following figure shows the data exchange flow:</p>
+<h3>3. API Summary </h3>
+<h3>Common Parameters </h3>
+<table>
+   <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Mandatory</th>
+        <th>Desc</th>
+    </tr>
+    <tr>
+    	<td>API Key</td>
+    	<td>string</td>
+    	<td>yes</td>
+    	<td>An api key, used to indicate whether the invoker is authorized. Reference to 4.1 for acquiring the token.The apikey should only be used within your server side code, otherwise it will not work.</td>
+    </tr>
+    <tr>
+    	<td>UserId</td>
+    	<td>string</td>
+    	<td>yes</td>
+    	<td>The userId which is the one you used to acquire api key.</td>
+    </tr>
+    <tr>
+    	<td>GroupId</td>
+    	<td>string</td>
+    	<td>yes</td>
+    	<td>Group name which is linked to the user (vehicles grouped under)</td>
+    </tr>
+    <tr>
+    	<td>Time</td>
+    	<td>Long</td>
+    	<td>yes</td>
+    	<td>UNIX timestamp, in seconds. Generally the time when the request is invoked.</td>
+    </tr>
+    </table>
+    <h3>Parameter Encoding</h3>
+    <p>The encoding of request and response is utf-8, all parameters in url should be URI Encoded.</p>
+    <h3>HTTP MIME Type</h3>
+    <p>JSON
+Content-type: text/html; charset=utf-8</p>
+<h3>4. API Listing</h3>
+<h3>4.1 Acquire API Key</h3>
+<P>Note : For testing phase this is not required.
+
+</P>
+<h3>Description :</h3>
+<p>Acquire API Key</p>
+<h3>URL :</h3>
+<p>http://gpsvts.net/mobile/apiKey</p>
+<h3>HTTP Method :</h3>
+<p>GET</p>
+<h3>Input Parameters :</h3>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Desc</th>
+	</tr>
+	<tr>
+		<td>UserId</td>
+		<td>String</td>
+		<td>Account Of Users</td>
+	</tr>
+	<tr>
+		<td>Time</td>
+		<td>Long</td>
+		<td>Unix Time Stamp in Seconds</td>
+	</tr>
+	<tr>
+		<td>Signature</td>
+		<td>String</td>
+		<td>Encrypted signature; algorithm：md5(md5(password of user account) + time)</td>
+	</tr>
+</table>
+<h3>URL Example</h3>
+<p>http://gpsvts.net/mobile/apiKey?userId=DEMO&time=1366786321&signature=e9b39daacc811af7109ef1e11a6583bd</domain_name></p>
+<h3>Response</h3>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Desc</th>
+	</tr>
+	<tr>
+		<td>Status</td>
+		<td>String</td>
+		<td>Status code:
+            0: success
+            Others: failed </td>
+    </tr>
+    <tr>
+    	<td>Reason</td>
+    	<td>String</td>
+    	<td>If status is zero, here the reason</td>
+    </tr>
+    <tr>
+    	<td>API Key</td>
+    	<td>String</td>
+    	<td>For Authorization</td>
+    </tr>
+    <tr>
+    	<td>Expires_in</td>
+    	<td>Number</td>
+    	<td>Expiration of API key, in seconds</td>
+    </tr>
+</table>
+<h4>Note : </h4>
+<p>(1) apiKey should be used within server side code only, otherwise it will not work.</p>
+<p>(2) If a return code 10001 is received, it means the apiKey has expired and should be reacquired.</p>
+<h3>4.3 Get Live Locations</h3>
+<p>Get the newest GPS data of all vehicles of a specified account.</p>
+<p>
+URL : </p>
+<p>http://gpsvts.net/mobile/getVehicleLocations</p>
+<p>
+HTTP Method :</p>
+<p>GET</p>
+<p>Input Parameters :</p>
+<p>(1) Common Parameters</p>
+<p>Refer to : Common Parameters</p>
+<p>(2) Specific Parameters</p>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Default Value</th>
+		<th>Desc</th>
+	</tr>
+	<tr>
+		<td>UserId</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td> - </td>
+		<td> User account</td>
+	</tr>
+	<tr>
+		<td>GroupId</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td> - </td>
+		<td>Group Id of the user for which vehicles are allotted.</td>
+	</tr>
+</table>
+<h3>URL Example : </h3>
+<p>http://gpsvts.net/mobile/getVehicleLocations?apiKey=ndwlraqfxujojrmktvzg&userId=DEMO&groupId=DEMO</p>
+<table>
+	<tr>
+		<th>Field></th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>RowId</td>
+		<td>String</td>
+		<td>Row Count</td>
+	</tr>
+	<tr>
+		<td>Group</td>
+		<td>String</td>
+		<td>Group Name for which vehicles are grouped under.</td>
+	</tr>
+	<tr>
+		<td>Zoom Level</td>
+		<td>String</td>
+		<td>Map zoom level</td>
+	</tr>
+	<tr>
+		<td>Latitude</td>
+		<td>String</td>
+		<td>GPS Latitude</td>
+	</tr>
+	<tr>
+		<td>Longtitude</td>
+		<td>String</td>
+		<td>GPS Longitude</td>
+	</tr>
+	<tr>
+		<td>Distance</td>
+		<td>String</td>
+		<td>Total Distance coverd for all vehicles</td>
+	</tr>
+	<tr>
+		<td>Total Vehicles</td>
+		<td>String</td>
+		<td>Total vehicles available in the group</td>
+	</tr>
+	<tr>
+		<td>Online</td>
+		<td>String</td>
+		<td>Number of vehicle online</td>
+	</tr>
+	<tr>
+		<td>Alerts</td>
+		<td>String</td>
+		<td>For future use</td>
+	</tr>
+	<tr>
+		<td>Attentions</td>
+		<td>String</td>
+		<td>For future use</td>
+	</tr>
+	<tr>
+		<td>TopSpeed</td>
+		<td>Number</td>
+		<td>Top speed of all vehicles</td>
+	</tr>
+	<tr>
+		<td>TopSpeedVehicleId</td>
+		<td>String</td>
+		<td>Top speed vehicle Id</td>
+	</tr>
+	<tr>
+		<td>TopMovingVehicles</td>
+		<td>String</td>
+		<td>Total moving vehicles count</td>
+	</tr>
+	<tr>
+		<td>TotalIdleVehicles</td>
+		<td>String</td>
+		<td>Total Idle vehicles count</td>
+	</tr>
+	<tr>
+		<td>TotalParkedVehicles</td>
+		<td>String</td>
+		<td>Total Idle vehicles count</td>
+	</tr>
+	<tr>
+		<td>TotalNoDataVehicles</td>
+		<td>String</td>
+		<td>Total no data vehicles count</td>
+	</tr>
+	<tr>
+		<td>AllowBooking</td>
+		<td>String</td>
+		<td>For future use</td>
+	</tr>
+	<tr>
+		<td>AllowedVehicles</td>
+		<td>String</td>
+		<td>For future use</td>
+	</tr>
+	<tr>
+		<td>SupportDetails</td>
+		<td>String</td>
+		<td>Support details</td>
+	</tr>
+	<tr>
+		<td>Vehicle Locations</td>
+		<td>Array</td>
+		<td>Array of vehicle locations</td>
+	</tr>
+	<tr>
+		<td>RowId</td>
+		<td>Integer</td>
+		<td>Record count</td>
+	</tr>
+	<tr>
+		<td>latitude</td>
+		<td>String</td>
+		<td>GPS latitude</td>
+	</tr>
+	<tr>
+		<td>Longitude</td>
+		<td>String</td>
+		<td>GPS Longitude</td>
+	</tr>
+	<tr>
+		<td>Speed</td>
+		<td>Integer</td>
+		<td>Current speed of the vehicle</td>
+	</tr>
+	<tr>
+		<td>Date</td>
+		<td>String</td>
+		<td>Current date and time (UTC)</td>
+	</tr>
+	<tr>
+		<td>Alert</td>
+		<td>String</td>
+		<td>Type of alert</td>
+	</tr>
+	<tr>
+		<td>Direction</td>
+		<td>String</td>
+		<td>Course of vehicle (North, South, East , West, NE,NW,SE,SW)</td>
+	</tr>
+	<tr>
+		<td>Position</td>
+		<td>String</td>
+		<td>Moving, Parked, Static (Idle), NoData</td>
+	</tr>
+	<tr>
+		<td>Distance Covered</td>
+		<td>Double</td>
+		<td>Distance travelled today</td>
+	</tr>
+	<tr>
+		<td>Odo Distance</td>
+		<td>Double</td>
+		<td>Vehicle Odo Meter Reading</td>
+	</tr>
+	<tr>
+		<td>TankSize</td>
+		<td>Integer</td>
+		<td>Fuel Tank Size</td>
+	</tr>
+	<tr>
+		<td>Status</td>
+		<td>String</td>
+		<td>GPS Status (ON or oFF)</td>
+	</tr>
+	<tr>
+		<td>Color</td>
+		<td>String</td>
+		<td>Internal use</td>
+	</tr>
+	<tr>
+		<td>LastSeen</td>
+		<td>String</td>
+		<td>GPS Last Communicated time</td>
+	</tr>
+	<tr>
+		<td>IgnitionStatus</td>
+		<td>String</td>
+		<td>ACC Status (ON or OFF)</td>
+	</tr>
+	<tr>
+		<td>InsideGeoFence</td>
+		<td>String</td>
+		<td>Is vehicle inside Geo fence (yes or no)</td>
+	</tr>
+	<tr>
+		<td>IsOverSpeed</td>
+		<td>String</td>
+		<td> Yes or No</td>
+	</tr>
+	<tr>
+		<td>Adderss</td>
+		<td>String</td>
+		<td>Address for the current lat and lng</td>
+	</tr>
+	<tr>
+		<td>ParkedTime</td>
+		<td>Integer</td>
+		<td>Parked time (shown when only vehicle is parked)</td>
+	</tr>
+	<tr>
+		<td>MovingTime</td>
+		<td>Integer</td>
+		<td>Moving time (shown when only vehicle is moving)</td>
+	</tr>
+	<tr>
+		<td>IdleTime</td>
+		<td>Integer</td>
+		<td>Idle time (shown when only vehicle is idle)</td>
+	</tr>
+	<tr>
+		<td>NoDataTime</td>
+		<td>Integer</td>
+		<td>No data time (shown when only vehicle is not communicating)</td>
+	</tr>
+	<tr>
+		<td>AlertDataTime</td>
+		<td>String</td>
+		<td>Alert time (shown when last alert received)</td>
+	</tr>
+	<tr>
+		<td>LoadTruck</td>
+		<td>String</td>
+		<td>Load of the truck received via load sensor</td>
+	</tr>
+	<tr>
+		<td>LoadTrailer</td>
+		<td>String</td>
+		<td>Load of the trailer received via load sensor</td>
+	</tr>
+	<tr>
+		<td>TotalTruck</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>TotalTrailer</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>VehicleBusy</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>FuelLitre</td>
+		<td>String</td>
+		<td>Current Fuel Level in Litre</td>
+	</tr>
+	<tr>
+		<td>OprName</td>
+		<td>String</td>
+		<td>For future use</td>
+	</tr>
+	<tr>
+		<td>RegNo</td>
+		<td>String</td>
+		<td>Vehicle Registration Number</td>
+	</tr>
+	<tr>
+		<td>Vehicle Type</td>
+		<td>String</td>
+		<td>Type of Vehicle(Truck, Bus, Car)</td>
+	</tr>
+	<tr>
+		<td>VehicleId</td>
+		<td>String</td>
+		<td>Asset Id. This is very important.</td>
+	</tr>
+	<tr>
+		<td>MobileNo</td>
+		<td>String</td>
+		<td>Mobile Number configured (typically drivers mobie Number)</td>
+	</tr>
+	<tr>
+		<td>CustomMarker</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>DeviceModel</td>
+		<td>String</td>
+		<td>Model of the device like GT06N etc.</td>
+	</tr>
+	<tr>
+		<td>ShortName</td>
+		<td>String</td>
+		<td>VehicleName</td>
+	</tr>
+	<tr>
+		<td>OrgId</td>
+		<td>String</td>
+		<td>Organization Name</td>
+	</tr>
+	<tr>
+		<td>OverSpeedLimit</td>
+		<td>String</td>
+		<td>OverSpeedLimit</td>
+	</tr>
+	<tr>
+		<td>DriverName</td>
+		<td>String</td>
+		<td>Name of the Driver</td>
+	</tr>
+	<tr>
+		<td>Live</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+</table>
+<h3>4.2 Get History</h3>
+<p>Get the newest GPS data of all vehicles of a specified account.</p>
+<h3>URL : </h3>
+<p>http://gpsvts.net/mobile/getVehicleHistory?userId=SBLT&groupId=SBLT&vehicleId=SBLT-TN21-AT-0234&fromDate=2016-04-21&fromTime=00:00:00&toDate=2016-04-23&toTime=11:47:00</p>
+<h4>HTTP METHOD : </h4>
+<h4> GET</h4>
+<h4>INPUT PARAMETERS : </h4>
+<p>(1) Common Parameters</p>
+<p>(2) Specific Parameters</p>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Default Value</th>
+		<th>Desc </th>
+	</tr>
+	<tr>
+		<td>VehicleId</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td> - </td>
+		<td>Vehicle Id (retrieved by getVehicleId API)</td>
+	</tr>
+	<tr>
+		<td>FromDate</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td> yyyy-mm-dd </td>
+		<td>Start Date</td>
+	</tr>
+	<tr>
+		<td>FromTime</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td>HH:mm:ss</td>
+		<td>Start time  (24 hours time format)</td>
+	</tr>
+	<tr>
+		<td>ToDate</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td>yyyy-mm-dd</td>
+		<td>End Date</td>
+	</tr>
+	<tr>
+		<td>ToTime</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td>HH:mm:ss</td>
+		<td>End time (24 hours time format)</td>
+	</tr>
+</table>
+<h3>URL Example</h3>
+<p>http://gpsvts.net/mobile/getVehicleHistory?userId=SBLT&groupId=SBLT&vehicleId=SBLT-TN21-AT-0234&fromDate=2016-04-21&fromTime=00:00:00&toDate=2016-04-23&toTime=23:47:00
+</p>
+<h3>RESPONSE</h3>
+<table>
+	<tr>
+		<th>Field</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>DeviceId</td>
+		<td>String</td>
+		<td>For future use</td>
+	</tr>
+	<tr>
+		<td>VehicleId</td>
+		<td>String</td>
+		<td>Asset Id</td>
+	</tr>
+	<tr>
+		<td>ShortName</td>
+		<td>String</td>
+		<td>VehicleName</td>
+	</tr>
+	<tr>
+		<td>AltShortName</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>AltShortTime</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>RegNo</td>
+		<td>String</td>
+		<td>Vehicle Registration Number</td>
+	</tr>
+</table>
+</body>
+</html>

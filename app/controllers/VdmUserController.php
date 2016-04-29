@@ -385,4 +385,24 @@ class VdmUserController extends \BaseController {
 		Session::flash ( 'message', 'Successfully deleted ' . $userId . '!' );
 		return Redirect::to ( 'vdmUsers' );
 	}
+
+	public function userIdCheck(){
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		Log::info(' inside the function ');
+		$userId = Input::get ( 'id' );
+      	$val = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
+      	$val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
+      	if($val1==1 || isset($val)) {
+      		return 'Already exist. Please use different id ';
+      	}
+      	if($userId== 'ADMIN' || $userId == 'Admin' || $userId == 'admin'){
+      		return 'Name with admin not acceptable ';
+      	}
+	}
+
 }

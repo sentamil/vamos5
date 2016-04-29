@@ -5,7 +5,7 @@
 			<div class="col-lg-12">
 				<div class="hpanel">
 					<div class="panel-heading">
-						<h4><font color="blue"><b> Dash Board </b> </font></h4>
+						<h4><font><b> Dash Board </b> </font></h4>
 					</div>
 					<div class="panel-body">
 						{{ HTML::ul($errors->all()) }}
@@ -54,7 +54,7 @@
 	        						{{ Form::select('groupname', array(null),Input::old('groupname'), array('id'=>'groupname')) }}
 
 	        						{{ Form::label('orgId', 'org/College Name') }}
-{{ Form::select('orgId',  array_merge(['' => 'Please Select'], $orgList), Input::old('orgId'), array('class' => 'form-control')) }} 
+					{{ Form::select('orgId',  array_merge(['' => 'Please Select'], $orgList), Input::old('orgId'), array('class' => 'form-control')) }} 
 											</td>
 											<td id="t1">
 												<p>

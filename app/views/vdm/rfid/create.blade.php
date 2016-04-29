@@ -6,7 +6,7 @@
     		<div class="col-lg-12">
        			 <div class="hpanel">
                		 <div class="panel-heading">
-                   		 <h4><b><font color="blue">ADD Tags</font></b></h4>
+                   		 <h4><b>ADD Tags</b></h4>
                 	 </div>
                 	<div class="panel-body">
 					
@@ -22,13 +22,13 @@
 											<div class="col-md-6">
 												<div class="row">
 
-													<div class="col-md-3">
+													<div class="col-md-6">
 														{{ Form::label('tags', 'Number Of Rfid Tags :') }}
 
 													</div>
 													
 													<div class="col-md-6">
-														{{ Form::text('tags', Input::old('tags'), array('class' => 'form-control')) }}
+														{{ Form::Number('tags', Input::old('tags'), array('class' => 'form-control','required' => 'required', 'placeholder'=>'Quantity', 'min'=>'1')) }}
 													</div>
 												</div>
 											</div>

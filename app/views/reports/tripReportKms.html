@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<title>GPS</title>
+
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
+<link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
+<link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="assets/css/simple-sidebar.css" rel="stylesheet">
+<link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
+<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+
+<style>
+.empty{
+    height: 1px; width: 1px; padding-right: 30px; float: left;
+}
+.table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+background-color: #ffffff;
+}
+</style>
+</head>
+<div id="preloader" >
+    <div id="status">&nbsp;</div>
+</div>
+<div id="preloader02" >
+    <div id="status02">&nbsp;</div>
+</div>
+
+<body ng-app="mapApp">
+    <div id="wrapper" ng-controller="mainCtrl">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
+                <li class="track"><a href="../public/live"><div></div><label>Track</label></a></li>
+                <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
+                <li class="alert01"><a href="../public/reports" ><div></div><label>Reports</label></a></li>
+                <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
+                <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
+                <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
+            </ul>
+            <ul class="sidebar-subnav ">
+                <li style="padding-left:25px;">
+                    <div class="right-inner-addon" align="center"> 
+                    <i class="fa fa-search"></i>
+                    <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
+                    </div>
+                </li>
+                <li ng-repeat="location in vehicle_list" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+                    <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:vehiname ==loc.vehicleId}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+        </div>
+        
+        <div style="position: absolute;top: 0px;left: 40%; z-index:999999;" id="testLoad"></div>
+        
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="panel panel-default">
+                 
+                </div>   
+            </div>
+        </div>
+ 
+    <!-- AdminLTE css box-->
+
+    <div class="col-md-12">
+       <div class="box box-primary">
+        <!-- <div class="row"> -->
+                <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
+                    <h3 class="box-title">Trip Summary</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-1" align="center"></div>
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.fromdate" class="form-control placholdercolor" id="dateFrom"  placeholder="From date">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.fromtime" class="form-control placholdercolor" id="timeFrom" placeholder="From time">
+                                <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.todate" class="form-control placholdercolor" id="dateTo" placeholder="From date">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.totime" class="form-control placholdercolor" id="timeTo" placeholder="From time">
+                                <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-1" align="center"></div>
+                     <div class="col-md-1" align="center">
+                        <button style="margin-left: -100%; padding : 5px" ng-click="submitFunction()">Submit</button>
+                    </div>
+                </div>
+
+              <!--  </div> -->
+            </div>
+            
+          
+        </div>
+
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div>
+                    <div class="pull-right">
+                        <img style="cursor: pointer;" ng-click="exportData('tripreportkms')"  src="../app/views/reports/image/xls.png" />
+                        <img style="cursor: pointer;" ng-click="exportDataCSV('tripreportkms')"  src="../app/views/reports/image/csv.jpeg" />
+                    </div>
+                    <div class="box-body" id="tripreportkms">
+                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">Trip Summary<span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
+                            <br>
+                                <table class="table table-bordered table-striped table-condensed table-hover">
+                                    <thead>
+                                        
+                                       
+                                         <tr>
+                                            <td colspan="10" style="font-weight: bold;" class="warning">
+                                                 <div class="col-md-3">
+                                                    <div class="col-md-6">Total Moving: </div> 
+                                                    <div class="col-md-6" style="font-weight: normal">{{msToTime(siteData.totalMovingTime)}}</div> 
+                                                </div>
+                                                 <div class="col-md-3">
+                                                    <div class="col-md-6">Total Idle: </div> 
+                                                    <div class="col-md-6" style="font-weight: normal">{{msToTime(siteData.totalIdleTime)}}</div> 
+                                                </div>
+                                                 <div class="col-md-3">
+                                                    <div class="col-md-6">Total Parking: </div> 
+                                                    <div class="col-md-6" style="font-weight: normal">{{msToTime(siteData.totalParkingTime)}}</div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-6">Total NoData: </div> 
+                                                    <div class="col-md-6" style="font-weight: normal">{{msToTime(siteData.totalNoDataTime)}}</div>
+                                                </div>
+                                               
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="10" style="font-weight: bold;" class="danger">
+                                                 <div class="col-md-3">
+                                                    <div class="col-md-7">Total Trip Length: </div> 
+                                                    <div class="col-md-5" style="font-weight: normal">{{siteData.totalTripLength}} (kms)</div> 
+                                                </div>
+                                                 <div class="col-md-3">
+                                                    <div class="col-md-6">NoData Count:</div> 
+                                                    <div class="col-md-6" style="font-weight: normal">{{siteData.noDataCount}}</div> 
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-6">Mileage: </div> 
+                                                    <div class="col-md-6" style="font-weight: normal">{{siteData.mileage}}(kms)</div> 
+                                                </div>
+                                                 <div class="col-md-3">
+                                                    <div class="col-md-7">Total Fuel Consume: </div> 
+                                                    <div class="col-md-5" style="font-weight: normal">{{siteData.totalFuelConsume}} (ltr)</div> 
+                                                </div>
+                                            </td>
+                                        </tr>
+                                         <tr>
+                                            <td colspan="10" style="font-weight: bold;" class="info">
+                                               <div class="col-md-3">
+                                                    <div class="col-md-3">Start: </div> 
+                                                    <div class="col-md-9" style="font-weight: normal">{{siteData.fromTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div> 
+                                                </div>
+                                                 <div class="col-md-3">
+                                                    <div class="col-md-3">End: </div> 
+                                                    <div class="col-md-9" style="font-weight: normal">{{siteData.toTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div> 
+                                                </div>
+                                                 <div class="col-md-3">
+                                                    <div class="col-md-8">Parking Count: </div> 
+                                                    <div class="col-md-4" style="font-weight: normal">{{siteData.parkCount}}</div>
+                                                </div>
+                                               
+                                                <div class="col-md-3">
+                                                    <div class="col-md-8">Moving Count: </div> 
+                                                    <div class="col-md-4" style="font-weight: normal">{{siteData.moveCount}}</div>
+                                                </div>
+                                               
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="10" style="font-weight: bold;"  class="active">
+                                                
+                                                
+                                                 <div class="col-md-3">
+                                                    <div class="col-md-7">Inital Fuel:</div> 
+                                                    <div class="col-md-5" style="font-weight: normal">{{siteData.initialFuel}} (ltr)</div> 
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-7">Final Fuel: </div> 
+                                                    <div class="col-md-5" style="font-weight: normal">{{siteData.finalFuel}} (ltr)</div> 
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-8">Total Fuel Count: </div> 
+                                                    <div class="col-md-4" style="font-weight: normal">{{siteData.fuelFillCount}} (ltr)</div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-8">Total Fuel Filled: </div> 
+                                                    <div class="col-md-4" style="font-weight: normal">{{siteData.totalFuelFilled}}</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="10" style="font-weight: bold;" class="success">
+                                                <div class="col-md-3">
+                                                    <div class="col-md-6">Vehicle Name: </div> 
+                                                    <div class="col-md-6" style="font-weight: normal">{{siteData.vehicleName}}</div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-6">Group Name: </div> 
+                                                    <div class="col-md-6" style="font-weight: normal">{{uiGroup}}</div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="col-md-4">Last Location: </div> 
+                                                    <div class="col-md-8" style="font-weight: normal">{{siteData.lastLocation}}</div> 
+                                                </div>
+                                                 <div class="col-md-2">
+                                                    <div class="col-md-8">Idle Count: </div> 
+                                                    <div class="col-md-4" style="font-weight: normal">{{siteData.idleCount}}</div>
+                                                </div>
+                                            </td>   
+                                        </tr>
+                                        
+                                        
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="10"></td>
+                                    </tr>
+                                    <tr style="font-weight: bold; background-color: #d1d1d1; text-align : center">
+                                        <td>Start Time</td>
+                                        <td>End Time</td>
+                                        <td>Duration</td>
+                                        <td>Start Loc</td>
+                                        <td>End Loc</td>
+                                        <td>Fuel Consume (ltr)</td>
+                                        <td>Intial Fuel (ltr)</td>
+                                        <td>End Fuel (ltr)</td>
+                                        <td>Position</td>
+                                        <td>Fuel Filled (ltr) </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="10"></td>
+                                    </tr>
+                                    <tr ng-repeat="tripsummary in siteData.historyConsilated" style="text-align : center; cursor : pointer" >
+                                        <!-- ng-click="getInput(tripsummary, siteData)" data-toggle="modal" data-target="#myModal" -->
+                                        <td class="col-md-1">{{tripsummary.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                        <td class="col-md-1">{{tripsummary.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                        <td class="col-md-1">{{msToTime(tripsummary.duration)}}</td>
+                                        <td class="col-md-1" ng-switch on="tripsummary.intLoc" >
+                                            <div ng-switch-when="undefined"><a href="https://www.google.com/maps?q=loc:{{tripsummary.intLat}},{{tripsummary.intLon}}" target="_blank">Link</a></div>
+                                            <div ng-switch-default>{{tripsummary.intLoc}}</div>
+                                        </td>
+                                        <td class="col-md-1" ng-switch on="tripsummary.finLoc">
+                                            <div ng-switch-when="undefined"><a href="https://www.google.com/maps?q=loc:{{tripsummary.finLat}},{{tripsummary.finLon}}" target="_blank">Link</a></div>
+                                            <div ng-switch-default>{{tripsummary.finLoc}}</div>
+                                        </td>
+                                        <td class="col-md-1" ng-switch on="tripsummary.position" >
+                                            <span ng-switch-when="S" style="color : #ff480b">Idle</span>
+                                            <span ng-switch-when="M" style="color : #00d736">Moving</span>
+                                            <span ng-switch-when="P" style="color : #080808">Parked</span>
+                                            <span ng-switch-when="U" style="color : #fc00bd">NoData</span>
+                                        </td>
+                                        <td class="col-md-1">{{tripsummary.fuelConsume}}</td>
+                                        <td class="col-md-1">{{tripsummary.intFuel}}</td>
+                                        <td class="col-md-1">{{tripsummary.finFuel}}</td>
+                                        <td class="col-md-1">{{tripsummary.filledFuel}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td ng-if="siteData.historyConsilated==null" colspan="10">No Records Found Choose some other date</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        <div class="modal fade" id="myModal" style=" top :70px">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Trip Summary Routes</h4>
+                    </div>
+                    <div class="modal-body" id="map_canvas" style="width: 100%; height: 500px;"></div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+                   
+    
+    
+
+
+    
+
+  
+    
+    <script src="assets/js/static.js"></script>
+    <script src="assets/js/jquery-1.11.0.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
+    <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+    <script src="../app/views/reports/customjs/html5csv.js"></script>
+    <script src="../app/views/reports/customjs/moment.js"></script>
+    <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
+    <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
+    <script src="assets/js/vamoApp.js"></script>
+    <script src="assets/js/services.js"></script>
+    <script src="assets/js/siteReport.js"></script>
+
+    <script>
+
+    
+        
+        $(function () {
+                $('#dateFrom, #dateTo').datetimepicker({
+                    format:'YYYY-MM-DD',
+                    useCurrent:true,
+                    pickTime: false
+                });
+                $('#timeFrom').datetimepicker({
+                    pickDate: false,
+                    
+                });
+                $('#timeTo').datetimepicker({
+                    pickDate: false,
+                    
+                });
+        });      
+    //     $("#menu-toggle").click(function(e) {
+    //     e.preventDefault();
+    //     $("#wrapper").toggleClass("toggled");
+    // });
+
+
+  </script>
+    
+</body>
+</html>
+
+

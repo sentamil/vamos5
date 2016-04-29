@@ -12,6 +12,12 @@ Route::get('/live', function() {
     }
 });
  
+Route::get('/apiAcess', function() {
+    Log::info(' api acess ');
+    return View::make('maps.api');
+
+});
+
 Route::get('/replay', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -131,6 +137,13 @@ Route::get('/downloadhistory', function() {
     return View::make('reports.downloadhistory');
 });
 
+Route::get('/tripkms', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get getTripkms');
+    return View::make('reports.tripReportKms');
+});
 
 Route::get('/printStops', function() {
     if (!Auth::check()) {
@@ -178,6 +191,15 @@ Route::get('/getVehicleLocations', function() {
     }
     Log::info('get Vehicle Locations');
     return View::make('vls.getVehicleLocations');
+});
+
+
+Route::get('/getTripSummary', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get getTripSummary');
+    return View::make('vls.getTripSummary');
 });
  
 Route::get('/getActionReport', function() {
@@ -522,6 +544,16 @@ Route::post('rfid/update', array('uses' => 'RfidController@update'));
  Route::post('select3', array('as' => 'ajax.checkUser', 'uses' => 'BusinessController@checkUser'));
   Route::post('select2', array('as' => 'ajax.getGroup', 'uses' => 'BusinessController@getGroup'));
 Route::post('Business/batchSale', array('uses' => 'BusinessController@batchSale'));
+
+// arun ajax call
+Route::post('groupId', array('as' => 'ajax.groupIdCheck', 'uses'=>'VdmGroupController@groupIdCheck'));
+Route::post('dealerId', array('as' => 'ajax.dealerCheck', 'uses'=>'VdmDealersController@dealerCheck'));
+Route::post('orgId', array('as' => 'ajax.ordIdCheck', 'uses'=>'VdmOrganizationController@ordIdCheck'));
+Route::post('userId', array('as' => 'ajax.userIdCheck', 'uses'=>'VdmUserController@userIdCheck'));
+
+
+
+
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
  
@@ -536,9 +568,10 @@ Route::resource('vdmBusRoutes', 'VdmBusRoutesController');
 Route::resource('vdmBusStops', 'VdmBusStopsController');
  
 Route::resource('vdmGeoFence', 'VdmGeoFenceController');
+Route::get('vdmOrganization/{param}/pView', array('uses' => 'VdmOrganizationController@pView'));
 Route::get('vdmOrganization/placeOfInterest', array('uses' => 'VdmOrganizationController@placeOfInterest'));
 Route::post('vdmOrganization/addpoi', array('uses' => 'VdmOrganizationController@addpoi'));
-Route::get('vdmOrganization/{param}/poiView', array('uses' => 'VdmOrganizationController@poiView'));
+
  
 Route::get('vdmOrganization/{param}/poiEdit', array('uses' => 'VdmOrganizationController@poiEdit'));
  

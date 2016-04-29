@@ -5,7 +5,7 @@
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
-                    <h4><b><font color="blue">Vehicles List</font></b></h4>  
+                    <h4><b>Vehicles List</b></h4>  
                 </div>
                 <div class="panel-body">
                 <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6">
@@ -56,8 +56,8 @@
 								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/removeStop/' . $value,'alternate') }}">Remove ALTS</a>
 								
 								
-								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/' . $value) }}">Show Vehicle</a>
-								
+<!-- 								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/' . $value) }}">Show Vehicle</a>
+ -->								
 								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/migration/' . $value) }}">Migration</a>
 					
 								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Edit</a>

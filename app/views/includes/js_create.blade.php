@@ -13,29 +13,74 @@
 <script src="../vendor/sparkline/index.js"></script>
 <script src="../plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script> 
+<script src="../vendor/validation/js/jquery.guardian-1.0.min.js"></script>
 <script src="../scripts/homer.js"></script>
 <script src="../scripts/charts.js"></script>
 
 <script type="text/javascript">
-    $( ".searchkey" ).keyup(function() {
-    
-       var valThis = $(this).val().toLowerCase();
-       $('.vehiclelist>input').each(function(){
-       var text = $(this).val().toLowerCase();
-       if(text.indexOf(valThis) >= 0) {
-        $(this).parent('div').fadeIn();
-       }
-       else{
-        $(this).parent('div').fadeOut();
-       }
-       });
+
+
+                  
+                  
+                  
+                  $(function () {
+                      $('.check').on('click', function () {
+                        var valu = $('.check').each(function(){});
+                        var count = 0;
+                        var counter = 0;
+                        if(list.length)
+                        {
+                          for (var a in list){
+                          if(valu[0].checked == true)
+                            $(questionCheckBox[list[a]]).each(function(){ this.checked = true; });
+                          else if (valu[0].checked != true)
+                            $(questionCheckBox[list[a]]).each(function(){ this.checked = false; });
+                        };
+                          
+                      }
+                      else
+                      {
+                        // if($(".searchkey").t)
+                        if($( ".searchkey" ).val())
+                          for (var a in value){
+                              $(questionCheckBox[counter]).each(function(){ this.checked = false; });
+                            counter++;
+                          }
+                        else
+                          for (var a in value){
+                            if(valu[0].checked == true)
+                              $(questionCheckBox[count]).each(function(){ this.checked = true; });
+                            else if (valu[0].checked != true)
+                              $(questionCheckBox[count]).each(function(){ this.checked = false; });
+                            count++;
+                          };
+                        }
+                     }); 
+                  });
+                
+
+
+
+$( ".searchkey" ).keyup(function() {
+  list = [];
+  var valThis = $(this).val().toLowerCase();
+  $('.vehiclelist>input').each(function(index){
+    var text = $(this).val().toLowerCase();
+    if(text.indexOf(valThis) >= 0) {
+      $(this).parent('div').fadeIn();
+      list.push(index);
+    }
+    else{
+      $(this).parent('div').fadeOut();
+    }
+  });
 })
 
 
       $(function () {
         $("#example1").dataTable();
 
-       /* var table = $('#example1').DataTable();
+       /* var table = $('#example1').DataTable();   userplace
         var test  =   [];
         $('#example1 tbody').on('click', 'td', function () {
             $(this).closest('td').find("input").each(function() {
@@ -66,21 +111,16 @@
         });*/
         
       });
-    </script>
-	<script type="text/javascript">
-$( ".searchkey" ).keyup(function() {
-  var valThis = $(this).val().toLowerCase();
-   $('.userplace>input').each(function(){
-       var text = $(this).val().toLowerCase();
-       if(text.indexOf(valThis) >= 0) {
-       	$(this).parent('div').fadeIn();
-       }
-       else{
-       	$(this).parent('div').fadeOut();
-       }
 
-  });
-})</script>
+
+
+
+
+
+
+
+    </script>
+	
 
 <script>
 
