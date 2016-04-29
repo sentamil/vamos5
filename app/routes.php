@@ -322,7 +322,7 @@ Route::get('/getSelectedVehicleLocation', function() {
     Log::info('get Selected Vehicle Location');
     return View::make('vls.getSelectedVehicleLocation');
 });
- 
+
 Route::get('/getExecutiveReport', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -331,6 +331,13 @@ Route::get('/getExecutiveReport', function() {
     return View::make('vls.getExecutiveReport');
 });
 
+Route::get('/getOverallSiteLocationReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getOverallSiteLocationReport');
+    return View::make('vls.getOverallSiteLocationReport');
+});
 
 Route::get('/getFuelDropFillReport', function() {
     if (!Auth::check()) {

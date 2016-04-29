@@ -24,7 +24,7 @@
 							</br>
 							<div class="form-group">
 							{{ Form::label('mobileNo', 'Mobile Number *') }}
-							{{ Form::Number('mobileNo', Input::old('mobileNo'), array('class' => 'form-control','placeholder'=>'Mobile Number', 'required' => 'required')) }}
+							{{ Form::text('mobileNo', Input::old('mobileNo'), array('class' => 'form-control','placeholder'=>'Mobile Number', 'required' => 'required')) }}
 							</div>
 							</div>
 							<div class="col-md-4">

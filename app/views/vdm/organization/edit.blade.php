@@ -61,7 +61,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     {{ Form::label('mobile', 'Mobile') }}
-                                    {{ Form::Number('mobile', $mobile, array('class' => 'form-control', 'placeholder'=>'Mobile Number')) }}
+                                    {{ Form::text('mobile', $mobile, array('class' => 'form-control', 'placeholder'=>'Mobile Number')) }}
                                 </div>
                                 <div class="form-group">
                                     {{ Form::label('mtc', 'Morning Trip Cron') }}

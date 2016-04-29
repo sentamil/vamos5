@@ -26,7 +26,7 @@
 				<br />
 				<div class="row">
 					<div class="col-md-3">{{ Form::label('mobile', 'Mobile * :') }}</div>
-					<div class="col-md-6">{{ Form::Number('mobile', Input::old('mobile'), array('class' => 'form-control', 'required' => 'required','placeholder'=>'Mobile Number')) }}</div>
+					<div class="col-md-6">{{ Form::text('mobile', Input::old('mobile'), array('class' => 'form-control', 'required' => 'required','placeholder'=>'Mobile Number')) }}</div>
 				</div>
 				<br />
 				<div class="row">
