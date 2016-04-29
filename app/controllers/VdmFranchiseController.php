@@ -53,6 +53,7 @@ public static function smsP()
 		$smsP=array_add($smsP, 'KapSMS','Kap');
 		$smsP=array_add($smsP, 'Mvaayoo','Mvaayoo');
 		$smsP=array_add($smsP, 'UniversalSMS','Universal');
+		$smsP=array_add($smsP, 'Voicegateway','Voicegateway');
 	return $smsP;
 }
 

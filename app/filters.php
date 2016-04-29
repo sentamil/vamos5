@@ -71,6 +71,29 @@ Route::filter('guest', function()
 	if (Auth::check()) return Redirect::to('/');
 });
 
+
+Route::filter('userauth',function()
+{
+
+    if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+      }
+       // Log::info( '-------test-----' .$username);
+        $username = Auth::user ()->username;
+        
+         $redis = Redis::connection ();
+         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        if($redis->sismember ( 'S_Users_Virtual_' . $fcode, $username )==1)
+         {
+         	 Log::info( '-------test-----' .$username);
+			return Redirect::to ( 'live' );
+
+         }
+});
+
+
+
+
 Route::filter('adminauth',function()
 {
 

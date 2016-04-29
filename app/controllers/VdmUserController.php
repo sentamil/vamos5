@@ -145,8 +145,15 @@ class VdmUserController extends \BaseController {
 				$redis->sadd ( $userId, $grp );
 			}
             
+            $virtualaccount=Input::get ( 'virtualaccount' );
            
-			
+			log::info(Input::get ( 'virtualaccount' ). '------login 1---------- ');
+
+			if($virtualaccount=='value')
+			{
+				$redis->sadd ( 'S_Users_Virtual_' . $fcode, $userId );
+			}
+
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			if(Session::get('cur')=='dealer')
 			{
@@ -197,15 +204,22 @@ class VdmUserController extends \BaseController {
 		
 		$redis = Redis::connection ();
 		$userId = $id;
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		$mobileNo = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':mobileNo' );
 		$email = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':email' );
 		$vehicleGroups = $redis->smembers ( $userId );
-		
+		//$redis->sadd ( 'S_Users_Virtual_' . $fcode, $userId );
+		$value=false;
+		 if($redis->sismember ( 'S_Users_Virtual_' . $fcode, $userId )==1)
+		 {
+		 	$value=true;
+		 }
+
 		$vehicleGroups = implode ( '<br/>', $vehicleGroups );
 		
 		return View::make ( 'vdm.users.show', array (
 				'userId' => $userId 
-		) )->with ( 'vehicleGroups', $vehicleGroups )->with('mobileNo',$mobileNo)->with('email',$email);
+		) )->with ( 'vehicleGroups', $vehicleGroups )->with('mobileNo',$mobileNo)->with('email',$email)->with('value',$value);
 	}
 	
 	/**
@@ -271,12 +285,16 @@ class VdmUserController extends \BaseController {
             }
             
         }
-  
+  		$value=false;
+		 if($redis->sismember ( 'S_Users_Virtual_' . $fcode, $userId )==1)
+		 {
+		 	$value=true;
+		 }
 		
 		return View::make ( 'vdm.users.edit', array (
 				'userId' => $userId 
 		) )->with ( 'vehicleGroups', $vehicleGroups )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email)->with('selectedGroups',$selectedGroups)->with('orgsList',$orgsList)->with('selectedOrgsList',$selectedOrgsList);
+		with('email',$email)->with('selectedGroups',$selectedGroups)->with('orgsList',$orgsList)->with('selectedOrgsList',$selectedOrgsList)->with('value',$value);
 	}
 	
 	/**
@@ -319,8 +337,18 @@ class VdmUserController extends \BaseController {
 				$redis->sadd ( $userId, $grp );
 			}
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
+
+			 $virtualaccount=Input::get ( 'virtualaccount' );
+
+			 if($virtualaccount=='value')
+			 {
+			 	$redis->sadd ( 'S_Users_Virtual_' . $fcode, $userId );
+			 }else
+			 {
+			 	$redis->srem ( 'S_Users_Virtual_' . $fcode, $userId );
+			 }
 			
-            
+           // 
            /* $orgsList = Input::get ( 'orgsList' );
             // $orgs = $redis->smembers('S_Orgs_' .$userId . '_' . $fcode);
             $redis->del('S_Orgs_' .$userId . '_' . $fcode);

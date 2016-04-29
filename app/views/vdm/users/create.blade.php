@@ -39,6 +39,16 @@
 							
 							{{ Form::text('password', Input::old('password'), array('class' =>'form-control','placeholder'=>'Password', 'required' => 'required')) }}
 							</div>
+
+							</br>
+							 <div class="form-group">
+							 {{Form::checkbox('virtualaccount', 'value',false, ['class' => 'check1'])}}
+							{{ Form::label('virtualaccount', 'Virtual Account') }}
+							</div>
+							
+
+
+
 							</div>
 	                        <div class="col-md-3" style="text-align: right"><br>
 							<h6>{{ Form::submit('submit', array('class' => 'btn btn-primary')) }}</h6>
