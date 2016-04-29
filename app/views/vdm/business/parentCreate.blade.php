@@ -33,7 +33,7 @@
 							<div class="col-md-1"><div id="show" style="border-radius: -25px; height:0px; margin: 0; width : 0px; padding: 0px; border: 0px">{{ Form::radio('type', 'Sale') }}</div></div>
 							<div class="col-md-2">Batch Sale</div>
 							<div class="col-md-2"></div>
-							<div class="col-md-2">{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}{{ Form::close() }}</div>
+							<div class="col-md-2">{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div>
 						</div>
 						<hr>
 						
@@ -64,10 +64,10 @@
 							<br>
 							<hr>
 							<div class="col-md-2"></div>
-							<div class="col-md-2">{{ Form::text('userId', Input::old('userId'), array('id'=>'userIdtempNew','class' => 'form-control','required'=>'required','placeholder'=>'User Name')) }}</div>
-							<div class="col-md-2">{{ Form::Number('mobileNo', Input::old('mobileNo'),array('class' => 'form-control','placeholder'=>'Mobile Number', 'required'=>'required')) }}</div>
-							<div class="col-md-2">{{ Form::Email('email', Input::old('email'),array('class' => 'form-control','placeholder'=>'Email', 'required'=>'required')) }}</div>
-							<div class="col-md-2">{{ Form::text('password', Input::old('password'),array('class' => 'form-control','placeholder'=>'Password', 'required'=>'required'))}}</div>
+							<div class="col-md-2">{{ Form::text('userId', Input::old('userId'), array('id'=>'userIdtempNew','class' => 'form-control','placeholder'=>'User Name')) }}</div>
+							<div class="col-md-2">{{ Form::Number('mobileNo', Input::old('mobileNo'),array('class' => 'form-control','placeholder'=>'Mobile Number')) }}</div>
+							<div class="col-md-2">{{ Form::Email('email', Input::old('email'),array('class' => 'form-control','placeholder'=>'Email')) }}</div>
+							<div class="col-md-2">{{ Form::text('password', Input::old('password'),array('class' => 'form-control','placeholder'=>'Password'))}}</div>
 
 						</div>
 						<br>
@@ -245,6 +245,7 @@
 								</table>
 							</div>
 						</div>
+						{{ Form::close() }}
 					</div>
 				</div>
 			</div>
