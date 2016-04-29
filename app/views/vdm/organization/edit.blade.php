@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="form-group">
                                     {{ Form::label('sendGeoFenceSMS', 'Send GeoFence SMS') }}
-                                    {{ Form::select('sendGeo    FenceSMS',  array( 'no' => 'No','yes' => 'Yes' ), $sendGeoFenceSMS, array('class' => 'form-control')) }} 
+                                    {{ Form::select('sendGeoFenceSMS',  array( 'no' => 'No','yes' => 'Yes' ), $sendGeoFenceSMS, array('class' => 'form-control','id'=>'sendGeoFenceSMS')) }} 
                                 </div>
                                 <div class="form-group">
                                     {{ Form::label('address', 'Address') }}

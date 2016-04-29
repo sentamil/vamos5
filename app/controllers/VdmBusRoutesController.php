@@ -83,13 +83,13 @@ class VdmBusRoutesController extends \BaseController {
     {
         
           Log::info(" VdmBusRoutesController @ store");
-        
+        Log::info(' orgId '.Input::get('orgId'));
         if(!Auth::check()) {
             return Redirect::to('login');
         }
         $username = Auth::user()->username;
         $rules = array(
-                'orgId'       => 'required',
+                'orgId' => 'required',
                 'routeId' => 'required',
                 'stops'=>'required'
         );
@@ -102,6 +102,7 @@ class VdmBusRoutesController extends \BaseController {
             // store
             
             $orgId       = Input::get('orgId');
+            
             $routeId      = Input::get('routeId');
             $stops      = Input::get('stops');
        
