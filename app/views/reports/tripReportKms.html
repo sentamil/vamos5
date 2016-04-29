@@ -136,114 +136,83 @@ background-color: #ffffff;
                 <div class="empty" align="center"></div> <p style="margin:0" class="page-header">Trip Summary<span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
                             <br>
                                 <table class="table table-bordered table-striped table-condensed table-hover">
-                                    <thead>
+                                    <thead style="font-weight: bold;">
                                         
                                        
-                                         <tr>
-                                            <td colspan="10" style="font-weight: bold;" class="warning">
-                                                 <div class="col-md-3">
-                                                    <div class="col-md-6">Total Moving: </div> 
-                                                    <div class="col-md-6" style="font-weight: normal">{{msToTime(siteData.totalMovingTime)}}</div> 
-                                                </div>
-                                                 <div class="col-md-3">
-                                                    <div class="col-md-6">Total Idle: </div> 
-                                                    <div class="col-md-6" style="font-weight: normal">{{msToTime(siteData.totalIdleTime)}}</div> 
-                                                </div>
-                                                 <div class="col-md-3">
-                                                    <div class="col-md-6">Total Parking: </div> 
-                                                    <div class="col-md-6" style="font-weight: normal">{{msToTime(siteData.totalParkingTime)}}</div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="col-md-6">Total NoData: </div> 
-                                                    <div class="col-md-6" style="font-weight: normal">{{msToTime(siteData.totalNoDataTime)}}</div>
-                                                </div>
-                                               
+                                         <tr class="active">
+                                            <td>
+                                                <div class="col-md-12">Start Time</div>
+                                            </td>
+                                            <td colspan="2">
+                                                <div class="col-md-12">{{siteData.fromTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div>
+                                            </td>
+                                            <td>
+                                                <div class="col-md-12">End Time</div>
+                                            </td>
+                                            <td colspan="2">
+                                                <div class="col-md-12">{{siteData.toTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div>
+                                            </td>
+                                            <td colspan="2" rowspan="3">
+                                                <div class="col-md-12">Last Sighted Location</div>
+                                            </td>
+                                            <td colspan="2" rowspan="3">
+                                                <div class="col-md-12">{{siteData.lastLocation}}</div>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td colspan="10" style="font-weight: bold;" class="danger">
-                                                 <div class="col-md-3">
-                                                    <div class="col-md-7">Total Trip Length: </div> 
-                                                    <div class="col-md-5" style="font-weight: normal">{{siteData.totalTripLength}} (kms)</div> 
-                                                </div>
-                                                 <div class="col-md-3">
-                                                    <div class="col-md-6">NoData Count:</div> 
-                                                    <div class="col-md-6" style="font-weight: normal">{{siteData.noDataCount}}</div> 
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="col-md-6">Mileage: </div> 
-                                                    <div class="col-md-6" style="font-weight: normal">{{siteData.mileage}}(kms)</div> 
-                                                </div>
-                                                 <div class="col-md-3">
-                                                    <div class="col-md-7">Total Fuel Consume: </div> 
-                                                    <div class="col-md-5" style="font-weight: normal">{{siteData.totalFuelConsume}} (ltr)</div> 
-                                                </div>
-                                            </td>
+                                        <tr class="success">
+                                            <td><div class="col-md-12">Vehicle Name</div></td>
+                                            <td colspan="2"><div class="col-md-12">{{siteData.vehicleName}}</div></td>
+                                            <td><div class="col-md-12">Group Name</div></td>
+                                            <td colspan="2"><div class="col-md-12">{{uiGroup}}</div></td>
                                         </tr>
-                                         <tr>
-                                            <td colspan="10" style="font-weight: bold;" class="info">
-                                               <div class="col-md-3">
-                                                    <div class="col-md-3">Start: </div> 
-                                                    <div class="col-md-9" style="font-weight: normal">{{siteData.fromTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div> 
-                                                </div>
-                                                 <div class="col-md-3">
-                                                    <div class="col-md-3">End: </div> 
-                                                    <div class="col-md-9" style="font-weight: normal">{{siteData.toTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div> 
-                                                </div>
-                                                 <div class="col-md-3">
-                                                    <div class="col-md-8">Parking Count: </div> 
-                                                    <div class="col-md-4" style="font-weight: normal">{{siteData.parkCount}}</div>
-                                                </div>
-                                               
-                                                <div class="col-md-3">
-                                                    <div class="col-md-8">Moving Count: </div> 
-                                                    <div class="col-md-4" style="font-weight: normal">{{siteData.moveCount}}</div>
-                                                </div>
-                                               
-                                            </td>
+                                         <tr class="success">
+                                            <td><div class="col-md-12">Trip Distance</div></td>
+                                            <td colspan="2"><div class="col-md-12">{{siteData.totalTripLength}} kms</div></td>
+                                            <td><div class="col-md-12">Milage</div></td>
+                                            <td colspan="2"><div class="col-md-12">{{siteData.mileage}} kmpl</div></td>
                                         </tr>
-                                        <tr>
-                                            <td colspan="10" style="font-weight: bold;"  class="active">
-                                                
-                                                
-                                                 <div class="col-md-3">
-                                                    <div class="col-md-7">Inital Fuel:</div> 
-                                                    <div class="col-md-5" style="font-weight: normal">{{siteData.initialFuel}} (ltr)</div> 
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="col-md-7">Final Fuel: </div> 
-                                                    <div class="col-md-5" style="font-weight: normal">{{siteData.finalFuel}} (ltr)</div> 
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="col-md-8">Total Fuel Count: </div> 
-                                                    <div class="col-md-4" style="font-weight: normal">{{siteData.fuelFillCount}} (ltr)</div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="col-md-8">Total Fuel Filled: </div> 
-                                                    <div class="col-md-4" style="font-weight: normal">{{siteData.totalFuelFilled}}</div>
-                                                </div>
-                                            </td>
+                                        <tr><td colspan="10"></td></tr>
+                                        <tr class="active">
+                                            <td colspan="2"><div class="col-md-12">Status</div></td>
+                                            <td colspan="2"><div class="col-md-12">Duration</div></td>
+                                            <td colspan="2"><div class="col-md-12">Fuel Details</div></td>
+                                            <td><div class="col-md-12">Litres</div></td>
+                                            <td colspan="2"><div class="col-md-12">Statistics</div></td>
+                                            <td><div class="col-md-12">Occurance</div></td>
                                         </tr>
-                                        <tr>
-                                            <td colspan="10" style="font-weight: bold;" class="success">
-                                                <div class="col-md-3">
-                                                    <div class="col-md-6">Vehicle Name: </div> 
-                                                    <div class="col-md-6" style="font-weight: normal">{{siteData.vehicleName}}</div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="col-md-6">Group Name: </div> 
-                                                    <div class="col-md-6" style="font-weight: normal">{{uiGroup}}</div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="col-md-4">Last Location: </div> 
-                                                    <div class="col-md-8" style="font-weight: normal">{{siteData.lastLocation}}</div> 
-                                                </div>
-                                                 <div class="col-md-2">
-                                                    <div class="col-md-8">Idle Count: </div> 
-                                                    <div class="col-md-4" style="font-weight: normal">{{siteData.idleCount}}</div>
-                                                </div>
-                                            </td>   
+                                        <tr class="warning">    
+                                            <td colspan="2"><div class="col-md-12">Total Moving</div></td>
+                                            <td colspan="2"><div class="col-md-12">{{msToTime(siteData.totalMovingTime)}}</div></td>
+                                            <td colspan="2"><div class="col-md-12">Initial Level</div></td>
+                                            <td><div class="col-md-12">{{siteData.initialFuel}}</div></td>
+                                            <td colspan="2"><div class="col-md-12">Fuel Fill Count</div></td>
+                                            <td><div class="col-md-12">{{siteData.fuelFillCount}}</div></td>
                                         </tr>
+                                        <tr class="info">
+                                            <td colspan="2"><div class="col-md-12">Total Idle</div></td>
+                                            <td colspan="2"><div class="col-md-12">{{msToTime(siteData.totalIdleTime)}}</div></td>
+                                            <td colspan="2"><div class="col-md-12">Final Level</div></td>
+                                            <td><div class="col-md-12">{{siteData.finalFuel}}</div></td>
+                                            <td colspan="2"><div class="col-md-12">Moving count</div></td>
+                                            <td><div class="col-md-12">{{siteData.moveCount}}</div></td>
+                                        </tr>
+                                        <tr class="success">
+                                            <td colspan="2"><div class="col-md-12">Total Parked</div></td>
+                                            <td colspan="2"><div class="col-md-12">{{msToTime(siteData.totalParkingTime)}}</div></td>
+                                            <td colspan="2"><div class="col-md-12">Total Filling</div></td>
+                                            <td><div class="col-md-12">{{siteData.totalFuelFilled}}</div></td>
+                                            <td colspan="2"><div class="col-md-12">Parking count</div></td>
+                                            <td><div class="col-md-12">{{siteData.parkCount}}</div></td>
+                                        </tr>
+                                        <tr class="danger">
+                                            <td colspan="2"><div class="col-md-12">Total NoData</div></td>
+                                            <td colspan="2"><div class="col-md-12">{{msToTime(siteData.totalNoDataTime)}}</div></td>
+                                            <td colspan="2"><div class="col-md-12">Consumption</div></td>
+                                            <td><div class="col-md-12">{{siteData.totalFuelConsume}}</div></td>
+                                            <td colspan="2"><div class="col-md-12">Idle Count</div></td>
+                                            <td><div class="col-md-12">{{siteData.idleCount}}</div></td>
+                                        </tr>
+
                                         
                                         
                                 </thead>
@@ -255,13 +224,15 @@ background-color: #ffffff;
                                         <td>Start Time</td>
                                         <td>End Time</td>
                                         <td>Duration</td>
-                                        <td>Start Loc</td>
-                                        <td>End Loc</td>
-                                        <td>Fuel Consume (ltr)</td>
-                                        <td>Intial Fuel (ltr)</td>
-                                        <td>End Fuel (ltr)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0">Start Loc</td>
+                                        <td ng-show="siteData.totalFuelConsume==0" colspan="3">Start Loc</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0">End Loc</td>
+                                        <td ng-show="siteData.totalFuelConsume==0" colspan="3">End Loc</td>
                                         <td>Position</td>
-                                        <td>Fuel Filled (ltr) </td>
+                                        <td ng-hide="siteData.totalFuelConsume==0">Fuel Consume (ltr)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0">Intial Fuel (ltr)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0">End Fuel (ltr)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0">Fuel Filled (ltr) </td>
                                     </tr>
                                     <tr>
                                         <td colspan="10"></td>
@@ -271,11 +242,19 @@ background-color: #ffffff;
                                         <td class="col-md-1">{{tripsummary.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td class="col-md-1">{{tripsummary.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td class="col-md-1">{{msToTime(tripsummary.duration)}}</td>
-                                        <td class="col-md-1" ng-switch on="tripsummary.intLoc" >
+                                        <td class="col-md-1" ng-switch on="tripsummary.intLoc" ng-hide="siteData.totalFuelConsume==0">
                                             <div ng-switch-when="undefined"><a href="https://www.google.com/maps?q=loc:{{tripsummary.intLat}},{{tripsummary.intLon}}" target="_blank">Link</a></div>
                                             <div ng-switch-default>{{tripsummary.intLoc}}</div>
                                         </td>
-                                        <td class="col-md-1" ng-switch on="tripsummary.finLoc">
+                                        <td ng-switch on="tripsummary.intLoc" ng-show="siteData.totalFuelConsume==0" colspan="3">
+                                            <div ng-switch-when="undefined"><a href="https://www.google.com/maps?q=loc:{{tripsummary.intLat}},{{tripsummary.intLon}}" target="_blank">Link</a></div>
+                                            <div ng-switch-default>{{tripsummary.intLoc}}</div>
+                                        </td>
+                                        <td class="col-md-1" ng-switch on="tripsummary.finLoc" ng-hide="siteData.totalFuelConsume==0">
+                                            <div ng-switch-when="undefined"><a href="https://www.google.com/maps?q=loc:{{tripsummary.finLat}},{{tripsummary.finLon}}" target="_blank">Link</a></div>
+                                            <div ng-switch-default>{{tripsummary.finLoc}}</div>
+                                        </td>
+                                        <td ng-switch on="tripsummary.finLoc" ng-show="siteData.totalFuelConsume==0" ng-show="siteData.totalFuelConsume==0" colspan="3">
                                             <div ng-switch-when="undefined"><a href="https://www.google.com/maps?q=loc:{{tripsummary.finLat}},{{tripsummary.finLon}}" target="_blank">Link</a></div>
                                             <div ng-switch-default>{{tripsummary.finLoc}}</div>
                                         </td>
@@ -285,10 +264,10 @@ background-color: #ffffff;
                                             <span ng-switch-when="P" style="color : #080808">Parked</span>
                                             <span ng-switch-when="U" style="color : #fc00bd">NoData</span>
                                         </td>
-                                        <td class="col-md-1">{{tripsummary.fuelConsume}}</td>
-                                        <td class="col-md-1">{{tripsummary.intFuel}}</td>
-                                        <td class="col-md-1">{{tripsummary.finFuel}}</td>
-                                        <td class="col-md-1">{{tripsummary.filledFuel}}</td>
+                                        <td class="col-md-1" ng-hide="siteData.totalFuelConsume==0">{{tripsummary.fuelConsume}}</td>
+                                        <td class="col-md-1" ng-hide="siteData.totalFuelConsume==0">{{tripsummary.intFuel}}</td>
+                                        <td class="col-md-1" ng-hide="siteData.totalFuelConsume==0">{{tripsummary.finFuel}}</td>
+                                        <td class="col-md-1" ng-hide="siteData.totalFuelConsume==0">{{tripsummary.filledFuel}}</td>
                                     </tr>
                                     <tr>
                                         <td ng-if="siteData.historyConsilated==null" colspan="10">No Records Found Choose some other date</td>

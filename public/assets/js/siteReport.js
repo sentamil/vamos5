@@ -1,6 +1,6 @@
 app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, vamoservice, $filter){
 
-// report summary report, 	site report trip report 
+// trip summary , 	site report, trip report 
 
 	//global declaration
 	
@@ -197,8 +197,8 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 			$scope.vehicle_list = response;
 			$scope.shortNam		= response[$scope.gIndex].vehicleLocations[0].shortName;
 			$scope.vehiname		= response[$scope.gIndex].vehicleLocations[0].vehicleId;
-			sessionValue($scope.vehiname, $scope.gName)
-
+			sessionValue($scope.vehiname, $scope.gName);
+			webServiceCall();
 		});
 	}
 

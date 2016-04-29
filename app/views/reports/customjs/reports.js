@@ -5,9 +5,13 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	//$("#testLoad").load("../public/menu");
 	var getUrl  =   document.location.href;
 	var index   =   getUrl.split("=")[1];
-	if(index)
-	$scope.actTab 	=	true;
-	$scope.tab 		=true;
+	if(index == 1)
+		$scope.actTab 	=	true;
+	else if(index ==2 )
+		$scope.siteTab 		=	true;
+
+		
+	$scope.tab 		=	true;
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
 	$scope.newAddr      = 	{};
@@ -95,8 +99,12 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 			});				
 		// // $scope.loading	=	false;
 		// if($('#consoldate.active'))
-		console.log($('#consoldate').attr('id'));
+		// console.log($('#consoldate').attr('id'));
 		// if(!$("#consoldate").css('visibility') === 'hidden'){
+			if($scope.siteTab == true)
+				{$scope.consoldateTrip();$scope.siteTab == false}
+	// else if($scope.actTab == true)
+	// 	{$('#myModal').show();}
 				$('#preloader').fadeOut(); 
 				$('#preloader02').delay(350).fadeOut('slow');
 		$scope.recursive($scope.data1.vehicleLocations,0);
@@ -171,6 +179,9 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
     	})
 	};
 
+
+	
+
 	$scope.consoldate1 =  function()
 	{
 		$('#preloader').show(); 
@@ -183,26 +194,76 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		service(conUrl1);
 	}
 
+	function dateFunction()
+	{
+		$scope.fromNowTS1		=	new Date();
+		$scope.fromdate1		=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
+		$scope.todate1			=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
+		$scope.totime		    =	$scope.fromNowTS1.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+		$scope.checkBox.loc 	= true;
+		$scope.checkBox.site 	= true;
+	}
 	
 	$scope.consoldate =  function()
 	{
 		
 		$('#preloader').show(); 
 		$('#preloader02').show();
-		$scope.fromNowTS1		=	new Date();
-		$scope.fromdate1		=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
-		$scope.todate1			=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
-		$scope.totime		    =	$scope.fromNowTS1.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+		dateFunction();
 		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime);
 		service(conUrl);
 	}
 	
+	function serviceCallTrip (url){
+		$http.get(url).success(function(response){
+			$scope.tripData = response;
+			$('#preloader').fadeOut(); 
+			$('#preloader02').delay(350).fadeOut('slow');
+		})
+	}
+
+
+	$scope.checkBox =	{}
+	$scope.consoldateTrip = function(valu)
+	{	
+		
+		$('#preloader').show(); 
+		$('#preloader02').show();
+		// $scope.tripValu = valu;
+		// console.log(' trip '+valu+'---->'+$scope.checkBox.site+$scope.checkBox.loc);
+		if(valu == 'tripButon')
+		{
+			$scope.fromdate1   =  document.getElementById("tripfrom").value;
+			$scope.fromTime    =  '12:00 AM';
+			// $scope.todate1     =  document.getElementById("tripto").value;
+			$scope.totime      =  '11:59 PM';
+		}
+			
+		else
+			dateFunction(); 
+		var conUrl              =   'http://'+getIP+context+'/public/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.fromdate1+'&toTime='+convert_to_24h($scope.totime)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site;
+		serviceCallTrip(conUrl);
+		console.log('  consoldate trip '+$scope.fromdate1 +$scope.fromTime+$scope.todate1 +$scope.totime);
+		
+	}
+
+	// $scope.consoldateTripButton = function(){
+	// 	console.log('  consoldate trip '+$scope.fromdate1 +$scope.fromTime+$scope.todate1 +$scope.totime);
+	// }
+
+
 
 	$scope.dialogBox 	=	function()
 	{
 		$scope.tab = false;
+		$scope.fromdate1   =  document.getElementById("dateFrom").value;
+		$scope.fromTime    =  document.getElementById("timeFrom").value;
+		$scope.todate1     =  document.getElementById("dateTo").value;
+		$scope.totime      =  document.getElementById("timeTo").value;
 		
 	}
+
+	
 
 	$scope.exportData = function (data) {
 		var blob = new Blob([document.getElementById(data).innerHTML], {
@@ -345,14 +406,13 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		$scope.groupId 	= 	groupid;
 		$scope.vehigroup = groupname;
 		$scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+$scope.vehigroup;
-			if($('#consoldate').attr('id')=='consoldate')
-			{
-				$('#preloader').show(); 
-				$('#preloader02').show();
-				$scope.consoldate1();
-				
-			}
-		}
+		$('#preloader').show(); 
+		$('#preloader02').show();
+		if($('#consoldate').attr('id')=='consoldate')
+			$scope.consoldate1();
+		else if($('#tripTab').attr('id')=='tripTab')
+			$scope.consoldateTrip('tripButon');
+	}
 	
 	
 	

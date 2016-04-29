@@ -190,7 +190,7 @@
             </li>
 			<li>  <a href="vdmOrganization/create"> <span class="nav-label">Add Organization</span></a></li>
                 
-			 <li>  <a href="vdmOrganization/placeOfInterest"> <span class="nav-label">Place Of Interest</span></a></li>
+			 <li>  <a href="vdmOrganization/placeOfInterest"> <span class="nav-label">Add POI</span></a></li>
                 </ul>
 			 
                 

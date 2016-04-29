@@ -236,6 +236,8 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 			$scope.shortNam		= response[$scope.gIndex].vehicleLocations[0].shortName;
 			$scope.vehiname		= response[$scope.gIndex].vehicleLocations[0].vehicleId;
 			sessionValue($scope.vehiname, $scope.gName)
+			getUiValue();
+			webServiceCall();
 
 		});
 	}
