@@ -21,13 +21,30 @@
 		            		<div class="col-md-1">{{ Form::label('mobileNo', 'MobileNo :') }}</div>
 		            		<div class="col-md-4">{{ Form::text('mobileNo', $mobileNo, array('class' => 'form-control','placeholder'=>'Mobile Number')) }}</div>
 		            	</div>
-		            	<br>
+		            	
+		            	
+
+
+						<br>
 		            	<div class="row">
 		            		
 		            		<div class="col-md-1">{{ Form::label('email', 'Email :') }}</div>
 		            		<div class="col-md-4">{{ Form::Email('email', $email, array('class' => 'form-control','placeholder'=>'Email')) }}</div>
 		            	</div>
+
+
+
+		            	<br>
+		            	<div class="row">
+		            		
+		            		<div class="col-md-4"> {{Form::checkbox('virtualaccount', 'value',$value, ['class' => 'check1'])}}
+							{{ Form::label('virtualaccount', 'Virtual Account') }}</div>
+		            		
+		            	</div>
 		            	<hr>
+
+
+
 		            	<div class="row">
 		            		<div class="col-md-12"><h4><font color="#086fa1">{{ Form::label('vehicleList', 'Select the groups:') }} </font></div>
 		            	</div>

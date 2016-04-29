@@ -330,6 +330,7 @@ public function addpoi()
 		$radius =null;
         $shortNameList = null;
         try{
+
 			// Log::info('-------------- $try------1-----'.$Places);
 			if($poiViewValue!=null)
 			{

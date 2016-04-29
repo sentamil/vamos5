@@ -108,7 +108,10 @@ class BusinessController extends \BaseController {
 		$orgArra = array();
 		$orgArra =array_add($orgArra, 'select','select');
       foreach($userList as $org) {
-            $orgArra = array_add($orgArra, $org,$org);
+           if(!$redis->sismember ( 'S_Users_Virtual_' . $fcode, $org )==1)
+		 {
+		 	 $orgArra = array_add($orgArra, $org,$org);
+		 }	
 			
         }
 			$userList=$orgArra;
@@ -386,8 +389,10 @@ public static function getUser()
 		$orgArra = array();
 		$orgArra = array_add($orgArra, 'select','select');
       foreach($userList as $key => $org) {
-            $orgArra = array_add($orgArra, $org,$org);
-			
+      	 if(!$redis->sismember ( 'S_Users_Virtual_' . $fcode, $org )==1)
+		 {
+		 	 $orgArra = array_add($orgArra, $org,$org);
+		 }	
         }
 			$userList=$orgArra;
 

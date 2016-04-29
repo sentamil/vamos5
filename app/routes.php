@@ -83,20 +83,7 @@ Route::get('/menu', function() {
 });
  
  
-Route::get('/sites', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    return View::make('reports.siteDetails');
-});
- 
-Route::get('/password_check', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    return View::make('reports.admin_Auth');
-});
- 
+
  
 View::addExtension('html', 'php');
 Route::get('/reports', function() {
@@ -262,6 +249,8 @@ Route::get('/getPoiHistory', function() {
 });
  
  
+
+
  
  
 Route::get('/liveTrack', function() {
@@ -423,6 +412,26 @@ Route::get('viewSite', function() {
 });
  
 ;
+
+
+Route::group(array('before' => 'userauth'), function(){ 
+        Route::get('/sites', function() {
+            if (!Auth::check()) {
+                return Redirect::to('login');
+            }
+            return View::make('reports.siteDetails');
+        });
+         
+        Route::get('/password_check', function() {
+            if (!Auth::check()) {
+                return Redirect::to('login');
+            }
+            return View::make('reports.admin_Auth');
+        });
+
+Route::post('vdmVehicles/updateLive/{param}', array('uses' => 'VdmVehicleController@updateLive'));
+
+});
  
 // route to show the login form
 //Route::get('register', array('uses' => 'RegisterController@showRegister'));                                      //Reg
@@ -592,7 +601,6 @@ Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleControlle
  
  
 });   //admin auth ends here
-Route::post('vdmVehicles/updateLive/{param}', array('uses' => 'VdmVehicleController@updateLive'));
 Route::post('AddSiteController/store', array('uses' => 'AddSiteController@store'));
 Route::post('AddSiteController/update', array('uses' => 'AddSiteController@update'));
 Route::post('AddSiteController/delete', array('uses' => 'AddSiteController@delete'));
