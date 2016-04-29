@@ -328,7 +328,7 @@ public function addpoi()
 		$radius =null;
         $shortNameList = null;
         try{
-			Log::info('-------------- $try-----------');
+			Log::info('-------------- $try-----------'.$id);
 			if($Places!=null)
 			{
 				Log::info('-------------- $try11-----------');
