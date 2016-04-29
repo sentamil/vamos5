@@ -806,7 +806,7 @@ public function addpoi()
         $username = Auth::user()->username;
         
 		 log::info( '---------------inside------------- ::' . $id);
-		
+		Log::info(' sendGeoFenceSMS---> '.Input::get('sendGeoFenceSMS'));
         //no rules as of now
         $rules=array();
         $validator = Validator::make(Input::all(), $rules);
@@ -869,6 +869,7 @@ public function addpoi()
 			$idleDuration=Input::get('idleDuration');
 			$overspeedalert=Input::get('overspeedalert');
 			$sendGeoFenceSMS=Input::get('sendGeoFenceSMS');
+			
 			$smsSender=Input::get('smsSender');
 			$smsProvider=Input::get('smsProvider');
 			$providerUserName=Input::get('providerUserName');
