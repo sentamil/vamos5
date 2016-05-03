@@ -4,16 +4,38 @@
 <title>API 
 </title>
 <style>
+#bgcolor{
+	background-color: #fff;
+}
+#page{
+	background-color: #e6e6e6;
+	border: 5px solid #666666;
+	margin-left: 150px;
+	margin-right: 150px;
+	margin-top: 0px;	 
+	width: 1000px;
+	padding: 10px;
+	font-family: verdana;
+}
+h1
+{
+	background-color: #fff;
+	text-align: center;
+}
+h2{
+	border-bottom: 1px solid #666666;
+	padding: 15px;
+}
 h2,h3{
 	color: #005580;
 }
-	table,td,th{
+	table,th,td{
 		border: 1px solid #000;
 		text-align: left;
 	}
 	table{
 		border-collapse: collapse;
-		width: 75%;	
+		width: 100%;	
 	}
 	th{
 		width: 25px;
@@ -21,9 +43,16 @@ h2,h3{
 	th,td{
 		padding: 15px;
 	}
+p{
+	padding: 3px;
+	line-height: 1.8;
+}
 </style>
 </head>
-<body> 
+<body>
+<div id="bgcolor">
+<h1>GPS Vehicle Tracking API</h1>
+<div id="page">
 <h2> Summary
 </h2>
 <p>
@@ -45,7 +74,7 @@ Dealer then uses the token on their server to access Open API for needed data.
 </p>
 <p>The following figure shows the data exchange flow:</p>
 <h3>3. API Summary </h3>
-<h3>Common Parameters </h3>
+<h4>Common Parameters :</h4>
 <table>
    <tr>
         <th>Name</th>
@@ -55,32 +84,32 @@ Dealer then uses the token on their server to access Open API for needed data.
     </tr>
     <tr>
     	<td>API Key</td>
-    	<td>string</td>
-    	<td>yes</td>
+    	<td>String</td>
+    	<td>Yes</td>
     	<td>An api key, used to indicate whether the invoker is authorized. Reference to 4.1 for acquiring the token.The apikey should only be used within your server side code, otherwise it will not work.</td>
     </tr>
     <tr>
     	<td>UserId</td>
-    	<td>string</td>
-    	<td>yes</td>
+    	<td>String</td>
+    	<td>Yes</td>
     	<td>The userId which is the one you used to acquire api key.</td>
     </tr>
     <tr>
     	<td>GroupId</td>
-    	<td>string</td>
-    	<td>yes</td>
+    	<td>String</td>
+    	<td>Yes</td>
     	<td>Group name which is linked to the user (vehicles grouped under)</td>
     </tr>
     <tr>
     	<td>Time</td>
     	<td>Long</td>
-    	<td>yes</td>
+    	<td>Yes</td>
     	<td>UNIX timestamp, in seconds. Generally the time when the request is invoked.</td>
     </tr>
     </table>
-    <h3>Parameter Encoding</h3>
+    <h4>Parameter Encoding :</h4>
     <p>The encoding of request and response is utf-8, all parameters in url should be URI Encoded.</p>
-    <h3>HTTP MIME Type</h3>
+    <h4>HTTP MIME Type :</h4>
     <p>JSON
 Content-type: text/html; charset=utf-8</p>
 <h3>4. API Listing</h3>
@@ -88,13 +117,13 @@ Content-type: text/html; charset=utf-8</p>
 <P>Note : For testing phase this is not required.
 
 </P>
-<h3>Description :</h3>
+<h4>Description :</h4>
 <p>Acquire API Key</p>
-<h3>URL :</h3>
-<p>http://gpsvts.net/mobile/apiKey</p>
-<h3>HTTP Method :</h3>
+<h4>URL :</h4>
+<p>http://Domain_Name/mobile/apiKey</p>
+<h4>HTTP Method :</h4>
 <p>GET</p>
-<h3>Input Parameters :</h3>
+<h4>Input Parameters :</h4>
 <table>
 	<tr>
 		<th>Name</th>
@@ -117,9 +146,9 @@ Content-type: text/html; charset=utf-8</p>
 		<td>Encrypted signature; algorithm：md5(md5(password of user account) + time)</td>
 	</tr>
 </table>
-<h3>URL Example</h3>
-<p>http://gpsvts.net/mobile/apiKey?userId=DEMO&time=1366786321&signature=e9b39daacc811af7109ef1e11a6583bd</domain_name></p>
-<h3>Response</h3>
+<h4>URL Example :</h4>
+<p>http://Domain_Name/mobile/apiKey?userId=DEMO&time=1366786321&signature=e9b39daacc811af7109ef1e11a6583bd</domain_name></p>
+<h4>Response :</h4>
 <table>
 	<tr>
 		<th>Name</th>
@@ -150,17 +179,17 @@ Content-type: text/html; charset=utf-8</p>
     </tr>
 </table>
 <h4>Note : </h4>
-<p>(1) apiKey should be used within server side code only, otherwise it will not work.</p>
+<p>(1) API Key should be used within server side code only, otherwise it will not work.</p>
 <p>(2) If a return code 10001 is received, it means the apiKey has expired and should be reacquired.</p>
-<h3>4.3 Get Live Locations</h3>
+<h3>4.2 Get Live Locations</h3>
 <p>Get the newest GPS data of all vehicles of a specified account.</p>
-<p>
-URL : </p>
-<p>http://gpsvts.net/mobile/getVehicleLocations</p>
-<p>
-HTTP Method :</p>
+<h4>
+URL : </h4>
+<p>http://Domain_Name/mobile/getVehicleLocations</p>
+<h4>
+HTTP Method :</h4>
 <p>GET</p>
-<p>Input Parameters :</p>
+<h4>Input Parameters :</h4>
 <p>(1) Common Parameters</p>
 <p>Refer to : Common Parameters</p>
 <p>(2) Specific Parameters</p>
@@ -187,11 +216,11 @@ HTTP Method :</p>
 		<td>Group Id of the user for which vehicles are allotted.</td>
 	</tr>
 </table>
-<h3>URL Example : </h3>
-<p>http://gpsvts.net/mobile/getVehicleLocations?apiKey=ndwlraqfxujojrmktvzg&userId=DEMO&groupId=DEMO</p>
+<h4>URL Example : </h4>
+<p>http://Domain_Name/mobile/getVehicleLocations?apiKey=ndwlraqfxujojrmktvzg&userId=DEMO&groupId=DEMO</p>
 <table>
 	<tr>
-		<th>Field></th>
+		<th>Field</th>
 		<th>Type</th>
 		<th>Description</th>
 	</tr>
@@ -223,7 +252,7 @@ HTTP Method :</p>
 	<tr>
 		<td>Distance</td>
 		<td>String</td>
-		<td>Total Distance coverd for all vehicles</td>
+		<td>Total Distance covered for all vehicles</td>
 	</tr>
 	<tr>
 		<td>Total Vehicles</td>
@@ -301,7 +330,7 @@ HTTP Method :</p>
 		<td>Record count</td>
 	</tr>
 	<tr>
-		<td>latitude</td>
+		<td>Latitude</td>
 		<td>String</td>
 		<td>GPS latitude</td>
 	</tr>
@@ -501,14 +530,16 @@ HTTP Method :</p>
 		<td>For Future Use</td>
 	</tr>
 </table>
-<h3>4.2 Get History</h3>
-<p>Get the newest GPS data of all vehicles of a specified account.</p>
-<h3>URL : </h3>
-<p>http://gpsvts.net/mobile/getVehicleHistory?userId=SBLT&groupId=SBLT&vehicleId=SBLT-TN21-AT-0234&fromDate=2016-04-21&fromTime=00:00:00&toDate=2016-04-23&toTime=11:47:00</p>
+<h3>4.3 Get History</h3>
+<p>Get the history of specific vehicle for the given date and time range.  This API should be fired after firing getVehicleLocations API. Because the first API has the  mapping between vehicleName and vehicleId. For this API vehicleID is the input.
+</p>
+<h4>URL : </h4>
+<p>http://Domain_Name/mobile/getVehicleHistory?userId=SBLT&groupId=SBLT&vehicleId=SBLT-TN21-AT-0234&fromDate=2016-04-21&fromTime=00:00:00&toDate=2016-04-23&toTime=11:47:00</p>
 <h4>HTTP METHOD : </h4>
-<h4> GET</h4>
+<P> GET</P>
 <h4>INPUT PARAMETERS : </h4>
 <p>(1) Common Parameters</p>
+<p>UserId</p>
 <p>(2) Specific Parameters</p>
 <table>
 	<tr>
@@ -523,7 +554,7 @@ HTTP Method :</p>
 		<td>String</td>
 		<td>Yes</td>
 		<td> - </td>
-		<td>Vehicle Id (retrieved by getVehicleId API)</td>
+		<td>Vehicle Id (Retrieved by getVehicleId API)</td>
 	</tr>
 	<tr>
 		<td>FromDate</td>
@@ -554,10 +585,10 @@ HTTP Method :</p>
 		<td>End time (24 hours time format)</td>
 	</tr>
 </table>
-<h3>URL Example</h3>
-<p>http://gpsvts.net/mobile/getVehicleHistory?userId=SBLT&groupId=SBLT&vehicleId=SBLT-TN21-AT-0234&fromDate=2016-04-21&fromTime=00:00:00&toDate=2016-04-23&toTime=23:47:00
+<h4>URL Example :</h4>
+<p>http://Domain_Name/mobile/getVehicleHistory?userId=SBLT&groupId=SBLT&vehicleId=SBLT-TN21-AT-0234&fromDate=2016-04-21&fromTime=00:00:00&toDate=2016-04-23&toTime=23:47:00
 </p>
-<h3>RESPONSE</h3>
+<h4>RESPONSE :</h4>
 <table>
 	<tr>
 		<th>Field</th>
@@ -594,6 +625,688 @@ HTTP Method :</p>
 		<td>String</td>
 		<td>Vehicle Registration Number</td>
 	</tr>
+	<tr>
+		<td>VehicleMake</td>
+		<td>String</td>
+		<td>Make of the vehicle</td>
+	</tr>
+	<tr>
+		<td>VehicleType</td>
+		<td>String</td>
+		<td>Type of the vehicle (Bus, Truck, Car)</td>
+	</tr>
+	<tr>
+		<td>Opr</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>MobileNo</td>
+		<td>String</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr>
+		<td>OverSpeedLimit</td>
+		<td>Number</td>
+		<td>OverSpeed Limit</td>
+	</tr>
+	<tr>
+		<td>OdoDistance</td>
+		<td>String</td>
+		<td>OdoMeter Reading</td>
+	</tr>
+	<tr>
+		<td>Device Model</td>
+		<td>String</td>
+		<td>Model of the device (GT06N, TK06 etc)</td>
+	</tr>
+	<tr>
+		<td>DriverName</td>
+		<td>String</td>
+		<td>Name of the Driver</td>
+	</tr>
+	<tr>
+		<td>Send GeoFenceSMS</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>GPS SimNo</td>
+		<td>String</td>
+		<td>Internal Use</td>
+	</tr>
+	<tr>
+		<td>MorningTripStartTime</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>EveningTripStartTime</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>PortNo</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>VehicleLocations</td>
+		<td>Array</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>RowId</td>
+		<td>Integer</td>
+		<td>Record Number</td>
+	</tr>
+	<tr>
+		<td>Latitude</td>
+		<td>String</td>
+		<td>GPS Latitude</td>
+	</tr>
+	<tr>
+		<td>Longitude</td>
+		<td>String</td>
+		<td>GPS Longitude</td>
+	</tr>
+	<tr>
+		<td>Speed</td>
+		<td>Integer</td>
+		<td>Current speed of the vehicle</td>
+	</tr>
+	<tr>
+		<td>Date</td>
+		<td>String</td>
+		<td>Current date and time (UTC)</td>
+	</tr>
+	<tr>
+		<td>Alert</td>
+		<td>String</td>
+		<td>Type of alert received</td>
+	</tr>
+	<tr>
+		<td>Direction</td>
+		<td>String</td>
+		<td>Course of Vehicle (North, South, East, West, NE,SE,NW,SW)</td>
+	</tr>
+	<tr>
+		<td>Position</td>
+		<td>String</td>
+		<td>Position (Moving, Parked, Static (Idle), No Data Time )</td>
+	</tr>
+	<tr>
+		<td>Distance Covered</td>
+		<td>Double</td>
+		<td>Today distance travelled</td>
+	</tr>
+	<tr>
+		<td>OdoDistance</td>
+		<td>Double</td>
+		<td>Odo meter reading</td>
+	</tr>
+	<tr>
+		<td>TankSize</td>
+		<td>Integer</td>
+		<td>Full tank level</td>
+	</tr>
+	<tr>
+		<td>Status</td>
+		<td>String</td>
+		<td>GPS Status(ON or OFF)</td>
+	</tr>
+	<tr>
+		<td>Color</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>LastSeen</td>
+		<td>String</td>
+		<td>GPS Last Communicate Date and Time (UTC)</td>
+	</tr>
+	<tr>
+		<td>IgnitionStatus</td>
+		<td>String</td>
+		<td>ACC Status(ON or OFF)</td>
+	</tr>
+	<tr>
+		<td>InsideGeoFence</td>
+		<td>String</td>
+		<td>Is vehicle inside Geo fence site (Yes or No)</td>
+	</tr>
+	<tr>
+		<td>IsOverSpeed</td>
+		<td>String</td>
+		<td>Yes or No</td>
+	</tr>
+	<tr>
+		<td>Address</td>
+		<td>String</td>
+		<td>Address for the lat and lon</td>
+	</tr>
+	<tr>
+		<td>ParkedTime</td>
+		<td>Integer</td>
+		<td>Parked time (shown when only vehicle is parked)</td>
+	</tr>
+	<tr>
+		<td>MovingTime</td>
+		<td>String</td>
+		<td>Moving time (shown when only vehicle is moving)</td>
+	</tr>
+	<tr>
+		<td>IdleTime</td>
+		<td>String</td>
+		<td>Idle time (shown when only vehicle is idle)</td>
+	</tr>
+	<tr>
+		<td>NoData Time</td>
+		<td>Integer</td>
+		<td>No data time (shown when only vehicle is not communicating)</td>
+	</tr>
+	<tr>
+		<td>AlertData Time</td>
+		<td>String</td>
+		<td>Alert time (shown when last alert received)</td>
+	</tr>
+	<tr>
+		<td>LoadTruck</td>
+		<td>String</td>
+		<td>Load of the truck received via load sensor</td>
+	</tr>
+	<tr>
+		<td>LoadTrailer</td>
+		<td>String</td>
+		<td>Load of the trailer received via load sensor</td>
+	</tr>
+	<tr>
+		<td>TotalTruck</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>TotalTrailer</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>TotalTrailer</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>Vehicle Busy</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>Fuel Litre</td>
+		<td>String</td>
+		<td>Current Fuel Level In Litre</td>
+	</tr>
+	<tr>
+		<td>TotalParkedTime</td>
+		<td>String</td>
+		<td>Total Parked Time for entire trip</td>
+	</tr>
+	<tr>
+		<td>TripDistance</td>
+		<td>String</td>
+		<td>Total Distance for entire Trip</td>
+	</tr>
+	<tr>
+		<td>TmpDistance</td>
+		<td>String</td>
+		<td>For Internel Use</td>
+	</tr>
+	<tr>
+		<td>IgnitionOnTime</td>
+		<td>String</td>
+		<td>Total IgnitionOnTime</td>
+	</tr>
 </table>
+<h3>4.4 Get History For Mobile</h3>
+<p>This API tuned for mobile use . History for specific vehicle Id for the given date and time range.
+</p>
+<h4>
+URL :</h4>
+<p>http://domain_name/mobile/getVehicleHistory4MobileV2
+</p>
+<h4>
+HTTP Method : </h4>
+<p>GET</p>
+<h4>Input Parameters : </h4>
+<p>(1) Common Parameters</p>
+<P>UserId</P>
+<p>(2) Specific Parameters</p>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Default Value</th>
+		<th>Desc</th>
+	</tr>
+	<tr>
+		<td>VehicleId</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td> - </td>
+		<td>Vehicle Id (Retrieved by getVehicleId API)</td>
+	</tr>
+	<tr>
+		<td>FromDate</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td>yyyy-mm-dd</td>
+		<td>Start Date</td>
+	</tr>
+	<tr>
+		<td>FromTime</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td>HH:MM:SS</td>
+		<td>Start Time (24 Hours Time Format)</td>
+	</tr>
+	<tr>
+		<td>ToDate</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td>yyyy-mm-dd</td>
+		<td>End Date</td>
+	</tr>
+	<tr>
+		<td>ToTime</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td>HH:MM:SS</td>
+		<td>End Time (24 Hours Time Format)</td>
+	</tr>	
+</table>
+<h4>URL Example : </h4>
+<p>http://domain_name/mobile/getVehicleHistory4MobileV2?vehicleId=SBLT-AP26-TC-8505&userId=SBLT
+</p>
+<h4>RESPONSE : </h4>
+<table>
+	<tr>
+		<th>Field</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>DeviceId</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>VehicleId</td>
+		<td>String</td>
+		<td>Asset Id</td>
+	</tr>
+	<tr>
+		<td>ShortName</td>
+		<td>String</td>
+		<td>Vehicle Name</td>
+	</tr>
+	<tr>
+		<td>AltShortName</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>AltShortTime</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>RegNo</td>
+		<td>String</td>
+		<td>Vehicle Registration Number</td>
+	</tr>
+	<tr>
+		<td>VehicleMake</td>
+		<td>String</td>
+		<td>Make of the Vehicle</td>
+	</tr>
+	<tr>
+		<td>VehicleType</td>
+		<td>String</td>
+		<td>Type Of the vehicle( Bus, Truck, Car)</td>
+	</tr>
+	<tr>
+		<td>Opr</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>MobileNo</td>
+		<td>String</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr>
+		<td>OverSpeedLimit</td>
+		<td>Number</td>
+		<td>OverSpeedLimit</td>
+	</tr>
+	<tr>
+		<td>Device Model</td>
+		<td>String</td>
+		<td>Model of the device (GT06N, TK06 etc)</td>
+	</tr>
+	<tr>
+		<td>Driver Name</td>
+		<td>String</td>
+		<td>Name of the Driver</td>
+	</tr>
+	<tr>
+		<td>SendGeoFenceSMS</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>GPS SimNo</td>
+		<td>String</td>
+		<td>Internel Use</td>
+	</tr>
+	<tr>
+		<td>MorningTripStartTime</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>EveningTripStartTime</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>PortNo</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>History For Mobile</td>
+		<td>Array</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>Latitude</td>
+		<td>String</td>
+		<td>GPS Latitude</td>
+	</tr>
+	<tr>
+		<td>Longitude</td>
+		<td>String</td>
+		<td>GPS Longitude</td>
+	</tr>
+	<tr>
+		<td>Speed</td>
+		<td>Integer</td>
+		<td>Current Speed of the Vehicle</td>
+	</tr>
+	<tr>
+		<td>Date & Time</td>
+		<td>String</td>
+		<td>Current Date and Time (UTC)</td>
+	</tr>
+	<tr>
+		<td>Direction</td>
+		<td>String</td>
+		<td>Course of Vehicle (North, South, West, East, NE, SE, NW, SW)</td>
+	</tr>
+	<tr>
+		<td>Position</td>
+		<td>String</td>
+		<td>Position (Moving, Parked, Static(Idle), No Data Time)</td>
+	</tr>
+	<tr>
+		<td>DistanceCovered</td>
+		<td>String</td>
+		<td>Distance Covered</td>
+	</tr>
+	<tr>
+		<td>ParkedTime</td>
+		<td>Long</td>
+		<td>Parked Time</td>
+</table>
+<h3>4.5 Get Selected Vehicle for Tracking ( Single Vehicle)</h3>
+<p>This API is to track single vehicle. This API should be fired after firing getVehicleLocations API. Because the first API has the  mapping between vehicleName and vehicleId. For this API vehicleID is the input.</p>
+<h4>URL</h4>
+<p>http://domain_name/mobile/getSelectedVehicleLocation</p>
+<h4>HTTP Method :</h4>
+<p>GET</p>
+<h4>Input Parameters :</h4>
+<p>(1) Common Parameters</p>
+<p>UserId and GroupId</p>
+<p>(2) Specific Parameters </p>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Default Value</th>
+		<th>Dec</th>
+	</tr>
+	<tr>
+		<td>VehicleId</td>
+		<td>String</td>
+		<td>Yes</td>
+		<td> - </td>
+		<td>Vehicle Id( Retrieved by getVehicleId API)</td>
+	</tr>
+</table>
+<h4>URL Example :</h4>
+<P>http://domain_name/mobile/getSelectedVehicleLocation?vehicleId=meena1001&userId=prasannak&group=prasannak
+</P>
+<h4>Response :</h4>
+<table>
+	<tr>
+		<td>Field</td>
+		<td>Type</td>
+		<td>Description</td>
+	</tr>
+	<tr>
+		<td>RowId</td>
+		<td>Integer</td>
+		<td>Record Count</td>
+	</tr>
+	<tr>
+		<td>Latitude</td>
+		<td>String</td>
+		<td>GPS Latitude</td>
+	</tr>
+	<tr>
+		<td>Longitude</td>
+		<td>Integer</td>
+		<td>GPS Longitude</td>
+	</tr>
+	<tr>
+		<td>Speed</td>
+		<td>Integer</td>
+		<td>Current Speed of the Vehicle</td>
+	</tr>
+	<tr>
+		<td>Date</td>
+		<td>String</td>
+		<td>Current Date and Time</td>
+	</tr>
+	<tr>
+		<td>Alert</td>
+		<td>String</td>
+		<td>Type of Alert</td>
+	</tr>
+	<tr>
+		<td>Direction</td>
+		<td>String</td>
+		<td>Course Of Vehicle (North, South, West, East, NE, NW, SE,SW)</td>
+	</tr>
+	<tr>
+		<td>Position</td>
+		<td>String</td>
+		<td>Moving, Parked, Static, (Idle), NoData)</td>
+	</tr>
+	<tr>
+		<td>Distance Coverd</td>
+		<td>Double</td>
+		<td>Distance Travelled Today</td>
+	</tr>
+	<tr>
+		<td>Odo Distance</td>
+		<td>Double</td>
+		<td>Vehicle Odo Meter Reading</td>
+	</tr>
+	<tr>
+		<td>TankSize</td>
+		<td>Integer</td>
+		<td>Fuel Tank Size</td>
+	</tr>
+	<tr>
+		<td>Status</td>
+		<td>String</td>
+		<td>GPS Status(ON or OFF)</td>
+	</tr>
+	<tr>
+		<td>Color</td>
+		<td>String</td>
+		<td>Internal Use</td>
+	</tr>
+	<tr>
+		<td>LastSeen</td>
+		<td>String</td>
+		<td>GPS Last Communicate Time</td>
+	</tr>
+	<tr>
+		<td>Ignition Status</td>
+		<td>String</td>
+		<td>ACC Status (ON or OFF)</td>
+	</tr>
+	<tr>
+		<td>InsideGeoFence</td>
+		<td>String</td>
+		<td>Is Vehicle inside GeoFence (Yes or No)</td>
+	</tr>
+	<tr>
+		<td>IsOverSpeed</td>
+		<td>String</td>
+		<td>Yes or No</td>
+	</tr>
+	<tr>
+		<td>Address</td>
+		<td>String</td>
+		<td>Address for the Current Lat and Lng</td>
+	</tr>
+	<tr>
+		<td>ParkedTime</td>
+		<td>Integer</td>
+		<td>Parked Time (Shown when only Vehicle is Parked)</td>
+	</tr>
+	<tr>
+		<td>MovingTime</td>
+		<td>Integer</td>
+		<td>Moving Time (Shown when only Vehicle is Moving)</td>
+	</tr>
+	<tr>
+		<td>Idle Time</td>
+		<td>Integer</td>
+		<td>Idle Time (Shown when only Vehicle is Idle)</td>
+	</tr>
+	<tr>
+		<td>NoData Time</td>
+		<td>Integer</td>
+		<td>No Data Time (Shown when only Vehicle is Not communicating)</td>
+	</tr>
+	<tr>
+		<td>AlertDataTime</td>
+		<td>String</td>
+		<td>AlertTime (Shown when last alert Received)</td>
+	</tr>
+	<tr>
+		<td>Load Truck</td>
+		<td>String</td>
+		<td>Load of the truck Received via load sensor</td>
+	</tr>
+	<tr>
+		<td>LoadTrailer</td>
+		<td>String</td>
+		<td>Load of the trailer Received via load sensor</td>
+	</tr>
+	<tr>
+		<td>TotalTruck</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>TotalTrailer</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>VehicleBusy</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>FuelLitre</td>
+		<td>String</td>
+		<td>Current Fuel Level in Litre</td>
+	</tr>
+	<tr>
+		<td>OprName</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>RegNo</td>
+		<td>String</td>
+		<td>Vehicle Registration Number</td>
+	</tr>
+	<tr>
+		<td>VehicleType</td>
+		<td>String</td>
+		<td>Type of Vehicle ( Truck, Car,Bus)</td>
+	</tr>
+	<tr>
+		<td>VehicleId</td>
+		<td>String</td>
+		<td>Asset Id. This isvery important</td>
+	</tr>
+	<tr>
+		<td>MobileNo</td>
+		<td>String</td>
+		<td>Mobile Number configured (Typically Drivers mobile number)</td>
+	</tr>
+	<tr>
+		<td>CustomMarker</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+	<tr>
+		<td>Device Model</td>
+		<td>String</td>
+		<td>Model of the device like GT06N Etc</td>
+	</tr>
+	<tr>
+		<td>Short Name</td>
+		<td>String</td>
+		<td>VehicleName</td>
+	</tr>
+	<tr>
+		<td>OrgId</td>
+		<td>String</td>
+		<td>Organization Name</td>
+	</tr>
+	<tr>
+		<td>OverSpeedLimit</td>
+		<td>String</td>
+		<td>Over Speed Limit</td>
+	</tr>
+	<tr>
+		<td>Driver Name</td>
+		<td>String</td>
+		<td>For Future Use</td>
+	</tr>
+</table>
+</div>
+</div>
 </body>
 </html>
