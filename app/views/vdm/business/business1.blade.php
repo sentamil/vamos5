@@ -19,18 +19,32 @@
 								 <div class="col-md-2"></div> 
 							</div> -->
 							<br>
-							<div class="row">
+							<div>
+								<table class="col-md-12">
+									<tr>
+										<td class="col-md-4"><span style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute;" id="hide1">{{ Form::radio('type1', 'new') }} </span>&nbsp;&nbsp;&nbsp; New User</td>
+										<td class="col-md-4"><span style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute" id="show1">{{ Form::radio('type1', 'existing') }} </span>&nbsp;&nbsp;&nbsp; Existing User</td>
+										<td class="col-md-4"><div>{{ Form::submit('Submit', array('class' => 'btn btn-sm btn-info')) }}</div></td>
+									</tr>
+								</table>
+								<!-- <div  style=" background-color: green"></div>: New User
+								<br>
+								<div id="show1" style="height:10px; width : 10px; background-color: green">{{ Form::radio('type1', 'existing') }} </div>: 
+								<br>
+								 -->
+							</div>
+							<!-- <div class="row"> -->
 								<!-- <div class="col-md-2"></div>
 								<div class="col-md-1"><div id="show1" style="border-radius: -25px; height:0px; margin: 0; width : 0px; padding: 0px; border: 0px">{{ Form::radio('type1', 'existing') }}</div></div>
 								<div class="col-md-1">Existing User</div> -->
 								<!-- <div class="col-md-2"></div> -->
-								<div class="col-md-1"><div id="hide1" style="border-radius: -25px; height:0px; margin: 0; width : 0px; padding: 0px; border: 0px; cursor :pointer;">{{ Form::radio('type1', 'new') }}</div></div>
-								<div class="col-md-2">New User</div>
-								<div class="col-md-1" id="p1"></div>
-								<div class="col-md-1" ><div id="show1" style="border-radius: 0px; height:0px; margin: 0; width : 0px; padding: 0px; border: 0px; background-color: green">{{ Form::radio('type1', 'existing') }}</div></div>
-								<div class="col-md-2">Existing User</div>
-								<div class='col-md-2'>{{ Form::submit('Submit', array('class' => 'btn btn-sm btn-info')) }}</div>
-							</div>
+								
+								<!-- <div </div> -->
+								<!-- <div class="col-md-1" id="p1"></div> -->
+								
+								<!-- <div class="col-md-2"></div> -->
+								
+							<!-- </div> -->
 							<br>
 							<div class="row" id="t">
 								<br>
@@ -99,7 +113,7 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script>
-$(document).ready(function(){
+
 
 	$("#hide").click(function(){
 		$("#p").hide();
@@ -128,7 +142,7 @@ $(document).ready(function(){
 	$("#p1").hide();
 	$("#t").hide();
 	$("#t1").hide();
-});
+
 
 $('#userIdtemp1').on('change', function() {
 	console.log('test vamos');

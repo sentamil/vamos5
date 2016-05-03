@@ -218,7 +218,7 @@
 		@endif 
 		
             </li>
-                
+             <li><a href="logout"> <span class="nav-label">LogOut</span></a></li> 
 
         </ul>
     </div>

@@ -22,31 +22,46 @@
 						</div>
 						<br>
 						<div class="row">	
-							<div class="col-md-2"></div>
+							<!-- <div class="col-md-2"></div>
 							<div class="col-md-1"><div id="hide" style="border-radius: -25px; height:0px; margin: 0; width : 0px; padding: 0px; border: 0px">{{ Form::radio('type', 'Move') }}</div></div>
-							<div class="col-md-1">Batch Move</div>
-							<div class="col-md-2"id="p1">{{ Form::select('dealerId', array($dealerId), Input::old('	'), array('class' => 'form-control')) }}</div>
+							<div class="col-md-1">Batch Move</div> -->
+							
+							<table class="col-md-12">
+								<tr>
+									<td class="col-md-4"><span style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute;" id="hide">{{ Form::radio('type', 'Move') }} </span>&nbsp;&nbsp;&nbsp; Batch Move</td>
+									<td class="col-md-4"><span style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute" id="show">{{ Form::radio('type', 'Sale') }} </span>&nbsp;&nbsp;&nbsp; Batch Sale</td>
+									<td class="col-md-4"><div>{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div></td>
+								</tr>
+							</table>
 						</div>
 						<br>
 						<div class="row">
-							<div class="col-md-2"></div>
-							<div class="col-md-1"><div id="show" style="border-radius: -25px; height:0px; margin: 0; width : 0px; padding: 0px; border: 0px">{{ Form::radio('type', 'Sale') }}</div></div>
-							<div class="col-md-2">Batch Sale</div>
-							<div class="col-md-2"></div>
-							<div class="col-md-2">{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div>
+							<!-- <div class="col-md-2"></div> -->
+							<!-- <div class="col-md-1"><div id="show" style="border-radius: -25px; height:0px; margin: 0; width : 0px; padding: 0px; border: 0px">{{ Form::radio('type', 'Sale') }}</div></div>
+							<div class="col-md-2">Batch Sale</div> -->
+							<div class="col-md-2"id="p1">{{ Form::select('dealerId', array($dealerId), Input::old('	'), array('class' => 'form-control')) }}</div>
+						<!-- 	<div class="col-md-2"></div>
+							<div class="col-md-2">{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div> -->
 						</div>
 						<hr>
 						
 						<div class="row">
 							<div class="col-md-2"></div>
-							<div id="p" class="col-md-8">
+							<table class="col-md-8" id="p">
+								<tr>
+									<td class="col-md-4"><span id="hide1"  style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute;" id="hide">{{ Form::radio('type', 'new') }} </span>&nbsp;&nbsp;&nbsp; New User</td>
+									<td class="col-md-4"><span id="show1" style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute" id="show">{{ Form::radio('type', 'existing') }} </span>&nbsp;&nbsp;&nbsp; Existing User</td>
+									<!-- <td class="col-md-4"><div>{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div></td> -->
+								</tr>
+							</table>
+							<!-- <div id="p" class="col-md-8">
 								<br>
-								<div class="col-md-2"><div id="hide1" style="border-radius: -25px; height:0px; margin: 0; width : 0px; padding: 0px; border: 0px; cursor :pointer;">{{ Form::radio('type1', 'new') }}</div></div>
+								<div class="col-md-2"><span id="hide1" style="border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute;">{{ Form::radio('type1', 'new') }}</span></div>
 								<div class="col-md-2">New User</div>
 								<div class="col-md-1" id="p1"></div>
 								<div class="col-md-2" ><div id="show1" style="border-radius: 0px; height:0px; margin: 0; width : 0px; padding: 0px; border: 0px; background-color: green">{{ Form::radio('type1', 'existing') }}</div></div>
 								<div class="col-md-2">Existing User</div>
-							</div>
+							</div> -->
 
 						</div>
 						
@@ -207,9 +222,9 @@
 											</script>	
 										<tr style="text-align: center;">
 											<td>{{ $i }}</td>
-											<td >{{ Form::text('deviceid'.$i, Input::old('deviceid'), array('id' => 'deviceid'.$i,'required')) }}</td>
+											<td >{{ Form::text('deviceid'.$i, Input::old('deviceid'), array('id' => 'deviceid'.$i,'required', 'class' => 'form-control')) }}</td>
 											<td>{{ Form::select('deviceidtype' .$i, array( 'GT06N' => 'GT06N (9964)','GT300' => 'GT300 (9961)','TK103' => 'TK103 (9968)', 'TK99' => 'TK99 (9978)', 'FM1202' => 'FM1202 (9975)','FM1120' => 'FM1120 (9975)', 'TR02' => 'TR02 (9965)', 'GT03A' => 'GT03A (9969)', 'VTRACK2' => 'VTRACK2 (9964)','ET01'=>'ET01 (9971)','ET02'=>'ET02 (9962)', 'ET03'=>'ET03 (9974)'), Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
-											<td>{{ Form::text('vehicleId'.$i, Input::old('vehicleId'), array('id' => 'vehicleId'.$i)) }}</td>
+											<td>{{ Form::text('vehicleId'.$i, Input::old('vehicleId'), array('id' => 'vehicleId'.$i, 'class' => 'form-control')) }}</td>
 											<td><a id="refData{{$i}}" class="btn btn-sm btn-success" >Details</a></td>
 										</tr>
 										<tr>
