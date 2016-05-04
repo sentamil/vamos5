@@ -49,8 +49,8 @@
 							<div class="col-md-2"></div>
 							<table class="col-md-8" id="p">
 								<tr>
-									<td class="col-md-4"><span id="hide1"  style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute;" id="hide">{{ Form::radio('type', 'new') }} </span>&nbsp;&nbsp;&nbsp; New User</td>
-									<td class="col-md-4"><span id="show1" style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute" id="show">{{ Form::radio('type', 'existing') }} </span>&nbsp;&nbsp;&nbsp; Existing User</td>
+									<td class="col-md-4"><span id="hide1"  style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute;" id="hide">{{ Form::radio('type1', 'new') }} </span>&nbsp;&nbsp;&nbsp; New User</td>
+									<td class="col-md-4"><span id="show1" style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute" id="show">{{ Form::radio('type1', 'existing') }} </span>&nbsp;&nbsp;&nbsp; Existing User</td>
 									<!-- <td class="col-md-4"><div>{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div></td> -->
 								</tr>
 							</table>
