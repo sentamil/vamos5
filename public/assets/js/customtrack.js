@@ -30,9 +30,11 @@ app.directive('map', function($http, vamoservice) {
 				fuelLtr 		 = parseInt(locs.fuelLitre);
 				total  			 = parseInt(locs.speed);
 				
+
+
 				scope.getLocation(locs.latitude, locs.longitude, function(count){
 					$('#lastseentrack').text(count); 
-					var t = vamoservice.geocodeToserver(locs.latitude, locs.longitude, count);
+					// var t = vamoservice.geocodeToserver(locs.latitude, locs.longitude, count);
 									
 				});
 				
@@ -63,20 +65,59 @@ app.directive('map', function($http, vamoservice) {
 					latLngBounds.extend(scope.path[scope.path.length-1]);
 				}
 				
-				if(data.isOverSpeed=='N'){
-					var strokeColorvar = '#00b3fd';
-				}else{
-					var strokeColorvar = '#ff0000';
+
+				function lineDraw(lat, lan){
+					// if(data.isOverSpeed=='N'){
+					// 	var strokeColorvar = '#00b3fd';
+					// }else{
+					// 	var strokeColorvar = '#ff0000';
+					// }
+					// var latlng1 = new google.maps.LatLng(lat, lan);
+					// console.log(' value -->'+ latlng1);
+					scope.slatlong = new google.maps.LatLng(lat, lan);
+					
+					scope.polyline = new google.maps.Polyline({
+								map: scope.map,
+								path: [scope.elatlong, scope.slatlong],
+								strokeColor: '#00b3fd',
+								strokeOpacity: 0.7,
+								strokeWeight: 5,
+								
+								clickable: true
+						  	});
+					scope.elatlong = scope.slatlong;
 				}
-				
-				var polyline = new google.maps.Polyline({
-			            map: scope.map,
-			            path: [scope.startlatlong, scope.endlatlong],
-			            strokeColor: strokeColorvar,
-			            strokeOpacity: 0.7,
-			            strokeWeight: 5
-			    });
-			    scope.startlatlong = scope.endlatlong;
+			    // scope.startlatlong = scope.endlatlong;
+
+
+
+
+			    
+			    (function latlan(){
+			    	vamoservice.getDataCall(scope.urlVeh).then(function(response) {
+			    		if(response.latLngOld != undefined)
+				    		for (var i = 0; i < response.latLngOld.length; i++) {
+				    			sp = response.latLngOld[i].split(',');
+				    			lineDraw(sp[0], sp[1]);
+				    		};
+			    		});
+			    }());	
+			    // vamoservice.getDataCall(uro).then(function(response) {
+			    // 	if(response.latLngOld.length)
+			    // 		console.log(' response '+response);
+			    // })
+
+			    var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
+						+'<div style="width:200px; display:inline-block;"><b >Address</b> - <span>'+data.address+'</span></div></div>';
+
+				var infowindow = new google.maps.InfoWindow({
+				    content: contentString
+				});
+
+
+				google.maps.event.addListener(scope.marker, "click", function(e) {
+					infowindow.open(scope.map, scope.marker);
+				});
 		  });
 		  $(document).on('pageshow', '#maploc', function(e, data){       
                 	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
@@ -85,11 +126,11 @@ app.directive('map', function($http, vamoservice) {
 		  setInterval(function() {
 		   		vamoservice.getDataCall(scope.url).then(function(data) {
 		   			var locs = data;
-					var myOptions = {
-						zoom: 13,
-						center: new google.maps.LatLng(locs.latitude, locs.longitude),
-						mapTypeId: google.maps.MapTypeId.ROADMAP
-	            	};
+					// var myOptions = {
+					// 	zoom: 13,
+					// 	center: new google.maps.LatLng(locs.latitude, locs.longitude),
+					// 	mapTypeId: google.maps.MapTypeId.ROADMAP
+	    //         	};
             		
             		$('#vehiid span').text(locs.shortName);
 					$('#toddist span span').text(locs.distanceCovered);
@@ -122,7 +163,7 @@ app.directive('map', function($http, vamoservice) {
 					
 					var myLatlng = new google.maps.LatLng(data.latitude, data.longitude);
 					scope.marker.setMap(null);
-					scope.map.setCenter(scope.marker.getPosition());
+					// scope.map.setCenter(scope.marker.getPosition());
 					
 					scope.marker = new MarkerWithLabel({
 					   position: myLatlng, 
@@ -132,6 +173,18 @@ app.directive('map', function($http, vamoservice) {
 					   labelAnchor: labelAnchorpos,
 					   labelClass: "labels",
 					   labelInBackground: false
+					});
+					
+					var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
+						+'<div><b style="width:100px; display:inline-block;">Address</b> - <span style="font-weight:bold;">'+data.address+'</span></div></div>';
+
+					var infowindow = new google.maps.InfoWindow({
+					    content: contentString
+					});
+
+
+					google.maps.event.addListener(scope.marker, "click", function(e) {
+						infowindow.open(scope.map, scope.marker);
 					});
 					
 					scope.endlatlong = new google.maps.LatLng(data.latitude, data.longitude);
@@ -161,7 +214,8 @@ app.directive('map', function($http, vamoservice) {
 app.controller('mainCtrl',function($scope, $http, vamoservice){ 
 	var res = document.location.href.split("?");
 	$scope.vehicleno = res[1].trim();
-	$scope.url = 'http://'+globalIP+context+'/public//getSelectedVehicleLocation?'+res[1];
+	$scope.url = 'http://'+globalIP+context+'/public/getSelectedVehicleLocation?'+res[1];
+	$scope.urlVeh = 'http://'+globalIP+context+'/public/getSelectedVehicleLocation1?'+res[1];
 	$scope.path = [];
 	$scope.speedval =[];
 	$scope.inter = 0;
@@ -178,7 +232,10 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 			position: myLatlng, 
 			map: $scope.map
 		});
-	}   
+	}
+
+	
+
 	$scope.getLocation = function(lat,lon, callback){
 		geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(lat, lon);
@@ -213,6 +270,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 			$scope.checkVal = false;
 		}
 	}
+
 	$scope.createGeofence=function(url){
 		
 		if($scope.cityCirclecheck==false){

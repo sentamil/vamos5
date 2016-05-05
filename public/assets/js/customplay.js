@@ -25,9 +25,10 @@ app.directive('map', function($http) {
 				var result=nd.toLocaleString();
 				return result;
 			}
-		 	scope.$watch("hisurl", function (val) { 
+			var locs;
+			scope.$watch("hisurl", function (val) { 
 		   		$http.get(scope.hisurl).success(function(data){
-		   			var locs = data;
+		   			locs = data;
 					scope.hisloc = locs;
 					
 					if(data.fromDateTime=='' || data.fromDateTime==undefined || data.fromDateTime=='NaN-aN-aN'){ 
@@ -70,15 +71,15 @@ app.directive('map', function($http) {
 							$('#lastseen').html('<strong>From Date & time :</strong> '+ new Date(data.fromDateTimeUTC).toString().split('GMT')[0]);
 							$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> '+ new Date(data.toDateTimeUTC).toString().split('GMT')[0]);
 							
-							var myOptions = {
-								zoom: Number(locs.zoomLevel),zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
-								center: new google.maps.LatLng(data.vehicleLocations[0].latitude, data.vehicleLocations[0].longitude),
-								mapTypeId: google.maps.MapTypeId.ROADMAP
-								//styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
+							// var myOptions = {
+							// 	zoom: Number(locs.zoomLevel),zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
+							// 	center: new google.maps.LatLng(data.vehicleLocations[0].latitude, data.vehicleLocations[0].longitude),
+							// 	mapTypeId: google.maps.MapTypeId.ROADMAP
+							// 	//styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
 								
 							
-							};
-	            			scope.map = new google.maps.Map(document.getElementById(attrs.id), myOptions);
+							// };
+	      //       			scope.map = new google.maps.Map(document.getElementById(attrs.id), myOptions);
 /*
 	            			 var input01 = (document.getElementById('pac-input'));
   							scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input01);
@@ -120,6 +121,7 @@ app.directive('map', function($http) {
 						   	    	scope.pointinfowindow(scope.map, gsmarker[i], locs.vehicleLocations[i]);
 						   	   }
 					   		}
+
 		  	  				var latLngBounds = new google.maps.LatLngBounds();
 			  				var j=0;
 			  				 var tempFlag=false;
@@ -209,11 +211,17 @@ app.directive('map', function($http) {
 							$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
 						}
 					}
+
+
+
+
+
 					var url = 'http://'+globalIP+context+'/public//getGeoFenceView?vehicleId='+scope.trackVehID;
 		
 				scope.createGeofence(url);
 		   		}).error(function(){ });
 		 	});
+        
         }
     };
 });
@@ -238,6 +246,8 @@ app.controller('mainCtrl',function($scope, $http, $q){
 
 	$scope.loading	=	true;
 	
+
+	
 	$http.get($scope.url).success(function(data){
 		
 		$scope.locations = data;
@@ -261,6 +271,84 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
 		$scope.loading	=	false;
 	}).error(function(){ /*alert('error'); */});
+
+
+
+
+	//draw the geo code
+	(function geosite(){
+		var geoUrl = 'http://'+globalIP+context+'/public/viewSite';
+		var myOptions = {
+			zoom: Number(6),zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
+			center: new google.maps.LatLng(0,0),
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+			//styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
+			
+		
+		};
+		$scope.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+		$http.get(geoUrl).success(function(response){
+			polygenList =[];
+			var latLanlist, seclat, seclan, sp; 
+
+			function centerMarker(listMarker){
+			    var bounds = new google.maps.LatLngBounds();
+			    for (i = 0; i < listMarker.length; i++) {
+			          bounds.extend(listMarker[i]);
+			      }
+			    return bounds.getCenter()
+			}
+
+			for (var listSite = 0; listSite < response.siteParent.length; listSite++) {
+				
+				var len = response.siteParent[listSite].site.length;
+				for (var k = 0; k < len; k++) {
+					console.log(' value  '+k);
+				// if(response.siteParent[i].site.length)
+				// {
+					var orgName = response.siteParent[listSite].site[k].siteName;
+					var splitLatLan = response.siteParent[listSite].site[k].latLng.split(",");
+					
+					polygenList = [];
+					for(var j = 0; splitLatLan.length>j; j++)
+		      		{
+		      			sp 	  = splitLatLan[j].split(":");
+		      			polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
+		      			console.log(sp[0]+' ---- '+ sp[1])
+		      			// latlanList.push(sp[0]+":"+sp[1]);
+		      			// seclat        = sp[0];
+		      			// seclan        = sp[1];
+		      		}
+					
+		      		var polygenColor = new google.maps.Polygon({
+		      			path: polygenList,
+		      			strokeColor: "#282828",
+		      			strokeWeight: 1,
+		      			fillColor: '#808080',
+		      			fillOpacity: 0.50,
+		      			map: $scope.map
+		      		});
+		      	
+			      	var labelAnchorpos = new google.maps.Point(19, 0);  ///12, 37
+			      	var marker = new MarkerWithLabel({
+				      	position: centerMarker(polygenList), 
+				      	map: $scope.map,
+				      	icon: 'assets/imgs/area_img.png',
+				      	labelContent: orgName,
+				      	labelAnchor: labelAnchorpos,
+				      	labelClass: "labels", 
+				      	labelInBackground: false
+			      	});
+			      // scope.map.setCenter(centerMarker(polygenList)); 
+			      // scope.map.setZoom(14); 
+		  		// }
+		  		}
+			};
+		})
+	}());
+		
+
+
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
 	}

@@ -570,7 +570,46 @@ background-color: #ffffff;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-			   			 
+			   			 <tab heading="Temperature" select="alertMe('temperaturereport')" active="tabTemperature">
+			   			 	<p style="margin:0" class="page-header">Temperature Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	<br>
+			   			 	<div id="temperatureChart" style="min-width:700px; max-width:700px; width: 700px; height: 300px"></div>
+			   			 	<div class="box-body table-responsive" id="temperaturereport">
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 		<thead>
+			   			 	 			<tr style="text-align:center; font-weight: bold;">
+				   			 	 			<td>Vehicle Group</td>
+										  	<td>{{trimColon(vgroup)}}</td>
+										  	<td>Vehicle Name</td>
+										  	<td>{{hist.shortName}}</td>	
+			   			 	 			</tr>
+			   			 	 			<tr><td colspan="3"></td></tr>
+			   			 	 			<tr style="text-align:center;font-weight: bold;">
+											<th class="id" style="text-align:center;" width="25%">Date &amp; Time</th>
+											<th class="id" style="text-align:center;" width="20%">Status</th>
+											<th class="id" style="text-align: center;" width="35%">Nearest Location</th>
+											<th class="id" style="text-align: center;" width="15%">G-Map</th>
+										</tr>
+								</thead>
+			   			 	 	<tbody>
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="temperature in temperatureData">
+			   			 	 			<td>{{temperature.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+			   			 	 			<td>{{temperature.temperature}}</td>
+			   			 	 			<td>
+			   			 	 			{{temperature.address}} 
+			   			 	 				<!-- <p ng-if="ignitionignitionignition.address!=null">{{ignition.address}}</p>
+											<p ng-if="ignitionignition.address==null && addressFuel[$index]!=null">{{addressFuel[$index]}}</p>
+											<p ng-if="ignition.address==null && addressFuel[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p> -->
+										</td> 
+			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{temperature.latitude}},{{temperature.longitude}}" target="_blank">Link</a></td>
+			   			 	 		</tr>
+			   			 	 		<tr>
+										<td ng-if="temperatureData==null" colspan="4">No Records Found Choose some other date</td>
+									</tr>
+			   			 	 	</tbody>
+			   			 	 	</table>
+			   			 	</div>
+			   			 </tab>
 
 
 			   			<div class="pull-right">

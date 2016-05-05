@@ -28,6 +28,9 @@
 		            	</div>
 		            	<br>
 		            	<div class="row">
+		            		<div class="col-md-12" id="selectedItems" style="border-bottom: 1px solid #a6a6a6;"></div>
+		            		<br>
+		            		<div class="col-md-12" id="unSelectedItems">
 		            		@if(isset($vehicleList))		  
 								@foreach($vehicleList as $key => $value)
 									<div class="col-md-3 vehiclelist"> 
@@ -39,6 +42,7 @@
 								@endforeach
 							@endif
 		            	</div>
+		            </div>
 		            	<hr>
 		            	{{ Form::close() }}
 		            </div> 

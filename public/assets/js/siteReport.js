@@ -298,57 +298,115 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 // }
 
 
-	$scope.getInput = function(inputValue, vehicleDetails){
+
+var map;
+myLatlng = new google.maps.LatLng(12.996250, 80.194750);
+function initialize() {
+    var mapOptions = {
+      center: myLatlng,
+      zoom: 14,
+      mapTypeControl: false,
+      center:myLatlng,
+      panControl:false,
+      rotateControl:false,
+      streetViewControl: false,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+  //start of modal google map
+  $('#mapmodals').on('shown.bs.modal', function () {
+      google.maps.event.trigger(map, "resize");
+      map.setCenter(myLatlng);
+  });
+
+  	jQuery('#mapmodals')
+ 	.on('shown.bs.modal',
+      function(){
+        google.maps.event.trigger(map,'resize',{});
+        map.setCenter(myLatlng);
+     });
+
+ 	var latLanPath =[];
+ 	var marker, markerList =[];
+
+    $scope.drawLine = function(loc1, loc2){
+    	$scope.startlatlong = new google.maps.LatLng(loc1, loc2);
 		
+		var flightPlanCoordinates = [$scope.startlatlong, $scope.endlatlong];
+		
+		$scope.flightPath = new google.maps.Polyline({
+			path: flightPlanCoordinates,
+			geodesic: true,
+			strokeColor: "#00c4ff",
+			strokeOpacity: 0.7,
+			strokeWeight: 5,
+			map: map,
+		});
+		$scope.endlatlong =$scope.startlatlong;
+		latLanPath.push($scope.flightPath);
+		// console.log(' value '+loc1+'-----'+loc2);
+		map.setCenter($scope.startlatlong);
+	}
+	
+
+	// clear the polyline function
+	function clearMap(){
+		$scope.endlatlong = null;
+		$scope.startlatlong = null;
+		for (var i=0; i<latLanPath.length; i++){
+        	latLanPath[i].setMap(null);
+       	}
+       
+       	for (var i = 0; i < markerList.length; i++) {
+       		markerList[i].setMap(null);
+       	};
+	}
+
+	
+	//marker function in maps
+	function startEndMarker(lat, lan, ind){
+	var image = '';
+		if(ind == 0)
+			image = 'assets/imgs/startflag.png'
+		else
+			image = 'assets/imgs/endflag.png'
+	marker = new google.maps.Marker({
+		    position: new google.maps.LatLng(lat, lan),
+		    map: map,
+		    icon: image
+		  });
+	markerList.push(marker);
+	}
+
+  //end of modal google map
+	$scope.getInput = function(inputValue, vehicleDetails){
+		clearMap(latLanPath);
         var startDate, endDate, startTime, endTime;
         startDate	= 	$filter('date')(inputValue.startTime, 'yyyy-MM-dd');
         endDate 	= 	$filter('date')(inputValue.endTime, 'yyyy-MM-dd');
         startTime	= 	$filter('date')(inputValue.startTime, 'HH:mm:ss');
         endTime		= 	$filter('date')(inputValue.endTime, 'HH:mm:ss');
-        var url 	= 	"http://"+globalIP+context+"/public/getVehicleHistory?vehicleId="+vehicleDetails.vehicleId+"&fromDate="+startDate+"&fromTime="+startTime+"&toDate="+endDate+"&toTime="+$scope.endTime;
-        
-// initialize();
-// $("#contact-modal").on("shown.bs.modal", function () {
-//     google.maps.event.trigger(map, "resize");
-// });
+        var url 	= 	"http://"+globalIP+context+"/public/getVehicleHistory?vehicleId="+vehicleDetails.vehicleId+"&fromDate="+startDate+"&fromTime="+startTime+"&toDate="+endDate+"&toTime="+endTime;
+ 		vamoservice.getDataCall(url).then(function(dataGet){
+ 			// if(dataGet.vehicleLocations[0] || dataGet.vehicleLocations[dataGet.vehicleLocations.length-1])
+ 			// 	startEndMarker(val.latitude, val.longitude);
+ 			var len = dataGet.vehicleLocations.length;
+ 			angular.forEach(dataGet.vehicleLocations, function(val, key){
+ 				if(key == 0 || key == len-1)
+ 					startEndMarker(val.latitude, val.longitude, key);
+ 					// console.log(' key value ---'+key);
+        		$scope.drawLine(val.latitude, val.longitude);
 
-// $('#myModal').on('shown', function () {
-//     google.maps.event.trigger(map, "resize");
-// });
+        	});
+        });
 
-
-
-
-
-        // vamoservice.getDataCall(url).then(function(dataGet){
-        // 	console.log(' data '+dataGet)
-        // 	angular.forEach(dataGet.vehicleLocations, function(val, key){
-        // 		$scope.drawLine(val.latitude, val.longitude);
-        // 	});
-        // });
-// $('#myModal').on('shown', function(){
-		// google.maps.event.trigger($scope.map, 'resize');
-		// $scope.map.setCenter(new google.maps.LatLng(12.993803, 80.193075));
-		
-  
-
-// 	});
        
     }
 
 
 
-    $scope.drawLine = function(loc1, loc2){
-		var flightPlanCoordinates = [loc1, loc2];
-		$scope.flightPath = new google.maps.Polyline({
-			path: flightPlanCoordinates,
-			geodesic: true,
-			strokeColor: "#ff0000",
-			strokeOpacity: 1.0,
-			strokeWeight:2
-		});
-		console.log(' value '+loc1+'-----'+loc2);
-	}
-	
 
 }]);

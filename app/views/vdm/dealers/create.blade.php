@@ -10,7 +10,7 @@
                 	</div>
                		 <div class="panel-body">
                 		{{ HTML::ul($errors->all()) }}
-						{{ Form::open(array('url' => 'vdmDealers')) }}
+						{{ Form::open(array('url' => 'vdmDealers', 'files' => true, 'enctype'=>'multipart/form-data')) }}
 					<div class="col-md-12">
 							<span id="validation" style="color: red; font-weight: bold"></span>
 						</div>
@@ -30,7 +30,7 @@
 									{{ Form::label('mobileNo', 'Mobile Number') }}									
 								</div>
 								<div class="col-md-6">
-									{{ Form::Number('mobileNo', Input::old('mobileNo'), array('class' => 'form-control', 'required' => 'required', 'placeholder'=>'Mobile Number')) }}
+									{{ Form::text('mobileNo', Input::old('mobileNo'), array('class' => 'form-control', 'required' => 'required', 'placeholder'=>'Mobile Number')) }}
 								</div>
 							</div>
 							<br>
@@ -59,10 +59,11 @@
 								<div class="col-md-6">
 									{{ Form::text('website', Input::old('website'), array('class' => 'form-control','placeholder'=>'Website')) }}
 								</div>
+								
 							</div>
 
 
- <br />
+ 							<br />
 								<div class="row">
 								<div class="col-md-3">
 							{{ Form::label('smsSender', 'SMS Sender') }}
@@ -91,13 +92,20 @@
 		<div class="col-md-6">
 		{{ Form::text('providerPassword', Input::old('providerPassword'), array('class' => 'form-control', 'placeholder'=>'SMS Provider Password')) }}
 		</div>
-		<div class="col-md-3">
-			{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}							
-								{{ Form::close() }}	
-		</div>
+		
 	</div>
-
-
+	<br>
+	<div class="row">
+		<div class="col-md-3">{{Form::label('Image 52*52(png)')}} {{ Form::file('logo_small', array('class' => 'form-control')) }}</div>
+		<div class="col-md-3">{{Form::label('Image 272*144(png)')}}{{ Form::file('logo_mob', array('class' => 'form-control')) }}</div>
+		<div class="col-md-3">{{Form::label('Image 144*144(png)')}}{{ Form::file('logo_desk', array('class' => 'form-control')) }}</div>
+		
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-6"></div>
+		<div class="col-md-3">{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}{{ Form::close() }}</div>
+	</div>
 
 							
 						</div>

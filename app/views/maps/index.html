@@ -215,7 +215,7 @@
                             <div style="display: flex">
                                 
                                 <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px">
-                                <select ng-model="days1" style="width:40%; font-weight: bold; font-size: 12px; padding : 3px">
+                                <select ng-model="days1" style="width:35%; font-weight: bold; font-size: 12px; padding : 3px">
                                     <option value = "0">Vehicle Id</option>
                                     <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
                                 </select>
@@ -232,6 +232,9 @@
                                     <option value = "8">8</option>
                                     <option value = "9">9</option>
                                     <option value = "10">10</option>
+                                    <option value = "30">1 Month</option>
+                                    <option value = "90">3 Month</option>
+                                    <option value = "365">1 Year</option>
                                 </select>
                                 <input type="button" id="traffic" data-toggle="modal" data-target="#myModal" value="Get Url" />
                                 </div>
@@ -432,6 +435,7 @@
                             <th style="text-align:center;"><div style="width: 100px;">Fuel Litre</div></th>
                             <th style="text-align:center;"><div style="width: 100px;">Temperature</div></th>
                             <th style="text-align:center;"><div style="width: 100px;">Ac/Hire</div></th>
+                            <th style="text-align:center;"><div style="width: 100px;">Battery</div></th>
                             <th style="text-align:center;"><div style="width: 100px;">Last Seen</div></th>
                             <th style="text-align:center;"><div style="width: 50px;">KM</div></th>
                             <th style="text-align:center;"><div style="width: 70px;">Speed</div></th>
@@ -463,10 +467,14 @@
                             <td>{{valueCheck(user.totalTruck)}}</td>
                             <td>{{valueCheck(user.fuelLitre)}}</td>
                             
-                            <td>--</td>
+                            <td>{{user.temperature}}</td>
                             <td ng-switch on="user.vehicleBusy">
-                                <span ng-switch-when="yes" style="color: #ff0045">ON</span>
-                                <span ng-switch-when="no" style="color: #00ce2f">OFF</span>
+                                <span ng-switch-when="yes" style="color: #ff0045">Busy</span>
+                                <span ng-switch-when="no" style="color: #00ce2f">Available</span>
+                            </td>
+                            <td  ng-switch on="user.powerStatus">
+                                <span ng-switch-when="OFF" style="color: #ff0045">OFF</span>
+                                <span ng-switch-when="ON" style="color: #00ce2f">ON</span>
                             </td>
                             <td>{{user.lastSeen}}</td>
                             <td>{{user.distanceCovered}}</td>
@@ -482,13 +490,8 @@
                 </div>
         </div>
     </div>
-   <!--  <div ng-show="true">aasd {{support}}
-        <div id="maploc">
-            <map id="map_canvas" style="height:100vh; width:100%;"></map>
-        </div>
-    </div> -->
-    
-    
+   
+
 </div>
     <div class="modal fade" id="myModal">
       <div class="modal-dialog">
