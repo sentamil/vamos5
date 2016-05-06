@@ -176,7 +176,7 @@ app.directive('map', function($http, vamoservice) {
 					});
 					
 					var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
-						+'<div><b style="width:100px; display:inline-block;">Address</b> - <span style="font-weight:bold;">'+data.address+'</span></div></div>';
+						+'<div style="width:200px; display:inline-block;"><b>Address</b> - <span>'+data.address+'</span></div></div>';
 
 					var infowindow = new google.maps.InfoWindow({
 					    content: contentString
