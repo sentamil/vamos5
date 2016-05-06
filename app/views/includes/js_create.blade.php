@@ -93,28 +93,28 @@ $(function(){
 });
 
 // function for individual check box click
-$(function(){
-  $(questionCheckBox).on('click',function(clickindex){
-    var counting = 0;
-      console.log(' arunss '+this.checked+'--->'+clickindex);
-      $(questionCheckBox).each(function(){
+// $(function(){
+//   $(questionCheckBox).on('click',function(clickindex){
+//     var counting = 0;
+//       console.log(' arunss '+this.checked+'--->'+clickindex);
+//       $(questionCheckBox).each(function(){
 
-          if(questionCheckBox[counting].value == clickindex.delegateTarget.value)
-          {
-            if(this.checked == true)
-              $(questionCheckBox[counting]).parent('div').appendTo('#selectedItems');
-            else if(this.checked == false)
-              // $('#selectedItems').parent('div').appendTo(questionCheckBox[counting]);
-             $(questionCheckBox[counting]).parent('div').appendTo('#unSelectedItems');
+//           if(questionCheckBox[counting].value == clickindex.delegateTarget.value)
+//           {
+//             if(this.checked == true)
+//               $(questionCheckBox[counting]).parent('div').appendTo('#selectedItems');
+//             else if(this.checked == false)
+//               // $('#selectedItems').parent('div').appendTo(questionCheckBox[counting]);
+//              $(questionCheckBox[counting]).parent('div').appendTo('#unSelectedItems');
 
-          }
-          counting++;
-      });
+//           }
+//           counting++;
+//       });
       // if(clickindex.delegateTarget.value == questionCheckBox[0]){
           // $(questionCheckBox[]).parent('div').appendTo('#selectedItems')
       //  
-  })
-});
+//   })
+// });
 
 
 
