@@ -382,7 +382,7 @@ class VdmDealersController extends \BaseController {
             $providerUserName=Input::get ( 'providerUserName' );
             $providerPassword=Input::get ( 'providerPassword' );
 
-            $upload_folder = '/var/www/codebase/vamos/public/assets/imgs';
+            $upload_folder = '/var/www/codebase/vamos/public/assets/imgs/';
             if (Input::hasFile('logo_small'))
 			{
 				$logoSmall=  Input::file('logo_small');
@@ -391,7 +391,7 @@ class VdmDealersController extends \BaseController {
 			    list($width, $height, $type, $attr) = getimagesize($logoSmall);
 			    if($height==52 && $width==52 && $type == 3){
 			    	
-			    	$file_name_small = $_SERVER['HTTP_HOST']. '.'.'small'.'.' . $logoSmall->getClientOriginalExtension();
+			    	$file_name_small = $website. '.'.'small'.'.' . $logoSmall->getClientOriginalExtension();
 			   		$logoSmall->move($upload_folder, $file_name_small);
 			    } else {
 			    	return Redirect::to ( 'vdmDealers/create' )->withErrors ( 'Image Size 52*52 or Image format png is missing.' );
@@ -404,7 +404,7 @@ class VdmDealersController extends \BaseController {
 			    // $link=  Input::file('logo_desktop');
 			    list($width, $height, $type, $attr) = getimagesize($logoMob);
 			    if($height==144 && $width==272 && $type == 3){
-			    	$file_name_Mob = $_SERVER['HTTP_HOST'].'.' . $logoMob->getClientOriginalExtension();
+			    	$file_name_Mob = $website.'.' . $logoMob->getClientOriginalExtension();
 			   		$logoMob->move($upload_folder, $file_name_Mob);
 			    } else {
 			    	return Redirect::to ( 'vdmDealers/create' )->withErrors ( 'Image Size 272*144 or Image format png is missing.' );

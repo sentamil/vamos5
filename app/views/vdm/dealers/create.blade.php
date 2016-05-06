@@ -57,7 +57,7 @@
 									{{ Form::label('website', 'website') }}	
 								</div>
 								<div class="col-md-6">
-									{{ Form::text('website', Input::old('website'), array('class' => 'form-control','placeholder'=>'Website')) }}
+									{{ Form::text('website', Input::old('website'), array('class' => 'form-control','placeholder'=>'Website', 'required' => 'required')) }}
 								</div>
 								
 							</div>
