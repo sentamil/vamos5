@@ -40,8 +40,26 @@
 		            		<div class="col-md-3">{{ Form::submit('Update the POI!', array('class' => 'btn btn-primary')) }}</div>
 		            	</div>
 		            	<br>
-		            	<hr>
+		            	
+
 		            	<div class="row">
+		            		<div class="col-md-12" id="selectedItems" style="border-bottom: 1px solid #a6a6a6;"></div>
+		            		<br>
+		            		<div class="col-md-12" id="unSelectedItems">
+			            		@if(isset($userplace))		  
+									@foreach($userplace as $key => $value)
+										<div class="col-md-3 vehiclelist">
+											{{ Form::checkbox('poi[]', $userplace[$key],  in_array($value,$selectedVehicles), ['class' => 'field','id' => 'questionCheckBox']) }}
+											{{ Form::label($userplace[$key]) }}			
+									
+										</div>
+									@endforeach
+								@endif
+			            	</div>
+			            </div>
+
+
+		            	<!-- <div class="row">
 		            		@if(isset($userplace))		  
 								@foreach($userplace as $key => $value)
 									 <div class="col-md-3 vehiclelist">
@@ -51,7 +69,7 @@
 									</div>
 								@endforeach
 							@endif
-		            	</div>
+		            	</div> -->
 		            	{{ Form::close() }}
 		            </div>
 		        </div>

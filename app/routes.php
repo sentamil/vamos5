@@ -50,11 +50,19 @@ Route::get('/history', function() {
     }
     return View::make('maps.history');
 });
- 
+
+View::addExtension('html', 'php');
 Route::get('/track', function() {
+  
+    return View::make('maps.trackSingleVeh');
+});
+
+Route::get('/trackSingleVeh', function() {
   
     return View::make('maps.track');
 });
+
+
  
 Route::get('/allVehicles', function() {
     $user = User::find(1);
@@ -180,6 +188,14 @@ Route::get('/getVehicleLocations', function() {
     return View::make('vls.getVehicleLocations');
 });
 
+
+Route::get('/getSelectedVehicleLocation1', function() {
+     if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get Vehicle getSelectedVehicleLocation1');
+    return View::make('vls.getSelectedVehicleLocation1');
+});
 
 Route::get('/getTripSummary', function() {
     if (!Auth::check()) {

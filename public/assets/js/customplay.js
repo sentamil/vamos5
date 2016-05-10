@@ -100,7 +100,84 @@ app.directive('map', function($http) {
 							    var bounds = scope.map.getBounds();
 							    searchBox.setBounds(bounds);
 							  });
-*/
+*/							
+
+
+							
+							//draw the geo code
+							// (function geosite(){
+								var geoUrl = 'http://'+globalIP+context+'/public/viewSite';
+								// var myOptions = {
+								// 	zoom: Number(6),zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
+								// 	center: new google.maps.LatLng(0,0),
+								// 	mapTypeId: google.maps.MapTypeId.ROADMAP
+			
+			
+		
+								// };
+								// $scope.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+								$http.get(geoUrl).success(function(response){
+									polygenList =[];
+									var latLanlist, seclat, seclan, sp; 
+
+									function centerMarker(listMarker){
+									    var bounds = new google.maps.LatLngBounds();
+									    for (i = 0; i < listMarker.length; i++) {
+									          bounds.extend(listMarker[i]);
+									      }
+									    return bounds.getCenter()
+									}
+
+									for (var listSite = 0; listSite < response.siteParent.length; listSite++) {
+										
+										var len = response.siteParent[listSite].site.length;
+										for (var k = 0; k < len; k++) {
+											console.log(' value  '+k);
+										// if(response.siteParent[i].site.length)
+										// {
+											var orgName = response.siteParent[listSite].site[k].siteName;
+											var splitLatLan = response.siteParent[listSite].site[k].latLng.split(",");
+											
+											polygenList = [];
+											for(var j = 0; splitLatLan.length>j; j++)
+								      		{
+								      			sp 	  = splitLatLan[j].split(":");
+								      			polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
+								      			console.log(sp[0]+' ---- '+ sp[1])
+								      			// latlanList.push(sp[0]+":"+sp[1]);
+								      			// seclat        = sp[0];
+								      			// seclan        = sp[1];
+								      		}
+											
+								      		var polygenColor = new google.maps.Polygon({
+								      			path: polygenList,
+								      			strokeColor: "#282828",
+								      			strokeWeight: 1,
+								      			fillColor: '#808080',
+								      			fillOpacity: 0.50,
+								      			map: scope.map
+								      		});
+								      	
+									      	var labelAnchorpos = new google.maps.Point(19, 0);  ///12, 37
+									      	var marker = new MarkerWithLabel({
+										      	position: centerMarker(polygenList), 
+										      	map: scope.map,
+										      	icon: 'assets/imgs/area_img.png',
+										      	labelContent: orgName,
+										      	labelAnchor: labelAnchorpos,
+										      	labelClass: "labels", 
+										      	labelInBackground: false
+									      	});
+									      // scope.map.setCenter(centerMarker(polygenList)); 
+									      // scope.map.setZoom(14); 
+								  		// }
+								  		}
+									};
+								})
+							// }());
+
+
+
 							google.maps.event.addListener(scope.map, 'click', function(event) {
 								scope.clickedLatlng = event.latLng.lat() +','+ event.latLng.lng();
 								$('#latinput').val(scope.clickedLatlng);
@@ -914,4 +991,6 @@ if($scope.markerstart){
 		$('#preloader').delay(350).fadeOut('slow');
 		$('body').delay(350).css({'overflow':'visible'});
 });
+
+	
 });

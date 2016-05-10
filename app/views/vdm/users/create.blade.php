@@ -66,16 +66,27 @@
 							 </div> <div class="col-md-4">{{Form::label('Select All :')}} {{Form::checkbox('$vehicleGroups', 'value', false, ['class' => 'check'])}}</div>
 							 </div>
 							 </br>
-							              @if(isset($vehicleGroups))
-								            @foreach($vehicleGroups as $key => $value)
-										<div class="col-md-3 vehiclelist">
-									
-									{{ Form::checkbox('vehicleGroups[]', $key, null, ['class' => 'field', 'id' => 'questionCheckBox']) }}
-									{{ Form::label($value) }}
-									</div>
-								@endforeach
-								
-								@endif
+
+
+
+							 	<div class="row">
+				            		<div class="col-md-12" id="selectedItems" style="border-bottom: 1px solid #a6a6a6;"></div>
+				            		<br>
+				            		<div class="col-md-12" id="unSelectedItems">
+					            		@if(isset($vehicleGroups))
+									        @foreach($vehicleGroups as $key => $value)
+												<div class="col-md-3 vehiclelist">
+													{{ Form::checkbox('vehicleGroups[]', $key, null, ['class' => 'field', 'id' => 'questionCheckBox']) }}
+													{{ Form::label($value) }}
+												</div>
+											@endforeach
+										@endif
+					            	</div>
+					            </div>
+
+
+
+							            
 								
 								{{ Form::close() }}
 						</div>

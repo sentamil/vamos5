@@ -41,7 +41,25 @@
 									 <div class="col-md-5"><h5>{{Form::label('Select All :')}} {{Form::checkbox('$userVehicles', 'value', false, ['class' => 'check'])}} </h5></div>
 								</div>
 								<br/>
-								@if(isset($userVehicles))		  
+								<div class="row">
+				            		<div class="col-md-12" id="selectedItems" aligin="center"></div>
+				            		<br>
+				            		<div class="col-md-12" id="unSelectedItems">
+				            		@if(isset($userVehicles))		  
+											@foreach($userVehicles as $key => $value)
+												<div class="col-md-3 vehiclelist"> 
+												{{ Form::checkbox('vehicleList[]', $key, null, ['class' => 'field', 'id' => 'questionCheckBox']) }}
+												{{ Form::label($value) }}
+												{{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
+												</div>
+														
+											@endforeach
+										@endif
+								</div>
+		            		</div>
+
+
+								<!-- @if(isset($userVehicles))		  
 									@foreach($userVehicles as $key => $value)
 										<div class="col-md-3 vehiclelist"> 
 										{{ Form::checkbox('vehicleList[]', $key, null, ['class' => 'field', 'id' => 'questionCheckBox']) }}
@@ -50,7 +68,7 @@
 										</div>
 												
 									@endforeach
-								@endif
+								@endif -->
 								
 								<script>
 									list = [];
