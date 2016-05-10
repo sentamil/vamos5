@@ -7,7 +7,7 @@
     		<div class="col-lg-12">
         		<div class="hpanel">
                		 <div class="panel-heading">
-                  		<h4><b><font> Add Device</font></b></h4>
+                  		<h4><b><font> Add jjjDevice</font></b></h4>
                 	</div>
                		 <div class="panel-body">
 						{{ Form::open(array('url' => 'Business/adddevice')) }}
@@ -49,8 +49,8 @@
 							<div class="col-md-2"></div>
 							<table class="col-md-8" id="p">
 								<tr>
-									<td class="col-md-4"><span id="hide1"  style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute;" id="hide">{{ Form::radio('type', 'new') }} </span>&nbsp;&nbsp;&nbsp; New User</td>
-									<td class="col-md-4"><span id="show1" style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute" id="show">{{ Form::radio('type', 'existing') }} </span>&nbsp;&nbsp;&nbsp; Existing User</td>
+									<td class="col-md-4"><span id="hide1"  style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute;" id="hide">{{ Form::radio('type1', 'new') }} </span>&nbsp;&nbsp;&nbsp; New User</td>
+									<td class="col-md-4"><span id="show1" style=" border-radius: 0px; width : 0px; height:0px; padding: 0px;border: 0px; position: absolute" id="show">{{ Form::radio('type1', 'existing') }} </span>&nbsp;&nbsp;&nbsp; Existing User</td>
 									<!-- <td class="col-md-4"><div>{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div></td> -->
 								</tr>
 							</table>
@@ -251,6 +251,9 @@
 														<td class="col-md-2">{{ Form::text('email'.$i, Input::old('email'), array('class' => 'form-control','placeholder'=>'Alert Email')) }}</td>
 														<td class="col-md-2">{{ Form::text('altShortName'.$i, Input::old('altShortName'), array('class' => 'form-control','placeholder'=>'Alternate Short Name')) }}</td></td>
 														<td class="col-md-2">{{ Form::select('isRfid'.$i,  array( 'no' => 'Rfid No','yes' => 'Rfid Yes' ), Input::old('isRfid'), array('class' => 'form-control')) }}</td>
+														<td class="col-md-2">{{ Form::select('Licence'.$i,  array($Licence), Input::old('Licence'), array('class' => 'form-control')) }}</td>
+														<td class="col-md-2">{{ Form::select('Payment_Mode'.$i,  array($Payment_Mode), Input::old('Payment_Mode'), array('class' => 'form-control')) }}</td>
+														<td class="col-md-2">{{ Form::text('descr'.$i, Input::old('descr'), array('class' => 'form-control','placeholder'=>'Description')) }}</td>
 													</tr>
 												</table>							
 											</td>

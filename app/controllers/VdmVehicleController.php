@@ -91,7 +91,7 @@ public function index() {
     $user=$user1->checkuser();
     return View::make ( 'vdm.vehicles.index', array (
         'vehicleList' => $vehicleList
-        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList );
+        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 );
 }
 
 
@@ -578,6 +578,9 @@ public function edit($id) {
         $refData= array_add($refData, 'fuel', 'no');
         $refData= array_add($refData, 'isRfid', 'no');
         $refData= array_add($refData, 'shortName', 'nill');
+        $refData= array_add($refData, 'Licence', '');
+        $refData= array_add($refData, 'Payment_Mode', '');
+         $refData= array_add($refData, 'descriptionStatus', '');
 //            $refData= array_add($refData, 'fuelType', 'digital');
         $refDataFromDB = json_decode ( $details, true );
 
@@ -615,8 +618,22 @@ public function edit($id) {
             $orgList = array_add($orgList,''.$org,$org);
         }
         
+        $Payment_Mode1 =array();
+        $Payment_Mode = DB::select('select type from Payment_Mode');
+        //log::info( '-------- av  in  ::----------'.count($Payment_Mode));
+        foreach($Payment_Mode as  $org1) {
+        $Payment_Mode1 = array_add($Payment_Mode1, $org1->type,$org1->type);
+        }
+        $Licence1 =array();
+        $Licence = DB::select('select type from Licence');
+        foreach($Licence as  $org) {
+        $Licence1 = array_add($Licence1, $org->type,$org->type);
+        }
+
+
+
         return View::make ( 'vdm.vehicles.edit', array (
-            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList );
+            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
     }catch(\Exception $e)
     {
         return Redirect::to ( 'vdmVehicles' );
@@ -653,6 +670,9 @@ public function edit1($id) {
         $refData= array_add($refData, 'paymentType',' ');
         $refData= array_add($refData, 'expiredPeriod',' ');
         $refData= array_add($refData, 'fuel', 'no');
+        $refData= array_add($refData, 'Licence', '');
+        $refData= array_add($refData, 'Payment_Mode', '');
+         $refData= array_add($refData, 'descriptionStatus', '');
         $refDataFromDB = json_decode ( $details, true );
 
 
@@ -689,10 +709,21 @@ public function edit1($id) {
             $orgList = array_add($orgList,$org,$org);
 
         }
+        $Payment_Mode1 =array();
+        $Payment_Mode = DB::select('select type from Payment_Mode');
+        //log::info( '-------- av  in  ::----------'.count($Payment_Mode));
+        foreach($Payment_Mode as  $org1) {
+        $Payment_Mode1 = array_add($Payment_Mode1, $org1->type,$org1->type);
+        }
+        $Licence1 =array();
+        $Licence = DB::select('select type from Licence');
+        foreach($Licence as  $org) {
+        $Licence1 = array_add($Licence1, $org->type,$org->type);
+        }
 
 //  var_dump($refData);
         return View::make ( 'vdm.vehicles.edit1', array (
-            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList );
+            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
     }catch(\Exception $e)
     {
         return Redirect::to ( 'vdmVehicles' );
@@ -876,6 +907,15 @@ public function update($id) {
             $expiredPeriod=' ';
         }
 
+
+        $Licence=Input::get ( 'Licence1');    
+    $Licence=!empty($Licence) ? $Licence : 'Advance';
+    $descriptionStatus=Input::get ( 'descriptionStatus');    
+    $descriptionStatus=!empty($descriptionStatus) ? $descriptionStatus : '';
+
+    $Payment_Mode=Input::get ( 'Payment_Mode1');  
+    $Payment_Mode=!empty($Payment_Mode) ? $Payment_Mode : 'Monthly';
+
 //    $odoDistance=$vehicleRefData['odoDistance'];
 //gpsSimNo
 //    $gpsSimNo=$vehicleRefData['gpsSimNo'];
@@ -916,8 +956,29 @@ else if(Session::get('cur')=='admin')
             'fuelType'=>$fuelType,
             'isRfid'=>$isRfid,
             'OWN'=>$ownership,
+            'Licence'=>$Licence,
+            'Payment_Mode'=>$Payment_Mode,
+            'descriptionStatus'=>$descriptionStatus,
             );
 
+try{
+$licence_id = DB::select('select licence_id from Licence where type = :type', ['type' => $Licence]);
+$payment_mode_id = DB::select('select payment_mode_id from Payment_Mode where type = :type', ['type' => $Payment_Mode]);
+        log::info( $licence_id[0]->licence_id.'-------- av  in  ::----------'.$payment_mode_id[0]->payment_mode_id);
+        
+$licence_id=$licence_id[0]->licence_id;
+$payment_mode_id=$payment_mode_id[0]->payment_mode_id;
+        DB::table('Vehicle_details')
+            ->where('vehicle_id', $vehicleId)
+            ->where('fcode', $fcode)
+            ->update(array('licence_id' => $licence_id,
+                'payment_mode_id' => $payment_mode_id,
+                ));
+
+}catch(\Exception $e)
+        {
+            Log::info($vehicleId.'--------------------inside Exception--------------------------------');
+        }
         $refDataJson = json_encode ( $refDataArr );
 // H_RefData
          Log::info($vehicleId.'--------------------org--------------------------------'.$orgId);
@@ -1253,6 +1314,15 @@ public function update1() {
         $orgId = Input::get ('orgId');
         $altShortName= Input::get ('altShortName');
         $parkingAlert = Input::get('parkingAlert');
+
+    $Licence=Input::get ( 'Licence1');    
+    $Licence=!empty($Licence) ? $Licence : 'Advance';
+    $descriptionStatus=Input::get ( 'descriptionStatus');    
+    $descriptionStatus=!empty($descriptionStatus) ? $descriptionStatus : '';
+
+    $Payment_Mode=Input::get ( 'Payment_Mode1');  
+    $Payment_Mode=!empty($Payment_Mode) ? $Payment_Mode : 'Monthly';
+
         $v=idate("d") ;
 //            $paymentType=Input::get ( 'paymentType' );
         $paymentType='yearly';
@@ -1310,6 +1380,9 @@ public function update1() {
             'fuel'=>$fuel,
             'isRfid'=>$isRfid,
             'OWN'=>$ownership,
+            'Licence'=>$Licence,
+            'Payment_Mode'=>$Payment_Mode,
+            'descriptionStatus'=>$descriptionStatus,
 
             );
         VdmVehicleController::destroy($vehicleIdTemp);
@@ -1619,10 +1692,34 @@ public function migrationUpdate() {
             'fuelType'=>isset($refDataJson1['fuelType'])?$refDataJson1['fuelType']:' ',
             'isRfid'=>isset($refDataJson1['isRfid'])?$refDataJson1['isRfid']:'no',
             'OWN'=>$ownership,
+            'Licence'=>isset($refDataJson1['Licence'])?$refDataJson1['Licence']:'',
+            'Payment_Mode'=>isset($refDataJson1['Payment_Mode'])?$refDataJson1['Payment_Mode']:'',
+            'descriptionStatus'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'',
             );
 
         $refDataJson = json_encode ( $refDataArr );
         
+
+try{
+$licence_id = DB::select('select licence_id from Licence where type = :type', ['type' => isset($refDataJson1['Licence'])?$refDataJson1['Licence']:'Advance']);
+$payment_mode_id = DB::select('select payment_mode_id from Payment_Mode where type = :type', ['type' => isset($refDataJson1['Payment_Mode'])?$refDataJson1['Payment_Mode']:'Monthly']);
+        log::info( $licence_id[0]->licence_id.'-------- av  in  ::----------'.$payment_mode_id[0]->payment_mode_id);
+        
+$licence_id=$licence_id[0]->licence_id;
+$payment_mode_id=$payment_mode_id[0]->payment_mode_id;
+        DB::table('Vehicle_details')
+            ->where('vehicle_id', $vehicleIdOld)
+            ->where('fcode', $fcode)
+            ->update(array('vehicle_id' => $vehicleId,
+                'device_id' => $deviceId,
+                ));
+
+}catch(\Exception $e)
+        {
+            Log::info($vehicleId.'--------------------inside Exception--------------------------------');
+        }
+
+
         $redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
         $redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
 

@@ -1,4 +1,5 @@
 <?php
+use Carbon\Carbon;
 class DashBoardController extends \BaseController {
 	
 	/**
@@ -6,7 +7,7 @@ class DashBoardController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index() {
+	public function indexToDelete() {
 		if (! Auth::check () ) {
 			return Redirect::to ( 'login' );
 		}
@@ -153,6 +154,94 @@ class DashBoardController extends \BaseController {
 		return View::make ( 'vdm.vehicles.dashboard')->with('count',$count)->with('dealerId',$dealerId)->with('vechile',$vechile)->with('temp',$temp)->with('vechileEx',$vechileEx)->with('vechileEx1',$vechileEx1)->with('prsentMonthCount',$prsentMonthCount)->with('nextMonthCount',$nextMonthCount)->with('prevMonthCount',$prevMonthCount);
 	}
 	
+
+
+public function index() {
+		if (! Auth::check () ) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		
+		log::info( 'User name  ::' . $username);
+		Session::forget('page');
+		
+		$redis = Redis::connection ();
+		
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		
+		Log::info('fcode=' . $fcode);
+		$temp=array();
+		$dealerId=array();
+
+
+			if(Session::get('cur')=='dealer')
+			{
+				$count=DB::table('Vehicle_details')
+				            ->where('fcode', $fcode)->where('belongs_to', $username)->count();
+						//$dealer = $redis->smembers('S_Dealers_'. $fcode); 
+
+						$month=date("m");
+						$year=date("Y");
+
+				            $prsentMonthCount=DB::table('Vehicle_details')
+				            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month-1,$year), DashBoardController::getDateT(59,59,23,15,$month,$year)))->where('belongs_to', $username)->count();
+
+	           $prevMonthCount=DB::table('Vehicle_details')
+	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month-2,$year), DashBoardController::getDateT(59,59,23,15,$month-1,$year)))->where('belongs_to', $username)->count();
+				$nextMonthCount=DB::table('Vehicle_details')
+	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month,$year), DashBoardController::getDateT(59,59,23,15,$month+1,$year)))->where('belongs_to', $username)->count();
+			}
+			else if(Session::get('cur')=='admin')
+			{
+
+				$count=DB::table('Vehicle_details')
+				            ->where('fcode', $fcode)->count();
+						$dealer = $redis->smembers('S_Dealers_'. $fcode);  
+						foreach($dealer as $org1) 
+						{
+							log::info( 'dealar name' . $org1);
+							$count1=DB::table('Vehicle_details')
+				            ->where('fcode', $fcode)->where('belongs_to', $org1)->count();
+
+				            $dealerId = array_add($dealerId, $org1,strval($count1));
+						}
+						$month=date("m");
+						$year=date("Y");
+						// log::info( 'pdate --->' . DashBoardController::getDateT(0,0,0,15,$month-1,$year));
+						// log::info( 'pdate --->' . DashBoardController::getDateT(59,59,23,15,$month,$year));
+						// log::info( 'prdate --->' . DashBoardController::getDateT(0,0,0,15,$month-2,$year));
+						// log::info( 'prdate --->' .DashBoardController::getDateT(59,59,23,15,$month-1,$year));
+						// log::info( 'ndate --->' . DashBoardController::getDateT(0,0,0,15,$month,$year));
+						// log::info( 'ndate --->' . DashBoardController::getDateT(59,59,23,15,$month+1,$year));
+
+				$prsentMonthCount=DB::table('Vehicle_details')
+				            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month-1,$year), DashBoardController::getDateT(59,59,23,15,$month,$year)))->count();
+
+	           $prevMonthCount=DB::table('Vehicle_details')
+	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month-2,$year), DashBoardController::getDateT(59,59,23,15,$month-1,$year)))->count();
+				$nextMonthCount=DB::table('Vehicle_details')
+	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month,$year), DashBoardController::getDateT(59,59,23,15,$month+1,$year)))->count();
+
+			}
+
+
+
+
+		
+		$vechile=array();$vechileEx=0;$vechileEx1=0;
+		return View::make ( 'vdm.vehicles.dashboard')->with('count',$count)->with('dealerId',$dealerId)->with('vechile',$vechile)->with('temp',$temp)->with('vechileEx',$vechileEx)->with('vechileEx1',$vechileEx1)->with('prsentMonthCount',$prsentMonthCount)->with('nextMonthCount',$nextMonthCount)->with('prevMonthCount',$prevMonthCount);
+	}
+
+ public function getDateT($second,$min,$hour,$day,$month,$year)
+{
+	$xmasThisYear = Carbon::createFromDate($year, $month, $day);			
+	$xmasThisYear->hour = $hour;
+	$xmasThisYear->minute = $min;
+	$xmasThisYear->second = $second;
+	
+	return $xmasThisYear;
+}
+
 	
 	public function getCount($presentData,$fcode,$username)
 	{

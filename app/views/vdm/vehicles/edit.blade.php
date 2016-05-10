@@ -80,7 +80,12 @@
 
 									{{ Form::select('isRfid', array('yes' => 'Yes','no' => 'No'), isset($refData['isRfid'])?$refData['isRfid']:'no', array('class' => 'form-control')) }} 
 								</div>
-							</div>
+								<div class="form-group">
+						{{ Form::label('descriptionStatus', 'Description') }}
+						{{ Form::text('descriptionStatus', $refData['descriptionStatus'], array('class' => 'form-control')) }}
+						
+					</div>
+										</div>
 
 							<div class="col-md-5">
 
@@ -151,6 +156,17 @@
 
 									{{ Form::select('fuelType', array('digital' => 'Digital','analog' => 'Analog'), isset($refData['fuelType'])?$refData['fuelType']:'Digital', array('class' => 'form-control')) }} 
 								</div>
+
+					<div class="form-group">
+								{{ Form::label('License1', 'Licence') }}
+								{{ Form::select('Licence1', array($Licence), $refData['Licence'],array('class' => 'form-control')) }} 
+							</div>
+							<div class="form-group">
+								{{ Form::label('Payment_Mode1', 'Payment Mode') }}
+								{{ Form::select('Payment_Mode1', array($Payment_Mode), $refData['Payment_Mode'],array('class' => 'form-control')) }} 
+							</div>
+
+
 
 								<div class="col-md-5" style="top: 30px; position: relative; left: 40%">
 									
