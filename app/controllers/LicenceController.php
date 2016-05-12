@@ -438,8 +438,12 @@ public function update()
 		}
 
 
-	$details=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date' => Carbon::now()]);
+	// $details=DB::table('Vehicle_details')
+	//             ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date' => Carbon::now()]);
+	//             return Redirect::to ( 'Licence' )->withErrors ( 'Successfully renewaled' );
+
+		$details=DB::table('Vehicle_details')
+	            ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date' => DATE_ADD(`renewal_date` , INTERVAL 2 DAY)]);
 	            return Redirect::to ( 'Licence' )->withErrors ( 'Successfully renewaled' );
 }
 else
