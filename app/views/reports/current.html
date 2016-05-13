@@ -248,14 +248,14 @@ background-color: #ffffff;
 								      	<td></td>
 								    </tr> -->
 									<tr style="text-align:center">
-										<th width="10%" class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;">Vehicle Name</th>
+										<th width="10%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">Vehicle Name</th>
 										<!-- <th ng-hide="true" style="text-align:center;">Vehicle Name</th> -->
-										<th width="5%" style="text-align:center;">Regn No</th>
-										<th width="5%" style="text-align:center;">Driver Name</th>
+										<th width="5%" class="id" custom-sort order="'regNo'" sort="sort" style="text-align:center;">Regn No</th>
+										<th width="5%" class="id" custom-sort order="'driverName'" sort="sort" style="text-align:center;">Driver Name</th>
 										<!-- <th ng-hide="true">Mobile Number</th> -->
-										<th width="10%" style="text-align:center;">Last Seen</th>
-										<th width="5%" style="text-align:center;">KM today</th>
-										<th width="5%" style="text-align:center;">Speed</th>
+										<th width="10%" class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Last Seen</th>
+										<th width="5%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;">KM today</th>
+										<th width="5%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed</th>
 										<th width="5%" style="text-align:center;">Position</th>
 										<th width="5%" style="text-align:center;">GPS Status</th>
 										<th width="5%" style="text-align:center;">Load Truck</th>
@@ -301,7 +301,7 @@ background-color: #ffffff;
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>														
 									</tr>
 									<tr ng-if="data1.vehicleLocations==null">
-										<td colspan="12">No Records Found Choose some other date</td>
+										<td colspan="12" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 								</table>		
 		        </div>
@@ -443,7 +443,7 @@ background-color: #ffffff;
 												
 											</tbody>
 											<tr ng-if="consoldateData.length==0" style="text-align: center">
-													<td colspan="9"><h6>Choose some other date</h6></td>
+													<td colspan="9" class="err"><h5>No Date Found! Choose some other date</h5></td>
 											</tr>
 										</table>
 								<!-- 
@@ -568,8 +568,8 @@ background-color: #ffffff;
 											</td> -->
 										
 									</tr>
-									<tr ng-if="tripData.mulitple.length==0 || tripData.mulitple==' '" style="text-align: center">
-										<td colspan="9"><h6>Choose some other date</h6></td>
+									<tr ng-if="tripData.mulitple.length==0 || tripData.mulitple==' ' || tripData.mulitple==null" align="center">
+										<td colspan="9" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 								</table>
 		                	</div>

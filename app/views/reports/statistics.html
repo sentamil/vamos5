@@ -11,12 +11,12 @@
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
-
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
-<!-- <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css">
 
-<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css"> -->
+<!-- <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css"> -->
+
+<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 <link href="../app/views/reports/c3chart/c3.css" rel="stylesheet" type="text/css">
 
 
@@ -191,14 +191,14 @@ background-color: #ffffff;
                                     <tr style="text-align:center; font-weight: bold;">
                                         <td width="6%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">VehicleName</td>
                                         <td width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date</td>
-                                        <td width="7%" class="id" sort="sort" style="text-align:center;">Kms</td>
-                                        <td width="7%" class="id" sort="sort" style="text-align:center;">ParkCount</td>
-                                        <td width="7%" class="id" sort="sort" style="text-align:center;">OverSpeed Count</td>
-                                        <td width="7%" class="id" sort="sort" style="text-align:center;">Odo Start</td>
-                                        <td width="7%" class="id" sort="sort" style="text-align:center;">Odo End</td>
-                                        <td ng-hide="true" width="7%" class="id" sort="sort" style="text-align:center;">Parked</td>
-                                        <td width="7%" class="id" sort="sort" style="text-align:center;">Running</td>
-                                        <td width="7%" class="id" sort="sort" style="text-align:center;">Idle</td>
+                                        <td width="7%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">Kms</td>
+                                        <td width="7%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">ParkCount</td>
+                                        <td width="7%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">OverSpeed Count</td>
+                                        <td width="7%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Start</td>
+                                        <td width="7%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo End</td>
+                                        <td ng-hide="true" width="7%" class="id"  style="text-align:center;">Parked</td>
+                                        <td width="7%" class="id" style="text-align:center;">Running</td>
+                                        <td width="7%" class="id" style="text-align:center;">Idle</td>
                                         <!-- <td width="7%" class="id" sort="sort" style="text-align:center;">TopSpeed</td>  --> 
                                        <!--  <td width="10%" class="id" sort="sort" style="text-align:center;">Date&amp;Time</td> -->
                                         <!-- <td width="10%" class="id" custom-sort order="'topSpeedGeoLocation'" sort="sort" style="text-align:center;">Top Location</td> -->
@@ -232,6 +232,9 @@ background-color: #ffffff;
                                         <!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} title="{{locationname}}">{{user.latitude}},{{user.longitude}}</td>
                                         <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>                      
                                      --></tr>
+                                     <tr ng-if="execGroupReportData=='' || execGroupReportData==null" align="center">
+                                        <td colspan="9" class="err"><h5>No Date Found! Choose some other date</h5></td>
+                                     </tr>
                                 </table>
                             </div>
                          </tab>
@@ -250,7 +253,7 @@ background-color: #ffffff;
                                         <th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;">Time</th>
                                         <th class="id" custom-sort order="'place'" sort="sort" style="text-align:center;">Place</th>
                                         <!-- <th class="id" custom-sort order="'odoInReading'" sort="sort" style="text-align:center;">Group</th> -->
-                                        <th class="id" custom-sort order="''" sort="sort" style="text-align:center;">G-Map</th>
+                                        <th class="id" sort="sort" style="text-align:center;">G-Map</th>
                                         <!-- <th class="id" custom-sort order="'geoLocation'" sort="sort" style="text-align:center;">Location</th> -->
                                         <!-- <th class="id" custom-sort order="'proximity'" sort="sort" style="text-align:center;">Proximity</th>
                                         <th class="id" custom-sort order="'dangling'" sort="sort" style="text-align:center;">Dangling</th> -->
@@ -269,8 +272,8 @@ background-color: #ffffff;
                                     <!-- <tr ng-if="vehiclenull==null&&geofencedata==null">
                                         <td colspan="8">Choose Individual Vehicle ID</td>
                                     </tr> -->
-                                    <tr ng-if="geofencedata==null">
-                                        <td colspan="5">No Records Found Choose some other date</td>
+                                    <tr ng-if="geofencedata==null || geofencedata== '' " align="center">
+                                        <td colspan="5" class="err"><h5>No Date Found! Choose some other date</h5></td>
                                     </tr>           
                             </table>
                             <!-- <pagination boundary-links="true" 

@@ -31,6 +31,10 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		$('body').delay(350).css({'overflow':'visible'});
 	};
 
+	$scope.sort = {       
+                sortingOrder : 'id',
+                reverse : false
+            };
 	function getParameterByName(name) {
     	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),

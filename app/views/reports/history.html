@@ -15,6 +15,7 @@
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
 </head>
 <div id="preloader" >
@@ -176,35 +177,35 @@ background-color: #ffffff;
 								    </tr>
 								    <tr><td colspan="7"></td></tr>
 									<tr style="text-align:center" >
-										<th width="14%" class="id" style="text-align:center;">Date&amp;Time</th>
-										<th width="8%" class="id" style="text-align:center;">Speed</th>
+										<th width="14%" class="id" custom-sort order="'lastSeen'" sort="sort"  style="text-align:center;">Date&amp;Time</th>
+										<th width="8%" class="id" custom-sort order="'speed'" sort="sort"  style="text-align:center;">Speed</th>
 										<th width="7%" class="id" style="text-align:center;">G-Map</th>
 										<th width="38%" class="id" style="text-align:center;">Nearest Location</th>
-										<th width="9%" class="id" style="text-align:center;">Dist</th>
-										<th width="15%" class="id" style="text-align:center;">C-Dist (KM)</th>
-										<th width="13%" class="id" style="text-align:center;">Odo (KM)</th>
+										<th width="9%" class="id" custom-sort order="'tmpDistance'" sort="sort"  style="text-align:center;">Dist</th>
+										<th width="15%" class="id" custom-sort order="'distanceCovered'" sort="sort"  style="text-align:center;">C-Dist (KM)</th>
+										<th width="13%" class="id" custom-sort order="'odoDistance'" sort="sort"  style="text-align:center;">Odo (KM)</th>
 
 									</tr></thead>
 									 
 													                
 					                <tbody>
-									<tr ng-repeat="user in movementdata" class="active" style="text-align:center">
-										<td>{{user.lastSeen}}</td>
-										<td>{{user.speed}}</td>
-										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
+									<tr ng-repeat="move in movementdata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+										<td>{{move.lastSeen}}</td>
+										<td>{{move.speed}}</td>
+										<td><a href="https://www.google.com/maps?q=loc:{{move.latitude}},{{move.longitude}}" target="_blank">Link</a></td>
 										<td>
-											<p ng-if="user.address!=null">{{user.address}}</p>
-											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && maddress1[$index]!=null">{{maddress1[$index]}}</p>
-											<p ng-if="user.address==null && maddress1[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+											<p ng-if="move.address!=null">{{move.address}}</p>
+											<p ng-if="move.address==null && maddress1[$index]!=null">{{maddress1[$index]}}</p>
+											<p ng-if="move.address==null && maddress1[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
 										</td>
 										<!-- <td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && maddress[$index]==null">Click Me</td> -->
 										<!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && maddress1[$index]!=null">{{maddress1[$index]}}</td> -->
-										<td>{{user.tmpDistance}}</td>
-										<td>{{user.distanceCovered}}</td>
-										<td>{{user.odoDistance}}</td>
+										<td>{{move.tmpDistance}}</td>
+										<td>{{move.distanceCovered}}</td>
+										<td>{{move.odoDistance}}</td>
 									</tr>	
-									<tr ng-if="movementdata==null">
-										<td colspan="7">No Records Found Choose some other date</td>
+									<tr ng-if="movementdata==null" align="center">
+										<td colspan="7" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 							</table>
 							<!-- <pagination boundary-links="true" max-size="3" items-per-page="itemsPerPage" total-items="movementdata.length" ng-model="currentPage" ng-change="pageChanged()"></pagination>	
@@ -243,17 +244,17 @@ background-color: #ffffff;
 								    
 								    <tr><td colspan="8"></td></tr>
 									<tr> 
-										<th width="12%" class="id" style="text-align:center;">Date&amp;Time</th>
-										<th width="10%" class="id" style="text-align:center;">Speed (Km)</th>
+										<th width="12%" class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Date&amp;Time</th>
+										<th width="10%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed (Km)</th>
 										<th colspan="2" width="18%" class="id" style="text-align:center;">G-Map</th>
 										<th width="30%" class="id" style="text-align:center;">Nearest Location</th>
-										<th ng-hide="true" class="id" style="text-align:center;">Over Speed</th>
-										<th width="12%" class="id" style="text-align:center;">Odo (Km)</th>
-										<th width="13%" class="id" style="text-align:center;">Trip (Km)</th>
-										<th ng-hide="true" width="10%" colspan="2" class="id" order="''" style="text-align:center;">G-Map</th>
+										<!-- <th ng-hide="true" class="id" sort="sort" style="text-align:center;">Over Speed</th> -->
+										<th width="12%" class="id" custom-sort order="'odoDistance'" sort="sort" style="text-align:center;">Odo (Km)</th>
+										<th width="13%" class="id" custom-sort order="'tripDistance'" sort="sort" style="text-align:center;">Trip (Km)</th>
+										<!-- <th ng-hide="true" width="10%" colspan="2" class="id" order="''" style="text-align:center;">G-Map</th> -->
 									</tr></thead>
 									
-									<tr ng-repeat="user in overspeeddata" class="active" style="text-align:center">
+									<tr ng-repeat="user in overspeeddata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
 										<td>{{user.lastSeen}}</td>
 										<td>{{user.speed}}</td>
 										<td colspan="2"><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
@@ -264,13 +265,13 @@ background-color: #ffffff;
 										</td>
 										<!-- <td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && oaddress[$index]==null">Click Me</td>
 										<td get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && oaddress[$index]!=null">{{oaddress[$index]}}</td> -->
-										<td ng-hide="true">{{user.isOverSpeed}}</td>
+										<!-- <td ng-hide="true">{{user.isOverSpeed}}</td> -->
 										<td>{{user.odoDistance}}</td>
 										<td>{{user.tripDistance}}</td>
 										<!-- <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>	 -->					
 									</tr>
-									<tr ng-if="overspeeddata==null">
-										<td colspan="8">No Records Found Choose some other date</td>
+									<tr ng-if="overspeeddata==null" align="center">
+										<td colspan="8" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 								</table>
 							</div>
@@ -294,10 +295,10 @@ background-color: #ffffff;
 								  	<tr><td colspan="4"></td></tr>
 									<tr style="text-align:center;font-weight: bold;">
 										
-										<th width="13%" class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Parked Time</th>
-										<th width="12%" class="id" order="'latitude'" style="text-align:center;">G-Map</th>
-										<th width="40%" class="id" order="'address'" style="text-align:center;">Nearest Location</th>
-										<th width="15%" class="id" custom-sort order="'parkedTime'" sort="sort" style="text-align:center;">Duration</th>
+										<th style="text-align:center;" custom-sort order="'lastSeen'" sort="sort" >Parked Time</th>
+										<th width="12%" style="text-align:center;">G-Map</th>
+										<th width="40%" style="text-align:center;">Nearest Location</th>
+										<th width="15%" custom-sort order="'parkedTime'" sort="sort"  style="text-align:center;">Duration</th>
 										<!-- <th width="20%" colspan="2" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Total Parked Time</th> -->
 									</tr></thead>
 									<tbody>
@@ -312,8 +313,8 @@ background-color: #ffffff;
 										</td>
 										<td>{{getParkedCorrectHours(user.parkedTime)}}</td>
 									</tr>
-									<tr ng-if="parkeddata==null">
-										<td colspan="4">No Records Found Choose some other date</td>
+									<tr ng-if="parkeddata==null" align="center">
+										<td colspan="4" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 									</tbody>								
 							</table>
@@ -332,14 +333,14 @@ background-color: #ffffff;
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="4"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th width="13%" class="id" style="text-align:center;">Idle Time</th>
+											<th width="13%" class="id" custom-sort order="'lastSeen'" sort="sort"  style="text-align:center;">Idle Time</th>
 											<th width="10%" class="id" style="text-align:center;">G-Map</th>
 											<th width="40%" class="id" style="text-align:center;">Nearest Location</th>
-											<th width="15%" class="id" style="text-align:center;">Duration</th>
+											<th width="15%" class="id" custom-sort order="'idleTime'" sort="sort"  style="text-align:center;">Duration</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
-			   			 	 		<tr ng-repeat="user in idlereport" class="active" style="text-align:center">
+			   			 	 		<tr ng-repeat="user in idlereport | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
 			   			 	 			<td>{{user.lastSeen}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
 			   			 	 			<td>
@@ -349,8 +350,8 @@ background-color: #ffffff;
 			   			 	 			</td>
 			   			 	 			<td>{{getParkedCorrectHours(user.idleTime)}}</td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if="idlereport==null">
-										<td colspan="4">No Records Found Choose some other date</td>
+			   			 	 		<tr ng-if="idlereport==null" align="center">
+										<td colspan="4" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
@@ -390,14 +391,14 @@ background-color: #ffffff;
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="5"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th width="20%" class="id" style="text-align:center;">Start Time</th>
-											<th width="20%" class="id" style="text-align:center;">Duration</th>
+											<th width="20%" class="id" custom-sort order="'startTime'" sort="sort"  style="text-align:center;">Start Time</th>
+											<th width="20%" class="id" custom-sort order="'duration'" sort="sort"  style="text-align:center;">Duration</th>
 											<th colspan="2" width="40%" class="id" style="text-align:center;">Nearest Location</th>
-											<th width="20%" class="id" style="text-align:center;">State</th>
+											<th width="20%" class="id" custom-sort order="'state'" sort="sort"  style="text-align:center;">State</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
-			   			 	 		<tr ng-repeat="user in eventReportData" class="active" style="text-align:center">
+			   			 	 		<tr ng-repeat="user in eventReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
 			   			 	 			<td>{{user.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>
 											<p ng-if="user.duration!=null">{{msToTime(user.duration)}}</p>
@@ -410,8 +411,8 @@ background-color: #ffffff;
 			   			 	 			</td>
 			   			 	 			<td>{{user.state}}</td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if="eventReportData==null">
-										<td colspan="5">No Records Found Choose some other date</td>
+			   			 	 		<tr ng-if="eventReportData==null" align="center">
+										<td colspan="5" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
@@ -437,13 +438,13 @@ background-color: #ffffff;
 										</tr>
 								</thead>
 			   			 	 	<tbody>
-			   			 	 		<tr ng-repeat="user in siteReport" class="active" style="text-align:center">
+			   			 	 		<tr ng-repeat="user in siteReport   " class="active" style="text-align:center">
 			   			 	 			<td>{{user.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td colspan="2">{{user.address}}</td>
 										<td>{{user.state}}</td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if="siteReport==null">
-										<td colspan="4">No Records Found Choose some other date</td>
+			   			 	 		<tr ng-if="siteReport==null" align="center">
+										<td colspan="4" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
@@ -463,9 +464,9 @@ background-color: #ffffff;
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="4"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th class="id" style="text-align:center;" width="20%">Alert Time</th>
+											<th class="id"  custom-sort order="'date'" sort="sort"  style="text-align:center;" width="20%">Alert Time</th>
 											
-											<th class="id" style="text-align:center;" width="20%">Load Truck</th>
+											<th class="id"  custom-sort order="'loadTruck'" sort="sort"  style="text-align:center;" width="20%">Load Truck</th>
 											<th ng-hide="true" class="id" style="text-align:center;">Load Trailer</th>
 											<th ng-hide="true" class="id" style="text-align:center;">Total Truck</th>
 											<th ng-hide="true" class="id" style="text-align:center;">Total Trailer</th>
@@ -474,7 +475,7 @@ background-color: #ffffff;
 										</tr>
 								</thead>
 			   			 	 	<tbody>
-			   			 	 		<tr class="active" style="text-align:center" ng-repeat="load in loadreport" ng-if="load.loadTruck!=='nill' && load.loadTrailer!=='nill' && load.totalTruck!=='nill' && load.totalTrailer!=='nill'">
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="load in loadreport | orderBy:sort.sortingOrder:sort.reverse" ng-if="load.loadTruck!=='nill' && load.loadTrailer!=='nill' && load.totalTruck!=='nill' && load.totalTrailer!=='nill'">
 			   			 	 			<td>{{load.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{load.loadTruck}}</td>
 			   			 	 			<td ng-hide="true">{{load.loadTrailer}}</td>
@@ -487,8 +488,8 @@ background-color: #ffffff;
 										</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{load.latitude}},{{load.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr>
-										<td ng-if="loadreport==null" colspan="4">No Records Found Choose some other date</td>
+			   			 	 		<tr ng-if="loadreport==null" align="center">
+										<td colspan="4" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
@@ -508,14 +509,14 @@ background-color: #ffffff;
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="3"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th class="id" style="text-align:center;" width="25%">Date &amp; Time</th>
-											<th class="id" style="text-align:center;" width="20%">Fuel (ltr)</th>
+											<th class="id"  custom-sort order="'date'" sort="sort"  style="text-align:center;" width="25%">Date &amp; Time</th>
+											<th class="id"  custom-sort order="'fuelLitre'" sort="sort"  style="text-align:center;" width="20%">Fuel (ltr)</th>
 											<th class="id" style="text-align: center;" width="35%">Nearest Location</th>
 											<th class="id" style="text-align: center;" width="15%">G-Map</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
-			   			 	 		<tr class="active" style="text-align:center" ng-repeat="fuel in fuelValue">
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="fuel in fuelValue | orderBy:sort.sortingOrder:sort.reverse">
 			   			 	 			<td>{{fuel.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{fuel.fuelLitre}}</td>
 			   			 	 			<td> 
@@ -525,8 +526,8 @@ background-color: #ffffff;
 										</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{fuel.latitude}},{{fuel.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr>
-										<td ng-if="fuelValue==null" colspan="4">No Records Found Choose some other date</td>
+			   			 	 		<tr ng-if="fuelValue==null" align="center">
+										<td colspan="4" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
@@ -545,14 +546,14 @@ background-color: #ffffff;
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="3"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th class="id" style="text-align:center;" width="25%">Date &amp; Time</th>
-											<th class="id" style="text-align:center;" width="20%">Status</th>
+											<th class="id"  custom-sort order="'date'" sort="sort"  style="text-align:center;" width="25%">Date &amp; Time</th>
+											<th class="id"  custom-sort order="'ignitionStatus'" sort="sort"  style="text-align:center;" width="20%">Status</th>
 											<th class="id" style="text-align: center;" width="35%">Nearest Location</th>
 											<th class="id" style="text-align: center;" width="15%">G-Map</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
-			   			 	 		<tr class="active" style="text-align:center" ng-repeat="ignition in ignitionData">
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="ignition in ignitionData | orderBy:sort.sortingOrder:sort.reverse">
 			   			 	 			<td>{{ignition.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{ignition.ignitionStatus}}</td>
 			   			 	 			<td>
@@ -563,8 +564,8 @@ background-color: #ffffff;
 										</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr>
-										<td ng-if="ignitionData==null" colspan="4">No Records Found Choose some other date</td>
+			   			 	 		<tr ng-if="ignitionData==null || ignitionData.length==0" align="center">  
+										<td colspan="4" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
@@ -585,14 +586,14 @@ background-color: #ffffff;
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="3"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th class="id" style="text-align:center;" width="25%">Date &amp; Time</th>
-											<th class="id" style="text-align:center;" width="20%">Status</th>
+											<th class="id"  custom-sort order="'date'" sort="sort"  style="text-align:center;" width="25%">Date &amp; Time</th>
+											<th class="id"  custom-sort order="'temperature'" sort="sort"  style="text-align:center;" width="20%">Status</th>
 											<th class="id" style="text-align: center;" width="35%">Nearest Location</th>
 											<th class="id" style="text-align: center;" width="15%">G-Map</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
-			   			 	 		<tr class="active" style="text-align:center" ng-repeat="temperature in temperatureData">
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="temperature in temperatureData | orderBy:sort.sortingOrder:sort.reverse">
 			   			 	 			<td>{{temperature.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{temperature.temperature}}</td>
 			   			 	 			<td>
@@ -603,8 +604,8 @@ background-color: #ffffff;
 										</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{temperature.latitude}},{{temperature.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr>
-										<td ng-if="temperatureData==null" colspan="4">No Records Found Choose some other date</td>
+			   			 	 		<tr ng-if="temperatureData==null" align="center">
+										<td colspan="4" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
