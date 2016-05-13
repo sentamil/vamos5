@@ -33,6 +33,7 @@
 												<th style="text-align: center;">Belongs To</th>
 												<th style="text-align: center;">Status</th>
 												<th style="text-align: center;">On Boarded Date</th>
+												<th style="text-align: center;">Renewal Date</th>
 												
 											</tr>
 										</thead>
@@ -47,6 +48,7 @@
 												<td>{{ $val->belongs_to  }}</td>
 												<td>{{ $val->status }}</td>
 												<td>{{ $val->sold_date }}</td>
+												<td>{{ $val->renewal_date }}</td>
 												<td>
 													
 													

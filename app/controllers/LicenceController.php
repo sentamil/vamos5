@@ -152,7 +152,7 @@ class LicenceController extends \BaseController {
       	$Licence1 = array_add($Licence1, $org->type,$org->type);
         }
 
-		 return View::make ( 'vdm.licence.licence' )->with ( 'year', $year )->with ( 'month', $month )->with('Payment_Mode',$Payment_Mode1)->with('Licence',$Licence1)->with('own',$own);
+		 return View::make ( 'vdm.licence.licence' )->with ( 'year', $year )->with ( 'month', $month )->with('Payment_Mode',$Payment_Mode1)->with('Licence',$Licence1)->with('own',$own)->with('monthT',date('m'))->with('yearT',date('Y'))->with('modeT',null)->with('typeT',null)->with('ownT',null);;
 	}
 
 
@@ -438,12 +438,8 @@ public function update()
 		}
 
 
-	// $details=DB::table('Vehicle_details')
-	//             ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date' => Carbon::now()]);
-	//             return Redirect::to ( 'Licence' )->withErrors ( 'Successfully renewaled' );
-
-		$details=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date' => DATE_ADD(`renewal_date` , INTERVAL 2 DAY)]);
+	$details=DB::table('Vehicle_details')
+	            ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date' => Carbon::now()]);
 	            return Redirect::to ( 'Licence' )->withErrors ( 'Successfully renewaled' );
 }
 else

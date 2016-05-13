@@ -24,18 +24,18 @@
 
 													<div class="col-md-6">
 														{{ Form::label('month', 'Month:') }}
-														{{ Form::select('month', array($month), date('m'), array('class' => 'form-control')) }}
+														{{ Form::select('month', array($month),$monthT , array('class' => 'form-control')) }}
 
 													</div>
 													<div class="col-md-6">
 														{{ Form::label('Year', 'year:') }}
-														{{ Form::select('year', array($year), date('Y'), array('class' => 'form-control')) }}
+														{{ Form::select('year', array($year),$yearT , array('class' => 'form-control')) }}
 
 													</div>
 													<br/>
 													<div class="col-md-6">
 														{{ Form::label('Licence', 'Licence:') }}
-														{{ Form::select('Licence', array($Licence), 'Both', array('class' => 'form-control')) }}
+														{{ Form::select('Licence', array($Licence), $typeT, array('class' => 'form-control')) }}
 
 													</div>
 													<!-- <div class="col-md-6">
@@ -45,7 +45,7 @@
 													</div> -->
 													<div class="col-md-6">
 														{{ Form::label('own', 'Ownership:') }}
-														{{ Form::select('own', array($own), 'OWN', array('class' => 'form-control')) }}
+														{{ Form::select('own', array($own), $ownT, array('class' => 'form-control')) }}
 
 													</div>
 													

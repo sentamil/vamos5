@@ -54,14 +54,14 @@ class DatabaseConfig extends \BaseController {
 				Schema::create('Vehicle_details', function ($table) {
 				$table->text('vehicle_id')->first();
 				$table->text('fcode')->after('vehicle_id');
-				$table->date('sold_date')->after('fcode');
+				$table->dateTime('sold_date')->after('fcode');
 				$table->integer('sold_time_stamp')->after('sold_date');
 				$table->integer('month')->after('sold_time_stamp');
 				$table->integer('year')->after('month');
 				$table->text('status')->nullable()->after('year');
 				$table->text('belongs_to')->after('status');
 				$table->text('device_id')->after('belongs_to');
-				$table->date('renewal_date')->after('device_id');
+				$table->dateTime('renewal_date')->after('device_id');
 				$table->integer('payment_mode_id');
 				//$table->foreign('payment_mode_id')->references('payment_mode_id')->on('Payment_Mode');
 				$table->integer('licence_id');
