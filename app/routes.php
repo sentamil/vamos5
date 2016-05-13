@@ -24,6 +24,8 @@ Route::get('/replay', function() {
     }
     return View::make('maps.replay');
 });
+
+
  
 Route::get('/ElectionCommisionTrustedClient', function() {
     Log::info( '-------login-----' );
