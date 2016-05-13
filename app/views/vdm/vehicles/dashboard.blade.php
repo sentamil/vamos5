@@ -18,8 +18,8 @@
 								<div style="color: #086fa1">
 									<div class="col-sm-6">{{ Form::label('tnovo', 'Total Vehicles OnBoard :') }}</div>
 									<div class="col-sm-6">{{ Form::label('count', $count.' ',array('class' => 'form-control')) }}</div>
-									<div class="col-sm-6">{{ Form::label('vechileEx', 'Number of Vehicles Expires Next Month :') }}</div>
-									<div class="col-sm-6">{{ Form::label('0', count($vechile), array('class' => 'form-control')) }}</div>
+									<!-- <div class="col-sm-6">{{ Form::label('vechileEx', 'Number of Vehicles Expires Next Month :') }}</div>
+									<div class="col-sm-6">{{ Form::label('0', count($vechile), array('class' => 'form-control')) }}</div> -->
 									<!-- <div class="col-sm-6">{{ Form::label('num', 'Onboarded Details') }}</div> -->
 									<div class="col-sm-6">{{Form::label('', 'Previous Month :')}}</div>
 									<div class="col-sm-6">{{ Form::label('0', $prevMonthCount, array('class' => 'form-control')) }}</div>

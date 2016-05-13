@@ -90,7 +90,28 @@
 		<a href="../vdmVehicles/dashboard"> <span class="nav-label">Dashboard</span></a>
 		
 		</li>
+
 		
+<li>
+            <a href="Routes"> <span class="nav-label">Licence</span><span class="fa arrow"></span></a>
+              <ul class="nav nav-second-level">
+                     
+                     <li>
+                <a href="../Licence"> <span class="nav-label">Licence</span></a>
+            </li>
+             <li>
+                <a href="../Licence"> <span class="nav-label">Onboard Devices</span></a>
+            </li>
+           
+        <li><a href="../Licence"> <span class="nav-label">Device List</span> <span class="label label-success pull-right">v.2</span> </a></li> 
+            
+         
+                </ul>
+            
+                
+            </li>
+
+
 		
 		<li>
 			<a href="Routes"> <span class="nav-label">Business</span><span class="fa arrow"></span></a>

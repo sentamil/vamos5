@@ -33,7 +33,7 @@
 					<tbody>
 					@foreach($vehicleList as $key => $value)
 						<tr style="text-align: center;">
-							<td>{{ ++$key }}</td>
+							<td>{{ ++$tmp }}</td>
 							<td>{{ $value }}</td>
 							<td>{{ array_get($shortNameList, $value)}}</td>
 							<td>{{ array_get($orgIdList, $value)}}</td>

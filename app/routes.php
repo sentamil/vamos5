@@ -590,6 +590,9 @@ Route::post('userId', array('as' => 'ajax.userIdCheck', 'uses'=>'VdmUserControll
 
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
+Route::resource('Licence', 'LicenceController');
+
+Route::get('Licence/ViewDevices/{param}', array('uses' => 'LicenceController@viewDevices'));
  
 Route::resource('vdmDealers', 'VdmDealersController');
  

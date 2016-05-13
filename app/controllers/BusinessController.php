@@ -1,4 +1,5 @@
 <?php
+use Carbon\Carbon;
 class BusinessController extends \BaseController {
 	
 	/**
@@ -125,6 +126,7 @@ class BusinessController extends \BaseController {
 	
 	
 	public function create() {
+		DatabaseConfig::checkDb();
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
@@ -134,6 +136,7 @@ class BusinessController extends \BaseController {
         //get the Org list
         $tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
 		
+		//log::info( '------login 1---------- '.date('m'));
 		if(Session::get('cur')=='dealer')
 			{
 				log::info( '------login 1---------- '.Session::get('cur'));
@@ -357,8 +360,19 @@ if(count($vehicleGroups)==0)
 		$userList=BusinessController::getUser();
 		$orgList=array();
 		$orgList=BusinessController::getOrg();
-
-		 return View::make ( 'vdm.business.createCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
+		$Payment_Mode1 =array();
+		$Payment_Mode = DB::select('select type from Payment_Mode');
+		//log::info( '-------- av  in  ::----------'.count($Payment_Mode));
+		foreach($Payment_Mode as  $org1) {
+      	$Payment_Mode1 = array_add($Payment_Mode1, $org1->type,$org1->type);
+        }
+		$Licence1 =array();
+		$Licence = DB::select('select type from Licence');
+		foreach($Licence as  $org) {
+      	$Licence1 = array_add($Licence1, $org->type,$org->type);
+        }
+		
+		 return View::make ( 'vdm.business.createCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
 		}
 		
 		
@@ -685,17 +699,28 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$gpsSimNo=Input::get ( 'gpsSimNo'.$i);	
 	$gpsSimNo=!empty($gpsSimNo) ? $gpsSimNo : '0123456789';
 
+	$Licence=Input::get ( 'Licence'.$i);	
+	$Licence=!empty($Licence) ? $Licence : 'Advance';
+	$descriptionStatus=Input::get ( 'descr'.$i);	
+	$descriptionStatus=!empty($descriptionStatus) ? $descriptionStatus : '';
 
+	$Payment_Mode=Input::get ( 'Payment_Mode'.$i);	
+	$Payment_Mode=!empty($Payment_Mode) ? $Payment_Mode : 'Monthly';
+
+
+$licence_id = DB::select('select licence_id from Licence where type = :type', ['type' => $Licence]);
+$payment_mode_id = DB::select('select payment_mode_id from Payment_Mode where type = :type', ['type' => $Payment_Mode]);
+		log::info( $licence_id[0]->licence_id.'-------- av  in  ::----------'.$payment_mode_id[0]->payment_mode_id);
+		
+$licence_id=$licence_id[0]->licence_id;
+$payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 	
-	if($deviceid!=null && $deviceidtype!=null)
+	if($deviceid!==null && $deviceidtype!==null && $licence_id!==null && $payment_mode_id!==null)
 	{
-
 		$dev=$redis->hget('H_Device_Cpy_Map',$deviceid);
 		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 		$back=$redis->hget($vehicleDeviceMapId, $deviceid);
 		$back = $redis->sismember('S_Vehicles_' . $fcode, $vehicleId);
-		
-		
 		if($back==1)
 		{
 			log::info('------temp-----a----- ');
@@ -743,6 +768,9 @@ for($i =1;$i<=$numberofdevice;$i++)
 				{
 					$redis->sadd('S_Pre_Onboard_Admin_'.$fcode,$deviceid);
 					$redis->hset('H_Pre_Onboard_Admin_'.$fcode,$deviceid,$deviceDataJson);
+
+
+
 				}
 
 					$v=idate("d") ;
@@ -795,6 +823,9 @@ for($i =1;$i<=$numberofdevice;$i++)
 								'eveningTripStartTime' => $eveningTripStartTime,
 								'parkingAlert' => 'no',
 								'vehicleMake' => '',
+								'Licence'=>$Licence,
+								'Payment_Mode'=>$Payment_Mode,
+								'descriptionStatus'=>$descriptionStatus,
 							);
 						$refDataJson = json_encode ( $refDataArr );
 						log::info('json data --->'.$refDataJson);
@@ -846,6 +877,21 @@ for($i =1;$i<=$numberofdevice;$i++)
 				Log::info($details.'before '.$ownerShip);
 				if($type=='Sale')
 				{
+					DB::table('Vehicle_details')->insert(
+					    array('vehicle_id' => $vehicleId, 
+					    	'fcode' => $fcode,
+					    	'sold_date' =>Carbon::now(),
+					    	'renewal_date'=>Carbon::now(),
+					    	'sold_time_stamp' => round(microtime(true) * 1000),
+					    	'month' => date('m'),
+					    	'year' => date('Y'),
+					    	'payment_mode_id' => $payment_mode_id,
+					    	'licence_id' => $licence_id,
+					    	'belongs_to'=>'OWN',
+					    	'device_id'=>$deviceid,
+					    	'status'=>$descriptionStatus)
+					);
+
 					if($details==null)
 					{
 						Log::info('new organistion going to create');
@@ -1225,8 +1271,36 @@ return Redirect::to ( 'Business' )->withErrors($error);
 						
 
 
-        						if($temOrg=='Default' || $temOrg=='default')
-        						{
+
+				$licence_id = DB::select('select licence_id from Licence where type = :type', ['type' => isset($refDataJson1['Licence'])?$refDataJson1['Licence']:'Advance']);
+				$payment_mode_id = DB::select('select payment_mode_id from Payment_Mode where type = :type', ['type' => isset($refDataJson1['Payment_Mode'])?$refDataJson1['Payment_Mode']:'Monthly']);
+						log::info( $licence_id[0]->licence_id.'-------- av  in  ::----------'.$payment_mode_id[0]->payment_mode_id);
+		
+				$licence_id=$licence_id[0]->licence_id;
+				$payment_mode_id=$payment_mode_id[0]->payment_mode_id;
+try{
+
+	DB::table('Vehicle_details')->insert(
+					    array('vehicle_id' => $vehicleId, 
+					    	'fcode' => $fcode,
+					    	'sold_date' =>Carbon::now(),
+					    	'renewal_date'=>Carbon::now(),
+					    	'sold_time_stamp' => round(microtime(true) * 1000),
+					    	'month' => date('m'),
+					    	'year' => date('Y'),
+					    	'payment_mode_id' => $payment_mode_id,
+					    	'licence_id' => $licence_id,
+					    	'belongs_to'=>$username,
+					    	'device_id'=>$deviceId,
+					    	'status'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'')
+					);
+
+
+        						// if($temOrg=='Default' || $temOrg=='default')
+        }catch(\Exception $e)
+        {
+
+        }						// {// ram testing
 
 
 			 $refDataArr = array (
@@ -1249,13 +1323,18 @@ return Redirect::to ( 'Business' )->withErrors($error);
 			            'eveningTripStartTime' => isset($refDataJson1['eveningTripStartTime'])?$refDataJson1['eveningTripStartTime']:' ',
 			            'parkingAlert' => isset($refDataJson1['parkingAlert'])?$refDataJson1['parkingAlert']:'no',
 			            'altShortName'=>isset($refDataJson1['altShortName'])?$refDataJson1['altShortName']:'nill',
-			            'date' =>isset($refDataJson1['date'])?$refDataJson1['date']:' ',
+			            'date' =>date('F d Y', strtotime("+0 month")),
 			            'paymentType'=>isset($refDataJson1['paymentType'])?$refDataJson1['paymentType']:' ',
 			            'expiredPeriod'=>isset($refDataJson1['expiredPeriod'])?$refDataJson1['expiredPeriod']:' ',
 			            'fuel'=>isset($refDataJson1['fuel'])?$refDataJson1['fuel']:'no',
 			            'fuelType'=>isset($refDataJson1['fuelType'])?$refDataJson1['fuelType']:' ',
 			            'isRfid'=>isset($refDataJson1['isRfid'])?$refDataJson1['isRfid']:'no',
 			            'OWN'=>$ownerShip,
+
+ 						'Licence'=>isset($refDataJson1['Licence'])?$refDataJson1['Licence']:'',
+           				 'Payment_Mode'=>isset($refDataJson1['Payment_Mode'])?$refDataJson1['Payment_Mode']:'',
+           				 'descriptionStatus'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'',
+
 			            );
 
 			        $refDataJson = json_encode ( $refDataArr );
@@ -1263,7 +1342,7 @@ return Redirect::to ( 'Business' )->withErrors($error);
 			       // $redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
 			        $redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
 
-}
+//}ram testing
 
 							}
 									log::info( '------login 1---------- '.Session::get('cur'));
