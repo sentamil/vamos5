@@ -323,7 +323,7 @@ class VdmDealersController extends \BaseController {
 			
 
 			
-			$upload_folder = '/var/www/codebase/vamos/public/assets/imgs/'; ///var/www/gitsrc/vamos/public/assets/imgs/
+			$upload_folder = '/var/www/gitsrc/vamos/public/assets/imgs/'; ///var/www/gitsrc/vamos/public/assets/imgs/
 			if (Input::hasFile('logo_smallEdit'))
 			{
 
@@ -434,7 +434,7 @@ class VdmDealersController extends \BaseController {
             $providerUserName=Input::get ( 'providerUserName' );
             $providerPassword=Input::get ( 'providerPassword' );
             // /var/www/gitsrc/vamos/public/assets/imgs/ for production path
-            $upload_folder = '/var/www/codebase/vamos/public/assets/imgs/';
+            $upload_folder = '/var/www/gitsrc/vamos/public/assets/imgs/';
             if (Input::hasFile('logo_small'))
 			{
 				$logoSmall=  Input::file('logo_small');
