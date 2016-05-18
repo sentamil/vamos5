@@ -12,6 +12,7 @@
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
 <style>
 .empty{
@@ -242,9 +243,9 @@ background-color: #ffffff;
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="5"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th class="id" style="text-align:center;" width="25%">Date &amp; Time</th>
-											<th class="id" style="text-align:center;" width="15%">Status</th>
-											<th class="id" style="text-align:center;" width="20%">Duration</th>
+											<th class="id" custom-sort order="'startTime'" sort="sort" style="text-align:center;" width="25%">Date &amp; Time</th>
+											<th class="id" custom-sort order="'state'" sort="sort" style="text-align:center;" width="15%">Status</th>
+											<th class="id" custom-sort order="'duration'" sort="sort" style="text-align:center;" width="20%">Duration</th>
 											<th class="id" style="text-align: center;" width="35%">Nearest Location</th>
 											<th class="id" style="text-align: center;" width="15%">G-Map</th>
 										</tr>
@@ -265,8 +266,8 @@ background-color: #ffffff;
 										</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr>
-										<td ng-if="eventData==''" colspan="5">No Records Found Choose some other date</td>
+			   			 	 		<tr ng-if="eventData==''"  align="center">
+										<td colspan="5" class="err"><h5>No Date Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>

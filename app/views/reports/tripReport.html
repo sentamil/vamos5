@@ -180,8 +180,8 @@ background-color: #ffffff;
                                         </td> 
                                         <!-- <td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td> -->
                                     </tr>
-                                    <tr>
-                                        <td ng-if="siteData.tripData==null" colspan="5">No Records Found Choose some other date</td>
+                                    <tr ng-if="siteData.tripData==null"  align="center">
+                                        <td colspan="5"class="err"><h5>No Date Found! Choose some other date</h5></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -201,6 +201,7 @@ background-color: #ffffff;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
     <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
     <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
     <script src="../app/views/reports/customjs/html5csv.js"></script>
     <script src="../app/views/reports/customjs/FileSaver.js"></script>

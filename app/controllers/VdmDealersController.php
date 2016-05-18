@@ -126,6 +126,7 @@ class VdmDealersController extends \BaseController {
 			$detail=json_decode($detailJson,true);
 		
 		$userId=$id;
+		Log::info(' image Name----> '.$userId);
 		$mobileNo = $detail['mobileNo'];
 		$email =$detail['email'];
 		if(isset($detail['website'])==1)
@@ -150,11 +151,15 @@ class VdmDealersController extends \BaseController {
 			$providerPassword='';		
 		$vehicleGroups = $redis->smembers ( $userId );
 		
-		
+		Log::info(' image Name----> '.$userId);
+		$imgSmall = '/vamo/public/assets/uploads/'.$website.'.small.png';
+		$imgMob = '/vamo/public/assets/uploads/'.$website.'.png';
+		$imgLogo = '/vamo/public/assets/uploads/'.$userId.'.png';
+		Log::info(' image Name '.$imgSmall);
 		
 		return View::make ( 'vdm.dealers.show', array (
 				'userId' => $userId 
-		) )->with('mobileNo',$mobileNo)->with('email',$email)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword);
+		) )->with('mobileNo',$mobileNo)->with('email',$email)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('imgSmall', $imgSmall)->with('imgMob',$imgMob)->with('imgLogo',$imgLogo);
 	}
 	
 	/**
@@ -217,7 +222,7 @@ class VdmDealersController extends \BaseController {
 	 
 	 
 	 
-	 
+	 //arun edit
 	 
 	public function edit($id) {
 		if (! Auth::check ()) {
@@ -254,7 +259,8 @@ class VdmDealersController extends \BaseController {
 		if(isset($detail['providerPassword'])==1)
 			$providerPassword=$detail['providerPassword'];
 		else
-			$providerPassword='';		
+			$providerPassword='';
+
 		return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
@@ -315,6 +321,52 @@ class VdmDealersController extends \BaseController {
 			$redis->hset ( 'H_DealerDetails_' . $fcode, $dealerid, $detailJson );
 			$redis->hmset ( 'H_UserId_Cust_Map', $dealerid . ':fcode', $fcode, $dealerid . ':mobileNo', $mobileNo,$dealerid.':email',$email );
 			
+
+			
+			$upload_folder = '/var/www/codebase/vamos/public/assets/imgs/'; ///var/www/gitsrc/vamos/public/assets/imgs/
+			if (Input::hasFile('logo_smallEdit'))
+			{
+
+				$logoSmall=  Input::file('logo_smallEdit');
+			    // $link=  Input::file('logo_mob');
+			    // $link=  Input::file('logo_desktop');
+			    list($width, $height, $type, $attr) = getimagesize($logoSmall);
+			    if($height==52 && $width==52 && $type == 3){
+			    	
+			    	$file_name_small = $website. '.'.'small'.'.' . $logoSmall->getClientOriginalExtension();
+			   		$logoSmall->move($upload_folder, $file_name_small);
+			    } else {
+			    	return Redirect::to ( 'vdmDealers/'.$dealerid.'/edit' )->withErrors ( 'Image Size 52*52 or Image format png is missing.' );
+			    }
+			}  
+			if (Input::hasFile('logo_mobEdit'))
+			{
+				$logoMob=  Input::file('logo_mobEdit');
+				// $link=  Input::file('logo_mob');
+			    // $link=  Input::file('logo_desktop');
+			    list($width, $height, $type, $attr) = getimagesize($logoMob);
+			    if($height==144 && $width==272 && $type == 3){
+			    	$file_name_Mob = $website.'.' . $logoMob->getClientOriginalExtension();
+			   		$logoMob->move($upload_folder, $file_name_Mob);
+			    } else {
+			    	return Redirect::to ( 'vdmDealers/'.$dealerid.'/edit' )->withErrors ( 'Image Size 272*144 or Image format png is missing.' );
+			    }
+			}
+			if (Input::hasFile('logo_deskEdit'))
+			{
+				$logoDesk =  Input::file('logo_deskEdit');
+				// $link=  Input::file('logo_mob');
+			    // $link=  Input::file('logo_desktop');
+			    list($width, $height, $type, $attr) = getimagesize($logoDesk);
+			    if($height==144 && $width==144 && $type == 3){
+			    	$file_name_Desk = $dealerid.'.' . $logoDesk->getClientOriginalExtension();
+			   		$logoDesk->move($upload_folder, $file_name_Desk);
+			    } else {
+			    	return Redirect::to ( 'vdmDealers/'.$dealerid.'/edit' )->withErrors ( 'Image Size 144*144 or Image format png is missing.' );
+			    }
+			}
+
+
 			// redirect
 			Session::flash ( 'message', 'Successfully updated ' . $dealerid . '!' );
 			if(Session::get('cur')=='dealer')
@@ -381,8 +433,8 @@ class VdmDealersController extends \BaseController {
             $smsProvider=Input::get ( 'smsProvider' );
             $providerUserName=Input::get ( 'providerUserName' );
             $providerPassword=Input::get ( 'providerPassword' );
-
-            $upload_folder = '/var/www/gitsrc/vamos/public/assets/imgs/';
+            // /var/www/gitsrc/vamos/public/assets/imgs/ for production path
+            $upload_folder = '/var/www/codebase/vamos/public/assets/imgs/';
             if (Input::hasFile('logo_small'))
 			{
 				$logoSmall=  Input::file('logo_small');
@@ -425,59 +477,7 @@ class VdmDealersController extends \BaseController {
 			}
 
 
-			 //    $fileSize = $_FILES['avatar']["size"];
-
-			 //    $file_name = preg_replace('#[^a-z.0-9]#i', '', $file_name); // filter the $filename
-				
-				// $kaboom = explode(".", $file_name); // Split file name into an array using the dot
-				
-				// Log::info(count($kaboom));
-				// $fileExt = end($kaboom);
-
-				// $target_file = "uploads/$fileName";
-				// $resized_file = "uploads/resized_$fileName";
-				// $wmax = 200;
-				// $hmax = 150;
-
-
-				// function ak_img_resize($target, $newcopy, $w, $h, $ext) {
-				//     list($w_orig, $h_orig) = getimagesize($target);
-				//     $scale_ratio = $w_orig / $h_orig;
-				//     if (($w / $h) > $scale_ratio) {
-				//            $w = $h * $scale_ratio;
-				//     } else {
-				//            $h = $w / $scale_ratio;
-				//     }
-				//     $img = "";
-				//     $ext = strtolower($ext);
-				//     if ($ext == "gif"){ 
-				//       $img = imagecreatefromgif($target);
-				//     } else if($ext =="png"){ 
-				//       $img = imagecreatefrompng($target);
-				//     } else { 
-				//       $img = imagecreatefromjpeg($target);
-				//     }
-				//     $tci = imagecreatetruecolor($w, $h);
-				//     // imagecopyresampled(dst_img, src_img, dst_x, dst_y, src_x, src_y, dst_w, dst_h, src_w, src_h)
-				//     imagecopyresampled($tci, $img, 0, 0, 0, 0, $w, $h, $w_orig, $h_orig);
-				//     imagejpeg($tci, $newcopy, 80);
-				// }
-
-				// ak_img_resize($upload_folder, $upload_folder, $wmax, $hmax, $fileExt);
-
-				// $fileExt = end($kaboom); // Now target the last array element to get the file extension
-				// // $target_file = "uploads/resized_$fileName";
-			 //    $new_jpg = "/Applications/XAMPP/htdocs/vamo/public/assets/uploads/".$kaboom[0].".png";
-			 //    ak_img_convert_to_jpg($upload_folder, $new_jpg, $fileExt);
-			 //    Log::info(' file_size ----------'.$fileSize.'-----'.$file_name.'----------------'.$fileExt);
-			    // $actual_link = $_SERVER['HTTP_HOST'];
-			    // Log::info(' url '. $actual_link);
-
-			    // $upload_folder = 'images-folder/';
-			    // $img=file_get_contents($link);
-			    // $fileSave = file_put_contents($upload_folder.substr($link, strrpos($link,'/')), $img);
-		        
-
+			 
 				
 
 			

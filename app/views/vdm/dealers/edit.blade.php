@@ -9,7 +9,9 @@
 		               <h4><b>Edit Dealer</b></h4>
 		            </div>
 		            <div class="panel-body">
-		            	{{ HTML::ul($errors->all()) }}{{ Form::model($dealerid, array('route' => array('vdmDealers.update', $dealerid), 'method' => 'PUT')) }}
+		            	{{ HTML::ul($errors->all()) }}
+		            	{{ Form::model($dealerid, array('route' => array('vdmDealers.update', $dealerid), 'method' => 'PUT', 'enctype'=>'multipart/form-data')) }}
+		            	
 		            	<hr>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
@@ -58,6 +60,12 @@
 		            		<div class="col-md-4">{{ Form::text('providerPassword', $providerPassword, array('class' => 'form-control', 'placeholder'=>'Provider providerPassword')) }}</div>
 		            	</div>
 		            	<br>
+		            	<div class="row">
+							<div class="col-md-4">{{Form::label('Image 52*52(png)')}} {{ Form::file('logo_smallEdit', array('class' => 'form-control')) }}</div>
+							<div class="col-md-4">{{Form::label('Image 272*144(png)')}}{{ Form::file('logo_mobEdit', array('class' => 'form-control')) }}</div>
+							<div class="col-md-4">{{Form::label('Image 144*144(png)')}}{{ Form::file('logo_deskEdit', array('class' => 'form-control')) }}</div>
+						</div>
+						<br>
 		            	<div class="row">
 		            		<div class="col-lg-12" align="center">{{ Form::submit('Update the User!', array('class' => 'btn btn-primary')) }}</div>
 		            	</div>

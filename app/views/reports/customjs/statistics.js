@@ -11,7 +11,11 @@ var index   =   getUrl.split("=")[1];
 	} else {
 		$scope.downloadid 	= 	'executive';
 	}
-	
+
+$scope.sort = {       
+                sortingOrder : 'id',
+                reverse : false
+            };
 
 //Global Variable declaration 
 $scope.url 			= 	'http://'+globalIP+context+'/public//getVehicleLocations';
@@ -348,4 +352,3 @@ $scope.exportData = function (data) {
 
 
 }]);
-

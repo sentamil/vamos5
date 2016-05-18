@@ -237,8 +237,8 @@
                             <td>{{rep.tripDistance}}</td>
                             <td>{{rep.fuelConsume}}</td>
                           </tr>
-                          <tr ng-if="fuelTotal[0].distanceHistory==null">
-                            <td colspan="4" class="nulltd">choose some other date</td>
+                          <tr ng-if="fuelTotal[0].distanceHistory==null" align="center">
+                            <td colspan="4" class="err"><h5>No Date Found! Choose some other date</h5></td>
                           </tr>
                         </tbody>
                       </table>
@@ -286,8 +286,8 @@
                             <!-- <td>{{msToTime(val.duration)}}</td> -->
                             <td>{{val.fuelConsume}}</td> 
                           </tr>
-                          <tr ng-if="fuelTotal[0].timeHistory==null">
-                            <td colspan="3" class="nulltd">choose some other date</td>
+                          <tr ng-if="fuelTotal[0].timeHistory==null" align="center">
+                            <td colspan="3" class="err"><h5>No Date Found! Choose some other date</h5></td>
                           </tr>
                         </tbody>
                       </table>
@@ -330,8 +330,8 @@
                             <td>{{rep.fuelFrom}}</td>
                             <td>{{rep.fuelTo}}</td>
                           </tr> 
-                          <tr ng-if="fuelTotal[0].fuelDrop==null">
-                            <td colspan="4" class="nulltd">choose some other date</td>
+                          <tr ng-if="fuelTotal[0].fuelDrop==null" align="center">
+                            <td colspan="4" class="err"><h5>No Date Found! Choose some other date</h5></td>
                           </tr>
                         </tbody>
                       </table>
@@ -375,8 +375,8 @@
                             <td>{{rep.fuelFrom}}</td>
                             <td>{{rep.fuelTo}}</td>
                           </tr>
-                          <tr ng-if="fuelTotal[1].fuelFill==null">
-                            <td colspan="4" class="nulltd">choose some other date</td>
+                          <tr ng-if="fuelTotal[1].fuelFill==null" align="center">
+                            <td colspan="4" class="err"><h5>No Date Found! Choose some other date</h5></td>
                           </tr>
                         </tbody>
                       </table>
