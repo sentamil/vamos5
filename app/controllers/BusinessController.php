@@ -654,15 +654,15 @@ $dbarray=array();
 $dbtemp=0;
 for($i =1;$i<=$numberofdevice;$i++)
 {
-	$deviceid = Input::get ( 'd'.$i);
+	$deviceid = Input::get ( 'deviceid'.$i);
 	$vehicleId=Input::get ( 'vehicleId'.$i);
 	
 	$vehicleId=!empty($vehicleId) ? $vehicleId : 'gpsvts_'.substr($deviceid, -5);
 	//isset($vehicleRefData['shortName'])?$vehicleRefData['shortName']:'nill';
-	log::info( Input::get('dt50').'--------number of  name::----------'.$i);
+	log::info( Input::get('deviceidtype50').'--------number of  name::----------'.$i);
 	$deviceid=str_replace(' ', '', $deviceid);
 	$vehicleId=str_replace(' ', '', $vehicleId);
-	$deviceidtype=Input::get('dt'.$i);
+	$deviceidtype=Input::get('deviceidtype'.$i);
 
 	$deviceModel=$deviceidtype;
 	$shortName=Input::get ( 'shortName'.$i);

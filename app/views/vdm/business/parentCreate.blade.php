@@ -7,7 +7,7 @@
     		<div class="col-lg-12">
         		<div class="hpanel">
                		 <div class="panel-heading">
-                  		<h4><b><font> Add Device</font></b></h4>
+                  		<h4><b><font> Add jjjDevice</font></b></h4>
                 	</div>
                		 <div class="panel-body">
 						{{ Form::open(array('url' => 'Business/adddevice')) }}
@@ -222,8 +222,8 @@
 											</script>	
 										<tr style="text-align: center;">
 											<td>{{ $i }}</td>
-											<td >{{ Form::text('d'.$i, Input::old('d'), array('id' => 'd'.$i,'required', 'class' => 'form-control')) }}</td>
-											<td>{{ Form::select('dt' .$i, array( 'GT06N' => 'GT06N (9964)','GT300' => 'GT300 (9961)','TK103' => 'TK103 (9968)', 'TK99' => 'TK99 (9978)', 'FM1202' => 'FM1202 (9975)','FM1120' => 'FM1120 (9975)', 'TR02' => 'TR02 (9965)', 'GT03A' => 'GT03A (9969)', 'VTRACK2' => 'VTRACK2 (9964)','ET01'=>'ET01 (9971)','ET02'=>'ET02 (9962)', 'ET03'=>'ET03 (9974)'), Input::old('dt'), array('class' => 'form-control')) }}</td>
+											<td >{{ Form::text('deviceid'.$i, Input::old('deviceid'), array('id' => 'deviceid'.$i,'required', 'class' => 'form-control')) }}</td>
+											<td>{{ Form::select('deviceidtype' .$i, array( 'GT06N' => 'GT06N (9964)','GT300' => 'GT300 (9961)','TK103' => 'TK103 (9968)', 'TK99' => 'TK99 (9978)', 'FM1202' => 'FM1202 (9975)','FM1120' => 'FM1120 (9975)', 'TR02' => 'TR02 (9965)', 'GT03A' => 'GT03A (9969)', 'VTRACK2' => 'VTRACK2 (9964)','ET01'=>'ET01 (9971)','ET02'=>'ET02 (9962)', 'ET03'=>'ET03 (9974)'), Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
 											<td>{{ Form::text('vehicleId'.$i, Input::old('vehicleId'), array('id' => 'vehicleId'.$i, 'class' => 'form-control')) }}</td>
 											<td><a id="refData{{$i}}" class="btn btn-sm btn-success" >Details</a></td>
 										</tr>
@@ -251,9 +251,9 @@
 														<td class="col-md-2">{{ Form::text('email'.$i, Input::old('email'), array('class' => 'form-control','placeholder'=>'Alert Email')) }}</td>
 														<td class="col-md-2">{{ Form::text('altShortName'.$i, Input::old('altShortName'), array('class' => 'form-control','placeholder'=>'Alternate Short Name')) }}</td></td>
 														<td class="col-md-2">{{ Form::select('isRfid'.$i,  array( 'no' => 'Rfid No','yes' => 'Rfid Yes' ), Input::old('isRfid'), array('class' => 'form-control')) }}</td>
-														<td class="col-md-2">{{ Form::select('licence'.$i,  array($Licence), Input::old('licence'), array('class' => 'form-control')) }}</td>
-														<td class="col-md-2">{{ Form::select('Payment_Mode'.$i,  array($Payment_Mode), Input::old('Payment_Mode'), array('class' => 'form-control')) }}</td>
-														<td class="col-md-2">{{ Form::text('descr'.$i, Input::old('descr'), array('class' => 'form-control','placeholder'=>'Description')) }}</td>
+														<td class="col-md-2">{{ Form::select('Licence'.$i,  array($Licence), Input::old('Licence'), array('class' => 'form-control')) }}</td>
+														<!-- <td class="col-md-2">{{ Form::select('Payment_Mode'.$i,  array($Payment_Mode), Input::old('Payment_Mode'), array('class' => 'form-control')) }}</td>
+														<td class="col-md-2">{{ Form::text('descr'.$i, Input::old('descr'), array('class' => 'form-control','placeholder'=>'Description')) }}</td> -->
 													</tr>
 												</table>							
 											</td>
