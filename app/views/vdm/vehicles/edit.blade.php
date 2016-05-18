@@ -85,6 +85,12 @@
 						{{ Form::text('descriptionStatus', $refData['descriptionStatus'], array('class' => 'form-control')) }}
 						
 					</div>
+					<br/>
+					<div class="form-group">
+						{{ Form::label('ipAddress', 'IP Address') }}
+						{{ Form::text('ipAddress', $refData['ipAddress'], array('class' => 'form-control')) }}
+						
+					</div>
 										</div>
 
 							<div class="col-md-5">
@@ -165,6 +171,12 @@
 								{{ Form::label('Payment_Mode1', 'Payment Mode') }}
 								{{ Form::select('Payment_Mode1', array($Payment_Mode), $refData['Payment_Mode'],array('class' => 'form-control')) }} 
 							</div>
+							<br/>
+					<div class="form-group">
+						{{ Form::label('portNo', 'Port Number') }}
+						{{ Form::text('portNo', $refData['portNo'], array('class' => 'form-control')) }}
+						
+					</div>
 
 
 

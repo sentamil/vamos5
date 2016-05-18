@@ -580,7 +580,9 @@ public function edit($id) {
         $refData= array_add($refData, 'shortName', 'nill');
         $refData= array_add($refData, 'Licence', '');
         $refData= array_add($refData, 'Payment_Mode', '');
-         $refData= array_add($refData, 'descriptionStatus', '');
+        $refData= array_add($refData, 'descriptionStatus', '');
+        $refData= array_add($refData, 'ipAddress', '');
+        $refData= array_add($refData, 'portNo', '');
 //            $refData= array_add($refData, 'fuelType', 'digital');
         $refDataFromDB = json_decode ( $details, true );
 
@@ -890,6 +892,8 @@ public function update($id) {
         $altShortName=Input::get ('altShortName');
         $fuelType=Input::get ('fuelType');
         $isRfid=Input::get ('isRfid');
+        $ipAddress=Input::get ('ipAddress');
+        $portNo=Input::get ('portNo');
         $redis = Redis::connection ();
         $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
 
@@ -959,6 +963,8 @@ else if(Session::get('cur')=='admin')
             'Licence'=>$Licence,
             'Payment_Mode'=>$Payment_Mode,
             'descriptionStatus'=>$descriptionStatus,
+            'ipAddress'=>$ipAddress,
+            'portNo'=>$portNo,
             );
 
 try{

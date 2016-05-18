@@ -62,6 +62,7 @@ class DatabaseConfig extends \BaseController {
 				$table->text('belongs_to')->after('status');
 				$table->text('device_id')->after('belongs_to');
 				$table->dateTime('renewal_date')->after('device_id');
+				$table->text('orgId')->after('renewal_date');
 				$table->integer('payment_mode_id');
 				//$table->foreign('payment_mode_id')->references('payment_mode_id')->on('Payment_Mode');
 				$table->integer('licence_id');
