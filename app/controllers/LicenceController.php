@@ -280,20 +280,20 @@ public function getYear()
 	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',3)->whereIn('licence_id', array($type1, $type2))->where('renewal_date', '<=', $dateT->getDateT(59,59,23,15,$month+5,$year))->count();
 	            }
 	            $yearfly=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',4)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$month-1,$year-1), $dateT->getDateT(59,59,23,15,$month,$year-1)))->count();
+	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',4)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,0,$month,$year-1), $dateT->getDateT(0,0,0,0,$month+1,$year-1)))->count();
 	            // $yearfly=DB::table('Vehicle_details')
 	            // ->where('fcode', $fcode)->where('payment_mode_id',3)->where('sold_date', '<=', $dateT->getDateT(59,59,23,15,$month+12,$year))->count();
 
 	            $yearfly2=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',5)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$month-1,$year-2), $dateT->getDateT(59,59,23,15,$month,$year-2)))->count();
+	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',5)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,0,$month,$year-2), $dateT->getDateT(0,0,0,0,$month+1,$year-2)))->count();
 
 	             $yearfly3=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',6)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$month-1,$year-3), $dateT->getDateT(59,59,23,15,$month,$year-3)))->count();
+	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',6)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,0,$month,$year-3), $dateT->getDateT(0,0,0,0,$month+1,$year-3)))->count();
 
 	             $yearfly4=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',7)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$month-1,$year-4), $dateT->getDateT(59,59,23,15,$month,$year-4)))->count();
+	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',7)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,0,$month,$year-4), $dateT->getDateT(0,0,0,0,$month+1,$year-4)))->count();
 	            $yearfly5=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',8)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$month-1,$year-5), $dateT->getDateT(59,59,23,15,$month,$year-5)))->count();
+	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',8)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,0,$month,$year-5), $dateT->getDateT(0,0,0,0,$month+1,$year-5)))->count();
 	            // $yearfly2=DB::table('Vehicle_details')
 	            // ->where('fcode', $fcode)->where('payment_mode_id',12)->where('sold_date', '<=', $dateT->getDateT(59,59,23,15,$month+(12*2),$year))->count();
 
@@ -377,26 +377,26 @@ log::info($perQuater.'----'.$perQuater.'----'.$mode.'-----');
 			else if($values[2]==4)
 			{
 				$details=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->where('belongs_to', $values[4])->where('payment_mode_id',4)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$values[0]-1,$values[1]-1), $dateT->getDateT(59,59,23,15,$values[0],$values[1]-1)))->get();
+	            ->where('fcode', $fcode)->where('belongs_to', $values[4])->where('payment_mode_id',4)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,0,$values[0],$values[1]-1), $dateT->getDateT(0,0,0,0,$values[0]+1,$values[1]-1)))->get();
 			}
 			else if($values[2]==5)
 			{
 				$details=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->where('belongs_to', $values[4])->where('payment_mode_id',5)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$values[0]-1,$values[1]-2), $dateT->getDateT(59,59,23,15,$values[0],$values[1]-2)))->get();
+	            ->where('fcode', $fcode)->where('belongs_to', $values[4])->where('payment_mode_id',5)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,0,$values[0],$values[1]-2), $dateT->getDateT(0,0,0,0,$values[0]+1,$values[1]-2)))->get();
 			}else if($values[2]==6)
 			{
 				$details=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->where('belongs_to', $values[4])->where('payment_mode_id',6)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$values[0]-1,$values[1]-3), $dateT->getDateT(59,59,23,15,$values[0],$values[1]-3)))->get();
+	            ->where('fcode', $fcode)->where('belongs_to', $values[4])->where('payment_mode_id',6)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,0,$values[0],$values[1]-3), $dateT->getDateT(0,0,0,0,$values[0]+1,$values[1]-3)))->get();
 			}
 			else if($values[2]==7)
 			{
 				$details=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->where('belongs_to', $values[4])->where('payment_mode_id',7)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$values[0]-1,$values[1]-4), $dateT->getDateT(59,59,23,15,$values[0],$values[1]-4)))->get();
+	            ->where('fcode', $fcode)->where('belongs_to', $values[4])->where('payment_mode_id',7)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,0,$values[0],$values[1]-4), $dateT->getDateT(0,0,0,0,$values[0]+1,$values[1]-4)))->get();
 			}
 			else if($values[2]==8)
 			{
 				$details=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->where('belongs_to', $values[4])->where('payment_mode_id',8)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$values[0]-1,$values[1]-5), $dateT->getDateT(59,59,23,15,$values[0],$values[1]-5)))->get();
+	            ->where('fcode', $fcode)->where('belongs_to', $values[4])->where('payment_mode_id',8)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,0,$values[0],$values[1]-5), $dateT->getDateT(0,0,0,0,$values[0]+1,$values[1]-5)))->get();
 			}
 
 

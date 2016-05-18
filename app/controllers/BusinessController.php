@@ -475,7 +475,7 @@ public function adddevice() {
 			if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 			}
-
+			dd(Input::get());
 			$username = Auth::user ()->username;
 			$redis = Redis::connection ();
 			$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -650,6 +650,8 @@ if($type=='Sale' && $type1!=='new')
 	$orgId=Input::get ( 'orgId');
 }
 
+$dbarray=array();
+$dbtemp=0;
 for($i =1;$i<=$numberofdevice;$i++)
 {
 	$deviceid = Input::get ( 'deviceid'.$i);
@@ -657,7 +659,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 	
 	$vehicleId=!empty($vehicleId) ? $vehicleId : 'gpsvts_'.substr($deviceid, -5);
 	//isset($vehicleRefData['shortName'])?$vehicleRefData['shortName']:'nill';
-	log::info( '--------number of  name::----------'.$vehicleId);
+	log::info( Input::get('deviceidtype50').'--------number of  name::----------'.$i);
 	$deviceid=str_replace(' ', '', $deviceid);
 	$vehicleId=str_replace(' ', '', $vehicleId);
 	$deviceidtype=Input::get('deviceidtype'.$i);
@@ -699,7 +701,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$gpsSimNo=Input::get ( 'gpsSimNo'.$i);	
 	$gpsSimNo=!empty($gpsSimNo) ? $gpsSimNo : '0123456789';
 
-	$Licence=Input::get ( 'Licence'.$i);	
+	$Licence=Input::get ( 'licence'.$i);	
 	$Licence=!empty($Licence) ? $Licence : 'Advance';
 	$descriptionStatus=Input::get ( 'descr'.$i);	
 	$descriptionStatus=!empty($descriptionStatus) ? $descriptionStatus : '';
@@ -710,21 +712,20 @@ for($i =1;$i<=$numberofdevice;$i++)
 
 $licence_id = DB::select('select licence_id from Licence where type = :type', ['type' => $Licence]);
 $payment_mode_id = DB::select('select payment_mode_id from Payment_Mode where type = :type', ['type' => $Payment_Mode]);
-		log::info( $licence_id[0]->licence_id.'-------- av  in  ::----------'.$payment_mode_id[0]->payment_mode_id);
+		
 		
 $licence_id=$licence_id[0]->licence_id;
 $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
-	
+	log::info( $deviceid.'-------- av  in  ::----------'.$deviceidtype.' '.$licence_id.' '.$payment_mode_id);
 	if($deviceid!==null && $deviceidtype!==null && $licence_id!==null && $payment_mode_id!==null)
 	{
+		log::info('------temp-----a----- ');
 		$dev=$redis->hget('H_Device_Cpy_Map',$deviceid);
 		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 		$back=$redis->hget($vehicleDeviceMapId, $deviceid);
 		$back = $redis->sismember('S_Vehicles_' . $fcode, $vehicleId);
 		if($back==1)
-		{
-			log::info('------temp-----a----- ');
-			
+		{	
 			$vehicleIdarray=array_add($vehicleIdarray,$vehicleId,$vehicleId);
 		}
 		if(Session::get('cur')=='dealer')
@@ -828,7 +829,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 								'descriptionStatus'=>$descriptionStatus,
 							);
 						$refDataJson = json_encode ( $refDataArr );
-						log::info('json data --->'.$refDataJson);
+						//log::info('json data --->'.$refDataJson);
 						$expireData=$redis->hget ( 'H_Expire_' . $fcode, $new_date2);
 						$redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
 						$cpyDeviceSet = 'S_Device_' . $fcode;
@@ -874,11 +875,28 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 					$redis->srem('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
 				}		
 				$details=$redis->hget('H_Organisations_'.$fcode,$organizationId);
-				Log::info($details.'before '.$ownerShip);
+				//Log::info($details.'before '.$ownerShip);
+
+
+
 				if($type=='Sale')
 				{
-					DB::table('Vehicle_details')->insert(
-					    array('vehicle_id' => $vehicleId, 
+					// DB::table('Vehicle_details')->insert(
+					//     array('vehicle_id' => $vehicleId, 
+					//     	'fcode' => $fcode,
+					//     	'sold_date' =>Carbon::now(),
+					//     	'renewal_date'=>Carbon::now(),
+					//     	'sold_time_stamp' => round(microtime(true) * 1000),
+					//     	'month' => date('m'),
+					//     	'year' => date('Y'),
+					//     	'payment_mode_id' => $payment_mode_id,
+					//     	'licence_id' => $licence_id,
+					//     	'belongs_to'=>'OWN',
+					//     	'device_id'=>$deviceid,
+					//     	'status'=>$descriptionStatus)
+					// );
+
+					$dbarray[$dbtemp++]=array('vehicle_id' => $vehicleId, 
 					    	'fcode' => $fcode,
 					    	'sold_date' =>Carbon::now(),
 					    	'renewal_date'=>Carbon::now(),
@@ -889,8 +907,8 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 					    	'licence_id' => $licence_id,
 					    	'belongs_to'=>'OWN',
 					    	'device_id'=>$deviceid,
-					    	'status'=>$descriptionStatus)
-					);
+					    	'status'=>$descriptionStatus,
+					    	'orgId'=>$orgId);
 
 					if($details==null)
 					{
@@ -983,6 +1001,16 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 
 
 }
+log::info('--------------count($dbarray--------------'.count($dbarray));
+if(count($dbarray)!==0)
+{
+	DB::table('Vehicle_details')->insert(
+					    $dbarray
+					);
+}
+
+
+
 
 if($type=='Sale' )
 {
@@ -1247,7 +1275,8 @@ return Redirect::to ( 'Business' )->withErrors($error);
 			if($deviceList!=null)
 			{
 				$temp=0;
-				
+				$dbarray=array();
+				$dbtemp=0;
 					foreach($deviceList as $device) {
 					log::info( '------ownership---------- '.$ownerShip);
 					$myArray = explode(',', $device);
@@ -1280,8 +1309,21 @@ return Redirect::to ( 'Business' )->withErrors($error);
 				$payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 try{
 
-	DB::table('Vehicle_details')->insert(
-					    array('vehicle_id' => $vehicleId, 
+	// DB::table('Vehicle_details')->insert(
+	// 				    array('vehicle_id' => $vehicleId, 
+	// 				    	'fcode' => $fcode,
+	// 				    	'sold_date' =>Carbon::now(),
+	// 				    	'renewal_date'=>Carbon::now(),
+	// 				    	'sold_time_stamp' => round(microtime(true) * 1000),
+	// 				    	'month' => date('m'),
+	// 				    	'year' => date('Y'),
+	// 				    	'payment_mode_id' => $payment_mode_id,
+	// 				    	'licence_id' => $licence_id,
+	// 				    	'belongs_to'=>$username,
+	// 				    	'device_id'=>$deviceId,
+	// 				    	'status'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'')
+	// 				);
+$dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId, 
 					    	'fcode' => $fcode,
 					    	'sold_date' =>Carbon::now(),
 					    	'renewal_date'=>Carbon::now(),
@@ -1292,9 +1334,8 @@ try{
 					    	'licence_id' => $licence_id,
 					    	'belongs_to'=>$username,
 					    	'device_id'=>$deviceId,
-					    	'status'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'')
-					);
-
+					    	'orgId'=>$orgId,
+					    	'status'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'');
 
         						// if($temOrg=='Default' || $temOrg=='default')
         }catch(\Exception $e)
@@ -1411,6 +1452,14 @@ try{
 					$temp++;
 				}
 				
+log::info('-------------- count($dbarray)--------------'.count($dbarray));
+if(count($dbarray)!==0)
+{
+	DB::table('Vehicle_details')->insert(
+					    $dbarray
+					);
+}
+
 					if($type=='Sale' )
 					{
 						log::info( '------sale-2--------- '.$ownerShip);
