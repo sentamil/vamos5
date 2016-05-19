@@ -41,7 +41,7 @@
 					        
 							@if(Session::get('vCol')=='2')
 							<td>{{ array_get($deviceModelList, $value)}}</td>
-						 <td>{{ array_get($expiredList, $value)}}</td>
+						<!--  <td>{{ array_get($expiredList, $value)}}</td> -->
 					        <td>{{ array_get($mobileNoList, $value)}}</td> 	
 							@endif 							
 							@if(Session::get('vCol')=='1')

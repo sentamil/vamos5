@@ -66,9 +66,29 @@
 									{{ Form::label('date', 'Date') }}
 									{{ Form::text('date', $refData['date'], array('class' => 'form-control','disabled' => 'disabled')) }}
 								</div>
-								<div class="form-group">
+								<!-- <div class="form-group">
 									{{ Form::label('expiredPeriod', 'Expired Period') }}
 									{{ Form::text('expiredPeriod', $refData['expiredPeriod'], array('class' => 'form-control','disabled' => 'disabled')) }}
+								</div> -->
+
+
+								<div class="form-group">
+									{{ Form::label('analog1', 'Analog input 1') }}
+									{{ Form::select('analog1', array('no' => 'No','fuel' => 'Fuel','load' => 'Load' ), $refData['analog1'],array('class' => 'form-control')) }}
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('digital1', 'Digital input 1') }}
+									{{ Form::select('digital1', array('no' => 'No','ac' => 'Ac','hire' => 'Hire','door' => 'Door' ), $refData['digital1'],array('class' => 'form-control')) }}
+								</div>
+
+								<div class="form-group">
+									{{ Form::label('serial1', 'Serial input 1') }}
+									{{ Form::select('serial1', array('no' => 'No','temperature' => 'Temperature','rfid' => 'Rfid','camera' => 'Camera' ), $refData['serial1'],array('class' => 'form-control')) }}
+								</div>
+								<div class="form-group">
+									{{ Form::label('digitalout', 'Digital output') }}
+									{{ Form::select('digitalout', array('no' => 'No','yes' => 'Yes'), $refData['digitalout'],array('class' => 'form-control')) }}
 								</div>
 								<div>
 									{{ Form::label('fuel', 'Fuel') }}
@@ -85,6 +105,7 @@
 						{{ Form::text('descriptionStatus', $refData['descriptionStatus'], array('class' => 'form-control')) }}
 						
 					</div>
+
 					<br/>
 					<div class="form-group">
 						{{ Form::label('ipAddress', 'IP Address') }}
@@ -158,11 +179,25 @@
 									{{ Form::text('paymentType', $refData['paymentType'], array('class' => 'form-control','disabled' => 'disabled')) }}
 								</div>
 								<div class="form-group">
+									{{ Form::label('analog2', 'Analog input 2') }}
+									{{ Form::select('analog2', array('no' => 'No','fuel' => 'Fuel','load' => 'Load' ), $refData['analog2'],array('class' => 'form-control')) }}
+								</div>
+								<div class="form-group">
+									{{ Form::label('digital2', 'Digital input 2') }}
+									{{ Form::select('digital2', array('no' => 'No','ac' => 'Ac','hire' => 'Hire','door' => 'Door' ), $refData['digital2'],array('class' => 'form-control')) }}
+								</div>
+								<div class="form-group">
+									{{ Form::label('serial2', 'Serial input 2') }}
+									{{ Form::select('serial2', array('no' => 'No','temperature' => 'Temperature','rfid' => 'Rfid','camera' => 'Camera' ), $refData['serial2'],array('class' => 'form-control')) }}
+								</div>
+
+
+								<div class="form-group">
 									{{ Form::label('fuelTyp', 'Fuel Type') }}<br>
 
 									{{ Form::select('fuelType', array('digital' => 'Digital','analog' => 'Analog'), isset($refData['fuelType'])?$refData['fuelType']:'Digital', array('class' => 'form-control')) }} 
 								</div>
-
+								
 					<div class="form-group">
 								{{ Form::label('License1', 'Licence') }}
 								{{ Form::select('Licence1', array($Licence), $refData['Licence'],array('class' => 'form-control')) }} 

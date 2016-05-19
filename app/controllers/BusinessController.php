@@ -701,7 +701,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$gpsSimNo=Input::get ( 'gpsSimNo'.$i);	
 	$gpsSimNo=!empty($gpsSimNo) ? $gpsSimNo : '0123456789';
 
-	$Licence=Input::get ( 'licence'.$i);	
+	$Licence=Input::get ( 'Licence'.$i);	
 	$Licence=!empty($Licence) ? $Licence : 'Advance';
 	$descriptionStatus=Input::get ( 'descr'.$i);	
 	$descriptionStatus=!empty($descriptionStatus) ? $descriptionStatus : '';
@@ -1004,9 +1004,13 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 log::info('--------------count($dbarray--------------'.count($dbarray));
 if(count($dbarray)!==0)
 {
+	
+	log::info('--------------before--------------'.time());
 	DB::table('Vehicle_details')->insert(
 					    $dbarray
 					);
+
+	log::info('--------------after--------------'.time());
 }
 
 

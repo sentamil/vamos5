@@ -251,8 +251,8 @@
 														<td class="col-md-2">{{ Form::text('email'.$i, Input::old('email'), array('class' => 'form-control','placeholder'=>'Alert Email')) }}</td>
 														<td class="col-md-2">{{ Form::text('altShortName'.$i, Input::old('altShortName'), array('class' => 'form-control','placeholder'=>'Alternate Short Name')) }}</td></td>
 														<td class="col-md-2">{{ Form::select('isRfid'.$i,  array( 'no' => 'Rfid No','yes' => 'Rfid Yes' ), Input::old('isRfid'), array('class' => 'form-control')) }}</td>
-														<td class="col-md-2">{{ Form::select('Licence'.$i,  array($Licence), Input::old('Licence'), array('class' => 'form-control')) }}</td>
-														<td class="col-md-2">{{ Form::select('Payment_Mode'.$i,  array($Payment_Mode), Input::old('Payment_Mode'), array('class' => 'form-control')) }}</td>
+														<td class="col-md-2">{{ Form::select('Licence'.$i,  array($Licence), 'Basic', array('class' => 'form-control')) }}</td>
+														<td class="col-md-2">{{ Form::select('Payment_Mode'.$i,  array($Payment_Mode), 'Yearly', array('class' => 'form-control')) }}</td>
 														<td class="col-md-2">{{ Form::text('descr'.$i, Input::old('descr'), array('class' => 'form-control','placeholder'=>'Description')) }}</td>
 													</tr>
 												</table>							
