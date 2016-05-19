@@ -234,14 +234,19 @@ public function getYear()
 			$yearT =$year ;
 			$modeT=$mode;
 			$typeT=$type;
+			if(Session::get('cur')=='dealer')
+	        {
+	        	$own=$username;
+	        }
 			$ownT=$own;
+			 
 			//DashBoardController::getDateT(59,59,23,15,$month,$year);
 			$dateT = new DashBoardController;
 		
 
 
-
-
+			//$daylast=new DateTime('last day of this month'); 
+			
 
 			$preMonthly=0;$monthly=0;
 			$perQuater=0;$quaterly=0;
@@ -259,6 +264,8 @@ public function getYear()
 				$type1=2;
 				$type2=2;
 			}
+
+
 				
 				$preMonthly=DB::table('Vehicle_details')
 	            ->where('fcode', $fcode)->where('belongs_to', $own)->where('payment_mode_id',1)->whereIn('licence_id', array($type1, $type2))->whereBetween('renewal_date', array($dateT->getDateT(0,0,0,16,$month-1,$year), $dateT->getDateT(59,59,23,15,$month,$year)))->count();
@@ -359,6 +366,10 @@ log::info($perQuater.'----'.$perQuater.'----'.$mode.'-----');
 				$type2=2;
 			}
 		$details=null;
+
+
+	
+
 			if($values[2]==1)
 			{
 				 $details=DB::table('Vehicle_details')
@@ -401,12 +412,17 @@ log::info($perQuater.'----'.$perQuater.'----'.$mode.'-----');
 
 
 		log::info($value.'---success ViewDevices---'.count($details));
-			// foreach ($details as $tem) {
-			// 	log::info('---success ViewDevices---'.$tem->vehicle_id);
+			$lastdue=strtotime($dateT->getDateT(59,59,23,0,date('m')+2,date('Y')));
+
+			$predue=strtotime($dateT->getDateT(59,59,23,0,$values[0],$values[1]));
+			$lastdue=$lastdue-$predue;
+
 		$i=0;	// }
-		if($values[2]==8 || $values[2]==7 || $values[2]==6 || $values[2]==5 || $values[2]==4)
+		if(($values[2]==8 || $values[2]==7 || $values[2]==6 || $values[2]==5 || $values[2]==4 )&& ($lastdue)>0)
 		{
 			$i=1;
+
+			log::info($lastdue.'----daylast--------'.$predue.' '.$values[0].' '.$values[1]);
 		}
 		$value=(string)$value;
 			return View::make ( 'vdm.licence.deviceView' )->with ( 'details', $details)->with('i',$i)->with('valueT',$value);
@@ -428,18 +444,108 @@ public function update()
         $username = Auth::user ()->username;
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-        $temp=array();
+        $temp="'";
         $i=0;
         if(count($vehicles)>0){
         	log::info('---success ViewDevices---'.$value);
+        	$payee=4;
 		foreach ($vehicles as $key => $val) {
-			$temp[$i++]=$val;
+		
+			$valT=explode(';', $val);
+
+			if($i==0)
+			{
+				$payee=$valT[1];
+				$temp= $temp.$valT[0]."'";
+			}
+			else
+			{
+				$temp= $temp.",'".$valT[0]."'";
+			}
 			
+			$i++;
+		}
+$Pmode=4;
+		switch ($payee) {
+			case '4':
+				$Pmode='"+1 year"';
+				break;
+			case '5':
+				$Pmode='"+2 year"';
+				break;
+			case '6':
+				$Pmode='"+3 year"';
+				break;
+			case '7':
+				$Pmode='"+4 year"';
+				break;
+			case '7':
+				$Pmode='"+5 year"';
+				break;
+			
+			default:
+				# code...
+				break;
 		}
 
+log::info('---success ViewDevices---'.$temp);
+$conn=DB::connection()->getPdo();
 
-	$details=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date' => Carbon::now()]);
+$sql = 'update Vehicle_details set renewal_date=(SELECT date (Vehicle_details1.renewal_date,'.$Pmode.') as date FROM Vehicle_details as Vehicle_details1  where vehicle_id=Vehicle_details.vehicle_id) where vehicle_id in ('.$temp.');
+';
+
+
+log::info('---success ViewDevices---'.$sql);
+$stmt = $conn->prepare($sql);
+
+
+$stmt->execute();
+
+    // echo a message to say the UPDATE succeeded
+
+log::info('Record updated successfully'.$stmt->rowCount());
+//     echo 
+
+// if ($conn->query($sql) === TRUE) {
+//     log::info('Record updated successfully');
+// } else {
+//     log::info('Error updating record: '. $conn->error);
+// }
+	// $details=DB::table('Vehicle_details')
+	//             ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date' => Carbon::now()]);
+
+
+	             // update Vehicle_details set renewal_date=(SELECT date (Vehicle_details1.renewal_date,'+1 day') as date FROM Vehicle_details as Vehicle_details1  where vehicle_id=Vehicle_details.vehicle_id) where vehicle_id in ('gpsvts_7150','gpsvts_gi99','gpsvts_gi98');
+
+
+// $details=DB::table('Vehicle_details')
+// 	            ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date=(SELECT date (Vehicle_details1.renewal_date,''+1 day'') as date FROM Vehicle_details as Vehicle_details1  where vehicle_id='$temp'')]);
+// $details=DB::table('Vehicle_details')
+// 	            ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date'=>'SELECT date (Vehicle_details1.renewal_date,+1 day) as date FROM Vehicle_details as Vehicle_details1  where vehicle_id=Vehicle_details.vehicle_id']);
+
+// $val=DB::table('Vehicle_details as Vehicle_details1')
+// ->select('date (Vehicle_details1.renewal_date,+1 day)')->get();
+// $val = DB::table('Vehicle_details')->where('DATE_ADD(renewal_date, INTERVAL 2 day)')->get();
+
+// dd($val);
+// log::info('---success first1---'.count($val));
+// foreach ($val as $key => $v) {
+// 	log::info('---success first2---'.$key);
+// 	log::info('---success first---'.$v->day);
+// }
+
+
+// 	            $details=DB::table('Vehicle_details')
+// 	            ->where('fcode', $fcode)->whereIn('vehicle_id',$temp)->update(['renewal_date'=>
+// DB::table('Vehicle_details as Vehicle_details1')
+// ->select('date (Vehicle_details1.renewal_date,+1 day) as date')->get()->date]);
+
+	            	// 'SELECT date (Vehicle_details1.renewal_date,+1 day) as date FROM Vehicle_details as Vehicle_details1  where vehicle_id=Vehicle_details.vehicle_id']);
+
+		// SELECT date (Vehicle_details1.renewal_date,'+1 day') as date FROM Vehicle_details as Vehicle_details1 where vehicle_id=
+
+
+	            // update Vehicle_details set renewal_date=(SELECT date (Vehicle_details1.renewal_date,'+1 day') as date FROM Vehicle_details as Vehicle_details1  where vehicle_id='gpsvts_7150') where vehicle_id='gpsvts_7150';
 	            return Redirect::to ( 'Licence' )->withErrors ( 'Successfully renewaled' );
 }
 else

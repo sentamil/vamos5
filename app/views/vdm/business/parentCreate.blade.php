@@ -7,7 +7,7 @@
     		<div class="col-lg-12">
         		<div class="hpanel">
                		 <div class="panel-heading">
-                  		<h4><b><font> Add jjjDevice</font></b></h4>
+                  		<h4><b><font> Add Device</font></b></h4>
                 	</div>
                		 <div class="panel-body">
 						{{ Form::open(array('url' => 'Business/adddevice')) }}
@@ -251,9 +251,9 @@
 														<td class="col-md-2">{{ Form::text('email'.$i, Input::old('email'), array('class' => 'form-control','placeholder'=>'Alert Email')) }}</td>
 														<td class="col-md-2">{{ Form::text('altShortName'.$i, Input::old('altShortName'), array('class' => 'form-control','placeholder'=>'Alternate Short Name')) }}</td></td>
 														<td class="col-md-2">{{ Form::select('isRfid'.$i,  array( 'no' => 'Rfid No','yes' => 'Rfid Yes' ), Input::old('isRfid'), array('class' => 'form-control')) }}</td>
-														<td class="col-md-2">{{ Form::select('Licence'.$i,  array($Licence), Input::old('Licence'), array('class' => 'form-control')) }}</td>
-														<!-- <td class="col-md-2">{{ Form::select('Payment_Mode'.$i,  array($Payment_Mode), Input::old('Payment_Mode'), array('class' => 'form-control')) }}</td>
-														<td class="col-md-2">{{ Form::text('descr'.$i, Input::old('descr'), array('class' => 'form-control','placeholder'=>'Description')) }}</td> -->
+														<td class="col-md-2">{{ Form::select('Licence'.$i,  array($Licence), 'Basic', array('class' => 'form-control')) }}</td>
+														<td class="col-md-2">{{ Form::select('Payment_Mode'.$i,  array($Payment_Mode), 'Yearly', array('class' => 'form-control')) }}</td>
+														<td class="col-md-2">{{ Form::text('descr'.$i, Input::old('descr'), array('class' => 'form-control','placeholder'=>'Description')) }}</td>
 													</tr>
 												</table>							
 											</td>

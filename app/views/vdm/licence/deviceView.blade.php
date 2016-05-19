@@ -37,10 +37,10 @@
 												<th style="text-align: center;">ID</th>
 												<th style="text-align: center;">Vehicle ID</th>
 												<th style="text-align: center;">Device ID</th>
-												<th style="text-align: center;">Belongs To</th>
+												<th style="text-align: center;">Org Id</th>
 												<th style="text-align: center;">Status</th>
 												<th style="text-align: center;">On Boarded Date</th>
-												<th style="text-align: center;">Renewal Date</th>
+												<th style="text-align: center;">Renewed Date</th>
 												
 											</tr>
 										</thead>
@@ -48,11 +48,11 @@
 											@if(isset($details))
 											@foreach($details as $key => $val)
 											<tr style="text-align: center;">
-											@if($i=='1')<td>{{ Form::checkbox('vehicleList[]', $val->vehicle_id , null, ['class' => 'field']) }}</td>@endif 
+											@if($i=='1')<td>{{ Form::checkbox('vehicleList[]', $val->vehicle_id.';'.$val->payment_mode_id , null, ['class' => 'field']) }}</td>@endif 
 												<td>{{ ++$key }}</td>
 												<td class="vehiclelist">{{ $val->vehicle_id }}</td>
 												<td>{{ $val->device_id  }}</td>
-												<td>{{ $val->belongs_to  }}</td>
+												<td>{{ $val->orgId  }}</td>
 												<td>{{ $val->status }}</td>
 												<td>{{ $val->sold_date }}</td>
 												<td>{{ $val->renewal_date }}</td>
@@ -75,6 +75,7 @@
 								</div>
 							</div> 
 						</div>
+		
 						@if($i=='1')
 						{{ Form::hidden('tempVal', $valueT) }}
             {{ Form::submit('renewal', array('class' => 'btn btn-sm btn-info')) }}

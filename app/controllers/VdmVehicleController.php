@@ -583,6 +583,18 @@ public function edit($id) {
         $refData= array_add($refData, 'descriptionStatus', '');
         $refData= array_add($refData, 'ipAddress', '');
         $refData= array_add($refData, 'portNo', '');
+        $refData= array_add($refData, 'analog1', '');
+        $refData= array_add($refData, 'analog2', '');
+        $refData= array_add($refData, 'digital1', '');
+        $refData= array_add($refData, 'digital2', '');
+        $refData= array_add($refData, 'serial1', '');
+        $refData= array_add($refData, 'serial2', '');
+         $refData= array_add($refData, 'digitalout', '');
+
+        
+
+        
+        
 //            $refData= array_add($refData, 'fuelType', 'digital');
         $refDataFromDB = json_decode ( $details, true );
 
@@ -894,6 +906,15 @@ public function update($id) {
         $isRfid=Input::get ('isRfid');
         $ipAddress=Input::get ('ipAddress');
         $portNo=Input::get ('portNo');
+        $analog1=Input::get ('analog1');
+        $analog2=Input::get ('analog2');
+
+         $digital1=Input::get ('digital1');
+        $digital2=Input::get ('digital2');
+         $serial1=Input::get ('serial1');
+        $serial2=Input::get ('serial2');
+         $digitalout=Input::get ('digitalout');
+
         $redis = Redis::connection ();
         $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
 
@@ -965,6 +986,13 @@ else if(Session::get('cur')=='admin')
             'descriptionStatus'=>$descriptionStatus,
             'ipAddress'=>$ipAddress,
             'portNo'=>$portNo,
+            'analog1'=>$analog1,
+            'analog2'=>$analog2,
+            'digital1'=>$digital1,
+            'digital2'=>$digital2,
+            'serial1'=>$serial1,
+            'serial2'=>$serial2,
+            'digitalout'=>$digitalout,
             );
 
 try{
@@ -979,6 +1007,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
             ->where('fcode', $fcode)
             ->update(array('licence_id' => $licence_id,
                 'payment_mode_id' => $payment_mode_id,
+                'status'=>$descriptionStatus,
                 ));
 
 }catch(\Exception $e)
