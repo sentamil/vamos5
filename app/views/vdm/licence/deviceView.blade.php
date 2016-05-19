@@ -75,7 +75,7 @@
 								</div>
 							</div> 
 						</div>
-						{{ Form::label('tempVal', $i) }}
+		
 						@if($i=='1')
 						{{ Form::hidden('tempVal', $valueT) }}
             {{ Form::submit('renewal', array('class' => 'btn btn-sm btn-info')) }}
