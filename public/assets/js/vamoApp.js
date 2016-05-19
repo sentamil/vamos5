@@ -27,7 +27,7 @@ if(ValidateIPaddress(logo)) {
 	parser.href   =   document.location.ancestorOrigins[0];
 	logo      	  =   parser.host;
 }
-var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+var imgName= '/vamo/public/uploads/'+logo+'.small.png';
 
 $('#imagesrc').attr('src', imgName);
 var gmarkers=[];

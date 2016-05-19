@@ -36,7 +36,7 @@
             parser.href   =   document.location.ancestorOrigins[0];
             logo      =   parser.host;
           }
-          var imgName= '/vamo/public/assets/imgs/'+logo+'.png';
+          var imgName= '/vamo/public/uploads/'+logo+'.png';
           //cons
           $('#imagesrc').attr('src', imgName);
         </script>
