@@ -475,7 +475,7 @@ public function adddevice() {
 			if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 			}
-			dd(Input::get());
+			//dd(Input::get());
 			$username = Auth::user ()->username;
 			$redis = Redis::connection ();
 			$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -776,7 +776,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 
 					$v=idate("d") ;
 					$monthTemp=idate("m") ;
-					log::info($monthTemp.'------monthTemp---------- ');
+					//log::info($monthTemp.'------monthTemp---------- ');
 					$paymentmonth=11;
 					if($v>15)
 					{
@@ -790,14 +790,14 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 							$paymentmonth=0;	
 							$new_date = 'February '.(date('Y', strtotime("0 month"))+1);
 							$new_date2 = 'February'.(date('Y', strtotime("0 month"))+1);
-							log::info($new_date.'------new_date feb---------- '.$new_date2);
+							//log::info($new_date.'------new_date feb---------- '.$new_date2);
 						}
 					}
 					for ($m = 1; $m <=$paymentmonth; $m++){
 
 						$new_date = date('F Y', strtotime("$m month"));
 							$new_date2 = date('FY', strtotime("$m month"));
-							log::info($new_date.'------ownership---------- '.$m);
+							//log::info($new_date.'------ownership---------- '.$m);
 						}
 						$new_date1 = date('F d Y', strtotime("+0 month"));
 						$refDataArr = array (

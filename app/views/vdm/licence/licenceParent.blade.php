@@ -23,10 +23,14 @@
             			{{ Form::label('Licence', 'Licence:') }}
 						{{ Form::select('Licence', array($Licence), $typeT, array('class' => 'form-control')) }}
             		</div>
-            		<div class="col-md-6">
-            			{{ Form::label('own', 'Ownership:') }}
-						{{ Form::select('own', array($own), $ownT, array('class' => 'form-control')) }}
-            		</div>
+      @if(Session::get('cur')=='admin') 
+       
+                        <div class="col-md-6">
+                              {{ Form::label('own', 'Ownership:') }}
+                                    {{ Form::select('own', array($own), $ownT, array('class' => 'form-control')) }}
+                        </div>
+       @endif 
+            		
             	</div>
             	<br>
             	<div class="row">
