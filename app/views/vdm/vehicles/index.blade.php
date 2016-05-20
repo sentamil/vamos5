@@ -22,7 +22,7 @@
 							
 								@if(Session::get('vCol')=='2')
 									<th style="text-align: center;">Device Model</th>
-								<th style="text-align: center;">Expire Date</th>
+								<!-- <th style="text-align: center;">Expire Date</th> -->
 								<th style="text-align: center;">Mobile No</th>
 									@endif 
 							@if(Session::get('vCol')=='1')
