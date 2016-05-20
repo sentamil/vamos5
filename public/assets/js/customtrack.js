@@ -165,6 +165,7 @@ app.directive('map', function($http, vamoservice) {
 					scope.marker.setMap(null);
 					// scope.map.setCenter(scope.marker.getPosition());
 					
+					
 					scope.marker = new MarkerWithLabel({
 					   position: myLatlng, 
 					   map: scope.map,
