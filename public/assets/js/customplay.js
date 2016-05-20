@@ -764,8 +764,8 @@ if($scope.markerstart){
 			   map: $scope.map,
 			   icon: pinImage,
 			   labelContent: ''/*pos.data.position*/,
-			   labelAnchor: labelAnchorpos,
-			   labelClass: "labels", 
+			   // labelAnchor: labelAnchorpos,
+			   // labelClass: "labels", 
 			   labelInBackground: true
 		});
 		gmarkers.push($scope.marker);	

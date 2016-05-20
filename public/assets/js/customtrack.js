@@ -7,7 +7,7 @@ app.directive('map', function($http, vamoservice) {
            vamoservice.getDataCall(scope.url).then(function(data) {
 		   		var locs = data;
 		   		var myOptions = {
-					zoom: 16,zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
+					zoom: 13,zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
 					center: new google.maps.LatLng(locs.latitude, locs.longitude),
 					mapTypeId: google.maps.MapTypeId.ROADMAP/*,
 					styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}] */
@@ -67,22 +67,27 @@ app.directive('map', function($http, vamoservice) {
 				
 
 				function lineDraw(lat, lan){
+					// if(data.isOverSpeed=='N'){
+					// 	var strokeColorvar = '#00b3fd';
+					// }else{
+					// 	var strokeColorvar = '#ff0000';
+					// }
+					// var latlng1 = new google.maps.LatLng(lat, lan);
+					// console.log(' value -->'+ latlng1);
 					scope.slatlong = new google.maps.LatLng(lat, lan);
 					
 					scope.polyline = new google.maps.Polyline({
 								map: scope.map,
 								path: [scope.elatlong, scope.slatlong],
-								strokeColor: '#00b3fd',//'#00b3fd',
-								// strokeOpacity: 0.7,
-								strokeOpacity: 1,
-    							scale: 4,
+								strokeColor: '#00b3fd',
+								strokeOpacity: 0.7,
 								strokeWeight: 5,
 								
 								clickable: true
 						  	});
 					scope.elatlong = scope.slatlong;
 				}
-			    
+			    // scope.startlatlong = scope.endlatlong;
 
 
 
@@ -109,7 +114,7 @@ app.directive('map', function($http, vamoservice) {
 				    content: contentString
 				});
 
-				counter = 1;
+
 				google.maps.event.addListener(scope.marker, "click", function(e) {
 					infowindow.open(scope.map, scope.marker);
 				});
@@ -121,7 +126,13 @@ app.directive('map', function($http, vamoservice) {
 		  setInterval(function() {
 		   		vamoservice.getDataCall(scope.url).then(function(data) {
 		   			var locs = data;
-					$('#vehiid span').text(locs.shortName);
+					// var myOptions = {
+					// 	zoom: 13,
+					// 	center: new google.maps.LatLng(locs.latitude, locs.longitude),
+					// 	mapTypeId: google.maps.MapTypeId.ROADMAP
+	    //         	};
+            		
+            		$('#vehiid span').text(locs.shortName);
 					$('#toddist span span').text(locs.distanceCovered);
 					$('#vehstat span').text(locs.position);
 					// total = parseInt(locs.speed);
@@ -148,11 +159,21 @@ app.directive('map', function($http, vamoservice) {
 					 	var latLngBounds = new google.maps.LatLngBounds();
 						latLngBounds.extend(scope.path[scope.path.length-1]);
 					}
-					var labelAnchorpos = new google.maps.Point(10, 10);
+					var labelAnchorpos = new google.maps.Point(0, 0);
 					
 					var myLatlng = new google.maps.LatLng(data.latitude, data.longitude);
 					scope.marker.setMap(null);
 					// scope.map.setCenter(scope.marker.getPosition());
+					
+					scope.marker = new MarkerWithLabel({
+					   position: myLatlng, 
+					   map: scope.map,
+					   icon: vamoservice.iconURL(data),
+					   labelContent: data.shortName,
+					   labelAnchor: labelAnchorpos,
+					   labelClass: "labels",
+					   labelInBackground: false
+					});
 					
 					var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
 						+'<div style="width:200px; display:inline-block;"><b>Address</b> - <span>'+data.address+'</span></div></div>';
@@ -162,98 +183,29 @@ app.directive('map', function($http, vamoservice) {
 					});
 
 
+					google.maps.event.addListener(scope.marker, "click", function(e) {
+						infowindow.open(scope.map, scope.marker);
+					});
 					
-					scope.map.setCenter(myLatlng);
-					// scope.endlatlong = myLatlng;
+					scope.endlatlong = new google.maps.LatLng(data.latitude, data.longitude);
 					
 				  	if(data.isOverSpeed=='N'){
-						var strokeColorvar = '#00b3fd';//'#00b3fd';
+						var strokeColorvar = '#00b3fd';
 					}else{
 						var strokeColorvar = '#ff0000';
 					}
          			
-				  	
-			       // marker moving code
-			       var numDeltas = 100;
-				    var delay = 30; //milliseconds
-				    var i = 0;
-				    var deltaLat;
-				    var deltaLng;
-				    // var position = [scope.startlatlong.lat(), scope.startlatlong.lng()];
-				   //  var lineSymbol = {
-							// path: 'M -2,0 0,-2 2,0 0,2 z',
-						 //    strokeColor: '#F00',
-						 //    fillColor: '#F00',
-						 //    fillOpacity: 1
-							// };
-
-
-
-				    counter++;
-				    if(counter < 3){
-				    	position = [scope.startlatlong.lat(), scope.startlatlong.lng()];
-				    	// console.log(' lat lan----> '+scope.startlatlong.lat()+','+ scope.startlatlong.lng());
-				    }
-				    scope.marker = new MarkerWithLabel({
-							   // position: latlng, 
-								   map: scope.map,
-								   icon: vamoservice.iconURL(data),
-								   labelContent: data.shortName,
-								   labelAnchor: labelAnchorpos,
-								   labelClass: "labels",
-								   labelInBackground: false
-							});
-				     // scope.map.setCenter(scope.marker.getPosition());
-				     // scope.map.setCenter(latlng);
-					    function moveMarker(){
-					        position[0] += deltaLat;
-					        position[1] += deltaLng;
-					        var latlng = new google.maps.LatLng(position[0], position[1]);
-					        scope.marker.setPosition(latlng);
-					        var polyline = new google.maps.Polyline({
-					        	path: [latlng, scope.endlatlong],
-					        	strokeOpacity: 0,
-								strokeColor: strokeColorvar,
-					            strokeOpacity: 1,
-					            strokeWeight: 3,
-					            scale : 100,
-					            map: scope.map,
-					            
-					            
-					        });
-					        
-					        // scope.marker.setPosition(latlng);
-					        
-					        if(i!=numDeltas){
-					            i++;
-					            setTimeout(moveMarker, delay);
-					        }
-					    	
-					    	scope.endlatlong = latlng;
-					    }
-
-
-
-					    function transition(result){
-					        i = 0;
-					        deltaLat = (result[0] - position[0])/numDeltas;
-					        deltaLng = (result[1] - position[1])/numDeltas;
-					        moveMarker();
-					    }
-					    
-					    
-					    
-					      // google.maps.event.addListener(scope.map, 'click', function(me) {
-					            var result = [data.latitude, data.longitude];
-					            scope.marker.setPosition(new google.maps.LatLng(data.latitude, data.longitude));
-					            transition(result);
-
-					google.maps.event.addListener(scope.marker, "click", function(e) {
-						infowindow.open(scope.map, scope.marker);
-					});
-
+				  	var polyline = new google.maps.Polyline({
+			            map: scope.map,
+			            path: [scope.startlatlong, scope.endlatlong],
+			            strokeColor: strokeColorvar,
+			            strokeOpacity: 0.7,
+			            strokeWeight: 5
+			        });
+			        
+			        scope.startlatlong = scope.endlatlong;
 			        google.maps.event.trigger(document.getElementById('maploc'), "resize");
-		   		// console.log(' set setTimeout(function() {}, 10); ')
+		   		
 		   		});
 		   }, 10000);
         }
