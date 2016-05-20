@@ -1,5 +1,6 @@
 <!-- Main Wrapper -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<!-- 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
 
 <div id="wrapper">
 	<div class="content animate-panel">
@@ -35,11 +36,11 @@
 							</table>
 						</div>
 						<br>
-						<div class="row">
+						<div class="col-md-12">
 							<!-- <div class="col-md-2"></div> -->
 							<!-- <div class="col-md-1"><div id="show" style="border-radius: -25px; height:0px; margin: 0; width : 0px; padding: 0px; border: 0px">{{ Form::radio('type', 'Sale') }}</div></div>
 							<div class="col-md-2">Batch Sale</div> -->
-							<div class="col-md-2"id="p1">{{ Form::select('dealerId', array($dealerId), Input::old('	'), array('class' => 'form-control')) }}</div>
+							<div class="col-md-2"id="p1">{{ Form::select('dealerId', array($dealerId), Input::old('	'), array('class' => 'selectpicker show-menu-arrow','data-live-search '=> 'true', 'data-toggle' => 'dropdown')) }}</div>
 						<!-- 	<div class="col-md-2"></div>
 							<div class="col-md-2">{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div> -->
 						</div>
@@ -65,13 +66,13 @@
 
 						</div>
 						
-						<div class="row" id="t">
+						<div class="col-md-12" id="t">
 							<br>
 							<hr>
 							<div class="col-md-2"></div>
-							<div class="col-md-2">{{ Form::label('ExistingUser', 'Existing User') }}{{ Form::select('userIdtemp', array($userList),'select', array('id'=>'userIdtemp1','class' => 'form-control')) }}</div>
+							<div class="col-md-2">{{ Form::label('ExistingUser', 'Existing User') }}{{ Form::select('userIdtemp', array($userList),'select', array('id'=>'userIdtemp1','class' => 'selectpicker show-menu-arrow form-control', 'data-live-search '=> 'true')) }}</div>
 							<div class="col-md-2">{{ Form::label('Group', 'Group name') }}{{ Form::select('groupname', array(null),Input::old('groupname'), array('id'=>'groupname','class' => 'form-control')) }}</div>
-							<div class="col-md-2">{{ Form::label('orgId', 'org/College Name') }}{{ Form::select('orgId',  array($orgList), Input::old('orgId'), array('class' => 'form-control')) }} </div>
+							<div class="col-md-2">{{ Form::label('orgId', 'org/College Name') }}{{ Form::select('orgId',  array($orgList), Input::old('orgId'), array('class' => 'selectpicker show-menu-arrow form-control', 'data-live-search '=> 'true')) }} </div>
 							
 						</div>
 						
@@ -89,7 +90,7 @@
 						<div class="row">
 							<div class="col-md-1"></div>
 							<div class="col-md-10">
-								<table class="table table-bordered dataTable">
+								<table class="table table-bordered dataTable" style="z-index: -10px; position: relative">
 									<thead>
 										<tr>
 											<th style="text-align: center;">No</th>
@@ -272,6 +273,10 @@
 </div>
 
 <script>
+ // $(function() {
+ //        $("#userIdtemp1").customselect();
+ //      });
+
 $("#hide").click(function(){
 	$("#p").hide();
 	$("#p1").show();

@@ -18,6 +18,10 @@
     <link rel="stylesheet" href="../vendor/animate.css/animate.css" />
     <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.css" />
 
+    <!-- search box -->
+    <!-- <link href="vendor/dropDown/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="../vendor/dropDown/css/bootstrap-select.min.css">
+
     <!-- App styles -->
     <link rel="stylesheet" href="../fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
     <link rel="stylesheet" href="../fonts/pe-icon-7-stroke/css/helper.css" />

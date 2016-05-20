@@ -9,9 +9,17 @@
 <script src="vendor/flot.curvedlines/curvedLines.js"></script>
 <script src="vendor/jquery.flot.spline/index.js"></script>
 <script src="vendor/metisMenu/dist/metisMenu.min.js"></script>
+<script src="vendor/dropDown/bootstrap-select.min.js"></script>
 <script src="vendor/iCheck/icheck.min.js"></script>
 <script src="vendor/peity/jquery.peity.min.js"></script>
 <script src="vendor/sparkline/index.js"></script>
+
+
+
+      
+
+
+
 <script src="plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
 <script src="plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script> 
 <!-- App scripts -->
@@ -21,8 +29,12 @@
 <script type="text/javascript">
       $(function () {
         $("#example1").dataTable();
+        $('.selectpicker').selectpicker();
       });
-    </script>
+</script>
+
+
+
 
 <script>
 

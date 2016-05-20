@@ -14,6 +14,11 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		return textVal.split(":")[0].trim();
 	}
 
+	$scope.sort = {       
+                sortingOrder : 'id',
+                reverse : false
+            };
+
 	//loading start function
 	var startLoading		= function () {
 		$('#status').show(); 
@@ -138,21 +143,23 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			dataTableList=[];
 			for(i; i<data.length; i++)
 			{
+				if(!data[i].error || data[i].error == null){
+					if($scope.groupVeh == true)
+					vehiclename.push(data[i].shortName);
+					else if(status == 'daily')
+						vehiclename.push(data[i].shortName);
+					else{
+						arrangeMonth();
+						vehiclename.push(arrangeMonthList[i]);
+					}
+					totalsuddenBreak.push(data[i].weightedBreakAnalysis);
+					SuddenAcc.push(data[i].weightedAccelAnalysis);
+					OverSpeed.push(data[i].weightedSpeedAnalysis);
+					sparkAlarm.push(data[i].weightedShockAlarmAnalysis);
+					kiloMeter.push(data[i].distance);
+					dataTableList.push({'month':data[i].shortName,'data': data[i]});	
+				}	
 				
-				if($scope.groupVeh == true)
-					vehiclename.push(data[i].shortName);
-				else if(status == 'daily')
-					vehiclename.push(data[i].shortName);
-				else{
-					arrangeMonth();
-					vehiclename.push(arrangeMonthList[i]);
-				}
-				totalsuddenBreak.push(data[i].weightedBreakAnalysis);
-				SuddenAcc.push(data[i].weightedAccelAnalysis);
-				OverSpeed.push(data[i].weightedSpeedAnalysis);
-				sparkAlarm.push(data[i].weightedShockAlarmAnalysis);
-				kiloMeter.push(data[i].distance);
-				dataTableList.push({'month':data[i].shortName,'data': data[i]});
 				
 			}
 			$scope.tableValue=dataTableList;
@@ -239,6 +246,16 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		})
 	}
 
+
+
+	$scope.nullValue = function(value_Data){
+		console.log(' 1 ');
+		if(value_Data.month==undefined)
+		return true;
+	}
+
+
+
 	function getTodayDate(date) {
      	var date = new Date(date);
     	return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
@@ -274,6 +291,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 	//for group selection
 
 	$scope.groupSelection 	=	function(groupname, rowId, index){
+		startLoading();
 		$scope.gIndex		=	rowId;
 		$scope.groupName 	=	groupname;
 		$scope.groupVeh		=	true;
@@ -289,6 +307,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 
 	$scope.genericFunction 	=	function(vehiid, groupname, index){
 		// status 				=	'singleVehicle';
+		startLoading();
 		$scope.gIndex		=	index;
 		$scope.groupName 	=	groupname;
 		$scope.vehicleId 	= 	vehiid;
@@ -624,3 +643,4 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 
 	
 }]);
+
