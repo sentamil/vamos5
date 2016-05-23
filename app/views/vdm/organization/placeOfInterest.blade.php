@@ -12,11 +12,11 @@
                 	<div class="row">
                 		{{ HTML::ul($errors->all()) }}
 						{{ Form::open(array('url' => 'vdmOrganization/addpoi')) }}
-  	              				<div class="row">
+  	              				<div>
   	              				<div class="col-md-5">
   	              					{{ Form::label('orgId', 'Organisation') }}
 											
-									{{ Form::select('orgId', array($orgList), Input::old('orgId'), array('class' => 'form-control')) }}   
+									{{ Form::select('orgId', array($orgList), Input::old('orgId'), array('class' => 'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}   
   	              				</div>
 								<div class="col-md-3">
   	              					{{ Form::label('radiusrange', 'Radius Range') }}

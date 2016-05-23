@@ -1,6 +1,7 @@
 @extends('includes.vdmEditHeader')
 @section('mainContent')
 
+
 <!-- if there are creation errors, they will show here -->
 <div id="wrapper">
 	<div class="content animate-panel">
@@ -120,7 +121,7 @@
 									{{ Form::label('orgId', 'Org/College Name') }}
 
 
-									{{ Form::select('orgId', array($orgList), $refData['orgId'], array('class' => 'form-control')) }}
+									{{ Form::select('orgId', array($orgList), $refData['orgId'], array('class' => 'form-control selectpicker' , 'data-live-search '=> 'true')) }}
 								</div>
 
 								<div class="form-group">
@@ -231,4 +232,13 @@
         </div>
     </div>
 </div>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+      $(function () {
+      $('.selectpicker').selectpicker();
+      });
+
+    </script>
 <div align="center">@stop</div>

@@ -18,6 +18,7 @@ app.directive('map', function($http) {
         	scope.path=[];
         	function utcdateConvert(milliseconds){
 				//var milliseconds=1440700484003;
+				
 				var offset='+10';
 				var d = new Date(milliseconds);
 				utc = d.getTime() + (d.getTimezoneOffset() * 60000);
@@ -764,8 +765,8 @@ if($scope.markerstart){
 			   map: $scope.map,
 			   icon: pinImage,
 			   labelContent: ''/*pos.data.position*/,
-			   labelAnchor: labelAnchorpos,
-			   labelClass: "labels", 
+			   // labelAnchor: labelAnchorpos,
+			   // labelClass: "labels", 
 			   labelInBackground: true
 		});
 		gmarkers.push($scope.marker);	
