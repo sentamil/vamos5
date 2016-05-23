@@ -1180,7 +1180,47 @@ public function updateLive($id) {
         if(isset($vehicleRefData['OWN'])==1)
             $ownership=$vehicleRefData['OWN'];
         else
-            $ownership='OWN';          
+            $ownership='OWN';  
+        if(isset($vehicleRefData['isRfid'])==1)
+            $isRfid=$vehicleRefData['isRfid'];
+        else
+            $isRfid='no';  
+        if(isset($vehicleRefData['ipAddress'])==1)
+            $ipAddress=$vehicleRefData['ipAddress'];
+        else
+            $ipAddress='';  
+        if(isset($vehicleRefData['portNo'])==1)
+            $portNo=$vehicleRefData['portNo'];
+        else
+            $portNo=''; 
+        if(isset($vehicleRefData['analog1'])==1)
+            $analog1=$vehicleRefData['analog1'];
+        else
+            $analog1='no';  
+        if(isset($vehicleRefData['analog2'])==1)
+            $analog2=$vehicleRefData['analog2'];
+        else
+            $analog2='no';  
+        if(isset($vehicleRefData['digital1'])==1)
+            $digital1=$vehicleRefData['digital1'];
+        else
+            $digital1='no';  
+        if(isset($vehicleRefData['digital2'])==1)
+            $digital2=$vehicleRefData['digital2'];
+        else
+            $digital2='no';  
+        if(isset($vehicleRefData['serial1'])==1)
+            $serial1=$vehicleRefData['serial1'];
+        else
+            $serial1='no';  
+        if(isset($vehicleRefData['serial2'])==1)
+            $serial2=$vehicleRefData['serial2'];
+        else
+            $serial2='no';  
+        if(isset($vehicleRefData['digitalout'])==1)
+            $digitalout=$vehicleRefData['digitalout'];
+        else
+            $digitalout='no';  
 
         $deviceId=$vehicleRefData['deviceId'];
         try{
@@ -1219,6 +1259,16 @@ public function updateLive($id) {
             'fuel'=>$fuel,
             'fuelType'=>$fuelType,
             'OWN'=>$ownership,
+            'ipAddress'=>$ipAddress,
+            'portNo'=>$portNo,
+            'analog1'=>$analog1,
+            'analog2'=>$analog2,
+            'digital1'=>$digital1,
+            'digital2'=>$digital2,
+            'serial1'=>$serial1,
+            'serial2'=>$serial2,
+            'digitalout'=>$digitalout,
+            'isRfid'=>$isRfid,
             );
 
         $refDataJson = json_encode ( $refDataArr );
