@@ -238,7 +238,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    				$scope.recursiveEvent($scope.eventReportData,0);
    				break;
    			case 'loadreport':
-   				$scope.recursiveLoad($scope.loadreport,0);
+   				// $scope.recursiveLoad($scope.loadreport,0);
    				break;
    			case 'fuelreport':
    				$scope.fuelChart($scope.fuelValue);
@@ -252,21 +252,50 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 
    	function ignitionFilter(ignitionValue)
    	{
-   		var ignitionStatus;
-   		var ignitionlist 	=	[];
+   		var ignitionStatus ='OFF', ignitionlist =[];
+   		
+   		$scope.ignitionData = [];
    		angular.forEach(ignitionValue, function(value, key){
-   			if(key == 0){
-   				ignitionlist.push(value);
-   				ignitionStatus = value.ignitionStatus;
-   			}
-	   		else if(ignitionStatus != value.ignitionStatus){
-	   			ignitionlist.push(value);
-   				ignitionStatus = value.ignitionStatus;
-	   		}
+   			// for (var i = 0; i < list.length; i++) {
+            if(ignitionlist.length <= 0){
+                if(value.ignitionStatus == 'ON')
+                ignitionlist.push(value)
+            } else if(ignitionlist.length >0 )
+            {
+                if(value.ignitionStatus == ignitionStatus){
+                    ignitionlist.push(value)
+                    if(ignitionlist[ignitionlist.length-1].ignitionStatus == 'ON')
+                        ignitionStatus = 'OFF';
+                    else
+                        ignitionStatus = 'ON'
+                }
+            }
+            
+        // };
 	   	});
-	   	$scope.ignitionData    =	ignitionlist;
+	   	//console.log(' list '+ignitionlist)
+	   	if(ignitionlist.length>1)
+	   		if(ignitionlist.length%2==0)
+	   			$scope.ignitionData    =	ignitionlist;
+	   		else{
+	   			 ignitionlist.pop();
+	   			 $scope.ignitionData = ignitionlist;
+	   	}
    	}
 
+
+
+   	//for load report invoke new api
+   	//http://188.166.237.200/vamo/public/getLoadReport?vehicleId=SENSEL-01&fromDate=2016-05-24&fromTime=0:0:0&toDate=2016-05-24&toTime=12:41:41
+   	//var url ="http://"+getIP+context+"/public/getSiteReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&site=true";
+   	//var loadUrl = "http://"+getIP+context+"/public/getLoadReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime);
+   	function loadReportApi(url){
+   		//var loadUrl = "http://"+getIP+context+"/public/getLoadReport?vehicleId="+prodId;
+   		$http.get(url).success(function(loadresponse){
+   			$scope.loadreport 		= 	 loadresponse;
+   			console.log(' log '+$scope.tabload)
+   		});
+   	}
 
    	//for initial loading
    	$scope.dataArray			=	function(data) {
@@ -274,11 +303,11 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
-		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!nill"}));
 		$scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
 		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!0"}));
 		ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
 		ignitionFilter(ignitionValue);
+		// loadReportApi("http://"+getIP+context+"/public/getLoadReport?vehicleId="+prodId);
 		$scope.recursive1($scope.movementdata,0);
 		//console.log(' data----> '+$scope.downloadid)
    	};
@@ -289,7 +318,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
-		$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!nill"}))
+		//$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!nill"}))
 		$scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
 		$scope.fuelValue=[];
 		if(data)
@@ -799,7 +828,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		   	case 'loadreport':
 		   		$scope.downloadid    =  'loadreport';
 	   			$scope.overallEnable = 	true;
-	   			$scope.recursiveLoad($scope.loadreport,0);
+	   			//$scope.recursiveLoad($scope.loadreport,0);
 	   			break;
 	   		case 'fuelreport':
 	   			$scope.downloadid    =  'fuelreport';
@@ -1028,11 +1057,13 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		// else
 		// {
 			var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval;
+			//var loadUrl 		= 	"http://"+getIP+context+"/public//getLoadReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime);
 			$http.get(histurl).success(function(data){
 				
 				//$scope.loading			=	false;
 				$scope.hist				=	data;
 				$scope.topspeedtime		=	data.topSpeedTime;
+				// loadReportApi(loadUrl);
 				$scope.dataArray_click(data.vehicleLocations);
 				$('#status').fadeOut(); 
 				$('#preloader').delay(350).fadeOut('slow');	

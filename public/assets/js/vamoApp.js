@@ -49,17 +49,18 @@ var app = angular.module('mapApp',['ui.bootstrap']);
 
 $(function() {
     // Set idle time
-    document.cookie = "username=John Doe";
-    $( document ).idleTimer( 10000 );
-    console.log(' inside the timer ');
+    document.cookie = "timer = 6000 ms";
+    localStorage.setItem('duck', 'entering');
+    $( document ).idleTimer( 60000 );
+    //console.log(' inside the timer ');
 });
 
 $(function() {
     $( document ).on( "idle.idleTimer", function(event, elem, obj){
-       console.log(' inside the timer 111');
        var cookie_s = document.cookie;
-       console.log(' cooliew '+cookie_s);
-       if(!cookie_s)
+       var local_val = sessionStorage.getItem('duck');
+       //console.log(' cooliew '+cookie_s);
+       if(!cookie_s || !local_val || cookie_s == ' ' || local_val == ' ')
         window.location.href = "login"
     });  
 });

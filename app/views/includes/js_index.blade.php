@@ -9,7 +9,7 @@
 <script src="vendor/flot.curvedlines/curvedLines.js"></script>
 <script src="vendor/jquery.flot.spline/index.js"></script>
 <script src="vendor/metisMenu/dist/metisMenu.min.js"></script>
-<script src="vendor/dropDown/bootstrap-select.min.js"></script>
+<script src="assets/dropDown/bootstrap-select.min.js"></script>
 <script src="vendor/iCheck/icheck.min.js"></script>
 <script src="vendor/peity/jquery.peity.min.js"></script>
 <script src="vendor/sparkline/index.js"></script>

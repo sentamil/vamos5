@@ -40,6 +40,10 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
 
+	$scope.sort = {       
+                sortingOrder : 'id',
+                reverse : false
+            };
 	//global declartion
 
 	$scope.locations = [];
@@ -118,6 +122,9 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 				break;
 			case 'tripkms' :
 				urlWebservice 	= 	"http://"+globalIP+context+"/public/getTripSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				break;
+			case 'load' :           
+				urlWebservice 	=	"http://"+globalIP+context+"/public/getLoadReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
 			default :
 				break;

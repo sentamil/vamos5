@@ -46,7 +46,6 @@
                                                     <td><a id="trip" href=""> Trip Time </a></td>
                                                     <td><a id="tripkms" href=""> Trip Summary</a></td>
                                                     <td><a id="temp" href=""> Temperature</a></td>
-                                                    <td></td>
                                                 </tr>
                                             </table>
 
@@ -98,7 +97,7 @@
                 $("#site").attr("href", 'siteReport?vid='+vid+'&vg='+gname+'&tn=site')
             });
             $("#load").click(function() {
-                $("#load").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=load')
+                $("#load").attr("href", 'loadDetails?vid='+vid+'&vg='+gname+'&tn=load')
             });
             $("#fuel").click(function() {
                 $("#fuel").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=fuel')
@@ -117,6 +116,7 @@
                 // console.log(' clck ')
                 $("#temp").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=temp')
             });
+            
 
 
 
