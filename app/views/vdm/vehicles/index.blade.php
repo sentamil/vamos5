@@ -21,6 +21,7 @@
 							<th style="text-align: center;">Device ID</th>
 							
 								@if(Session::get('vCol')=='2')
+									<th style="text-align: center;">Status</th>
 									<th style="text-align: center;">Device Model</th>
 								<!-- <th style="text-align: center;">Expire Date</th> -->
 								<th style="text-align: center;">Mobile No</th>
@@ -40,6 +41,22 @@
 							<td>{{ array_get($deviceList, $value)}}</td>
 					        
 							@if(Session::get('vCol')=='2')
+								@if(array_get($statusList, $value) == 'P')
+									<td style="color: #8e8e7b">Parking</td>
+								@endif
+								@if(array_get($statusList, $value) == 'M')
+									<td style="color: #00b374">Moving</td>
+								@endif
+								@if(array_get($statusList, $value) == 'S')
+									<td style="color: #ff6500">Standing</td>
+								@endif
+								@if(array_get($statusList, $value) == 'U')
+									<td style="color: #fe068d">No Data</td>
+								@endif
+								@if(array_get($statusList, $value) == 'N')
+									<td style="color: #0a85ff">New Device</td>
+								@endif
+
 							<td>{{ array_get($deviceModelList, $value)}}</td>
 						<!--  <td>{{ array_get($expiredList, $value)}}</td> -->
 					        <td>{{ array_get($mobileNoList, $value)}}</td> 	

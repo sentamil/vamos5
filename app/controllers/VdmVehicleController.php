@@ -45,6 +45,7 @@ public function index() {
     $orgIdList = null;
     $deviceModelList = null;
     $expiredList = null;
+    $statusList = null;
     foreach ( $vehicleList as $key => $vehicle  ) {
 
         Log::info($key.'$vehicle ' .$vehicle);
@@ -58,6 +59,7 @@ public function index() {
         $vehicleRefData=json_decode($vehicleRefData,true);
 
         $deviceId = $vehicleRefData['deviceId'];
+
 
         if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.$username.'_'.$fcode, $deviceId)==0) || Session::get('cur')=='admin')
         {
@@ -76,6 +78,12 @@ public function index() {
         $deviceModelList = array_add($deviceModelList,$vehicle,$deviceModel);
         $expiredPeriod=isset($vehicleRefData['expiredPeriod'])?$vehicleRefData['expiredPeriod']:'nill';
         $expiredList = array_add($expiredList,$vehicle,$expiredPeriod);
+
+        $statusVehicle = $redis->hget ( 'H_ProData_' . $fcode, $vehicle );
+        $statusSeperate = explode(',', $statusVehicle);
+        $statusList = array_add($statusList, $vehicle, $statusSeperate[7]);
+
+
         }
         else
         {
@@ -91,7 +99,7 @@ public function index() {
     $user=$user1->checkuser();
     return View::make ( 'vdm.vehicles.index', array (
         'vehicleList' => $vehicleList
-        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 );
+        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList);
 }
 
 
