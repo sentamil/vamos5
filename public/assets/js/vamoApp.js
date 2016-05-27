@@ -60,7 +60,7 @@ $(function() {
        var cookie_s = document.cookie;
        var local_val = sessionStorage.getItem('duck');
        //console.log(' cooliew '+cookie_s);
-       if(!cookie_s || !local_val || cookie_s == ' ' || local_val == ' ')
+       if(!cookie_s)
         window.location.href = "login"
     });  
 });

@@ -46,15 +46,15 @@
 								
 							<!-- </div> -->
 							<br>
-							<div class="row" id="t">
+							<div id="t">
 								<br>
 								<hr>
 								<div class="col-md-2"></div>
-								<div class="col-md-2">{{ Form::label('ExistingUser', 'Existing User') }}{{ Form::select('userIdtemp', array($userList),'select', array('id'=>'userIdtemp1','class' => 'form-control')) }}</div>
+								<div class="col-md-2">{{ Form::label('ExistingUser', 'Existing User') }}{{ Form::select('userIdtemp', array($userList),'select', array('id'=>'userIdtemp1','class' => 'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
 								<div class="col-md-2">{{ Form::label('Group', 'Group name') }}{{ Form::select('groupname', array(null),Input::old('groupname'), array('id'=>'groupname','class' => 'form-control')) }}</div>
-								<div class="col-md-2">{{ Form::label('orgId', 'org/College Name') }}{{ Form::select('orgId',  array_merge(['' => 'Please Select'], $orgList), Input::old('orgId'), array('class' => 'form-control')) }}</div>
+								<div class="col-md-2">{{ Form::label('orgId', 'org/College Name') }}{{ Form::select('orgId',  array_merge(['' => 'Please Select'], $orgList), Input::old('orgId'), array('class' => 'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
 							</div>
-							<div class="row" id="t1">
+							<div id="t1">
 								<br>
 								<hr>
 								<div class="col-md-2"></div>
