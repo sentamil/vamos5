@@ -41,21 +41,25 @@
 							<td>{{ array_get($deviceList, $value)}}</td>
 					        
 							@if(Session::get('vCol')=='2')
-								@if(array_get($statusList, $value) == 'P')
-									<td style="color: #8e8e7b">Parking</td>
-								@endif
-								@if(array_get($statusList, $value) == 'M')
-									<td style="color: #00b374">Moving</td>
-								@endif
-								@if(array_get($statusList, $value) == 'S')
-									<td style="color: #ff6500">Standing</td>
-								@endif
-								@if(array_get($statusList, $value) == 'U')
-									<td style="color: #fe068d">No Data</td>
-								@endif
-								@if(array_get($statusList, $value) == 'N')
-									<td style="color: #0a85ff">New Device</td>
-								@endif
+
+								<td>
+									@if(array_get($statusList, $value) == 'P')
+										<div style="color: #8e8e7b">Parking</div>
+									@endif
+									@if(array_get($statusList, $value) == 'M')
+										<div style="color: #00b374">Moving</div>
+									@endif
+									@if(array_get($statusList, $value) == 'S')
+										<div style="color: #ff6500">Standing</div>
+									@endif
+									@if(array_get($statusList, $value) == 'U')
+										<div style="color: #fe068d">No Data</div>
+									@endif
+									@if(array_get($statusList, $value) == 'N')
+										<div style="color: #0a85ff">New Device</div>
+									@endif
+								</td>
+								
 
 							<td>{{ array_get($deviceModelList, $value)}}</td>
 						<!--  <td>{{ array_get($expiredList, $value)}}</td> -->
