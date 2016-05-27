@@ -50,9 +50,9 @@
 								<br>
 								<hr>
 								<div class="col-md-2"></div>
-								<div class="col-md-2">{{ Form::label('ExistingUser', 'Existing User') }}{{ Form::select('userIdtemp', array($userList),'select', array('id'=>'userIdtemp1','class' => 'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
+								<div class="col-md-2">{{ Form::label('ExistingUser', 'Existing User') }}{{ Form::select('userIdtemp', array($userList),'select', array('id'=>'valSelected','class' => 'form-control')) }}</div>
 								<div class="col-md-2">{{ Form::label('Group', 'Group name') }}{{ Form::select('groupname', array(null),Input::old('groupname'), array('id'=>'groupname','class' => 'form-control')) }}</div>
-								<div class="col-md-2">{{ Form::label('orgId', 'org/College Name') }}{{ Form::select('orgId',  array_merge(['' => 'Please Select'], $orgList), Input::old('orgId'), array('class' => 'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
+								<div class="col-md-2">{{ Form::label('orgId', 'org/College Name') }}{{ Form::select('orgId',  array_merge(['' => 'Please Select'], $orgList), Input::old('orgId'), array('class' => 'form-control')) }}</div>
 							</div>
 							<div id="t1">
 								<br>
@@ -144,7 +144,7 @@
 	$("#t1").hide();
 
 
-$('#userIdtemp1').on('change', function() {
+$('#valSelected').on('change', function() {
 	console.log('test vamos');
 	var data = {
 		'id': $(this).val()
