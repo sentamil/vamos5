@@ -33,6 +33,87 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
     }
 
 
+    //chants for temperature
+
+	// $(function () {
+function plottinGraphs(valueGraph){
+    // $scope.averages = [
+    //         [1246406400000, 21.5],
+    //         [1246492800000, 22.1],
+    //         [1246579200000, 23],
+    //         [1246665600000, 23.8],
+    //         [1246752000000, 21.4],
+    //         [1246838400000, 21.3],
+    //         [1246924800000, 18.3],
+    //         [1247011200000, 15.4],
+    //         [1247097600000, 16.4],
+    //         [1247184000000, 17.7],
+    //         [1247270400000, 17.5],
+    //         [1247356800000, 17.6],
+    //         [1247443200000, 17.7],
+    //         [1247529600000, 16.8],
+    //         [1247616000000, 17.7],
+    //         [1247702400000, 16.3],
+    //         [1247788800000, 17.8],
+    //         [1247875200000, 18.1],
+    //         [1247961600000, 17.2],
+    //         [1248048000000, 14.4],
+    //         [1248134400000, 13.7],
+    //         [1248220800000, 15.7],
+    //         [1248307200000, 14.6],
+    //         [1248393600000, 15.3],
+    //         [1248480000000, 15.3],
+    //         [1248566400000, 15.8],
+    //         [1248652800000, 15.2],
+    //         [1248739200000, 14.8],
+    //         [1248825600000, 14.4],
+    //         [1248912000000, 15],
+    //         [1248998400000, 13.6]
+    //     ];
+
+
+    $('#temperatureChart').highcharts({
+
+        title: {
+            text: ' '
+        },
+
+        xAxis: {
+            type: 'datetime'
+        },
+
+        yAxis: {
+            title: {
+                text: null
+            }
+        },
+
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            valueSuffix: '°C'
+        },
+
+        legend: {
+        },
+
+        series: [{
+            name: 'Temperature',
+            
+            data: valueGraph,
+            zIndex: 1,
+            color: Highcharts.getOptions().colors[0],
+            marker: {
+            	enabled: true,
+                fillColor: 'white',
+                lineWidth: 2,
+                lineColor: Highcharts.getOptions().colors[0],
+                symbol: 'circle'
+            }
+        }]
+    });
+};
+
 	function getParameterByName(name) {
     	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -126,6 +207,8 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 			case 'load' :           
 				urlWebservice 	=	"http://"+globalIP+context+"/public/getLoadReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
+			case 'temperature' :
+				urlWebservice 	= 	"http://"+globalIP+context+"/public/getTemperatureReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval=-1";
 			default :
 				break;
 			}
@@ -137,25 +220,41 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 
 	function webServiceCall(){
 		
-		// if (tab == 'site')
-		// 	url 	= 	"http://"+globalIP+context+"/public/getSiteReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&site=true";
-		// else if (tab == 'trip')
-		// 	url 	= 	"http://"+globalIP+context+"/public/getTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval;
-		var url = urlReport();		
+		var url = urlReport();
+		var graphList = [];		
 		$scope.siteData = [];
 		vamoservice.getDataCall(url).then(function(responseVal){
-			$scope.siteData = responseVal;
+			try{
+				$scope.siteData = responseVal;
 			var entry=0,exit=0; 
 			if (tab == 'site')
 			angular.forEach(responseVal, function(val, key){
-				if(val.state == 'SiteExit')
-					exit++ 
-				else if (val.state == 'SiteEntry')
-					entry++
+				if(tab == 'site'){
+					if(val.state == 'SiteExit')
+						exit++ 
+					else if (val.state == 'SiteEntry')
+						entry++
+				}
 			})
+
+			if(tab == 'temperature'){
+				angular.forEach(responseVal.temperature, function(graphValue, graphKey){
+
+					graphList.push([graphValue.date, Number(graphValue.temperature)]);
+						// plottinGraphs(temperature);
+				})
+				plottinGraphs(graphList);
+			}
+
 			$scope.siteEntry 	=	entry;
 			$scope.siteExit 	=	exit;
-			stopLoading();
+
+			stopLoading();	
+			} catch (err){
+				console.log(' print err '+err);
+				stopLoading();	
+			}
+			
 		});
 	}
 
@@ -247,68 +346,12 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		$('#menu').toggle(1000);
 	})
 
-	// tr click map view
-	// $scope.flightPath = new google.maps.Polyline();
-	// $scope.map =  null;
 	
-	
-	
-	
-
-
-
-// var map;
-// myLatlng = new google.maps.LatLng(32.0260053,34.8987034);
-
-
-// function initialize() {
-//     var myOptions = {
-//         zoom: 14,
-//         center: myLatlng,
-//         mapTypeId: google.maps.MapTypeId.ROADMAP
-//     };
-//         map = new google.maps.Map(document.getElementById('map_canvas'),
-//                               myOptions);        
-
-
-
-//         $("#myModal").ready(function() {
-//             $(window).resize(function() {
-//                 google.maps.event.trigger(map, 'resize');
-//             });
-            
-//             $('#myModal').modal('show');
-//             google.maps.event.trigger(map, 'resize');
-//             return map.setCenter(myLatlng);
-//         });
-    
-
-// }
-// myLatlng = new google.maps.LatLng(32.0260053,34.8987034);
-// function initialize() {
-//   var mapOptions = {
-//             zoom: 12,
-//             center: myLatlng,
-//             mapTypeId: google.maps.MapTypeId.ROADMAP
-//         };
-//     map = new google.maps.Map(document.getElementById("map_canvas"),
-//             mapOptions);
-//     $('#MyModal').on('loaded.bs.modal',function(e){
-//    setTimeOut(GoogleMap,500);
-// });
-
-        // $('#myModal').on('shown.bs.modal', function () {
-        //       google.maps.event.trigger(map, 'resize');
-        //       map.setCenter(new google.maps.LatLng(54, -2));
-        //     });
-        // $('#myModal').modal("show");
-// }
-
-
 
 var map;
-myLatlng = new google.maps.LatLng(12.996250, 80.194750);
+
 function initialize() {
+	myLatlng = new google.maps.LatLng(12.996250, 80.194750);
     var mapOptions = {
       center: myLatlng,
       zoom: 14,
@@ -321,6 +364,7 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 }
+if(tab == 'tripkms')
 google.maps.event.addDomListener(window, 'load', initialize);
 
   //start of modal google map
@@ -415,5 +459,26 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 
+// });
+
+// if(tab === 'temperature')
+// setInterval(function () {
+//       var chart = $('#temperatureChart').highcharts(), point;
+//         if (chart) {
+//             point = chart.series[0].points[0];
+//             point.update(total);
+//         }
+//        var chartFuel = $('#container-fuel').highcharts(), point;
+//         if (chartFuel) {
+//             point = chartFuel.series[0].points[0];
+//             point.update(fuelLtr);
+//             if(tankSize==0)
+//             	tankSize =200;
+//             chartFuel.yAxis[0].update({
+// 			    max: tankSize,
+// 			}); 
+
+//         }
+//     }, 1000);
 
 }]);

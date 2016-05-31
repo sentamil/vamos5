@@ -142,6 +142,15 @@ Route::get('/tripkms', function() {
     return View::make('reports.tripReportKms');
 });
 
+
+Route::get('/temperature', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    Log::info(' temperature ');
+    return View::make('reports.temperReport');
+});
+
 Route::get('/printStops', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -215,7 +224,16 @@ Route::get('/getActionReport', function() {
     return View::make('vls.getActionReport');
 });
  
- 
+
+Route::get('/getTemperatureReport', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    Log::info(' get temperature api ');
+    return View::make('vls.getTemperatureReport');
+});
+
+
 Route::get('/getOverallVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
