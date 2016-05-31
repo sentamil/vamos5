@@ -151,7 +151,7 @@
                                         </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="active" style="text-align:center" ng-repeat="temper in siteData.temperature  track by $index| orderBy:sort.sortingOrder:sort.reverse">
+                                    <tr class="active" style="text-align:center" ng-repeat="temper in siteData.temperature | orderBy:sort.sortingOrder:sort.reverse">
                                         <td>{{temper.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td>{{temper.temperature}}</td>
                                         <td>{{temper.address}}</td>
