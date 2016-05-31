@@ -36,51 +36,40 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
     //chants for temperature
 
 	// $(function () {
-function plottinGraphs(valueGraph){
-    // $scope.averages = [
-    //         [1246406400000, 21.5],
-    //         [1246492800000, 22.1],
-    //         [1246579200000, 23],
-    //         [1246665600000, 23.8],
-    //         [1246752000000, 21.4],
-    //         [1246838400000, 21.3],
-    //         [1246924800000, 18.3],
-    //         [1247011200000, 15.4],
-    //         [1247097600000, 16.4],
-    //         [1247184000000, 17.7],
-    //         [1247270400000, 17.5],
-    //         [1247356800000, 17.6],
-    //         [1247443200000, 17.7],
-    //         [1247529600000, 16.8],
-    //         [1247616000000, 17.7],
-    //         [1247702400000, 16.3],
-    //         [1247788800000, 17.8],
-    //         [1247875200000, 18.1],
-    //         [1247961600000, 17.2],
-    //         [1248048000000, 14.4],
-    //         [1248134400000, 13.7],
-    //         [1248220800000, 15.7],
-    //         [1248307200000, 14.6],
-    //         [1248393600000, 15.3],
-    //         [1248480000000, 15.3],
-    //         [1248566400000, 15.8],
-    //         [1248652800000, 15.2],
-    //         [1248739200000, 14.8],
-    //         [1248825600000, 14.4],
-    //         [1248912000000, 15],
-    //         [1248998400000, 13.6]
-    //     ];
-
+function plottinGraphs(valueGraph, timeData){
+   
 
     $('#temperatureChart').highcharts({
-
-        title: {
+    	                                             // This is for all plots, change Date axis to local timezone
+   		title: {
             text: ' '
         },
 
         xAxis: {
-            type: 'datetime'
-        },
+			
+            type: 'datetime',
+            // labels: {
+            //     overflow: 'justify'
+            // },
+            // startOnTick: true,
+            // showFirstLabel: true,
+            // endOnTick: true,
+            // showLastLabel: true,
+            categories: timeData,
+            // tickInterval: 10,
+            // labels: {
+            //     formatter: function() {
+            //         return this.value.toString().substring(0, 6);
+            //     },
+            //     rotation: 0.1,
+            //     align: 'left',
+            //     step: 10,
+            //     enabled: true
+            // },
+            style: {
+                fontSize: '8px'
+            }
+	    },
 
         yAxis: {
             title: {
@@ -191,7 +180,7 @@ function plottinGraphs(valueGraph){
 	  	
 	}
 
-
+	
 	function urlReport(){
 		var urlWebservice;
 		switch  (tab){
@@ -221,7 +210,8 @@ function plottinGraphs(valueGraph){
 	function webServiceCall(){
 		
 		var url = urlReport();
-		var graphList = [];		
+		var graphList = [];
+		var graphTime = [];		
 		$scope.siteData = [];
 		vamoservice.getDataCall(url).then(function(responseVal){
 			try{
@@ -239,11 +229,12 @@ function plottinGraphs(valueGraph){
 
 			if(tab == 'temperature'){
 				angular.forEach(responseVal.temperature, function(graphValue, graphKey){
-
-					graphList.push([graphValue.date, Number(graphValue.temperature)]);
+				//var time = moment(graphValue.date).format("DD-MM-YYYY h:mm:ss");
+					graphList.push(Number(graphValue.temperature));
+					graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"))
 						// plottinGraphs(temperature);
 				})
-				plottinGraphs(graphList);
+				plottinGraphs(graphList, graphTime);
 			}
 
 			$scope.siteEntry 	=	entry;
