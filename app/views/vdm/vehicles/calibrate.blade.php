@@ -35,7 +35,7 @@
                 		<div class="row">
                 			<div class="col-md-3"></div>
                 			<div class="col-md-3">{{ Form::text('volt'.$j++, isset(explode(":", $value)[0])?explode(":", $value)[0]:0,  array('class' => 'form-control')) }}</div>
-                			<div class="col-md-3">{{ Form::text('litre', "Litre", array('class' => 'form-control','disabled' => 'disabled')) }}</div>
+                			<div class="col-md-3">{{ Form::text( 'litre'.$i++,isset(explode(":", $value)[1])?explode(":", $value)[1]:0,array('class' => 'form-control') ) }}</div>
                 		</div>
                 		 @endforeach
                 		<br>

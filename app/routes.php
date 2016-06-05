@@ -142,6 +142,15 @@ Route::get('/tripkms', function() {
     return View::make('reports.tripReportKms');
 });
 
+
+Route::get('/temperature', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    Log::info(' temperature ');
+    return View::make('reports.temperReport');
+});
+
 Route::get('/printStops', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -215,7 +224,16 @@ Route::get('/getActionReport', function() {
     return View::make('vls.getActionReport');
 });
  
- 
+
+Route::get('/getTemperatureReport', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    Log::info(' get temperature api ');
+    return View::make('vls.getTemperatureReport');
+});
+
+
 Route::get('/getOverallVehicleHistory', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -295,8 +313,15 @@ Route::get('/getOverallDriverPerformance', function() {
     Log::info('getOverallDriverPerformance');
     return View::make('vls.getOverallDriverPerformance');
 });
+
  
- 
+Route::get('/getLoadReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getLoadReport');
+    return View::make('vls.getLoadReport');
+}); 
  
 Route::get('/playBack', function() {
     if (!Auth::check()) {
@@ -392,6 +417,14 @@ Route::get('/siteReport', function() {
     }
     Log::info('site report');
     return View::make('reports.sitePerVehicle');
+});
+
+Route::get('/loadDetails', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    Log::info(' load deatils  ');
+    return View::make('reports.loadReport');
 });
 
 Route::get('/getActionReport', function() {    

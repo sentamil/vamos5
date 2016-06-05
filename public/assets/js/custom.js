@@ -90,8 +90,12 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		return textVal.split(":")[0].trim();
 	}
 
+	$scope.sort = {       
+                sortingOrder : 'id',
+                reverse : false
+            };
 
-	function sessionValue(vid, gname){
+    function sessionValue(vid, gname){
 		sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
 		$("#testLoad").load("../public/menu");
 	}
@@ -119,6 +123,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		});	
 	});
 
+	
 	
 	// console.log($scope.locations02)
 	$scope.$watch("vehicleStatus", function (val) {
@@ -276,8 +281,45 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	$scope.clusterMarker = function()
 	{
 		$scope.groupMap=true;
-		var mcOptions = {gridSize: 50,maxZoom: 15}
-		var markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions)	
+		var mcClusterIconFolder = "assets/imgs";
+  var mcOptions = {
+    maxZoom: 11,
+    styles: [
+      {
+      height: 53,
+      url: mcClusterIconFolder + "/m1.png",
+      width: 53
+      },
+      {
+      height: 56,
+      url: mcClusterIconFolder + "/m2.png",
+      width: 56
+      },
+      {
+      height: 66,
+      url: mcClusterIconFolder + "/m3.png",
+      width: 66
+      },
+      {
+      height: 78,
+      url: mcClusterIconFolder + "/m4.png",
+      width: 78
+      },
+      {
+      height: 90,
+      url: mcClusterIconFolder + "/m5.png",
+      width: 90
+      }
+    ]
+  };
+		// var mcOptions = {gridSize: 50,maxZoom: 15, imagePath: 'https://raw.githubusercontent.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png'}
+		
+		// var markerCluster 	= new MarkerClusterer($scope.map, gmarkers, { 
+  //   		imagePath: 'assets/imgs/m1.png' 
+		// });	
+		 var markerCluster 	= new MarkerClusterer($scope.map, gmarkers,{
+    imagePath: 'https://rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png' 
+});
 	}
 
 	$scope.getLocation = function(lat,lon, callback){

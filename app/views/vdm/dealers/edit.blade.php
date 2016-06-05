@@ -50,13 +50,13 @@
 		            	</div><br>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
-		            		<div class="col-md-2">{{ Form::label('providerUserName', 'Provider UserName :') }}</div>
+		            		<div class="col-md-2">{{ Form::label('providerUserName', 'Sms Provider UserName :') }}</div>
 		            		<div class="col-md-4">{{ Form::text('providerUserName', $providerUserName, array('class' => 'form-control', 'placeholder'=>'Provider Name')) }}</div>
 		            	</div>
 		            	<br>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
-		            		<div class="col-md-2">{{ Form::label('providerPassword', 'Provider Password :') }}</div>
+		            		<div class="col-md-2">{{ Form::label('providerPassword', 'Sms Provider Password :') }}</div>
 		            		<div class="col-md-4">{{ Form::text('providerPassword', $providerPassword, array('class' => 'form-control', 'placeholder'=>'Provider providerPassword')) }}</div>
 		            	</div>
 		            	<br>

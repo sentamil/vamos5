@@ -8,7 +8,10 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	$scope.alertData 		=	'time';
 	// $scope.hrs    = 1;
 	// $scope.kms 	  = 10;
-
+	$scope.sort = {       
+                sortingOrder : 'id',
+                reverse : false
+            };
 
 	function formatAMPM(date) {
     	  var date = new Date(date);

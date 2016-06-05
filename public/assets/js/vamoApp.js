@@ -49,16 +49,17 @@ var app = angular.module('mapApp',['ui.bootstrap']);
 
 $(function() {
     // Set idle time
-    document.cookie = "username=John Doe";
-    $( document ).idleTimer( 10000 );
-    console.log(' inside the timer ');
+    document.cookie = "timer = 6000 ms";
+    
+    $( document ).idleTimer( 60000 );
+    //console.log(' inside the timer ');
 });
 
 $(function() {
     $( document ).on( "idle.idleTimer", function(event, elem, obj){
-       console.log(' inside the timer 111');
        var cookie_s = document.cookie;
-       console.log(' cooliew '+cookie_s);
+       
+       //console.log(' cooliew '+cookie_s);
        if(!cookie_s)
         window.location.href = "login"
     });  

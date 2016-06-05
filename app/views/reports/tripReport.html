@@ -13,6 +13,7 @@
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
 <style>
 .empty{
@@ -74,7 +75,7 @@ background-color: #ffffff;
        <div class="box box-primary">
         <!-- <div class="row"> -->
                 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
-                    <h3 class="box-title">Trip Report</h3>
+                    <h3 class="box-title">Trip Time Report</h3>
                 </div>
                 <div class="row">
                     <div class="col-md-1" align="center"></div>
@@ -146,7 +147,7 @@ background-color: #ffffff;
                         <img style="cursor: pointer;" ng-click="exportDataCSV('tripreport')"  src="../app/views/reports/image/csv.jpeg" />
                     </div>
                     <div class="box-body" id="tripreport">
-                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">Trip Report <span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
+                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">Trip Time Report <span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
                             
                                 <table class="table table-bordered table-striped table-condensed table-hover">
                                     <thead>
@@ -158,16 +159,16 @@ background-color: #ffffff;
                                         </tr>
                                         <tr><td colspan="5"></td></tr>
                                         <tr style="text-align:center;font-weight: bold;">
-                                            <th class="id" style="text-align:center;" width="15%">Date &amp; Time</th>
-                                            <th class="id" style="text-align:center;" width="15%">Distance</th>
-                                            <th class="id" style="text-align:center;" width="15%">cumulative</th>
-                                            <th class="id" style="text-align:center;" width="15%">Odo Meter</th>
-                                            <th class="id" style="text-align: center;" width="35%">Nearest Location</th>
+                                            <th class="id" custom-sort order="'date'" sort="sort" style="text-align:center;" width="15%">Date &amp; Time</th>
+                                            <th class="id" custom-sort order="'distanse'" sort="sort" style="text-align:center;" width="15%">Distance</th>
+                                            <th class="id" custom-sort order="'cumDistance'" sort="sort" style="text-align:center;" width="15%">cumulative</th>
+                                            <th class="id" custom-sort order="'odoDistance'" sort="sort" style="text-align:center;" width="15%">Odo Meter</th>
+                                            <th class="id" custom-sort order="'address'" sort="sort" style="text-align: center;" width="35%">Nearest Location</th>
                                             <!-- <th class="id" style="text-align: center;" width="20%">G-Map</th> -->
                                         </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="active" style="text-align:center" ng-repeat="ignition in siteData.tripData">
+                                    <tr class="active" style="text-align:center" ng-repeat="ignition in siteData.tripData | orderBy:sort.sortingOrder:sort.reverse">
                                         <td>{{ignition.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td>{{ignition.distanse}}</td>
                                         <td>{{ignition.cumDistance}}</td>
@@ -180,8 +181,8 @@ background-color: #ffffff;
                                         </td> 
                                         <!-- <td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td> -->
                                     </tr>
-                                    <tr ng-if="siteData.tripData==null"  align="center">
-                                        <td colspan="5"class="err"><h5>No Date Found! Choose some other date</h5></td>
+                                    <tr ng-if="siteData.tripData==null || siteData.tripData.length==0"  align="center">
+                                        <td colspan="5"class="err"><h5>No Data Found! Choose some other date</h5></td>
                                     </tr>
                                 </tbody>
                             </table>

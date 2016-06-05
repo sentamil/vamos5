@@ -33,6 +33,76 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
     }
 
 
+    //chants for temperature
+
+	// $(function () {
+function plottinGraphs(valueGraph, timeData){
+   
+
+    $('#temperatureChart').highcharts({
+    	                                             // This is for all plots, change Date axis to local timezone
+   		title: {
+            text: ' '
+        },
+
+        xAxis: {
+			
+            type: 'datetime',
+            // labels: {
+            //     overflow: 'justify'
+            // },
+            // startOnTick: true,
+            // showFirstLabel: true,
+            // endOnTick: true,
+            // showLastLabel: true,
+            categories: timeData,
+            // tickInterval: 10,
+            // labels: {
+            //     formatter: function() {
+            //         return this.value.toString().substring(0, 6);
+            //     },
+            //     rotation: 0.1,
+            //     align: 'left',
+            //     step: 10,
+            //     enabled: true
+            // },
+            style: {
+                fontSize: '8px'
+            }
+	    },
+
+        yAxis: {
+            title: {
+                text: null
+            }
+        },
+
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            valueSuffix: '°C'
+        },
+
+        legend: {
+        },
+
+        series: [{
+            name: 'Temperature',
+            
+            data: valueGraph,
+            zIndex: 1,
+            color: Highcharts.getOptions().colors[0],
+            marker: {
+            	enabled: true,
+                fillColor: 'white',
+                lineWidth: 2,
+                lineColor: Highcharts.getOptions().colors[0],
+                symbol: 'circle'
+            }
+        }]
+    });
+};
+
 	function getParameterByName(name) {
     	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -40,6 +110,10 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
 
+	$scope.sort = {       
+                sortingOrder : 'id',
+                reverse : false
+            };
 	//global declartion
 
 	$scope.locations = [];
@@ -106,7 +180,7 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 	  	
 	}
 
-
+	
 	function urlReport(){
 		var urlWebservice;
 		switch  (tab){
@@ -119,6 +193,11 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 			case 'tripkms' :
 				urlWebservice 	= 	"http://"+globalIP+context+"/public/getTripSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
+			case 'load' :           
+				urlWebservice 	=	"http://"+globalIP+context+"/public/getLoadReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				break;
+			case 'temperature' :
+				urlWebservice 	= 	"http://"+globalIP+context+"/public/getTemperatureReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval=-1";
 			default :
 				break;
 			}
@@ -130,25 +209,43 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 
 	function webServiceCall(){
 		
-		// if (tab == 'site')
-		// 	url 	= 	"http://"+globalIP+context+"/public/getSiteReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&site=true";
-		// else if (tab == 'trip')
-		// 	url 	= 	"http://"+globalIP+context+"/public/getTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval;
-		var url = urlReport();		
+		var url = urlReport();
+		var graphList = [];
+		var graphTime = [];		
 		$scope.siteData = [];
 		vamoservice.getDataCall(url).then(function(responseVal){
-			$scope.siteData = responseVal;
+			try{
+				$scope.siteData = responseVal;
 			var entry=0,exit=0; 
 			if (tab == 'site')
 			angular.forEach(responseVal, function(val, key){
-				if(val.state == 'SiteExit')
-					exit++ 
-				else if (val.state == 'SiteEntry')
-					entry++
+				if(tab == 'site'){
+					if(val.state == 'SiteExit')
+						exit++ 
+					else if (val.state == 'SiteEntry')
+						entry++
+				}
 			})
+
+			if(tab == 'temperature'){
+				angular.forEach(responseVal.temperature, function(graphValue, graphKey){
+				//var time = moment(graphValue.date).format("DD-MM-YYYY h:mm:ss");
+					graphList.push(Number(graphValue.temperature));
+					graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"))
+						// plottinGraphs(temperature);
+				})
+				plottinGraphs(graphList, graphTime);
+			}
+
 			$scope.siteEntry 	=	entry;
 			$scope.siteExit 	=	exit;
-			stopLoading();
+
+			stopLoading();	
+			} catch (err){
+				console.log(' print err '+err);
+				stopLoading();	
+			}
+			
 		});
 	}
 
@@ -240,68 +337,12 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		$('#menu').toggle(1000);
 	})
 
-	// tr click map view
-	// $scope.flightPath = new google.maps.Polyline();
-	// $scope.map =  null;
 	
-	
-	
-	
-
-
-
-// var map;
-// myLatlng = new google.maps.LatLng(32.0260053,34.8987034);
-
-
-// function initialize() {
-//     var myOptions = {
-//         zoom: 14,
-//         center: myLatlng,
-//         mapTypeId: google.maps.MapTypeId.ROADMAP
-//     };
-//         map = new google.maps.Map(document.getElementById('map_canvas'),
-//                               myOptions);        
-
-
-
-//         $("#myModal").ready(function() {
-//             $(window).resize(function() {
-//                 google.maps.event.trigger(map, 'resize');
-//             });
-            
-//             $('#myModal').modal('show');
-//             google.maps.event.trigger(map, 'resize');
-//             return map.setCenter(myLatlng);
-//         });
-    
-
-// }
-// myLatlng = new google.maps.LatLng(32.0260053,34.8987034);
-// function initialize() {
-//   var mapOptions = {
-//             zoom: 12,
-//             center: myLatlng,
-//             mapTypeId: google.maps.MapTypeId.ROADMAP
-//         };
-//     map = new google.maps.Map(document.getElementById("map_canvas"),
-//             mapOptions);
-//     $('#MyModal').on('loaded.bs.modal',function(e){
-//    setTimeOut(GoogleMap,500);
-// });
-
-        // $('#myModal').on('shown.bs.modal', function () {
-        //       google.maps.event.trigger(map, 'resize');
-        //       map.setCenter(new google.maps.LatLng(54, -2));
-        //     });
-        // $('#myModal').modal("show");
-// }
-
-
 
 var map;
-myLatlng = new google.maps.LatLng(12.996250, 80.194750);
+
 function initialize() {
+	myLatlng = new google.maps.LatLng(12.996250, 80.194750);
     var mapOptions = {
       center: myLatlng,
       zoom: 14,
@@ -314,6 +355,7 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 }
+if(tab == 'tripkms')
 google.maps.event.addDomListener(window, 'load', initialize);
 
   //start of modal google map
@@ -408,5 +450,26 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 
+// });
+
+// if(tab === 'temperature')
+// setInterval(function () {
+//       var chart = $('#temperatureChart').highcharts(), point;
+//         if (chart) {
+//             point = chart.series[0].points[0];
+//             point.update(total);
+//         }
+//        var chartFuel = $('#container-fuel').highcharts(), point;
+//         if (chartFuel) {
+//             point = chartFuel.series[0].points[0];
+//             point.update(fuelLtr);
+//             if(tankSize==0)
+//             	tankSize =200;
+//             chartFuel.yAxis[0].update({
+// 			    max: tankSize,
+// 			}); 
+
+//         }
+//     }, 1000);
 
 }]);

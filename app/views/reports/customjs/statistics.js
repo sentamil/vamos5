@@ -301,6 +301,7 @@ function serviceCall(){
 		var poiUrl 			=	'http://'+globalIP+context+'/public//getPoiHistory?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 		vamoservice.getDataCall(poiUrl).then(function(responsePoi){
 			$scope.geofencedata			=		[];
+			if(responsePoi.history !=null)
 			if(responsePoi.history.length>0)
 				$scope.geofencedata		=   	responsePoi.history;
 			stopLoading();

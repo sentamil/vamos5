@@ -481,8 +481,8 @@ public function adddevice() {
 			$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 			$ownerShip      = Input::get('dealerId');
 			$userId      = Input::get('userId');
-			$mobileNo      = Input::get('mobileNo');
-			$email      = Input::get('email');
+			$mobileNoUser      = Input::get('mobileNoUser');
+			$emailUser      = Input::get('emailUser');
 			$password      = Input::get('password');
 			$type      = Input::get('type');
 			$type1      = Input::get('type1');
@@ -531,7 +531,7 @@ public function adddevice() {
 				}
 					$type='Sale';
 					$ownerShip = $username;
-					    $mobArr = explode(',', $mobileNo);
+					$mobArr = explode(',', $mobileNo);
 			}
 			if($type=='Sale' && $type1==null)
 			{
@@ -543,7 +543,7 @@ public function adddevice() {
 				log::info($ownerShip.'3----a------->'.Session::get('cur'));
 				 $rules = array (
 				'userId' => 'required|alpha_dash',
-				'email' => 'required|email',
+				'emailUser' => 'required|email',
 				
 				);             
                 
@@ -572,7 +572,7 @@ public function adddevice() {
 				}
 				
 
-			    $mobArr = explode(',', $mobileNo);
+			    $mobArr = explode(',', $mobileNoUser);
 				foreach($mobArr as $mob){
 					$val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
 				if($val1==1 ) 
@@ -1052,12 +1052,12 @@ if($type=='Sale' )
 		{
 			$password='awesome';
 		}
-		$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password,$userId.':OWN',$OWN);						
+		$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNoUser,$userId.':email',$emailUser ,$userId.':password',$password,$userId.':OWN',$OWN);						
 		$user = new User;	
 		$user->name = $userId;
 		$user->username=$userId;
-		$user->email=$email;
-		$user->mobileNo=$mobileNo;
+		$user->email=$emailUser;
+		$user->mobileNo=$mobileNoUser;
 		$user->password=Hash::make($password);
 		$user->save();
 

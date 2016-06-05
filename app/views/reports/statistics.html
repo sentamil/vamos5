@@ -196,9 +196,9 @@ background-color: #ffffff;
                                         <td width="7%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">OverSpeed Count</td>
                                         <td width="7%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Start</td>
                                         <td width="7%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo End</td>
-                                        <td ng-hide="true" width="7%" class="id"  style="text-align:center;">Parked</td>
-                                        <td width="7%" class="id" style="text-align:center;">Running</td>
-                                        <td width="7%" class="id" style="text-align:center;">Idle</td>
+                                       <!--  <td ng-hide="true" width="7%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">Parked</td> -->
+                                        <td width="7%" class="id" custom-sort order="'totalRunningTime'" sort="sort" style="text-align:center;">Running</td>
+                                        <td width="7%" class="id" custom-sort order="'totalIdleTime'" sort="sort" style="text-align:center;">Idle</td>
                                         <!-- <td width="7%" class="id" sort="sort" style="text-align:center;">TopSpeed</td>  --> 
                                        <!--  <td width="10%" class="id" sort="sort" style="text-align:center;">Date&amp;Time</td> -->
                                         <!-- <td width="10%" class="id" custom-sort order="'topSpeedGeoLocation'" sort="sort" style="text-align:center;">Top Location</td> -->
@@ -213,7 +213,7 @@ background-color: #ffffff;
                                         <td>{{user.overSpeedInstances}}</td>
                                         <td>{{user.odoOpeningReading}}</td>
                                         <td>{{user.odoClosingReading}}</td>
-                                        <td ng-hide="true">{{msToTime(user.totalParkedTime)}}</td>
+                                        <!-- <td ng-hide="true">{{msToTime(user.totalParkedTime)}}</td> -->
                                         <td>{{msToTime(user.totalRunningTime)}}</td>
                                         <td>{{msToTime(user.totalIdleTime)}}</td>
                                        <!--  <td>
@@ -232,8 +232,8 @@ background-color: #ffffff;
                                         <!-- <td get-location lat={{user.latitude}} lon={{user.longitude}} title="{{locationname}}">{{user.latitude}},{{user.longitude}}</td>
                                         <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>                      
                                      --></tr>
-                                     <tr ng-if="execGroupReportData=='' || execGroupReportData==null" align="center">
-                                        <td colspan="9" class="err"><h5>No Date Found! Choose some other date</h5></td>
+                                     <tr ng-if="execGroupReportData=='' || execGroupReportData==null || execGroupReportData.length==0" align="center">
+                                        <td colspan="8" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                      </tr>
                                 </table>
                             </div>
@@ -272,8 +272,8 @@ background-color: #ffffff;
                                     <!-- <tr ng-if="vehiclenull==null&&geofencedata==null">
                                         <td colspan="8">Choose Individual Vehicle ID</td>
                                     </tr> -->
-                                    <tr ng-if="geofencedata==null || geofencedata== '' " align="center">
-                                        <td colspan="5" class="err"><h5>No Date Found! Choose some other date</h5></td>
+                                    <tr ng-if="geofencedata==null || geofencedata== '' || geofencedata.length==0" align="center">
+                                        <td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                     </tr>           
                             </table>
                             <!-- <pagination boundary-links="true" 

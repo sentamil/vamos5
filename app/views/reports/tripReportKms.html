@@ -14,6 +14,7 @@
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
 <style>
 .empty{
@@ -213,24 +214,24 @@ background-color: #ffffff;
                                         <td colspan="11"></td>
                                     </tr>
                                     <tr style="font-weight: bold; background-color: #d1d1d1; text-align : center">
-                                        <td>Start Time</td>
-                                        <td>End Time</td>
-                                        <td>Duration</td>
-                                        <td>Distance (kms)</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0">Start Loc</td>
-                                        <td ng-show="siteData.totalFuelConsume==0" colspan="3">Start Loc</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0">End Loc</td>
-                                        <td ng-show="siteData.totalFuelConsume==0" colspan="3">End Loc</td>
-                                        <td>Position</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0">Fuel Consume (ltr)</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0">Intial Fuel (ltr)</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0">End Fuel (ltr)</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0">Fuel Filled (ltr) </td>
+                                        <td class="id" custom-sort order="'startTime'" sort="sort">Start Time</td>
+                                        <td class="id" custom-sort order="'endTime'" sort="sort">End Time</td>
+                                        <td class="id" custom-sort order="'duration'" sort="sort">Duration</td>
+                                        <td class="id" custom-sort order="'tripDistance'" sort="sort">Distance (kms)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'intLoc'" sort="sort">Start Loc</td>
+                                        <td ng-show="siteData.totalFuelConsume==0" colspan="3" class="id" custom-sort order="'intLoc'" sort="sort">Start Loc</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'finLoc'" sort="sort">End Loc</td>
+                                        <td ng-show="siteData.totalFuelConsume==0" colspan="3" class="id" custom-sort order="'finLoc'" sort="sort">End Loc</td>
+                                        <td class="id" custom-sort order="'position'" sort="sort">Position</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'fuelConsume'" sort="sort">Fuel Consume (ltr)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'intFuel'" sort="sort">Intial Fuel (ltr)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'finFuel'" sort="sort">End Fuel (ltr)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'filledFuel'" sort="sort">Fuel Filled (ltr) </td>
                                     </tr>
                                     <tr>
                                         <td colspan="11"></td>
                                     </tr>
-                                    <tr ng-repeat="tripsummary in siteData.historyConsilated" style="text-align : center; cursor : pointer" ng-click="getInput(tripsummary, siteData)" data-toggle="modal" data-target="#mapmodals" >
+                                    <tr ng-repeat="tripsummary in siteData.historyConsilated | orderBy:sort.sortingOrder:sort.reverse" style="text-align : center;">
                                         <!-- ng-click="getInput(tripsummary, siteData)" data-toggle="modal" data-target="#mapmodals" -->
                                         <td class="col-md-1">{{tripsummary.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td class="col-md-1">{{tripsummary.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
@@ -238,19 +239,31 @@ background-color: #ffffff;
                                         <td class="col-md-1">{{tripsummary.tripDistance}}</td>
                                         <td class="col-md-1" ng-switch on="tripsummary.intLoc" ng-hide="siteData.totalFuelConsume==0">
                                             <div ng-switch-when="undefined"><a href="https://www.google.com/maps?q=loc:{{tripsummary.intLat}},{{tripsummary.intLon}}" target="_blank">Link</a></div>
-                                            <div ng-switch-default>{{tripsummary.intLoc}}</div>
+                                            <div ng-switch-default>
+                                                <a ng-click="getInput(tripsummary, siteData)" ng-if="tripsummary.position=='M'" data-toggle="modal" data-target="#mapmodals" >{{tripsummary.intLoc}}</a>
+                                                <p ng-if="tripsummary.position!= 'M'">{{tripsummary.intLoc}}</p>
+                                            </div>
                                         </td>
                                         <td ng-switch on="tripsummary.intLoc" ng-show="siteData.totalFuelConsume==0" colspan="3">
                                             <div ng-switch-when="undefined"><a href="https://www.google.com/maps?q=loc:{{tripsummary.intLat}},{{tripsummary.intLon}}" target="_blank">Link</a></div>
-                                            <div ng-switch-default>{{tripsummary.intLoc}}</div>
+                                            <div ng-switch-default>
+                                                <a ng-click="getInput(tripsummary, siteData)" ng-if="tripsummary.position=='M'" data-toggle="modal" data-target="#mapmodals" >{{tripsummary.intLoc}}</a>
+                                                <p ng-if="tripsummary.position!= 'M'">{{tripsummary.intLoc}}</p>
+                                            </div>
                                         </td>
                                         <td class="col-md-1" ng-switch on="tripsummary.finLoc" ng-hide="siteData.totalFuelConsume==0">
                                             <div ng-switch-when="undefined"><a href="https://www.google.com/maps?q=loc:{{tripsummary.finLat}},{{tripsummary.finLon}}" target="_blank">Link</a></div>
-                                            <div ng-switch-default>{{tripsummary.finLoc}}</div>
+                                            <div ng-switch-default>
+                                                <a ng-click="getInput(tripsummary, siteData)" ng-if="tripsummary.position=='M'" data-toggle="modal" data-target="#mapmodals" >{{tripsummary.finLoc}}</a>
+                                                <p ng-if="tripsummary.position!= 'M'">{{tripsummary.finLoc}}</p>
+                                            </div>
                                         </td>
                                         <td ng-switch on="tripsummary.finLoc" ng-show="siteData.totalFuelConsume==0" ng-show="siteData.totalFuelConsume==0" colspan="3">
                                             <div ng-switch-when="undefined"><a href="https://www.google.com/maps?q=loc:{{tripsummary.finLat}},{{tripsummary.finLon}}" target="_blank">Link</a></div>
-                                            <div ng-switch-default>{{tripsummary.finLoc}}</div>
+                                            <div ng-switch-default>
+                                                <a ng-click="getInput(tripsummary, siteData)" ng-if="tripsummary.position=='M'" data-toggle="modal" data-target="#mapmodals" >{{tripsummary.finLoc}}</a>
+                                                <p ng-if="tripsummary.position!= 'M'">{{tripsummary.finLoc}}</p>
+                                            </div>
                                         </td>
                                         <td class="col-md-1" ng-switch on="tripsummary.position" >
                                             <span ng-switch-when="S" style="color : #ff480b">Idle</span>
@@ -263,8 +276,8 @@ background-color: #ffffff;
                                         <td class="col-md-1" ng-hide="siteData.totalFuelConsume==0">{{tripsummary.finFuel}}</td>
                                         <td class="col-md-1" ng-hide="siteData.totalFuelConsume==0">{{tripsummary.filledFuel}}</td>
                                     </tr>
-                                    <tr  ng-if="siteData.historyConsilated==null" align="center">
-                                        <td colspan="11" class="err"><h5>No Date Found! Choose some other date</h5></td>
+                                    <tr  ng-if="siteData.historyConsilated==null || siteData.historyConsilated.length== 0" align="center">
+                                        <td colspan="11" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                     </tr>
                                 </tbody>
                             </table>
