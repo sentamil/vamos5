@@ -224,7 +224,7 @@
 										<tr style="text-align: center;">
 											<td>{{ $i }}</td>
 											<td >{{ Form::text('deviceid'.$i, Input::old('deviceid'), array('id' => 'deviceid'.$i,'required', 'class' => 'form-control')) }}</td>
-											<td>{{ Form::select('deviceidtype' .$i, array( 'GT06N' => 'GT06N (9964)','GT300' => 'GT300 (9961)','TK103' => 'TK103 (9968)', 'TK99' => 'TK99 (9978)', 'FM1202' => 'FM1202 (9975)','FM1120' => 'FM1120 (9975)', 'TR02' => 'TR02 (9965)', 'GT03A' => 'GT03A (9969)', 'VTRACK2' => 'VTRACK2 (9964)','ET01'=>'ET01 (9971)','ET02'=>'ET02 (9962)', 'ET03'=>'ET03 (9974)'), Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
+											<td>{{ Form::select('deviceidtype' .$i, array( 'GT06N' => 'GT06N (9964)','GT300' => 'GT300 (9961)','TK103' => 'TK103 (9968)', 'TK99' => 'TK99 (9978)', 'FM1202' => 'FM1202 (9975)','FM1120' => 'FM1120 (9975)', 'TR02' => 'TR02 (9965)', 'GT03A' => 'GT03A (9969)', 'VTRACK2' => 'VTRACK2 (9964)','TRAKMATE' => 'TRAKMATE (9973)','GT02U' => 'GT02U (9990)','ET01'=>'ET01 (9971)','ET02'=>'ET02 (9962)', 'ET03'=>'ET03 (9974)'), Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
 											<td>{{ Form::text('vehicleId'.$i, Input::old('vehicleId'), array('id' => 'vehicleId'.$i, 'class' => 'form-control')) }}</td>
 											<td><a id="refData{{$i}}" class="btn btn-sm btn-success" >Details</a></td>
 										</tr>

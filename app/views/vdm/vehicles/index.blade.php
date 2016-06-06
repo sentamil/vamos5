@@ -1,4 +1,6 @@
 @include('includes.header_index')
+{{ HTML::ul($errors->all()) }}
+ {{ Form::open(array('url' => 'vdmVehicles/moveDealer')) }}
 <div id="wrapper">
 <div class="content animate-panel">
 <div class="row">
@@ -6,15 +8,28 @@
         <div class="hpanel">
                 <div class="panel-heading">
                     <h4><b>Vehicles List</b></h4>  
+
+                    @if(Session::get('cur')=='admin')
+                    <div >{{ Form::label('dealerId', 'Dealers Id') }}</div>
+                            <div >{{ Form::select('dealerId', array($dealerId), Input::old(''),array('class'=>'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
+                            <div >{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div>
+       				 @endif 
+                    
+                    
                 </div>
+
                 <div class="panel-body">
                 <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6">
                 <div class="col-sm-6"><div id="example2_filter" class="dataTables_filter"></div></div></div><div class="row">
+
                 	<div class="col-sm-12">
                 	<table id="example1" class="table table-bordered dataTable">
                		 <thead>
 						<tr>
 							<th style="text-align: center;">ID</th>
+							 @if(Session::get('cur')=='admin')
+							<th style="text-align: center;">Select</th>
+							 @endif 
 							<th style="text-align: center;">AssetID </th>
 							<th style="text-align: center;">Vehicle Name</th>
 							<th style="text-align: center;">Org Name</th>
@@ -35,6 +50,9 @@
 					@foreach($vehicleList as $key => $value)
 						<tr style="text-align: center;">
 							<td>{{ ++$tmp }}</td>
+							 @if(Session::get('cur')=='admin')
+							<td>{{ Form::checkbox('vehicleList[]', $value, null, ['class' => 'field']) }}</td>
+							@endif 
 							<td>{{ $value }}</td>
 							<td>{{ array_get($shortNameList, $value)}}</td>
 							<td>{{ array_get($orgIdList, $value)}}</td>
@@ -81,7 +99,7 @@
  -->								
 								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/migration/' . $value) }}">Migration</a>
 					
-								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Edit</a>
+								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/edit/' . $value ) }}">Edit</a>
 								
 								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/calibrateOil/' . $value) }}">Calibrate</a>
 							

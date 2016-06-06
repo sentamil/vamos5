@@ -97,9 +97,18 @@ public function index() {
 
     $user1= new VdmDealersController;
     $user=$user1->checkuser();
+    $dealerId = $redis->smembers('S_Dealers_'. $fcode);
+
+
+
+    $orgArr = array();
+    foreach($dealerId as $org) {
+        $orgArr = array_add($orgArr, $org,$org);
+    }
+    $dealerId = $orgArr;
     return View::make ( 'vdm.vehicles.index', array (
         'vehicleList' => $vehicleList
-        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList);
+        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList)->with('dealerId',$dealerId); 
 }
 
 
@@ -658,6 +667,7 @@ public function edit($id) {
             'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
     }catch(\Exception $e)
     {
+        log::info( '------exception---------- '.$e->getMessage());
         return Redirect::to ( 'vdmVehicles' );
     }
 }
@@ -1977,6 +1987,40 @@ public function multi() {
     $orgList = $orgArr;
 
     return View::make ( 'vdm.vehicles.multi' )->with('orgList',$orgList);       
+
+}
+
+
+
+public function moveDealer() {
+    Log::info('------- inside dealerSearch--------');
+    if (! Auth::check ()) {
+        return Redirect::to ( 'login' );
+    }
+    $username = Auth::user ()->username;
+    $redis = Redis::connection ();
+    $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+    Log::info(' inside multi ' );
+    $vehicleList= Input::get ( 'vehicleList' );
+    $dealerId= Input::get ( 'dealerId' );
+ Log::info('------- inside dealerSearch--------'.count($vehicleList));
+ if($vehicleList!==null)
+ {
+     foreach ($vehicleList as $key => $value) {
+       Log::info('------- inside vehicle--------'.$value);
+        $redis->sadd('S_Vehicles_Dealer_'.$dealerId.'_'.$fcode,$value);
+        $redis->srem('S_Vehicles_Admin_'.$fcode,$value);
+    }
+ }
+   
+
+    // $redis->sadd('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
+    // $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleId);
+
+
+return Redirect::to ( 'vdmVehicles' );
+
+   // return View::make ( 'vdm.vehicles.dealerSearch' )->with('dealerId',$dealerId);       
 
 }
 
