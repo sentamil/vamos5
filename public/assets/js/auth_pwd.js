@@ -35,7 +35,7 @@ app.controller('mainCtrl',function($scope){
       		if(data == 'incorrect')
       			$scope.statusUi   = "Invalid Password"; 
       		else if (data == 'correct'){
-      			location.pathname = '/vamo/public/sites';
+      			location.pathname = context+'/public/sites';
       			sessionStorage.setItem('auth', 'sitesVal');
       		}
       			
