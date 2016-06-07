@@ -50,7 +50,7 @@
 										<div style="color: #00b374">Moving</div>
 									@endif
 									@if(array_get($statusList, $value) == 'S')
-										<div style="color: #ff6500">Standing</div>
+										<div style="color: #ff6500">Idle</div>
 									@endif
 									@if(array_get($statusList, $value) == 'U')
 										<div style="color: #fe068d">No Data</div>
@@ -93,6 +93,9 @@
 						
 						
 							<script>
+
+
+
 
   function ConfirmDelete()
   {

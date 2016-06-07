@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css" />
     
     <!-- search box -->
-    <!-- <link href="vendor/dropDown/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="assets/dropDown/css/bootstrap-select.min.css">
     
     <!-- App styles -->
