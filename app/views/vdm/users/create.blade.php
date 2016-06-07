@@ -42,7 +42,7 @@
 
 							</br>
 							 <div class="form-group">
-							 {{Form::checkbox('virtualaccount', 'value',false, ['class' => 'check1'])}}
+							 {{Form::checkbox('virtualaccount', 'value',true, ['class' => 'check1'])}}
 							{{ Form::label('virtualaccount', 'Virtual Account') }}
 							</div>
 							

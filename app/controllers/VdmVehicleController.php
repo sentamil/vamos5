@@ -97,9 +97,18 @@ public function index() {
 
     $user1= new VdmDealersController;
     $user=$user1->checkuser();
+    $dealerId = $redis->smembers('S_Dealers_'. $fcode);
+
+
+
+    $orgArr = array();
+    foreach($dealerId as $org) {
+        $orgArr = array_add($orgArr, $org,$org);
+    }
+    $dealerId = $orgArr;
     return View::make ( 'vdm.vehicles.index', array (
         'vehicleList' => $vehicleList
-        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList);
+        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList)->with('dealerId',$dealerId); 
 }
 
 
@@ -658,6 +667,7 @@ public function edit($id) {
             'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
     }catch(\Exception $e)
     {
+        log::info( '------exception---------- '.$e->getMessage());
         return Redirect::to ( 'vdmVehicles' );
     }
 }
@@ -1188,7 +1198,47 @@ public function updateLive($id) {
         if(isset($vehicleRefData['OWN'])==1)
             $ownership=$vehicleRefData['OWN'];
         else
-            $ownership='OWN';          
+            $ownership='OWN';  
+        if(isset($vehicleRefData['isRfid'])==1)
+            $isRfid=$vehicleRefData['isRfid'];
+        else
+            $isRfid='no';  
+        if(isset($vehicleRefData['ipAddress'])==1)
+            $ipAddress=$vehicleRefData['ipAddress'];
+        else
+            $ipAddress='';  
+        if(isset($vehicleRefData['portNo'])==1)
+            $portNo=$vehicleRefData['portNo'];
+        else
+            $portNo=''; 
+        if(isset($vehicleRefData['analog1'])==1)
+            $analog1=$vehicleRefData['analog1'];
+        else
+            $analog1='no';  
+        if(isset($vehicleRefData['analog2'])==1)
+            $analog2=$vehicleRefData['analog2'];
+        else
+            $analog2='no';  
+        if(isset($vehicleRefData['digital1'])==1)
+            $digital1=$vehicleRefData['digital1'];
+        else
+            $digital1='no';  
+        if(isset($vehicleRefData['digital2'])==1)
+            $digital2=$vehicleRefData['digital2'];
+        else
+            $digital2='no';  
+        if(isset($vehicleRefData['serial1'])==1)
+            $serial1=$vehicleRefData['serial1'];
+        else
+            $serial1='no';  
+        if(isset($vehicleRefData['serial2'])==1)
+            $serial2=$vehicleRefData['serial2'];
+        else
+            $serial2='no';  
+        if(isset($vehicleRefData['digitalout'])==1)
+            $digitalout=$vehicleRefData['digitalout'];
+        else
+            $digitalout='no';  
 
         $deviceId=$vehicleRefData['deviceId'];
         try{
@@ -1227,6 +1277,16 @@ public function updateLive($id) {
             'fuel'=>$fuel,
             'fuelType'=>$fuelType,
             'OWN'=>$ownership,
+            'ipAddress'=>$ipAddress,
+            'portNo'=>$portNo,
+            'analog1'=>$analog1,
+            'analog2'=>$analog2,
+            'digital1'=>$digital1,
+            'digital2'=>$digital2,
+            'serial1'=>$serial1,
+            'serial2'=>$serial2,
+            'digitalout'=>$digitalout,
+            'isRfid'=>$isRfid,
             );
 
         $refDataJson = json_encode ( $refDataArr );
@@ -1927,6 +1987,40 @@ public function multi() {
     $orgList = $orgArr;
 
     return View::make ( 'vdm.vehicles.multi' )->with('orgList',$orgList);       
+
+}
+
+
+
+public function moveDealer() {
+    Log::info('------- inside dealerSearch--------');
+    if (! Auth::check ()) {
+        return Redirect::to ( 'login' );
+    }
+    $username = Auth::user ()->username;
+    $redis = Redis::connection ();
+    $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+    Log::info(' inside multi ' );
+    $vehicleList= Input::get ( 'vehicleList' );
+    $dealerId= Input::get ( 'dealerId' );
+ Log::info('------- inside dealerSearch--------'.count($vehicleList));
+ if($vehicleList!==null)
+ {
+     foreach ($vehicleList as $key => $value) {
+       Log::info('------- inside vehicle--------'.$value);
+        $redis->sadd('S_Vehicles_Dealer_'.$dealerId.'_'.$fcode,$value);
+        $redis->srem('S_Vehicles_Admin_'.$fcode,$value);
+    }
+ }
+   
+
+    // $redis->sadd('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
+    // $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleId);
+
+
+return Redirect::to ( 'vdmVehicles' );
+
+   // return View::make ( 'vdm.vehicles.dealerSearch' )->with('dealerId',$dealerId);       
 
 }
 
