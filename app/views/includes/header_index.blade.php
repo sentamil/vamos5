@@ -19,9 +19,9 @@
     
     <!-- search box -->
     <link rel="stylesheet" href="assets/dropDown/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css" type="text/css">
-    <link rel="stylesheet" href="plugins/datatables/jquery.dataTables.min.css">
     
+    <link rel="stylesheet" href="plugins/datatables/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css" type="text/css">
     <!-- App styles -->
     <link rel="stylesheet" href="fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
     <link rel="stylesheet" href="fonts/pe-icon-7-stroke/css/helper.css" />
