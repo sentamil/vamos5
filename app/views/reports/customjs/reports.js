@@ -5,8 +5,12 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	//$("#testLoad").load("../public/menu");
 	var getUrl  =   document.location.href;
 	var index   =   getUrl.split("=")[1];
-	if(index == 1)
+	if(index == 1){
 		$scope.actTab 	=	true;
+		$(window).load(function(){
+        	$('#myModal').modal('show');
+    	});
+	}
 	else if(index ==2 )
 		$scope.siteTab 		=	true;
 
@@ -194,7 +198,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		service(conUrl1);
 	}
 
-	function dateFunction()
+	$scope.dateFunction = function()
 	{
 		$scope.fromNowTS1		=	new Date();
 		$scope.fromdate1		=	$scope.getTodayDate1($scope.fromNowTS1.setDate($scope.fromNowTS1.getDate()));
@@ -209,7 +213,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		
 		$('#preloader').show(); 
 		$('#preloader02').show();
-		dateFunction();
+		$scope.dateFunction();
 		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime);
 		service(conUrl);
 	}
@@ -240,7 +244,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		}
 			
 		else
-			dateFunction(); 
+			$scope.dateFunction(); 
 		var conUrl              =   'http://'+getIP+context+'/public/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.fromdate1+'&toTime='+convert_to_24h($scope.totime)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site;
 		serviceCallTrip(conUrl);
 		console.log('  consoldate trip '+$scope.fromdate1 +$scope.fromTime+$scope.todate1 +$scope.totime);

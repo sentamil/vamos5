@@ -31,12 +31,12 @@ app.directive('map', function($http, vamoservice) {
 				total  			 = parseInt(locs.speed);
 				
 
-
+				if(data.address == null || data.address == undefined || data.address == ' ')
 				scope.getLocation(locs.latitude, locs.longitude, function(count){
 					$('#lastseentrack').text(count); 
-					// var t = vamoservice.geocodeToserver(locs.latitude, locs.longitude, count);
-									
 				});
+				else
+					$('#lastseentrack').text(data.address); 
 				
 				$('#positiontime').text(vamoservice.statusTime(locs).tempcaption);
 				$('#regno span').text(vamoservice.statusTime(locs).temptime);
@@ -147,11 +147,17 @@ app.directive('map', function($http, vamoservice) {
 
 					$('#positiontime').text(vamoservice.statusTime(locs).tempcaption);
 					$('#regno span').text(vamoservice.statusTime(locs).temptime);
-					scope.getLocation(locs.latitude, locs.longitude, function(count){
-						$('#lastseentrack').text(count); 
-						var t = vamoservice.geocodeToserver(locs.latitude, locs.longitude, count);
-									
-					});
+					// scope.getLocation(locs.latitude, locs.longitude, function(count){
+					// 	$('#lastseentrack').text(count); 
+					// });
+
+
+					if(data.address == null || data.address == undefined || data.address == ' ')
+						scope.getLocation(locs.latitude, locs.longitude, function(count){
+							$('#lastseentrack').text(count); 
+						});
+					else
+						$('#lastseentrack').text(data.address); 
            			
            			scope.path.push(new google.maps.LatLng(data.latitude, data.longitude));
 					
