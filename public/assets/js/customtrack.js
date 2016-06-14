@@ -32,12 +32,15 @@ app.directive('map', function($http, vamoservice) {
 				
 
 				if(data.address == null || data.address == undefined || data.address == ' ')
-				scope.getLocation(locs.latitude, locs.longitude, function(count){
-					$('#lastseentrack').text(count);
-					data.address = count;  
-				});
-				else
-					$('#lastseentrack').text(data.address); 
+					scope.getLocation(locs.latitude, locs.longitude, function(count){
+						$('#lastseentrack').text(count);
+						data.address = count;
+						scope.addres = count;  
+					});
+				else{
+						$('#lastseentrack').text(data.address);
+						scope.addres = data.address;   
+					} 
 				
 				$('#positiontime').text(vamoservice.statusTime(locs).tempcaption);
 				$('#regno span').text(vamoservice.statusTime(locs).temptime);
@@ -109,7 +112,7 @@ app.directive('map', function($http, vamoservice) {
 			    // })
 
 			    var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
-						+'<div style="width:200px; display:inline-block;"><b >Address</b> - <span>'+data.address+'</span></div></div>';
+						+'<div style="width:200px; display:inline-block;"><b >Address</b> - <span>'+scope.addres+'</span></div></div>';
 
 				var infowindow = new google.maps.InfoWindow({
 				    content: contentString
@@ -156,10 +159,13 @@ app.directive('map', function($http, vamoservice) {
 					if(data.address == null || data.address == undefined || data.address == ' ')
 						scope.getLocation(locs.latitude, locs.longitude, function(count){
 							$('#lastseentrack').text(count);
-							data.address = count; 
+							data.address = count;
+							scope.addres = count;  
 						});
-					else
-						$('#lastseentrack').text(data.address); 
+					else{
+						$('#lastseentrack').text(data.address);
+						scope.addres = data.address;   
+					}
            			
            			scope.path.push(new google.maps.LatLng(data.latitude, data.longitude));
 					
@@ -185,7 +191,7 @@ app.directive('map', function($http, vamoservice) {
 					});
 					
 					var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
-						+'<div style="width:200px; display:inline-block;"><b>Address</b> - <span>'+data.address+'</span></div></div>';
+						+'<div style="width:200px; display:inline-block;"><b>Address</b> - <span>'+scope.addres+'</span></div></div>';
 
 					var infowindow = new google.maps.InfoWindow({
 					    content: contentString
