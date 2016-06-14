@@ -33,7 +33,8 @@ app.directive('map', function($http, vamoservice) {
 
 				if(data.address == null || data.address == undefined || data.address == ' ')
 				scope.getLocation(locs.latitude, locs.longitude, function(count){
-					$('#lastseentrack').text(count); 
+					$('#lastseentrack').text(count);
+					data.address = count;  
 				});
 				else
 					$('#lastseentrack').text(data.address); 
@@ -154,7 +155,8 @@ app.directive('map', function($http, vamoservice) {
 
 					if(data.address == null || data.address == undefined || data.address == ' ')
 						scope.getLocation(locs.latitude, locs.longitude, function(count){
-							$('#lastseentrack').text(count); 
+							$('#lastseentrack').text(count);
+							data.address = count; 
 						});
 					else
 						$('#lastseentrack').text(data.address); 
