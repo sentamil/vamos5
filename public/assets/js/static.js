@@ -1,2 +1,2 @@
 var globalIP = document.location.host;
-var context = '/vamo';
+var context = '/gps';
