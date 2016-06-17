@@ -21,11 +21,11 @@
 
                 <div class="panel-body">
 
-                    @if(Session::get('cur')=='admin')
+                   <!--  @if(Session::get('cur')=='admin')
                     <div >{{ Form::label('dealerId', 'Dealers Id') }}</div>
                             <div >{{ Form::select('dealerId', array($dealerId), Input::old(''),array('class'=>'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
                             <div >{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div>
-       				 @endif 
+       				 @endif  -->
                
        				 
                 	<hr>
