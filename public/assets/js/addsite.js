@@ -21,7 +21,7 @@ app.controller('mainCtrl',function($scope, $http){
   var polygenColor;
   marker = new google.maps.Marker({});
   var oldName         = '';
-  $scope.url          = 'http://'+getIP+'/vamo/public/viewSite';
+  $scope.url          = 'http://'+getIP+context+'/public/viewSite';
   var myOptions       = {
                           zoom: 7,
                           center: new google.maps.LatLng(12.993803, 80.193075),
@@ -90,7 +90,7 @@ app.controller('mainCtrl',function($scope, $http){
   {
     //$scope.orgIdlist    = [];
 
-    var url_site          = 'http://'+getIP+'/vamo/public/viewSite';
+    var url_site          = 'http://'+getIP+context+'/public/viewSite';
     $http.get(url_site).success(function(response){
       mergeList       = [];
       dropDown=[];

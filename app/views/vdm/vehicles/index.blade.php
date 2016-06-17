@@ -9,6 +9,7 @@
                 <div class="panel-heading">
                     <h4><b>Vehicles List</b></h4>  
 
+
                    <!--  @if(Session::get('cur')=='admin')
                     <div >{{ Form::label('dealerId', 'Dealers Id') }}</div>
                             <div >{{ Form::select('dealerId', array($dealerId), Input::old(''),array('class'=>'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
@@ -19,10 +20,15 @@
                 </div>
 
                 <div class="panel-body">
-                <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6">
-                <div class="col-sm-6"><div id="example2_filter" class="dataTables_filter"></div></div></div><div class="row">
 
-                	<div class="col-sm-12">
+                    @if(Session::get('cur')=='admin')
+                    <div >{{ Form::label('dealerId', 'Dealers Id') }}</div>
+                            <div >{{ Form::select('dealerId', array($dealerId), Input::old(''),array('class'=>'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
+                            <div >{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div>
+       				 @endif 
+               
+       				 
+                	<hr>
                 	<table id="example1" class="table table-bordered dataTable">
                		 <thead>
 						<tr>
@@ -68,7 +74,7 @@
 										<div style="color: #00b374">Moving</div>
 									@endif
 									@if(array_get($statusList, $value) == 'S')
-										<div style="color: #ff6500">Standing</div>
+										<div style="color: #ff6500">Idle</div>
 									@endif
 									@if(array_get($statusList, $value) == 'U')
 										<div style="color: #fe068d">No Data</div>
@@ -112,6 +118,9 @@
 						
 							<script>
 
+
+
+
   function ConfirmDelete()
   {
   var x = confirm("Confirm to remove?");
@@ -123,9 +132,9 @@
 
 </script>
 					</tbody>
-                </table></div></div>
-            </div>
-    </div>
+                </table>
+          
+    
 </div>
 </div>
 </div>

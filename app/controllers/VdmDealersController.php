@@ -1,6 +1,7 @@
 <?php
 class VdmDealersController extends \BaseController {
 	
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -10,6 +11,7 @@ class VdmDealersController extends \BaseController {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
+		
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -151,11 +153,16 @@ class VdmDealersController extends \BaseController {
 			$providerPassword='';		
 		$vehicleGroups = $redis->smembers ( $userId );
 		
-		Log::info(' image Name----> '.$userId);
-		$imgSmall = '/vamo/public/uploads/'.$website.'.small.png';
-		$imgMob = '/vamo/public/uploads/'.$website.'.png';
-		$imgLogo = '/vamo/public/uploads/'.$userId.'.png';
-		Log::info(' image Name '.$imgSmall);
+		$path = $_SERVER['REQUEST_URI'];
+		$pathValue =  explode("/", $path);
+		$imgLoc = '/'.$pathValue[1].'/public/uploads/';
+
+
+		//Log::info(' image Name----> '.$userId);
+		$imgSmall = $imgLoc.$website.'.small.png';
+		$imgMob = $imgLoc.$website.'.png';
+		$imgLogo = $imgLoc.$userId.'.png';
+		//Log::info(' image as '.$imgSmall);
 		
 		return View::make ( 'vdm.dealers.show', array (
 				'userId' => $userId 
@@ -296,7 +303,8 @@ class VdmDealersController extends \BaseController {
 			return Redirect::to ( 'vdmDealers/update' )->withErrors ( $validator );
 		} else {
 			// store
-			
+			$path = $_SERVER['REQUEST_URI'];
+			$pathValue =  explode("/", $path);
 			
 			
 			
@@ -323,7 +331,7 @@ class VdmDealersController extends \BaseController {
 			
 
 			
-			$upload_folder = '/var/www/vamo/public/uploads/'; ///var/www/gitsrc/vamos/public/assets/imgs/
+			$upload_folder = '/var/www/'.$pathValue[1].'/public/uploads/'; ///var/www/gitsrc/vamos/public/assets/imgs/
 			if (Input::hasFile('logo_smallEdit'))
 			{
 
@@ -425,6 +433,9 @@ class VdmDealersController extends \BaseController {
 		else {
 			// store
 			
+			$path = $_SERVER['REQUEST_URI'];
+			$pathValue =  explode("/", $path);
+
 			$dealerId = Input::get ( 'dealerId' );
 			$email = Input::get ( 'email' );
 			$mobileNo = Input::get ( 'mobileNo' );
@@ -434,7 +445,7 @@ class VdmDealersController extends \BaseController {
             $providerUserName=Input::get ( 'providerUserName' );
             $providerPassword=Input::get ( 'providerPassword' );
             // /var/www/gitsrc/vamos/public/assets/imgs/ for production path
-            $upload_folder = '/var/www/vamo/public/uploads/';
+            $upload_folder = '/var/www/'.$pathValue[1].'/public/uploads/';
             if (Input::hasFile('logo_small'))
 			{
 				$logoSmall=  Input::file('logo_small');

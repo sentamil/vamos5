@@ -21,16 +21,21 @@
 
 
 <script src="plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-<script src="plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script> 
-<!-- App scripts -->
+<script src="plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+<script src="plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+
 <script src="scripts/homer.js"></script>
 <script src="scripts/charts.js"></script>
 
 <script type="text/javascript">
-      $(function () {
-        $("#example1").dataTable();
+    $(function () {
+        $("#example1").dataTable({
+            stateSave: true
+        });
         $('.selectpicker').selectpicker();
-      });
+    });
+
+   
 </script>
 
 

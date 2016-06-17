@@ -142,7 +142,7 @@ app.directive('map', function($http, vamoservice) {
 app.controller('mainCtrl',function($scope, $http, vamoservice){ 
 	var res = document.location.href.split("?");
 	$scope.vehicleno = res[1].trim();
-	$scope.url = 'http://'+globalIP+'/vamo/public//publicTracking?'+res[1];
+	$scope.url = 'http://'+globalIP+context+'/public//publicTracking?'+res[1];
 	$scope.path = [];
 	$scope.speedval =[];
 	$scope.inter = 0;

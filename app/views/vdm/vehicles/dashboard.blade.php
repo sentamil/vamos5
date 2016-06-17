@@ -57,7 +57,7 @@
 										<hr>
 										<div class="col-sm-12" style="color: #086fa1">
 											<div class="col-sm-6">{{ Form::label('vehicles', 'Vehicles OnBoard with each Dealers : ') }}</div>
-											<div class="col-sm-6">{{ Form::label('vechileEx', $vechileEx) }}</div>
+											<div class="col-sm-6">{{ Form::label('Vehicles Expired :', $vechileEx) }}</div>
 										</div>
 										<div class="col-sm-6">
 											<table id="example1" class="table table-bordered dataTable">
@@ -80,7 +80,7 @@
 											</table>
 										</div>
 										<div class="col-sm-6">
-											{{ Form::label('vechileEx1', $vechileEx1) }}
+											<!-- {{ Form::label('vechileEx1', $vechileEx1) }} -->
 											<!-- </div> -->
 											<table id="example1" class="table table-bordered dataTable">
 												<thead>
