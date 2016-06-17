@@ -9,11 +9,11 @@
                 <div class="panel-heading">
                     <h4><b>Vehicles List</b></h4>  
 
-                    @if(Session::get('cur')=='admin')
+                   <!--  @if(Session::get('cur')=='admin')
                     <div >{{ Form::label('dealerId', 'Dealers Id') }}</div>
                             <div >{{ Form::select('dealerId', array($dealerId), Input::old(''),array('class'=>'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
                             <div >{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}</div>
-       				 @endif 
+       				 @endif  -->
                     
                     
                 </div>
@@ -27,9 +27,9 @@
                		 <thead>
 						<tr>
 							<th style="text-align: center;">ID</th>
-							 @if(Session::get('cur')=='admin')
+							<!--  @if(Session::get('cur')=='admin')
 							<th style="text-align: center;">Select</th>
-							 @endif 
+							 @endif  -->
 							<th style="text-align: center;">AssetID </th>
 							<th style="text-align: center;">Vehicle Name</th>
 							<th style="text-align: center;">Org Name</th>
@@ -50,9 +50,9 @@
 					@foreach($vehicleList as $key => $value)
 						<tr style="text-align: center;">
 							<td>{{ ++$tmp }}</td>
-							 @if(Session::get('cur')=='admin')
+							 <!-- @if(Session::get('cur')=='admin')
 							<td>{{ Form::checkbox('vehicleList[]', $value, null, ['class' => 'field']) }}</td>
-							@endif 
+							@endif  -->
 							<td>{{ $value }}</td>
 							<td>{{ array_get($shortNameList, $value)}}</td>
 							<td>{{ array_get($orgIdList, $value)}}</td>
