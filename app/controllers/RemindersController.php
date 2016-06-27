@@ -40,7 +40,7 @@ class RemindersController extends Controller {
 				$hashurl=Hash::make($temp);
 				$hashurl=str_replace("/","a",$hashurl);
 				log::info($emailTemp."valid user ".$username.' token '.$temp." hash url ".$hashurl);
-				$url='http://' .$ipaddress . '/vamo/public/password/reset/'.$hashurl;
+				$url='http://' .$ipaddress . '/gps/public/password/reset/'.$hashurl;
 					$response=Mail::send('emails.reset', array('url'=>$url), function($message){
 				$message->to(Session::pull ( 'email' ))->subject('PASSWORD RESET!');
 			});
