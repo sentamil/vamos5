@@ -219,14 +219,29 @@ font-size:12px;
 padding-left:0px;
 
 }
-.sidebar-subnav li li a.red{ color:red;}
+.sidebar-subnav li li a.red span{ color:red;}
+
 /*.sidebar-subnav li ul li a:hover {
 color:#152b44;
 }*/
 .sidebar-subnav li ul li.active a{ background-color:#aaa !important;
-color:#333;
+}
+.sidebar-subnav li ul li.active a span{ color:#d8dad9!important;
 }
 
+.sidebar-subnav li ul li a.red span{color:red !important;
+}
+.sidebar-subnav li ul li a{
+	text-decoration: underline;
+	color: #0886AE
+}
+.sidebar-subnav li ul li a span{
+ color:#888;
+font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight";
+font-weight:normal;
+font-size:12px;
+padding-left:0px;
+}
 .sidebar-bottom{ margin-top:30%;}
 .col-lg-12{ padding:0 !important;}
 @media(min-width:768px) {

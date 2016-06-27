@@ -54,7 +54,7 @@
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak>{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index, loc.shortName)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> {{loc.shortName}}</a></li>
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index, loc.shortName)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> <span>{{loc.shortName}}</span></a></li>
                     </ul>
                 </li>
             </ul>
