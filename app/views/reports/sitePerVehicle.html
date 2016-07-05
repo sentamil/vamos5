@@ -218,7 +218,7 @@ background-color: #ffffff;
                                         <!-- <td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td> -->
                                     </tr>
                                     <tr align="center">
-                                        <td ng-if="siteData==''" colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                        <td ng-if="siteData=='' || siteData.length==0" colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                     </tr>
                                 </tbody>
                                 </table>

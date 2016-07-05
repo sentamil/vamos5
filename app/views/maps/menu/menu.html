@@ -47,6 +47,9 @@
                                                     <td><a id="tripkms" href=""> Trip Summary</a></td>
                                                     <td><a id="temp" href=""> Temperature</a></td>
                                                 </tr>
+                                                <tr>
+                                                    <td><a id="alarm" href="">Alarm</a></td>
+                                                </tr>
                                             </table>
 
                                         </div>
@@ -116,7 +119,9 @@
                 // console.log(' clck ')
                 $("#temp").attr("href", 'temperature?vid='+vid+'&vg='+gname+'&tn=temperature')
             });
-            
+            $('#alarm').click(function(){
+                $('#alarm').attr("href", 'alarm?vid='+vid+'&vg='+gname+'&tn=alarm')
+            })
 
 
 

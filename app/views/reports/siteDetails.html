@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="assets/imgs/tab.ico">
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <!-- <link href="assets/css/jVanilla.css" rel="stylesheet"> -->
     
     <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
@@ -64,7 +65,7 @@
                                     <tr><td colspan="2"></td></tr>
                                     <tr>
                                         <td><b>Site Name</b></td>
-                                        <td><input name="txt" type="text" ng-model="textValue" style="width:100%; font-weight: bold; font-size: 12px; padding : 3px"/></td>
+                                        <td><input name="txt" data-toggle="tooltip" data-placement="left"  title="please don't use space" type="text" ng-model="textValue" style="width:100%; font-weight: bold; font-size: 12px; padding : 3px"/></td>
                                     </tr>
                                     <tr>
                                         <td><b>Type</b></td>
@@ -138,16 +139,20 @@
 
     </div>
     <script src="assets/js/static.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
     <script src="assets/js/addsite.js"></script>
     <script>
-    
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
     //menu loading
     $("#testLoad").load("../public/menu");
     var logo =document.location.host;
