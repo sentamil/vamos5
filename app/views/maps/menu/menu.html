@@ -49,10 +49,10 @@
             <ul>
                 <li><a href="../public/replay">History</a></li>
                 <li><a href="../public/live">Track</a></li>
-                <li><a id="addsites">Admin</a>
-                   <div  style="padding-left: 10px">
-                       <a href="../public/password_check" id="addsites" class="lowcase">AddSites</a>
-                   </div>
+                <li><!-- <a id="addsites">Admin</a>
+                   <div  style="padding-left: 10px"> -->
+                       <a href="../public/password_check" id="addsites">AddSites / Geofrance</a>
+                 <!--   </div> -->
                 </li>
             </ul>
         </li>
@@ -60,9 +60,9 @@
             <a href="#"><span data-hover="Reports">Reports</span></a>
             <ul>
                 <li><a href="../public/reports"> Current </a></li>
-                <li><a href="../public/reports?ind=1"> Consolidated </a></li>
-                <li><a href="../public/reports?ind=2"> Consolidated Site/Location</a></li>
-                <li> <a href="#"> Advanced &nbsp; </a>
+                <li><a href="../public/reports?ind=1">Vehicles Consolidated </a></li>
+                <li><a href="../public/reports?ind=2"> Consolidated Site / Location</a></li>
+                <!-- <li> <a href="#"> Advanced &nbsp; </a>
                      <div style="padding-left: 10px">
                         <table style="width: 300px; height: 100px;">
                             <tr>
@@ -91,16 +91,39 @@
                         </table>
 
                     </div>
+                </li> -->
             </ul>
         </li>
             <li class="cl-effect-5">
-                <a href="../public/fuel"><span data-hover="Fuel">Fuel</span></a>
+                <a><span data-hover="analytics">analytics</span></a>
+                <ul>
+                    <li><a id="movement" href=""> Movement </a></li>
+                    <li><a id="overspeed" href=""> OverSpeed </a></li>
+                    <li><a id="parked" href=""> Parked </a></li>
+                    <li><a id="idle" href=""> Idle </a></li>
+                    <li><a id="event" href=""> Event </a></li>
+                    <li><a id="site" href=""> Site </a></li>
+                    
+                    <li><a id="trip" href=""> Trip Time </a></li>
+                    <li><a id="tripkms" href=""> Trip Summary</a></li>
+                    
+                    <li><a id="alarm" href="">Alarm</a></li>
+                </ul>
             </li>
         <li class="cl-effect-5">
             <a href="#"><span data-hover="Statistics">Statistics</span></a>
             <ul>
                 <li><a href="../public/statistics">Executive</a></li>
                 <li><a href="../public/statistics?ind=1">POI</a></li>
+            </ul>
+        </li>
+        <li class="cl-effect-5">
+            <a href="#"><span data-hover="sensor">sensor</span></a>
+            <ul>
+                <li><a id="load" href=""> Load </a></li>
+                    <li><a id="fuel" href=""> Fuel </a></li>
+                    <li><a id="ignition" href=""> Ignition </a></li>
+                    <li><a id="temp" href=""> Temperature</a></li>
             </ul>
         </li>
         <li class="cl-effect-5">
@@ -118,7 +141,7 @@
             <span class="glyphicon glyphicon-user"><span id="valueUser" style="font-size:12px; font-weight: bold; font-family: Helvetica"></span></span>    
         </li>
         <li>
-            <a href="../public/logout" class="glyphicon glyphicon-log-out" style="padding: 10px 15px;color: #fff; text-align: center;width: 10vw;"></a>
+            <a href="../public/logout" class="glyphicon glyphicon-log-out" style="padding: 10px 15px;color: #fff; text-align: center;"></a>
         </li>
     </ul>
 </nav>
