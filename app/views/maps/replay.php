@@ -18,8 +18,7 @@
 <![endif]-->
 <style type="text/css">
   #map_canvas{
-    width:100%;
-    height: 100vh; 
+    height:94vh; width:100%; margin-top: 35px;
   }
   [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
       display: none !important;
@@ -63,12 +62,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div style="position: absolute;top: 0px;left: 20%; z-index:999999;" id="testLoad"></div>
+                        <div id="testLoad"></div>
                         </div>
                         <div id="minmax">
                             <img src="assets/imgs/add.png" />
                         </div>
-                        <div id="contentmin" class="rightsection" style="position: absolute;top: 30px;right: 10px; z-index:9; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
+                        <div id="contentmin" class="rightsection" style="position: absolute;margin-top: 35px;right: 10px; z-index:9; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
                                  <table cellpadding="0" cellspacing="0" class="dynData">
                                           <tbody>
                                                 <tr>

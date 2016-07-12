@@ -1,4 +1,198 @@
 <!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>Creative Link Effects</title>
+        
+        <meta name="author" content="Codrops" />
+        <link href="assets/css/jVanilla.css" rel="stylesheet">
+        <style type="text/css">
+            
+/*@import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
+@import url(//fonts.googleapis.com/css?family=Kaushan+Script);
+*/
+
+
+/*html, body{
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Source Sans Pro', sans-serif;
+    background: #f9f9f9;
+   
+}*/
+
+/*
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  
+  border-top: 10px solid #f00;
+}
+*/
+
+
+        </style>
+        
+   
+    </head>
+
+<body>
+<div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;">     
+<nav class="menus">
+    <ul>
+        <li class="cl-effect-5">
+            <a href="#"><span data-hover="Tracking">Tracking </span></a>
+            <ul>
+                <li><a href="../public/replay">History</a></li>
+                <li><a href="../public/live">Track</a></li>
+                <li><a id="addsites">Admin</a>
+                   <div  style="padding-left: 10px">
+                       <a href="../public/password_check" id="addsites" class="lowcase">AddSites</a>
+                   </div>
+                </li>
+            </ul>
+        </li>
+        <li class="cl-effect-5">
+            <a href="#"><span data-hover="Reports">Reports</span></a>
+            <ul>
+                <li><a href="../public/reports"> Current </a></li>
+                <li><a href="../public/reports?ind=1"> Consolidated </a></li>
+                <li><a href="../public/reports?ind=2"> Consolidated Site/Location</a></li>
+                <li> <a href="#"> Advanced &nbsp; </a>
+                     <div style="padding-left: 10px">
+                        <table style="width: 300px; height: 100px;">
+                            <tr>
+                                <td><a id="movement" href="" class="lowcase"> Movement </a></td>
+                                <td><a id="overspeed" href="" class="lowcase"> OverSpeed </a></td>
+                                <td><a id="parked" href="" class="lowcase"> Parked </a></td>
+                            </tr>
+                            <tr>
+                                <td><a id="idle" href="" class="lowcase"> Idle </a></td>
+                                <td><a id="event" href="" class="lowcase"> Event </a></td>
+                                <td><a id="site" href="" class="lowcase"> Site </a></td>
+                            </tr>
+                            <tr>
+                                <td><a id="load" href="" class="lowcase"> Load </a></td>
+                                <td><a id="fuel" href="" class="lowcase"> Fuel </a></td>
+                                <td><a id="ignition" href="" class="lowcase"> Ignition </a></td>
+                            </tr>
+                            <tr>
+                                <td><a id="trip" href="" class="lowcase"> Trip Time </a></td>
+                                <td><a id="tripkms" href="" class="lowcase"> Trip Summary</a></td>
+                                <td><a id="temp" href="" class="lowcase"> Temperature</a></td>
+                            </tr>
+                            <tr>
+                                <td><a id="alarm" href="" class="lowcase">Alarm</a></td>
+                            </tr>
+                        </table>
+
+                    </div>
+            </ul>
+        </li>
+            <li class="cl-effect-5">
+                <a href="../public/fuel"><span data-hover="Fuel">Fuel</span></a>
+            </li>
+        <li class="cl-effect-5">
+            <a href="#"><span data-hover="Statistics">Statistics</span></a>
+            <ul>
+                <li><a href="../public/statistics">Executive</a></li>
+                <li><a href="../public/statistics?ind=1">POI</a></li>
+            </ul>
+        </li>
+        <li class="cl-effect-5">
+            <a href="#"><span data-hover="Performance">Performance</span></a>
+            <ul>
+                <li><a href="../public/performance?tab=daily">Daily Performance</a></li>
+                <li><a href="../public/performance">Monthly Performance</a></li>
+            </ul>
+        </li>
+        
+        
+
+        <li id="userId">
+            <!-- <a href="">arun</a> -->
+            <span class="glyphicon glyphicon-user"><span id="valueUser" style="font-size:12px; font-weight: bold; font-family: Helvetica"></span></span>    
+        </li>
+        <li>
+            <a href="../public/logout" class="glyphicon glyphicon-log-out" style="padding: 10px 15px;color: #fff; text-align: center;width: 10vw;"></a>
+        </li>
+    </ul>
+</nav>
+</div>
+<script type="text/javascript">
+    var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
+    var sp = menuValue.split(",");
+    $('#valueUser').text("  "+sp[1]);
+
+
+    var obj = JSON.parse(sessionStorage.getItem('user'));
+            var sp  = obj.split(',');
+            var vid = sp[0];
+            var gname = sp[1];
+            $("#movement").click(function() {
+               $("#movement").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement')
+            });
+            $("#overspeed").click(function() {
+                $("#overspeed").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=overspeed')
+            });
+            $("#parked").click(function() {
+                $("#parked").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=parked')
+            });
+            $("#idle").click(function() {
+                $("#idle").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=idle')
+            });
+            $("#event").click(function() {
+                $("#event").attr("href", 'event?vid='+vid+'&vg='+gname+'&tn=event')
+            });
+            $("#site").click(function() {
+                $("#site").attr("href", 'siteReport?vid='+vid+'&vg='+gname+'&tn=site')
+            });
+            $("#load").click(function() {
+                $("#load").attr("href", 'loadDetails?vid='+vid+'&vg='+gname+'&tn=load')
+            });
+            $("#fuel").click(function() {
+                $("#fuel").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=fuel')
+            });
+            $("#ignition").click(function() {
+                $("#ignition").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=ignition')
+            });
+            $('#trip').click(function() {
+                $('#trip').attr("href", 'trip?vid='+vid+'&vg='+gname+'&tn=trip')
+            });
+            $('#tripkms').click(function() {
+                // console.log(' clck ')
+                $("#tripkms").attr("href", 'tripkms?vid='+vid+'&vg='+gname+'&tn=tripkms')
+            });
+            $('#temp').click(function() {
+                // console.log(' clck ')
+                $("#temp").attr("href", 'temperature?vid='+vid+'&vg='+gname+'&tn=temperature')
+            });
+            $('#alarm').click(function(){
+                $('#alarm').attr("href", 'alarm?vid='+vid+'&vg='+gname+'&tn=alarm')
+            })
+
+
+
+            $('#addsites').click(function(){
+                if(sessionStorage.getItem('auth') == 'sitesVal')
+                    $('#addsites').attr("href", 'sites')
+                else
+                    $('#addsites').attr("href", 'password_check') 
+            });
+    
+</script>
+</body>
+</html>
+
+
+
+
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <link href="assets/css/jVanilla.css" rel="stylesheet">
@@ -14,7 +208,7 @@
                         <li class="list"> <a href="#">Admin &nbsp; <img src="assets/imgs/right.png"></a></a>
                             <ul class="menu-hover">
                                 <li class="list"><a href="../public/password_check" id="addsites">AddSites</a></li>
-                                <!-- <li class="list"><a href="../public/statistics?ind=1">POI</a></li> -->
+                               
                             </ul>
                         </li>
                         </ul>
@@ -133,4 +327,4 @@
             });
         </script>
     </body>
-</html>
+</html> -->

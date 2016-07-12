@@ -10,6 +10,7 @@
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <style type="text/css">
        /* #map_canvas{
             width:100%;
@@ -19,25 +20,33 @@
             background-color: green 
         }*/
 
-        #maploc1{
-            width:100%;
-            height: 45vh;
 
+        #maploc1{
+             width:100%;
+            height: 45vh;
+            /*overflow: auto;*/
+            /*resize: both;*/
+            box-shadow: 3px 3px 2px #888888;
+        
         } 
+       
        #maploc2{
             width:100%;
-            height: 45vh; 
+            height: 45vh;
+            box-shadow: 3px 3px 2px #888888; 
         } 
         #maploc3{
             width:100%;
-            height: 45vh; 
+            height: 45vh;
+            box-shadow: 3px 3px 2px #888888; 
         } 
        #maploc4{
             width:100%;
             height: 45vh; 
+            box-shadow: 3px 3px 2px #888888;
         } 
 
-        .shadow{box-shadow: 3px 3px 2px #888888;}
+       
 
         .watermark1 {
             position: absolute;
@@ -46,7 +55,7 @@
             left: 100px;
             font-size: 1em;
             text-align: center;
-            z-index: 1000;
+            /*z-index: 1000;*/
         }
 
          .watermark2 {
@@ -56,7 +65,7 @@
             right: 100px;
             font-size: 1em;
             text-align: center;
-            z-index: 1000;
+            /*z-index: 1000;*/
         }
 
         .watermark3 {
@@ -66,7 +75,7 @@
             left: 100px;
             font-size: 1em;
             text-align: center;
-            z-index: 1000;
+            /*z-index: 1000;*/
         }
 
          .watermark4 {
@@ -76,7 +85,7 @@
             right: 100px;
             font-size: 1em;
             text-align: center;
-            z-index: 1000;
+            /*z-index: 1000;*/
         }
 
       /*  body{padding: 0px; margin: 0px}*/
@@ -115,27 +124,25 @@
                 </div>
             </div>
             <div>
-                <p class="watermark1">Screen 1</p> 
-                <div class="col-md-6 quarter" style="padding: 3px; margin: 0px;">
-                  
-                    <div id="maploc1" class="shadow"></div>
+                
+                <div class="col-md-6 " style="padding: 3px; margin: 0px;">
+                    <div id="maploc1"><p class="watermark1">Screen 1</p></div>
                 </div>
-                <p class="watermark2">Screen 2</p> 
-                <div class="col-md-6 quarter"  style="padding: 3px; margin: 0px;">
-                    
-                    <div id="maploc2" class="shadow"></div>
+                
+                <div class="col-md-6 "  style="padding: 3px; margin: 0px;">
+                    <div id="maploc2"><p class="watermark2">Screen 2</p></div>
                 </div>
+                
                 <div class="col-md-12"><hr style="margin: 0.3em auto;"></div>
-                <p class="watermark3">Screen 3</p> 
-                <div class="col-md-6 quarter" style="padding: 3px; margin: 0px;">
-                   
-                    <div id="maploc3" class="shadow"></div>
+                
+                <div class="col-md-6 " style="padding: 3px; margin: 0px;">
+                    <div id="maploc3"><p class="watermark3">Screen 3</p></div>
                 </div>
-                <p class="watermark4">Screen 4</p> 
-                <div class="col-md-6 quarter" style="padding: 3px; margin: 0px;">
-                    
-                    <div id="maploc4" class="shadow"></div>
+                
+                <div class="col-md-6 " style="padding: 3px; margin: 0px;">
+                    <div id="maploc4"><p class="watermark4">Screen 4</p> </div>
                 </div>
+
             </div>
         <!-- </div>
  -->
@@ -144,8 +151,6 @@
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-    
-    
     <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/highcharts-more.js"></script>
@@ -159,18 +164,5 @@
 
 
 
-    <script>
-    $(document).ready(function(){
-        $('#minmax').click(function(){
-            $('#contentmin').animate({
-                height: 'toggle'
-            },2000);
-        });
-    });
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$("#wrapper").toggleClass("toggled");
-		});
-    </script>
 </body>
 </html>

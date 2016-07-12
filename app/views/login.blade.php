@@ -38,6 +38,13 @@
           }
 
 
+         
+          // (function test(){
+          //    console.log("arun")
+          // }());
+          
+
+
           var path = document.location.pathname;
           var splitpath  = path.split("/");
           //console.log(' path '+"----"+splitpath[1]);
@@ -56,7 +63,7 @@
         <p class="login-box-msg">GPS Tracking System</p>
         <form action="../../index2.html" method="post">
           <div class="form-group has-feedback">
-            {{ Form::text('userName', Input::old('userName'), array('placeholder' => 'Username', 'class'=>'form-control')) }}
+            {{ Form::text('userName', Input::old('userName'), array('placeholder' => 'Username', 'class'=>'form-control', 'id'=>'userIds')) }}
             <span style="top: 8px;" class="fa fa-user form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
@@ -72,16 +79,29 @@
               </div>                        
             </div><!-- /.col -->
             <div class="col-xs-4">
-              {{ Form::submit('Login', array('class'=>'btn btn-primary btn-block btn-flat')) }}
+              {{ Form::submit('Login', array('class'=>'btn btn-primary btn-block btn-flat', 'id'=>'clickme')) }}
             </div><!-- /.col -->
             {{ Form::close() }}
           </div>
         </form>
-
+        
         <!-- /.social-auth-links -->
 
         <a href="#">{{ HTML::link('password/reset', 'Forgot/reset your password?', array('id' => 'linkid'), false)}} </a><br>
         <a href="/gps/public/apiAcess">Api Access</a><br>
-
+        <a href="" target="_blank">
+          <img src="/vamo/public/assets/imgs/apple.png" width="150px" height="40px" />
+        </a>
+        <a href="https://play.google.com/store/search?q=gpsvts&c=apps&hl=en" target="_blank">
+          <img src="/vamo/public/assets/imgs/android.png" width="150px" height="40px" />
+        </a>
+        
       </div><!-- /.login-box-body -->
     </div>
+    <script type="text/javascript">
+
+       $('#clickme').click(function(){
+            var userId  = $('#userIds').val();
+            sessionStorage.setItem('userIdName', JSON.stringify('username'+","+userId));
+        });
+    </script>
