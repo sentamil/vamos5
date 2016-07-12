@@ -89,8 +89,8 @@
 
         <a href="#">{{ HTML::link('password/reset', 'Forgot/reset your password?', array('id' => 'linkid'), false)}} </a><br>
         <a href="/gps/public/apiAcess">Api Access</a><br>
-        <a href="https://linkmaker.itunes.apple.com/en-us/details/1038796257?q=gpsvts&country=in&media=appstore&genre=all" target="_blank"><img src="/vamo/public/assets/imgs/apple.png" /></a>
-        <a href="https://play.google.com/store/search?q=gpsvts&c=apps&hl=en" target="_blank"><img src="/vamo/public/assets/imgs/android.png" /></a>
+        <a href="#" target="_blank"><img src="/gps/public/assets/imgs/apple.png" /></a>
+        <a href="#" target="_blank"><img src="/gps/public/assets/imgs/android.png" /></a>
         
       </div><!-- /.login-box-body -->
     </div>
