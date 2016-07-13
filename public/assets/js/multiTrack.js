@@ -52,15 +52,16 @@ var getJoke = function(addressUrl){
 
 
 function resolveAddress(response)
-{	
+{	var address = ' ';
 	try
 	{
-		var addressUrl 	= "http://maps.googleapis.com/maps/api/geocode/json?latlng="+response.latitude+','+response.longitude+"&sensor=true"
-		var address = (response.address==undefined? getJoke(addressUrl) : response.address)
-		return address
+		var addressUrl 	= 	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+response.latitude+','+response.longitude+"&sensor=true"
+		address = (response.address==undefined? getJoke(addressUrl) : response.address)
+		return address;
 	} 
 	catch (err) 
 	{
+		return address;
 		stopLoading();
 		console.log(' error '+err)
 	}
