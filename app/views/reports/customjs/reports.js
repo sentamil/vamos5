@@ -172,7 +172,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 				$scope.selectMe($scope.consoldateData);
 			else
 			{
-				$scope.connSlow = "Your Internet is too slow :)"
+				$scope.connSlow = "No Data found! Please contact our admin.";
 				$('#connSlow').modal('show');
 			}
 		});

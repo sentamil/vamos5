@@ -35,7 +35,7 @@
 		            		<div class="col-md-2">{{ Form::label('providerUserName', 'Sms Provider Name')  }}</div>
 		            		<div class="col-md-4"><label class="form-control">{{$providerUserName}}</label></div>
 		            		<div class="col-md-2">{{ Form::label('providerPassword', 'Sms Provider Password')  }}</div>
-		            		<div class="col-md-4"><label class="form-control">{{$providerPassword}}</label></div>
+		            		<div class="col-md-4"><label class="form-control">*****************</label></div>
 		            	</div>
 		            	<br>
 		            	<div class="row">

@@ -109,7 +109,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <select ng-options="vehi.vehicleId for vehi in vehicles" ng-model="vehicle" class="form-control">
+                        <select ng-options="vehi.shortName for vehi in vehicles" ng-model="vehi.vehicleId" class="form-control">
                             <option style="display:none" value="">Select Vehicle</option>
                         </select>
                     </div>
@@ -119,7 +119,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-primary" ng-click="multiTracking(vehicle, screen)">Submit</button>
+                        <button type="button" class="btn btn-primary" ng-click="multiTracking(vehi.vehicleId, screen)">Submit</button>
                     </div>
                 </div>
             </div>

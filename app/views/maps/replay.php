@@ -67,7 +67,7 @@
                         <div id="minmax">
                             <img src="assets/imgs/add.png" />
                         </div>
-                        <div id="contentmin" class="rightsection" style="position: absolute;margin-top: 35px;right: 10px; z-index:9; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
+                        <div id="contentmin" class="rightsection" style="position: absolute;margin-top: -20px;right: 10px; z-index:9; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
                                  <table cellpadding="0" cellspacing="0" class="dynData">
                                           <tbody>
                                                 <tr>

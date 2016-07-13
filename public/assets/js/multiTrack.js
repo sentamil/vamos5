@@ -55,7 +55,7 @@ function resolveAddress(response)
 {	
 	try
 	{
-		var addressUrl 	=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+response.latitude+','+response.longitude+"&sensor=true"
+		var addressUrl 	= "http://maps.googleapis.com/maps/api/geocode/json?latlng="+response.latitude+','+response.longitude+"&sensor=true"
 		var address = (response.address==undefined? getJoke(addressUrl) : response.address)
 		return address
 	} 
@@ -263,7 +263,7 @@ function intervalServiceCall(obj, marker, maps, path, screen){
 			marker.setMap(maps)
 			maps.setCenter(new google.maps.LatLng(response.latitude,response.longitude));
 				
-			maps.setZoom(13);
+			// maps.setZoom(13);
 			// path.push(response.latitude,response.longitude);
 			switch (screen){
 				case 'screen1':

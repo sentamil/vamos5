@@ -97,7 +97,10 @@
                                 </div>
                                 <div class="form-group">
                                     {{ Form::label('providerPassword', 'Provider Password :') }}
-                                    {{ Form::text('providerPassword', $providerPassword, array('class' => 'form-control', 'placeholder'=>'Provider Password')) }}
+                                    
+
+                                    {{Form::input('password', 'providerPassword', $providerPassword,array('class' => 'form-control','placeholder'=>'Provider provider Password'))}}
+
                                 </div>
                                 <div class="form-group">
                                     {{ Form::label('email', 'Email') }}
