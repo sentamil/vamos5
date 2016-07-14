@@ -475,6 +475,7 @@ public function updateNotification() {
 
 		$email=$redis->hget('H_UserId_Cust_Map',$userId.':email');
 		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email',$userId.':password');
+		$redis->hdel ( 'H_Notification_Map_User', $userId);
 		
 		Log::info(" about to delete user" .$userId);
 		
