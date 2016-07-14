@@ -667,6 +667,8 @@ Route::post('userId', array('as' => 'ajax.userIdCheck', 'uses'=>'VdmUserControll
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
 Route::resource('Licence', 'LicenceController');
+Route::get('vdmUsers/notification/{param}', array('uses' => 'VdmUserController@notification'));
+Route::post('vdmUsers/updateNotification', array('uses' => 'VdmUserController@updateNotification'));
 
 Route::get('Licence/ViewDevices/{param}', array('uses' => 'LicenceController@viewDevices'));
  

@@ -34,12 +34,15 @@
 								<td>{{ array_get($userGroupsArr, $value)}}</td>	
 								<td>{{ $fcode }}</td>
 								<td>
+								<a class="btn btn-small btn-success" href="{{ URL::to('vdmUsers/' . $value) }}">Show this User</a>
+
+									<a class="btn btn-small btn-info" href="{{ URL::to('vdmUsers/' . $value . '/edit') }}">Edit this User</a>	
+									<a class="btn btn-small btn-success" href="{{ URL::to('vdmUsers/notification/' . $value ) }}">Edit Notification</a>				
 									{{ Form::open(array('url' => 'vdmUsers/' . $value, 'class' => 'pull-right' ,'onsubmit' => 'return ConfirmDelete()')) }}
 										{{ Form::hidden('_method', 'DELETE') }}
 										{{ Form::submit('Delete this User', array('class' => 'btn btn-warning')) }}
 									{{ Form::close() }}
-									<a class="btn btn-small btn-success" href="{{ URL::to('vdmUsers/' . $value) }}">Show this User</a>
-									<a class="btn btn-small btn-info" href="{{ URL::to('vdmUsers/' . $value . '/edit') }}">Edit this User</a>					
+
 								</td>
 							</tr>
 						@endforeach
