@@ -396,7 +396,7 @@ border-width: 10px;
  	label{font-weight:normal !important;}
 	.error{ display:none;}
 
-	.box > .loading-img, .loading-img,#status, #status02 {width: 100px;height: 100px;position: absolute;left: 50%;top: 50%;background-image: url(../imgs/status.gif);background-repeat: no-repeat;background-position: center;background-color:#f6f6f6;margin: -100px 0 0 -100px; border-radius: 2px}
+	.box > .loading-img, .loading-img,#status, #status02 {width: 100px;height: 100px;z-index: 9999;position: absolute;left: 50%;top: 50%;background-image: url(../imgs/status.gif);background-repeat: no-repeat;background-position: center;background-color:#f6f6f6;margin: -100px 0 0 -100px; border-radius: 2px}
 	#preloader, #preloader02 {position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 9999;}
 	#preloader02 { background-color:transparent; display:none;}
 	
@@ -466,9 +466,9 @@ border-width: 10px;
 .dynData td{ font-size:12px; padding:4px; color: #2a2a2a}
 #lastseen, #lstseendate{font-size:12px;}
 .dynData h3{ font-size:12px; margin:0; padding-left:10px; font-weight:normal;}
-#menuView {position: absolute;top: 175px;left: 5px; z-index:999; padding: 5px; font-size: 11px;}
+#menuView {position: absolute;top: 175px;left: 5px; z-index:9999; padding: 5px; font-size: 11px;}
 #draggable {position: absolute;top: 70px;left: 130px; z-index:999; width: 250px;padding: 7px;background: #fff; -webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
-#contentmin{position: absolute;top: 13vh;right: 10px; z-index:999; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}
+#contentmin{position: absolute;top: 13vh;right: 10px; z-index:9999; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}
 .dynData tbody tr:nth-child(odd){background-color: rgba(0,0,0,0.2); 
 	box-shadow: 0px 0px 0px 15px rgba(0, 0, 0, 0.3) !important;}
 #viewMap{cursor: pointer; padding: 6px; width: 100%; border-bottom-style: solid; border-bottom-color: #bfbfbf; border-width: 0.1em; border-radius: 2px; background-color: #196481}
@@ -654,5 +654,5 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 #testLoad{
-	position: fixed; top: 0px; z-index:999999; width: 100%;
+	position: fixed; top: 0px; z-index:999; width: 100%;
 }

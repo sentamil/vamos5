@@ -402,7 +402,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 			+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 			+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 
-			+'<div><a href="../public/trackSingleVeh?vehicleId='+vehicleID+'" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a>&nbsp;&nbsp;'
+			+'<div><a href="../public/trackSingleVeh?vehicleId='+vehicleID+'&track=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a> &nbsp;&nbsp; <a href="../public/trackSingleVeh?vehicleId='+vehicleID+'&track=multiTrack" target="_blank">MultiTrack</a>&nbsp;&nbsp;'
 			+'</div>';
 			
 			// var	drop1 = document.getElementById("ddlViewBy");

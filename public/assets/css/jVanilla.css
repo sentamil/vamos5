@@ -132,6 +132,7 @@ display: none;
     display:block;
     padding:10px 15px;
     line-height:1.2em;
+    letter-spacing: 1px;
     color:#fff;
     border-left:1px solid #fff;
 }
