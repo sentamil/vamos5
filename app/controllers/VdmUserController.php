@@ -186,7 +186,14 @@ class VdmUserController extends \BaseController {
 			$user->mobileNo=$mobileNo;
 			$user->password=Hash::make($password);
 			$user->save();
-			
+
+			$notificationset = 'S_VAMOS_NOTIFICATION';
+			$notificationGroups =  $redis->smembers ( $notificationset);
+			if(count($notificationGroups)>0)
+			{
+				$notification=implode(",",$notificationGroups);
+				$redis->hset("H_Notification_Map_User",$userId,$notification);
+			}
 			
 			
 			// redirect
