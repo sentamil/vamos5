@@ -169,7 +169,12 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 			$('#preloader').fadeOut(); 
 			$('#preloader02').delay(350).fadeOut('slow');
 			if($scope.consoldateData)
-			$scope.selectMe($scope.consoldateData);
+				$scope.selectMe($scope.consoldateData);
+			else
+			{
+				$scope.connSlow = "No Data found! Please contact our admin.";
+				$('#connSlow').modal('show');
+			}
 		});
 	}
   	 
@@ -195,7 +200,15 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		$scope.todate1     =  document.getElementById("dateTo").value;
 		$scope.totime      =  document.getElementById("timeTo").value;
 		var conUrl1        =  'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime);
-		service(conUrl1);
+		var days = daydiff(new Date($scope.fromdate1), new Date($scope.todate1));
+		if(days <= 3)
+			service(conUrl1);
+		else {
+			$('#preloader').fadeOut(); 
+			$('#preloader02').delay(350).fadeOut('slow');
+			$scope.connSlow = "Sorry for the inconvenience, Its a three days report"
+			$('#connSlow').modal('show');
+		}
 	}
 
 	$scope.dateFunction = function()

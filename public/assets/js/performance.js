@@ -229,7 +229,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 					}
 				},
 				series: [{
-					name: 'Break Analysis',
+					name: 'Brake Analysis',
 					data: totalsuddenBreak
 				}, {
 					name: 'Speed Analysis',

@@ -64,7 +64,19 @@ Route::get('/trackSingleVeh', function() {
     return View::make('maps.track');
 });
 
+Route::get('/multiple_vehicle', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('maps.multiTracking');
+});
 
+Route::get('/alarm', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    return View::make('reports.alarmReport');
+});
  
 Route::get('/allVehicles', function() {
     $user = User::find(1);
@@ -240,6 +252,14 @@ Route::get('/getOverallVehicleHistory', function() {
     }
     Log::info('get Vehicle Locations');
     return View::make('vls.getOverallVehicleHistory');
+});
+
+Route::get('/getAlarmReport',function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    Log::info('getAlarmReport');
+    return View::make('vls.getAlarmReport');
 });
 
 Route::get('/getTripReport', function() {

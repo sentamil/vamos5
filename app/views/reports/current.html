@@ -79,14 +79,14 @@ background-color: #ffffff;
                 </li>
                 <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
                     </ul>
                 </li>
             </ul>
         	
         </div>
         
-     	<div style="position: absolute;top: 0px;left: 40%; z-index:999999;" id="testLoad"></div>
+     	<div id="testLoad"></div>
         <div id="page-content-wrapper">
         	 <div class="container-fluid">
         	
@@ -336,6 +336,26 @@ background-color: #ffffff;
 					        <div class="modal-footer">
 					        	<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="consoldate()">Ok</button>
 					          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="dateFunction()">Close</button>
+					        </div>
+					      </div>
+					      
+					    </div>
+					  </div>
+
+				 <!-- modal box -->
+		        	<div class="modal fade" id="connSlow" role="dialog" style="top: 100px">
+					    <div class="modal-dialog">
+					    
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <button type="button" class="close" data-dismiss="modal">&times;</button>
+					          <h4 class="modal-title">Consolidated Report</h4>
+					        </div>
+					        <div class="modal-body" align="center">
+					          <h4>{{connSlow}}</h4>
+					        </div>
+					        <div class="modal-footer">
+					        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					        </div>
 					      </div>
 					      

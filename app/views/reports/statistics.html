@@ -64,7 +64,7 @@ background-color: #ffffff;
                 </li> -->
                 <li ng-repeat="location in vehicleList" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>{{loc.shortName}}</a></li>
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
                     </ul>
                 </li>
             </ul>
@@ -76,7 +76,7 @@ background-color: #ffffff;
             </div>
         <!-- /#page-content-wrapper -->
         </div>
-        <div style="position: absolute;top: 0px;left: 40%; z-index:999999;" id="testLoad"></div>
+        <div id="testLoad"></div>
     <!-- AdminLTE css box-->
    
        <div class="col-md-12">
@@ -233,7 +233,7 @@ background-color: #ffffff;
                                         <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>                      
                                      --></tr>
                                      <tr ng-if="execGroupReportData=='' || execGroupReportData==null || execGroupReportData.length==0" align="center">
-                                        <td colspan="8" class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                        <td colspan="9" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                      </tr>
                                 </table>
                             </div>

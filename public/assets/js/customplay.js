@@ -26,7 +26,8 @@ app.directive('map', function($http) {
 				var result=nd.toLocaleString();
 				return result;
 			}
-		 	scope.$watch("hisurl", function (val) { 
+		 	scope.$watch("hisurl", function (val) {
+		 		scope.startLoading(); 
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
 					scope.hisloc = locs;
@@ -144,7 +145,7 @@ app.directive('map', function($http) {
 								      		{
 								      			sp 	  = splitLatLan[j].split(":");
 								      			polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
-								      			console.log(sp[0]+' ---- '+ sp[1])
+								      			// console.log(sp[0]+' ---- '+ sp[1])
 								      			// latlanList.push(sp[0]+":"+sp[1]);
 								      			// seclat        = sp[0];
 								      			// seclan        = sp[1];
@@ -290,6 +291,7 @@ app.directive('map', function($http) {
 					var url = 'http://'+globalIP+context+'/public//getGeoFenceView?vehicleId='+scope.trackVehID;
 		
 				scope.createGeofence(url);
+				scope.stopLoading();
 		   		}).error(function(){ });
 		 	});
         }
@@ -308,6 +310,20 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
 	};
+
+	//loading start function
+	$scope.startLoading		= function () {
+		$('#status').show(); 
+		$('#preloader').show();
+	};
+
+	//loading stop function
+	$scope.stopLoading		= function () {
+		$('#status').fadeOut(); 
+		$('#preloader').delay(350).fadeOut('slow');
+		$('body').delay(350).css({'overflow':'visible'});
+	};
+
 
 	function sessionValue(vid, gname){
 		sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
@@ -670,6 +686,15 @@ if($scope.markerstart){
 		var tempTim = addZ(hrs) + ' H : ' + addZ(mins) + ' M : ' + addZ(secs) + ' S '; //+ ms;
 		return tempTim;
 	}
+
+
+	// function parseDate(str) {
+	//     var mdy = str.split('/');
+	//     return new Date(mdy[2], mdy[0]-1, mdy[1]);
+	// }
+	
+
+
 	function utcdateConvert(milliseconds){
 		//var milliseconds=1440700484003;
 		var offset='+10';
@@ -693,6 +718,7 @@ if($scope.markerstart){
 		return sHours+":"+sMinutes+":00";
 	}
 	$scope.plotting = function(){
+		
 		$scope.hisurlold = $scope.hisurl;
 		var fromdate = document.getElementById('dateFrom').value;
 		var todate = document.getElementById('dateTo').value;
@@ -714,7 +740,11 @@ if($scope.markerstart){
 			if(document.getElementById('dateTo').value==''){
 				$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
 			}else{
-				$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime;
+				var days =daydiff(new Date(fromdate), new Date(todate));
+				if(days<3)
+					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime;
+				else
+					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1';
 			}
 		}
 		if($scope.hisurlold!=$scope.hisurl){	

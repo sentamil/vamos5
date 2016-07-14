@@ -3,7 +3,7 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 // trip summary , 	site report, trip report 
 
 	//global declaration
-	
+	$scope.addressFuel 			= 	[];
 	$scope.uiDate 				=	{};
 	$scope.interval				= 	10;
   	$scope.siteEntry 			=	0;
@@ -198,12 +198,65 @@ function plottinGraphs(valueGraph, timeData){
 				break;
 			case 'temperature' :
 				urlWebservice 	= 	"http://"+globalIP+context+"/public/getTemperatureReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval=-1";
+				break;
+			case 'alarm' :
+				urlWebservice   =  "http://"+globalIP+context+"/public/getAlarmReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				break;
 			default :
 				break;
 			}
 			return urlWebservice;
 
 	}
+
+	var delayed6 = (function () {
+  		var queue = [];
+
+	  	function processQueue() {
+		    if (queue.length > 0) {
+		      setTimeout(function () {
+		        queue.shift().cb();
+		        processQueue();
+		      }, queue[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue.push({ delay: delay, cb: cb });
+
+	    	if (queue.length === 1) {
+	      	processQueue();
+	    	}
+	  	};
+	}());
+
+	function google_api_call(tempurlFuel, index6, latFuel, lonFuel) {
+		vamoservice.getDataCall(tempurlFuel).then(function(data){
+			$scope.addressFuel[index6] = data.results[0].formatted_address;
+		})
+	};
+
+	// for address in alarm report in address resolving
+	$scope.recursive 	= 	function(locationFuel, indexFuel)
+	{
+		var index6 = 0;
+		angular.forEach(locationFuel, function(value ,primaryKey){
+			//console.log(' primaryKey '+primaryKey)
+			index6 = primaryKey;
+			if(locationFuel[index6].address == undefined)
+			{
+				var latFuel		 =	locationFuel[index6].lat;
+			 	var lonFuel		 =	locationFuel[index6].lng;
+				var tempurlFuel =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latFuel+','+lonFuel+"&sensor=true";
+				delayed6(2000, function (index6) {
+				      return function () {
+				        google_api_call(tempurlFuel, index6, latFuel, lonFuel);
+				      };
+				    }(index6));
+			}
+		})
+	}
+
 
 	// service call for the event report
 
@@ -215,32 +268,39 @@ function plottinGraphs(valueGraph, timeData){
 		$scope.siteData = [];
 		vamoservice.getDataCall(url).then(function(responseVal){
 			try{
+				if(tab == 'alarm')
+					try{
+						$scope.recursive(responseVal.alarmList,0);
+					} catch (er){
+						console.log(' address Solving '+er);
+					}
+					
 				$scope.siteData = responseVal;
-			var entry=0,exit=0; 
-			if (tab == 'site')
-			angular.forEach(responseVal, function(val, key){
-				if(tab == 'site'){
-					if(val.state == 'SiteExit')
-						exit++ 
-					else if (val.state == 'SiteEntry')
-						entry++
-				}
-			})
+				var entry=0,exit=0; 
+				if (tab == 'site')
+					angular.forEach(responseVal, function(val, key){
+						if(tab == 'site'){
+							if(val.state == 'SiteExit')
+								exit++ 
+							else if (val.state == 'SiteEntry')
+								entry++
+						}
+					})
 
-			if(tab == 'temperature'){
-				angular.forEach(responseVal.temperature, function(graphValue, graphKey){
-				//var time = moment(graphValue.date).format("DD-MM-YYYY h:mm:ss");
-					graphList.push(Number(graphValue.temperature));
-					graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"))
+				if(tab == 'temperature'){
+					angular.forEach(responseVal.temperature, function(graphValue, graphKey){
+					//var time = moment(graphValue.date).format("DD-MM-YYYY h:mm:ss");
+						graphList.push(Number(graphValue.temperature));
+						graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"))
 						// plottinGraphs(temperature);
-				})
-				plottinGraphs(graphList, graphTime);
-			}
+					})
+					plottinGraphs(graphList, graphTime);
+				}
 
-			$scope.siteEntry 	=	entry;
-			$scope.siteExit 	=	exit;
+				$scope.siteEntry 	=	entry;
+				$scope.siteExit 	=	exit;
 
-			stopLoading();	
+				stopLoading();	
 			} catch (err){
 				console.log(' print err '+err);
 				stopLoading();	

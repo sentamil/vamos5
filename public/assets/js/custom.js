@@ -122,9 +122,13 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 			}
 		});	
 	});
+    
 
-	
-	
+    // document.getElementById('#userId').value = menuValue;
+    // $scope.userName = 'menuValue';
+ //    console.log(' value in menu '+menuValue);
+	// $('#userId span').val(menuValue);
+	// console.log(' value in menu '+$('#userId span').val(menuValue));
 	// console.log($scope.locations02)
 	$scope.$watch("vehicleStatus", function (val) {
 		if($scope.locations02!=undefined){
@@ -226,6 +230,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
         'odoDistance': $scope.ododis,
   	    'overSpeedLimit':$scope.spLimit,
         'driverName': $scope.driName,
+        'mobileNo' :$scope.mobileNo,
         'regNo': $scope.refname,
 		'vehicleType':$scope.vehType,
 		})
@@ -963,7 +968,7 @@ function locat_address(locs) {
 				var lat = locs[i].latitude;
 				var lng =  locs[i].longitude;
 				
-					console.log(' lat :'+lat+'lan :'+lng+'data :'+locs[i]);
+					// console.log(' lat :'+lat+'lan :'+lng+'data :'+locs[i]);
 					// console.log('marker :'+gmarkers[i]+' vehicle ID : '+ locs[i].vehicleId+'  lat  :'+ lat+'lng  :'+ lng);
 					$scope.addMarker({ lat: lat, lng: lng , data: locs[i]});
 					$scope.infoBoxed($scope.map,gmarkers[i], locs[i].vehicleId, lat, lng, locs[i]);	

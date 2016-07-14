@@ -57,7 +57,9 @@
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('providerPassword', 'Sms Provider Password :') }}</div>
-		            		<div class="col-md-4">{{ Form::text('providerPassword', $providerPassword, array('class' => 'form-control', 'placeholder'=>'Provider providerPassword')) }}</div>
+		            		<div class="col-md-4">
+		            		{{Form::input('password', 'providerPassword', $providerPassword,array('class' => 'form-control','placeholder'=>'Provider provider Password'))}}
+		            		</div>
 		            	</div>
 		            	<br>
 		            	<div class="row">

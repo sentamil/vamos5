@@ -311,7 +311,9 @@ function serviceCall(){
 
 $scope.plotHist 	=	function()
 {
+	startLoading();
 	serviceCall();
+	// stopLoading();
 }
 
 //tab click method

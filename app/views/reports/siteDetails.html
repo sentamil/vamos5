@@ -10,19 +10,19 @@
     <link rel="shortcut icon" href="assets/imgs/tab.ico">
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <!-- <link href="assets/css/jVanilla.css" rel="stylesheet"> -->
     
     <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
     <style type="text/css">
         #map_canvas{
-            width:100%;
-            height: 100vh; 
+            height:94vh; width:100%; margin-top: 35px;
         }
         #pac-input{
             border-radius: 3px;
             height: 30px;
             width: 200px;
-            top: -60px;
+            top: -25px;
             left: 200px;
             max-width: 200px;
             z-index: 9999;
@@ -53,10 +53,10 @@
 
         <div id="page-content-wrapper">
             <div class="container-fluid">
-                <div style="position: absolute;top: 0px;left: 35%; z-index:999999;" id="testLoad">
+                <div id="testLoad">
                 </div>
                 <input id="pac-input" type="text" placeholder="search box"></input>
-                <div style="position: absolute;top: 30px;right: 20px; z-index:999999; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
+                <div style="position: absolute;top: 50px;right: 20px; z-index:999; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
                     <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Add Sites</div>
                         <div class="siteInput" > 
                             <table cellpadding="0" cellspacing="0">
@@ -64,7 +64,7 @@
                                     <tr><td colspan="2"></td></tr>
                                     <tr>
                                         <td><b>Site Name</b></td>
-                                        <td><input name="txt" type="text" ng-model="textValue" style="width:100%; font-weight: bold; font-size: 12px; padding : 3px"/></td>
+                                        <td><input name="txt" data-toggle="tooltip" data-placement="left"  title="please don't use space" type="text" ng-model="textValue" style="width:100%; font-weight: bold; font-size: 12px; padding : 3px"/></td>
                                     </tr>
                                     <tr>
                                         <td><b>Type</b></td>
@@ -138,21 +138,25 @@
 
     </div>
     <script src="assets/js/static.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
     <script src="assets/js/addsite.js"></script>
     <script>
-    
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
     //menu loading
     $("#testLoad").load("../public/menu");
-    var logo =document.location.host;
-    var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    $('#imagesrc').attr('src', imgName);
+    // var logo =document.location.host;
+    // var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
+    // $('#imagesrc').attr('src', imgName);
     </script>
 </body>
 </html>
