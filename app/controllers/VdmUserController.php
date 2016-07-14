@@ -146,7 +146,12 @@ class VdmUserController extends \BaseController {
 			}
             
             $virtualaccount=Input::get ( 'virtualaccount' );
-           
+
+
+			$notificationset = 'S_VAMOS_NOTIFICATION';
+			$groupList = $redis->smembers ( $notificationset);
+			$notiString=implode(",", $groupList);
+			$redis->hset("H_Notification_Map_User",$userId,$notiString);   
 			log::info(Input::get ( 'virtualaccount' ). '------login 1---------- ');
 
 			if($virtualaccount=='value')
@@ -296,7 +301,76 @@ class VdmUserController extends \BaseController {
 		) )->with ( 'vehicleGroups', $vehicleGroups )->with ( 'mobileNo', $mobileNo )->
 		with('email',$email)->with('selectedGroups',$selectedGroups)->with('orgsList',$orgsList)->with('selectedOrgsList',$selectedOrgsList)->with('value',$value);
 	}
+
+
+
+
+	public function notification($id) {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$userId = $id;
+		
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		
+		
+		
+		
+		$notificationset = 'S_VAMOS_NOTIFICATION';
+		
+		$notification=$redis->hget("H_Notification_Map_User",$userId);
+		$notificationArray=array();
+		if($notification!==null)
+		{
+			$notificationArray=explode(",",$notification);
+		}
+		$groupList = $redis->smembers ( $notificationset);
+		
+		$notificationGroups = null;
+		
+		 
+		
+		
+		foreach ( $groupList as $key => $value ) {
+			$notificationGroups = array_add ( $notificationGroups, $value, $value );
+		}
+        
+       
+        
+      
+  		
+		return View::make ( 'vdm.users.notification', array (
+				'userId' => $userId 
+		) )->with ( 'notificationGroups', $notificationGroups )
+		->with('notificationArray',$notificationArray);
+	}
 	
+
+
+
+public function updateNotification() {
+	
+		$userId = Input::get ( 'userId' );
+		Log::info('user id '.$userId);
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$notificationGroups = Input::get ( 'notificationGroups' );
+		if(count($notificationGroups)>0)
+		{
+			$notification=implode(",",$notificationGroups);
+			$redis->hset("H_Notification_Map_User",$userId,$notification);
+		}
+		Session::flash ( 'message', 'Successfully updated  Notification' . $userId . '!' );
+		return Redirect::to ( 'vdmUsers' );
+		
+	}
+
 	/**
 	 * Update the specified resource in storage.
 	 *

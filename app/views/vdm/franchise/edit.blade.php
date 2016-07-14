@@ -101,6 +101,10 @@
 		{{ Form::label('addLicence', 'Add licence ') }}
 		{{ Form::text('addLicence', Input::old('addLicence'), array('class' => 'form-control')) }}
 	</div>
+	<div class="form-group">
+		{{ Form::label('timeZone', 'Time Zone') }}
+		{{ Form::text('timeZone', $timeZone, array('class' => 'form-control')) }}
+	</div>
 	
 	
 	{{ Form::submit('Update the Franchise!', array('class' => 'btn btn-primary')) }}

@@ -87,6 +87,10 @@
 		{{ Form::label('providerPassword', 'SMS Provider Password') }}
 		{{ Form::text('providerPassword', Input::old('providerPassword'), array('class' => 'form-control')) }}
 	</div>
+	<div class="form-group">
+		{{ Form::label('timeZone', 'Time Zone') }}
+		{{ Form::text('timeZone', Input::old('timeZone'), array('class' => 'form-control')) }}
+	</div>
 
 	
 	{{ Form::submit('Add the Franchise!', array('class' => 'btn btn-primary')) }}

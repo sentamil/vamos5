@@ -6,47 +6,31 @@
 		    <div class="col-lg-12">
 		        <div class="hpanel">
 		            <div class="panel-heading">
-		               <h4><b>Edit User</b></h4>
+		               <h4><b>Edit Notification</b></h4>
 		            </div>
 		            <div class="panel-body">
-		            	{{ HTML::ul($errors->all()) }}{{ Form::model($userId, array('route' => array('vdmUsers.update', $userId), 'method' => 'PUT')) }}
+		            {{ Form::open(array('url' => 'vdmUsers/updateNotification')) }}
 		            	<div class="row">
 		            		
 		            		<div class="col-md-1">{{ Form::label('userId', 'UserId :')}}</div>
-		            		<div class="col-md-4">{{ Form::label('userId', $userId, array('class'=>'form-control'))  }}</div>
-		            	</div>
-		            	<br>
-		            	<div class="row">
+		            		<div class="col-md-4">{{ Form::label('userId', $userId, array('class'=>'form-control'))  }}
+		            			{{ Form::hidden('userId', $userId) }}
+		            		</div>
 		            		
-		            		<div class="col-md-1">{{ Form::label('mobileNo', 'MobileNo :') }}</div>
-		            		<div class="col-md-4">{{ Form::text('mobileNo', $mobileNo, array('class' => 'form-control','placeholder'=>'Mobile Number')) }}</div>
-		            	</div>
-		            	
-		            	
-
-
-						<br>
-		            	<div class="row">
 		            		
-		            		<div class="col-md-1">{{ Form::label('email', 'Email :') }}</div>
-		            		<div class="col-md-4">{{ Form::Email('email', $email, array('class' => 'form-control','placeholder'=>'Email')) }}</div>
 		            	</div>
+		            
 
 
 
 		            	<br>
-		            	<div class="row">
-		            		
-		            		<div class="col-md-4"> {{Form::checkbox('virtualaccount', 'value',$value, ['class' => 'check1'])}}
-							{{ Form::label('virtualaccount', 'Virtual Account') }}</div>
-		            		
-		            	</div>
+		            	
 		            	<hr>
 
 
 
 		            	<div class="row">
-		            		<div class="col-md-12"><h4><font color="#086fa1">{{ Form::label('vehicleList', 'Select the groups:') }} </font></div>
+		            		<div class="col-md-12"><h4><font color="#086fa1">{{ Form::label('vehicleList', 'Select the Notification:') }} </font></div>
 		            	</div>
 		            	<div class="row">
 		            		<div class="col-md-1">{{ Form::label('Filter', 'Filter :') }}</div>
@@ -60,10 +44,10 @@
 		            		<div class="col-md-12" id="selectedItems" style="border-bottom: 1px solid #a6a6a6;"></div>
 		            		<br>
 		            		<div class="col-md-12" id="unSelectedItems">
-		            		@if(isset($vehicleGroups))
-								@foreach($vehicleGroups as $key => $value)
+		            		@if(isset($notificationGroups))
+								@foreach($notificationGroups as $key => $value)
 									 <div class="col-md-3 vehiclelist"> 
-									{{ Form::checkbox('vehicleGroups[]', $key,  in_array($value,$selectedGroups), ['class' => 'field','id' => 'questionCheckBox']) }}
+									{{ Form::checkbox('notificationGroups[]', $key,  in_array($value,$notificationArray), ['class' => 'field','id' => 'questionCheckBox']) }}
 									{{ Form::label($value) }}
 									</div>
 								@endforeach
@@ -81,7 +65,7 @@
 </div>		
 <script type="text/javascript">
 list = [];
-var value = <?php echo json_encode($vehicleGroups ); ?>;
+var value = <?php echo json_encode($notificationGroups ); ?>;
 
 </script>
 @include('includes.js_footer')

@@ -276,6 +276,8 @@ public function users()
 			$smsProvider=Input::get ('smsProvider');
 			$providerUserName=Input::get ('providerUserName');
 			$providerPassword=Input::get ('providerPassword');
+			//$eFDSchedular=Input::get ('eFDSchedular');
+			$timeZone=Input::get ('timeZone');
 	
 			
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
@@ -308,6 +310,8 @@ public function users()
 					'smsProvider'=>$smsProvider,
 					'providerUserName'=>$providerUserName,
 					'providerPassword'=>$providerPassword,
+					'timeZone'=>$timeZone,
+					//'eFDSchedular'=>$eFDSchedular
 					
 					
 					
@@ -315,17 +319,11 @@ public function users()
 			
 			$detailsJson = json_encode ( $details );
 			$redis->hmset ( 'H_Franchise', $fcode,$detailsJson);
-			
+			$redis->hmset('H_Fcode_Timezone_Schedular',$fcode,$timeZone);
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			$password='awesome';
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo1,$userId.':email',$email1 ,$userId.':password',$password,$userId.':OWN','admin');
-			
-
-			
-			
-			
 			$user = new User;
-			
 			$user->name = $fname;
 			$user->username=$userId;
 			$user->email=$email1; 
@@ -480,6 +478,14 @@ public function users()
 			$providerPassword=$franchiseDetails['providerPassword'];
 		else
 			$providerPassword='';
+		// if(isset($franchiseDetails['eFDSchedular'])==1)
+		// 	$eFDSchedular=$franchiseDetails['eFDSchedular'];
+		// else
+		// 	$eFDSchedular='';
+		if(isset($franchiseDetails['timeZone'])==1)
+			$timeZone=$franchiseDetails['timeZone'];
+		else
+			$timeZone='';
 
 
 
@@ -505,6 +511,7 @@ public function users()
 		->with('smsProvider',$smsProvider)
 		->with('providerUserName',$providerUserName)
 		->with('providerPassword',$providerPassword)
+		->with('timeZone',$timeZone)
 		->with('smsP',VdmFranchiseController::smsP());
 	
 
@@ -559,6 +566,7 @@ public function users()
 			$smsProvider=Input::get ('smsProvider');
 			$providerUserName=Input::get ('providerUserName');
 			$providerPassword=Input::get ('providerPassword');
+			$timeZone=Input::get ('timeZone');
 			$redis = Redis::connection ();
 				
 				if($numberofLicence==null)
@@ -617,11 +625,13 @@ public function users()
 					'smsSender'=>$smsSender,
 					'smsProvider'=>$smsProvider,
 					'providerUserName'=>$providerUserName,
-					'providerPassword'=>$providerPassword,		
+					'providerPassword'=>$providerPassword,	
+					//'eFDSchedular'=>$eFDSchedular,
+					'timeZone'=>$timeZone,		
 			);
 			$detailsJson = json_encode ( $details );
 			$redis->hmset ( 'H_Franchise', $fcode,$detailsJson);
-			
+			$redis->hmset('H_Fcode_Timezone_Schedular',$fcode,$timeZone);
 			
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo',
