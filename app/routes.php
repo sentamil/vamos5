@@ -60,8 +60,24 @@ Route::get('/track', function() {
 });
 
 Route::get('/trackSingleVeh', function() {
-  
-    return View::make('maps.track');
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $single = strstr($actual_link , 'single');
+    $multi = strstr($actual_link , 'multiTrack');
+
+    if ($single)
+    {
+
+        return View::make('maps.track');
+        log::info(' single -->'.$actual_link);
+    } 
+    else if ($multi) 
+    {
+        return View::make('maps.multiTracking');
+        log::info(' multi -->'.$actual_link);
+    }
 });
 
 Route::get('/multiple_vehicle', function() {
@@ -576,7 +592,11 @@ Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeControl
  
 Route::group(array('before' => 'adminauth'), function(){   //admin auth starts here
    
+
 Route::get('vdmVehicles/calibrateOil/{param}', array('uses' => 'VdmVehicleController@calibrate'));
+
+
+// Route::get('vdmVehicles/calibrateOil/{param}/{param1}', array('uses' => 'VdmVehicleController@calibrate'));
 Route::post('vdmVehicles/updateCalibration', array('uses' => 'VdmVehicleController@updateCalibration'));
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
 Route::post('vdmVehicles/moveDealer', array('uses' => 'VdmVehicleController@moveDealer'));
@@ -635,14 +655,14 @@ Route::post('rfid/update', array('uses' => 'RfidController@update'));
   Route::post('select2', array('as' => 'ajax.getGroup', 'uses' => 'BusinessController@getGroup'));
 Route::post('Business/batchSale', array('uses' => 'BusinessController@batchSale'));
 
-// arun ajax call
+// ajax call
 Route::post('groupId', array('as' => 'ajax.groupIdCheck', 'uses'=>'VdmGroupController@groupIdCheck'));
 Route::post('dealerId', array('as' => 'ajax.dealerCheck', 'uses'=>'VdmDealersController@dealerCheck'));
 Route::post('orgId', array('as' => 'ajax.ordIdCheck', 'uses'=>'VdmOrganizationController@ordIdCheck'));
 Route::post('userId', array('as' => 'ajax.userIdCheck', 'uses'=>'VdmUserController@userIdCheck'));
 
 
-
+// Route::post('vdmVehicles/calibrate/count', array('uses'=>'VdmVehicleController@calibrateCount'));
 
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
@@ -675,7 +695,6 @@ Route::get('vdmOrganization/{param}/poiDelete', array('uses' => 'VdmOrganization
 Route::get('vdmOrganization/{param}/getSmsReport', array('uses' => 'VdmOrganizationController@getSmsReport'));
 Route::resource('vdmOrganization', 'VdmOrganizationController');
 Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleController@analogCalibrate'));
- 
  
  
  

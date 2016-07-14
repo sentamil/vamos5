@@ -45,10 +45,11 @@
 <nav class="menus">
     <ul>
         <li class="cl-effect-5">
-            <a href="#"><span data-hover="Tracking">Tracking </span></a>
+            <a><span data-hover="Tracking">Tracking </span></a>
             <ul>
                 <li><a href="../public/replay">History</a></li>
-                <li><a href="../public/live">Track</a></li>
+                <li><a id="singleTrack" href="">Single Track</a></li>
+                <li><a id="multiTrack" href="">Multi Track</a></li>
                 <li><!-- <a id="addsites">Admin</a>
                    <div  style="padding-left: 10px"> -->
                        <a href="../public/password_check" id="addsites">AddSites / Geo Fence</a>
@@ -57,7 +58,7 @@
             </ul>
         </li>
         <li class="cl-effect-5">
-            <a href="#"><span data-hover="Reports">Reports</span></a>
+            <a><span data-hover="Reports">Reports</span></a>
             <ul>
                 <li><a href="../public/reports">CURRENT STATUS</a></li>
                 <li><a href="../public/reports?ind=1">Vehicles Consolidated </a></li>
@@ -111,14 +112,14 @@
                 </ul>
             </li>
         <li class="cl-effect-5">
-            <a href="#"><span data-hover="Statistics">Statistics</span></a>
+            <a><span data-hover="Statistics">Statistics</span></a>
             <ul>
                 <li><a href="../public/statistics">Executive</a></li>
                 <li><a href="../public/statistics?ind=1">POI</a></li>
             </ul>
         </li>
         <li class="cl-effect-5">
-            <a href="#"><span data-hover="sensor">sensor</span></a>
+            <a><span data-hover="sensor">sensor</span></a>
             <ul>
                 <li><a id="load" href=""> Load </a></li>
                     <li><a id="fuel" href=""> Fuel </a></li>
@@ -127,7 +128,7 @@
             </ul>
         </li>
         <li class="cl-effect-5">
-            <a href="#"><span data-hover="Performance">Performance</span></a>
+            <a><span data-hover="Performance">Performance</span></a>
             <ul>
                 <li><a href="../public/performance?tab=daily">Daily Performance</a></li>
                 <li><a href="../public/performance">Monthly Performance</a></li>
@@ -157,54 +158,61 @@
             var vid = sp[0];
             var gname = sp[1];
             $("#movement").click(function() {
-               $("#movement").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement')
+               $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement')
             });
             $("#overspeed").click(function() {
-                $("#overspeed").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=overspeed')
+                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=overspeed')
             });
             $("#parked").click(function() {
-                $("#parked").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=parked')
+                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=parked')
             });
             $("#idle").click(function() {
-                $("#idle").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=idle')
+                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=idle')
             });
             $("#event").click(function() {
-                $("#event").attr("href", 'event?vid='+vid+'&vg='+gname+'&tn=event')
+                $(this).attr("href", 'event?vid='+vid+'&vg='+gname+'&tn=event')
             });
             $("#site").click(function() {
-                $("#site").attr("href", 'siteReport?vid='+vid+'&vg='+gname+'&tn=site')
+                $(this).attr("href", 'siteReport?vid='+vid+'&vg='+gname+'&tn=site')
             });
             $("#load").click(function() {
-                $("#load").attr("href", 'loadDetails?vid='+vid+'&vg='+gname+'&tn=load')
+                $(this).attr("href", 'loadDetails?vid='+vid+'&vg='+gname+'&tn=load')
             });
             $("#fuel").click(function() {
-                $("#fuel").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=fuel')
+                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=fuel')
             });
             $("#ignition").click(function() {
-                $("#ignition").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=ignition')
+                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=ignition')
             });
             $('#trip').click(function() {
-                $('#trip').attr("href", 'trip?vid='+vid+'&vg='+gname+'&tn=trip')
+                $(this).attr("href", 'trip?vid='+vid+'&vg='+gname+'&tn=trip')
             });
             $('#tripkms').click(function() {
                 // console.log(' clck ')
-                $("#tripkms").attr("href", 'tripkms?vid='+vid+'&vg='+gname+'&tn=tripkms')
+                $(this).attr("href", 'tripkms?vid='+vid+'&vg='+gname+'&tn=tripkms')
             });
             $('#temp').click(function() {
                 // console.log(' clck ')
-                $("#temp").attr("href", 'temperature?vid='+vid+'&vg='+gname+'&tn=temperature')
+                $(this).attr("href", 'temperature?vid='+vid+'&vg='+gname+'&tn=temperature')
             });
             $('#alarm').click(function(){
-                $('#alarm').attr("href", 'alarm?vid='+vid+'&vg='+gname+'&tn=alarm')
+                $(this).attr("href", 'alarm?vid='+vid+'&vg='+gname+'&tn=alarm')
             })
-
+            $('#multiTrack').click(function(){
+                $(this).attr("href", 'trackSingleVeh?vehicleId='+vid+'&track=multiTrack');
+                $(this).attr("target", '_blank');
+            });
+            $('#singleTrack').click(function(){
+                $(this).attr("href", 'trackSingleVeh?vehicleId='+vid+'&track=single');
+                $(this).attr("target", '_blank');
+            });
 
 
             $('#addsites').click(function(){
                 if(sessionStorage.getItem('auth') == 'sitesVal')
-                    $('#addsites').attr("href", 'sites')
+                    $(this).attr("href", 'sites')
                 else
-                    $('#addsites').attr("href", 'password_check') 
+                    $(this).attr("href", 'password_check') 
             });
     
 </script>

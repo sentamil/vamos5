@@ -5,147 +5,150 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
+    <meta name="author" content="Arun">
     <title>GPS</title>
     <link rel="shortcut icon" href="assets/imgs/tab.ico">
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
     <style type="text/css">
-       /* #map_canvas{
+        #map_canvas{
             width:100%;
-            height: 100vh;
-            padding: 0px;
-            margin: 0px;
-            background-color: green 
-        }*/
-
-
-        #maploc1{
-             width:100%;
-            height: 45vh;
-            /*overflow: auto;*/
-            /*resize: both;*/
-            box-shadow: 3px 3px 2px #888888;
-        
-        } 
-       
-       #maploc2{
-            width:100%;
-            height: 45vh;
-            box-shadow: 3px 3px 2px #888888; 
-        } 
-        #maploc3{
-            width:100%;
-            height: 45vh;
-            box-shadow: 3px 3px 2px #888888; 
-        } 
-       #maploc4{
-            width:100%;
-            height: 45vh; 
-            box-shadow: 3px 3px 2px #888888;
-        } 
-
-       
-
-        .watermark1 {
-            position: absolute;
-            opacity: 0.25;
-            top: 100px;
-            left: 100px;
-            font-size: 1em;
-            text-align: center;
-            /*z-index: 1000;*/
+            height: 100vh; 
         }
-
-         .watermark2 {
-            position: absolute;
-            opacity: 0.25;
-            top: 100px;
-            right: 100px;
-            font-size: 1em;
-            text-align: center;
-            /*z-index: 1000;*/
-        }
-
-        .watermark3 {
-            position: absolute;
-            opacity: 0.25;
-            bottom: 100px;
-            left: 100px;
-            font-size: 1em;
-            text-align: center;
-            /*z-index: 1000;*/
-        }
-
-         .watermark4 {
-            position: absolute;
-            opacity: 0.25;
-            bottom: 100px;
-            right: 100px;
-            font-size: 1em;
-            text-align: center;
-            /*z-index: 1000;*/
-        }
-
-      /*  body{padding: 0px; margin: 0px}*/
+         #container-speed{  width: 170px; height: 100px;}
+     #container-fuel{  width: 170px; height: 100px;}
+         .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
     </style>
 </head>
-<div id="preloader" >
-    <div id="status">&nbsp;</div>
-</div>
-<div id="preloader02" >
-    <div id="status02">&nbsp;</div>
-</div>
-
 <body ng-app="mapApp">
-	<div ng-controller="mainCtrl" style="padding-left:0 !important;">
-       <!--  <div > -->
-            <div style="background-color: #d8d8d8; padding: 5px; box-shadow: 3px 3px 2px #888888; border-top: 3px solid #3071a9">
-                <div class="container">
-                    <div class="col-md-3">
-                        <select ng-options="groups for groups in sliceGroup" ng-model="vehicleSelected" ng-change="update()" class="form-control">
-                            <option style="display:none" value="">Select Group</option>
-                        </select>
+    <div id="wrapper" ng-controller="mainCtrl" style="padding-left:0 !important;">
+        
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="maploc">
+                            <div id="pac-input01">
+                                <div>
+                                    <input type="button" id="traffic" ng-click="check()" value="Traffic" />
+                                </div> 
+                            </div>
+                            <map id="map_canvas"></map>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <select ng-options="vehi.shortName for vehi in vehicles" ng-model="vehi.vehicleId" class="form-control">
-                            <option style="display:none" value="">Select Vehicle</option>
-                        </select>
+                    <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
+                            <img src="assets/imgs/add.png" />
+                        </div>
+                    <div class="rightSection" id="contentmin">
+                        <table cellpadding="0" cellspacing="0" style="font-size:12px; word-wrap: break-word;" class="trackDetails">
+                            <tr>
+                                <td style="width:50%">Vehicle Name</td>
+                                <td id="vehiid" style="width:50%"><span></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%">odoDistance</td>
+                                <td id="vehdevtype" style="width:50%"><span></span> Km</td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%">Speed Limit</td>
+                                <td id="mobno"><span></span> Km/h</td>
+                            </tr>
+                            <!-- <tr>
+                                <td colspan="2"><div id="container-speed"></div></td>
+                            </tr> -->
+                            <tr>
+                                <td style="width:50%">Today Distance</td>
+                                <td id="toddist"><span><span></span>&nbsp;Km</span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%"><span id="positiontime">Position </span>Time</td>
+                                <td id="regno"><span></span></td>
+                            </tr>
+                             <tr>
+                                <td style="width:50%">Address</td>
+                                <td id="lastseentrack"><span></span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="latlong"><label>LatLong<input type="text"  style="width:230px" value="0.0" id="latinput" readonly/> <br/> POI : <input type="text" style="width:153px;" id="poival" placeholder="Enter Point of Interest" ng-enter="enterkeypress()" /> <button ng-click="enterkeypress()">Save</button></label></div>
+                                </td>
+                                
+                            </tr>
+                        </table>
+                        
+                        <h3 style="font-size:14px; text-align:center; margin-top:0;">Vehicle Status</h3>
+                        <div class="tracklegend">
+                            <table cellpadding="0" cellspacing="0" style="font-size:12px; word-wrap: break-word;">
+                                <tbody>
+                                    <tr>
+                                        <td style="width:25%">Moving</td>
+                                        <td align="center"><img src="assets/imgs/green.png"/></td>
+                                        <td style="width:25%">Parked</td>
+                                        <td align="center"><img src="assets/imgs/flag.png"/></td>
+                                    </tr>
+                                     <tr>
+                                        <td>Overspeed</td>
+                                        <td align="center"><img src="assets/imgs/red.png"/></td>
+                                        <td>Standing</td>
+                                        <td align="center"><img src="assets/imgs/orange.png"/></td>
+                                    </tr>
+                                     <tr>
+                                        <td>Geo Fence</td>
+                                        <td align="center"><img src="assets/imgs/blue.png"/></td>
+                                        <td>No Data</td>
+                                        <td align="center"><img src="assets/imgs/gray.png"/></td>
+                                    </tr>
+                            </table>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <select ng-options="screen for screen in selectScreen"  class="form-control" ng-model="screen">
-                            <option style="display:none" value="">Select Screen</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="button" class="btn btn-primary" ng-click="multiTracking(vehi.vehicleId, screen)">Submit</button>
-                    </div>
+                     <div id="graphsId">
+                            <div>
+                                <div>Speed - <label id="speed"></label>&nbsp;Km/h</div>
+                                <div id="container-speed"></div>
+                            </div>
+                            <div>
+                                <div>Tank Size - <label id="fuel"></label>&nbsp;Ltr</div>
+                                <div id="container-fuel"></div>
+                            </div>
+                        </div>
+                    <!--div id="lastseentrack" style="top:0; height: auto; bottom:auto">&nbsp;</div-->
+                   <!-- <div class="latlong"><label><input type="text"  style="width:265px" value="0.0" id="latinput" readonly/> POI : <input type="text" style="width:300px;" id="poival" placeholder="Enter Point of Interest" ng-enter="enterkeypress()" /> <button ng-click="enterkeypress()">Save</button></label><!--<label>Longitude : <input type="text" value="0.0" id="lnginput" readonly/></label></div>-->
+                         <!-- div class="bottomContent">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-2" align="center" id="vehiid">
+                                    <h6>Vehicle ID - <span></span></h6>
+                                    
+                                </div>
+                                <div class="col-md-2" align="center" id="vehdevtype">
+                                    <h6>odoDistance - <span></span></h6>
+                                </div>
+                                 <div class="col-md-2" align="center" id="mobno">
+                                    <h6>Speed Limit - <span></span></h6>
+                                    
+                                </div>
+                                
+                                <div class="col-md-4 col-lg-2" align="center">
+                                    <div id="container-speed"></div>
+                                </div>
+                                <div class="col-md-4 col-lg-2" align="right" id="toddist">
+                                    <h6 align="right" style="text-align:right;">&nbsp;Today Distance - <span><span></span>&nbsp;Km</span></h6>
+                                   
+                                </div>
+                               
+                                <div class="col-md-2" align="center" id="regno">
+                                    <h6><p id="positiontime" style="display: inline; padding: 0; margin: 0;">Position</p> Time - <span></span></h6>
+                                    
+                                </div>
+                            </div>
+                        </div -->
                 </div>
             </div>
-            <div>
-                
-                <div class="col-md-6 " style="padding: 3px; margin: 0px;">
-                    <div id="maploc1"><p class="watermark1">Screen 1</p></div>
-                </div>
-                
-                <div class="col-md-6 "  style="padding: 3px; margin: 0px;">
-                    <div id="maploc2"><p class="watermark2">Screen 2</p></div>
-                </div>
-                
-                <div class="col-md-12"><hr style="margin: 0.3em auto;"></div>
-                
-                <div class="col-md-6 " style="padding: 3px; margin: 0px;">
-                    <div id="maploc3"><p class="watermark3">Screen 3</p></div>
-                </div>
-                
-                <div class="col-md-6 " style="padding: 3px; margin: 0px;">
-                    <div id="maploc4"><p class="watermark4">Screen 4</p> </div>
-                </div>
-
-            </div>
-        <!-- </div>
- -->
+        </div>
     </div>
     <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
@@ -154,15 +157,25 @@
     <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/highcharts-more.js"></script>
-	<script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
+    <script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
-    <script src="assets/js/multiTrack.js"></script>
-
-
-
+    <script src="assets/js/customtrack.js"></script>
+    <script>
+    $(document).ready(function(){
+        $('#minmax').click(function(){
+            $('#contentmin').animate({
+                height: 'toggle'
+            },2000);
+        });
+    });
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
 </body>
 </html>
