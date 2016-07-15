@@ -186,7 +186,14 @@ class VdmUserController extends \BaseController {
 			$user->mobileNo=$mobileNo;
 			$user->password=Hash::make($password);
 			$user->save();
-			
+
+			$notificationset = 'S_VAMOS_NOTIFICATION';
+			$notificationGroups =  $redis->smembers ( $notificationset);
+			if(count($notificationGroups)>0)
+			{
+				$notification=implode(",",$notificationGroups);
+				$redis->hset("H_Notification_Map_User",$userId,$notification);
+			}
 			
 			
 			// redirect
@@ -468,6 +475,7 @@ public function updateNotification() {
 
 		$email=$redis->hget('H_UserId_Cust_Map',$userId.':email');
 		$redis->hdel ( 'H_UserId_Cust_Map', $userId . ':fcode', $userId . ':mobileNo', $userId.':email',$userId.':password');
+		$redis->hdel ( 'H_Notification_Map_User', $userId);
 		
 		Log::info(" about to delete user" .$userId);
 		
