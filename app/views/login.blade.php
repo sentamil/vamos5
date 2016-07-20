@@ -2,18 +2,19 @@
 <html>
 <head>
   <title>GPS</title>
-  <link href="http://almsaeedstudio.com/themes/AdminLTE/dist/css/AdminLTE.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="http://almsaeedstudio.com/themes/AdminLTE/bootstrap/css/bootstrap.min.css">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-</head>
-
-<body class="login-page">
   
+  <link rel="stylesheet" type="text/css" href="assets/css/login.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+</head>
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
+<body class="cont">
+
   {{ Form::open(array('url' => 'login')) }}
-    <div class="login-box">
-      <div class="login-logo">
-        <img id="imagesrc"/>
+    <div class="demo">
+      <div class="login"  align="center">
+      <div class="login__check"> </div>
+        <img id="imagesrc" style="border-radius: 8px;max-width: 100%;height: auto;"/>
         <script>
           
                   
@@ -53,47 +54,55 @@
           //cons
           $('#imagesrc').attr('src', imgName);
         </script>
+        <p class="login__signup"><a>GPS Tracking System</a></p>
         <h5>
-        <?php if(Session::has('flash_notice')): ?>
-            <div class="text-danger" id="flash_notice"><?php echo Session::get('flash_notice') ?></div>
-        <?php endif; ?>
-      </h5>
-      </div><!-- /.login-logo -->
-      <div class="login-box-body">
-        <p class="login-box-msg">GPS Tracking System</p>
-        <form action="../../index2.html" method="post">
-          <div class="form-group has-feedback">
-            {{ Form::text('userName', Input::old('userName'), array('placeholder' => 'Username', 'class'=>'form-control', 'id'=>'userIds')) }}
-            <span style="top: 8px;" class="fa fa-user form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            {{ Form::password('password', array('placeholder' => 'Password', 'class'=>'form-control')) }}
-            <span style="top: 8px;" class="fa fa-lock form-control-feedback"></span>
-          </div>
-          <div class="row">
-            <div class="col-xs-8">    
-              <div class="checkbox icheck">
-                <label class="">
-                 <input name="remember" type="checkbox" /> Remember Me
-                </label>
-              </div>                        
-            </div><!-- /.col -->
-            <div class="col-xs-4">
-              {{ Form::submit('Login', array('class'=>'btn btn-primary btn-block btn-flat', 'id'=>'clickme')) }}
-            </div><!-- /.col -->
-            {{ Form::close() }}
-          </div>
-        </form>
-        
-        <!-- /.social-auth-links -->
+          <?php if(Session::has('flash_notice')): ?>
+            <div class="flashMessage" id="flash_notice"><?php echo Session::get('flash_notice') ?></div>
+          <?php endif; ?>
+        </h5>
 
-        <a href="#">{{ HTML::link('password/reset', 'Forgot/reset your password?', array('id' => 'linkid'), false)}} </a><br>
-        <a href="/gps/public/apiAcess">Api Access</a><br>
-        <a href="#" target="_blank"><img src="/gps/public/assets/imgs/apple.png" /></a>
-        <a href="#" target="_blank"><img src="/gps/public/assets/imgs/android.png" /></a>
+        <div class="login__form">
+          
+          <div class="login__row">
+            <svg class="login__icon name svg-icon" viewBox="0 0 20 20">
+              <path d="M0,20 a10,8 0 0,1 20,0z M10,0 a4,4 0 0,1 0,8 a4,4 0 0,1 0,-8" />
+            </svg>
+            {{ Form::text('userName', Input::old('userName'), array('placeholder' => 'Username', 'class'=>'login__input name', 'id'=>'userIds')) }}
+          </div>
+          <div class="login__row">
+            <svg class="login__icon pass svg-icon" viewBox="0 0 20 20">
+              <path d="M0,20 20,20 20,8 0,8z M10,13 10,16z M4,8 a6,8 0 0,1 12,0" />
+            </svg>
+            {{ Form::password('password', array('placeholder' => 'Password', 'class'=>'login__input pass')) }}
+          </div>
+
+        {{ Form::submit('Login', array('class'=>'login__submit', 'id'=>'clickme')) }}
+     
+       <p class="login__signup"><a href="#">{{ HTML::link('password/reset', 'Forgot/reset your password?', array('id' => 'linkid'), false)}} </a> &nbsp;<a href="/gps/public/apiAcess">Api Access</a></p>
+
+        <span style="padding: 10px">
+          <div id="cf">
+            <img class="bottom" src="/gps/public/assets/imgs/andG.png" style="width: 25px; height: 25px"/>
+            <img class="top" src="/gps/public/assets/imgs/andGy.png" style="width: 25px; height: 25px"/>
+          </div>
+
+          <div id="cff">
+            <img class="bottom" src="/gps/public/assets/imgs/appG.png" style="width: 25px; height: 25px"/>
+            <img class="top" src="/gps/public/assets/imgs/appGy.png" style="width: 25px; height: 25px"/>
+          </div>
+         
+      </span>
+      
         
-      </div><!-- /.login-box-body -->
+        </div>
     </div>
+
+     
+      
+
+    </div>
+     {{ Form::close() }}
+</body>
     <script type="text/javascript">
 
        $('#clickme').click(function(){
