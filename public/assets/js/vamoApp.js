@@ -20,7 +20,7 @@ function ValidateIPaddress(ipaddress)
 	return (false)  
 }  
 
-
+// logo = 'localhost';
 
 if(ValidateIPaddress(logo)) {
 	var parser    =   document.createElement('a');
@@ -28,12 +28,20 @@ if(ValidateIPaddress(logo)) {
 	logo      	  =   parser.host;
 }
 var imgName= context+'/public/uploads/'+logo+'.small.png';
-var wwwSplit = logo.split(".")
-if(wwwSplit[0]=="www")
-  var imgName= context+'/public/uploads/'+logo+'.small.png';
-  
 
-$('#imagesrc').attr('src', imgName);
+var folder = imgName;
+
+
+
+var wwwSplit = logo.split(".")
+if(wwwSplit[0]=="www"){
+  wwwSplit.shift();
+  imgName = context+'/public/uploads/'+wwwSplit+'.small.png';
+}
+
+  $('#imagesrc').attr('src', imgName);
+
+
 var gmarkers=[];
 var ginfowindow=[];
 var geomarker=[];
@@ -87,6 +95,24 @@ $(function() {
   };
 
 
+function todaydate(){
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+  var yyyy = today.getFullYear();
+
+  if(dd<10) {
+      dd='0'+dd
+  } 
+
+  if(mm<10) {
+      mm='0'+mm
+  } 
+
+  return mm+'/'+dd+'/'+yyyy;
+}
+
+
 //common directive for sorting
 app.directive("customSort", function() {
 return {
@@ -125,6 +151,27 @@ return {
     };      
   }// end link
 }
-});
+})
 
+// (function(){
+
+// var exportTable = function(){
+// var link = function($scope, elm, attr){
+// $scope.$on(‘export-pdf’, function(e, d){
+//       elm.tableExport({type:’pdf’, escape:’false’});
+//  });
+// $scope.$on(‘export-excel’, function(e, d){
+//        elm.tableExport({type:’excel’, escape:false});
+//  });
+// $scope.$on(‘export-doc’, function(e, d){
+//      elm.tableExport({type: ‘doc’, escape:false});
+//  });
+// }
+// return {
+//   restrict: ‘C’,
+//   link: link
+//    }
+//  }
+// app.directive(‘exportTable’, exportTable);
+// })();
 

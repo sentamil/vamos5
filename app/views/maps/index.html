@@ -16,7 +16,7 @@
 
 <!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
 <!-- new file -->
- <!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
+ <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 
 <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -30,14 +30,19 @@
      [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
         display: none !important;
      }
+
+  
 </style>
 </head>
-<div id="preloader" >
+
     <div id="status">&nbsp;</div>
-</div>
-<div id="preloader02" >
-    <div id="status02">&nbsp;</div>
-</div>
+<!-- <div class="wrap">
+  <div class="loading">
+    <div class="bounceball"></div>
+    <div class="text">NOW LOADING</div>
+  </div>
+</div> -->
+
 <body ng-app="mapApp">
 <div ng-controller="mainCtrl">
    <div id="wrapper">
@@ -67,7 +72,10 @@
                 </li>
                 <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
+                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}" data-toggle="tooltip" data-original-title="<div align='left'><span>Speed</span> &nbsp;-&nbsp; {{loc.speed}}; <br> <span>Ignition</span> &nbsp;-&nbsp; {{loc.ignitionStatus}} <br> <span>Address</span> &nbsp;-&nbsp; {{loc.address}}  </div>" tooltip-loader><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a>
+
+                        </li>
+
                     </ul>
                 </li>
             </ul>
@@ -246,8 +254,8 @@
                                 <input type="button" id="traffic" data-toggle="modal" data-target="#myModal" value="Get Url" />
                                 </div>
 
-                                <div class="modal fade" id="myModal" role="dialog">
-                                    <div class="modal-dialog modal-lg">
+                                <div class="modal fade" id="myModal" role="dialog" data-backdrop="false">
+                                    <div class="modal-dialog modal-md">
                                       <div class="modal-content">
                                         <div class="modal-header">
                                          <div class="form-group">
@@ -522,13 +530,15 @@
     <script src="assets/js/jquery-1.11.0.js"></script>
 
    
-    
+        
 
     <script src="assets/js/bootstrap.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
+
+    <!-- <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script> -->
      <!-- new files -->
     <!-- <script src="https://code.angularjs.org/1.2.9/angular.min.js"></script> -->
     <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>  -->
@@ -542,6 +552,8 @@
     <script src="http://code.highcharts.com/highcharts-more.js"></script>
     <script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
+    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY9lNthKAcaSCcQGKMcilI5aYWAeru9wc&sensor=false" ></script> -->
+
     <!-- <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js" type="text/javascript"></script> -->
   <!--   <script src="https://rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js" type="text/javascript"></script>
     <script src="https://rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer_compiled.js" type="text/javascript"></script> -->
@@ -568,6 +580,8 @@
     // var logo =document.location.host;
     // var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
     // $('#imagesrc').attr('src', imgName);
+
+
 
     $(document).ready(function(){
         $('#minmax').click(function(){

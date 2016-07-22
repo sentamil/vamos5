@@ -45,7 +45,9 @@
 <nav class="menus">
     <ul>
         <li class="cl-effect-5">
-            <a><span data-hover="Tracking">Tracking </span></a>
+            
+            <!-- <a><span  data-hover="Tracking">Tracking</span></a><span class="glyphicons glyphicons-road"></span> -->
+            <a><span  data-hover="Tracking"><div class="glyphicon glyphicon-map-marker"></div>&nbsp;Tracking</span></a>
             <ul>
                 <li><a href="../public/replay">History</a></li>
                 <li><a id="singleTrack" href="">Single Track</a></li>
@@ -58,7 +60,8 @@
             </ul>
         </li>
         <li class="cl-effect-5">
-            <a><span data-hover="Reports">Reports</span></a>
+            <!-- <a><span data-hover="Reports">Reports</span></a> -->
+            <a><span  data-hover="Reports"><div class="glyphicon glyphicon-list-alt"></div>&nbsp;Reports</span></a>
             <ul>
                 <li><a href="../public/reports">CURRENT STATUS</a></li>
                 <li><a href="../public/reports?ind=1">Vehicles Consolidated </a></li>
@@ -96,7 +99,8 @@
             </ul>
         </li>
             <li class="cl-effect-5">
-                <a><span data-hover="analytics">analytics</span></a>
+                <!-- <a><span data-hover="analytics">analytics</span></a> -->
+                <a><span  data-hover="analytics"><div class="glyphicon glyphicon-screenshot"></div>&nbsp;analytics</span></a>
                 <ul>
                     <li><a id="movement" href=""> Movement </a></li>
                     <li><a id="overspeed" href=""> OverSpeed </a></li>
@@ -112,14 +116,16 @@
                 </ul>
             </li>
         <li class="cl-effect-5">
-            <a><span data-hover="Statistics">Statistics</span></a>
+            <!-- <a><span data-hover="Statistics">Statistics</span></a> -->
+            <a><span  data-hover="Statistics"><div class="glyphicon glyphicon-stats"></div>&nbsp;Statistics</span></a>
             <ul>
                 <li><a href="../public/statistics">Executive</a></li>
                 <li><a href="../public/statistics?ind=1">POI</a></li>
             </ul>
         </li>
         <li class="cl-effect-5">
-            <a><span data-hover="sensor">sensor</span></a>
+        <a><span  data-hover="sensor"><div class="glyphicon glyphicon-list"></div>&nbsp;sensor</span></a>
+            <!-- <a><span data-hover="sensor">sensor</span></a> -->
             <ul>
                 <li><a id="load" href=""> Load </a></li>
                     <li><a id="fuel" href=""> Fuel </a></li>
@@ -128,7 +134,16 @@
             </ul>
         </li>
         <li class="cl-effect-5">
-            <a><span data-hover="Performance">Performance</span></a>
+            <!-- <a><span data-hover="Fuel">Fuel</span></a> -->
+            <a><span  data-hover="Fuel"><div class="glyphicon glyphicon-tint"></div>&nbsp;Fuel</span></a>
+            <ul>
+                <li><a href="../public/fuel">Distance &amp; Time</a></li>
+                <li><a href="../public/fuel?tab=fuelfill">Fuel Fill</a></li>
+            </ul>
+        </li>
+        <li class="cl-effect-5" style="width: 160px;">
+            <a><span  data-hover="Performance"><div class="glyphicon glyphicon-charts"></div>&nbsp;Performance</span></a>
+            <!-- <a><span  data-hover="Performance">Performance</span></a> -->
             <ul>
                 <li><a href="../public/performance?tab=daily">Daily Performance</a></li>
                 <li><a href="../public/performance">Monthly Performance</a></li>
@@ -136,12 +151,13 @@
         </li>
         
         
-
+       
         <li id="userId">
             <!-- <a href="">arun</a> -->
             <span class="glyphicon glyphicon-user"><span id="valueUser" style="font-size:12px; font-weight: bold; font-family: Helvetica"></span></span>    
         </li>
-        <li>
+        
+        <li style="width: 100px; ">
             <a href="../public/logout" class="glyphicon glyphicon-log-out" style="padding: 10px 15px;color: #fff; text-align: center;"></a>
         </li>
     </ul>

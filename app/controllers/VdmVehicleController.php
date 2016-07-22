@@ -763,40 +763,66 @@ public function edit1($id) {
 }
 
 public function updateCalibration() {
-    Log::info('-------------inside calibrate add-----------');
+    
+    $calibrateCount = Session::get('key');
+    Session::forget('key');
+   
+    Log::info('-------------inside calibrate add-----------'.$calibrateCount);
+
     $temp=0;
     if (! Auth::check ()) {
         return Redirect::to ( 'login' );
     }
     $username = Auth::user ()->username;
-
     $redis = Redis::connection ();
     $vehicleId = Input::get ('vehicleId');
     $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+
+
+    if($calibrateCount <=0 || $calibrateCount == null) 
+    {
+        $calibrateCount = $redis->ZCOUNT ( 'Z_Sensor_'.$vehicleId.'_'.$fcode,'-inf','+inf');
+        Log::info('-------zcount value--------'.$calibrateCount);
+    }
+
     $redis->del ( 'Z_Sensor_'.$vehicleId.'_'.$fcode );
-    for ($p = 9; $p>=$temp; $p--)
+    // log::info(' forloop count  '.$)
+    for ($p = $calibrateCount; $p>=$temp; $p--)
     {
         $volt=Input::get ('volt'.$p);
         $litre=Input::get ('litre'.$p);
-        log::info( $volt.'---------------vechile------------- ::' .$litre);
-        if((!$litre==null || $litre==0) && !$volt==null)
+        log::info($volt.'---------------vechile--11----------- ::' .$litre);
+
+        if($litre>0 && ($volt==null || $volt == 0)){
+
+            $volt =  0.001;
+
+            log::info($volt.'---------------vechile--12----------- ::' .$litre);
+
+        }
+        
+        if((!$litre==null || $litre==0) && (!$volt==null))
         {
-// log::info( $volt.'---------------vechile------------- ::' .$litre);
+           
+            
+            log::info(' volt value '.$volt.' count '.$calibrateCount);
+            log::info( $volt.'---------------vechile------- ::' .$litre);
             $redis->zadd ( 'Z_Sensor_'.$vehicleId.'_'.$fcode,$volt,$litre);
         }
 
 
     }
     Log::info('-------------outside calibrate add-----------');
-    return Redirect::to ( 'vdmVehicles' );
+    
+    
+return Redirect::to ( 'vdmVehicles' );
 }
 
 
 
 
 
-
-public function calibrate($id) {
+public static function calibrate($id,$temp) {
 
     Log::info('-------------inside calibrate-----------');
     if (! Auth::check ()) {
@@ -822,8 +848,8 @@ public function calibrate($id) {
 
     $latandlan=array();
     $address1= $redis->zrange( 'Z_Sensor_'.$vehicleId.'_'.$fcode,0,-1,'withscores');
-
-    $temp=null;
+    log::info(array($address1));
+    // $temp=null;
     $v=0;
     foreach($address1 as $org => $rowId)
     {
@@ -833,14 +859,25 @@ public function calibrate($id) {
         $ahan=$rowId[1].':'.$rowId[0];
 
         log::info( $rowId[1].'inside no'.$ahan.' result' .$rowId[0]);
-//$place = array_add($place, $rowId[1].':'.$rowId[0],$ahan);
+        //$place = array_add($place, $rowId[1].':'.$rowId[0],$ahan);
         $place = array_add($place,$v,$ahan);
         $v++;
     }
 
+// $volt=Input::get ('count_Calib');
+// log::info(' volt  '.$volt);
+// $valu = count($place);
 
-    $temp=10-count($place);
-    log::info( $temp.'---------------place------------- ::' .count($place));
+// log(' valua  ===> '+$valu);
+// if((count($place)>0 && $temp==0) || ($temp!=0 && $temp<=count($place)))
+// {
+//     log::info( $temp.'---------------place------------- ::' .count($place));
+//     $temp = count($place);
+// }
+
+    $temp= $temp-count($place);
+
+    log::info(' temp plavce '.count($place));
     for ($p = 0; $p < $temp; $p++)
     {
         log::info( '---------------in------------- ::' );
@@ -864,6 +901,21 @@ public function calibrate($id) {
 }
 
 
+public function calibrateCount(){
+    
+    $calibrateVehi = Input::get ( 'vehicleId' );
+    $listValue = Input::get ( 'listvalue' );
+    $count = Input::get ( 'count_Calib' );
+    if($count == null){
+        $count = 0;
+    }
+    $total = (int)$count+(int)$listValue;
+    Session::forget('key');
+    Session::put('key', $total);
+    $url = 'vdmVehicles/calibrateOil/'.$calibrateVehi.'/'.$total;
+    log::info($url);
+    return Redirect::to ( $url );
+}
 
 
 /**
@@ -1135,6 +1187,8 @@ public function updateLive($id) {
         $vehicleType = Input::get ( 'vehicleType' );
         $driverName = Input::get ( 'driverName' );
         $odoDistance = Input::get ('odoDistance');
+        $mobileNo = Input::get ( 'mobileNo' );
+        log::info(' mobileNo value  '.$mobileNo.'  vehihile type   '.$vehicleType);
         $redis = Redis::connection ();
         $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
         $vehicleRefData=json_decode($vehicleRefData,true);
@@ -1147,10 +1201,7 @@ public function updateLive($id) {
             $oprName=$vehicleRefData['oprName'];
         else
             $oprName='';
-        if(isset($vehicleRefData['mobileNo'])==1)
-            $mobileNo=$vehicleRefData['mobileNo'];
-        else
-            $mobileNo='';
+        
         if(isset($vehicleRefData['deviceModel'])==1)
             $deviceModel=$vehicleRefData['deviceModel'];
         else

@@ -54,7 +54,9 @@
           //cons
           $('#imagesrc').attr('src', imgName);
         </script>
-        <p class="login__signup"><a>GPS Tracking System</a></p>
+        <br>
+        <br>
+        <p class="login__signup" style="font-size: 14px"><a>GPS Tracking System</a></p>
         <h5>
           <?php if(Session::has('flash_notice')): ?>
             <div class="flashMessage" id="flash_notice"><?php echo Session::get('flash_notice') ?></div>
