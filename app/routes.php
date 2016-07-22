@@ -597,7 +597,7 @@ Route::get('vdmVehicles/calibrateOil/{param}', array('uses' => 'VdmVehicleContro
 
 
 Route::get('vdmVehicles/calibrateOil/{param}/{param1}', array('uses' => 'VdmVehicleController@calibrate'));
-// Route::post('vdmVehicles/updateCalibration', array('uses' => 'VdmVehicleController@updateCalibration'));
+Route::post('vdmVehicles/updateCalibration', array('uses' => 'VdmVehicleController@updateCalibration'));
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
 Route::post('vdmVehicles/moveDealer', array('uses' => 'VdmVehicleController@moveDealer'));
 Route::get('vdmVehicles/index1', array('uses' => 'VdmVehicleController@index1'));
