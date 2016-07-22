@@ -36,7 +36,7 @@ var folder = imgName;
 var wwwSplit = logo.split(".")
 if(wwwSplit[0]=="www"){
   wwwSplit.shift();
-  imgName = context+'/public/uploads/'+wwwSplit+'.small.png';
+  imgName = context+'/public/uploads/'+wwwSplit[0]+'.'+wwwSplit[1]+'.small.png';
 }
 
   $('#imagesrc').attr('src', imgName);

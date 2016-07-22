@@ -51,6 +51,14 @@
           //console.log(' path '+"----"+splitpath[1]);
 
           var imgName= '/'+splitpath[1]+'/public/uploads/'+logo+'.png';
+
+          var wwwSplit = logo.split(".")
+              if(wwwSplit[0]=="www"){
+                wwwSplit.shift();
+                imgName = '/'+splitpath[1]+'/public/uploads/'+wwwSplit[0]+'.'+wwwSplit[1]+'.small.png';
+              }
+
+          
           //cons
           $('#imagesrc').attr('src', imgName);
         </script>
