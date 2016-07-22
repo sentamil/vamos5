@@ -1422,7 +1422,7 @@ public function update1() {
     $rules = array (
         'deviceId' => 'required|alpha_dash',
         'vehicleId' => 'required|alpha_dash',
-        'shortName' => 'required|alpha_dash',
+        'shortName' => 'required',
         'regNo' => 'required',
         'vehicleType' => 'required',
         'oprName' => 'required',
