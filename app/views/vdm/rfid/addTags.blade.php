@@ -22,14 +22,14 @@
 						<br>
 						<div class="row">
 							<div class="col-md-3"></div>
-							<div class="col-md-3">Belongs To</div>
-							<div class="col-md-3">{{ Form::select('belongsTo', $vehList, Input::old('belongsTo'),array('id' => 'belongsTo','class'=>'form-control')) }}</div></br>
+							<!-- <div class="col-md-3">Belongs To</div> -->
+							<!-- <div class="col-md-3">{{ Form::select('belongsTo', $vehList, Input::old('belongsTo'),array('id' => 'belongsTo','class'=>'form-control')) }}</div> --></br>
 						</div>
 						<br>
 						<div class="row">
 							<div class="col-md-3"></div>
-							<div class="col-md-3">Swiped by</div>
-							<div class="col-md-3">{{Form::select('swipedBy', $vehRfidYesList, array('swipedBy'), array('multiple','name'=>'sports'.'[]','id' => 'swi','class'=>'form-control'))}}</div>
+							<!-- <div class="col-md-3">Swiped by</div> -->
+							<!-- <div class="col-md-3">{{Form::select('swipedBy', $vehRfidYesList, array('swipedBy'), array('multiple','name'=>'sports'.'[]','id' => 'swi','class'=>'form-control'))}}</div> -->
 						</div>
 						<br>
 						<div class="row">
@@ -40,6 +40,7 @@
 										<tr>
 											<th style="text-align: center;">No</th>
 											<th style="text-align: center;">Tag Id</th>
+											<th style="text-align: center;">Mobile number</th>
 											<th style="text-align: center;">Tag Name</th>
 												
 											<!-- <th style="text-align: center;">Belongs To</th>
@@ -52,6 +53,7 @@
 										<tr style="text-align: center;">
 											<td>{{ $i }}</td>
 											<td>{{ Form::text('tagid'.$i, Input::old('tagid')) }}</td>
+											<td>{{ Form::text('mobile'.$i, Input::old('nobile')) }}</td>
 											<td>{{ Form::text('tagname'.$i, Input::old('tagname')) }}</td>
 											<!-- <td>{{ Form::select('belongsTo' .$i, $vehList, Input::old('belongsTo'),array('id' => 'useri')) }}</td>
 

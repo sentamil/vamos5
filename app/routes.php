@@ -642,13 +642,15 @@ Route::resource('DashBoard', 'DashBoardController');
  
 Route::resource('Business', 'BusinessController');
 Route::resource('rfid', 'RfidController');
- Route::get('rfid/destroy/{param}', array('uses' => 'RfidController@destroy'));
+ Route::get('rfid/{param}/destroy', array('uses' => 'RfidController@destroy'));
+ Route::get('rfid/editRfid/{param}', array('uses' => 'RfidController@edit1'));
+ Route::post('rfid/index1', array('uses' => 'RfidController@index1'));
 
 Route::post('Business/adddevice', array('uses' => 'BusinessController@adddevice'));
 
 Route::post('rfid/addTags', array('uses' => 'RfidController@addTags'));
 Route::post('rfid/update', array('uses' => 'RfidController@update'));
- Route::post('select', array('as' => 'ajax.user_select', 'uses' => 'RfidController@getVehicle'));
+ Route::post('user_select', array('as' => 'ajax.user_select', 'uses' => 'RfidController@getVehicle'));
  Route::post('select', array('as' => 'ajax.checkvehicle', 'uses' => 'BusinessController@checkvehicle'));
  Route::post('select1', array('as' => 'ajax.checkDevice', 'uses' => 'BusinessController@checkDevice'));
  Route::post('select3', array('as' => 'ajax.checkUser', 'uses' => 'BusinessController@checkUser'));
