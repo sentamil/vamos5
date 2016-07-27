@@ -279,6 +279,7 @@ public function users()
 			$providerPassword=Input::get ('providerPassword');
 			//$eFDSchedular=Input::get ('eFDSchedular');
 			$timeZone=Input::get ('timeZone');
+			$apiKey=Input::get('apiKey');
 	
 			
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
@@ -312,6 +313,7 @@ public function users()
 					'providerUserName'=>$providerUserName,
 					'providerPassword'=>$providerPassword,
 					'timeZone'=>$timeZone,
+					'apiKey'=>$apiKey,	
 					//'eFDSchedular'=>$eFDSchedular
 					
 					
@@ -487,6 +489,10 @@ public function users()
 			$timeZone=$franchiseDetails['timeZone'];
 		else
 			$timeZone='';
+		if(isset($franchiseDetails['apiKey'])==1)
+			$apiKey=$franchiseDetails['apiKey'];
+		else
+			$apiKey='';
 
 
 
@@ -513,6 +519,7 @@ public function users()
 		->with('providerUserName',$providerUserName)
 		->with('providerPassword',$providerPassword)
 		->with('timeZone',$timeZone)
+		->with('apiKey', $apiKey)
 		->with('smsP',VdmFranchiseController::smsP());
 	
 
@@ -568,6 +575,8 @@ public function users()
 			$providerUserName=Input::get ('providerUserName');
 			$providerPassword=Input::get ('providerPassword');
 			$timeZone=Input::get ('timeZone');
+			$apiKey=Input::get('apiKey');
+
 			$redis = Redis::connection ();
 				
 				if($numberofLicence==null)
@@ -628,9 +637,13 @@ public function users()
 					'providerUserName'=>$providerUserName,
 					'providerPassword'=>$providerPassword,	
 					//'eFDSchedular'=>$eFDSchedular,
-					'timeZone'=>$timeZone,		
+					'timeZone'=>$timeZone,
+					'apiKey'=>$apiKey,		
 			);
 			$detailsJson = json_encode ( $details );
+			log::info($detailsJson);
+			log::info($apiKey);
+
 			$redis->hmset ( 'H_Franchise', $fcode,$detailsJson);
 			$redis->hmset('H_Fcode_Timezone_Schedular',$fcode,$timeZone);
 			

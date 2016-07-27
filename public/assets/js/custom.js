@@ -51,7 +51,7 @@ app.filter('statusfilter', function(){
 		}
 	}
 });
-
+ 
 app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($scope, $http, vamoservice, $filter, statusfilter){
 	//console.log($rootScope.test)
 	$scope.locations = [];
@@ -1512,4 +1512,16 @@ $(document).ready(function(e) {
 
         }
     }, 1000);
+});
+;app.directive('tooltipLoader', function() {
+        return function(scope, element, attrs) {
+
+	        element.tooltip({
+	        trigger:"hover",
+	        placement: "top",
+	        html: true,
+	        animated : 'fade',
+	        container: 'body',
+	    });
+    };
 });

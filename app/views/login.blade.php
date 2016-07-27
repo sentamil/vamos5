@@ -51,10 +51,20 @@
           //console.log(' path '+"----"+splitpath[1]);
 
           var imgName= '/'+splitpath[1]+'/public/uploads/'+logo+'.png';
+
+          var wwwSplit = logo.split(".")
+              if(wwwSplit[0]=="www"){
+                wwwSplit.shift();
+                imgName = '/'+splitpath[1]+'/public/uploads/'+wwwSplit[0]+'.'+wwwSplit[1]+'.small.png';
+              }
+
+          
           //cons
           $('#imagesrc').attr('src', imgName);
         </script>
-        <p class="login__signup"><a>GPS Tracking System</a></p>
+        <br>
+        <br>
+        <p class="login__signup" style="font-size: 14px"><a>GPS Tracking System</a></p>
         <h5>
           <?php if(Session::has('flash_notice')): ?>
             <div class="flashMessage" id="flash_notice"><?php echo Session::get('flash_notice') ?></div>
@@ -92,7 +102,9 @@
           </div>
          
       </span>
-      
+      <label style="font-size: 10px; color: #fff">
+       <input name="remember" type="checkbox" /> Remember Me
+      </label>
         
         </div>
     </div>
@@ -109,4 +121,25 @@
             var userId  = $('#userIds').val();
             sessionStorage.setItem('userIdName', JSON.stringify('username'+","+userId));
         });
+
+  $('#userIds').on('change', function() {
+    
+    var postValue = {
+      'id': $(this).val()
+
+      };
+    // alert($('#groupName').val());
+    $.post('{{ route("ajax.apiKeyAcess") }}',postValue)
+      .done(function(data) {
+        
+        // $('#validation').text(data);
+            sessionStorage.setItem('apiKey', JSON.stringify('apikey'+","+data));
+            
+          }).fail(function() {
+            console.log("fail");
+      });
+
+    
+  })
+
     </script>

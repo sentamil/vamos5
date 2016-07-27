@@ -107,7 +107,7 @@
 					
 								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/edit/' . $value ) }}">Edit</a>
 								
-								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/calibrateOil/' . $value) }}">Calibrate</a>
+								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/calibrateOil/' . $value,'0') }}">Calibrate</a>
 							
 			
 				

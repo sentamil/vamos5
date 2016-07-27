@@ -533,7 +533,9 @@ Route::get('password/reset/{token}', array('uses' => 'RemindersController@reset'
  
 Route::post('password/reset/{token}', array('before' => 'csrf', 'uses' => 'RemindersController@update', 'as' => 'password.update'));
  
- 
+Route::post('userIds', array('as' => 'ajax.apiKeyAcess', 'uses'=>'HomeController@getApi')); 
+
+
  
   //vdmGeoFence
  
@@ -596,7 +598,7 @@ Route::group(array('before' => 'adminauth'), function(){   //admin auth starts h
 Route::get('vdmVehicles/calibrateOil/{param}', array('uses' => 'VdmVehicleController@calibrate'));
 
 
-// Route::get('vdmVehicles/calibrateOil/{param}/{param1}', array('uses' => 'VdmVehicleController@calibrate'));
+Route::get('vdmVehicles/calibrateOil/{param}/{param1}', array('uses' => 'VdmVehicleController@calibrate'));
 Route::post('vdmVehicles/updateCalibration', array('uses' => 'VdmVehicleController@updateCalibration'));
 Route::get('vdmVehicles/multi', array('uses' => 'VdmVehicleController@multi'));
 Route::post('vdmVehicles/moveDealer', array('uses' => 'VdmVehicleController@moveDealer'));
@@ -664,7 +666,7 @@ Route::post('orgId', array('as' => 'ajax.ordIdCheck', 'uses'=>'VdmOrganizationCo
 Route::post('userId', array('as' => 'ajax.userIdCheck', 'uses'=>'VdmUserController@userIdCheck'));
 
 
-// Route::post('vdmVehicles/calibrate/count', array('uses'=>'VdmVehicleController@calibrateCount'));
+Route::post('vdmVehicles/calibrate/count', array('uses'=>'VdmVehicleController@calibrateCount'));
 
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');

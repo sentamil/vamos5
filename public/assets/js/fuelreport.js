@@ -8,6 +8,20 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	$scope.alertData 		=	'time';
 	// $scope.hrs    = 1;
 	// $scope.kms 	  = 10;
+
+
+	function getParameterByName(name) {
+    	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
+	var tabValue			=	getParameterByName('tab');
+
+
+	// console.log(' value in tabValue '+$scope.tabValue);
+
 	$scope.sort = {       
                 sortingOrder : 'id',
                 reverse : false
@@ -312,14 +326,25 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	{	
 		$("#fill").hide();
     	$("#eventReport").show();
+    	var distanceTimeUrl = ' ';
 		document.getElementById ("stop").checked = true;
     	document.getElementById ("idlecheck").checked = true;
     	var stoppage 		= 	document.getElementById ("stop").checked;
     	var idleEvent 		= 	document.getElementById ("idlecheck").checked;
     	var kms 			=   document.getElementsByClassName("kms")[0].value;
     	var hrs 			=   document.getElementsByClassName("hrs")[0].value;
-		var distanceTimeUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms;
-		serviceCall(distanceTimeUrl);
+		
+		
+		if(tabValue == "fuelfill"){
+			$('#fuelValue').val('fill');
+			distanceTimeUrl 	= 	'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&fuelDrop=false'+'&fuelFill=true';
+			serviceCall(distanceTimeUrl);
+			$("#eventReport").hide(1000);
+    		$("#fill").show(1000);
+		} else{
+			distanceTimeUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms;
+			serviceCall(distanceTimeUrl);
+		}
 	}
 	
 

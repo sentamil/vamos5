@@ -29,9 +29,14 @@
 
 <script type="text/javascript">
     $(function () {
+        
         $("#example1").dataTable({
-            stateSave: true
+            stateSave: true,
+            // iCookieDuration: 10,
+            stateDuration: -1,
         });
+        // var table = $('#example1').DataTable();
+        // table.state.clear();
         $('.selectpicker').selectpicker();
     });
 

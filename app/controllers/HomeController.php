@@ -161,7 +161,7 @@ class HomeController extends BaseController {
             Log::info('Login details ' . Input::get('userName') .' '. Input::get('password') );
 			// attempt to do the login
 			if (Auth::attempt($userdata,$remember)) {
-
+				log::info(' inside the login ');
                 $username = Auth::user()->username;
                   $redis = Redis::connection();
                   $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
@@ -190,8 +190,7 @@ class HomeController extends BaseController {
       }
 	 
       else {
-           
-		  $redis = Redis::connection ();
+        $redis = Redis::connection ();
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		$val1= $redis->sismember ( 'S_Dealers_' . $fcode, $username );
 		$val = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -203,8 +202,20 @@ class HomeController extends BaseController {
 		
            
       }
-				
-				 return  Redirect::to('live');
+			
+		// $redis = Redis::connection ();
+		// $fcodeKey = $redis->hget( 'H_UserId_Cust_Map',$username . ':fcode' );
+		// $franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
+		// $getFranchise=json_decode($franchiseDetails,true);
+		// // log::info($getFranchise);
+		// $apiKey='';
+		// if(isset($getFranchise['apiKey'])==1)
+		// 	$apiKey=$getFranchise['apiKey'];
+		// Session::put('apikey', $apiKey);
+		// Log::info('apikey '.$apiKey);	
+		// log::info(Session::get('apikey'));
+		// $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		return  Redirect::to('live');
 				
 
 			} else {	 	
@@ -219,6 +230,27 @@ class HomeController extends BaseController {
 		}
 	}
 	
+
+	public function getApi()
+	{
+		
+		log::info(' inside the api key ');
+		$username = Input::get ( 'id' );
+		$redis = Redis::connection ();
+		$fcodeKey = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
+		$getFranchise=json_decode($franchiseDetails,true);
+		log::info($getFranchise);
+		
+		if(isset($getFranchise['apiKey'])==1)
+			$apiKey=$getFranchise['apiKey'];
+		else
+			$apiKey='';
+
+		
+		return $apiKey;
+	}
+
 	public function track(){
 		
 		return View::make('track');
