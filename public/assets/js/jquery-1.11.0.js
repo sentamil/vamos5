@@ -1,10 +1,10 @@
-var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
-var url = " ";
+// var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
+var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
 
-if(apikey_url == null || apikey_url == "" || apikey_url == undefined)
-	url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
-else 
-	url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&callback=initMap";
+// if(apikey_url == null || apikey_url == "" || apikey_url == undefined)
+// 	url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
+// else 
+// 	url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&callback=initMap";
 
 
 /*! jQuery v1.11.0 | (c) 2005, 2014 jQuery Foundation, Inc. | jquery.org/license */
