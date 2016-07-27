@@ -1,4 +1,4 @@
-@include('includes.header_index')
+@include('includes.header_create')
 <div id="wrapper">
 	<div class="content animate-panel">
 		<div class="row">
@@ -32,9 +32,9 @@
 
 	                            			<th>Tag ID</th>
 	                            			<th>Tag Name</th>
+	                            			<th>Mobile Number</th>
+
 	                            			<th>Org Name</th>
-	                            			<th>Belongs To</th>
-	                            			<th>Swiped By</th>
 	                            			<th>Action</th>
 
 	                            		</tr>
@@ -45,12 +45,11 @@
 	                            		<tr style="text-align: center;font-size: 12px">
 	                            			<td>{{ $key }}</td>
 	                            			<td>{{ array_get($tagnameList, $key)}}</td>
-											<td>{{ array_get($orgList, $key)}}</td>
-											<td>{{ array_get($belongsToList, $key)}}</td>
-											<td>{{ array_get($swipevalueList, $key)}}</td>
+											<td>{{ array_get($mobileList, $key)}}</td>
+											<td>{{ $orgIdUi}}</td>
 	                            			<td>
-                                                    <a class="btn btn-warning" href="{{ URL::to('rfid/destroy/'.$key) }}">Delete</a>
-<a class="btn btn-warning" href="{{ URL::to('rfid/'.$key . '/edit') }}">Edit</a>
+         <a class="btn btn-warning" href="{{ URL::to('rfid/'.$key.';'.$orgIdUi.'/destroy') }}">Delete</a>
+<a class="btn btn-warning" href="{{ URL::to('rfid/'.$key.';'.$orgIdUi.'/edit') }}">Edit</a>
                                                     </td>
 	                            		</tr>
 	                            		@endforeach
@@ -79,6 +78,6 @@
 	    </div>
 	</div>
 	</div>
-	@include('includes.js_index')
+	@include('includes.js_create')
 	</body>
 	</html>

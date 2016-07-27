@@ -144,12 +144,12 @@ class RfidController extends \BaseController {
             $tagid = Input::get ( 'tagid'.$i);
 
             $tagid=trim($tagid,"");
-            $belongsTo=Input::get('belongsTo');
-            log::info( '--------inside belongsTo in  ::----------'.$belongsTo);
+            $mobile=Input::get('mobile'.$i);
+            log::info( '--------inside mobile in  ::----------'.$mobile);
             $swipedBy=Input::get('sports');
             $org=Input::get('org');
             // log::info( '--------inside tagname in  ::----------'.$tagname);
-            if($tagid!==null && $tagid!=='' && $belongsTo!==null && $belongsTo!=='' && $belongsTo!=='select' && $org!==null && $org!=='' && $org!=='select')
+            if($tagid!==null && $tagid!=='' && $mobile!==null && $mobile!=='' && $mobile!=='select' && $org!==null && $org!=='' && $org!=='select')
             {
                 log::info( '-------- add test  ::----------'.$tags);
                 $val=$redis->sismember ( 'S_Rfid_Tags_' . $fcode, $tagid);
@@ -163,31 +163,22 @@ class RfidController extends \BaseController {
                     log::info( '--------inside tagid in  ::----------'.$tagid);
                     $tagname=Input::get('tagname'.$i);
                     
-                    
-                    $swipevalue='';
-                    if($swipedBy!=null)
-                    {
-                        $swipevalue=implode(",",$swipedBy);
-                    }
                     $redis->sadd('S_Rfid_Tags_' . $fcode,$tagid);
                     $redis->hset('H_Rfid_Map',$tagid,$fcode);
                     $redis->sadd('S_Rfid_Org_'.$org.'_' . $fcode,$tagid);
                         $refDataArr = array (
                                         'tagid' => $tagid,
-                                        'distance' => 0,
-                                        'org' => $org,
-                                        'belongsTo' => $belongsTo,
+                                        'mobile' => $mobile,
                                         'tagname' => $tagname,
-                                        'swipevalue' => $swipevalue,
                         );
                      $refDataJson = json_encode ( $refDataArr );                          
                     if(Session::get('cur')=='dealer')
                     {             
-                        $redis->hset('H_Rfid_Dealer_'.$username.'_'.$fcode,$tagid,$refDataJson);   
+                        $redis->hset('H_Rfid_Dealer_'.$org.'_'.$fcode,$tagid,$refDataJson);   
                     }
                     else if(Session::get('cur')=='admin')
                     {
-                        $redis->hset('H_Rfid_Admin_'.$fcode,$tagid,$refDataJson); 
+                        $redis->hset('H_Rfid_Admin_'.$org.'_'.$fcode,$tagid,$refDataJson); 
                     }       
 
 
@@ -220,7 +211,7 @@ class RfidController extends \BaseController {
 
 
 
-    public function index() {
+    public function index1() {
         if (! Auth::check () ) {
             return Redirect::to ( 'login' );
         }
@@ -232,18 +223,19 @@ class RfidController extends \BaseController {
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 
         $key='';
+        $orgIdUi=Input::get ( 'org');
         if(Session::get('cur')=='dealer')
         {    
-            $key= 'H_Rfid_Dealer_'.$username.'_'.$fcode;     
+            $key= 'H_Rfid_Dealer_'.$orgIdUi.'_'.$fcode;     
         }
         else if(Session::get('cur')=='admin')
         {
-            $key='H_Rfid_Admin_'.$fcode;
+            $key='H_Rfid_Admin_'.$orgIdUi.'_'.$fcode;
         }       
         $values=$redis->hgetall($key);
         $taglist =null;
         $distanceList = null;
-        $orgList =null;
+        $mobileList =null;
         $belongsToList = null;
         $tagnameList =null;
         $swipevalueList = null;
@@ -253,8 +245,8 @@ class RfidController extends \BaseController {
             $taglist = array_add($taglist,$key,$tagid);
             $distance=isset($valueT['distance'])?$valueT['distance']:'0';
             $distanceList = array_add($distanceList,$key,$distance);
-            $org=isset($valueT['org'])?$valueT['org']:'nill';
-            $orgList = array_add($orgList,$key,$org);
+            $mobile=isset($valueT['mobile'])?$valueT['mobile']:'nill';
+            $mobileList = array_add($mobileList,$key,$mobile);
             $belongsTo=isset($valueT['belongsTo'])?$valueT['belongsTo']:'nill';
             $belongsToList = array_add($belongsToList,$key,$belongsTo);
             $tagname=isset($valueT['tagname'])?$valueT['tagname']:'nill';
@@ -262,7 +254,47 @@ class RfidController extends \BaseController {
             $swipevalue=isset($valueT['swipevalue'])?$valueT['swipevalue']:'nill';
             $swipevalueList = array_add($swipevalueList,$key,$swipevalue);
         }
-        return View::make ( 'vdm.rfid.index')->with('values',$values)->with('taglist',$taglist)->with('distanceList',$distanceList)->with('orgList',$orgList)->with('belongsToList',$belongsToList)->with('tagnameList',$tagnameList)->with('swipevalueList',$swipevalueList);
+        return View::make ( 'vdm.rfid.index')->with('values',$values)->with('taglist',$taglist)->with('distanceList',$distanceList)->with('mobileList',$mobileList)->with('belongsToList',$belongsToList)->with('tagnameList',$tagnameList)->with('orgIdUi',$orgIdUi);
+    }
+
+
+
+    public function index() {
+
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+
+        $username = Auth::user ()->username;
+        $redis = Redis::connection ();
+        $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+
+       
+           // Session::put('tags',$tags);
+            log::info( '--------inside tag add in  ::----------');
+            
+            $orgListId = 'S_Organisations_' . $fcode;
+
+            if(Session::get('cur')=='dealer')
+            {
+                log::info( '------login 1---------- '.Session::get('cur'));
+                $orgListId = 'S_Organisations_Dealer_'.$username.'_'.$fcode;
+            }
+            else if(Session::get('cur')=='admin')
+            {
+                $orgListId = 'S_Organisations_Admin_'.$fcode;
+            }
+            $orgList = $redis->smembers ( $orgListId);
+            $orgArray = array();
+            foreach ( $orgList as $org ) {
+
+                $orgArray = array_add($orgArray, $org,$org);
+//TODO --- more details obtained here
+            }
+            $orgList=$orgArray ;
+             Log::info('tag= ahan' );
+            return View::make ( 'vdm.rfid.showTags',array ('orgList' => $orgList) );
+        
     }
 
 
@@ -271,13 +303,15 @@ class RfidController extends \BaseController {
 
     public function destroy($id)
     {
-        $tagid=$id;
+       
         if (! Auth::check () ) {
             return Redirect::to ( 'login' );
         }
         $username = Auth::user ()->username;
-
-        log::info( 'User name  ::' . $username); 
+        $myArray = explode(';', $id);
+        $id=$myArray[0];
+        $tagid=$id;
+        log::info( 'User name test ::' . $id); 
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
         $redis->srem('S_Rfid_Tags_' . $fcode,$tagid);
@@ -285,14 +319,13 @@ class RfidController extends \BaseController {
 
         if(Session::get('cur')=='dealer')
         {    
-            $keyt='H_Rfid_Dealer_'.$username.'_'.$fcode; 
+            $keyt='H_Rfid_Dealer_'.$myArray[1].'_'.$fcode; 
         }
         else if(Session::get('cur')=='admin')
         {
-            $keyt='H_Rfid_Admin_'.$fcode;
+            $keyt='H_Rfid_Admin_'.$myArray[1].'_'.$fcode;
         }       
-        $valueT=$redis->hget($keyt,$tagid);
-        $orgname =explode(";",$valueT)[0];
+        $orgname =$myArray[1];
         $redis->srem('S_Rfid_Org_'.$orgname.'_' . $fcode,$tagid);
         $redis->hdel($keyt,$tagid); 
 
@@ -309,17 +342,21 @@ class RfidController extends \BaseController {
 
         log::info( 'User name  ::' . $username); 
         $redis = Redis::connection ();
-
+        $myArray = explode(';', $id);
+        $id=$myArray[0];
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 
         $key='';
+         $vehicleId = $myArray[0];
+        $orgId =$myArray[1];
+        Log::info(' orgId = ' . $orgId);
         if(Session::get('cur')=='dealer')
         {    
-            $key= 'H_Rfid_Dealer_'.$username.'_'.$fcode;     
+            $key= 'H_Rfid_Dealer_'.$orgId.'_'.$fcode;     
         }
         else if(Session::get('cur')=='admin')
         {
-            $key='H_Rfid_Admin_'.$fcode;
+            $key='H_Rfid_Admin_'.$orgId.'_'.$fcode;
         }       
         $values=$redis->hget($key,$id);
 
@@ -327,8 +364,8 @@ class RfidController extends \BaseController {
 
             $valueT=json_decode($values,true);
              $tagname=isset($valueT['tagname'])?$valueT['tagname']:'nill';
-            $orgname=isset($valueT['org'])?$valueT['org']:'nill';
-             $belongsto=isset($valueT['belongsTo'])?$valueT['belongsTo']:'nill';
+            $orgname=$orgId;
+             $mobile=isset($valueT['mobile'])?$valueT['mobile']:'nill';
               $swipeby=isset($valueT['swipevalue'])?$valueT['swipevalue']:'nill';
                 $swipeby=explode(',',$swipeby);
         if(Session::get('cur')=='dealer')
@@ -395,7 +432,7 @@ class RfidController extends \BaseController {
         $orgList=$orgArray ;
 
 
-        return View::make ( 'vdm.rfid.edit',array ('vehList' => $vehList) )->with ( 'vehRfidYesList', $vehRfidYesList )->with ( 'tagid', $tagid )->with ( 'tagname', $tagname )->with ( 'orgname', $orgname )->with ( 'belongsto', $belongsto )->with ( 'swipeby', $swipeby )->with ( 'orgList', $orgList );
+        return View::make ( 'vdm.rfid.edit',array ('vehList' => $vehList) )->with ( 'vehRfidYesList', $vehRfidYesList )->with ( 'tagid', $tagid )->with ( 'tagname', $tagname )->with ( 'orgname', $orgname )->with ( 'mobile', $mobile )->with ( 'swipeby', $swipeby )->with ( 'orgList', $orgList );
 
     }
 
@@ -417,12 +454,12 @@ class RfidController extends \BaseController {
             $tagidtemp = Input::get ( 'tagidtemp');
 
             $tagid=trim($tagid,"");
-            $belongsTo=Input::get('belongsTo');
-            log::info( '--------inside belongsTo in  ::----------'.$belongsTo);
-            $swipedBy=Input::get('sports');
+            $mobile=Input::get('mobile');
+            log::info( '--------inside mobile in  ::----------'.$mobile);
             $org=Input::get('org');
+            $orgT=Input::get('orgT');
             // log::info( '--------inside tagname in  ::----------'.$tagname);
-            if($tagid!==null && $tagid!=='' && $belongsTo!==null && $belongsTo!=='' && $belongsTo!=='select' && $org!==null && $org!=='' && $org!=='select')
+            if($tagid!==null && $tagid!=='' && $mobile!==null && $mobile!=='' && $mobile!=='select' && $org!==null && $org!=='' && $org!=='select')
             {
                 log::info( '-------- add test  ::----------'.Session::get('tags'));
                 $val=$redis->sismember ( 'S_Rfid_Tags_' . $fcode, $tagid);
@@ -437,40 +474,31 @@ class RfidController extends \BaseController {
                     $tagname=Input::get('tagname');
                     
                     
-                    $swipevalue='';
-                    if($swipedBy!=null)
-                    {
-                        $swipevalue=implode(",",$swipedBy);
-                    }
-                    
                      $redis->srem('S_Rfid_Tags_' . $fcode,$tagidtemp);
                     $redis->sadd('S_Rfid_Tags_' . $fcode,$tagid);
                     $redis->hdel('H_Rfid_Map',$tagidtemp);
                     $redis->hset('H_Rfid_Map',$tagid,$fcode);
-                    $redis->srem('S_Rfid_Org_'.$org.'_' . $fcode,$tagidtemp);
+                    $redis->srem('S_Rfid_Org_'.$orgT.'_' . $fcode,$tagidtemp);
                     $redis->sadd('S_Rfid_Org_'.$org.'_' . $fcode,$tagid);
 
                         $refDataArr = array (
                                         'tagid' => $tagid,
-                                        'distance' => 0,
-                                        'org' => $org,
-                                        'belongsTo' => $belongsTo,
+                                        'mobile' => $mobile,
                                         'tagname' => $tagname,
-                                        'swipevalue' => $swipevalue,
                         );
                      $refDataJson = json_encode ( $refDataArr );       
 
                     if(Session::get('cur')=='dealer')
                     {             
                        
-                        $redis->hdel('H_Rfid_Dealer_'.$username.'_'.$fcode,$tagidtemp);   
-                        $redis->hset('H_Rfid_Dealer_'.$username.'_'.$fcode,$tagid,$refDataJson); 
+                        $redis->hdel('H_Rfid_Dealer_'.$orgT.'_'.$fcode,$tagidtemp);   
+                        $redis->hset('H_Rfid_Dealer_'.$org.'_'.$fcode,$tagid,$refDataJson); 
                     }
                     else if(Session::get('cur')=='admin')
                     {
                        
-                        $redis->hdel('H_Rfid_Admin_'.$fcode,$tagidtemp); 
-                         $redis->hset('H_Rfid_Admin_'.$fcode,$tagid,$refDataJson);
+                        $redis->hdel('H_Rfid_Admin_'.$orgT.'_'.$fcode,$tagidtemp); 
+                         $redis->hset('H_Rfid_Admin_'.$org.'_'.$fcode,$tagid,$refDataJson);
                     }       
 
 
@@ -507,7 +535,7 @@ public function getVehicle()
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 
-$orgId = Input::get ( 'id');
+            $orgId = Input::get ( 'id');
 
             if(Session::get('cur')=='dealer')
             {
