@@ -91,6 +91,10 @@
 		{{ Form::label('timeZone', 'Time Zone') }}
 		{{ Form::text('timeZone', Input::old('timeZone'), array('class' => 'form-control')) }}
 	</div>
+	<div class="form-group">
+		{{ Form::label('apiKey', 'Api Key') }}
+		{{ Form::text('apiKey', Input::old('apiKey'), array('class' => 'form-control')) }}
+	</div>
 
 	
 	{{ Form::submit('Add the Franchise!', array('class' => 'btn btn-primary')) }}

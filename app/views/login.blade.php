@@ -102,7 +102,9 @@
           </div>
          
       </span>
-      
+      <label style="font-size: 10px; color: #fff">
+       <input name="remember" type="checkbox" /> Remember Me
+      </label>
         
         </div>
     </div>
@@ -119,4 +121,25 @@
             var userId  = $('#userIds').val();
             sessionStorage.setItem('userIdName', JSON.stringify('username'+","+userId));
         });
+
+  $('#userIds').on('change', function() {
+    
+    var postValue = {
+      'id': $(this).val()
+
+      };
+    // alert($('#groupName').val());
+    $.post('{{ route("ajax.apiKeyAcess") }}',postValue)
+      .done(function(data) {
+        
+        // $('#validation').text(data);
+            sessionStorage.setItem('apiKey', JSON.stringify('apikey'+","+data));
+            
+          }).fail(function() {
+            console.log("fail");
+      });
+
+    
+  })
+
     </script>
