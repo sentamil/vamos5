@@ -1,6 +1,8 @@
 app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, vamoservice, $filter){
 
-// trip summary , 	site report, trip report 
+	
+
+// trip summary , 	site report, trip report , rfid Report
 
 	//global declaration
 	$scope.addressFuel 			= 	[];
@@ -9,17 +11,17 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
   	$scope.siteEntry 			=	0;
 	$scope.siteExit 			=	0;
 	//loading start function
-	var startLoading		= function () {
-		$('#status').show(); 
-		$('#preloader').show();
-	};
+	// var startLoading		= function () {
+	// 	$('#status').show(); 
+	// 	$('#preloader').show();
+	// };
 
 	//loading stop function
-	var stopLoading		= function () {
-		$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');
-		$('body').delay(350).css({'overflow':'visible'});
-	};
+	// var stopLoading		= function () {
+	// 	$('#status').fadeOut(); 
+	// 	$('#preloader').delay(350).fadeOut('slow');
+	// 	$('body').delay(350).css({'overflow':'visible'});
+	// };
 
 	$scope.msToTime		=	function(ms) {
 		days = Math.floor(ms / (24*60*60*1000));
@@ -202,6 +204,9 @@ function plottinGraphs(valueGraph, timeData){
 			case 'alarm' :
 				urlWebservice   =  "http://"+globalIP+context+"/public/getAlarmReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
+			case 'rfid' :
+				urlWebservice   =  "http://"+globalIP+context+"/public/getRfidReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				break;
 			default :
 				break;
 			}
@@ -257,6 +262,12 @@ function plottinGraphs(valueGraph, timeData){
 		})
 	}
 
+	//get the value
+	$scope.rfidSplit 	= 	function(value, index){
+		var _tageValue = value.split(';');
+		return (index == 'one') ? _tageValue[0] :  _tageValue[1];
+	}
+
 
 	// service call for the event report
 
@@ -276,6 +287,10 @@ function plottinGraphs(valueGraph, timeData){
 					}
 					
 				$scope.siteData = responseVal;
+
+				// if(tab == 'rfid')
+				// 	forRfitOnly(responseVal);
+
 				var entry=0,exit=0; 
 				if (tab == 'site')
 					angular.forEach(responseVal, function(val, key){

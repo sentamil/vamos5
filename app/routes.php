@@ -111,6 +111,13 @@ Route::get('/settings', function() {
     }
     return View::make('maps.settings');
 });
+
+Route::get('/rfidTag', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.rfidReport');
+});
  
 View::addExtension('html', 'php');
 Route::get('/menu', function() {
@@ -321,7 +328,13 @@ Route::get('/getPoiHistory', function() {
 });
  
  
-
+Route::get('getRfidReport', function(){
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getRfidReport');
+    return View::make('vls.getRfidReport');
+});
 
  
  
