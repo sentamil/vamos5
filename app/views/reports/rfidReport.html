@@ -151,11 +151,11 @@ background-color: #ffffff;
                     
                     </div>
                     <div class="box-body" id="rfidreport">
-                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">RFId Tag Report <span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
+                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">RFId Tag Report &nbsp;&nbsp;{{shortNam}}<span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
                             
                                 <table class="table table-bordered table-striped table-condensed table-hover">
                                     <thead>
-                                        <tr style="text-align:center; font-weight: bold;">
+                                        <tr style="text-align:center; font-weight: bold; ">
                                             <td>Vehicle Group</td>
                                             <td>{{uiGroup}}</td>
                                             <td>Vehicle Name</td>
@@ -195,7 +195,7 @@ background-color: #ffffff;
                                     
                                 </tbody>
                                 <tr ng-if="siteData.gd == null || siteData.vehicleId == null"  align="center">
-                                    <td colspan="4"class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                    <td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                 </tr>
                             </table>
                         </div>
