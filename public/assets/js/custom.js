@@ -1,4 +1,5 @@
 //comment by satheesh ++...
+ 
 var setintrvl;
 app.filter('statusfilter', function(){
 	return function(obj, param){
@@ -53,8 +54,14 @@ app.filter('statusfilter', function(){
 });
  
 app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($scope, $http, vamoservice, $filter, statusfilter){
-	//console.log($rootScope.test)
-	$scope.locations = [];
+
+        // $.getScript("assets/js/markerwithlabel.js");
+        // $.getScript("assets/js/infobubble.js");
+        // $.getScript("assets/js/infobox.js");
+   
+    
+    
+    $scope.locations = [];
 	$scope.nearbyLocs =[];
 	$scope.mapTable =[];
 	$scope.val = 5;	
@@ -73,8 +80,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	$scope.map =  null;
 	$scope.flightpathall = []; 
 	$scope.clickflag = false;
-	$scope.flightPath = new google.maps.Polyline();
-	$scope.trafficLayer = new google.maps.TrafficLayer();
+	
 	$scope.checkVal=false;
 	$scope.clickflagVal =0;
 	$scope.nearbyflag = false;
@@ -84,8 +90,10 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	var markerCluster;
 	var vehicleids=[];
 	var polygenList=[];
+
+	
 	//var menuVid;
-	//$scope.locations01 = vamoservice.getDataCall($scope.url);
+	
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
 	}
@@ -124,12 +132,6 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	});
     
 
-    // document.getElementById('#userId').value = menuValue;
-    // $scope.userName = 'menuValue';
- //    console.log(' value in menu '+menuValue);
-	// $('#userId span').val(menuValue);
-	// console.log(' value in menu '+$('#userId span').val(menuValue));
-	// console.log($scope.locations02)
 	$scope.$watch("vehicleStatus", function (val) {
 		if($scope.locations02!=undefined){
 			$scope.selected=undefined;
@@ -1525,3 +1527,50 @@ $(document).ready(function(e) {
 	    });
     };
 });
+
+
+
+ function googleTranslateElementInit() 
+    {
+         new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+
+
+    $(document).ready(function(){
+        $('#minmax').click(function(){
+            $('#contentmin').animate({
+                height: 'toggle'
+            },500);
+        });
+    });
+
+    $("#editable").hide();
+    $("#viewable").show();
+
+    $(document).ready(function(){
+      
+        $('#draggable').hide(0);  
+        $('#minmaxMarker').click(function(){
+           
+              $('#draggable').animate({
+                height: 'toggle'
+            },500);
+        });
+    
+
+    });
+    $("#inputEdit").click(function(e){
+        $("#editable").show();
+        $("#viewable").hide();
+    })
+    
+    
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    $(document).ready(function(){
+        if(navigator.appVersion.indexOf("MSIE")!=-1){
+            document.body.style.zoom="90%";
+        }
+    });
