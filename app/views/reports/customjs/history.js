@@ -303,6 +303,16 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    		});
    	}
 
+   	function filter(obj){
+   		var _returnObj = [];
+   		if(obj)
+   			angular.forEach(obj,function(val, key){
+   				if(val.fuelLitre >0)
+   					_returnObj.push(val)
+   			})
+   		return _returnObj;
+   	}
+
    	//for initial loading
    	$scope.dataArray			=	function(data) {
    		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
@@ -310,7 +320,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
 		$scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
-		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!0"}));
+		$scope.fuelValue 		= 	filter(data);
 		ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
 		ignitionFilter(ignitionValue);
 		// loadReportApi("http://"+getIP+context+"/public/getLoadReport?vehicleId="+prodId);
@@ -328,7 +338,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
 		$scope.fuelValue=[];
 		if(data)
-		$scope.fuelValue 		= 	($filter('filter')(data, {'fuelLitre': "!0"}));
+		$scope.fuelValue 		= 	filter(data);
 		ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
 		ignitionFilter(ignitionValue);
 		$scope.alertMe_click($scope.downloadid);

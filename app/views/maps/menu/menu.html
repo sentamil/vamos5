@@ -113,6 +113,7 @@
                     <li><a id="tripkms" href=""> Trip Summary</a></li>
                     
                     <li><a id="alarm" href="">Alarm</a></li>
+
                 </ul>
             </li>
         <li class="cl-effect-5">
@@ -134,7 +135,7 @@
                     <li><a id="fuel" href=""> Fuel </a></li>
                     <li><a href="../public/fuel">Distance &amp; Time</a></li>
                     <li><a href="../public/fuel?tab=fuelfill">Fuel Fill</a></li>
-                    
+                    <li><a id="rfid" href="">Rfid</a></li>
             </ul>
         </li>
         <!-- <li class="cl-effect-5">
@@ -218,6 +219,11 @@
             $('#alarm').click(function(){
                 $(this).attr("href", 'alarm?vid='+vid+'&vg='+gname+'&tn=alarm')
             })
+
+            $('#rfid').click(function(){
+                $(this).attr("href", 'rfidTag?vid='+vid+'&vg='+gname+'&tn=rfid')
+            })
+
             $('#multiTrack').click(function(){
                 $(this).attr("href", 'trackSingleVeh?vehicleId='+vid+'&track=multiTrack');
                 $(this).attr("target", '_blank');

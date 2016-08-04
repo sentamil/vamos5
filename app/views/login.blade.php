@@ -55,7 +55,7 @@
           var wwwSplit = logo.split(".")
               if(wwwSplit[0]=="www"){
                 wwwSplit.shift();
-                imgName = '/'+splitpath[1]+'/public/uploads/'+wwwSplit[0]+'.'+wwwSplit[1]+'.small.png';
+                imgName = '/'+splitpath[1]+'/public/uploads/'+wwwSplit[0]+'.'+wwwSplit[1]+'.png';
               }
 
           
@@ -133,7 +133,7 @@
       .done(function(data) {
         
         // $('#validation').text(data);
-            sessionStorage.setItem('apiKey', JSON.stringify('apikey'+","+data));
+            sessionStorage.setItem('apiKey', JSON.stringify(data));
             
           }).fail(function() {
             console.log("fail");
