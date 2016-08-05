@@ -199,7 +199,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		$scope.fromTime    =  document.getElementById("timeFrom").value;
 		$scope.todate1     =  document.getElementById("dateTo").value;
 		$scope.totime      =  document.getElementById("timeTo").value;
-		var conUrl1        =  'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime);
+		var conUrl1        =  'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
 		var days = daydiff(new Date($scope.fromdate1), new Date($scope.todate1));
 		if(days <= 3)
 			service(conUrl1);
@@ -227,7 +227,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		$('#preloader').show(); 
 		$('#preloader02').show();
 		$scope.dateFunction();
-		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime);
+		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
 		service(conUrl);
 	}
 	
@@ -258,7 +258,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 			
 		else
 			$scope.dateFunction(); 
-		var conUrl              =   'http://'+getIP+context+'/public/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.fromdate1+'&toTime='+convert_to_24h($scope.totime)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site;
+		var conUrl              =   'http://'+getIP+context+'/public/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.fromdate1+'&toTime='+convert_to_24h($scope.totime)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
 		serviceCallTrip(conUrl);
 		console.log('  consoldate trip '+$scope.fromdate1 +$scope.fromTime+$scope.todate1 +$scope.totime);
 		
