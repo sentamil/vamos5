@@ -280,6 +280,7 @@ public function store() {
         $altShortName= Input::get ('altShortName');
         $parkingAlert = Input::get('parkingAlert');
         $isRfid = Input::get('isRfid');
+        $rfidType = Input::get('rfidType');
         $v=idate("d") ;
 //            $paymentType=Input::get ( 'paymentType' );
         $paymentType='yearly';
@@ -338,6 +339,7 @@ else if(Session::get('cur')=='admin')
             'expiredPeriod'=>$new_date,
             'fuel'=>$fuel,
             'isRfid'=>$isRfid,
+            'rfidType'=>$rfidType,
             'OWN'=>$ownership,
 
             );
@@ -594,6 +596,7 @@ public function edit($id) {
         $refData= array_add($refData, 'expiredPeriod',' ');
         $refData= array_add($refData, 'fuel', 'no');
         $refData= array_add($refData, 'isRfid', 'no');
+        $refData= array_add($refData, 'rfidType', 'no');
         $refData= array_add($refData, 'shortName', 'nill');
         $refData= array_add($refData, 'Licence', '');
         $refData= array_add($refData, 'Payment_Mode', '');
@@ -974,6 +977,7 @@ public function update($id) {
         $altShortName=Input::get ('altShortName');
         $fuelType=Input::get ('fuelType');
         $isRfid=Input::get ('isRfid');
+        $rfidType=Input::get ('rfidType');
         $ipAddress=Input::get ('ipAddress');
         $portNo=Input::get ('portNo');
         $analog1=Input::get ('analog1');
@@ -1050,6 +1054,7 @@ else if(Session::get('cur')=='admin')
             'fuel'=>$fuel,
             'fuelType'=>$fuelType,
             'isRfid'=>$isRfid,
+            'rfidType'=>$rfidType,
             'OWN'=>$ownership,
             'Licence'=>$Licence,
             'Payment_Mode'=>$Payment_Mode,
@@ -1254,6 +1259,10 @@ public function updateLive($id) {
             $isRfid=$vehicleRefData['isRfid'];
         else
             $isRfid='no';  
+        if(isset($vehicleRefData['rfidType'])==1)
+            $rfidType=$vehicleRefData['rfidType'];
+        else
+            $rfidType='no';  
         if(isset($vehicleRefData['ipAddress'])==1)
             $ipAddress=$vehicleRefData['ipAddress'];
         else
@@ -1338,6 +1347,7 @@ public function updateLive($id) {
             'serial2'=>$serial2,
             'digitalout'=>$digitalout,
             'isRfid'=>$isRfid,
+            'rfidType'=>$rfidType,
             );
 
         $refDataJson = json_encode ( $refDataArr );
@@ -1465,6 +1475,7 @@ public function update1() {
         $eveningTripStartTime = Input::get ('eveningTripStartTime');
         $fuel=Input::get ('fuel');
         $isRfid=Input::get ('isRfid');
+        $rfidType=Input::get ('rfidType');
         $orgId = Input::get ('orgId');
         $altShortName= Input::get ('altShortName');
         $parkingAlert = Input::get('parkingAlert');
@@ -1533,6 +1544,7 @@ public function update1() {
             'expiredPeriod'=>$new_date,
             'fuel'=>$fuel,
             'isRfid'=>$isRfid,
+            'rfidType'=>$rfidType,
             'OWN'=>$ownership,
             'Licence'=>$Licence,
             'Payment_Mode'=>$Payment_Mode,
@@ -1845,6 +1857,7 @@ public function migrationUpdate() {
             'fuel'=>isset($refDataJson1['fuel'])?$refDataJson1['fuel']:'no',
             'fuelType'=>isset($refDataJson1['fuelType'])?$refDataJson1['fuelType']:' ',
             'isRfid'=>isset($refDataJson1['isRfid'])?$refDataJson1['isRfid']:'no',
+            'rfidType'=>isset($refDataJson1['rfidType'])?$refDataJson1['rfidType']:'no',
             'OWN'=>$ownership,
             'Licence'=>isset($refDataJson1['Licence'])?$refDataJson1['Licence']:'',
             'Payment_Mode'=>isset($refDataJson1['Payment_Mode'])?$refDataJson1['Payment_Mode']:'',

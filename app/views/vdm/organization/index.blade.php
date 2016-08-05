@@ -37,7 +37,7 @@
 <tr><td>
 
  <a class="btn btn-warning" href="{{ URL::to('vdmOrganization/' . $value . '/edit') }}">Edit Organization </a>
- 
+ <a class="btn btn-warning" href="{{ URL::to('vdmOrganization/' . $value . '/editAlerts') }}">Edit Alerts </a> 
  <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/pView') }}">View POI </a>
  <a class="btn btn-warning" href="{{ URL::to('vdmOrganization/' . $value . '/poiEdit') }}">Edit POI </a>
  <a class="btn btn-small btn-info" href="{{ URL::to('vdmOrganization/' . $value . '/poiDelete') }}">Delete POI </a>

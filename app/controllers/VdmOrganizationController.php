@@ -189,6 +189,34 @@ public function addpoi()
  			Session::flash('message', 'Successfully created !');
  			return Redirect::to('vdmOrganization');
 	 		}
+
+
+
+	public function updateNotification()
+	{	
+		if(!Auth::check()) {
+			return Redirect::to('login');
+		}
+		$username = Auth::user()->username;
+		$redis = Redis::connection();
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		$orgId =Input::get('orgId');
+		$emailList =Input::get('emailList');
+		$smsList =Input::get('smsList');
+		if(count($emailList)>0)
+		{
+			$email=implode(",",$emailList);
+			$redis->hset("H_EMAIL_".$fcode,$orgId,$email);
+		}
+		if(count($smsList)>0)
+		{
+			$sms=implode(",",$smsList);
+			$redis->hset("H_SMS_".$fcode,$orgId,$sms);
+		}
+		Log::info('orgid is -->'.$orgId);
+		Session::flash('message', 'Successfully created !');
+		return Redirect::to('vdmOrganization');
+	 }
 		
 		
 	public function poiEdit($id)
@@ -362,6 +390,49 @@ public function addpoi()
 	 		}
 		
 	
+
+
+	public function editAlerts($id)
+	{
+		if(!Auth::check()) {
+			return Redirect::to('login');
+		}
+		$username = Auth::user()->username;
+		$redis = Redis::connection();
+		
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		
+		$alertList=array();
+		$smsArray=array();
+		$emailArray=array();
+		
+        try{
+
+			$alertList=$redis->smembers("S_VAMOS_SMS");
+			$email=$redis->hget("H_EMAIL_".$fcode,$id);
+			$sms=$redis->hget("H_SMS_".$fcode,$id);
+			if($email!==null)
+			{
+				$emailArray=explode(",",$email);
+			}
+			
+			if($sms!==null)
+			{
+				$smsArray=explode(",",$sms);
+			}
+
+
+
+		
+		Log::info('-------------- $out-----------');
+		}catch(\Exception $e)
+	   {	
+		 Log::info('-------------- radius-----------'.$e);
+	   }
+	   
+	   
+       return View::make('vdm.organization.editAlerts')->with('orgId',$id)->with('alertList',$alertList)->with('tmp',0)->with('smsArray',$smsArray)->with('emailArray',$emailArray); 
+	 		}
 
     public function store()
     {
@@ -646,7 +717,8 @@ public function addpoi()
         $redis->srem('S_Organisations_' . $fcode,$id);
 		$redis->srem('S_Organisations_Dealer_'.$username.'_'.$fcode,$id);
 		$redis->srem('S_Organisations_Admin_'.$fcode,$id);
-		
+		$redis->hdel("H_EMAIL_".$fcode,$id);
+		$redis->hdel("H_SMS_".$fcode,$id);
 		
 		
         $redis->hdel('H_Organisations_'.$fcode,$id);//Orgnizations

@@ -718,8 +718,10 @@ Route::resource('vdmBusStops', 'VdmBusStopsController');
  
 Route::resource('vdmGeoFence', 'VdmGeoFenceController');
 Route::get('vdmOrganization/{param}/pView', array('uses' => 'VdmOrganizationController@pView'));
+Route::get('vdmOrganization/{param}/editAlerts', array('uses' => 'VdmOrganizationController@editAlerts'));
 Route::get('vdmOrganization/placeOfInterest', array('uses' => 'VdmOrganizationController@placeOfInterest'));
 Route::post('vdmOrganization/addpoi', array('uses' => 'VdmOrganizationController@addpoi'));
+Route::post('vdmOrganization/updateNotification', array('uses' => 'VdmOrganizationController@updateNotification'));
 
  
 Route::get('vdmOrganization/{param}/poiEdit', array('uses' => 'VdmOrganizationController@poiEdit'));

@@ -101,6 +101,12 @@
 
 									{{ Form::select('isRfid', array('yes' => 'Yes','no' => 'No'), isset($refData['isRfid'])?$refData['isRfid']:'no', array('class' => 'form-control')) }} 
 								</div>
+								<br/>
+								<div class="form-group">
+									{{ Form::label('rfidType', 'Rfid Type') }}<br>
+
+									{{ Form::select('rfidType', array('type1' => 'Type1','type2' => 'Type2'), isset($refData['rfidType'])?$refData['rfidType']:'no', array('class' => 'form-control')) }} 
+								</div>
 								<div class="form-group">
 						{{ Form::label('descriptionStatus', 'Description') }}
 						{{ Form::text('descriptionStatus', $refData['descriptionStatus'], array('class' => 'form-control')) }}
