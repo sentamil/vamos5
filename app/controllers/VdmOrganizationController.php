@@ -208,10 +208,18 @@ public function addpoi()
 			$email=implode(",",$emailList);
 			$redis->hset("H_EMAIL_".$fcode,$orgId,$email);
 		}
+		else
+		{
+			$redis->hdel("H_EMAIL_".$fcode,$orgId);
+		}
 		if(count($smsList)>0)
 		{
 			$sms=implode(",",$smsList);
 			$redis->hset("H_SMS_".$fcode,$orgId,$sms);
+		}
+		else
+		{
+			$redis->hdel("H_SMS_".$fcode,$orgId);
 		}
 		Log::info('orgid is -->'.$orgId);
 		Session::flash('message', 'Successfully created !');
