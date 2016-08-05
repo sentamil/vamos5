@@ -2,36 +2,29 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 
 	
 
-// trip summary , 	site report, trip report , rfid Report
+// trip summary , 	site report, trip report , rfid Report, multiple sites
 
 	//global declaration
 	$scope.addressFuel 			= 	[];
 	$scope.uiDate 				=	{};
-	$scope.interval				= 	10;
+	
   	$scope.siteEntry 			=	0;
 	$scope.siteExit 			=	0;
-	//loading start function
-	// var startLoading		= function () {
-	// 	$('#status').show(); 
-	// 	$('#preloader').show();
-	// };
-
-	//loading stop function
-	// var stopLoading		= function () {
-	// 	$('#status').fadeOut(); 
-	// 	$('#preloader').delay(350).fadeOut('slow');
-	// 	$('body').delay(350).css({'overflow':'visible'});
-	// };
+	
 
 	$scope.msToTime		=	function(ms) {
-		days = Math.floor(ms / (24*60*60*1000));
-	    daysms=ms % (24*60*60*1000);
-	    hours = Math.floor((daysms)/(60*60*1000));
-	    hoursms=ms % (60*60*1000);
-	    minutes = Math.floor((hoursms)/(60*1000));
-	    minutesms=ms % (60*1000);
-	    sec = Math.floor((minutesms)/(1000));
-	    return days+"d : "+hours+"h : "+minutes+"m : "+sec+"s";
+		if (ms == undefined || ms == null || ms == '')
+			return' ';
+		else{
+			days = Math.floor(ms / (24*60*60*1000));
+		    daysms=ms % (24*60*60*1000);
+		    hours = Math.floor((daysms)/(60*60*1000));
+		    hoursms=ms % (60*60*1000);
+		    minutes = Math.floor((hoursms)/(60*1000));
+		    minutesms=ms % (60*1000);
+		    sec = Math.floor((minutesms)/(1000));
+		    return days+"d : "+hours+"h : "+minutes+"m : "+sec+"s";
+		}
     }
 
 
@@ -183,6 +176,20 @@ function plottinGraphs(valueGraph, timeData){
 	}
 
 	
+	function getSite(){
+		var data;
+		var urlSite = 'http://'+globalIP+context+'/public/viewSite';
+		$.ajax({
+	    	url:urlSite, 
+	    	async: false,   
+	    	success:function(response) {
+	      		data = response;
+	      	}
+		})
+
+		return data;
+	}
+	
 	function urlReport(){
 		var urlWebservice;
 		switch  (tab){
@@ -206,6 +213,9 @@ function plottinGraphs(valueGraph, timeData){
 				break;
 			case 'rfid' :
 				urlWebservice   =  "http://"+globalIP+context+"/public/getRfidReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				break;
+			case 'multiSite' :
+				urlWebservice   =  "http://"+globalIP+context+"/public/getSiteSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&stopTime="+$scope.interval+"&language=en"+"&site1="+$scope._site1.siteName+"&site2="+$scope._site2.siteName;
 				break;
 			default :
 				break;
@@ -329,6 +339,7 @@ function plottinGraphs(valueGraph, timeData){
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
 			$scope.vehicle_list = data;
+			var siteNames 	= 	[];
 			if(data.length){
 				$scope.vehiname	= getParameterByName('vid');
 				$scope.uiGroup 	= $scope.trimColon(getParameterByName('vg'));
@@ -337,9 +348,31 @@ function plottinGraphs(valueGraph, timeData){
 					if($scope.gName == val.group){
 						$scope.gIndex = val.rowId;
 						angular.forEach(data[$scope.gIndex].vehicleLocations, function(value, keys){
-							if($scope.vehiname == value.vehicleId)
-							$scope.shortNam	= value.shortName;
-						})
+							if($scope.vehiname == value.vehicleId){
+								$scope.shortNam	= value.shortName;
+								if(tab == 'multiSite')
+								{
+									$scope.orgId 	= value.orgId;
+									var siteValue = getSite();
+									angular.forEach(JSON.parse(siteValue).siteParent, function(val, key){
+						      			if(val.orgId == $scope.orgId){
+						      				if(val.site.length > 0){
+						      					siteNames.push({'siteName':'All'});
+						      					angular.forEach(val.site, function(siteName, keys){
+							      					siteNames.push(siteName);
+
+							      				})
+							      				
+							      				$scope.siteName = siteNames;
+							      				$scope._site1 	=	siteNames[0];
+							      				$scope._site2 	=	siteNames[0];
+						      				}
+						      			}
+						      				
+						      		})
+								}
+							}
+ 						})
 						
 					}
 						
@@ -347,7 +380,8 @@ function plottinGraphs(valueGraph, timeData){
 				
 				sessionValue($scope.vehiname, $scope.gName)
 			}
-			$scope.fromNowTS		=	new Date();
+			$scope.interval				= 	10;
+			$scope.fromNowTS			=	new Date();
 			$scope.uiDate.fromdate 		=	getTodayDate($scope.fromNowTS);
 		  	$scope.uiDate.fromtime		=	'12:00 AM';
 		  	$scope.uiDate.todate		=	getTodayDate($scope.fromNowTS);
@@ -369,6 +403,7 @@ function plottinGraphs(valueGraph, timeData){
 			$scope.vehicle_list = response;
 			$scope.shortNam		= response[$scope.gIndex].vehicleLocations[0].shortName;
 			$scope.vehiname		= response[$scope.gIndex].vehicleLocations[0].vehicleId;
+			$scope.orgId		= response[$scope.gIndex].vehicleLocations[0].orgId;
 			sessionValue($scope.vehiname, $scope.gName);
 			webServiceCall();
 		});
@@ -382,13 +417,13 @@ function plottinGraphs(valueGraph, timeData){
 		angular.forEach($scope.vehicle_list[$scope.gIndex].vehicleLocations, function(val, key){
 			if(vehid == val.vehicleId)
 				$scope.shortNam	= val.shortName;
+				$scope.orgId = val.orgId;
 		})
 		getUiValue();
 		webServiceCall();
 
 	}
 
-  	
 	$scope.submitFunction 	=	function(){
 		startLoading();
 		getUiValue();

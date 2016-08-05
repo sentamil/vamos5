@@ -108,6 +108,7 @@
                     <li><a id="idle" href=""> Idle </a></li>
                     <li><a id="event" href=""> Event </a></li>
                     <li><a id="site" href=""> Site </a></li>
+                    <li><a id="multiSite" href=""> Site (Mulitple Site)</a></li>
                     
                     <li><a id="trip" href=""> Trip Time </a></li>
                     <li><a id="tripkms" href=""> Trip Summary</a></li>
@@ -195,6 +196,9 @@
             });
             $("#site").click(function() {
                 $(this).attr("href", 'siteReport?vid='+vid+'&vg='+gname+'&tn=site')
+            }); 
+            $("#multiSite").click(function() {
+                $(this).attr("href", 'multiSite?vid='+vid+'&vg='+gname+'&tn=multiSite')
             });
             $("#load").click(function() {
                 $(this).attr("href", 'loadDetails?vid='+vid+'&vg='+gname+'&tn=load')

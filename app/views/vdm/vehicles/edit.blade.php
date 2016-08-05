@@ -54,7 +54,7 @@
 								</div>
 
 
-								<div class="form-group">
+								<!-- <div class="form-group">
 									{{ Form::label('morningTripStartTime', 'Morning Trip Start Time') }}
 									{{ Form::text('morningTripStartTime', $refData['morningTripStartTime'], array('class' => 'form-control')) }}
 								</div>
@@ -62,7 +62,7 @@
 								<div class="form-group">
 									{{ Form::label('eveningTripStartTime', 'Evening Trip Start Time') }}
 									{{ Form::text('eveningTripStartTime',$refData['eveningTripStartTime'], array('class' => 'form-control'))}}            
-								</div>
+								</div> -->
 								<div class="form-group">
 									{{ Form::label('date', 'Date') }}
 									{{ Form::text('date', $refData['date'], array('class' => 'form-control','disabled' => 'disabled')) }}
@@ -107,10 +107,15 @@
 						
 					</div>
 
-					<br/>
+					<!-- <br/> -->
 					<div class="form-group">
 						{{ Form::label('ipAddress', 'IP Address') }}
 						{{ Form::text('ipAddress', $refData['ipAddress'], array('class' => 'form-control')) }}
+						
+					</div>
+					<div class="form-group">
+						{{ Form::label('portNo', 'Port Number') }}
+						{{ Form::text('portNo', $refData['portNo'], array('class' => 'form-control')) }}
 						
 					</div>
 										</div>
@@ -208,11 +213,7 @@
 								{{ Form::select('Payment_Mode1', array($Payment_Mode), $refData['Payment_Mode'],array('class' => 'form-control')) }} 
 							</div>
 							<br/>
-					<div class="form-group">
-						{{ Form::label('portNo', 'Port Number') }}
-						{{ Form::text('portNo', $refData['portNo'], array('class' => 'form-control')) }}
-						
-					</div>
+					
 
 
 
