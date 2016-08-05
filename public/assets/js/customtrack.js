@@ -139,6 +139,7 @@ app.directive('map', function($http, vamoservice) {
             		$('#vehiid span').text(locs.shortName);
 					$('#toddist span span').text(locs.distanceCovered);
 					$('#vehstat span').text(locs.position);
+					$('#deviceVolt span').text(locs.position);
 					// total = parseInt(locs.speed);
 					$('#vehdevtype span').text(locs.odoDistance);
 					$('#mobno span').text(locs.overSpeedLimit);
@@ -183,13 +184,14 @@ app.directive('map', function($http, vamoservice) {
 					scope.marker = new MarkerWithLabel({
 					   position: myLatlng, 
 					   map: scope.map,
+					   // center: myLatlng,
 					   icon: vamoservice.iconURL(data),
 					   labelContent: data.shortName,
 					   labelAnchor: labelAnchorpos,
 					   labelClass: "labels",
 					   labelInBackground: false
 					});
-					
+					scope.map.setCenter(myLatlng);
 					var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
 						+'<div style="width:200px; display:inline-block;"><b>Address</b> - <span>'+scope.addres+'</span></div></div>';
 

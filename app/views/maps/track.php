@@ -69,9 +69,13 @@
                                 <td style="width:50%"><span id="positiontime">Position </span>Time</td>
                                 <td id="regno"><span></span></td>
                             </tr>
-                             <tr>
+                            <tr>
                                 <td style="width:50%">Address</td>
                                 <td id="lastseentrack"><span></span></td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%">DeviceVolt</td>
+                                <td id="deviceVolt"><span></span></td>
                             </tr>
                             <tr>
                                 <td colspan="2">

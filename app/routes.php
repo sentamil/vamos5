@@ -186,6 +186,14 @@ Route::get('/temperature', function(){
     return View::make('reports.temperReport');
 });
 
+Route::get('multiSite', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    Log::info(' multiSite ');
+    return View::make('reports.multiSiteReport');
+});
+
 Route::get('/printStops', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -418,6 +426,15 @@ Route::get('/getOverallSiteLocationReport', function() {
     }
     Log::info('getOverallSiteLocationReport');
     return View::make('vls.getOverallSiteLocationReport');
+});
+
+
+Route::get('/getSiteSummary', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getSiteSummary');
+    return View::make('vls.getSiteSummary');
 });
 
 Route::get('/getFuelDropFillReport', function() {
