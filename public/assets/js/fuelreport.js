@@ -337,12 +337,12 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		
 		if(tabValue == "fuelfill"){
 			$('#fuelValue').val('fill');
-			distanceTimeUrl 	= 	'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&fuelDrop=false'+'&fuelFill=true';
+			distanceTimeUrl 	= 	'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&fuelDrop=false'+'&fuelFill=true'+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
 			serviceCall(distanceTimeUrl);
 			$("#eventReport").hide(1000);
     		$("#fill").show(1000);
 		} else{
-			distanceTimeUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms;
+			distanceTimeUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
 			serviceCall(distanceTimeUrl);
 		}
 	}
@@ -433,7 +433,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
     	var hrs 			=   document.getElementsByClassName("hrs")[0].value;
     	if($scope.report=="distance")
     	{
-    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms;
+    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms+'&fromDateUTC='+utcFormat(fromd,convert_to_24h(fromt))+'&toDateUTC='+utcFormat(tod,convert_to_24h(tot));
     		serviceCall(distanceUrl);
     		$("#fill").hide(1000);
     		$("#eventReport").show(1000);
@@ -441,7 +441,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
     	}
     	else if($scope.report == "fill")
     	{
-    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&fuelDrop='+drop+'&fuelFill='+fill;
+    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&fuelDrop='+drop+'&fuelFill='+fill+'&fromDateUTC='+utcFormat(fromd,convert_to_24h(fromt))+'&toDateUTC='+utcFormat(tod,convert_to_24h(tot));
     		serviceCall(distanceUrl);
     		$("#eventReport").hide(1000);
     		$("#fill").show(1000);
