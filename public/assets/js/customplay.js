@@ -742,11 +742,11 @@ if($scope.markerstart){
 			}else{
 				var days =daydiff(new Date(fromdate), new Date(todate));
 				if(days<3)
-					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime;
+					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,convert_to_24h(fromtime))+'&toDateUTC='+utcFormat(todate,convert_to_24h(totime));
 				else
-					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1';
+					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,convert_to_24h(fromtime))+'&toDateUTC='+utcFormat(todate,convert_to_24h(totime));
 			}
-		}
+		}az
 		if($scope.hisurlold!=$scope.hisurl){	
 			for(var i=0; i<gmarkers.length; i++){
 				gmarkers[i].setMap(null);
