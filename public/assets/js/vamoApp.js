@@ -113,6 +113,9 @@ function todaydate(){
 }
 
 
+function utcFormat(d,t){return new Date(d+' '+t).getTime();}
+
+
 //common directive for sorting
 app.directive("customSort", function() {
 return {

@@ -97,6 +97,8 @@ function plottinGraphs(valueGraph, timeData){
         }]
     });
 };
+	
+	
 
 	function getParameterByName(name) {
     	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -186,7 +188,6 @@ function plottinGraphs(valueGraph, timeData){
 	      		data = response;
 	      	}
 		})
-
 		return data;
 	}
 	
@@ -215,7 +216,13 @@ function plottinGraphs(valueGraph, timeData){
 				urlWebservice   =  "http://"+globalIP+context+"/public/getRfidReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
 			case 'multiSite' :
-				urlWebservice   =  "http://"+globalIP+context+"/public/getSiteSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&stopTime="+$scope.interval+"&language=en"+"&site1="+$scope._site1.siteName+"&site2="+$scope._site2.siteName;
+				try{
+					urlWebservice   =  "http://"+globalIP+context+"/public/getSiteSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&stopTime="+$scope.interval+"&language=en"+"&site1="+$scope._site1.siteName+"&site2="+$scope._site2.siteName;
+				}
+				catch (e){
+					stopLoading();
+					return
+				}
 				break;
 			default :
 				break;
@@ -287,7 +294,10 @@ function plottinGraphs(valueGraph, timeData){
 		var graphList = [];
 		var graphTime = [];		
 		$scope.siteData = [];
-		vamoservice.getDataCall(url).then(function(responseVal){
+		var urlUTC;
+			urlUTC = url+'&fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
+		if (url != undefined)
+		vamoservice.getDataCall(urlUTC).then(function(responseVal){
 			try{
 				if(tab == 'alarm')
 					try{
@@ -541,7 +551,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
         endDate 	= 	$filter('date')(inputValue.endTime, 'yyyy-MM-dd');
         startTime	= 	$filter('date')(inputValue.startTime, 'HH:mm:ss');
         endTime		= 	$filter('date')(inputValue.endTime, 'HH:mm:ss');
-        var url 	= 	"http://"+globalIP+context+"/public/getVehicleHistory?vehicleId="+vehicleDetails.vehicleId+"&fromDate="+startDate+"&fromTime="+startTime+"&toDate="+endDate+"&toTime="+endTime;
+        var url 	= 	"http://"+globalIP+context+"/public/getVehicleHistory?vehicleId="+vehicleDetails.vehicleId+"&fromDate="+startDate+"&fromTime="+startTime+"&toDate="+endDate+"&toTime="+endTime+'&fromDateUTC='+utcFormat(startDate,convert_to_24h(startTime))+'&toDateUTC='+utcFormat(endDate,convert_to_24h(endTime));
  		vamoservice.getDataCall(url).then(function(dataGet){
  			// if(dataGet.vehicleLocations[0] || dataGet.vehicleLocations[dataGet.vehicleLocations.length-1])
  			// 	startEndMarker(val.latitude, val.longitude);
