@@ -475,9 +475,11 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 }
-initialize()
+
+
 if(tab == 'tripkms')
-google.maps.event.addDomListener(window, 'load', initialize);
+	initialize();
+//google.maps.event.addDomListener(window, 'load', initialize);
 
   //start of modal google map
   $('#mapmodals').on('shown.bs.modal', function () {
