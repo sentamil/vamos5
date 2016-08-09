@@ -538,5 +538,18 @@ $(document).ready(function(e) {
 
         }
     }, 1000);
+
+
+    $(document).ready(function(){
+        $('#minmax').click(function(){
+            $('#contentmin').animate({
+                height: 'toggle'
+            },2000);
+        });
+    });
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
 });
  

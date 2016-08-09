@@ -746,7 +746,7 @@ if($scope.markerstart){
 				else
 					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
 			}
-		}az
+		}
 		if($scope.hisurlold!=$scope.hisurl){	
 			for(var i=0; i<gmarkers.length; i++){
 				gmarkers[i].setMap(null);
@@ -1023,5 +1023,33 @@ if($scope.markerstart){
 		$('body').delay(350).css({'overflow':'visible'});
 });
 
+
+	$(document).ready(function(){
+        $('#minmax').click(function(){
+            $('#contentmin').animate({
+                height: 'toggle'
+            },500);
+        });
+    });
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+    
+        $(function () {
+        $('#dateFrom, #dateTo').datetimepicker({
+          format:'YYYY-MM-DD',
+          useCurrent:true,
+          pickTime: false
+        });
+        $('#timeFrom').datetimepicker({
+          pickDate: false,
+                    useCurrent:true,
+        });
+        $('#timeTo').datetimepicker({
+          useCurrent:true,
+          pickDate: false
+        });
+        });
 	
 });

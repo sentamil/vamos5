@@ -308,5 +308,9 @@ app.controller('mainCtrl',function($scope, $http){
     serviceCall();
   }
 
-
+$(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    //menu loading
+    $("#testLoad").load("../public/menu");
 });
