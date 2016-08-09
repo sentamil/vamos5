@@ -247,12 +247,12 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-    <script src="assets/js/static.js"></script>
+   <!--  <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,places&sensor=false" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,places" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/infobubble.js" type="text/javascript"></script>
     <script src="assets/js/moment.js" type="text/javascript"></script>
@@ -260,40 +260,92 @@
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/unique.js"></script>
-    <script src="assets/js/customplay.js"></script>
+    <script src="assets/js/customplay.js"></script> -->
     <script>
 
-    // var logo =document.location.host;
-    // var imgName= '/vamo/public/assets/imgs/'+logo+'.small.png';
-    // $('#imagesrc').attr('src', imgName);
+ 
+var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
+var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry";
+
+if(apikey_url != null || apikey_url != "" || apikey_url != undefined)
+//         url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places,geometry";
+          url   = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places,geometry"
+
+   function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
+     if (scriptsCollection[startIndex]) {
+       var fileref = document.createElement('script');
+       fileref.setAttribute("type","text/javascript");
+       fileref.setAttribute("src", scriptsCollection[startIndex]);
+       fileref.onload = function(){
+         startIndex = startIndex + 1;
+         loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback)
+       };
+ 
+       document.getElementsByTagName("head")[0].appendChild(fileref)
+     }
+     else {
+       librariesLoadedCallback();
+     }
+   }
+ 
+   // An array of scripts you want to load in order
+   var scriptLibrary = [];
+   scriptLibrary.push("assets/js/jquery-1.11.0.js");
+   scriptLibrary.push("assets/js/static.js");
+   scriptLibrary.push("assets/js/bootstrap.min.js");
+   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
+   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+   scriptLibrary.push(url);
+   scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
+   // scriptLibrary.push("http://code.highcharts.com/highcharts.js");
+   // scriptLibrary.push("http://code.highcharts.com/highcharts-more.js");
+   // scriptLibrary.push("http://code.highcharts.com/modules/solid-gauge.js");
+   scriptLibrary.push("assets/js/markerwithlabel.js");
+   
+   scriptLibrary.push("assets/js/moment.js");
+   scriptLibrary.push("assets/js/bootstrap-datetimepicker.js");
+   scriptLibrary.push("assets/js/infobubble.js");
+   scriptLibrary.push("assets/js/infobox.js");
+   scriptLibrary.push("assets/js/vamoApp.js");
+   // scriptLibrary.push("assets/js/services.js");
+   scriptLibrary.push("assets/js/customplay.js");
+
+
+
+ 
+   // Pass the array of scripts you want loaded in order and a callback function to invoke when its done
+   loadJsFilesSequentially(scriptLibrary, 0, function(){
+       // application is "ready to be executed"
+       // startProgram();
+   });
+   
+    // $(document).ready(function(){
+    //     $('#minmax').click(function(){
+    //         $('#contentmin').animate({
+    //             height: 'toggle'
+    //         },500);
+    //     });
+    // });
+    // $("#menu-toggle").click(function(e) {
+    //   e.preventDefault();
+    //   $("#wrapper").toggleClass("toggled");
+    // });
     
-    $(document).ready(function(){
-        $('#minmax').click(function(){
-            $('#contentmin').animate({
-                height: 'toggle'
-            },500);
-        });
-    });
-    $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-    });
-    
-        $(function () {
-        $('#dateFrom, #dateTo').datetimepicker({
-          format:'YYYY-MM-DD',
-          useCurrent:true,
-          pickTime: false
-        });
-        $('#timeFrom').datetimepicker({
-          pickDate: false,
-                    useCurrent:true,
-        });
-        $('#timeTo').datetimepicker({
-          useCurrent:true,
-          pickDate: false
-        });
-        });
+    //     $(function () {
+    //     $('#dateFrom, #dateTo').datetimepicker({
+    //       format:'YYYY-MM-DD',
+    //       useCurrent:true,
+    //       pickTime: false
+    //     });
+    //     $('#timeFrom').datetimepicker({
+    //       pickDate: false,
+    //                 useCurrent:true,
+    //     });
+    //     $('#timeTo').datetimepicker({
+    //       useCurrent:true,
+    //       pickDate: false
+    //     });
+    //     });
         </script>
 </body>
 </html>

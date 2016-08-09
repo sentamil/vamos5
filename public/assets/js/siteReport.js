@@ -475,8 +475,11 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 }
+
+
 if(tab == 'tripkms')
-google.maps.event.addDomListener(window, 'load', initialize);
+	initialize();
+//google.maps.event.addDomListener(window, 'load', initialize);
 
   //start of modal google map
   $('#mapmodals').on('shown.bs.modal', function () {
@@ -551,7 +554,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
         endDate 	= 	$filter('date')(inputValue.endTime, 'yyyy-MM-dd');
         startTime	= 	$filter('date')(inputValue.startTime, 'HH:mm:ss');
         endTime		= 	$filter('date')(inputValue.endTime, 'HH:mm:ss');
-        var url 	= 	"http://"+globalIP+context+"/public/getVehicleHistory?vehicleId="+vehicleDetails.vehicleId+"&fromDate="+startDate+"&fromTime="+startTime+"&toDate="+endDate+"&toTime="+endTime+'&fromDateUTC='+utcFormat(startDate,convert_to_24h(startTime))+'&toDateUTC='+utcFormat(endDate,convert_to_24h(endTime));
+        var url 	= 	"http://"+globalIP+context+"/public/getVehicleHistory?vehicleId="+vehicleDetails.vehicleId+"&fromDate="+startDate+"&fromTime="+startTime+"&toDate="+endDate+"&toTime="+endTime+'&fromDateUTC='+utcFormat(startDate,startTime)+'&toDateUTC='+utcFormat(endDate,endTime);
  		vamoservice.getDataCall(url).then(function(dataGet){
  			// if(dataGet.vehicleLocations[0] || dataGet.vehicleLocations[dataGet.vehicleLocations.length-1])
  			// 	startEndMarker(val.latitude, val.longitude);
@@ -568,7 +571,21 @@ google.maps.event.addDomListener(window, 'load', initialize);
        
     }
 
-
+  $(function () {
+                $('#dateFrom, #dateTo').datetimepicker({
+                    format:'YYYY-MM-DD',
+                    useCurrent:true,
+                    pickTime: false
+                });
+                $('#timeFrom').datetimepicker({
+                    pickDate: false,
+                    
+                });
+                $('#timeTo').datetimepicker({
+                    pickDate: false,
+                    
+                });
+        });      
 
 // });
 
