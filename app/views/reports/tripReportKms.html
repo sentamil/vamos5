@@ -329,10 +329,10 @@ background-color: #ffffff;
     
 
   
-    
+   <!--  
     <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
     <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -348,27 +348,73 @@ background-color: #ffffff;
 
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
-    <script src="assets/js/siteReport.js"></script>
+    <script src="assets/js/siteReport.js"></script> -->
 
     <script>
 
+    var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
+var url = "http://maps.google.com/maps/api/js?sensor=false";
+
+if(apikey_url != null || apikey_url != "" || apikey_url != undefined)
+        url = "http://maps.google.com/maps/api/js?key="+apikey_url;
     
+   function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
+     if (scriptsCollection[startIndex]) {
+       var fileref = document.createElement('script');
+       fileref.setAttribute("type","text/javascript");
+       fileref.setAttribute("src", scriptsCollection[startIndex]);
+       fileref.onload = function(){
+         startIndex = startIndex + 1;
+         loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback)
+       };
+ 
+       document.getElementsByTagName("head")[0].appendChild(fileref)
+     }
+     else {
+       librariesLoadedCallback();
+     }
+   }
+ 
+   // An array of scripts you want to load in order
+   var scriptLibrary = [];
+   
+   scriptLibrary.push("assets/js/static.js");
+   scriptLibrary.push("assets/js/jquery-1.11.0.js");
+   scriptLibrary.push("assets/js/bootstrap.min.js");
+   scriptLibrary.push("https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js");
+   scriptLibrary.push("../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js");
+   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js");
+   
+   scriptLibrary.push("../app/views/reports/customjs/html5csv.js");
+   scriptLibrary.push("../app/views/reports/customjs/moment.js");
+   scriptLibrary.push("../app/views/reports/customjs/FileSaver.js");
+   scriptLibrary.push("../app/views/reports/datepicker/bootstrap-datetimepicker.js");
+   scriptLibrary.push("../app/views/reports/datatable/jquery.dataTables.js");
+   scriptLibrary.push(url);
+   
+   
+
+   scriptLibrary.push("http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js");
+
+
+   // scriptLibrary.push("assets/js/infobubble.js");
+   // scriptLibrary.push("assets/js/moment.js");
+   // scriptLibrary.push("assets/js/bootstrap-datetimepicker.js");
+   // scriptLibrary.push("assets/js/infobox.js");
+   scriptLibrary.push("assets/js/vamoApp.js");
+   scriptLibrary.push("assets/js/services.js");
+   scriptLibrary.push("assets/js/siteReport.js");
+
+
+
+ 
+   // Pass the array of scripts you want loaded in order and a callback function to invoke when its done
+   loadJsFilesSequentially(scriptLibrary, 0, function(){
+       // application is "ready to be executed"
+       // startProgram();
+   });
         
-        $(function () {
-                $('#dateFrom, #dateTo').datetimepicker({
-                    format:'YYYY-MM-DD',
-                    useCurrent:true,
-                    pickTime: false
-                });
-                $('#timeFrom').datetimepicker({
-                    pickDate: false,
-                    
-                });
-                $('#timeTo').datetimepicker({
-                    pickDate: false,
-                    
-                });
-        });      
+      
     //     $("#menu-toggle").click(function(e) {
     //     e.preventDefault();
     //     $("#wrapper").toggleClass("toggled");
