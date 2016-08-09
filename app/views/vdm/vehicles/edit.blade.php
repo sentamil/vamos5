@@ -105,7 +105,7 @@
 								<div class="form-group">
 									{{ Form::label('rfidType', 'Rfid Type') }}<br>
 
-									{{ Form::select('rfidType', array('type1' => 'Type1','type2' => 'Type2'), isset($refData['rfidType'])?$refData['rfidType']:'no', array('class' => 'form-control')) }} 
+									{{ Form::select('rfidType', array('type1' => 'Type1','type2' => 'Type2','type3' => 'Type3 (234 reverse)'), isset($refData['rfidType'])?$refData['rfidType']:'no', array('class' => 'form-control')) }} 
 								</div>
 								<div class="form-group">
 						{{ Form::label('descriptionStatus', 'Description') }}
