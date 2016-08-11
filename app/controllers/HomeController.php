@@ -202,7 +202,7 @@ class HomeController extends BaseController {
 		
            
       }
-			
+			 // Log::info('Login details $url ' . $url);
 		// $redis = Redis::connection ();
 		// $fcodeKey = $redis->hget( 'H_UserId_Cust_Map',$username . ':fcode' );
 		// $franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
@@ -215,7 +215,7 @@ class HomeController extends BaseController {
 		// Log::info('apikey '.$apiKey);	
 		// log::info(Session::get('apikey'));
 		// $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-		return  Redirect::to('live');
+		return  Redirect::to('track');
 				
 
 			} else {	 	

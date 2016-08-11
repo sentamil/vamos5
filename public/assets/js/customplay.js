@@ -338,12 +338,12 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		$scope.groupname = data[0].group;
 		$scope.vehicleId = data[0].vehicleLocations[0].vehicleId;
 		sessionValue($scope.vehicleId, $scope.groupname)
-		if(location.href.split("=")[1]==undefined || location.href.split("=")[1].trim().length==0){
+		if(getParameterByName('vehicleId')!=undefined || getParameterByName('vehicleId')!=null){
 			$scope.trackVehID =$scope.locations[0].vehicleLocations[0].vehicleId;
 			$scope.shortVehiId =$scope.locations[0].vehicleLocations[0].shortName;
 			$scope.selected=0;
 		}else{
-			$scope.trackVehID =location.href.split("=")[1].trim();
+			$scope.trackVehID =getParameterByName('vehicleId');
 			for(var i=0; i<$scope.locations[0].vehicleLocations.length;i++){
 				if($scope.locations[0].vehicleLocations[i].vehicleId==$scope.trackVehID){
 					$scope.selected=i;
