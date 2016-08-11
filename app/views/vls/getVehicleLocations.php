@@ -32,7 +32,7 @@ foreach ($input as $key => $value) {
  $web="web";
  $val="y";
  $parameters="{$parameters}&{$web}={$val}";
- log::info( ' parameters :' . $parameters);
+ log::info( ' parameters :' . $parameters.' ip :' . $ipaddress);
 
 		 $url = 'http://' .$ipaddress .':9000/getVehicleLocations' . $parameters;
 		$url=htmlspecialchars_decode($url);
