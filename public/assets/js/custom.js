@@ -1,5 +1,4 @@
 //comment by satheesh ++...
- 
 var setintrvl;
 app.filter('statusfilter', function(){
 	return function(obj, param){
@@ -54,14 +53,8 @@ app.filter('statusfilter', function(){
 });
  
 app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($scope, $http, vamoservice, $filter, statusfilter){
-
-        // $.getScript("assets/js/markerwithlabel.js");
-        // $.getScript("assets/js/infobubble.js");
-        // $.getScript("assets/js/infobox.js");
-   
-    
-    
-    $scope.locations = [];
+	
+	$scope.locations = [];
 	$scope.nearbyLocs =[];
 	$scope.mapTable =[];
 	$scope.val = 5;	
@@ -404,7 +397,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 			+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 			+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 
-			+'<div><a href="../public/trackSingleVeh?vehicleId='+vehicleID+'&track=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/replay?vehicleId='+vehicleID+'" target="_self">History</a> &nbsp;&nbsp; <a href="../public/trackSingleVeh?vehicleId='+vehicleID+'&track=multiTrack" target="_blank">MultiTrack</a>&nbsp;&nbsp;'
+			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'" target="_self">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp;'
 			+'</div>';
 			
 			// var	drop1 = document.getElementById("ddlViewBy");
@@ -474,7 +467,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 				
 				$scope.final_data = result;
 				
-    			var url='../public/track?vehicleId='+result.trim();
+    			var url='../public/track?vehicleId='+result.trim()+'&maps=track';
 				window.open(url,'_blank');
 				
 			})
@@ -1574,3 +1567,4 @@ $(document).ready(function(e) {
             document.body.style.zoom="90%";
         }
     });
+
