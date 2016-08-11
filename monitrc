@@ -142,7 +142,7 @@ set alert ahan.vamosys@gmail.com
 ## commands to a running Monit daemon. See the Monit Wiki if you want to 
 ## enable SSL for the web server. 
 #
-# set httpd port 2812 and
+ set httpd port 2812 and
      use address XXYY  # only accept connection from localhost
     allow 0.0.0.0/0.0.0.0        # allow localhost to connect to the server and
     allow admin:monit      # require user 'admin' with password 'monit'
