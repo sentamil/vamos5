@@ -216,7 +216,7 @@ joinLine(urlVehi, vehicleid);
 			vamoservice.getDataCall(url).then(function(response){
 				mapProp = {
 		    		center: new google.maps.LatLng(response.latitude,response.longitude),
-		    		zoom:16,
+		    		zoom:7,
 			    	zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};

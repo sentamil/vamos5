@@ -5,37 +5,12 @@
  */
 View::addExtension('html', 'php');
 Route::get('/track', function() {
-    // if (!Auth::check()) {
-    //     return Redirect::to('login');
-    // } else {
-    //     return View::make('maps.index');
-    // }
+    
     if (!Auth::check()) {
         return Redirect::to('login');
     }
-    // $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-    // log::info(' value  '. $_GET['maps']);
-
-    // $single = strstr($actual_link , 'maps');
-    // $multi = strstr($actual_link , 'multiTrack');
-    // log::info(' value  '.$single);
     else 
     {   
-        // if(!isset($_GET['maps'])){
-
-    //         if($_GET['maps'] == 'replay'){
-    //             return View::make('maps.replay');
-    //         log::info(' single -->'.$actual_link);
-    //         }
-    //         else
-    //         {
-    //             return View::make('maps.index');
-    //             log::info(' multi -->'.$actual_link);
-    //         }
-    //     }
-        
-    //     return View::make('maps.index');
-    //             log::info(' multi -->'.$actual_link);
         try 
             {
                 if($_GET['maps'] == 'replay'){
@@ -73,16 +48,19 @@ Route::get('/track', function() {
             {       
                 log::info(' exception ');
                 return View::make('maps.index');
-                    // echo 'Caught exception: ',  $e->getMessage(), "\n";
             }
     } 
     
 });
- // AIzaSyDY9lNthKAcaSCcQGKMcilI5aYWAeru9wc
+
 Route::get('/apiAcess', function() {
     Log::info(' api acess ');
     return View::make('maps.api');
 
+});
+
+Route::get('/live', function() {
+    return Redirect::to('login');
 });
 
 Route::get('/replay', function() {
@@ -824,8 +802,8 @@ Route::resource('vdmFranchises', 'VdmFranchiseController');
 Route::post('vdmFranchises/findFransList', array('uses' => 'VdmFranchiseController@findFransList'));
 Route::post('vdmFranchises/findUsersList', array('uses' => 'VdmFranchiseController@findUsersList'));
  
- 
- 
+ // for scheduled reports
+Route::post('ScheduledController/reportScheduling', array('uses' => 'ScheduledController@reportScheduling'));
  
  
 Route::get('/setPOIName', function() {

@@ -267,7 +267,7 @@
 var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
 var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry";
 
-if(apikey_url != null || apikey_url != "" || apikey_url != undefined)
+if(apikey_url != null || apikey_url != undefined)
         url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places,geometry";
           url   = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places,geometry"
 
