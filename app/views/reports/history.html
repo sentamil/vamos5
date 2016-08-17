@@ -177,7 +177,7 @@ background-color: #ffffff;
 								    </tr>
 								    <tr><td colspan="7"></td></tr>
 									<tr style="text-align:center" >
-										<th width="14%" class="id" custom-sort order="'lastSeen'" sort="sort"  style="text-align:center;">Date&amp;Time</th>
+										<th width="14%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;">Date&amp;Time</th>
 										<th width="8%" class="id" custom-sort order="'speed'" sort="sort"  style="text-align:center;">Speed</th>
 										<th width="7%" class="id" style="text-align:center;">G-Map</th>
 										<th width="38%" class="id" custom-sort order="'address'" sort="sort"  style="text-align:center;">Nearest Location</th>
@@ -190,7 +190,7 @@ background-color: #ffffff;
 													                
 					                <tbody>
 									<tr ng-repeat="move in movementdata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
-										<td>{{move.lastSeen}}</td>
+										<td>{{move.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{move.speed}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{move.latitude}},{{move.longitude}}" target="_blank">Link</a></td>
 										<td>
@@ -244,7 +244,7 @@ background-color: #ffffff;
 								    
 								    <tr><td colspan="8"></td></tr>
 									<tr> 
-										<th width="12%" class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Date&amp;Time</th>
+										<th width="12%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date&amp;Time</th>
 										<th width="10%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed (Km)</th>
 										<th width="11%" class="id" custom-sort order="'movingTime'" sort="sort" style="text-align:center;">Duration</th>
 										<th width="7%" class="id" style="text-align:center;">G-Map</th>
@@ -257,7 +257,7 @@ background-color: #ffffff;
 									</tr></thead>
 									
 									<tr ng-repeat="user in overspeeddata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
-										<td>{{user.lastSeen}}</td>
+										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{user.speed}}</td>
 										<td>{{msToTime(user.movingTime)}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
@@ -298,7 +298,7 @@ background-color: #ffffff;
 								  	<tr><td colspan="4"></td></tr>
 									<tr style="text-align:center;font-weight: bold;">
 										
-										<th style="text-align:center;" custom-sort order="'lastSeen'" sort="sort" >Parked Time</th>
+										<th style="text-align:center;" custom-sort order="'date'" sort="sort" >Parked Time</th>
 										<th width="12%" style="text-align:center;">G-Map</th>
 										<th width="40%" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
 										<th width="15%" custom-sort order="'parkedTime'" sort="sort"  style="text-align:center;">Duration</th>
@@ -307,7 +307,7 @@ background-color: #ffffff;
 									<tbody>
 									<tr ng-repeat="user in parkeddata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
 										
-										<td>{{user.lastSeen}}</td>
+										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
 										<td> 
 											<p ng-if="user.address!=null">{{user.address}}</p>
@@ -336,7 +336,7 @@ background-color: #ffffff;
 			   			 	 			</tr>
 			   			 	 			<tr><td colspan="4"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th width="13%" class="id" custom-sort order="'lastSeen'" sort="sort"  style="text-align:center;">Idle Time</th>
+											<th width="13%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;">Idle Time</th>
 											<th width="10%" class="id" style="text-align:center;">G-Map</th>
 											<th width="40%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
 											<th width="15%" class="id" custom-sort order="'idleTime'" sort="sort"  style="text-align:center;">Duration</th>
@@ -344,7 +344,7 @@ background-color: #ffffff;
 								</thead>
 			   			 	 	<tbody>
 			   			 	 		<tr ng-repeat="user in idlereport | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
-			   			 	 			<td>{{user.lastSeen}}</td>
+			   			 	 			<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
 			   			 	 			<td>
 			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
