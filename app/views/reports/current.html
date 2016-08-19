@@ -253,7 +253,7 @@ background-color: #ffffff;
 										<th width="5%" class="id" custom-sort order="'regNo'" sort="sort" style="text-align:center;">Regn No</th>
 										<th width="5%" class="id" custom-sort order="'driverName'" sort="sort" style="text-align:center;">Driver Name</th>
 										<!-- <th ng-hide="true">Mobile Number</th> -->
-										<th width="10%" class="id" custom-sort order="'lastSeen'" sort="sort" style="text-align:center;">Last Seen</th>
+										<th width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Last Seen</th>
 										<th width="5%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;">KM today</th>
 										<th width="5%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed</th>
 										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;">Position</th>
@@ -270,7 +270,7 @@ background-color: #ffffff;
 										<td>{{user.regNo}}</td>
 										<td>{{user.driverName}}</td>
 										<!-- <td ng-hide="true">{{user.mobileNo}}</td> -->
-										<td>{{user.lastSeen}}</td>
+										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{user.distanceCovered}}</td>
 										<td>{{user.speed}}</td>
 										<td ng-switch on="user.position">
