@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- <script src="assets/js/require.js"></script> -->
-<!-- <script src="assets/js/jquery-1.11.0.js"></script>
-<script src="assets/js/static.js"></script> -->
-<!-- <script src="urlApi()" type="text/javascript"></script> -->
-
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,7 +48,7 @@
 
                 </li>
                 <li class="track"><a href="javascript:void(0);" class="active"><div></div><label>Track</label></a></li>
-                <li class="history"><a href="../public/replay"><div></div><label>History</label></a></li>
+                <li class="history"><a href="../public/track?maps=replay"><div></div><label>History</label></a></li>
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
                 <li class="admin"><a href="../public/fuel"><div></div><label>Fuel</label></a></li>
@@ -629,7 +624,7 @@
 var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
 var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
 
-if(apikey_url != null || apikey_url != "" || apikey_url != undefined)
+if(apikey_url != null || apikey_url != undefined)
         url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url;
 
    function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {

@@ -297,7 +297,7 @@ app.directive('map', function($http) {
         }
     };
 });
-app.controller('mainCtrl',function($scope, $http, $q){
+app.controller('mainCtrl',function($scope, $http, $q, $filter){
 	$scope.locations = [];
 	$scope.path = [];
 	$scope.polylinearr=[];
@@ -338,12 +338,12 @@ app.controller('mainCtrl',function($scope, $http, $q){
 		$scope.groupname = data[0].group;
 		$scope.vehicleId = data[0].vehicleLocations[0].vehicleId;
 		sessionValue($scope.vehicleId, $scope.groupname)
-		if(location.href.split("=")[1]==undefined || location.href.split("=")[1].trim().length==0){
+		if(getParameterByName('vehicleId')!=undefined || getParameterByName('vehicleId')!=null){
 			$scope.trackVehID =$scope.locations[0].vehicleLocations[0].vehicleId;
 			$scope.shortVehiId =$scope.locations[0].vehicleLocations[0].shortName;
 			$scope.selected=0;
 		}else{
-			$scope.trackVehID =location.href.split("=")[1].trim();
+			$scope.trackVehID =getParameterByName('vehicleId');
 			for(var i=0; i<$scope.locations[0].vehicleLocations.length;i++){
 				if($scope.locations[0].vehicleLocations[i].vehicleId==$scope.trackVehID){
 					$scope.selected=i;
@@ -617,8 +617,8 @@ if($scope.markerstart){
 					if (status == google.maps.GeocoderStatus.OK) {
 					  if (results[1]) {
 					  	var contentString = '<div class="nearbyTable02"><div><table cellpadding="0" cellspacing="0"><tbody>'
-			+'<tr><td>Speed</td><td>'+$scope.infowindowShow.dataTempVal.speed+'</td></tr>'
-			+'<tr><td>date & time</td><td>'+$scope.infowindowShow.dataTempVal.lastSeen+'</td></tr>'
+			+'<tr><td>Speed </td><td>'+$scope.infowindowShow.dataTempVal.speed+'</td></tr>'
+			+'<tr><td>date & time</td><td>'+dateFormat($scope.infowindowShow.dataTempVal.date)+'</td></tr>'
 			+'<tr><td>trip distance</td><td>'+$scope.infowindowShow.dataTempVal.tripDistance+'</td></tr>'
 			+'<tr><td style="widthpx">location</td><td style="width:100px">'+results[1].formatted_address+'</td></tr>'
 			+'</tbody></table></div>';
@@ -834,7 +834,7 @@ if($scope.markerstart){
 			$scope.tempadd = count;
 		});
 		
-		var contentString = '<h3 class="infoh3">Vehicle Details ('+$scope.trackVehID+') </h3><div class="nearbyTable02"><div><table cellpadding="0" cellspacing="0"><tbody><!--<tr><td>Location</td><td>'+$scope.tempadd+'</td></tr>--><tr><td>Last seen</td><td>'+pos.data.lastSeen+'</td></tr><tr><td>Parked Time</td><td>'+$scope.timeCalculate(pos.data.parkedTime)+'</td></tr><tr><td>Trip Distance</td><td>'+pos.data.tripDistance+'</td></tr></table></div>';
+		var contentString = '<h3 class="infoh3">Vehicle Details ('+$scope.trackVehID+') </h3><div class="nearbyTable02"><div><table cellpadding="0" cellspacing="0"><tbody><!--<tr><td>Location</td><td>'+$scope.tempadd+'</td></tr>--><tr><td>Last seen</td><td>'+dateFormat(pos.data.date)+'</td></tr><tr><td>Parked Time</td><td>'+$scope.timeCalculate(pos.data.parkedTime)+'</td></tr><tr><td>Trip Distance</td><td>'+pos.data.tripDistance+'</td></tr></table></div>';
 		var infoWindow = new google.maps.InfoWindow({content: contentString});
 		google.maps.event.addListener($scope.markerstart, "click", function(e){
 			infoWindow.open($scope.map, $scope.markerstart);	
@@ -862,7 +862,7 @@ if($scope.markerstart){
 			
 			var contentString = '<h3 class="infoh3">Vehicle Details ('+$scope.trackVehID+') </h3>'
 			+'<div class="nearbyTable02"><div><table cellpadding="0" cellspacing="0"><tbody>'
-			+'<tr><td>Location</td><td>'+$scope.tempadd+'</td></tr><tr><td>Last seen</td><td>'+pos.data.lastSeen+'</td>'
+			+'<tr><td>Location</td><td>'+$scope.tempadd+'</td></tr><tr><td>Last seen</td><td>'+dateFormat(pos.data.date)+'</td>'
 			+'</tr><tr><td>Parked Time</td><td>'+$scope.timeCalculate(pos.data.parkedTime)+'</td></tr><tr><td>Trip Distance</td>'
 			+'<td>'+pos.data.tripDistance+'</td></tr></table></div>';
 			
@@ -880,6 +880,10 @@ if($scope.markerstart){
 		
 	}
 	$scope.tempadd="";
+
+	function dateFormat(date) { return $filter('date')(date, "yyyy-MM-dd HH:mm:ss");}
+
+
 	$scope.printadd=function(a, b, c, d, marker, map, data){
 		var posval='';
 		
@@ -890,7 +894,7 @@ if($scope.markerstart){
 			posval = 'Parked Time';
 		}
 		
-		var contentString = '<h3 class="infoh3">Vehicle Details ('+$scope.trackVehID+') </h3><div class="nearbyTable02">'
+		var contentString = '<h3 class="infoh3">Vehicle Details('+$scope.trackVehID+') </h3><div class="nearbyTable02">'
 		+'<div><table cellpadding="0" cellspacing="0"><tbody>'
 		+'<tr><td>Location</td><td>'+d+'</td></tr>'
 		+'<tr><td>Last seen</td><td>'+a+'</td></tr>'
@@ -927,7 +931,7 @@ if($scope.markerstart){
 			 }else if(data.position=='P'){
 			 	var b = data.parkedTime;
 			 }
-			$scope.printadd(data.lastSeen, b, data.tripDistance, count, marker, map, data); 
+			$scope.printadd(dateFormat(data.date), b, data.tripDistance, count, marker, map, data); 
 		});
 	};
 	$scope.gcount =0;

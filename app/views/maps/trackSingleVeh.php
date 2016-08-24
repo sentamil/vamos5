@@ -150,7 +150,7 @@
             </div>
         </div>
     </div>
-    <script src="assets/js/static.js"></script>
+    <!-- <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
@@ -164,19 +164,72 @@
     <script src="assets/js/infobox.js"  type="text/javascript"></script>
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
-    <script src="assets/js/customtrack.js"></script>
+    <script src="assets/js/customtrack.js"></script> -->
     <script>
-    $(document).ready(function(){
-        $('#minmax').click(function(){
-            $('#contentmin').animate({
-                height: 'toggle'
-            },2000);
-        });
-    });
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$("#wrapper").toggleClass("toggled");
-		});
+
+var apikey_url = 'AIzaSyDY9lNthKAcaSCcQGKMcilI5aYWAeru9wc';//JSON.parse(sessionStorage.getItem('apiKey'));
+// var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
+
+// if(apikey_url != null || apikey_url != undefined)
+      var url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url;
+
+   function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
+     if (scriptsCollection[startIndex]) {
+       var fileref = document.createElement('script');
+       fileref.setAttribute("type","text/javascript");
+       fileref.setAttribute("src", scriptsCollection[startIndex]);
+       fileref.onload = function(){
+         startIndex = startIndex + 1;
+         loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback)
+       };
+ 
+       document.getElementsByTagName("head")[0].appendChild(fileref)
+     }
+     else {
+       librariesLoadedCallback();
+     }
+   }
+ 
+   // An array of scripts you want to load in order
+   var scriptLibrary = [];
+   
+   scriptLibrary.push("assets/js/static.js");
+   scriptLibrary.push("assets/js/jquery-1.11.0.js");
+   scriptLibrary.push("assets/js/bootstrap.min.js");
+   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
+   // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+   // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+   scriptLibrary.push(url);
+   scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
+   scriptLibrary.push("http://code.highcharts.com/highcharts.js");
+   scriptLibrary.push("http://code.highcharts.com/highcharts-more.js");
+   scriptLibrary.push("http://code.highcharts.com/modules/solid-gauge.js");
+   scriptLibrary.push("assets/js/markerwithlabel.js");
+   scriptLibrary.push("assets/js/infobubble.js");
+   scriptLibrary.push("assets/js/infobox.js");
+   scriptLibrary.push("assets/js/vamoApp.js");
+   scriptLibrary.push("assets/js/services.js");
+   scriptLibrary.push("assets/js/customtrack.js");
+
+
+
+ 
+   // Pass the array of scripts you want loaded in order and a callback function to invoke when its done
+   loadJsFilesSequentially(scriptLibrary, 0, function(){
+       // application is "ready to be executed"
+       // startProgram();
+   });
+  //   $(document).ready(function(){
+  //       $('#minmax').click(function(){
+  //           $('#contentmin').animate({
+  //               height: 'toggle'
+  //           },2000);
+  //       });
+  //   });
+		// $("#menu-toggle").click(function(e) {
+		// 	e.preventDefault();
+		// 	$("#wrapper").toggleClass("toggled");
+		// });
     </script>
 </body>
 </html>

@@ -4,18 +4,63 @@
  * |-------------------------------------------------------------------------- | Application Routes |-------------------------------------------------------------------------- | | Here is where you can register all of the routes for an application. | It's a breeze. Simply tell Laravel the URIs it should respond to | and give it the Closure to execute when that URI is requested. |
  */
 View::addExtension('html', 'php');
-Route::get('/live', function() {
+Route::get('/track', function() {
+    
     if (!Auth::check()) {
         return Redirect::to('login');
-    } else {
-        return View::make('maps.index');
     }
+    else 
+    {   
+        try 
+            {
+                if($_GET['maps'] == 'replay'){
+                    log::info(' replay ');
+                    return View::make('maps.replay');
+                    // log::info(' single -->'.$actual_link);
+                }
+                else if ($_GET['maps'] == 'sites'){
+                    log::info(' site ');
+                    return View::make('reports.siteDetails');
+                }
+                else if ($_GET['maps'] == 'mulitple'){
+                    log::info(' mulitple ');
+                    return View::make('maps.multiTracking');
+                }
+                else if ($_GET['maps'] == 'single'){
+                    log::info(' single ');
+                    return View::make('maps.track');
+                }
+                else if($_GET['maps'] == 'tripkms'){
+                    log::info(' tripkms ');
+                    return View::make('reports.tripReportKms');
+                } 
+                else if($_GET['maps'] == 'track'){
+                    log::info(' public ');
+                    return View::make('maps.trackSingleVeh');
+                }
+                else
+                {
+                    return View::make('maps.index');
+                    log::info(' index ');
+                }
+            } 
+        catch (Exception $e) 
+            {       
+                log::info(' exception ');
+                return View::make('maps.index');
+            }
+    } 
+    
 });
- 
+
 Route::get('/apiAcess', function() {
     Log::info(' api acess ');
     return View::make('maps.api');
 
+});
+
+Route::get('/live', function() {
+    return Redirect::to('login');
 });
 
 Route::get('/replay', function() {
@@ -54,10 +99,10 @@ Route::get('/history', function() {
 });
 
 View::addExtension('html', 'php');
-Route::get('/track', function() {
+// Route::get('/track', function() {
   
-    return View::make('maps.trackSingleVeh');
-});
+//     return View::make('maps.trackSingleVeh');
+// });
 
 Route::get('/trackSingleVeh', function() {
     if (!Auth::check()) {
@@ -757,8 +802,8 @@ Route::resource('vdmFranchises', 'VdmFranchiseController');
 Route::post('vdmFranchises/findFransList', array('uses' => 'VdmFranchiseController@findFransList'));
 Route::post('vdmFranchises/findUsersList', array('uses' => 'VdmFranchiseController@findUsersList'));
  
- 
- 
+ // for scheduled reports
+Route::post('ScheduledController/reportScheduling', array('uses' => 'ScheduledController@reportScheduling'));
  
  
 Route::get('/setPOIName', function() {

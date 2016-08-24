@@ -20,6 +20,7 @@ app.directive('map', function($http, vamoservice) {
 				$('#vehiid span').text(locs.shortName);
 				$('#toddist span span').text(locs.distanceCovered);
 				// total = parseInt(locs.speed);
+				$('#deviceVolt span').text(locs.deviceVolt);
 				$('#vehdevtype span').text(locs.odoDistance);
 				$('#mobno span').text(locs.overSpeedLimit);
 				
@@ -139,7 +140,7 @@ app.directive('map', function($http, vamoservice) {
             		$('#vehiid span').text(locs.shortName);
 					$('#toddist span span').text(locs.distanceCovered);
 					$('#vehstat span').text(locs.position);
-					$('#deviceVolt span').text(locs.position);
+					$('#deviceVolt span').text(locs.deviceVolt);
 					// total = parseInt(locs.speed);
 					$('#vehdevtype span').text(locs.odoDistance);
 					$('#mobno span').text(locs.overSpeedLimit);
