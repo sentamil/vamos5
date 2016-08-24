@@ -609,7 +609,9 @@ public function edit($id) {
         $refData= array_add($refData, 'digital2', '');
         $refData= array_add($refData, 'serial1', '');
         $refData= array_add($refData, 'serial2', '');
-         $refData= array_add($refData, 'digitalout', '');
+        $refData= array_add($refData, 'digitalout', '');
+        $refData= array_add($refData, 'mintemp', '');
+        $refData= array_add($refData, 'maxtemp', '');
 
         
 
@@ -708,6 +710,9 @@ public function edit1($id) {
         $refData= array_add($refData, 'Licence', '');
         $refData= array_add($refData, 'Payment_Mode', '');
          $refData= array_add($refData, 'descriptionStatus', '');
+         $refData= array_add($refData, 'mintemp', '');
+         $refData= array_add($refData, 'maxtemp', '');
+
         $refDataFromDB = json_decode ( $details, true );
 
 
@@ -988,6 +993,8 @@ public function update($id) {
          $serial1=Input::get ('serial1');
         $serial2=Input::get ('serial2');
          $digitalout=Input::get ('digitalout');
+         $mintemp=Input::get ('mintemp');
+         $maxtemp=Input::get ('maxtemp');
 
         $redis = Redis::connection ();
         $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
@@ -1068,6 +1075,8 @@ else if(Session::get('cur')=='admin')
             'serial1'=>$serial1,
             'serial2'=>$serial2,
             'digitalout'=>$digitalout,
+            'mintemp'=>$mintemp,
+            'maxtemp'=>$maxtemp,
             );
 
 try{
@@ -1298,7 +1307,15 @@ public function updateLive($id) {
         if(isset($vehicleRefData['digitalout'])==1)
             $digitalout=$vehicleRefData['digitalout'];
         else
-            $digitalout='no';  
+            $digitalout='no'; 
+        if(isset($vehicleRefData['mintemp'])==1)
+            $mintemp=$vehicleRefData['mintemp'];
+        else
+            $mintemp=-50; 
+        if(isset($vehicleRefData['maxtemp'])==1)
+            $maxtemp=$vehicleRefData['maxtemp'];
+        else
+            $maxtemp=50;  
 
         $deviceId=$vehicleRefData['deviceId'];
         try{
@@ -1348,6 +1365,8 @@ public function updateLive($id) {
             'digitalout'=>$digitalout,
             'isRfid'=>$isRfid,
             'rfidType'=>$rfidType,
+            'mintemp'=>$mintemp,
+            'maxtemp'=>$maxtemp,
             );
 
         $refDataJson = json_encode ( $refDataArr );
@@ -1485,6 +1504,10 @@ public function update1() {
     $descriptionStatus=Input::get ( 'descriptionStatus');    
     $descriptionStatus=!empty($descriptionStatus) ? $descriptionStatus : '';
 
+    $mintemp=Input::get ( 'mintemp');    
+    $mintemp=!empty($mintemp) ? $mintemp : '';
+    $maxtemp=Input::get ( 'maxtemp');    
+    $maxtemp=!empty($maxtemp) ? $maxtemp : '';
     $Payment_Mode=Input::get ( 'Payment_Mode1');  
     $Payment_Mode=!empty($Payment_Mode) ? $Payment_Mode : 'Monthly';
 
@@ -1549,6 +1572,8 @@ public function update1() {
             'Licence'=>$Licence,
             'Payment_Mode'=>$Payment_Mode,
             'descriptionStatus'=>$descriptionStatus,
+            'mintemp'=>$mintemp,
+            'maxtemp'=>$maxtemp,
 
             );
         VdmVehicleController::destroy($vehicleIdTemp);
@@ -1862,6 +1887,8 @@ public function migrationUpdate() {
             'Licence'=>isset($refDataJson1['Licence'])?$refDataJson1['Licence']:'',
             'Payment_Mode'=>isset($refDataJson1['Payment_Mode'])?$refDataJson1['Payment_Mode']:'',
             'descriptionStatus'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'',
+            'mintemp'=>isset($refDataJson1['mintemp'])?$refDataJson1['mintemp']:'',
+            'maxtemp'=>isset($refDataJson1['maxtemp'])?$refDataJson1['maxtemp']:'',
             );
 
         $refDataJson = json_encode ( $refDataArr );

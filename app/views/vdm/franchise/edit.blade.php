@@ -85,7 +85,10 @@
 		{{ Form::label('providerPassword', 'SMS Provider Password') }}
 		{{ Form::text('providerPassword', $providerPassword, array('class' => 'form-control')) }}
 	</div>
-
+	<div class="form-group">
+		{{ Form::label('ipadd', 'DB IP') }}
+		  {{ Form::select('ipadd',  array( $dbIpAr), $dbIp, array('class' => 'form-control')) }} 
+	</div>
 
 
 
@@ -103,7 +106,7 @@
 	</div>
 	<div class="form-group">
 		{{ Form::label('timeZone', 'Time Zone') }}
-		{{ Form::text('timeZone', $timeZone, array('class' => 'form-control')) }}
+		{{ Form::select('timeZone', array($timeZoneC),$timeZone, array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
 		{{ Form::label('apiKey', 'Api Key') }}

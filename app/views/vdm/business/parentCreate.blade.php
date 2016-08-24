@@ -237,7 +237,7 @@
 														<td class="col-md-2">{{ Form::select('vehicleType'.$i, array( 'Car'=>'Vehicle Type','Car' => 'Car', 'Truck' => 'Truck','Bus' => 'Bus'), Input::old('vehicleType'), array('class' => 'form-control')) }}</td>
 														<td class="col-md-2">{{ Form::select('oprName'.$i, array('airtel'=>'Operator', 'airtel' => 'airtel', 'reliance' => 'reliance','idea' => 'idea'), Input::old('oprName'), array('class' => 'form-control')) }}</td>
 														<td class="col-md-2">{{ Form::select('fuel'.$i,  array( 'no' => 'Fuel No','yes' => 'Fuel Yes' ), Input::old('fuel'), array('class' => 'form-control')) }}</td>
-														<td class="col-md-2">{{ Form::text('morningTripStartTime'.$i, Input::old('morningTripStartTime'), array('class' => 'form-control','placeholder'=>'Morning Trip Start Time')) }} </td>
+														<td class="col-md-2">{{ Form::text('altShortName'.$i, Input::old('altShortName'), array('class' => 'form-control','placeholder'=>'Alternate Short Name')) }}</td>
 
 													</tr>
 													<tr style="height: 50px">
@@ -250,7 +250,7 @@
 													</tr>
 													<tr style="height: 50px">	
 														<td class="col-md-2">{{ Form::text('email'.$i, Input::old('email'), array('class' => 'form-control','placeholder'=>'Alert Email')) }}</td>
-														<td class="col-md-2">{{ Form::text('altShortName'.$i, Input::old('altShortName'), array('class' => 'form-control','placeholder'=>'Alternate Short Name')) }}</td></td>
+														</td>
 														<td class="col-md-2">{{ Form::select('isRfid'.$i,  array( 'no' => 'Rfid No','yes' => 'Rfid Yes' ), Input::old('isRfid'), array('class' => 'form-control')) }}</td>
 														<td class="col-md-2">{{ Form::select('Licence'.$i,  array($Licence), 'Basic', array('class' => 'form-control')) }}</td>
 														<td class="col-md-2">{{ Form::select('Payment_Mode'.$i,  array($Payment_Mode), 'Yearly', array('class' => 'form-control')) }}</td>
