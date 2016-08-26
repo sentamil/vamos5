@@ -35,7 +35,7 @@ app.directive('map', function($http) {
 					if(data.fromDateTime=='' || data.fromDateTime==undefined || data.fromDateTime=='NaN-aN-aN'){ 
 						if(data.error==null){}else{
 							$('.alert-danger').show();
-							$('#myModal').modal();
+							// $('#myModal').modal();
 						}
 						$('#lastseen').html('<strong>From Date & time :</strong> -');
 						$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
