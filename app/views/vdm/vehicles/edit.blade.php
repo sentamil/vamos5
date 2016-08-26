@@ -91,17 +91,17 @@
 									{{ Form::label('digitalout', 'Digital output') }}
 									{{ Form::select('digitalout', array('no' => 'No','yes' => 'Yes'), $refData['digitalout'],array('class' => 'form-control')) }}
 								</div>
-								<div>
+								<!-- <div class="form-group">
 									{{ Form::label('fuel', 'Fuel') }}
 									{{ Form::select('fuel', array('no' => 'No','yes' => 'Yes' ), $refData['fuel'],array('class' => 'form-control')) }} 
-								</div>
-								<br/>
+								</div> -->
+								
 								<div class="form-group">
 									{{ Form::label('isRF', 'IsRFID') }}<br>
 
 									{{ Form::select('isRfid', array('yes' => 'Yes','no' => 'No'), isset($refData['isRfid'])?$refData['isRfid']:'no', array('class' => 'form-control')) }} 
 								</div>
-								<br/>
+				
 								<div class="form-group">
 									{{ Form::label('rfidType', 'Rfid Type') }}<br>
 
@@ -169,7 +169,7 @@
 								</div>
 
 
-								<div class="form-group">
+								<!-- <div class="form-group">
 									{{ Form::label('parkingAlert', 'Parking Alert') }}
 									{{ Form::select('parkingAlert', array('no' => 'No','yes' => 'Yes'), $refData['parkingAlert'], array('class' => 'form-control')) }}           
 
@@ -180,7 +180,7 @@
 									{{ Form::label('sendGeoFenceSMS', 'Send GeoFence SMS') }}
 									{{ Form::select('sendGeoFenceSMS', array('no' => 'No','yes' => 'Yes'), $refData['sendGeoFenceSMS'], array('class' => 'form-control')) }}           
 
-								</div>
+								</div> -->
 								<div class="form-group">
 									{{ Form::label('altShort', 'Alternate Vehicle Name') }}
 									{{ Form::text('altShortName',$refData['altShortName'], array('class' => 'form-control')) }}          
@@ -210,13 +210,21 @@
 									{{ Form::select('fuelType', array('digital' => 'Digital','analog' => 'Analog'), isset($refData['fuelType'])?$refData['fuelType']:'Digital', array('class' => 'form-control')) }} 
 								</div>
 								
-					<div class="form-group">
+							<div class="form-group">
 								{{ Form::label('License1', 'Licence') }}
 								{{ Form::select('Licence1', array($Licence), $refData['Licence'],array('class' => 'form-control')) }} 
 							</div>
 							<div class="form-group">
 								{{ Form::label('Payment_Mode1', 'Payment Mode') }}
 								{{ Form::select('Payment_Mode1', array($Payment_Mode), $refData['Payment_Mode'],array('class' => 'form-control')) }} 
+							</div>
+							<div class="form-group">
+								{{ Form::label('mintem', 'Minimum Temperature') }}
+								{{ Form::number('mintemp', $refData['mintemp'],array('class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'-100')) }} 
+							</div>
+							<div class="form-group">
+								{{ Form::label('maxtem', 'Maximum Temperature') }}
+								{{ Form::number('maxtemp', $refData['maxtemp'],array('class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'-100')) }} 
 							</div>
 							<br/>
 					

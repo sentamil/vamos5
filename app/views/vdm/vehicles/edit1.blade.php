@@ -159,6 +159,14 @@
 			{{ Form::label('Payment_Mode1', 'Payment Mode') }}
 			{{ Form::select('Payment_Mode1', array($Payment_Mode), $refData['Payment_Mode'],array('class' => 'form-control')) }} 
 		</div>
+		<div class="form-group">
+			{{ Form::label('mintem', 'Minimum Temperature') }}
+			{{ Form::number('mintemp', $refData['mintemp'],array('class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'-100')) }} 
+		</div>
+		<div class="form-group">
+			{{ Form::label('maxtem', 'Maximum Temperature') }}
+			{{ Form::number('maxtemp', $refData['maxtemp'],array('class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'-100')) }} 
+		</div>
 		
 	</div>
 </div>

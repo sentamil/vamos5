@@ -79,6 +79,7 @@
 		{{ Form::label('smsProvider', 'SMS Provider') }}
 		 {{ Form::select('smsProvider',  array( $smsP), Input::old('smsProvider'), array('class' => 'form-control')) }} 
 	</div>
+	
 	<div class="form-group">
 		{{ Form::label('providerUserName', 'SMS Provider User Name') }}
 		{{ Form::text('providerUserName', Input::old('providerUserName'), array('class' => 'form-control')) }}
@@ -88,8 +89,12 @@
 		{{ Form::text('providerPassword', Input::old('providerPassword'), array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
+		{{ Form::label('ipadd', 'DB IP') }}
+		 {{ Form::select('ipadd',  array( $dbIp), Input::old('ipadd'), array('class' => 'form-control')) }} 
+	</div>
+	<div class="form-group">
 		{{ Form::label('timeZone', 'Time Zone') }}
-		{{ Form::text('timeZone', Input::old('timeZone'), array('class' => 'form-control')) }}
+		{{ Form::select('timeZone', array($timeZoneC), 'Asia/Kolkata', array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
 		{{ Form::label('apiKey', 'Api Key') }}
