@@ -7,7 +7,13 @@ View::addExtension('html', 'php');
 Route::get('/track', function() {
     
     if (!Auth::check()) {
-        return Redirect::to('login');
+        
+        if($_GET['maps'] == 'track'){
+            return View::make('maps.trackSingleVeh');
+        } else {
+            return Redirect::to('login');    
+        }
+        
     }
     else 
     {   
