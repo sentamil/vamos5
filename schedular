@@ -1,0 +1,36 @@
+#!/bin/bash
+
+SCRIPT_HOME=/prd/vamos/codebase/scheduler;
+export SCRIPT_HOME
+
+start() {
+        echo -n "Starting Java Server: "
+        $SCRIPT_HOME/adhoc.sh start
+        sleep 2
+        echo "done"
+}
+
+stop() {
+        echo -n "Stopping Java Server: "
+	ps aux | grep java |grep Scheduler| awk '{print $2}' | xargs kill -9
+        #$SCRIPT_HOME/adhoc.sh stop
+        echo "done"
+}
+
+case "$1" in
+        start)
+                start
+                ;;
+        stop)
+                stop
+                ;;
+        restart)
+                stop
+                start
+                ;;
+        *)
+ 	#	stop
+        #        start
+                echo $"Usage: javaserver {start|stop|restart}"
+                exit
+esac
