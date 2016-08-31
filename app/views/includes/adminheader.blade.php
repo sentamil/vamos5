@@ -23,6 +23,7 @@
 		<li><a href="{{ URL::to('vdmFranchises') }}">View All Franchises</a></li>
 		<li><a href="{{ URL::to('vdmFranchises/create') }}">Add a Franchise</a>
 		<li><a href="{{ URL::to('ipAddressManager') }}">IPAddressManager</a>
+		<li><a href="{{ URL::to('vdmFranchises/buyAddress') }}">Address control</a>
 		<li><a href="{{ URL::to('logout/') }}">Logout User: {{Auth::user ()->username }}</a></li>	
 
 	</ul>

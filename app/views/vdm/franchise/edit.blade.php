@@ -89,7 +89,14 @@
 		{{ Form::label('ipadd', 'DB IP') }}
 		  {{ Form::select('ipadd',  array( $dbIpAr), $dbIp, array('class' => 'form-control')) }} 
 	</div>
-
+	<div class="form-group">
+		{{ Form::label('backUpDays', 'DB BackupDays') }}
+		{{ Form::number('backUpDays', $backUpDays, array('class' => 'form-control','required' => 'required', 'placeholder'=>'numbers', 'min'=>'1')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('dbType', 'DB Type') }}
+		 {{ Form::select('dbType',  array( $backType), $dbType, array('class' => 'form-control')) }} 
+	</div>
 
 
 	<div class="form-group">
