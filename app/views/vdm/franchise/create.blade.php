@@ -93,6 +93,14 @@
 		 {{ Form::select('ipadd',  array( $dbIp), Input::old('ipadd'), array('class' => 'form-control')) }} 
 	</div>
 	<div class="form-group">
+		{{ Form::label('backUpDays', 'DB BackupDays') }}
+		 {{ Form::number('backUpDays',   Input::old('backUpDays'), array('class' => 'form-control','required' => 'required', 'placeholder'=>'numbers', 'min'=>'1')) }} 
+	</div>
+	<div class="form-group">
+		{{ Form::label('dbType', 'DB Type') }}
+		 {{ Form::select('dbType',  array( $backType), 'mysql', array('class' => 'form-control')) }} 
+	</div>
+	<div class="form-group">
 		{{ Form::label('timeZone', 'Time Zone') }}
 		{{ Form::select('timeZone', array($timeZoneC), 'Asia/Kolkata', array('class' => 'form-control')) }}
 	</div>

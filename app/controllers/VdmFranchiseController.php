@@ -45,7 +45,7 @@ class VdmFranchiseController extends \BaseController {
 		$smsP=VdmFranchiseController::smsP();
 		$dbIp=VdmFranchiseController::dbIp();
 		log::info( 'VdmFranchiseController  :' . count($dbIp));
-		return View::make ( 'vdm.franchise.create' )->with('smsP',$smsP)->with('dbIp',$dbIp)->with('timeZoneC',VdmFranchiseController::timeZoneC());
+		return View::make ( 'vdm.franchise.create' )->with('smsP',$smsP)->with('dbIp',$dbIp)->with('timeZoneC',VdmFranchiseController::timeZoneC())->with('backType',VdmFranchiseController::backTypeC());
 	}
 
 
@@ -54,10 +54,16 @@ public static function dbIp()
 		$dbIp=array();
 		$dbIp[0]='188.166.237.200';
 		$dbIp[1]='188.166.244.126';
-
-		// $dbIp=array_add($dbIp, '188.166.244.126','188.166.244.126');
-		// $dbIp=array_add($dbIp, '188.166.237.200','188.166.237.200');
 	return $dbIp;
+}
+
+
+public static function backTypeC()
+{
+		$backType=array();
+		$backType=array_add($backType, 'sqlite','Sqlite');
+		$backType=array_add($backType, 'mysql','Mysql');
+	return $backType;
 }
 	
 public static function smsP()
@@ -709,6 +715,37 @@ public function users()
        
 	}
 
+
+	public function buyAddress()
+	{
+		  Log::info('------- inside fransearch--------');
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $username = Auth::user ()->username;
+        $redis = Redis::connection ();
+        $addressCount=$redis->get('VAMOSADDRESS_CONTROL');   
+        if($addressCount==null)
+        {
+        	$addressCount=0;
+        }   
+        return View::make ( 'vdm.franchise.buyAddress' )->with('addressCount',$addressCount);       
+       
+	}
+
+
+	public function updateAddCount() {
+                    log::info( '-----------List----------- ::');
+                    if (! Auth::check () ) {
+                                    return Redirect::to ( 'login' );
+                    }
+                     $redis = Redis::connection ();
+                   $redis->set('VAMOSADDRESS_CONTROL',Input::get ( 'addressCount' ));     
+                return Redirect::to ( 'vdmFranchises' );
+    }
+
+
+
 		public function findFransList() {
                                 log::info( '-----------List----------- ::');
                                 if (! Auth::check () ) {
@@ -867,10 +904,11 @@ public function users()
 			$smsProvider=Input::get ('smsProvider');
 			$providerUserName=Input::get ('providerUserName');
 			$providerPassword=Input::get ('providerPassword');
+			$backUpDays=Input::get('backUpDays');
 			//$eFDSchedular=Input::get ('eFDSchedular');
 			$timeZone=Input::get ('timeZone');
 			$apiKey=Input::get('apiKey');
-	
+			$dbType=Input::get('dbType');
 			
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
 			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'deviceModel'=>$deviceModel);
@@ -904,6 +942,8 @@ public function users()
 					'providerPassword'=>$providerPassword,
 					'timeZone'=>$timeZone,
 					'apiKey'=>$apiKey,	
+					'backUpDays'=>$backUpDays,
+					'dbType'=>$dbType,
 					//'eFDSchedular'=>$eFDSchedular
 			);
 			$redis->hmset('H_Franchise_Mysql_DatabaseIP',$fcode,$dbIp);
@@ -1082,6 +1122,15 @@ public function users()
 			$apiKey=$franchiseDetails['apiKey'];
 		else
 			$apiKey='';
+		if(isset($franchiseDetails['backUpDays'])==1)
+			$backUpDays=$franchiseDetails['backUpDays'];
+		else
+			$backUpDays='60';
+		if(isset($franchiseDetails['dbType'])==1)
+			$dbType=$franchiseDetails['dbType'];
+		else
+			$dbType='mysql';
+		
 		$dbIp=$redis->hget('H_Franchise_Mysql_DatabaseIP',$fcode);
 		if($dbIp=='')
 		{
@@ -1114,10 +1163,12 @@ public function users()
 		->with('timeZone',$timeZone)
 		->with('apiKey', $apiKey)
 		->with('dbIp', $dbIp)
+		->with('dbType', $dbType)
+		->with('backUpDays', $backUpDays)
 		->with('dbIpAr', VdmFranchiseController::dbIp())
 		->with('smsP',VdmFranchiseController::smsP())
-	    ->with('timeZoneC',VdmFranchiseController::timeZoneC());
-
+	    ->with('timeZoneC',VdmFranchiseController::timeZoneC())
+        ->with('backType',VdmFranchiseController::backTypeC());
 	}
 	
 	/**
@@ -1173,7 +1224,8 @@ public function users()
 			$providerPassword=Input::get ('providerPassword');
 			$timeZone=Input::get ('timeZone');
 			$apiKey=Input::get('apiKey');
-
+			$backUpDays=Input::get('backUpDays');
+			$dbType=Input::get('dbType');
 			$redis = Redis::connection ();
 				
 				if($numberofLicence==null)
@@ -1236,6 +1288,8 @@ public function users()
 					//'eFDSchedular'=>$eFDSchedular,
 					'timeZone'=>$timeZone,
 					'apiKey'=>$apiKey,	
+					'backUpDays'=>$backUpDays,
+					'dbType'=>$dbType,
 					
 			);
 			$detailsJson = json_encode ( $details );

@@ -804,7 +804,9 @@ Route::get('vdmGeoFence/{token}/view', array('uses' => 'VdmGeoFenceController@vi
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
 Route::get('vdmFranchises/fransearch', array('uses' => 'VdmFranchiseController@fransearch'));
 Route::get('vdmFranchises/users', array('uses' => 'VdmFranchiseController@users'));
+Route::get('vdmFranchises/buyAddress', array('uses' => 'VdmFranchiseController@buyAddress'));
 Route::resource('vdmFranchises', 'VdmFranchiseController');
+Route::post('vdmFranchises/updateAddCount', array('uses' => 'VdmFranchiseController@updateAddCount'));
 Route::post('vdmFranchises/findFransList', array('uses' => 'VdmFranchiseController@findFransList'));
 Route::post('vdmFranchises/findUsersList', array('uses' => 'VdmFranchiseController@findUsersList'));
  
