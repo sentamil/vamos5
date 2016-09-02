@@ -22,10 +22,21 @@ public function reportScheduling(){
 	$mail = Input::get ( 'mail' );
 	$tot = Input::get ( 'tot' );
 	$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+	
+	$franchiesJson 	= 	$redis->hget('H_Franchise_Mysql_DatabaseIP', $fcode);
+
+	// $franchies 	=	json_decode($franchiesJson,true);
+	// if(isset($franchies['availableLincence'])==1)
 	/*
 		 Mysql Connection
 	*/
-	$servername = "188.166.237.200";
+
+	$servername = $franchiesJson;
+	
+	if (!$servername){
+		$servername = "188.166.237.200";
+	}
+	
 	$usernamedb = "root";
 	$password = "#vamo123";
 	$dbname = $fcode;
@@ -37,7 +48,7 @@ public function reportScheduling(){
       	log::info("Connection failed: ");
    	} else {
    		
-   		// $results = $conn->query("SELECT * FROM ScheduledReport");
+   		$results = $conn->query("SELECT * FROM ScheduledReport");
    		/*
 			Create table
    		*/
@@ -55,11 +66,11 @@ public function reportScheduling(){
 	   	($result->num_rows > 0) ? $conn->query($update) : $conn->query($insert);
 
 	   	log::info(' Sucessfully inserted/updated !!! ');
-		// 		;
+				// ;
 
 		// } else {
 		// 	;
-		// 		log::info(' Sucessfully update !!! ');
+				// log::info(' Sucessfully update !!! ');
 		// }
 	
    	// }

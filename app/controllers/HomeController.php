@@ -240,7 +240,7 @@ class HomeController extends BaseController {
 		$fcodeKey = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		$franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
 		$getFranchise=json_decode($franchiseDetails,true);
-		log::info($getFranchise);
+		// log::info($getFranchise);
 		
 		if(isset($getFranchise['apiKey'])==1)
 			$apiKey=$getFranchise['apiKey'];
