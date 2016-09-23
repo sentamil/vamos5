@@ -54,6 +54,7 @@ public static function dbIp()
 		$dbIp=array();
 		$dbIp[0]='188.166.237.200';
 		$dbIp[1]='188.166.244.126';
+		$dbIp[2]='128.199.94.62';
 	return $dbIp;
 }
 
@@ -1139,8 +1140,6 @@ public function users()
 		$key = array_search($dbIp, VdmFranchiseController::dbIp());
 		$dbIp=$key;
 		Log::info("dbIp..".$dbIp);
-		Session::put('available',$availableLincence);
-		Session::put('numberofLicence',$numberofLicence);
 		return View::make ( 'vdm.franchise.edit', array (
 				'fname' => $franchiseDetails['fname'] 
 		) )->with ( 'fcode', $fcode )->with ( 'franchiseDetails', $franchiseDetails )
@@ -1153,6 +1152,8 @@ public function users()
 		->with('userId',$userId)
 		->with('fullAddress',$fullAddress)
 		->with('otherDetails',$otherDetails)
+		->with('numberofLicenceO',$numberofLicence)
+		->with('availableLincenceO',$availableLincence)
 		->with('numberofLicence',$numberofLicence)
 		->with('availableLincence',$availableLincence)
 		->with('website',$website)
@@ -1238,8 +1239,8 @@ public function users()
 					return Redirect::to ( 'vdmFranchises/update' )->withErrors ( 'Please check the License count' );
 				}
 				else{*/
-					$availableLincence=$numberofLicence+Session::get('available');
-					$numberofLicence=$numberofLicence+Session::get('numberofLicence');
+					$availableLincence=$numberofLicence+Input::get('availableLincenceO');
+					$numberofLicence=$numberofLicence+Input::get('numberofLicenceO');
 				//}
 				
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,

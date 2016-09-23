@@ -838,16 +838,6 @@ Route::get('/download', function() {
     $headers = array('Content-Type: application/zip');
     return Response::download($file, 'sample.txt.gz', $headers);
 });
- 
-//Route::get('/json', array('uses' =>'ManiController@testMani'));
-//Route::post('/meena', array('uses' => 'MeenaController@loginMeena'));
-//Route::get('/lmeena', array('uses' => 'MeenaController@testMeena'));
-//Route::get('/Meena1',array('uses'=>'Meena1Controller@testmeena'));
-//Route::get('/Meena2',array('uses'=>'Meena2Controller@testMeena2'));
-//Route::get('/Meena3',array('uses'=>'Meena3Controller@testMeena3'));
-//Route::get('/Fish',array('uses'=>'FishController@testFish'));
-//Route::get('/Array',array('uses'=>'ArrayController@testArray'));
-//Route::get('/Correction',array('uses'=>'CorrectionController@testCorrection'));
 Route::get('/SmsReport',array('uses'=>'SmsReportController@testSmsReport'));
 Route::post('/SmsReport',array('uses'=>'SmsReportController@testSmsReport'));
 Route::get('/Test',array('uses'=>'TestController@postAuth'));
