@@ -812,6 +812,7 @@ Route::post('vdmFranchises/findUsersList', array('uses' => 'VdmFranchiseControll
  
  // for scheduled reports
 Route::post('ScheduledController/reportScheduling', array('uses' => 'ScheduledController@reportScheduling'));
+Route::get('ScheduledController/getValue', array('uses' => 'ScheduledController@getValue'));
  
  
 Route::get('/setPOIName', function() {

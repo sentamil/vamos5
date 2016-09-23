@@ -471,8 +471,7 @@ border-width: 10px;
 #menuView {position: absolute;top: 175px;left: 5px; z-index:99; padding: 5px; font-size: 11px;}
 #draggable {position: absolute;top: 70px;left: 130px; z-index:99; width: 250px;padding: 7px;background: #fff; -webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
 #contentmin{position: fixed;top: 70px;right: 20px; z-index:99; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}
-.dynData tbody tr:nth-child(odd){background-color: rgba(0,0,0,0.2); 
-	box-shadow: 0px 0px 0px 15px rgba(0, 0, 0, 0.3) !important;}
+.dynData tbody tr:nth-child(odd){background-color: rgba(0,0,0,0.2);} /*box-shadow: 0px 0px 0px 15px rgba(0, 0, 0, 0.3) !important;*/
 #viewMap{cursor: pointer; padding: 6px; width: 100%; border-bottom-style: solid; border-bottom-color: #bfbfbf; border-width: 0.1em; border-radius: 2px; background-color: #196481}
 #viewMap:hover{
 	transform: scale(1.05);

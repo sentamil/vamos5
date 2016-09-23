@@ -1,4 +1,4 @@
-app.controller('mainCtrl',['$scope','vamoservice',function($scope, vamoservice){
+app.controller('mainCtrl',['$scope','vamoservice','$timeout',function($scope, vamoservice,$timeout){
 	
 $("#testLoad").load("../public/menu");
 
@@ -6,39 +6,142 @@ $("#testLoad").load("../public/menu");
 $scope.vehicles         = [];
 $scope.checkingValue    = {};
 $scope.vehiId           = [];
-$scope.hours            = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
-$scope.reports          = ['Movement (M)','OverSpeed (O)','Site (S)','Fuel (F)','Temperature (T)'];
-var url                 = 'http://'+globalIP+context+'/public//getVehicleLocations';
 
+$scope.hours            = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+$scope.reports          = ['Movement (M)','OverSpeed (O)','Site (S)']; //,'Fuel (F)','Temperature (T)'
+var url                 = 'http://'+globalIP+context+'/public//getVehicleLocations';
+var menuValue           = JSON.parse(sessionStorage.getItem('userIdName'));
+var sp                  = menuValue.split(",");
+
+
+// $scope.checkingValue.move[] = [];
+// $scope.checkingValue.over[] = [];
+
+$scope.checkingValue.move = [];
+$scope.checkingValue.over = [];
+$scope.checkingValue.site = [];
+$scope.checkingValue.fuel = [];
+$scope.checkingValue.temp = [];
+
+
+// onload function for value already present
+function fetchController(group){
+$.ajax({
+          async: false,
+          method: 'GET', 
+          url: "ScheduledController/getValue",
+          data: {'userName':sp[1], 'groupName':group},
+          success: function (response) {
+              if(response.length){
+                $scope.mailId   = response[0].email;
+                $scope.from     = response[0].fromTime;
+                $scope.to       = response[0].toTime;
+                $scope.groupSelected    = response[0].groupName;
+                angular.forEach($scope.vehicles, function(value, key){
+                  $scope.vehiId[key] = false;
+                  $scope.checkingValue.move[key]   = false;
+                  $scope.checkingValue.over[key]   = false;
+                  $scope.checkingValue.site[key]   = false;
+                  // $scope.checkingValue.fuel[key]   = false;
+                  // $scope.checkingValue.temp[key]   = false;
+                  angular.forEach(response, function(innerValue, innerKey){
+                    if(value.vehicleId == innerValue.vehicleId){
+                      $scope.vehiId[key] = true;
+                      console.log(innerValue.reports)
+                      var reportsValue  =  innerValue.reports.split(',');
+                      try{
+
+                        angular.forEach(reportsValue, function(rep, ind){
+
+                          switch (rep){
+                            case 'movement':
+                              $scope.checkingValue.move[key]   = true;
+                              break;
+                            case 'overspeed':
+                              $scope.checkingValue.over[key]   = true;
+                              break;
+                            case 'site':
+                              $scope.checkingValue.site[key]   = true;
+                              break;
+                          }
+
+                        });
+
+                      }catch(err){
+
+                        console.log(err)
+
+                      }
+                      
+                    }
+                });
+
+              });
+            }
+            
+          }
+        });
+
+}
 
 //add vehicle in single list
 function addVehi(vehi){
+  $scope.vehicles = [];
   for (var i = 0; i < vehi.length; i++) 
   {$scope.vehicles.push(vehi[i])}
+  
 }
+
+
 
 
 //init function
 (function (){
   startLoading();
+
   vamoservice.getDataCall(url).then(function(data){
     
     addVehi(data[0].vehicleLocations);
     $scope.locations02 = data;
-    for (var i = 0; i <= data.length-1; i++) {
-      if(i!=0)
-      vamoservice.getDataCall(url+'?group='+data[i].group).then(function(res){
-        addVehi(res[i-1].vehicleLocations);
-      });
+    // $scope.groupSelected.group  = data[0];
+    if(data.length){
+      fetchController(data[0].group);
+      // try {
+      //   for (var i = 0; i <= data.length-1; i++) {
+
+      //     angular.forEach(data, function(value, key){
+      //       if(key!=0)
+      //       $http.get(url+'?group='+value.group).success(function(res){
+      //         addVehi(res[key].vehicleLocations);
+      //         if(key == data.length-1)
+      //         //     console.log('err');
+      //          fetchController();
+      //       });
+      //     })
+      //     if(i!=0)
+            
+
+      //     if()
+      //   }
+      //    throw "is empty";
+      // } catch (err) {
+      //   // console.log(err);
+      // }
+
+    } else {
+      // fetchController();
     }
     
+    
+  
   });
+
   stopLoading();
 }());
 
 $scope.trimColon = function(textVal){
-    return textVal.split(":")[0].trim();
-  }
+  return textVal.split(":")[0].trim();
+}
 
 $scope.vehiSelect   = function(vehid){
   $scope.vehiId  = [];
@@ -92,13 +195,15 @@ function checkUndefined(value){
 
 
 $scope.storeValue   = function(){
+
   startLoading();
-  if($scope.vehiId.length && $scope.mailId)
+  if($scope.vehiId.length && $scope.mailId && $scope.from || $scope.from==0 && $scope.to){
+    var reportsList = [];
     angular.forEach($scope.vehiId,function(val,id){
       
       var reports = '';
       
-      if($scope.from != undefined && $scope.to != undefined && $scope.vehicles[id].vehicleId != null && $scope.vehicles[id].vehicleId != ''){
+      if($scope.vehiId[id] == true && $scope.from != undefined && $scope.to != undefined && $scope.vehicles[id].vehicleId != null && $scope.vehicles[id].vehicleId != ''){
         try{ reports += $scope.checkingValue.move[id] == true ?  'movement,' : ''; }
         catch (e){}
         try{ reports += $scope.checkingValue.over[id] == true ?  'overspeed,' : ''; } 
@@ -109,26 +214,37 @@ $scope.storeValue   = function(){
         catch (e){}
         try{ reports += $scope.checkingValue.temp[id] == true ?  'temperature,' : ''; } 
         catch (e){}
-          
-        var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
-        var sp  = menuValue.split(",");
+        reportsList.push([sp[1],reports, $scope.vehicles[id].vehicleId, $scope.from, $scope.to, $scope.mailId, $scope.groupSelected]);
+        
 
 
-        $.ajax({
+        
+
+      }
+     
+    })
+
+  $.ajax({
           async: false,
           method: 'POST', 
           url: "ScheduledController/reportScheduling",
-          data: {'userName':sp[1],'vehicle': $scope.vehicles[id].vehicleId,'report': reports,'fromt': $scope.from,'tot': $scope.to,'mail':$scope.mailId}, // a JSON object to send back
+          data: {'reportList': reportsList,'userName':sp[1],'groupName': $scope.groupSelected},//{'userName':sp[1],'vehicle': $scope.vehicles[id].vehicleId,'report': reportsList,'fromt': $scope.from,'tot': $scope.to,'mail':$scope.mailId,'groupName': $scope.groupSelected.group}, // a JSON object to send back
           success: function (response) {
             stopLoading();
             location.reload();
           }
         });
-
-      }
-      stopLoading();
-    })
-  
+}
+  else{
+    stopLoading();
+    $scope.error = "* Please fill all field"
+    var countUp = function() {
+      $scope.error = '';
+        
+    }
+    
+    $timeout(countUp, 5000);
+  }
 }
 
 
@@ -138,11 +254,7 @@ $scope.storeValue   = function(){
 
 $scope.changeValue =  function(reportName){
 
-  $scope.checkingValue.move = [];
-  $scope.checkingValue.over = [];
-  $scope.checkingValue.site = [];
-  $scope.checkingValue.fuel = [];
-  $scope.checkingValue.temp = [];
+  
   if(reportName.length)
     angular.forEach(reportName, function(name, id){
       angular.forEach($scope.vehicles, function(key, value){
@@ -168,28 +280,49 @@ $scope.changeValue =  function(reportName){
     })
 }
 
-$scope.report   = function(a, b, c, d, e){
-console.log(' in controller '+a+"  "+b+' '+c+' '+d+' '+e)
-  
-  var URL_ROOT    = "ScheduledController/";
-    $.post( URL_ROOT+'reportScheduling', {
-        '_token': $('meta[name=csrf-token]').attr('content'),
-        'vehicle': a,
-        'report': e,
-        'fromt': c,
-        'tot': d,
-        'mail':b,
-        'userName':'SBLT',
-        // 'org':org,
-        // 'latLng': latlanList,
-      })
-      .done(function(data) {
-        console.log("Sucess");
-      })
-      .fail(function() {
-        console.log("fail");
-      });
+$scope.groupChange  = function(){
+
+  $scope.checkingValue.move = [];
+  $scope.checkingValue.over = [];
+  $scope.checkingValue.site = [];
+  // $scope.checkingValue.fuel = [];
+  // $scope.checkingValue.temp = [];
+  $scope.vehiId             = [];
+  $scope.from               = '';
+  $scope.to                 = '';
+  vamoservice.getDataCall(url+'?group='+$scope.groupSelected).then(function(response){
+    angular.forEach(response, function(value, key){
+      ($scope.groupSelected == value.group) ? addVehi(response[key].vehicleLocations) : console.log(' No groupName ');
+    })
+    // addVehi(res[key].vehicleLocations);
+    fetchController($scope.groupSelected);
+    // fetchController($scope.groupSelected.group);
+  });
 }
+
+
+// $scope.report   = function(a, b, c, d, e){
+// console.log(' in controller '+a+"  "+b+' '+c+' '+d+' '+e)
+  
+//   var URL_ROOT    = "ScheduledController/";
+//     $.post( URL_ROOT+'reportScheduling', {
+//         '_token': $('meta[name=csrf-token]').attr('content'),
+//         'vehicle': a,
+//         'report': e,
+//         'fromt': c,
+//         'tot': d,
+//         'mail':b,
+//         'userName':'SBLT',
+//         // 'org':org,
+//         // 'latLng': latlanList,
+//       })
+//       .done(function(data) {
+//         console.log("Sucess");
+//       })
+//       .fail(function() {
+//         console.log("fail");
+//       });
+// }
 
 
 }]);
