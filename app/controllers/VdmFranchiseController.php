@@ -69,13 +69,15 @@ public static function backTypeC()
 	
 public static function smsP()
 {
-		$smsP=array();
-		$smsP=array_add($smsP, 'nill','Nill');
-		$smsP=array_add($smsP, 'KapSMS','Kap');
-		$smsP=array_add($smsP, 'Mvaayoo','Mvaayoo');
-		$smsP=array_add($smsP, 'UniversalSMS','Universal');
-		$smsP=array_add($smsP, 'Voicegateway','Voicegateway');
-		$smsP=array_add($smsP, 'SmartSms','SmartSms');
+	if (! Auth::check ()) {
+		return Redirect::to ( 'login' );
+	}
+	$redis = Redis::connection ();
+	$smsProvider = $redis->lrange('L_SMS_Provider', 0, -1);
+	$smsP=array();
+	foreach ($smsProvider as $sms) {
+    	$smsP=array_add($smsP, $sms, $sms);
+	}
 	return $smsP;
 }
 public static function timeZoneC()

@@ -163,6 +163,18 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 			}
 	   }
 	}
+
+
+	function fetchingAddress(pos){
+
+		if(pos.address == null || pos.address == undefined || pos.address == ' ')
+			$scope.getLocation(pos.latitude, pos.longitude, function(count){ 
+				$('#lastseen').text(count); 
+			});
+		else
+			$('#lastseen').text(pos.address);
+	}
+
 	$scope.drawLine = function(loc1, loc2){
 		var flightPlanCoordinates = [loc1, loc2];
 		$scope.flightPath = new google.maps.Polyline({
@@ -476,6 +488,8 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	
 
 	
+
+	
 	$scope.addMarker= function(pos){
 	    
 	    var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
@@ -505,11 +519,20 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	    
 		if(pos.data.vehicleId==$scope.vehicleno){
 			$scope.assignValue(pos.data);
-		    $scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
-				$('#lastseen').text(count);
-				var t = vamoservice.geocodeToserver(pos.data.latitude,pos.data.longitude,count);
+
+			// if(pos.data.address == null || pos.data.address == undefined || pos.data.address == ' ')
+			// 		$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){ 
+			// 			$('#lastseen').text(count); 
+			// 		});
+			// 	else
+			// 		$('#lastseen').text(pos.data.address);
+			fetchingAddress(pos.data);
+
+		 //    $scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
+			// 	$('#lastseen').text(count);
+			// 	var t = vamoservice.geocodeToserver(pos.data.latitude,pos.data.longitude,count);
 									
-			});		
+			// });		
 		}
 		gmarkers.push($scope.marker);
 		// $scope.marl.push($scope.marker);
@@ -519,11 +542,16 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 			$scope.assignValue(pos.data);
 			$('#graphsId').show(500);
 			editableValue();
-			$scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
-				$('#lastseen').text(count); 
-				var t = vamoservice.geocodeToserver(pos.data.latitude,pos.data.longitude,count);
+
+			fetchingAddress(pos.data);
+
+
+
+			// $scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
+			// 	$('#lastseen').text(count); 
+			// 	var t = vamoservice.geocodeToserver(pos.data.latitude,pos.data.longitude,count);
 									
-			});
+			// });
 			if($scope.selected!=undefined){
 				$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
 			}
@@ -684,10 +712,11 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 			 if(temp.vehicleId==$scope.vehicleno){
 				 $scope.assignValue(temp);
 				 $scope.selected=i;
-				 $scope.getLocation(lat, lng, function(count){
-					 $('#lastseen').text(count);
-					 var t = vamoservice.geocodeToserver(lat,lng,count);
-				 });	
+				 fetchingAddress(temp);
+				 // $scope.getLocation(lat, lng, function(count){
+					//  $('#lastseen').text(count);
+					//  var t = vamoservice.geocodeToserver(lat,lng,count);
+				 // });	
 			 }
 			 //$scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);
 		}
@@ -1016,9 +1045,14 @@ function locat_address(locs) {
 				$scope.map.setCenter(gmarkers[i].getPosition());
 				
 				$scope.assignValue(temp[i]);
-				$scope.getLocation(temp[i].latitude, temp[i].longitude, function(count){ 
-					$('#lastseen').text(count); 
-				});
+				fetchingAddress(temp[i]);
+				// if(temp[i].address == null || temp[i].address == undefined || temp[i].address == ' ')
+				// 	$scope.getLocation(temp[i].latitude, temp[i].longitude, function(count){ 
+				// 		$('#lastseen').text(count); 
+				// 	});
+				// else
+				// 	$('#lastseen').text(temp[i].address);
+
 				$scope.infowindowShow={};				
 				for(var j=0; j<ginfowindow.length;j++){
 					ginfowindow[j].close();
@@ -1499,11 +1533,11 @@ $(document).ready(function(e) {
         if (chartFuel) {
             point = chartFuel.series[0].points[0];
             point.update(fuelLtr);
-            if(tankSize==0)
-            	tankSize =200;
-            chartFuel.yAxis[0].update({
-			    max: tankSize,
-			}); 
+//            if(tankSize==0)
+ //           	tankSize =200;
+ //           chartFuel.yAxis[0].update({
+//			    max: tankSize,
+//			}); 
 
         }
     }, 1000);

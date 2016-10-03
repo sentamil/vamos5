@@ -531,11 +531,11 @@ $(document).ready(function(e) {
         if (chartFuel) {
             point = chartFuel.series[0].points[0];
             point.update(fuelLtr);
-            if(tankSize==0)
-            	tankSize =200;
-            chartFuel.yAxis[0].update({
-			    max: tankSize,
-			}); 
+//            if(tankSize==0)
+//            	tankSize =200;
+//            chartFuel.yAxis[0].update({
+//			    max: tankSize,
+//			}); 
 
         }
     }, 1000);
