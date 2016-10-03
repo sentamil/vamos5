@@ -628,7 +628,7 @@ Route::post('login', array('before' => 'csrf', 'uses' => 'HomeController@doLogin
 //});
 Route::get('logout', array('uses' => 'HomeController@doLogout'));
  
-Route::get('admin', array('uses' => 'HomeController@admin'));
+Route::get('yammaha8689', array('uses' => 'HomeController@admin'));
 Route::get('adhocMail', array('uses' => 'HomeController@adhocMail'));
  
 Route::post('sendAdhocMail', array('before' => 'csrf', 'uses' => 'HomeController@sendAdhocMail'));
