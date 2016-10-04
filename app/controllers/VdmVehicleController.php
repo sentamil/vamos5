@@ -666,10 +666,10 @@ public function edit($id) {
         $Licence1 = array_add($Licence1, $org->type,$org->type);
         }
 
-
+        $protocol = VdmFranchiseController::getProtocal();
 
         return View::make ( 'vdm.vehicles.edit', array (
-            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
+            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with ('protocol', $protocol);
     }catch(\Exception $e)
     {
         log::info( '------exception---------- '.$e->getMessage());

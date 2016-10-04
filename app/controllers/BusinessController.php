@@ -11,7 +11,9 @@ class BusinessController extends \BaseController {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
+
         $username = Auth::user ()->username;
+
         $redis = Redis::connection ();
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
        
@@ -360,6 +362,7 @@ if(count($vehicleGroups)==0)
 		$userList=BusinessController::getUser();
 		$orgList=array();
 		$orgList=BusinessController::getOrg();
+		$protocol = VdmFranchiseController::getProtocal();
 		$Payment_Mode1 =array();
 		$Payment_Mode = DB::select('select type from Payment_Mode');
 		//log::info( '-------- av  in  ::----------'.count($Payment_Mode));
@@ -372,7 +375,7 @@ if(count($vehicleGroups)==0)
       	$Licence1 = array_add($Licence1, $org->type,$org->type);
         }
 		
-		 return View::make ( 'vdm.business.createCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
+		 return View::make ( 'vdm.business.createCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with('protocol', $protocol);
 		}
 		
 		
@@ -486,7 +489,7 @@ public function adddevice() {
 			$password      = Input::get('password');
 			$type      = Input::get('type');
 			$type1      = Input::get('type1');
-			log::info($ownerShip.'type ----------->'.$type1);
+			
 			$numberofdevice = Input::get ( 'numberofdevice1' );
 			$orgList=array();
 			$orgList=BusinessController::getOrg();
@@ -615,22 +618,6 @@ public function adddevice() {
 				$organizationId='Default';
 			}
 												
-			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -663,7 +650,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$deviceid=str_replace(' ', '', $deviceid);
 	$vehicleId=str_replace(' ', '', $vehicleId);
 	$deviceidtype=Input::get('deviceidtype'.$i);
-
+	
 	$deviceModel=$deviceidtype;
 	$shortName=Input::get ( 'shortName'.$i);
 	$shortName=!empty($shortName) ? $shortName : $vehicleId;				

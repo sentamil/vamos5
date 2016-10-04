@@ -69,9 +69,6 @@ public static function backTypeC()
 	
 public static function smsP()
 {
-	if (! Auth::check ()) {
-		return Redirect::to ( 'login' );
-	}
 	$redis = Redis::connection ();
 	$smsProvider = $redis->lrange('L_SMS_Provider', 0, -1);
 	$smsP=array();
@@ -80,6 +77,21 @@ public static function smsP()
 	}
 	return $smsP;
 }
+
+public static function getProtocal(){
+
+	$redis = Redis::connection ();
+	$protocal = $redis->lrange('L_Protocal', 0, -1);
+	$getProtocal=array();
+	log::info(' get protocal ');
+	foreach ($protocal as $pro) {
+		$value 	= explode(":",$pro);
+		log::info(gettype($value[0]));
+    	$getProtocal=array_add($getProtocal, $value[0], $value[0].' ('.$value[1].') ');
+    }
+	return $getProtocal;
+}
+
 public static function timeZoneC()
 {
 		$timeZoneC=array();
