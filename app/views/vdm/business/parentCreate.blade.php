@@ -242,7 +242,7 @@
 													</tr>
 													<tr style="height: 50px">
 														<td class="col-md-2">{{ Form::text('eveningTripStartTime'.$i, Input::old('eveningTripStartTime'), array('class' => 'form-control','placeholder'=>'Evening Trip Start Time')) }}</td>
-														<td class="col-md-2">{{ Form::select('overSpeedLimit'.$i,  array( '10'=>'Speed Limit','10' => '10','20' => '20','30' => '30','40' => '40','50' => '50','60' => '60','70' => '70','80' => '80','90' => '90','100' => '100','110' => '110','120' => '120','130' => '130','140' => '140','150' => '150' ), Input::old('overSpeedLimit'), array('class' => 'form-control')) }} </td>
+														<td class="col-md-2">{{ Form::select('overSpeedLimit'.$i,  array( '60'=>'Speed Limit','10' => '10','20' => '20','30' => '30','40' => '40','50' => '50','60' => '60','70' => '70','80' => '80','90' => '90','100' => '100','110' => '110','120' => '120','130' => '130','140' => '140','150' => '150' ), Input::old('overSpeedLimit'), array('class' => 'form-control')) }} </td>
 														<td class="col-md-2">{{ Form::text('mobileNo'.$i, Input::old('mobileNo'), array('class' => 'form-control','placeholder'=>'Alert Mobile No')) }}</td>
 														<td class="col-md-2">{{ Form::text('odoDistance'.$i, Input::old('odoDistance'), array('class' => 'form-control','placeholder'=>'Odometer')) }}</td>
 														<td class="col-md-2">{{ Form::text('driverName'.$i, Input::old('driverName'), array('class' => 'form-control','placeholder'=>'Driver Name')) }}</td>
