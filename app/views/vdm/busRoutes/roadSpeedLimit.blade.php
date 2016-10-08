@@ -22,12 +22,12 @@
 							</div>
 
 							<div class="col-lg-2">
-								{{ Form::text('fromlatlng', Input::old('fromlatlng'),array('class' => 'form-control','placeholder'=>'From latlng', 'required' => 'required'))  }}
+								{{ Form::text('fromlatlng', Input::old('fromlatlng'),array('class' => 'form-control','placeholder'=>'Start latlong', 'required' => 'required'))  }}
 								<div style="font-size: 9px; text-align: center;">seperate lat lng by comma (lat,lng)</div>
 							</div>
 
 							<div class="col-lg-2">
-								{{ Form::text('tolatlng', Input::old('tolatlng'),array('class' => 'form-control','placeholder'=>'To latlng', 'required' => 'required'))  }}
+								{{ Form::text('tolatlng', Input::old('tolatlng'),array('class' => 'form-control','placeholder'=>'End latlong', 'required' => 'required'))  }}
 								<div style="font-size: 9px; text-align: center;">seperate lat lng by comma (lat,lng)</div>
 							</div>
 							<div class="col-lg-3">
