@@ -61,8 +61,18 @@
                      }); 
                   });
                 
+$(".edit").mouseover(function(e) {
+    // console.log(e); 
+    $(this).attr("src", '../assets/imgs/bedit.png');
+}).mouseout(function() {
+    $(this).attr("src", '../assets/imgs/wedit.png');
+});
 
-
+$(".delete").mouseover(function() { 
+    $(this).attr("src", '../assets/imgs/bdel.png');
+}).mouseout(function() {
+    $(this).attr("src", '../assets/imgs/wdel.png');
+});
 
 $( ".searchkey" ).keyup(function() {
   list = [];

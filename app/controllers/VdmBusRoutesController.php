@@ -214,5 +214,110 @@ class VdmBusRoutesController extends \BaseController {
         }
         
     }
+
+/*
+    For set the road limit 
+*/
+
+    public function _roadSpeed()
+    {
+        log::info(' reach the road speed function ');
+        $username           = Auth::user ()->username;
+        $redis              = Redis::connection ();
+        $fcode              = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        $_uIbinding         = array();
+        $getValue           = $redis->hgetall ( 'H_SpeedRange_'.$fcode);
+
+        $roadSpeedValue     = $getValue;
+        log::info(count($roadSpeedValue));
+
+        if(count($roadSpeedValue) > 0)
+        {
+            foreach ($roadSpeedValue as $key => $value) {
+                log::info($key);
+                $splitValue = json_decode($value, true);
+                log::info($splitValue);
+
+                $_uIbinding=array_add($_uIbinding, $key,$splitValue);
+            }
+            return View::make('vdm.busRoutes.roadSpeedLimit')->with('roadSpeedValue',$_uIbinding);
+        }
+        else
+            return View::make('vdm.busRoutes.roadSpeedLimit');
+    }
+
+/*
+    road speed range insert 
+*/
+
+
+    public function _speedRange()
+    {
+        $_comma             = ':';
+        $username           = Auth::user ()->username;
+        $redis              = Redis::connection ();
+        $fcode              = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        $_speedRangeValue   = Input::all();
+
+        $rules  = array (
+                'roadName'  => 'required',
+                'speed'     => 'required|numeric',
+                'fromlatlng'=> 'required',
+                'tolatlng'  => 'required',
+                );             
+        
+        $validator          = Validator::make ($_speedRangeValue, $rules);
+        if ($validator->fails ()) {log::info(' Validator Fails ');}else {
+            
+            $rangeValues    = array();
+            $keyValue       = $redis->hget('H_SpeedRange_'.$fcode, $_speedRangeValue['roadName']);  
+            
+            if ($keyValue) {
+                foreach (json_decode($keyValue) as $key => $value) {
+                    array_push($rangeValues,$value);
+                }
+            } 
+            
+            array_push($rangeValues, $_speedRangeValue['fromlatlng'].$_comma.$_speedRangeValue['tolatlng'].$_comma.$_speedRangeValue['speed']);
+            
+            $redis->hset('H_SpeedRange_'.$fcode, $_speedRangeValue['roadName'], json_encode($rangeValues));
+
+        }
+        return Redirect::to('vdmBusRoutes/roadSpeed');
+    }
+
+    /*
+        delete function
+    */
+    public function _deleteRoad($id)
+    {
+        $username           = Auth::user ()->username;
+        $redis              = Redis::connection ();
+        $fcode              = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        if (isset($id)) {
+            
+            $_checkvalue    = explode (':' ,$id );
+            $_getValue      = $redis->hget('H_SpeedRange_'.$fcode, $_checkvalue[0]);
+            
+            if(count($_checkvalue) == 4){
+                $rangeValues = array();
+                foreach (json_decode($_getValue) as $key => $value) {
+
+                    if($value == $_checkvalue[1].':'.$_checkvalue[2].':'.$_checkvalue[3])
+                    {
+                        log::info($value);
+                    } else {
+                        array_push($rangeValues, $value);
+                    }
+                }
+                $redis->hset('H_SpeedRange_'.$fcode, $_checkvalue[0], json_encode($rangeValues));
+            } else {
+                log::info(' value in llll ');
+                log::info($_checkvalue[0]);
+                $redis->hdel('H_SpeedRange_'.$fcode, $_checkvalue[0]);
+            }
+        }
+        return Redirect::to('vdmBusRoutes/roadSpeed');
+    }
     
 }

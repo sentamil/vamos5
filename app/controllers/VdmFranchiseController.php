@@ -83,11 +83,9 @@ public static function getProtocal(){
 	$redis = Redis::connection ();
 	$protocal = $redis->lrange('L_Protocal', 0, -1);
 	$getProtocal=array();
-	log::info(' get protocal ');
 	foreach ($protocal as $pro) {
 		$value 	= explode(":",$pro);
-		log::info(gettype($value[0]));
-    	$getProtocal=array_add($getProtocal, $value[0], $value[0].' ('.$value[1].') ');
+		$getProtocal=array_add($getProtocal, $value[0], $value[0].' ('.$value[1].') ');
     }
 	return $getProtocal;
 }

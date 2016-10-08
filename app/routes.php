@@ -763,6 +763,9 @@ Route::get('vdmDealers/editDealer/{param}', array('uses' => 'VdmDealersControlle
  
 Route::resource('vdmSchools', 'VdmSchoolController');
  
+Route::get('vdmBusRoutes/Range/{param}', array('uses' => 'VdmBusRoutesController@_deleteRoad'));
+Route::get('vdmBusRoutes/roadSpeed', 'VdmBusRoutesController@_roadSpeed');
+Route::post('vdmBusRoutes/_speedRange', array('uses' => 'VdmBusRoutesController@_speedRange'));
 Route::resource('vdmBusRoutes', 'VdmBusRoutesController');
  
 Route::resource('vdmBusStops', 'VdmBusStopsController');

@@ -41,6 +41,9 @@
     <div class="color-line">
     </div>
     <div id="logo" class="light-version">
+    <!--  <span>
+           GPS Admin
+        </span> -->
     </div>
     <nav role="navigation">
         <div class="header-link hide-menu"><i class="fa fa-bars"></i></div>
@@ -213,6 +216,9 @@
                 <a href="Routes"> <span class="nav-label">Routes</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                      <li><a href="vdmBusRoutes/create">Create Bus Routes with Stops</a></li>
+                     @if(Session::get('cur')=='admin')
+                     <li><a href="vdmBusRoutes/roadSpeed">Road Speed</a></li>
+                     @endif 
                 </ul>
             </li>
             
