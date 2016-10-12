@@ -847,40 +847,34 @@ public function addpoi()
 		$smsProvider=isset($orgDataArr['smsProvider'])?$orgDataArr['smsProvider']:'nill';
 		$providerUserName=isset($orgDataArr['providerUserName'])?$orgDataArr['providerUserName']:'';
 		$providerPassword=isset($orgDataArr['providerPassword'])?$orgDataArr['providerPassword']:'';
+		$smsPattern=isset($orgDataArr['schoolPattern'])?$orgDataArr['schoolPattern']:'nill';
         log::info( 'time1 ::' . $time1);
          log::info( 'time2 ::' . $time2);
 		$address1=array();
-		 $place=array();
-		 $place1=array();
-		  $latandlan=array();
+		$place=array();
+		$place1=array();
+		$latandlan=array();
 		$address1= $redis->hgetall('H_Poi_'.$id.'_'.$fcode);
 		
 		$temp=null;
 		foreach($address1 as $org => $rowId)
-	{
+		{
 			 
-			  log::info( 'inside no result' .count($address1));
+			$place = array_add($address1, $org,$org);
+			$latandlan = array_add($address1, $rowId,$rowId);
 			 
-				 $place = array_add($address1, $org,$org);
-					$latandlan = array_add($address1, $rowId,$rowId);
-					
-				
-					
-			 
-		 }
-		 
-		
+		}
 		 
 		$i=0;
 		$j=0;$k=0;$m=0;
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
-        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius)->with('smsSender',$smsSender)->with('sosAlert',$sosAlert)->with('live',$live)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());   
+        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius)->with('smsSender',$smsSender)->with('sosAlert',$sosAlert)->with('live',$live)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP())->with('smsPattern',$smsPattern);   
         
     }
     
     public function update($id)
     {
-        
+        log::info(' update function lets watch ');
         if(!Auth::check()) {
             return Redirect::to('login');
         }
@@ -955,6 +949,7 @@ public function addpoi()
 			$smsProvider=Input::get('smsProvider');
 			$providerUserName=Input::get('providerUserName');
 			$providerPassword=Input::get('providerPassword');
+			$smsPattern=Input::get('smsPattern');
 			$live=Input::get('live');
 					$startTime =$time1;
 			$endTime=$time2;
@@ -982,6 +977,7 @@ public function addpoi()
 					'smsProvider'=>$smsProvider,
 					'providerUserName'=>$providerUserName,
 					'providerPassword'=>$providerPassword,
+					'schoolPattern'=>$smsPattern,
             );
             
             $orgDataJson = json_encode ( $orgDataArr );

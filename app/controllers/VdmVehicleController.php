@@ -1662,6 +1662,9 @@ public function migrationUpdate() {
     }
     $vehicleId = Input::get ( 'vehicleId' );
     $deviceId = Input::get ( 'deviceId' );
+    $vehicleId =preg_replace('/\s+/', '', $vehicleId);
+    $deviceId =preg_replace('/\s+/', '', $deviceId);
+
     $vehicleIdOld= Input::get ( 'vehicleIdOld' );
     $deviceIdOld = Input::get ( 'deviceIdOld' );
      $expiredPeriodOld = Input::get ( 'expiredPeriodOld' );
@@ -2280,7 +2283,6 @@ public function migration($id)
         return Redirect::to ( 'login' );
     }
     $username = Auth::user ()->username;
-
     $redis = Redis::connection ();
     $vehicleId = $id;
     $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );

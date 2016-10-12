@@ -106,6 +106,10 @@
                                     {{ Form::label('email', 'Email') }}
                                     {{ Form::text('email', $email, array('class' => 'form-control', 'placeholder'=>'Email')) }}
                                 </div>
+                                <div class="form-group">
+                                    {{ Form::label('smsPattern', 'SMS Pattern') }}
+                                    {{ Form::select('smsPattern',  array( 'nill' => 'Nill','type1' => 'Type 1','type2' => 'Type 2','type3' => 'Type 3' ), $smsPattern, array('class' => 'form-control')) }} 
+                                </div>
 
                                <!--  <div class="form-group">
                                     {{ Form::submit('Update the Vehicle!', array('class' => 'btn btn-primary')) }}
