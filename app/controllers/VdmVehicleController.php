@@ -1676,7 +1676,7 @@ public function migrationUpdate() {
 
 
     $rules = array (
-        'vehicleId' => 'required|alpha_dash',
+        'vehicleId' => 'required',
         'deviceId' => 'required',
         );
 
