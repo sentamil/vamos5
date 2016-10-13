@@ -79,11 +79,30 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	$scope.nearbyflag = false;
 	$scope.groupMap=false;
 	var tempdistVal = 0;
-	var mcOptions={};
+	// var mcOptions={};
 	var markerCluster;
 	var vehicleids=[];
 	var polygenList=[];
-
+	var mcOptions = {
+    maxZoom: 11,
+    styles: [
+      {
+      height: 53,
+      url: "assets/imgs/m1.png",
+      width: 53
+      },
+      {
+      height: 56,
+      url: "assets/imgs/m2.png",
+      width: 56
+      },
+      {
+      height: 66,
+      url: "assets/imgs/m3.png",
+      width: 66
+      }
+    ]
+  };
 	
 	//var menuVid;
 	
@@ -727,7 +746,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		if($scope.groupMap==true)
 		{
 			markerCluster.clearMarkers();
-			mcOptions = {gridSize: 50, maxZoom: 15};
+			// mcOptions = {gridSize: 50, maxZoom: 15};
 			markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions) 	
 		}
 		// else if($scope.groupMap == false)
@@ -1111,8 +1130,8 @@ function locat_address(locs) {
 		$("#single").show();
 		$scope.groupMap=true;
 		// markerCluster 	= new MarkerClusterer($scope.map, null, null)
-
-		mcOptions = {gridSize: 50,maxZoom: 15}
+		
+		// mcOptions = {gridSize: 50,maxZoom: 15,styles: [ { height: 53, url: "assets/imgs/m1.png", width: 53}]}
 		markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions)	
 	}
 
