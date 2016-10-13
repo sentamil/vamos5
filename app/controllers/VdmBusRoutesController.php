@@ -267,7 +267,7 @@ class VdmBusRoutesController extends \BaseController {
                 );             
         
         $validator          = Validator::make ($_speedRangeValue, $rules);
-        if ($validator->fails ()) {log::info(' Validator Fails ');}else {
+        if ($validator->fails ()) {return Redirect::back()->withErrors ( $validator );}else {
             
             $rangeValues    = array();
             $keyValue       = $redis->hget('H_SpeedRange_'.$fcode, $_speedRangeValue['roadName']);  
@@ -312,12 +312,57 @@ class VdmBusRoutesController extends \BaseController {
                 }
                 $redis->hset('H_SpeedRange_'.$fcode, $_checkvalue[0], json_encode($rangeValues));
             } else {
-                log::info(' value in llll ');
-                log::info($_checkvalue[0]);
                 $redis->hdel('H_SpeedRange_'.$fcode, $_checkvalue[0]);
             }
         }
         return Redirect::to('vdmBusRoutes/roadSpeed');
     }
-    
+
+
+   
+
+    public function _editSpeed(){
+
+        $sessionValue       = Session::get('roodSpeed');
+        $splitValue         = explode(':',$sessionValue);
+        Session::forget('roodSpeed');
+        $username           = Auth::user ()->username;
+        $redis              = Redis::connection ();
+        $fcode              = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        $_speedRangeValue   = Input::all();
+
+        $rules  = array (
+                'roadName'  => 'required',
+                'speed'     => 'required|numeric',
+                'fromlatlng'=> 'required',
+                'tolatlng'  => 'required',
+                );
+
+        $validator          = Validator::make ($_speedRangeValue, $rules);
+        if ($validator->fails ()) {return Redirect::back()->withErrors ( $validator );}else 
+        {
+            $_getValue      = $redis->hget('H_SpeedRange_'.$fcode, $splitValue[0]);
+            
+                $rangeValues = array();
+                $storedValue = $_speedRangeValue['fromlatlng'].':'.$_speedRangeValue['tolatlng'].':'.$_speedRangeValue['speed'];
+                
+                foreach (json_decode($_getValue) as $key => $value) {
+                    $checking = $splitValue[1].':'.$splitValue[2].':'.$splitValue[3];
+                    $value == $checking ? array_push($rangeValues, $storedValue) : array_push($rangeValues, $value);
+                        
+                }
+                $redis->hdel('H_SpeedRange_'.$fcode, $splitValue[0]);
+                $redis->hset('H_SpeedRange_'.$fcode, $_speedRangeValue['roadName'], json_encode($rangeValues));
+        }
+        return Redirect::to('vdmBusRoutes/roadSpeed');
+
+    }
+
+    public function _updateRoad($value){
+
+        Session::put('roodSpeed', $value);
+        $splitValue        = explode(':',$value);
+        return View::make ('vdm.busRoutes.editSpeedLimit')->with('roadName', $splitValue[0])->with('speed', $splitValue[3])->with('fromlatlng', $splitValue[1])->with('tolatlng', $splitValue[2]);
+    }
+
 }

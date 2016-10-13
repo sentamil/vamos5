@@ -553,12 +553,12 @@ Route::get('/getActionReport', function() {
 });    
  
  
-Route::get('/admin', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    return View::make('admin');
-});
+// Route::get('/admin', function() {
+//     if (!Auth::check()) {
+//         return Redirect::to('login');
+//     }
+//     return View::make('admin');
+// });
  
 Route::get('/', array('uses' => 'HomeController@showLogin'));// Reg
  
@@ -762,11 +762,16 @@ Route::resource('vdmDealers', 'VdmDealersController');
 Route::get('vdmDealers/editDealer/{param}', array('uses' => 'VdmDealersController@editDealer'));
  
 Route::resource('vdmSchools', 'VdmSchoolController');
- 
+
+
+
 Route::get('vdmBusRoutes/Range/{param}', array('uses' => 'VdmBusRoutesController@_deleteRoad'));
-Route::get('vdmBusRoutes/roadSpeed', 'VdmBusRoutesController@_roadSpeed');
+Route::post('vdmBusRoutes/editSpeed', array('uses' => 'VdmBusRoutesController@_editSpeed'));
+Route::get('vdmBusRoutes/updateValue/{param}', array('uses' => 'VdmBusRoutesController@_updateRoad'));
+Route::get('vdmBusRoutes/roadSpeed', array('uses' => 'VdmBusRoutesController@_roadSpeed'));
 Route::post('vdmBusRoutes/_speedRange', array('uses' => 'VdmBusRoutesController@_speedRange'));
 Route::resource('vdmBusRoutes', 'VdmBusRoutesController');
+
  
 Route::resource('vdmBusStops', 'VdmBusStopsController');
  
