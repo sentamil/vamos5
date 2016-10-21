@@ -10,6 +10,7 @@
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <!--[if lt IE 9]>
@@ -161,7 +162,58 @@
                                 </div>
                             <div class="latlong" style="bottom: 130px;width:275px; "><label><input type="text" value="0.0" id="latinput" style="width:265px"  readonly /></label></div>
                             <div id="lastseen"></div><div id="lstseendate"></div>
-                        
+                              <div style="margin-top: 7px; float:left; font-size: 12px">
+                                <button data-target="#myModal" data-toggle="modal" ng-click="getOrd()">Routes</button>
+
+                              </div>
+
+                              <div class="modal fade" id="myModal" role="dialog" data-backdrop="false" style=" top: 50px">
+                                    <div class="modal-dialog modal-md">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                         <div class="form-group">
+                                             <h4>Save Route</h4>
+                                            </div>
+                                        </div>
+                                        <div class="modal-body" >
+                                            
+                                             <label for="mail" style="color: #ec0808">{{error}}</label>
+                                             <br>
+                                             <!--  <select class="form-control" ng-model="selectedOrdId" ng-options="geo for geo in orgIds">
+                                                <option style="display:none" value="">Select Org Name</option>
+                                              </select>
+                                            
+                                              <br> -->
+                                              <input type="text" class="form-control" ng-model="trackVehID" placeholder="Vehicle Id">
+                                              <br>
+                                              <input type="text" class="form-control" ng-model="routeName" placeholder="Route Name">
+                                               <br>
+                                               <div align="right">
+                                              <button type="button" ng-click="routesSubmit()" class="btn btn-success" >Submit</button>
+                                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>
+                                        </div>
+                                         
+                                        <div class="col-md-12" style="height: 200px; overflow: scroll;">
+                                         <br>
+                                          <!-- <ul class="list-group">
+                                            <li class="list-group-item">Routes</li>
+                                            <li class="list-group-item" ng-repeat="route in routedValue">{{route}}</li>
+                                            
+                                          </ul> -->
+                                            <table class="dynData" style="overflow: scroll;">
+                                              <tr ng-repeat="route in routedValue">
+                                                <td>{{route}}</td>
+                                              </tr>
+                                            </table>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
                                 <div class="legendlist">
 
                                   <h3><b>Vehicle Status</b></h3>

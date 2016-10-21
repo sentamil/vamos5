@@ -440,6 +440,76 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 		}
 	}
 
+	/*
+		getting Org ids
+	*/
+	var url_site    = 'http://'+globalIP+context+'/public/viewSite';
+	$http.get(url_site).success(function(response){
+		$scope.orgIds 	= response.orgIds;
+	})
+	
+	$scope.getOrd 	= function()
+	{
+		$scope.error = "";
+		$scope.routeName = "";
+		$scope.selectedOrdId = "";
+
+		console.log($scope.orgIds)
+		if($scope.orgIds)
+			$.ajax({
+				
+				async: false,
+		        method: 'GET', 
+		        url: "storeOrgValues/val",
+		        data: {"orgId":$scope.orgIds},
+		        success: function (response) {
+
+		        	console.log(response);
+		        	$scope.routedValue = response;
+ 
+		        }
+	      	})
+
+	}
+
+	/*
+		Store the routes in redis
+	*/
+	$scope.routesSubmit =  function(){
+		$scope.error = "";
+		console.log(' get org ids ')
+		var fromdate 	= document.getElementById('dateFrom').value;
+		var todate 		= document.getElementById('dateTo').value;
+		var fromtime 	= document.getElementById('timeFrom').value;
+		var totime 		= document.getElementById('timeTo').value;
+		try{
+			$scope.error = (!fromdate || !todate || !fromtime || !totime)? "Date Required/Please fill all the field":  "";
+			if($scope.error == "")
+				{
+					var utcFrom 	= utcFormat(fromdate, $scope.timeconversion(fromtime));
+					var utcTo 		= utcFormat(todate, $scope.timeconversion(totime));
+					var _routeUrl 	= 'http://'+globalIP+context+'/public/addRoutesForOrg?vehicleId='+$scope.trackVehID+'&fromDateUTC='+utcFrom+'&toDateUTC='+utcTo+'&routeName='+$scope.routeName.split(' ').join('_');
+					if(!$scope.trackVehID == "" && !$scope.routeName == "")
+						$http.get(_routeUrl).success(function(response){
+							if(response.trim()== "false"){
+								$scope.error = "* Already having this Route Name"
+							} else if (response.trim()== "true"){
+								$scope.error = "* Successfully Stored"
+							}
+						})
+					else
+						throw $scope.error;
+
+				} else 
+					throw $scope.error;
+		}catch(err){
+			console.log(' error --> '+err)
+			$scope.error  = "* Date Required/Please fill all the field";
+		}
+
+	}
+
+
 
 function animateMapZoomTo(map, targetZoom) {
     var currentZoom = arguments[2] || map.getZoom();
