@@ -77,6 +77,10 @@ Route::get('/replay', function() {
 });
 
 
+Route::get('/newUI', function(){
+    return View::make('motorUI.index');
+});
+
  
 Route::get('/ElectionCommisionTrustedClient', function() {
     Log::info( '-------login-----' );
@@ -551,6 +555,15 @@ Route::get('/getActionReport', function() {
     Log::info('get Vehicle Locations');    
     return View::make('vls.getActionReport');      
 });    
+
+
+Route::get('/addRoutesForOrg', function() {    
+    if (!Auth::check()) {      
+        return Redirect::to('login');      
+    }      
+    Log::info('get addRoutesForOrg');    
+    return View::make('vls.addRoutesForOrg');      
+}); 
  
  
 // Route::get('/admin', function() {
@@ -782,15 +795,17 @@ Route::get('vdmOrganization/placeOfInterest', array('uses' => 'VdmOrganizationCo
 Route::post('vdmOrganization/addpoi', array('uses' => 'VdmOrganizationController@addpoi'));
 Route::post('vdmOrganization/updateNotification', array('uses' => 'VdmOrganizationController@updateNotification'));
 
+
  
 Route::get('vdmOrganization/{param}/poiEdit', array('uses' => 'VdmOrganizationController@poiEdit'));
  
 Route::get('vdmOrganization/{param}/poiDelete', array('uses' => 'VdmOrganizationController@poiDelete'));
  
+
+
 Route::get('vdmOrganization/{param}/getSmsReport', array('uses' => 'VdmOrganizationController@getSmsReport'));
 Route::resource('vdmOrganization', 'VdmOrganizationController');
 Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleController@analogCalibrate'));
- 
  
  
 });   //admin auth ends here
@@ -821,7 +836,9 @@ Route::post('vdmFranchises/findUsersList', array('uses' => 'VdmFranchiseControll
  // for scheduled reports
 Route::post('ScheduledController/reportScheduling', array('uses' => 'ScheduledController@reportScheduling'));
 Route::get('ScheduledController/getValue', array('uses' => 'ScheduledController@getValue'));
- 
+
+// // invoke from javascript
+Route::get('storeOrgValues/val', array('uses' => 'VdmOrganizationController@storedOrg'));
  
 Route::get('/setPOIName', function() {
     if (!Auth::check()) {

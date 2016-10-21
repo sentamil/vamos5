@@ -1084,5 +1084,27 @@ for ($i = 0; $i < 10; $i++) {
      		return 'Organistaion is already exist. Please choose another one ';
      	}
 
-     }  
+     }
+
+
+    public function storedOrg(){
+    	
+        if(!Auth::check()) {
+            return Redirect::to('login');
+        }
+        $username 	= Auth::user()->username;
+        $redis 		= Redis::connection ();
+        $fcode 		= $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        $orgid 		= Input::get('orgId');
+   		$orgArr = array();
+	    foreach (Input::get('orgId') as $key => $value) {
+	    	$routeName 	= $redis->smembers ( 'S_RouteList_'. $value.'_'.$fcode);
+	    	foreach ($routeName as $k => $v) {
+	    		$orgArr[] = $v;
+	    	}
+	    }
+	    log::info(array_values($orgArr));
+	    return $orgArr;
+    }
+
 }
