@@ -612,6 +612,7 @@ public function edit($id) {
         $refData= array_add($refData, 'digitalout', '');
         $refData= array_add($refData, 'mintemp', '');
         $refData= array_add($refData, 'maxtemp', '');
+        $refData= array_add($refData, 'routeName', '');
 
         
 
@@ -632,6 +633,17 @@ public function edit($id) {
 
         $orgId =isset($refDataFromDB['orgId'])?$refDataFromDB['orgId']:'NotAvailabe';
         Log::info(' orgId = ' . $orgId);
+
+        $routeList  = $redis->smembers('S_RouteList_'.$orgId.'_'.$fcode);
+        
+
+        $routeLIST =null;
+        $routeLIST = array_add($routeLIST,'nil','nill');
+        foreach ( $routeList as $route ) {
+            $routeLIST = array_add($routeLIST,$route,$route);
+        }
+
+
         $refData = array_add($refData, 'orgId', $orgId);
         $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
         $refData= array_add($refData,'parkingAlert',$parkingAlert);
@@ -669,7 +681,7 @@ public function edit($id) {
         $protocol = VdmFranchiseController::getProtocal();
 
         return View::make ( 'vdm.vehicles.edit', array (
-            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with ('protocol', $protocol);
+            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with ('protocol', $protocol)->with ('$routeName',$routeLIST);
     }catch(\Exception $e)
     {
         log::info( '------exception---------- '.$e->getMessage());
@@ -987,14 +999,15 @@ public function update($id) {
         $portNo=Input::get ('portNo');
         $analog1=Input::get ('analog1');
         $analog2=Input::get ('analog2');
-
-         $digital1=Input::get ('digital1');
+        $digital1=Input::get ('digital1');
         $digital2=Input::get ('digital2');
-         $serial1=Input::get ('serial1');
+        $serial1=Input::get ('serial1');
         $serial2=Input::get ('serial2');
-         $digitalout=Input::get ('digitalout');
-         $mintemp=Input::get ('mintemp');
-         $maxtemp=Input::get ('maxtemp');
+        $digitalout=Input::get ('digitalout');
+        $mintemp=Input::get ('mintemp');
+        $maxtemp=Input::get ('maxtemp');
+        $routeName = Input::get('routeName');
+        
 
         $redis = Redis::connection ();
         $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
@@ -1015,12 +1028,12 @@ public function update($id) {
 
 
         $Licence=Input::get ( 'Licence1');    
-    $Licence=!empty($Licence) ? $Licence : 'Advance';
-    $descriptionStatus=Input::get ( 'descriptionStatus');    
-    $descriptionStatus=!empty($descriptionStatus) ? $descriptionStatus : '';
+        $Licence=!empty($Licence) ? $Licence : 'Advance';
+        $descriptionStatus=Input::get ( 'descriptionStatus');    
+        $descriptionStatus=!empty($descriptionStatus) ? $descriptionStatus : '';
 
-    $Payment_Mode=Input::get ( 'Payment_Mode1');  
-    $Payment_Mode=!empty($Payment_Mode) ? $Payment_Mode : 'Monthly';
+        $Payment_Mode=Input::get ( 'Payment_Mode1');  
+        $Payment_Mode=!empty($Payment_Mode) ? $Payment_Mode : 'Monthly';
 
 //    $odoDistance=$vehicleRefData['odoDistance'];
 //gpsSimNo
@@ -1077,6 +1090,7 @@ else if(Session::get('cur')=='admin')
             'digitalout'=>$digitalout,
             'mintemp'=>$mintemp,
             'maxtemp'=>$maxtemp,
+            'routeName'=>$routeName,
             );
 
 try{

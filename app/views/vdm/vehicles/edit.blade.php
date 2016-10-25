@@ -64,8 +64,12 @@
 									{{ Form::text('eveningTripStartTime',$refData['eveningTripStartTime'], array('class' => 'form-control'))}}            
 								</div> -->
 								<div class="form-group">
+									{{ Form::label('route', 'Route Name') }}
+									{{ Form::select('routeName',$routeName, $refData['routeName'], array('class' => 'form-control')) }}
+								</div>
+								<div class="form-group">
 									{{ Form::label('date', 'Date') }}
-									{{ Form::text('date', $refData['date'], array('class' => 'form-control','disabled' => 'disabled')) }}
+									{{ Form::text('date', $refData	date'], array('class' => 'form-control','disabled' => 'disabled')) }}
 								</div>
 								<!-- <div class="form-group">
 									{{ Form::label('expiredPeriod', 'Expired Period') }}
