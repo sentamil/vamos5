@@ -69,7 +69,7 @@
 								</div>
 								<div class="form-group">
 									{{ Form::label('date', 'Date') }}
-									{{ Form::text('date', $refData	date'], array('class' => 'form-control','disabled' => 'disabled')) }}
+									{{ Form::text('date', $refData['date'], array('class' => 'form-control','disabled' => 'disabled')) }}
 								</div>
 								<!-- <div class="form-group">
 									{{ Form::label('expiredPeriod', 'Expired Period') }}

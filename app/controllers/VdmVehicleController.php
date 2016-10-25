@@ -644,6 +644,8 @@ public function edit($id) {
         }
 
 
+
+
         $refData = array_add($refData, 'orgId', $orgId);
         $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
         $refData= array_add($refData,'parkingAlert',$parkingAlert);
@@ -681,7 +683,7 @@ public function edit($id) {
         $protocol = VdmFranchiseController::getProtocal();
 
         return View::make ( 'vdm.vehicles.edit', array (
-            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with ('protocol', $protocol)->with ('$routeName',$routeLIST);
+            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with ('protocol', $protocol)->with ('routeName',$routeLIST);
     }catch(\Exception $e)
     {
         log::info( '------exception---------- '.$e->getMessage());
