@@ -448,13 +448,8 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 		$scope.orgIds 	= response.orgIds;
 	})
 	
-	$scope.getOrd 	= function()
-	{
-		$scope.error = "";
-		$scope.routeName = "";
-		$scope.selectedOrdId = "";
+	function getRouteNames(){
 
-		console.log($scope.orgIds)
 		if($scope.orgIds)
 			$.ajax({
 				
@@ -464,11 +459,19 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 		        data: {"orgId":$scope.orgIds},
 		        success: function (response) {
 
-		        	console.log(response);
 		        	$scope.routedValue = response;
  
 		        }
 	      	})
+	}
+
+	$scope.getOrd 	= function()
+	{
+		$scope.error = "";
+		$scope.routeName = "";
+		$scope.selectedOrdId = "";
+		getRouteNames();
+		
 
 	}
 
@@ -488,26 +491,123 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 				{
 					var utcFrom 	= utcFormat(fromdate, $scope.timeconversion(fromtime));
 					var utcTo 		= utcFormat(todate, $scope.timeconversion(totime));
-					var _routeUrl 	= 'http://'+globalIP+context+'/public/addRoutesForOrg?vehicleId='+$scope.trackVehID+'&fromDateUTC='+utcFrom+'&toDateUTC='+utcTo+'&routeName='+$scope.routeName.split(' ').join('_');
+					var _routeUrl 	= 'http://'+globalIP+context+'/public/addRoutesForOrg?vehicleId='+$scope.trackVehID+'&fromDateUTC='+utcFrom+'&toDateUTC='+utcTo+'&routeName='+removeSpace_Join($scope.routeName);
 					if(!$scope.trackVehID == "" && !$scope.routeName == "")
 						$http.get(_routeUrl).success(function(response){
 							if(response.trim()== "false"){
 								$scope.error = "* Already having this Route Name"
 							} else if (response.trim()== "true"){
 								$scope.error = "* Successfully Stored"
-							}
+							} else
+								$scope.error = "* Try again"
 						})
 					else
 						throw $scope.error;
 
 				} else 
 					throw $scope.error;
+				getRouteNames();
 		}catch(err){
 			console.log(' error --> '+err)
 			$scope.error  = "* Date Required/Please fill all the field";
 		}
 
 	}
+
+	$scope.deleteRouteName 	= function(deleteValue){
+		// $scope.routeName = deleteValue;
+		console.log(deleteValue)
+		try{
+
+			if(!deleteValue =='' && $scope.orgIds.length>0 && !$scope.orgIds=='')
+				$.ajax({
+					
+					async: false,
+			        method: 'GET', 
+			        url: "storeOrgValues/deleteRoutes",
+			        data: {"delete":deleteValue, "orgIds":$scope.orgIds},
+			        success: function (response) {
+
+			        	// $scope.routedValue = response;
+	 
+			        }
+		    })
+		    getRouteNames();
+		    $scope.error =	"* Deleted Successfully"
+
+		} catch (err){
+
+			$scope.error =	"* Not Deleted Successfully"
+		}
+		// console.log($(this).parent().parent().find('td').text())
+		// console.log($('.editAction').closest('tr').children('td:eq(0)').text());
+
+	}
+
+	
+
+$('.dynData').on("click", "#editAction", function(event){
+    var target 		= $(this).closest('tr').children('td:eq(0)')
+    $scope.error 	=	""
+    // $(target).html($('<input />',{'value' : target.text()}).val(target.text()));
+
+    // $(this).siblings().each(
+    //     function(){
+            // if the td elements contain any input tag
+            if(!target.text() == '');
+            if ($(target).find('input').length){
+                // sets the text content of the tag equal to the value of the input
+                $(target).text($(target).find('input').val());
+            }
+            else {
+                // removes the text, appends an input and sets the value to the text-value
+                var t = $(target).text();
+                $(target).html($('<input />',{'value' : target.text()}).val(target.text()));
+            }
+        // });
+    
+});
+
+	$('.dynData').on("change", $(this).closest('tr').children('td:eq(0) input'), function(event){
+		console.log(' new value '+event.target.value)
+		$scope.error =	""
+		var _newValue = event.target.value;
+		var _oldValue = event.target.defaultValue;
+		try{
+
+			if(!_newValue =='' && $scope.orgIds.length>0 && !$scope.orgIds=='')
+				$.ajax({
+					
+					async: false,
+			        method: 'GET', 
+			        url: "storeOrgValues/editRoutes",
+			        data: {"newValue":_newValue, "oldValue":_oldValue, "orgIds":$scope.orgIds},
+			        success: function (response) {
+
+			        	// $scope.routedValue = response;
+			        	$scope.error =	"* Edited Successfully"
+	 
+			        }
+		    })
+
+		} catch (err){
+
+			$scope.error =	"* Not Edited Successfully"
+		}
+		
+
+	})
+
+	// $(document).ready(function() {
+ //                $('.dynData table tbody tr td input').change(function() {
+ //                    var rowEdit = $(this).parents('tr');
+ //                    alert(rowEdit)
+ //                    console.log($(rowEdit));
+ //                    $(rowEdit).children('.sub').html('Success');
+ //                })
+ //            })
+
+
 
 
 
@@ -1125,5 +1225,13 @@ if($scope.markerstart){
           pickDate: false
         });
         });
-	
+        
+	$(document).ready(function(){
+        $('#editAction').click(function(){
+            // $('#contentmin').animate({
+            //     height: 'toggle'
+            // },500);
+            console.log(' edit action ')
+        });
+    });
 });

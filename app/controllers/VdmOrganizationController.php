@@ -1107,4 +1107,66 @@ for ($i = 0; $i < 10; $i++) {
 	    return $orgArr;
     }
 
+public function _editRoutes(){
+
+	log::info(' edit routes ');
+	if(!Auth::check()) {
+        return Redirect::to('login');
+    }
+    $_new_V 	= Input::get('newValue');
+	$_old_V 	= Input::get('oldValue');
+	$_ord_L		= Input::get('orgIds');
+	$redis 		= Redis::connection ();
+	$username 	= Auth::user()->username;
+    $fcode 		= $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+
+    if($_new_V != ''){
+	    foreach ($_ord_L as $key => $value) {
+	    	
+	    	$routeName 	= $redis->smembers ( 'S_RouteList_'. $value.'_'.$fcode);
+	    	foreach ($routeName as $k => $val) {
+	    		if($_old_V == $val)
+	    		{
+	    			$redis->srem ('S_RouteList_'. $value.'_'.$fcode, $_old_V);
+	    			$redis->sadd ('S_RouteList_'. $value.'_'.$fcode, $_new_V);
+	    			$redis->rename('Z_'.$_old_V.'_'.$value.'_'.$fcode, 'Z_'.$_new_V.'_'.$value.'_'.$fcode);
+	    			$redis->rename('L_'.$_old_V.'_'.$value.'_'.$fcode, 'L_'.$_new_V.'_'.$value.'_'.$fcode);
+	    		}
+	    	}
+
+	    }
+		return 'true';
+	}
+	else return 'false'; 
+
+}
+
+	
+public function _deleteRoutes(){
+
+	log::info(' edit routes ');
+	if(!Auth::check()) {
+        return Redirect::to('login');
+    }
+    $redis 		= Redis::connection ();
+	$username 	= Auth::user()->username;
+    $fcode 		= $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+    $_del_V 	= Input::get('delete');
+    $_org_L 	= Input::get('orgIds');
+    if($_del_V != '')
+    	foreach ($_org_L as $key => $value) {
+	    	
+	    	$routeName 	= $redis->smembers ( 'S_RouteList_'. $value.'_'.$fcode);
+	    	foreach ($routeName as $k => $val) {
+	    		if($_del_V == $val)
+	    			$redis->srem ('S_RouteList_'. $value.'_'.$fcode, $_del_V);
+	    			$redis->del ('Z_'.$_del_V.'_'.$value.'_'.$fcode);
+	    			$redis->del ('L_'.$_del_V.'_'.$value.'_'.$fcode);
+	    		
+	    	}
+
+	    }
+	// return 'true';
+}
+
 }

@@ -163,11 +163,11 @@
                             <div class="latlong" style="bottom: 130px;width:275px; "><label><input type="text" value="0.0" id="latinput" style="width:265px"  readonly /></label></div>
                             <div id="lastseen"></div><div id="lstseendate"></div>
                               <div style="margin-top: 7px; float:left; font-size: 12px">
-                                <button data-target="#myModal" data-toggle="modal" ng-click="getOrd()">Routes</button>
+                                <button data-target="#myModal1" data-toggle="modal" ng-click="getOrd()">Routes</button>
 
                               </div>
 
-                              <div class="modal fade" id="myModal" role="dialog" data-backdrop="false" style=" top: 50px">
+                              <div class="modal fade" id="myModal1" role="dialog" data-backdrop="false" style=" top: 50px">
                                     <div class="modal-dialog modal-md">
                                       <div class="modal-content">
                                         <div class="modal-header">
@@ -177,20 +177,20 @@
                                         </div>
                                         <div class="modal-body" >
                                             
-                                             <label for="mail" style="color: #ec0808">{{error}}</label>
+                                             <label for="error" style="color: #ec0808">{{error}}</label>
                                              <br>
                                              <!--  <select class="form-control" ng-model="selectedOrdId" ng-options="geo for geo in orgIds">
                                                 <option style="display:none" value="">Select Org Name</option>
                                               </select>
                                             
                                               <br> -->
-                                              <input type="text" class="form-control" ng-model="trackVehID" placeholder="Vehicle Id">
+                                              <!-- <input type="text" class="form-control" ng-model="trackVehID" placeholder="Vehicle Id"> -->
                                               <br>
                                               <input type="text" class="form-control" ng-model="routeName" placeholder="Route Name">
                                                <br>
                                                <div align="right">
-                                              <button type="button" ng-click="routesSubmit()" class="btn btn-success" >Submit</button>
-                                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>
+                                              <button type="button" ng-click="routesSubmit()" class="btn btn-default" >Submit</button>
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
                                         </div>
                                          
                                         <div class="col-md-12" style="height: 200px; overflow: scroll;">
@@ -200,9 +200,21 @@
                                             <li class="list-group-item" ng-repeat="route in routedValue">{{route}}</li>
                                             
                                           </ul> -->
-                                            <table class="dynData" style="overflow: scroll;">
+                                         
+                                            <table class="dynData table-fixed" style="overflow: scroll;">
+                                            <thead>
+                                                <tr>
+                                                 <th>&nbsp;Routes Name</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                                </tr>
+                                              </thead>
+                                              
+                                            
                                               <tr ng-repeat="route in routedValue">
                                                 <td>{{route}}</td>
+                                                <td id="editAction"><a class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span> </a></td>
+                                                <td ng-click="deleteRouteName(route)"><a class="btn btn-xs btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
                                               </tr>
                                             </table>
 

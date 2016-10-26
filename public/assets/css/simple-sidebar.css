@@ -657,3 +657,5 @@ input[type=range]:focus::-ms-fill-upper {
 #testLoad{
 	position: fixed; top: 0px; z-index:999; width: 100%;
 }
+
+.iconSize{width: 16px; height: 16px; cursor: pointer;}

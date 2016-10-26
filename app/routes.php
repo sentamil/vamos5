@@ -839,6 +839,8 @@ Route::get('ScheduledController/getValue', array('uses' => 'ScheduledController@
 
 // // invoke from javascript
 Route::get('storeOrgValues/val', array('uses' => 'VdmOrganizationController@storedOrg'));
+Route::get('storeOrgValues/editRoutes', array('uses' => 'VdmOrganizationController@_editRoutes'));
+Route::get('storeOrgValues/deleteRoutes', array('uses' => 'VdmOrganizationController@_deleteRoutes'));
  
 Route::get('/setPOIName', function() {
     if (!Auth::check()) {
