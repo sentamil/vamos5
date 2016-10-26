@@ -122,6 +122,7 @@ function todaydate(){
 
 function utcFormat(d,t){return new Date(d+' '+t).getTime();}
 
+function removeSpace_Join(valu){return valu.split(' ').join('_')}
 
 //common directive for sorting
 app.directive("customSort", function() {
