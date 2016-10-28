@@ -379,9 +379,9 @@
                                 <th width="7%">Speed Km/h</th>
                                 <th width="35%">Address</th>
                                 <th width="5%">Position</th>
+                                <th width="5%">TripDistance</th>
                                 <th width="5%">IgnitionStatus</th>
                                 <th width="5%">OdoDistance</th>
-                                <th width="5%">TripDistance</th>
                                 <th width="5%">PowerStatus</th>
                                 <th width="5%">DeviceVolt</th>
                               </tr>

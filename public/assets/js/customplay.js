@@ -968,10 +968,11 @@ if($scope.markerstart){
 				$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
 			}else{
 				var days =daydiff(new Date(fromdate), new Date(todate));
-				if(days<7)
+				if(days<3)
 					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-				else  
-					// $scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+				else if(days < 7)  
+					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+				else
 					alert('Please selected date before 7 days / No data found')
 			}
 		}
