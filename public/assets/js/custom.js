@@ -428,7 +428,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 			+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 			+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 
-			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'" target="_self">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp;'
+			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_self">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp;'
 			+'</div>';
 			
 			// var	drop1 = document.getElementById("ddlViewBy");
@@ -564,7 +564,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 
 			fetchingAddress(pos.data);
 
-
+			sessionStorage.setItem('user', JSON.stringify(pos.data.vehicleId+','+$scope.gName));
 
 			// $scope.getLocation(pos.data.latitude, pos.data.longitude, function(count){
 			// 	$('#lastseen').text(count); 
@@ -1561,18 +1561,18 @@ $(document).ready(function(e) {
         }
     }, 1000);
 });
-;app.directive('tooltipLoader', function() {
-        return function(scope, element, attrs) {
+// app.directive('tooltipLoader', function() {
+//         return function(scope, element, attrs) {
 
-	        element.tooltip({
-	        trigger:"hover",
-	        placement: "top",
-	        html: true,
-	        animated : 'fade',
-	        container: 'body',
-	    });
-    };
-});
+// 	        element.tooltip({
+// 	        trigger:"hover",
+// 	        placement: "top",
+// 	        html: true,
+// 	        animated : 'fade',
+// 	        container: 'body',
+// 	    });
+//     };
+// });
 
 
 

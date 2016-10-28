@@ -28,6 +28,7 @@ app.directive('map', function($http) {
 			}
 		 	scope.$watch("hisurl", function (val) {
 		 		scope.startLoading(); 
+		 		if(scope.hisurl != undefined)
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
 					scope.hisloc = locs;
@@ -62,12 +63,12 @@ app.directive('map', function($http) {
 							scope.fromdate			=	scope.getTodayDate(scope.fromNowTS);
 							scope.todate			=	scope.getTodayDate(scope.toNowTS);
 							
-							$('#vehiid h3').text(locs.shortName);
-							$('#toddist h3').text(scope.timeCalculate(locs.totalRunningTime));
-							$('#vehstat h3').text(scope.timeCalculate(locs.totalIdleTime));
-							$('#vehdevtype h3 span').text(locs.odoDistance);
-							$('#mobno h3').text(scope.timeCalculate(locs.totalParkedTime));
-							$('#regno h3 span').text(locs.tripDistance);
+							$('#vehiid h6').text(locs.shortName);
+							// $('#toddist h6').text(scope.timeCalculate(locs.totalRunningTime));
+							// $('#vehstat h6').text(scope.timeCalculate(locs.totalIdleTime));
+							// $('#vehdevtype h6 span').text(locs.odoDistance);
+							// $('#mobno h6').text(scope.timeCalculate(locs.totalParkedTime));
+							// $('#regno h6 span').text(locs.tripDistance);
 							
 							$('#lastseen').html('<strong>From Date & time :</strong> '+ new Date(data.fromDateTimeUTC).toString().split('GMT')[0]);
 							$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> '+ new Date(data.toDateTimeUTC).toString().split('GMT')[0]);
@@ -332,29 +333,85 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 
 	$scope.loading	=	true;
 	
-	$http.get($scope.url).success(function(data){
+	// $http.get($scope.url).success(function(data){
 		
-		$scope.locations = data;
-		$scope.groupname = data[0].group;
-		$scope.vehicleId = data[0].vehicleLocations[0].vehicleId;
-		sessionValue($scope.vehicleId, $scope.groupname)
-		if(getParameterByName('vehicleId')!=undefined || getParameterByName('vehicleId')!=null){
-			$scope.trackVehID =$scope.locations[0].vehicleLocations[0].vehicleId;
-			$scope.shortVehiId =$scope.locations[0].vehicleLocations[0].shortName;
-			$scope.selected=0;
-		}else{
-			$scope.trackVehID =getParameterByName('vehicleId');
-			for(var i=0; i<$scope.locations[0].vehicleLocations.length;i++){
-				if($scope.locations[0].vehicleLocations[i].vehicleId==$scope.trackVehID){
-					$scope.selected=i;
-				}
+	// 	$scope.locations = data;
+	// 	$scope.groupname = data[0].group;
+	// 	$scope.vehicleId = data[0].vehicleLocations[0].vehicleId;
+	// 	sessionValue($scope.vehicleId, $scope.groupname)
+	// 	if(getParameterByName('vehicleId')=='' && getParameterByName('gid')==''){
+	// 		$scope.trackVehID =$scope.locations[0].vehicleLocations[3].vehicleId;
+	// 		$scope.shortVehiId =$scope.locations[0].vehicleLocations[3].shortName;
+	// 		$scope.selected=0;
+	// 	}else{
+	// 		$scope.trackVehID =getParameterByName('vehicleId');
+	// 		for(var i=0; i<$scope.locations[0].vehicleLocations.length;i++){
+	// 			if($scope.locations[0].vehicleLocations[i].vehicleId==$scope.trackVehID){
+	// 				$scope.selected=i;
+	// 			}
+	// 		}
+			
+	// 	}
+		
+		
+	// 	// 
+
+	// }).error(function(){ /*alert('error'); */});
+
+	(function init(){
+		var url;
+		$scope.groupname = getParameterByName('gid');
+		url =(getParameterByName('vehicleId')=='' && getParameterByName('gid')=='')?$scope.url:$scope.url+'?group='+$scope.groupname;
+		$http.get(url).success(function(response){
+
+			$scope.locations 	= response;
+
+			
+			// $scope.vehicleId 	= response[0].vehicleLocations[0].vehicleId;
+			// $scope.trackVehID 	= $scope.locations[0].vehicleLocations[3].vehicleId;
+			// $scope.shortVehiId 	= $scope.locations[0].vehicleLocations[3].shortName;
+			// $scope.selected 	= 0;
+
+
+			if (getParameterByName('gid') == '' && getParameterByName('vehicleId') == '') {
+
+				$scope.groupname 	= response[0].group;
+				$scope.trackVehID 	= $scope.locations[0].vehicleLocations[3].vehicleId;
+				$scope.shortVehiId 	= $scope.locations[0].vehicleLocations[3].shortName;
+				$scope.selected 	= 0;
+			
+			} else { 
+
+				$scope.trackVehID  	= getParameterByName('vehicleId');
+				angular.forEach(response, function(value, key){
+					if($scope.groupname 	= value.group)
+					{	
+						console.log(key);
+						angular.forEach(value.vehicleLocations, function(val, k){
+							if(val.vehicleId == $scope.trackVehID)
+								$scope.selected=k;
+						})
+						
+						// $scope.locations 	= response;
+					}	
+				})
+
 			}
-		}
-		
+		sessionValue($scope.trackVehID, $scope.groupname)
 		$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
-		$scope.loading	=	false;
-	}).error(function(){ /*alert('error'); */});
+
+		})
+		// } else{
+
+
+		// }
+
+	}());
+
+
+
+
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
 	}
@@ -911,10 +968,11 @@ if($scope.markerstart){
 				$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
 			}else{
 				var days =daydiff(new Date(fromdate), new Date(todate));
-				if(days<3)
+				if(days<7)
 					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-				else
-					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+				else  
+					// $scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+					alert('Please selected date before 7 days / No data found')
 			}
 		}
 		if($scope.hisurlold!=$scope.hisurl){	
@@ -941,7 +999,8 @@ if($scope.markerstart){
 			$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
 		}else{
 			if($scope.hisloc.error!=null){
-				$('#myModal').modal();
+				// $('#myModal').modal();
+				alert('Please selected date before 7 days / No data found')
 			}
 		}
 		
@@ -1197,7 +1256,7 @@ if($scope.markerstart){
 		$('body').delay(350).css({'overflow':'visible'});
 });
 
-
+	
 	$(document).ready(function(){
         $('#minmax').click(function(){
             $('#contentmin').animate({
@@ -1234,4 +1293,14 @@ if($scope.markerstart){
             console.log(' edit action ')
         });
     });
+	$('.legendlist').hide()
+    $(document).ready(function() {
+    	$('.viewList').click(function(){
+    		$('.legendlist').animate({
+    			height: 'toggle'
+    		})
+    	})
+    	
+
+	});
 });
