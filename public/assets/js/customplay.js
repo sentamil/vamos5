@@ -135,7 +135,6 @@ app.directive('map', function($http) {
 										
 										var len = response.siteParent[listSite].site.length;
 										for (var k = 0; k < len; k++) {
-											console.log(' value  '+k);
 										// if(response.siteParent[i].site.length)
 										// {
 											var orgName = response.siteParent[listSite].site[k].siteName;
@@ -366,13 +365,6 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 
 			$scope.locations 	= response;
 
-			
-			// $scope.vehicleId 	= response[0].vehicleLocations[0].vehicleId;
-			// $scope.trackVehID 	= $scope.locations[0].vehicleLocations[3].vehicleId;
-			// $scope.shortVehiId 	= $scope.locations[0].vehicleLocations[3].shortName;
-			// $scope.selected 	= 0;
-
-
 			if (getParameterByName('gid') == '' && getParameterByName('vehicleId') == '') {
 
 				$scope.groupname 	= response[0].group;
@@ -530,6 +522,17 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 		getRouteNames();
 		
 
+	}
+
+
+	/*
+		show table in view
+	*/
+	// $( "#historyDetails" ).hide();
+	$scope.hideShowTable 	= function(){
+		var btValue = ($("#btnValue").text()=='HideDetails')?'ShowDetails':'HideDetails';
+		$('#btnValue').text(btValue);
+		$( "#historyDetails" ).fadeToggle("slow");
 	}
 
 	/*

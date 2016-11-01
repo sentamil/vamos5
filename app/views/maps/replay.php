@@ -19,7 +19,7 @@
 <![endif]-->
 <style type="text/css">
   #map_canvas{
-    height:54vh; width:100%; margin-top: 35px;
+    height:94vh; width:100%; margin-top: 35px;
   }
   [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
       display: none !important;
@@ -166,7 +166,7 @@
                             <!-- <div id="lastseen"></div><div id="lstseendate"></div> -->
                               <div style="margin-top: 7px; float:left; font-size: 12px">
                                 <button data-target="#myModal1" data-toggle="modal" ng-click="getOrd()">Routes</button>
-
+                                <button ng-click="hideShowTable()" id="btnValue">HideDetails</button>
                               </div>
 
                               <div class="modal fade" id="myModal1" role="dialog" data-backdrop="false" style=" top: 90px">
@@ -332,46 +332,93 @@
                                 </div>
                                 </div>
                                 
-                        <div class="box-body" style="width: 100%; height: 40vh; background-color: #fbfbfb; overflow: scroll;">
-                          <table class="table-striped table-bordered table-condensed table-hover" id="tables">
+                        <div style="position: fixed; bottom: 0px; z-index: 1; background-color: #fff" id="historyDetails">
+                        <!-- <div> -->
+                          <table class="table-striped table-bordered table-condensed table-hover">
                             <thead>
                               <tr>
                                 <td colspan="10">
-                                   <div class="row">
-                                  <div class="col-lg-2" style="border-right: solid 1px #808080">
-                                    <h6>Vehicle ID</h6>
-                                      
-                                      <h6>{{hisloc.shortName}}</h6>
+                                  <div class="row">
+                                    <div class="col-lg-2" style="border-right: solid 1px #808080">
+                                      <h6>Vehicle ID</h6>
+                                        
+                                        <h6>{{hisloc.shortName}}</h6>
+                                    </div>
+                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
+                                      <h6>odoDistance</h6>
+                                        
+                                        <h6>{{hisloc.odoDistance}}</h6>
+                                    </div>
+                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
+                                      <h6>Total Idle Time</h6>
+                                        <h6>{{timeCalculate(hisloc.totalIdleTime)}}</h6>
+                                    </div>
+                                    
+                                    <div class="col-lg-2"  style="border-right: solid 1px #808080">
+                                      <h6>Total Running Time</h6>
+                                        <h6>{{timeCalculate(hisloc.totalRunningTime)}}</h6>
+                                    </div>
+                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
+                                      <h6>Total Parked Time</h6>
+                                        <h6>{{timeCalculate(hisloc.totalParkedTime)}}</h6>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <h6>Trip Distance</h6>
+                                        <h6>{{hisloc.tripDistance}}&nbsp;km</h6>
+                                    </div>
                                   </div>
-                                  <div class="col-md-2"  style="border-right: solid 1px #808080">
-                                    <h6>odoDistance</h6>
-                                      
-                                      <h6>{{hisloc.odoDistance}}</h6>
-                                  </div>
-                                  <div class="col-md-2"  style="border-right: solid 1px #808080">
-                                    <h6>Total Idle Time</h6>
-                                      <h6>{{timeCalculate(hisloc.totalIdleTime)}}</h6>
-                                  </div>
-                                  
-                                  <div class="col-lg-2"  style="border-right: solid 1px #808080">
-                                    <h6>Total Running Time</h6>
-                                      <h6>{{timeCalculate(hisloc.totalRunningTime)}}</h6>
-                                  </div>
-                                  <div class="col-md-2"  style="border-right: solid 1px #808080">
-                                    <h6>Total Parked Time</h6>
-                                      <h6>{{timeCalculate(hisloc.totalParkedTime)}}</h6>
-                                  </div>
-                                  <div class="col-md-2">
-                                    <h6>Trip Distance</h6>
-                                      <h6>{{hisloc.tripDistance}}&nbsp;km</h6>
-                                  </div>
-                              </div>
-
                                 </td>
-                                <!-- <td colspan="2"></td>
-                                <td colspan="2"></td>
-                                <td colspan="2"></td>
-                                <td colspan="2"></td> -->
+                              </tr>
+                              <tr>
+                                <th width="5%">S NO</th>
+                                <th width="15%">Date &amp; Time</td>
+                                <th width="7%">Speed Km/h</th>
+                                <th width="35%">Address</th>
+                                <th width="8%">Position</th>
+                                <th width="8%">TripDistance</th>
+                                <th width="8%">Ignition</th>
+                                <th width="8%">OdoDistance</th>
+                                <th width="8%">PowerStatus</th>
+                                <th width="8%">DeviceVolt</th>
+                              </tr>
+                            </thead>
+                          </table>
+                        <!-- </div> -->
+                        <div style="width: 100%; height: 30vh; overflow: auto">
+                          <table class="table-striped table-bordered table-condensed table-hover">
+                            <!-- <thead>
+                              <tr>
+                                <td colspan="10">
+                                  <div class="row">
+                                    <div class="col-lg-2" style="border-right: solid 1px #808080">
+                                      <h6>Vehicle ID</h6>
+                                        
+                                        <h6>{{hisloc.shortName}}</h6>
+                                    </div>
+                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
+                                      <h6>odoDistance</h6>
+                                        
+                                        <h6>{{hisloc.odoDistance}}</h6>
+                                    </div>
+                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
+                                      <h6>Total Idle Time</h6>
+                                        <h6>{{timeCalculate(hisloc.totalIdleTime)}}</h6>
+                                    </div>
+                                    
+                                    <div class="col-lg-2"  style="border-right: solid 1px #808080">
+                                      <h6>Total Running Time</h6>
+                                        <h6>{{timeCalculate(hisloc.totalRunningTime)}}</h6>
+                                    </div>
+                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
+                                      <h6>Total Parked Time</h6>
+                                        <h6>{{timeCalculate(hisloc.totalParkedTime)}}</h6>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <h6>Trip Distance</h6>
+                                        <h6>{{hisloc.tripDistance}}&nbsp;km</h6>
+                                    </div>
+                                  </div>
+                                </td>
                               </tr>
                               <tr>
                                 <th width="5%">S NO</th>
@@ -385,27 +432,29 @@
                                 <th width="5%">PowerStatus</th>
                                 <th width="5%">DeviceVolt</th>
                               </tr>
-                            </thead>
+                            </thead> -->
                             <tbody>
                               <tr ng-repeat="hist in hisloc.vehicleLocations">
-                                <td>{{hist.rowId}}</td>
-                                <td>{{hist.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                <td>{{hist.speed}}</td>
-                                <td>{{hist.address}}</td>
-                                <td ng-switch on="hist.position">
+                                <td width="5%">{{hist.rowId}}</td>
+                                <td width="12%">{{hist.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td width="7%">{{hist.speed}}</td>
+                                <td width="29%">{{hist.address}}</td>
+                                <td width="8%" ng-switch on="hist.position">
                                   <span ng-switch-when="S"><img title="Vehicle Standing" src="assets/imgs/orange.png"/></span>
                                   <span ng-switch-when="M"><img title="Vehicle Moving" src="assets/imgs/green.png"/></span>
                                   <span ng-switch-when="P"><img title="Vehicle Parked" src="assets/imgs/flag.png"/></span>
                                   <span ng-switch-when="U"><img title="Vehicle NoData" src="assets/imgs/gray.png"/></span>
                                 </td>
-                                <td>{{hist.tripDistance}}</td>
-                                <td>{{hist.ignitionStatus}}</td>
-                                <td>{{hist.odoDistance}}</td>
-                                <td>{{hist.powerStatus}}</td>
-                                <td>{{hist.deviceVolt}}</td>
+                                <td width="8%">{{hist.tripDistance}}</td>
+                                <td width="8%">{{hist.ignitionStatus}}</td>
+                                <td width="8%">{{hist.odoDistance}}</td>
+                                <td width="8%">{{hist.powerStatus}}</td>
+                                <td width="8%">{{hist.deviceVolt}}</td>
                               </tr>
                             </tbody>
                           </table>
+                        </div>
+                          
                         </div>
                     </div>
                 </div>
@@ -478,7 +527,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/bootstrap.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   scriptLibrary.push('https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry');
+   scriptLibrary.push(url);
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    // scriptLibrary.push("http://code.highcharts.com/highcharts.js");
    // scriptLibrary.push("http://code.highcharts.com/highcharts-more.js");
