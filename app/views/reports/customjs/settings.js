@@ -8,7 +8,7 @@ $scope.checkingValue    = {};
 $scope.vehiId           = [];
 
 $scope.hours            = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
-$scope.reports          = ['Movement (M)','OverSpeed (O)','Site (S)']; //,'Fuel (F)','Temperature (T)'
+$scope.reports          = ['Movement (M)','OverSpeed (O)','Site (S)', 'POI (PI)']; //,'Fuel (F)','Temperature (T)'
 var url                 = 'http://'+globalIP+context+'/public//getVehicleLocations';
 var menuValue           = JSON.parse(sessionStorage.getItem('userIdName'));
 var sp                  = menuValue.split(",");
@@ -20,7 +20,7 @@ var sp                  = menuValue.split(",");
 $scope.checkingValue.move = [];
 $scope.checkingValue.over = [];
 $scope.checkingValue.site = [];
-$scope.checkingValue.fuel = [];
+$scope.checkingValue.poi = [];
 $scope.checkingValue.temp = [];
 
 
@@ -42,7 +42,7 @@ $.ajax({
                   $scope.checkingValue.move[key]   = false;
                   $scope.checkingValue.over[key]   = false;
                   $scope.checkingValue.site[key]   = false;
-                  // $scope.checkingValue.fuel[key]   = false;
+                  $scope.checkingValue.poi[key]   = false;
                   // $scope.checkingValue.temp[key]   = false;
                   angular.forEach(response, function(innerValue, innerKey){
                     if(value.vehicleId == innerValue.vehicleId){
@@ -62,6 +62,9 @@ $.ajax({
                               break;
                             case 'site':
                               $scope.checkingValue.site[key]   = true;
+                              break;
+                            case 'poi':
+                              $scope.checkingValue.poi[key]    = true;
                               break;
                           }
 
@@ -210,7 +213,7 @@ $scope.storeValue   = function(){
         catch (e){}
         try{ reports += $scope.checkingValue.site[id] == true ?  'site,' : ''; } 
         catch (e){}
-        try{ reports += $scope.checkingValue.fuel[id] == true ?  'fuel,' : ''; } 
+        try{ reports += $scope.checkingValue.poi[id] == true ?  'poi,' : ''; } 
         catch (e){}
         try{ reports += $scope.checkingValue.temp[id] == true ?  'temperature,' : ''; } 
         catch (e){}
@@ -253,7 +256,10 @@ $scope.storeValue   = function(){
 
 
 $scope.changeValue =  function(reportName){
-
+  $scope.checkingValue.move = [];
+  $scope.checkingValue.over = [];
+  $scope.checkingValue.site = [];
+  $scope.checkingValue.poi = [];
   
   if(reportName.length)
     angular.forEach(reportName, function(name, id){
@@ -268,8 +274,8 @@ $scope.changeValue =  function(reportName){
           case 'Site (S)':
             $scope.checkingValue.site[value]  = true;
             break;
-          case 'Fuel (F)':
-            $scope.checkingValue.fuel[value]  = true;
+          case 'POI (PI)':
+            $scope.checkingValue.poi[value]  = true;
             break;
           case 'Temperature (T)':
             $scope.checkingValue.temp[value]  = true;
@@ -285,7 +291,7 @@ $scope.groupChange  = function(){
   $scope.checkingValue.move = [];
   $scope.checkingValue.over = [];
   $scope.checkingValue.site = [];
-  // $scope.checkingValue.fuel = [];
+  $scope.checkingValue.poi = [];
   // $scope.checkingValue.temp = [];
   $scope.vehiId             = [];
   $scope.from               = '';

@@ -96,6 +96,7 @@
                     <input type="checkbox" ng-model="checkingValue.move[$index]">M</input>&nbsp;
                     <input type="checkbox" ng-model="checkingValue.over[$index]">O</input>&nbsp;
                     <input type="checkbox" ng-model="checkingValue.site[$index]">S</input>&nbsp;
+                    <input type="checkbox" ng-model="checkingValue.poi[$index]">PI</input>&nbsp;
                     <!-- <input type="checkbox" ng-model="checkingValue.fuel[$index]">F</input>&nbsp;
                     <input type="checkbox" ng-model="checkingValue.temp[$index]">T</input> -->
                     
