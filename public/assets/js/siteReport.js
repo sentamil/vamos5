@@ -324,7 +324,7 @@ function plottinGraphs(valueGraph, timeData){
 
                             angular.forEach(responseVal.load, function(value, keyLoad){
                             	spLoading = splitColon(value.load);
-                                $scope.siteData.load.push({'date':value.date, 'lat':value.lat, 'lng': value.lng, 'Axle1': spLoading[0], 'Axle2': spLoading[1], 'Axle2': spLoading[2], 'Axle3': spLoading[3], 'Axle4': spLoading[4], 'Axle5': spLoading[5], 'Axle6': spLoading[6], 'Axle7': spLoading[7], 'Axle8': spLoading[8], 'LoadTruck': spLoading[9], 'LoadTrailer': spLoading[10], 'TotalLoadTruck': spLoading[11], 'TotalLoadTrailer': spLoading[12]})
+                                $scope.siteData.load.push({'date':value.date, 'lat':value.lat, 'lng': value.lng, 'Axle1': spLoading[0], 'Axle2': spLoading[1], 'Axle3': spLoading[2], 'Axle4': spLoading[3], 'Axle5': spLoading[4], 'Axle6': spLoading[5], 'Axle7': spLoading[6], 'Axle8': spLoading[7],  'LoadTruck': spLoading[8], 'LoadTrailer': spLoading[9], 'TotalLoadTruck': spLoading[10], 'TotalLoadTrailer': spLoading[11]})
                             console.log(value)
                             })
 
