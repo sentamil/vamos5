@@ -368,8 +368,8 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 			if (getParameterByName('gid') == '' && getParameterByName('vehicleId') == '') {
 
 				$scope.groupname 	= response[0].group;
-				$scope.trackVehID 	= $scope.locations[0].vehicleLocations[3].vehicleId;
-				$scope.shortVehiId 	= $scope.locations[0].vehicleLocations[3].shortName;
+				$scope.trackVehID 	= $scope.locations[0].vehicleLocations[0].vehicleId;
+				$scope.shortVehiId 	= $scope.locations[0].vehicleLocations[0].shortName;
 				$scope.selected 	= 0;
 			
 			} else { 

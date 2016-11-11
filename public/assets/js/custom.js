@@ -139,6 +139,8 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 				$scope.zoomLevel = 6;
 				$scope.support = data[$scope.gIndex].supportDetails;
 				$scope.initilize('map_canvas');
+				// if($scope.makerType == undefined)
+				markerChange($scope.makerType);
 			}
 		});	
 	});
@@ -406,10 +408,11 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		}
 		// ginfowindow=[];
 		clearInterval(setintrvl);
+		markerChange($scope.makerType);
 		//$scope.locations02 = vamoservice.getDataCall($scope.url);
-		$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');
-		$('body').delay(350).css({'overflow':'visible'});
+		// $('#status').fadeOut(); 
+		// $('#preloader').delay(350).fadeOut('slow');
+		// $('body').delay(350).css({'overflow':'visible'});
 	}
 	
 
@@ -754,6 +757,13 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		// 	markerCluster.clearMarkers(null);
 		// }
 		$scope.markerJump($scope.locations02[$scope.gIndex].vehicleLocations);
+
+
+		// if($scope.makerType ==  "markerChange")
+		// {
+			markerChange($scope.makerType);
+		// }
+
 		
 	}
 
@@ -1083,6 +1093,26 @@ function locat_address(locs) {
 			}
 		}
 	};
+
+
+	function markerChange(value){
+		var icon , img;
+			
+		angular.forEach($scope.locations, function(valu, key){
+			
+			img = ($scope.makerType == 'markerChange')? 'assets/imgs/'+valu.vehicleType+'.png' : vamoservice.iconURL(valu)
+			if($scope.makerType == 'markerChange')
+				icon = {scaledSize: new google.maps.Size(30, 30),url: img} //scaledSize: new google.maps.Size(25, 25)
+			else
+				icon = {url: img}
+			gmarkers[key].setIcon(icon);
+			gmarkers[key].setMap($scope.map);
+
+		});
+		
+	}
+
+
 	$('#mapTable-mapList').hide()
 	$("#homeImg").hide();
 	$("#listImg").show();
@@ -1091,6 +1121,8 @@ function locat_address(locs) {
 	$("#efullscreen").hide();
 	$("#fullscreen").show();
 	$('#graphsId').hide();
+	$("#carMarker").show();
+	$("#marker").hide();
 	// $scope.idinvoke;
 	//list view
 	function listMap ()
@@ -1148,6 +1180,26 @@ function locat_address(locs) {
 			gmarkers[i].setMap($scope.map);
 		}
 	}
+
+	// changeMarker
+	function changeMarker()
+	{
+		if($scope.makerType == undefined)
+		{
+			$("#carMarker").show();
+			$("#marker").hide();	
+		} else if ($scope.makerType == 'markerChange'){
+			$("#carMarker").hide();
+			$("#marker").show();	
+		}
+		
+		// $scope.groupMap=true;
+		// markerCluster 	= new MarkerClusterer($scope.map, null, null)
+		
+		// mcOptions = {gridSize: 50,maxZoom: 15,styles: [ { height: 53, url: "assets/imgs/m1.png", width: 53}]}
+		// markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions)	
+	}
+
 
 	function fullScreen()
 	{
@@ -1256,6 +1308,15 @@ function locat_address(locs) {
 			case 'graphs': 
 				graphView();
 				break;
+			case 'markerChange':
+				$scope.makerType =  "markerChange";
+				changeMarker()
+				markerChange('markerChange');
+				break;
+			case 'undefined':
+				$scope.makerType =  undefined;
+				changeMarker()
+				markerChange(undefined);
 			default:
 		   		break;
 		}

@@ -138,16 +138,43 @@
                                         <tr><td colspan="5"></td></tr>
                                         <tr style="text-align:center;font-weight: bold;">
                                             <th class="id" custom-sort order="'date'" sort="sort" style="text-align:center;" width="25%">Date &amp; Time</th>
-                                            <th class="id" custom-sort order="'load'" sort="sort" style="text-align:center;" width="15%">Load</th>
-                                            <th class="id" custom-sort order="'address'" sort="sort" style="text-align: center;" width="45%">Nearest Location</th>
+
+                                            <th class="id" custom-sort order="'Axle1'" sort="sort" style="text-align:center;" width="15%">Axle1</th>
+                                            <th class="id" custom-sort order="'Axle2'" sort="sort" style="text-align:center;" width="15%">Axle2</th>
+                                            <th class="id" custom-sort order="'Axle3'" sort="sort" style="text-align:center;" width="15%">Axle3</th>
+                                            <th class="id" custom-sort order="'Axle4'" sort="sort" style="text-align:center;" width="15%">Axle4</th>
+                                            <th class="id" custom-sort order="'Axle5'" sort="sort" style="text-align:center;" width="15%">Axle5</th>
+                                            <th class="id" custom-sort order="'Axle6'" sort="sort" style="text-align:center;" width="15%">Axle6</th>
+                                            <th class="id" custom-sort order="'Axle7'" sort="sort" style="text-align:center;" width="15%">Axle7</th>
+                                            <th class="id" custom-sort order="'Axle8'" sort="sort" style="text-align:center;" width="15%">Axle8</th>
+                                            <th class="id" custom-sort order="'LoadTruck'" sort="sort" style="text-align:center;" width="15%">LoadTruck</th>
+                                            <th class="id" custom-sort order="'LoadTrailer'" sort="sort" style="text-align:center;" width="15%">LoadTrailer</th>
+                                            <th class="id" custom-sort order="'TotalLoadTruck'" sort="sort" style="text-align:center;" width="15%">TotalLoadTruck</th>
+                                            <th class="id" custom-sort order="'TotalLoadTrailer'" sort="sort" style="text-align:center;" width="15%">TotalLoadTrailer</th>
+                                            
+
+                                            <!-- <th class="id" custom-sort order="'address'" sort="sort" style="text-align: center;" width="25%">Nearest Location</th> -->
                                             <th class="id" style="text-align: center;" width="15%">G-Map</th>
                                         </tr>
                                 </thead>
                                 <tbody>
                                     <tr class="active" style="text-align:center" ng-repeat="load in siteData.load | orderBy:sort.sortingOrder:sort.reverse">
                                         <td>{{load.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                        <td>{{load.load}}</td>
-                                        <td>{{load.address}}</td>
+                                        
+                                        <td>{{load.Axle1}}</td>
+                                        <td>{{load.Axle2}}</td>
+                                        <td>{{load.Axle3}}</td>
+                                        <td>{{load.Axle4}}</td>
+                                        <td>{{load.Axle5}}</td>
+                                        <td>{{load.Axle6}}</td>
+                                        <td>{{load.Axle7}}</td>
+                                        <td>{{load.Axle8}}</td>
+                                        <td>{{load.LoadTruck}}</td>
+                                        <td>{{load.LoadTrailer}}</td>
+                                        <td>{{load.TotalLoadTruck}}</td>
+                                        <td>{{load.TotalLoadTrailer}}</td>
+
+                                        <!-- <td>{{load.address}}</td> -->
                                         <td><a href="https://www.google.com/maps?q=loc:{{load.lat}},{{load.lng}}" target="_blank">Link</a></td>
                                     </tr>
                                     <tr ng-if="siteData.load==null || siteData.load.length==0"  align="center">

@@ -7,7 +7,7 @@ $scope.vehicles         = [];
 $scope.checkingValue    = {};
 $scope.vehiId           = [];
 
-$scope.hours            = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+$scope.hours            = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 $scope.reports          = ['Movement (M)','OverSpeed (O)','Site (S)', 'POI (PI)']; //,'Fuel (F)','Temperature (T)'
 var url                 = 'http://'+globalIP+context+'/public//getVehicleLocations';
 var menuValue           = JSON.parse(sessionStorage.getItem('userIdName'));
@@ -200,23 +200,19 @@ function checkUndefined(value){
 $scope.storeValue   = function(){
 
   startLoading();
-  if($scope.vehiId.length && $scope.mailId && $scope.from || $scope.from==0 && $scope.to){
+  if($scope.vehiId.length && $scope.mailId  && $scope.mailId != '' && $scope.from || $scope.from==0 && $scope.to){
     var reportsList = [];
     angular.forEach($scope.vehiId,function(val,id){
       
       var reports = '';
       
       if($scope.vehiId[id] == true && $scope.from != undefined && $scope.to != undefined && $scope.vehicles[id].vehicleId != null && $scope.vehicles[id].vehicleId != ''){
-        try{ reports += $scope.checkingValue.move[id] == true ?  'movement,' : ''; }
-        catch (e){}
-        try{ reports += $scope.checkingValue.over[id] == true ?  'overspeed,' : ''; } 
-        catch (e){}
-        try{ reports += $scope.checkingValue.site[id] == true ?  'site,' : ''; } 
-        catch (e){}
-        try{ reports += $scope.checkingValue.poi[id] == true ?  'poi,' : ''; } 
-        catch (e){}
-        try{ reports += $scope.checkingValue.temp[id] == true ?  'temperature,' : ''; } 
-        catch (e){}
+        try{ reports += $scope.checkingValue.move[id] == true ?  'movement,' : ''; }catch (e){}
+        try{ reports += $scope.checkingValue.over[id] == true ?  'overspeed,' : ''; }catch (e){}
+        try{ reports += $scope.checkingValue.site[id] == true ?  'site,' : ''; }catch (e){}
+        try{ reports += $scope.checkingValue.poi[id] == true ?  'poi,' : ''; }catch (e){}
+        // try{ reports += $scope.checkingValue.temp[id] == true ?  'temperature,' : ''; } 
+        // catch (e){}
         reportsList.push([sp[1],reports, $scope.vehicles[id].vehicleId, $scope.from, $scope.to, $scope.mailId, $scope.groupSelected]);
         
 
@@ -251,16 +247,18 @@ $scope.storeValue   = function(){
 }
 
 
-
-
-
-
-$scope.changeValue =  function(reportName){
+function forNull(){
   $scope.checkingValue.move = [];
   $scope.checkingValue.over = [];
   $scope.checkingValue.site = [];
   $scope.checkingValue.poi = [];
+}
+
+
+
+$scope.changeValue =  function(reportName){
   
+  forNull();
   if(reportName.length)
     angular.forEach(reportName, function(name, id){
       angular.forEach($scope.vehicles, function(key, value){
@@ -288,10 +286,7 @@ $scope.changeValue =  function(reportName){
 
 $scope.groupChange  = function(){
 
-  $scope.checkingValue.move = [];
-  $scope.checkingValue.over = [];
-  $scope.checkingValue.site = [];
-  $scope.checkingValue.poi = [];
+  forNull();
   // $scope.checkingValue.temp = [];
   $scope.vehiId             = [];
   $scope.from               = '';
@@ -329,6 +324,15 @@ $scope.groupChange  = function(){
 //         console.log("fail");
 //       });
 // }
+
+
+$scope.deleteFn   = function(_data, index){
+
+  console.log(' deleteFn invoking '+index);
+  console.log(_data);
+  console.log($scope.checkingValue);
+
+}
 
 
 }]);

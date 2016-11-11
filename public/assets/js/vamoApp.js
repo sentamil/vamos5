@@ -95,6 +95,10 @@ $(function() {
   };
 
 
+function splitColon(spValue){
+  return spValue.split(':');
+}
+
 function getParameterByName(name) {
       name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
       var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),

@@ -68,8 +68,8 @@
                 </li>
                 <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}" data-toggle="tooltip" data-original-title="<div align='left'><span>Speed</span> &nbsp;-&nbsp; {{loc.speed}}; <br> <span>Ignition</span> &nbsp;-&nbsp; {{loc.ignitionStatus}} <br> <span>Address</span> &nbsp;-&nbsp; {{loc.address}}  </div>" tooltip-loader><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a>
-
+                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}" ><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a>
+                           <!--  data-toggle="tooltip" data-original-title="<div align='left'><span>Speed</span> &nbsp;-&nbsp; {{loc.speed}}; <br> <span>Ignition</span> &nbsp;-&nbsp; {{loc.ignitionStatus}} <br> <span>Address</span> &nbsp;-&nbsp; {{loc.address}}  </div>" tooltip-loader -->
                         </li>
 
                     </ul>
@@ -164,6 +164,18 @@
                                             <span ng-click="mapView('graphs')" id="graphsCharts">
                                                 <img style="width: 20px; height: 20px" src="assets/imgs/graphs.png" />
                                             </span>
+                                            
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div id="viewMap" title="Change Marker" id="cMarker">
+                                            <!-- <span ng-click="mapView('markerChange')">
+                                                <img style="width: 20px; height: 20px" src="assets/imgs/graphs.png" />
+                                            </span> -->
+                                            <span title="Cluster Marker" id="carMarker" ng-click="mapView('markerChange')"><img style="width: 20px; height: 20px" src="assets/imgs/mMarker.png" /></span>
+                                            <span title="Marker View" id="marker" ng-click="mapView('undefined')"><img style="width: 20px; height: 20px" src="assets/imgs/mCar.png" /></span>
                                             
                                         </div>
                                     </td>
@@ -511,7 +523,7 @@
                                 <span ng-switch-when="no" style="color: #00ce2f">Available</span>
                             </td>
                            
-                            <td>{{user.lastSeen}}</td>
+                            <td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                             <td>{{user.distanceCovered}}</td>
                             <td>{{user.speed}}</td>
                             
