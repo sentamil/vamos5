@@ -1141,6 +1141,46 @@ public function _editRoutes(){
 
 }
 
+public function _mapHistory(){
+          if(!Auth::check()) {
+            return Redirect::to('login');
+        }
+      //  log::info('map history');
+
+        $_mapr_V   =   Input::get('maproute');
+        $_orgid_L  =   Input::get('organId');
+        $redis     =   Redis::connection();
+        $username  =   Auth::user()->username;
+        $fcode     =   $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+
+             if($_mapr_V != ''){
+                     
+                 foreach ($_orgid_L as $key => $value) {
+                   	
+                        $routeName= $redis->smembers('S_RouteList_'.$value.'_'.$fcode);
+
+                    foreach ($routeName as $k => $val) {
+	    		              
+                                 if($_mapr_V == $val){
+
+                                 	log::info($val);
+                                    
+                                    log::info($value);
+
+                                     $route_list  =$redis->lrange('L_'.$_mapr_V.'_'.$value.'_'.$fcode,0,-1);
+	                                
+	                                
+                                 }
+
+	    	               }
+                    }    
+
+             }
+         
+         return $route_list;
+             
+      }
+
 	
 public function _deleteRoutes(){
 

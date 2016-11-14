@@ -75,7 +75,7 @@
                         <div class="form-group">
                             <div class="input-group datecomp">
                                 <input type="text" ng-model="uiDate.fromdate" class="form-control placholdercolor" id="dateFrom"  placeholder="From date">
-                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
                             </div>
                         </div>
                         
@@ -84,7 +84,7 @@
                         <div class="form-group">
                             <div class="input-group datecomp">
                                 <input type="text" ng-model="uiDate.fromtime" class="form-control placholdercolor" id="timeFrom" placeholder="From time">
-                                <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                                <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
                             </div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                         <div class="form-group">
                             <div class="input-group datecomp">
                                 <input type="text" ng-model="uiDate.todate" class="form-control placholdercolor" id="dateTo" placeholder="From date">
-                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                         <div class="form-group">
                             <div class="input-group datecomp">
                                 <input type="text" ng-model="uiDate.totime" class="form-control placholdercolor" id="timeTo" placeholder="From time">
-                                <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                                <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
                             </div>
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                                         <td><a href="https://www.google.com/maps?q=loc:{{load.lat}},{{load.lng}}" target="_blank">Link</a></td>
                                     </tr>
                                     <tr ng-if="siteData.load==null || siteData.load.length==0"  align="center">
-                                        <td colspan="4"class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                        <td colspan="14"class="err"><h5>No Data Found! Choose some other date</h5></td>
                                     </tr>
                                 </tbody>
                             </table>

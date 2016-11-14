@@ -83,14 +83,14 @@
                                   <div class="form-group" style="width:140px; margin-right:10px; float:left">
                                       <div class="input-group datecomp">
                                             <input type="text" class="form-control placholdercolor" ng-model="fromdate" id="dateFrom" placeholder="From date">
-                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                            <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
                                       </div>
                                     </div>
                                 
                                   <div class="form-group" style="width:125px; float:left">
                                       <div class="input-group datecomp">
                                             <input type="text" class="form-control placholdercolor" ng-model="fromtime" id="timeFrom" placeholder="From time">
-                                            <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                                            <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
                                       </div>
                                     </div>
                                </div>
@@ -98,13 +98,13 @@
                                       <div class="form-group" style="width:140px; margin-right:10px;  float:left">
                                           <div class="input-group datecomp">
                                                 <input type="text" class="form-control placholdercolor" ng-model="todate" id="dateTo" placeholder="To date">
-                                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                                <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
                                           </div>
                                         </div>
                                       <div class="form-group" style="width:125px; float:left ">
                                           <div class="input-group datecomp">
                                                 <input type="text" class="form-control placholdercolor" ng-model="totime" id="timeTo" placeholder="To time" >
-                                                <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div>
+                                                <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
                                           </div>
                                         </div>
                                     </div>
@@ -166,37 +166,44 @@
                             <!-- <div id="lastseen"></div><div id="lstseendate"></div> -->
                               <div style="margin-top: 7px; float:left; font-size: 12px">
                                 <button data-target="#myModal1" data-toggle="modal" ng-click="getOrd()">Routes</button>
-                                <button ng-click="hideShowTable()" id="btnValue">HideDetails</button>
+                                <button ng-click="hideShowTable()" id="btnValue">ShowDetails</button>
                               </div>
 
-                              <div class="modal fade" id="myModal1" role="dialog" data-backdrop="false" style=" top: 90px">
+                              <div class="modal fade" id="myModal1" role="dialog" data-backdrop="false" style=" top: 70px">
                                     <div class="modal-dialog modal-md">
                                       <div class="modal-content">
-                                        <div class="modal-header">
+                                        <div class="modal-header" style="height:45px;padding-top:7px;">
+                                       
                                          <!-- <div> --><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                             <h4>Save Route</h4>
+                                          <h4> Save Route </h4> 
                                             <!-- </div> -->
                                         </div>
                                         <div class="modal-body" >
                                             
                                              <label for="error" style="color: #ec0808">{{error}}</label>
-                                             <br>
+                                            <!-- <br> -->
                                              <!--  <select class="form-control" ng-model="selectedOrdId" ng-options="geo for geo in orgIds">
                                                 <option style="display:none" value="">Select Org Name</option>
                                               </select>
                                             
                                               <br> -->
                                               <!-- <input type="text" class="form-control" ng-model="trackVehID" placeholder="Vehicle Id"> -->
-                                              <br>
-                                              <input type="text" class="form-control" ng-model="routeName" placeholder="Route Name">
-                                               <br>
-                                               <div align="right">
-                                              <button type="button" ng-click="routesSubmit()" class="btn btn-default" >Submit</button>
-                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
-                                        </div>
-                                         
-                                        <div class="col-md-12" style="height: 200px; overflow: scroll;">
+                                          <!--    <br> -->
+                                           <div style="float:left;">      
+                                            <input type="text" class="form-control" ng-model="routeName" placeholder="Enter Route Name" style="width:470px; height: 30px">
+                                            <!--   <br> -->
+                                            </div>   
+                                            <div style="float: right; padding-right:20px">
+                                          <button type="button" ng-click="routesSubmit()" class="btn btn-default"  style="height:30px;text-align: center;padding-top:5px; " >Save</button>
+                                             
+                                         <!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                                          </div>
+                                       </div>
+
                                          <br>
+
+                                        <div class="col-md-12" style="height: 275px; overflow: scroll;">
+                                    <!--    <br> -->
                                           <!-- <ul class="list-group">
                                             <li class="list-group-item">Routes</li>
                                             <li class="list-group-item" ng-repeat="route in routedValue">{{route}}</li>
@@ -214,7 +221,7 @@
                                               
                                             
                                               <tr ng-repeat="route in routedValue">
-                                                <td>{{route}}</td>
+                                                <td ng-click="getMap(route)"><a  data-target="#myModal2" data-toggle="modal" style="cursor: pointer;">{{route}}</a></td>
                                                 <td id="editAction"><a class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span> </a></td>
                                                 <td ng-click="deleteRouteName(route)"><a class="btn btn-xs btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
                                               </tr>
@@ -332,7 +339,7 @@
                                 </div>
                                 </div>
                                 
-                        <div style="position: fixed; bottom: 0px; z-index: 1; background-color: #fff" id="historyDetails">
+                        <div style="position: fixed; bottom: 0px; z-index: 1; background-color: #fff;" id="historyDetails" >
                         <!-- <div> -->
                           <table class="table-striped table-bordered table-condensed table-hover">
                             <thead>
@@ -479,6 +486,27 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+
+
+
+   <div class="modal fade" id="myModal2" role="dialog"  style="top:30px;">
+                                    <div class="modal-dialog modal-md" style="width:700px;height:500px"  >
+                                      <div class="modal-content">
+                                        <div class="modal-header" style="height:45px; padding-top: 7px;">
+                                         <!-- <div> --><button  type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true" style="color:white;">&times;</span></button>
+                                        
+                                             <h4>{{windowRouteName}}</h4>
+                                            <!-- </div> -->
+                                        </div>
+                                    <div class="modal-body" style="padding:5px 5px 5px 5px;">
+                                          
+                                         <div id="dvMap" style="width:100%;height:450px;"></div>
+
+                                         </div>
+                                        
+                                      </div>
+                                    </div>
+                                  </div>    
    <!--  <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -529,6 +557,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
+   
    // scriptLibrary.push("http://code.highcharts.com/highcharts.js");
    // scriptLibrary.push("http://code.highcharts.com/highcharts-more.js");
    // scriptLibrary.push("http://code.highcharts.com/modules/solid-gauge.js");
