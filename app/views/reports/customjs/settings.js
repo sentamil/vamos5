@@ -302,36 +302,35 @@ $scope.groupChange  = function(){
 }
 
 
-// $scope.report   = function(a, b, c, d, e){
-// console.log(' in controller '+a+"  "+b+' '+c+' '+d+' '+e)
-  
-//   var URL_ROOT    = "ScheduledController/";
-//     $.post( URL_ROOT+'reportScheduling', {
-//         '_token': $('meta[name=csrf-token]').attr('content'),
-//         'vehicle': a,
-//         'report': e,
-//         'fromt': c,
-//         'tot': d,
-//         'mail':b,
-//         'userName':'SBLT',
-//         // 'org':org,
-//         // 'latLng': latlanList,
-//       })
-//       .done(function(data) {
-//         console.log("Sucess");
-//       })
-//       .fail(function() {
-//         console.log("fail");
-//       });
-// }
 
-
+/*
+  FOR DELETING THE SCHEDULE REPORT 
+*/
 $scope.deleteFn   = function(_data, index){
-
-  console.log(' deleteFn invoking '+index);
-  console.log(_data);
-  console.log($scope.checkingValue);
-
+  startLoading();
+  $scope.error    = '';
+  var value       = {};
+  value.userName  = '';
+  value.groupName = '';
+  value.vehiId    = '';
+  value.userName  = sp[1];
+  value.groupName = $scope.groupSelected;
+  value.vehiId    = (!index == undefined || index >= 0) ? _data.vehicleId : null;
+  
+  if(value.userName != undefined && value.groupName != undefined)
+    $.ajax({
+      async: false,
+      method: 'GET', 
+      url: "ScheduledController/reportDelete",
+      data: value,
+      success: function (response) {
+        $scope.error = (response == 'correct') ? 'Successfully Updated' : 'Not Updated Successfully';
+        stopLoading();
+        // location.reload();
+      }
+    });
+  else
+    $scope.error = '*Enter all fields';
 }
 
 

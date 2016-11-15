@@ -836,6 +836,7 @@ Route::post('vdmFranchises/findUsersList', array('uses' => 'VdmFranchiseControll
  // for scheduled reports
 Route::post('ScheduledController/reportScheduling', array('uses' => 'ScheduledController@reportScheduling'));
 Route::get('ScheduledController/getValue', array('uses' => 'ScheduledController@getValue'));
+Route::get('ScheduledController/reportDelete', array('uses'=>'ScheduledController@reportDelete'));
 
 // // invoke from javascript
 Route::get('storeOrgValues/val', array('uses' => 'VdmOrganizationController@storedOrg'));
