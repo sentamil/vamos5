@@ -326,7 +326,7 @@ $scope.deleteFn   = function(_data, index){
       success: function (response) {
         $scope.error = (response == 'correct') ? 'Successfully Updated' : 'Not Updated Successfully';
         stopLoading();
-        // location.reload();
+        location.reload();
       }
     });
   else
