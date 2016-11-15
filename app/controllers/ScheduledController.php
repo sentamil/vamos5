@@ -185,7 +185,7 @@ public function reportDelete(){
 	   	} else {
 
 	   		log::info(' Connection Sucessfully ');
-	   		$conn->query($ex_Query);
+	   		$con->query($ex_Query);
 	   		return 'correct';
 
 	   	}
