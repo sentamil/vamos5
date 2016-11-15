@@ -83,7 +83,7 @@
                       </th>
                       <th class="id" style="text-align: center;" width="40%"> 
                       <select name="selectdata" ng-model="reportSelected" ng-change="changeValue(reportSelected)" class="selectpicker" title="Select Report" ng-options="report for report in reports" multiple  data-live-search="true" data-live-search-placeholder="Search" data-actions-box="true"></select></th>
-                     <th style="text-align:center;font-weight: bold;">
+                     <th style="text-align:center;font-weight: bold; cursor: pointer;" title="Delete All Vehicles">
                         <span class="glyphicon glyphicon-trash" ng-click="deleteFn()"></span>
                      </th>
                     </tr>
@@ -103,7 +103,7 @@
                     <input type="checkbox" ng-model="checkingValue.temp[$index]">T</input> -->
                     
                     </td>
-                    <td>
+                    <td style="cursor: pointer;" title="Delete Individual Vehicle">
                         <span class="glyphicon glyphicon-trash" ng-click="deleteFn(vehicleName, $index)">
                     </td>
                   </tr>
