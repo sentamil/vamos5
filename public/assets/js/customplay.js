@@ -1,4 +1,3 @@
-//commits
 // var app = angular.module('mapApp', []);
 var gmarkers=[];
 var ginfowindow=[];
@@ -587,7 +586,7 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
       
       pathCoords=[];
 
-    //  console.log(pathCoords.length);
+      console.log(pathCoords.length);
 
        
   for(i=0;i<latLangs.length;i++){
@@ -601,7 +600,7 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
       }
 
 dvMap.setCenter(new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng)); 
-dvMap.setZoom(8);
+//dvMap.setZoom(8);
 
 autoRefresh(dvMap);
 
@@ -619,7 +618,7 @@ var mapOptions={
 
 dvMap=new google.maps.Map(mapCanvas,mapOptions);
 
-
+//autoRefresh(dvMap);
 
 }
 
@@ -633,13 +632,29 @@ $('#myModal2').on('shown.bs.modal', function () {
 
 
 
+/*function myMap() {
 
-function moveMarker(dvMap, marker, latlng) {
+   var mapCanvas = document.getElementById("dvMap");
+  
+   var mapOptions = {
+   // center: new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng),
+    center: new google.maps.LatLng(0,0),
+    zoom: 8,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  
+ dvMap = new google.maps.Map(mapCanvas, mapOptions);
+
+  autoRefresh(dvMap);
+
+}*/
+
+function moveMarker(marker, latlng) {
 
 			marker.setPosition(latlng);
-
- // dvMap.setCenter(latlng);
-           // dvMap.panTo(latlng);
+          
+         
+          
 
   }
 
@@ -671,10 +686,10 @@ function autoRefresh(map) {
 				{
 					var latlng = new google.maps.LatLng(coords.lat, coords.lng);
 					route.getPath().push(latlng);
-                    moveMarker(map, marker, latlng);
-                    map.panTo(latlng);
+                    moveMarker( marker, latlng);
+                   map.panTo(latlng);
                        
-				}, 100 * i, pathCoords[i]);
+				}, 0* i, pathCoords[i]);
 			}
 
 }
