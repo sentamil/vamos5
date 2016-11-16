@@ -558,6 +558,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push(url);
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    
+   scriptLibrary.push("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js");
    // scriptLibrary.push("http://code.highcharts.com/highcharts.js");
    // scriptLibrary.push("http://code.highcharts.com/highcharts-more.js");
    // scriptLibrary.push("http://code.highcharts.com/modules/solid-gauge.js");

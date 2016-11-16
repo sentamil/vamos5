@@ -493,6 +493,9 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 		getting Org ids
 	*/
 	var url_site    = 'http://'+globalIP+context+'/public/viewSite';
+
+	console.log(url_site);
+	
 	$http.get(url_site).success(function(response){
 		$scope.orgIds 	= response.orgIds;
 	})
@@ -514,26 +517,195 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 	      	})
 	}
 
+    
 	$scope.getOrd 	= function()
 	{
 		$scope.error = "";
 		$scope.routeName = "";
 		$scope.selectedOrdId = "";
+
 		getRouteNames();
+
+		}
+
+
+    $scope.getMap = function(routesMap){
+
+        
+
+    	
+       $scope.windowRouteName=routesMap;
+        
+       
+
+       if(!routesMap =='' && $scope.orgIds.length>0 && !$scope.orgIds==''){
+             $.ajax({
+                       async:false,
+                       method:'GET',
+                       url:"storeOrgValues/mapHistory",
+                       data:{"maproute":routesMap,"organId":$scope.orgIds},
+                       success:function(response){
+
+                                 $scope.mapValues =response;
+
+                                 getMapArray($scope.mapValues);
+                       }
+
+               })
+           
+        
+ }        
+
+}
+
+ var latLanpath=[];
+ var markerList=[];
+ var pathCoords=[];
+
+
+	function clearMap(path){
 		
+		for (var i=0; i<latLanpath.length; i++){
+        	latLanpath[i].setMap(null);
 
-	}
+       	}
+
+       	for (var i = 0; i < markerList.length; i++) {
+       		markerList[i].setMap(null);
+       	}
+}
+
+ function getMapArray(values){
+
+     
+       var latSplit ;
+       var latLangs=values;
+
+       clearMap(pathCoords);
+     
+      
+      pathCoords=[];
+
+      console.log(pathCoords.length);
+
+       
+  for(i=0;i<latLangs.length;i++){
+
+        latSplit = latLangs[i].split(",");
+
+       pathCoords.push({
+           "lat": latSplit[0],
+           "lng": latSplit[1]
+           });
+      }
+
+dvMap.setCenter(new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng)); 
+//dvMap.setZoom(8);
+
+autoRefresh(dvMap);
+
+     }
+
+function myMap(){
+
+var mapCanvas=document.getElementById("dvMap");
+
+var mapOptions={
+	center: new google.maps.LatLng(0,0),
+    zoom: 8,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+
+dvMap=new google.maps.Map(mapCanvas,mapOptions);
+
+//autoRefresh(dvMap);
+
+}
+
+myMap();
+$('#myModal2').on('shown.bs.modal', function () {
+     
+       google.maps.event.trigger(dvMap, "resize");
+
+      
+  });
 
 
-	/*
+
+/*function myMap() {
+
+   var mapCanvas = document.getElementById("dvMap");
+  
+   var mapOptions = {
+   // center: new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng),
+    center: new google.maps.LatLng(0,0),
+    zoom: 8,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  
+ dvMap = new google.maps.Map(mapCanvas, mapOptions);
+
+  autoRefresh(dvMap);
+
+}*/
+
+function moveMarker(marker, latlng) {
+
+			marker.setPosition(latlng);
+          
+         
+          
+
+  }
+
+function autoRefresh(map) {
+			var i, route, marker;
+			
+			route = new google.maps.Polyline({
+				path: [],
+				geodesic : true,
+				strokeColor: '#FF0000',
+				strokeOpacity: 1.0,
+				strokeWeight: 2,
+				editable: false,
+				map:map
+			});
+                
+
+                latLanpath.push(route);
+               // http://maps.google.com/mapfiles/ms/micons/blue.png
+			  marker=new google.maps.Marker({map:map,icon:""});
+
+			  markerList.push(marker);
+			
+			for (i=0; i<pathCoords.length; i++) {
+
+
+
+               setTimeout(function (coords)
+				{
+					var latlng = new google.maps.LatLng(coords.lat, coords.lng);
+					route.getPath().push(latlng);
+                    moveMarker( marker, latlng);
+                   map.panTo(latlng);
+                       
+				}, 0* i, pathCoords[i]);
+			}
+
+}
+
+
+/*
 		show table in view
 	*/
-	$( "#historyDetails" ).hide();
+$( "#historyDetails" ).hide();
 	$scope.hideShowTable 	= function(){
 		var btValue = ($("#btnValue").text()=='ShowDetails')?'HideDetails':'ShowDetails';
 		$('#btnValue').text(btValue);
 		$( "#historyDetails" ).fadeToggle("slow");
 	}
+ 
+
 
 	/*
 		Store the routes in redis
@@ -573,129 +745,6 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 		}
 
 	}
-
-
-
- $scope.getMap = function(routesMap){
-
-        
-
-    	
-       $scope.windowRouteName=routesMap;
-        
-       
-
-       if(!routesMap =='' && $scope.orgIds.length>0 && !$scope.orgIds==''){
-             $.ajax({
-                       async:false,
-                       method:'GET',
-                       url:"storeOrgValues/mapHistory",
-                       data:{"maproute":routesMap,"organId":$scope.orgIds},
-                       success:function(response){
-
-                                 $scope.mapValues =response;
-
-                                 getMapArray($scope.mapValues);
-                       }
-
-               })
-           
-        
- }        
-
-}
-
-
- var pathCoords=[];
-
-
- function getMapArray(values){
-
-     //console.log("mapArray");
-       var latSplit ;
-       var latLangs=values;
-
-  clearMap(pathCoords);
-
-  for(i=0;i<latLangs.length;i++){
-
-        latSplit = latLangs[i].split(",");
-
-       pathCoords.push({
-           "lat": latSplit[0],
-           "lng": latSplit[1]
-           });
-      }
-
-}
-
-$('#myModal2').on('shown.bs.modal', function () {
-     
-	 myMap();
-     google.maps.event.trigger(dvMap, "resize");
-
-      
-  });
-
-	function clearMap(){
-		
-		for (var i=0; i<pathCoords.length; i++){
-        	pathCoords[i].setMap(null);
-       	}
-}
-
-function myMap() {
-
-   var mapCanvas = document.getElementById("dvMap");
-  
-   var mapOptions = {
-    center: new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng),
-    zoom: 8,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  }
-  
- dvMap = new google.maps.Map(mapCanvas, mapOptions);
-
-  autoRefresh(dvMap);
-
-}
-
-function moveMarker(dvMap, marker, latlng) {
-
-	marker.setPosition(latlng);
-	dvMap.panTo(latlng);
-
-  }
-
-function autoRefresh(dvMap) {
-			var i, route, marker;
-			
-			route = new google.maps.Polyline({
-				path: [],
-				geodesic : true,
-				strokeColor: '#FF0000',
-				strokeOpacity: 1.0,
-				strokeWeight: 2,
-				editable: false,
-				map:dvMap
-			});
-                
-               // http://maps.google.com/mapfiles/ms/micons/blue.png
-			  marker=new google.maps.Marker({map:dvMap,icon:""});
-			
-			for (i=0; i<pathCoords.length; i++) {
-
-               setTimeout(function (coords)
-				{
-					var latlng = new google.maps.LatLng(coords.lat, coords.lng);
-					route.getPath().push(latlng);
-                    moveMarker(dvMap, marker, latlng);
-                       
-				}, 200 * i, pathCoords[i]);
-			}
-
-}
-
 
 	$scope.deleteRouteName 	= function(deleteValue){
 		// $scope.routeName = deleteValue;
@@ -1430,4 +1479,8 @@ if($scope.markerstart){
     	
 
 	});
+
 });
+
+
+
