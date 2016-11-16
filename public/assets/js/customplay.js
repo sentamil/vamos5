@@ -1,4 +1,4 @@
-// commit changes
+//commits
 // var app = angular.module('mapApp', []);
 var gmarkers=[];
 var ginfowindow=[];
@@ -559,22 +559,37 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 
 }
 
-
+ var latLanpath=[];
+ var markerList=[];
  var pathCoords=[];
 
 
+	function clearMap(path){
+		
+		for (var i=0; i<latLanpath.length; i++){
+        	latLanpath[i].setMap(null);
+
+       	}
+
+       	for (var i = 0; i < markerList.length; i++) {
+       		markerList[i].setMap(null);
+       	}
+}
+
  function getMapArray(values){
 
-     //console.log("mapArray");
+     
        var latSplit ;
        var latLangs=values;
 
-  
-   
-   if(pathCoords != 0){
-        pathCoords=[];
-    
-}
+       clearMap(pathCoords);
+     
+      
+      pathCoords=[];
+
+    //  console.log(pathCoords.length);
+
+       
   for(i=0;i<latLangs.length;i++){
 
         latSplit = latLangs[i].split(",");
@@ -585,53 +600,50 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
            });
       }
 
-     
+dvMap.setCenter(new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng)); 
+dvMap.setZoom(8);
+
+autoRefresh(dvMap);
+
+     }
+
+function myMap(){
+
+var mapCanvas=document.getElementById("dvMap");
+
+var mapOptions={
+	center: new google.maps.LatLng(0,0),
+    zoom: 8,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+
+dvMap=new google.maps.Map(mapCanvas,mapOptions);
 
 
 
 }
 
+myMap();
 $('#myModal2').on('shown.bs.modal', function () {
      
-	myMap();
-    google.maps.event.trigger(dvMap, "resize");
+       google.maps.event.trigger(dvMap, "resize");
 
       
   });
 
-	/*function clearMap(){
-		
-		for (var i=0; i<pathCoords.length; i++){
-        	pathCoords[i].setMap(null);
-       	}
-}*/
 
-function myMap() {
 
-   var mapCanvas = document.getElementById("dvMap");
-  
-   var mapOptions = {
-    center: new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng),
-    zoom: 8,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  }
-  
- dvMap = new google.maps.Map(mapCanvas, mapOptions);
-
-  autoRefresh(dvMap);
-
-}
 
 function moveMarker(dvMap, marker, latlng) {
 
-	
 			marker.setPosition(latlng);
 
-            dvMap.panTo(latlng);
+ // dvMap.setCenter(latlng);
+           // dvMap.panTo(latlng);
 
   }
 
-function autoRefresh(dvMap) {
+function autoRefresh(map) {
 			var i, route, marker;
 			
 			route = new google.maps.Polyline({
@@ -641,21 +653,28 @@ function autoRefresh(dvMap) {
 				strokeOpacity: 1.0,
 				strokeWeight: 2,
 				editable: false,
-				map:dvMap
+				map:map
 			});
                 
+
+                latLanpath.push(route);
                // http://maps.google.com/mapfiles/ms/micons/blue.png
-			  marker=new google.maps.Marker({map:dvMap,icon:""});
+			  marker=new google.maps.Marker({map:map,icon:""});
+
+			  markerList.push(marker);
 			
 			for (i=0; i<pathCoords.length; i++) {
+
+
 
                setTimeout(function (coords)
 				{
 					var latlng = new google.maps.LatLng(coords.lat, coords.lng);
 					route.getPath().push(latlng);
-                    moveMarker(dvMap, marker, latlng);
+                    moveMarker(map, marker, latlng);
+                    map.panTo(latlng);
                        
-				}, 200 * i, pathCoords[i]);
+				}, 100 * i, pathCoords[i]);
 			}
 
 }
@@ -1450,26 +1469,3 @@ if($scope.markerstart){
 
 
 
-
-
-
-
-
-/*
-function myfunc() {
-  var mapOptions = {
-    center: new google.maps.LatLng(51.219987, 4.396237),
-    zoom: 12,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
-  var map1 = new google.maps.Map(document.getElementById("mapCanvas"), mapOptions);
-}
-
-myfunc();
-
-$("#myModal2").on("shown.bs.modal", function () {
-
-    google.maps.event.trigger(map1, "resize");
-    
-});
-*/
