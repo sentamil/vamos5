@@ -148,4 +148,57 @@ public function getValue(){
    	
 }
 
+/*
+	DELETE VALUE IN SCHEDULED REPORTS
+*/
+public function reportDelete(){
+
+	$username 		= 	Input::get ( 'userName' );
+	$grpName 		= 	Input::get ( 'groupName' );
+	$vidName 		= 	Input::get ( 'vehiId' );
+	$redis 			= 	Redis::connection ();
+	$fcode 			= 	$redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+	$franchiesJson 	= 	$redis->hget('H_Franchise_Mysql_DatabaseIP', $fcode);
+	$servername 	= 	$franchiesJson;
+	
+	if (!$servername){
+		$servername = "188.166.237.200";
+	}
+	
+	$usernamedb 	= "root";
+	$password 		= "#vamo123";
+	$dbname 		= $fcode;
+	$groupQuery 	= "DELETE FROM ScheduledReport WHERE userName='$username' AND groupName='$grpName'";
+	$vehiQuery 		= "DELETE FROM ScheduledReport WHERE userName='$username' AND groupName='$grpName' AND vehicleId='$vidName'";
+	$ex_Query 		= ($vidName ? $vehiQuery : $groupQuery);
+    	
+    log::info($ex_Query);
+	try {
+
+		$con 		= mysqli_connect($servername, $usernamedb, $password, $fcode);
+
+		if( !$con ) {
+	    	
+	    	die('Could not connect: ' . mysqli_connect_error());
+	      	log::info("Connection failed: ");
+
+	   	} else {
+
+	   		log::info(' Connection Sucessfully ');
+	   		$con->query($ex_Query);
+	   		return 'correct';
+
+	   	}
+	   	$con->close();
+	
+	} catch (Exception $e) {
+		
+		log::info($e);
+		return 'incorrect';
+
+	}
+	
+
+}
+
 }
