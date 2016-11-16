@@ -1,4 +1,4 @@
-// commit 
+// commit changes
 // var app = angular.module('mapApp', []);
 var gmarkers=[];
 var ginfowindow=[];
