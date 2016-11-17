@@ -8,6 +8,7 @@
 
 
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
+<link href="assets/css/jVanilla.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/bootstrap-select.css">

@@ -1,46 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" class="no-js">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        <title>Creative Link Effects</title>
-        
-        <meta name="author" content="Codrops" />
-        <link href="assets/css/jVanilla.css" rel="stylesheet">
-        <style type="text/css">
-            
-/*@import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
-@import url(//fonts.googleapis.com/css?family=Kaushan+Script);
-*/
 
-
-/*html, body{
-    padding: 0px;
-    margin: 0px;
-    font-family: 'Source Sans Pro', sans-serif;
-    background: #f9f9f9;
-   
-}*/
-
-/*
-.arrow-down {
-  width: 0; 
-  height: 0; 
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  
-  border-top: 10px solid #f00;
-}
-*/
-
-
-        </style>
-        
-   
-    </head>
-
-<body>
 <div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;">     
 <nav class="menus">
     <ul>
@@ -49,7 +7,7 @@
             <!-- <a><span  data-hover="Tracking">Tracking</span></a><span class="glyphicons glyphicons-road"></span> -->
             <a><span  data-hover="Tracking"><div class="glyphicon glyphicon-map-marker"></div>&nbsp;Tracking</span></a>
             <ul>
-                <li><a href="../public/track?maps=replay">History</a></li>
+                <li><a id="history" href="">History</a></li>
                 <li><a id="singleTrack" href="">Single Track</a></li>
                 <li><a id="multiTrack" href="">Multi Track</a></li>
                 <li><!-- <a id="addsites">Admin</a>
@@ -159,7 +117,7 @@
         
        
         <li id="userId">
-            <!-- <a href="">arun</a> -->
+           
             <span class="glyphicon glyphicon-user"><span id="valueUser" style="font-size:12px; font-weight: bold; font-family: Helvetica"></span></span>    
         </li>
         
@@ -237,6 +195,9 @@
                 $(this).attr("target", '_blank');
             });
 
+            $('#history').click(function () {
+                $(this).attr("href", "track?maps=replay&vehicleId="+vid)
+            })
 
             $('#addsites').click(function(){
                 if(sessionStorage.getItem('auth') == 'sitesVal')
@@ -246,146 +207,4 @@
             });
     
 </script>
-</body>
-</html>
 
-
-
-
-
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <link href="assets/css/jVanilla.css" rel="stylesheet">
-</head>
-<body>
-    <div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;">
-        <nav>
-            <ul class="menu-hover">
-                <li class="list"> <a href="#">Maps <img src="assets/imgs/down.png"></a>
-                    <ul class="menu-hover">
-                        <li class="list"><a href="../public/replay">History</a></li>
-                        <li class="list"><a href="../public/live">Track</a></li>
-                        <li class="list"> <a href="#">Admin &nbsp; <img src="assets/imgs/right.png"></a></a>
-                            <ul class="menu-hover">
-                                <li class="list"><a href="../public/password_check" id="addsites">AddSites</a></li>
-                               
-                            </ul>
-                        </li>
-                        </ul>
-                        <li class="list"> <a href="../public/reports">Reports <img src="assets/imgs/down.png"></a>
-                            <ul class="menu-hover">
-                                <li class="list"><a href="../public/reports"> Current </a></li>
-                                <li class="list"><a href="../public/reports?ind=1"> Consolidated </a></li>
-                                <li class="list"><a href="../public/reports?ind=2"> Consolidated Site/Location</a></li>
-                                <li class="list"><a href="#"> Advanced &nbsp; <img src="assets/imgs/right.png"></a>
-                                    <ul class="menu-hover">
-                                        <div>
-                                            <table style="width: 400px; height: 100px; background-color: #5f6975">
-                                                <tr>
-                                                    <td><a id="movement" href=""> Movement </a></td>
-                                                    <td><a id="overspeed" href="" > OverSpeed </a></td>
-                                                    <td><a id="parked" href=""> Parked </a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><a id="idle" href=""> Idle </a></td>
-                                                    <td><a id="event" href=""> Event </a></td>
-                                                    <td><a id="site" href=""> Site </a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><a id="load" href=""> Load </a></td>
-                                                    <td><a id="fuel" href=""> Fuel </a></td>
-                                                    <td><a id="ignition" href=""> Ignition </a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><a id="trip" href=""> Trip Time </a></td>
-                                                    <td><a id="tripkms" href=""> Trip Summary</a></td>
-                                                    <td><a id="temp" href=""> Temperature</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><a id="alarm" href="">Alarm</a></td>
-                                                </tr>
-                                            </table>
-
-                                        </div>
-                                        
-                                        
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="list"> <a href="../public/fuel">Fuel</a></li>
-                        <li class="list"> <a href="../public/statistics"> Statistics <img src="assets/imgs/down.png"></a>
-                            <ul class="menu-hover">
-                                <li class="list"><a href="../public/statistics">Executive</a></li>
-                                <li class="list"><a href="../public/statistics?ind=1">POI</a></li>
-                            </ul>
-                        </li>
-                        <li class="list"> <a href="../public/performance"> Performance <img src="assets/imgs/down.png"></a>
-                            <ul class="menu-hover">
-                                <li class="list"><a href="../public/performance?tab=daily">Daily Performance</a></li>
-                                <li class="list"><a href="../public/performance">Monthly Performance</a></li>
-                            </ul>
-                        </li>
-                        <li class="list"> <a href="../public/logout"> Logout </a></li>
-                    </ul>
-                </nav>
-            </div>
-        <script>
-            var obj = JSON.parse(sessionStorage.getItem('user'));
-            var sp  = obj.split(',');
-            var vid = sp[0];
-            var gname = sp[1];
-            $("#movement").click(function() {
-               $("#movement").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement')
-            });
-            $("#overspeed").click(function() {
-                $("#overspeed").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=overspeed')
-            });
-            $("#parked").click(function() {
-                $("#parked").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=parked')
-            });
-            $("#idle").click(function() {
-                $("#idle").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=idle')
-            });
-            $("#event").click(function() {
-                $("#event").attr("href", 'event?vid='+vid+'&vg='+gname+'&tn=event')
-            });
-            $("#site").click(function() {
-                $("#site").attr("href", 'siteReport?vid='+vid+'&vg='+gname+'&tn=site')
-            });
-            $("#load").click(function() {
-                $("#load").attr("href", 'loadDetails?vid='+vid+'&vg='+gname+'&tn=load')
-            });
-            $("#fuel").click(function() {
-                $("#fuel").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=fuel')
-            });
-            $("#ignition").click(function() {
-                $("#ignition").attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=ignition')
-            });
-            $('#trip').click(function() {
-                $('#trip').attr("href", 'trip?vid='+vid+'&vg='+gname+'&tn=trip')
-            });
-            $('#tripkms').click(function() {
-                // console.log(' clck ')
-                $("#tripkms").attr("href", 'tripkms?vid='+vid+'&vg='+gname+'&tn=tripkms')
-            });
-            $('#temp').click(function() {
-                // console.log(' clck ')
-                $("#temp").attr("href", 'temperature?vid='+vid+'&vg='+gname+'&tn=temperature')
-            });
-            $('#alarm').click(function(){
-                $('#alarm').attr("href", 'alarm?vid='+vid+'&vg='+gname+'&tn=alarm')
-            })
-
-
-
-            $('#addsites').click(function(){
-                if(sessionStorage.getItem('auth') == 'sitesVal')
-                    $('#addsites').attr("href", 'sites')
-                else
-                    $('#addsites').attr("href", 'password_check') 
-            });
-        </script>
-    </body>
-</html> -->
