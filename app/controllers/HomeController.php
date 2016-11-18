@@ -285,7 +285,9 @@ class HomeController extends BaseController {
 	public function doLogout()
 	{
 		Auth::logout(); // log the user out of our application
-		return Redirect::to('login'); // redirect the user to the login screen
+		// return View::make('logout');
+		return View::make('logout');
+		//return Redirect::to('logoutWeb'); // redirect the user to the login screen
 	}
 
 }

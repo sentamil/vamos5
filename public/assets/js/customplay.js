@@ -896,7 +896,7 @@ function animateMapZoomTo(map, targetZoom) {
 										
 					var contentString = '<h3 class="infoh3">Location</h3>'
 					+'<div class="nearbyTable02"><div><table cellpadding="0" cellspacing="0"><tbody>'
-					+'<tr><td>Latlong</td><td>'+data.geoLocation+' </td></tr>'
+					+'<tr><td>Latlong</td><td>'+data.geoLocation+' </td></tr>'+'<tr><td>StopName</td><td>'+data.stopName+' </td></tr>'
 					+'</table></div>';
 					var infoWindow = new google.maps.InfoWindow({content:contentString});
 					geoinfowindow.push(infoWindow);
