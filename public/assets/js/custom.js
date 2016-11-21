@@ -223,20 +223,20 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		// angular.forEach($scope.locations, function(value, key){
 			$scope.selected = index;
 			var individualVehicle = $filter('filter')($scope.locations, { vehicleId:  vehicleno});
-			if(individualVehicle[0].position != 'N')
+			if (individualVehicle[0].position === 'N' || individualVehicle[0].position === 'Z')
 			{
 				
+				$('#status').fadeOut(); 
+				$('#preloader').delay(350).fadeOut('slow');
+				$('body').delay(350).css({'overflow':'visible'});
+				alert(individualVehicle[0].address);
+			}
+			else
+			{
 				$scope.removeTask(vehicleno);
 				sessionValue(vehicleno, $scope.gName)
 				$('#graphsId').show(500);
 				editableValue();
-			}
-			else
-			{
-				$('#status').fadeOut(); 
-				$('#preloader').delay(350).fadeOut('slow');
-				$('body').delay(350).css({'overflow':'visible'});
-				alert('GPS Device yet to communicated with server...!!!');
 			}
 		// })	
 		
