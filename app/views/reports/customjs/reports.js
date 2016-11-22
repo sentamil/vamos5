@@ -80,39 +80,34 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	$scope.fromTime       =   '12:00 AM';
 	$scope.vehigroup;
 	$scope.consoldateData =   [];
-
+	$scope.today 		  =   new Date();
 	 
 	$scope.sort = {       
                 sortingOrder : 'id',
                 reverse : false
             };
     $scope.$watch("url", function (val) {
-  		$scope.loading	=	true;
+  		startLoading();
 	 	$http.get($scope.url).success(function(data){
-			$scope.locations 	= 	data;
-			$scope.vehigroup    =   data[$scope.groupId].group;
-			// $scope.consoldate(data[$scope.groupId].group);
-			if(data.length)
+	 		if(data.length >0 && data != ''){
+
+				$scope.locations 	= 	data;
+				$scope.vehigroup    =   data[$scope.groupId].group;
 				$scope.vehiname		=	data[$scope.groupId].vehicleLocations[0].vehicleId;
-			sessionStorage.setItem('user', JSON.stringify($scope.vehiname+','+$scope.vehigroup));
-			$("#testLoad").load("../public/menu");
-			angular.forEach(data, function(value, key) {
-				   if(value.totalVehicles) {
-				  		$scope.data1		=	data[key];
-				  }
-			});				
-		// // $scope.loading	=	false;
-		// if($('#consoldate.active'))
-		// console.log($('#consoldate').attr('id'));
-		// if(!$("#consoldate").css('visibility') === 'hidden'){
-			if($scope.siteTab == true)
-				{$scope.consoldateTrip();$scope.siteTab == false}
-	// else if($scope.actTab == true)
-	// 	{$('#myModal').show();}
-				$('#preloader').fadeOut(); 
-				$('#preloader02').delay(350).fadeOut('slow');
-		$scope.recursive($scope.data1.vehicleLocations,0);
-		}).error(function(){ /*alert('error'); */});
+				sessionStorage.setItem('user', JSON.stringify($scope.vehiname+','+$scope.vehigroup));
+				$("#testLoad").load("../public/menu");
+				angular.forEach(data, function(value, key) {
+					   if(value.totalVehicles) {
+					  		$scope.data1		=	data[key];
+					  }
+				});				
+				if($scope.siteTab == true)
+					{$scope.consoldateTrip();$scope.siteTab == false}
+				
+				$scope.recursive($scope.data1.vehicleLocations,0);
+			}
+			stopLoading();
+		}).error(function(){stopLoading();});
 	});
     // address resolving with delay function
 	$scope.selectMe = function(consoldateData)
@@ -193,8 +188,9 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 
 	$scope.consoldate1 =  function()
 	{
-		$('#preloader').show(); 
-		$('#preloader02').show();
+		// $('#preloader').show(); 
+		// $('#preloader02').show();
+		startLoading();
 		$scope.fromdate1   =  document.getElementById("dateFrom").value;
 		$scope.fromTime    =  document.getElementById("timeFrom").value;
 		$scope.todate1     =  document.getElementById("dateTo").value;
@@ -204,8 +200,9 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		if(days <= 3)
 			service(conUrl1);
 		else {
-			$('#preloader').fadeOut(); 
-			$('#preloader02').delay(350).fadeOut('slow');
+			// $('#preloader').fadeOut(); 
+			// $('#preloader02').delay(350).fadeOut('slow');
+			stopLoading()
 			$scope.connSlow = "Sorry for the inconvenience, Its a three days report"
 			$('#connSlow').modal('show');
 		}
@@ -224,8 +221,9 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	$scope.consoldate =  function()
 	{
 		
-		$('#preloader').show(); 
-		$('#preloader02').show();
+		// $('#preloader').show(); 
+		// $('#preloader02').show();
+		startLoading();
 		$scope.dateFunction();
 		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
 		service(conUrl);
@@ -234,8 +232,9 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	function serviceCallTrip (url){
 		$http.get(url).success(function(response){
 			$scope.tripData = response;
-			$('#preloader').fadeOut(); 
-			$('#preloader02').delay(350).fadeOut('slow');
+			stopLoading()
+			// $('#preloader').fadeOut(); 
+			// $('#preloader02').delay(350).fadeOut('slow');
 		})
 	}
 
@@ -243,9 +242,9 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	$scope.checkBox =	{}
 	$scope.consoldateTrip = function(valu)
 	{	
-		
-		$('#preloader').show(); 
-		$('#preloader02').show();
+		startLoading();
+		// $('#preloader').show(); 
+		// $('#preloader02').show();
 		// $scope.tripValu = valu;
 		// console.log(' trip '+valu+'---->'+$scope.checkBox.site+$scope.checkBox.loc);
 		if(valu == 'tripButon')

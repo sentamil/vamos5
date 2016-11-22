@@ -196,8 +196,10 @@ function barLoad(vehicleId) {
 //group level graph 
 
 function donutLoad(data) {
+
 	$scope.barArray	=	[];
 	var vehiName='';
+	if(data != '')
 	angular.forEach(JSON.parse(data.distanceCoveredAnalytics), function(value, key) {
 		angular.forEach(data.execReportData, function(val, key1){
 			if(val.vehicleId == key)

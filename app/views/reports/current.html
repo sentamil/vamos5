@@ -53,13 +53,16 @@ background-color: #ffffff;
 </style>
 </head>
 <div id="preloader" >
+
     <div id="status">&nbsp;</div>
 </div>
-<div id="preloader02" >
-    <div id="status02">&nbsp;</div>
-</div>
+<!-- <div id="preloader02" >
+    <div id="status02">&nbsp; -->
+    	<!-- <p id="preloader"> asdasdß</p> -->
+ <!--    </div>
+</div> -->
 
-<body ng-app="mapApp">
+<body ng-app="mapApp" class="ng-cloak">
 	<div id="wrapper" ng-controller="mainCtrl">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -110,117 +113,136 @@ background-color: #ffffff;
 		        	
 		            <h5 class="box-title">Current Status Report</h5>
 		            <!-- language -->
-		            <div id="google_translate_element"></div>
-		           
-		            <div class="box-tools pull-right">
+		            
+		           <!-- <hr style="margin-bottom:0px;"> -->
+		          <!--   <div class="box-tools pull-right">
 		               <img style="cursor: pointer;" ng-click="exportData('statusreport')"  src="../app/views/reports/image/xls.png" />
 		            	<img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV('statusreport')"  src="../app/views/reports/image/csv.jpeg" />
-		            </div>
+		            </div> -->
 		        </div>
-		        
+		        <hr style="margin: 0px">
 		        <div class="box-body">
 		        	<table class="table">
-					   	<tr style="font-weight: bold;">
-						  	<td>Vehicle Group : {{data1.group}}</td>					  
-						  	<td style="text-align: right;">Report Date : {{today}}</td>				
-					  	</tr>				  	
+					   	<thead style="font-weight: bold;">
+						  	<td>Vehicle Group : {{data1.group}}</td>
+						  	<td>Report Date : {{today| date:'yyyy-MM-dd'}}</td>									  
+						  	<td><div id="google_translate_element"></div></td>
+						  	<td>
+						  		<div class="pull-right">
+						  			<img style="cursor: pointer;" ng-click="exportData('statusreport')"  src="../app/views/reports/image/xls.png" />
+		            				<img style="cursor: pointer;" ng-click="exportDataCSV('statusreport')"  src="../app/views/reports/image/csv.jpeg" />
+						  		</div>
+						  	</td>									  
+						</thead>
+						<thead>
+							
+						</thead>				  	
 		        	</table>
-		        	<input class="btn btn-xs btn-danger pull-right" type="button" value="More" ng-click="toggle = !toggle" >
-		        	<br><br>
-      				<div ng-hide="toggle" class="col-md-3">
+		        	<!-- <input class="btn btn-xs btn-danger pull-right" type="button" value="More" ng-click="toggle = !toggle" > -->
+		        	<hr style="margin:0px 0px 10px 0px;">
+
+
+      				<div class="col-md-3">
 			        	<div class="small-box bg-aqua">
 	                        <div class="inner">
-	                            <h3>{{data1.distance|number:0}}</h3>
-	                            <p><b>Total Km Today</b></p>                                   
+	                            <!-- <h3></h3> -->
+	                            <p><b>Total Kms {{data1.distance|number:0}} </b> <i class="fa fa-tachometer pull-right"></i></p>       
+	                        <!--     <span class='badge badge-success small'>
+								  <i class='icon-user icon-white'></i>
+								  <i class='icon-user icon-white'></i>
+								  <i class='icon-user icon-white'></i> 
+								  <i class="fa fa-tachometer"></i>
+								</span>-->
+								                            
 	                        </div>
-	                        <div class="icon">
+	                        <!-- <div class="icon">
 	                            <i class="fa fa-tachometer"></i>
-	                        </div>
+	                        </div> -->
 	                     </div>
 	                </div>
 	                
-	                <div ng-hide="toggle" class="col-md-3">
+	                <div class="col-md-3">
 			        	<div class="small-box bg-green">
 	                        <div class="inner">
-	                            <h3>{{data1.online}}</h3>
-	                            <p><b>Vehicles Online</b></p>                                   
+	                            <!-- <h6></h6> -->
+	                            <p><b>Vehicles Online {{data1.online}}</b><i class="fa fa-taxi pull-right"></i></p>                                   
 	                        </div>
-	                        <div class="icon">
+	                       <!--  <div class="icon">
 	                            <i class="fa fa-taxi"></i>
-	                        </div>
+	                        </div> -->
 	                     </div>
 	                </div>
 	                
-	                <div ng-hide="toggle" class="col-md-3">
+	                <div class="col-md-3">
 			        	<div class="small-box bg-yellow">
 	                        <div class="inner">
-	                            <h3>{{data1.alerts}}</h3>
-	                            <p><b>Alarms/Atentions</b></p>                                   
+	                            <!-- <h3></h3> -->
+	                            <p><b>Alarms/Atentions {{data1.alerts}}</b><i class="fa fa-bell pull-right"></i></p>                                   
 	                        </div>
-	                        <div class="icon">
+	                       <!--  <div class="icon">
 	                            <i class="fa fa-bell"></i>
-	                        </div>
+	                        </div> -->
 	                     </div>
 	                </div>
 	                
-	                <div ng-hide="toggle" class="col-md-3">
+	                <div class="col-md-3">
 			        	<div class="small-box bg-red">
 	                        <div class="inner">
-	                            <h3>{{data1.totalVehicles}}</h3>
-	                            <p><b>Total Vehicle</b></p>                                   
+	                            <!-- <h3></h3> -->
+	                            <p><b>Total Vehicle {{data1.totalVehicles}}</b><i class="fa fa-taxi pull-right"></i></p>                                   
 	                        </div>
-	                        <div class="icon">
+	                       <!--  <div class="icon">
 	                            <i class="fa fa-taxi"></i>
-	                        </div>
+	                        </div> -->
 	                     </div>
 	                </div>
 	                
 	                
-	                <div ng-show="toggle" class="col-md-3">
+	                <div class="col-md-3">
 			        	<div class="small-box bg-blue">
 	                        <div class="inner">
-	                            <h3>{{data1.totalMovingVehicles}}</h3>
-	                            <p><b>Total Moving Vehicles</b></p>                                   
+	                            <!-- <h3></h3> -->
+	                            <p><b>Moving Vehicles {{data1.totalMovingVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #7feb1c"></i></p>                                   
 	                        </div>
-	                        <div class="icon">
+	                       <!--  <div class="icon">
 	                            <i class="fa fa-taxi"></i>
-	                        </div>
+	                        </div> -->
 	                     </div>
 	                </div>
 	                
-	                <div ng-show="toggle" class="col-md-3">
+	                <div class="col-md-3">
 			        	<div class="small-box bg-purple">
 	                        <div class="inner">
-	                            <h3>{{data1.totalIdleVehicles}}</h3>
-	                            <p><b>Total Idle Vehicles</b></p>                                   
+	                            <!-- <h3></h3> -->
+	                            <p><b>Idle Vehicles {{data1.totalIdleVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #eb881c"></i></p>                                   
 	                        </div>
-	                        <div class="icon">
+	                        <!-- <div class="icon">
 	                            <i class="fa fa-taxi"></i>
-	                        </div>
+	                        </div> -->
 	                     </div>
 	                </div>
 	                
-	                <div ng-show="toggle" class="col-md-3">
+	                <div class="col-md-3">
 			        	<div class="small-box bg-teal">
 	                        <div class="inner">
-	                            <h3>{{data1.totalParkedVehicles}}</h3>
-	                            <p><b>Total Parked Vehicles</b></p>                                   
+	                            <!-- <h3></h3> -->
+	                            <p><b>Parked Vehicles {{data1.totalParkedVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #7b7b7b"></i></p>                                   
 	                        </div>
-	                        <div class="icon">
+	                        <!-- <div class="icon">
 	                            <i class="fa fa-taxi"></i>
-	                        </div>
+	                        </div> -->
 	                     </div>
 	                </div>
 	                
-	                <div ng-show="toggle" class="col-md-3">
+	                <div class="col-md-3">
 			        	<div class="small-box bg-maroon">
 	                        <div class="inner">
-	                            <h3>{{data1.totalNoDataVehicles}}</h3>
-	                            <p><b>Total No Date Vehicles</b></p>                                   
+	                            <!-- <h3></h3> -->
+	                            <p><b>NoData Vehicles {{data1.totalNoDataVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #ff62b0"></i></p>                                   
 	                        </div>
-	                        <div class="icon">
+	                        <!-- <div class="icon">
 	                            <i class="fa fa-taxi"></i>
-	                        </div>
+	                        </div> -->
 	                     </div>
 	                </div>
 	                
@@ -249,23 +271,23 @@ background-color: #ffffff;
 								      	<td></td>
 								    </tr> -->
 									<tr style="text-align:center">
-										<th width="10%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">Vehicle Name</th>
+										<th width="10%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">Vehicle</th>
 										<!-- <th ng-hide="true" style="text-align:center;">Vehicle Name</th> -->
-										<th width="5%" class="id" custom-sort order="'regNo'" sort="sort" style="text-align:center;">Regn No</th>
-										<th width="5%" class="id" custom-sort order="'driverName'" sort="sort" style="text-align:center;">Driver Name</th>
+										<th width="5%" class="id" custom-sort order="'regNo'" sort="sort" style="text-align:center;">RegNo</th>
+										<th width="5%" class="id" custom-sort order="'driverName'" sort="sort" style="text-align:center;">Driver</th>
 										<!-- <th ng-hide="true">Mobile Number</th> -->
-										<th width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Last Seen</th>
-										<th width="5%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;">KM today</th>
+										<th width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">LastSeen</th>
+										<th width="5%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;">KMs</th>
 										<th width="5%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed</th>
 										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;">Position</th>
-										<th width="5%" class="id" custom-sort order="'status'" sort="sort" style="text-align:center;">GPS Status</th>
-										<th width="5%" class="id" custom-sort order="'loadTruck'" sort="sort" style="text-align:center;">Load Truck</th>
-										<th width="10%" class="id" custom-sort order="'vehicleBusy'" sort="sort" style="text-align:center;">Hire Status</th>
-										<th width="10%" class="id" custom-sort order="'temperature'" sort="sort" style="text-align:center;">Temperature</th>
+										<th width="5%" class="id" custom-sort order="'status'" sort="sort" style="text-align:center;">GPS</th>
+										<th width="5%" class="id" custom-sort order="'loadTruck'" sort="sort" style="text-align:center;">Load</th>
+										<th width="5%" class="id" custom-sort order="'vehicleBusy'" sort="sort" style="text-align:center;">A/C</th>
+										<th width="5%" class="id" custom-sort order="'temperature'" sort="sort" style="text-align:center;">&#8451;</th>
 										<th width="40%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
-										<th width="5%" style="text-align:center;">G-Map</th>
+										<th width="5%" style="text-align:center;">GMap</th>
 									</tr>
-									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 11px">
 										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.shortName}}</a></td>
 										<!-- <td ng-hide="true"></td> -->
 										<td>{{user.regNo}}</td>
@@ -292,17 +314,17 @@ background-color: #ffffff;
 										<td ng-if="user.loadTruck=='nill'">--</td>
 										<td ng-if="user.loadTruck!='nill'">{{user.loadTruck}}</td>
 										<td ng-switch on="user.vehicleBusy">
-			                                <span ng-switch-when="yes" style="color: #ff0045">Busy</span>
-			                                <span ng-switch-when="no" style="color: #00ce2f">Available</span>
+			                                <span ng-switch-when="yes" style="color: #ff0045">ON</span>
+			                                <span ng-switch-when="no" style="color: #00ce2f">OFF</span>
 			                            </td>
 			                            <td>{{user.temperature}}</td>
-										<td ng-if="user.address!=null">{{user.address}}</td>
+										<td ng-if="user.address!=null" >{{user.address}}</td>
 										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
 										<td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>														
 									</tr>
 									<tr ng-if="data1.vehicleLocations==null">
-										<td colspan="12" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td colspan="13" class="err"><h5>No Data Found ! Try Again</h5></td>
 									</tr>
 								</table>		
 		        </div>
@@ -601,7 +623,7 @@ background-color: #ffffff;
 		    </tab>
         </tabset>
     </div>
-</div>
+
     <script src="assets/js/static.js"></script>
 	<script src="assets/js/jquery-1.11.0.js"></script>
    

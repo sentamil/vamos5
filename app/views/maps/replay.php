@@ -34,7 +34,7 @@
 <div id="preloader02" >
     <div id="status02">&nbsp;</div>
 </div>
-<body ng-controller="mainCtrl">
+<body ng-controller="mainCtrl" class="ng-cloak">
         <div id="wrapper" >
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
