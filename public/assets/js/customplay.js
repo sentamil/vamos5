@@ -27,7 +27,7 @@ app.directive('map', function($http) {
 				return result;
 			}
 		 	scope.$watch("hisurl", function (val) {
-		 		scope.startLoading(); 
+		 		startLoading(); 
 		 		if(scope.hisurl != undefined)
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
@@ -291,8 +291,8 @@ app.directive('map', function($http) {
 					var url = 'http://'+globalIP+context+'/public//getGeoFenceView?vehicleId='+scope.trackVehID;
 		
 				scope.createGeofence(url);
-				scope.stopLoading();
-		   		}).error(function(){ });
+				stopLoading();
+		   		}).error(function(){ stopLoading();});
 		 	});
         }
     };
@@ -311,18 +311,18 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
 	};
 
-	//loading start function
-	$scope.startLoading		= function () {
-		$('#status').show(); 
-		$('#preloader').show();
-	};
+	// //loading start function
+	// $scope.startLoading		= function () {
+	// 	$('#status').show(); 
+	// 	$('#preloader').show();
+	// };
 
-	//loading stop function
-	$scope.stopLoading		= function () {
-		$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');
-		$('body').delay(350).css({'overflow':'visible'});
-	};
+	// //loading stop function
+	// $scope.stopLoading		= function () {
+	// 	$('#status').fadeOut(); 
+	// 	$('#preloader').delay(350).fadeOut('slow');
+	// 	$('body').delay(350).css({'overflow':'visible'});
+	// };
 
 
 	function sessionValue(vid, gname){
@@ -357,7 +357,32 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 
 	// }).error(function(){ /*alert('error'); */});
 
+
+	$scope.getOrd 	= function()
+	{
+		$scope.error = "";
+		$scope.routeName = "";
+		$scope.selectedOrdId = "";
+
+		getRouteNames();
+
+	}
+
+
+	function showRoutes(setRoute){
+
+		if(setRoute != '' && setRoute == 'routes'){
+
+			console.log(' into the function  ')
+			$("#myModal1").modal();
+			$scope.getOrd();
+		}
+
+	}
+
+
 	(function init(){
+		startLoading()
 		var url;
 		$scope.groupname = getParameterByName('gid');
 		url =(getParameterByName('vehicleId')=='' && getParameterByName('gid')=='')?$scope.url:$scope.url+'?group='+$scope.groupname;
@@ -378,7 +403,6 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 				angular.forEach(response, function(value, key){
 					if($scope.groupname 	= value.group)
 					{	
-						console.log(key);
 						angular.forEach(value.vehicleLocations, function(val, k){
 							if(val.vehicleId == $scope.trackVehID)
 								$scope.selected=k;
@@ -398,7 +422,7 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 
 
 		// }
-
+		stopLoading();
 	}());
 
 
@@ -494,10 +518,11 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 	*/
 	var url_site    = 'http://'+globalIP+context+'/public/viewSite';
 
-	console.log(url_site);
+	
 	
 	$http.get(url_site).success(function(response){
 		$scope.orgIds 	= response.orgIds;
+		showRoutes(getParameterByName('rt'))
 	})
 	
 	function getRouteNames(){
@@ -518,26 +543,11 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 	}
 
     
-	$scope.getOrd 	= function()
-	{
-		$scope.error = "";
-		$scope.routeName = "";
-		$scope.selectedOrdId = "";
-
-		getRouteNames();
-
-		}
-
-
+	
     $scope.getMap = function(routesMap){
 
-        
-
-    	
        $scope.windowRouteName=routesMap;
-        
        
-
        if(!routesMap =='' && $scope.orgIds.length>0 && !$scope.orgIds==''){
              $.ajax({
                        async:false,
@@ -552,145 +562,98 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
                        }
 
                })
-           
         
- }        
+ 	}        
 
 }
 
- var latLanpath=[];
- var markerList=[];
- var pathCoords=[];
+var latLanpath=[];
+var markerList=[];
+var pathCoords=[];
 
 
-	function clearMap(path){
+function clearMap(path){
 		
-		for (var i=0; i<latLanpath.length; i++){
-        	latLanpath[i].setMap(null);
+	for (var i=0; i<latLanpath.length; i++){
+    	latLanpath[i].setMap(null);
 
-       	}
+   	}
 
-       	for (var i = 0; i < markerList.length; i++) {
-       		markerList[i].setMap(null);
-       	}
+   	for (var i = 0; i < markerList.length; i++) {
+   		markerList[i].setMap(null);
+   	}
 }
 
- function getMapArray(values){
+function getMapArray(values){
 
-     
-       var latSplit ;
-       var latLangs=values;
+    var latSplit ;
+   	var latLangs=values;
+   	clearMap(pathCoords);
+    pathCoords=[];
 
-       clearMap(pathCoords);
-     
-      
-      pathCoords=[];
-
-      console.log(pathCoords.length);
-
-       
-  for(i=0;i<latLangs.length;i++){
+  	for(i=0;i<latLangs.length;i++){
 
         latSplit = latLangs[i].split(",");
+        pathCoords.push({"lat": latSplit[0],"lng": latSplit[1]});
+    }
 
-       pathCoords.push({
-           "lat": latSplit[0],
-           "lng": latSplit[1]
-           });
-      }
+	dvMap.setCenter(new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng)); 
+	autoRefresh(dvMap);
 
-dvMap.setCenter(new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng)); 
-//dvMap.setZoom(8);
-
-autoRefresh(dvMap);
-
-     }
+}
 
 function myMap(){
 
-var mapCanvas=document.getElementById("dvMap");
+	var mapCanvas=document.getElementById("dvMap");
+	var mapOptions={
+		center: new google.maps.LatLng(0,0),
+	    zoom: 8,
+	    mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	dvMap=new google.maps.Map(mapCanvas,mapOptions);
 
-var mapOptions={
-	center: new google.maps.LatLng(0,0),
-    zoom: 8,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-};
+}
+myMap();
 
-dvMap=new google.maps.Map(mapCanvas,mapOptions);
+$('#myModal2').on('shown.bs.modal', function () {
+	google.maps.event.trigger(dvMap, "resize");
+});
 
-//autoRefresh(dvMap);
+
+
+function moveMarker(marker, latlng) {
+	
+	marker.setPosition(latlng);
 
 }
 
-myMap();
-$('#myModal2').on('shown.bs.modal', function () {
-     
-       google.maps.event.trigger(dvMap, "resize");
-
-      
-  });
-
-
-
-/*function myMap() {
-
-   var mapCanvas = document.getElementById("dvMap");
-  
-   var mapOptions = {
-   // center: new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng),
-    center: new google.maps.LatLng(0,0),
-    zoom: 8,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  }
-  
- dvMap = new google.maps.Map(mapCanvas, mapOptions);
-
-  autoRefresh(dvMap);
-
-}*/
-
-function moveMarker(marker, latlng) {
-
-			marker.setPosition(latlng);
-          
-         
-          
-
-  }
-
 function autoRefresh(map) {
-			var i, route, marker;
-			
-			route = new google.maps.Polyline({
-				path: [],
-				geodesic : true,
-				strokeColor: '#FF0000',
-				strokeOpacity: 1.0,
-				strokeWeight: 2,
-				editable: false,
-				map:map
-			});
+	var i, route, marker;
+	
+	route = new google.maps.Polyline({
+		path: [],
+		geodesic : true,
+		strokeColor: '#FF0000',
+		strokeOpacity: 1.0,
+		strokeWeight: 2,
+		editable: false,
+		map:map
+	});
                 
-
-                latLanpath.push(route);
-               // http://maps.google.com/mapfiles/ms/micons/blue.png
-			  marker=new google.maps.Marker({map:map,icon:""});
-
-			  markerList.push(marker);
-			
-			for (i=0; i<pathCoords.length; i++) {
-
-
-
-               setTimeout(function (coords)
-				{
-					var latlng = new google.maps.LatLng(coords.lat, coords.lng);
-					route.getPath().push(latlng);
-                    moveMarker( marker, latlng);
-                   map.panTo(latlng);
-                       
-				}, 0* i, pathCoords[i]);
-			}
+	latLanpath.push(route);
+    marker = new google.maps.Marker({map:map,icon:""});
+    markerList.push(marker);
+	for (i=0; i<pathCoords.length; i++) {
+		
+		setTimeout(function (coords)
+			{
+				var latlng = new google.maps.LatLng(coords.lat, coords.lng);
+				route.getPath().push(latlng);
+                moveMarker( marker, latlng);
+                map.panTo(latlng);
+            
+            }, 0* i, pathCoords[i]);
+		}
 
 }
 
