@@ -34,9 +34,8 @@
 		            		@if(isset($vehicleList))		  
 								@foreach($vehicleList as $key => $value)
 									<div class="col-md-3 vehiclelist"> 
-									{{ Form::checkbox('vehicleList[]', $key,  in_array($value,$selectedVehicles), ['class' => 'field' ,'id' => 'questionCheckBox']) }}
-									{{ Form::label($value) }}
-									{{ Form::label('( ' . array_get($shortNameList, $value) . ' )') }}
+									  {{ Form::checkbox('vehicleList[]', $key.' || ' . array_get($shortNameList, $value),  in_array($value,$selectedVehicles), ['class' => 'field' ,'id' => 'questionCheckBox']) }}
+                                                                        {{ Form::label(array_get($shortNameList, $value)) }}
 									</div>
 									
 								@endforeach
