@@ -16,7 +16,7 @@
 </head>
 <div id="status">&nbsp;</div>
 <body ng-app = "mapApp">
-    <div ng-controller = "mainCtrl">
+    <div ng-controller = "mainCtrl" class="ng-cloak">
         <div id="wrapper">
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">

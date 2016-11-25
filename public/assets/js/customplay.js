@@ -27,7 +27,7 @@ app.directive('map', function($http) {
 				return result;
 			}
 		 	scope.$watch("hisurl", function (val) {
-		 		startLoading(); 
+		 		// startLoading(); 
 		 		if(scope.hisurl != undefined)
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
@@ -372,8 +372,6 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 	function showRoutes(setRoute){
 
 		if(setRoute != '' && setRoute == 'routes'){
-
-			console.log(' into the function  ')
 			$("#myModal1").modal();
 			$scope.getOrd();
 		}
@@ -396,6 +394,7 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 				$scope.trackVehID 	= $scope.locations[0].vehicleLocations[0].vehicleId;
 				$scope.shortVehiId 	= $scope.locations[0].vehicleLocations[0].shortName;
 				$scope.selected 	= 0;
+				$('#vehiid h3').text($scope.shortVehiId);
 			
 			} else { 
 
@@ -404,8 +403,10 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 					if($scope.groupname 	= value.group)
 					{	
 						angular.forEach(value.vehicleLocations, function(val, k){
-							if(val.vehicleId == $scope.trackVehID)
-								$scope.selected=k;
+							if(val.vehicleId == $scope.trackVehID){
+								$scope.selected 	=	k;
+								$('#vehiid h3').text(val.shortName);
+							}
 						})
 						
 						// $scope.locations 	= response;
@@ -416,13 +417,13 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 		sessionValue($scope.trackVehID, $scope.groupname)
 		$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
-
+		// stopLoading();
 		})
 		// } else{
 
 
 		// }
-		stopLoading();
+		
 	}());
 
 
@@ -879,6 +880,7 @@ function animateMapZoomTo(map, targetZoom) {
 	}
 	
 	$scope.genericFunction = function(a,b,shortName){
+		startLoading();
 		$scope.path = [];
 		gmarkers=[];
 		ginfowindow=[];
@@ -888,9 +890,11 @@ function animateMapZoomTo(map, targetZoom) {
 		$scope.selected = b;
 		$scope.plotting();
 		sessionValue($scope.trackVehID, $scope.groupname);
+		// stopLoading();
 	}
 	
 	$scope.groupSelection = function(groupname, groupid){
+		startLoading();
 		 $scope.selected=0;
 		 $scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
@@ -935,8 +939,8 @@ if($scope.markerstart){
 			$('.nav-second-level li').eq(0).children('a').addClass('active');
 			$scope.loading	=	false;
 			
-			
-		}).error(function(){ /*alert('error'); */});
+			// stopLoading();
+		}).error(function(){ stopLoading();});
 		
 	}
 	$scope.pointMarker=function(data){
@@ -1083,7 +1087,7 @@ if($scope.markerstart){
 		return sHours+":"+sMinutes+":00";
 	}
 	$scope.plotting = function(){
-		
+		startLoading();
 		$scope.hisurlold = $scope.hisurl;
 		var fromdate = document.getElementById('dateFrom').value;
 		var todate = document.getElementById('dateTo').value;
@@ -1142,7 +1146,7 @@ if($scope.markerstart){
 				alert('Please selected date before 7 days / No data found')
 			}
 		}
-		
+		// stopLoading();
 	}
 	$scope.addMarker= function(pos){
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
@@ -1316,13 +1320,16 @@ if($scope.markerstart){
 	        offset = count /2;
 	        $scope.gcount = count;
 	        var icons = $scope.polyline.get('icons');
-	        icons[0].offset = (offset) + '%';
-	        $scope.polyline.set('icons', icons);    
-	        if ($scope.polyline.get('icons')[0].offset == "99.5%") {
-	            icons[0].offset = '100%';
-	            $scope.polyline.set('icons', icons);
-	            window.clearInterval(id);
-	        }
+	        if(icons != undefined){
+	        	icons[0].offset = (offset) + '%';
+	        	$scope.polyline.set('icons', icons);    
+	        	if ($scope.polyline.get('icons')[0].offset == "99.5%") {
+		            icons[0].offset = '100%';
+		            $scope.polyline.set('icons', icons);
+		            window.clearInterval(id);
+		        }
+	        } else {window.clearInterval(id);}
+	        
 	    }, tempint);
 	}
 	
@@ -1389,13 +1396,7 @@ if($scope.markerstart){
             window.clearInterval(id);
         }   
 	}
-	$(window).load(function() {
-		$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');
-		$('body').delay(350).css({'overflow':'visible'});
-});
 
-	
 	$(document).ready(function(){
         $('#minmax').click(function(){
             $('#contentmin').animate({

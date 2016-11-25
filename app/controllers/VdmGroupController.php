@@ -114,10 +114,9 @@ if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.
         {
 
 
-			$userVehicles=array_add($userVehicles, $value, $value);
-           
-             $shortName = $vehicleRefData['shortName']; 
-            $shortNameList = array_add($shortNameList,$value,$shortName);
+			$shortName = $vehicleRefData['shortName']; 
+			$userVehicles=array_add($userVehicles, $value , $value);
+           	$shortNameList = array_add($shortNameList,$value,$shortName);
 			}
 			
 		}	
@@ -176,8 +175,9 @@ if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.
 				;
 			}
 			$redis->sadd('S_Groups_' . $fcode, $groupId . ':' . $fcode);
-			foreach($vehicleList as $vehicle) {
-				$redis->sadd($groupId . ':' . $fcode,$vehicle);
+			foreach($vehicleList as $vehi) {
+				$vehicle    = explode(" || ",$vehi)[0];
+                $redis->sadd($groupId . ':' . $fcode,$vehicle);
 			}
 
 			
@@ -318,7 +318,8 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 			$redis = Redis::connection();
 			$redis->del($id);
 			
-			foreach($vehicleList as $vehicle) {
+			foreach($vehicleList as $vehi) {
+				$vehicle  = explode(" || ",$vehi)[0];
 				$redis->sadd($id,$vehicle);
 			}
 			

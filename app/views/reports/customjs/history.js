@@ -98,8 +98,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 
     	$http.get(urlEvent).success(function(eventRes){
     		$scope.eventReportData 		=	eventRes;
-    		$('#status').fadeOut(); 
-			$('#preloader').delay(350).fadeOut('slow');
+   //  		$('#status').fadeOut(); 
+			// $('#preloader').delay(350).fadeOut('slow');
+			stopLoading();
     		if($scope.buttonClick==true)
     		{
     			$scope.alertMe_click($scope.downloadid);
@@ -137,8 +138,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     	$http.get(url).success(function(siteval){
     		$scope.siteReport=[];
     		$scope.siteReport = siteval;
-    		$('#status').fadeOut(); 
-			$('#preloader').delay(350).fadeOut('slow');
+   //  		$('#status').fadeOut(); 
+			// $('#preloader').delay(350).fadeOut('slow');
+			stopLoading();
     	});
     }
 
@@ -197,6 +199,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
    	
    	(function initial(prodId){
    		console.log(' new  '+prodId)
+   		startLoading();
    		$scope.id	=	prodId;
    		var histurl	=	"http://"+getIP+context+"/public/getVehicleHistory?vehicleId="+getParameterByName('vid')+"&interval="+$scope.interval;
    		$scope.loading	=	true;
@@ -218,11 +221,13 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 				$scope.todate			=	$scope.getTodayDate($scope.toNowTS);
 				// $scope.eventCall();
 				// $scope.siteCall();
+				stopLoading()
 			});
 		} catch (errr){
-			$('#status').fadeOut(); 
-			$('#preloader').delay(350).fadeOut('slow');	
+			// $('#status').fadeOut(); 
+			// $('#preloader').delay(350).fadeOut('slow');	
 			console.log(' error '+errr);
+			stopLoading()
 		}  
    	}(prodId));
    	
@@ -320,7 +325,13 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
 		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
 		$scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
+
 		$scope.fuelValue 		= 	filter(data);
+		if(tabId == 'fuel')
+		{
+			$scope.fuelChart($scope.fuelValue);
+			$scope.recursiveFuel($scope.fuelValue, 0);
+		}
 		ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
 		ignitionFilter(ignitionValue);
 		// loadReportApi("http://"+getIP+context+"/public/getLoadReport?vehicleId="+prodId);
@@ -775,12 +786,14 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	}
 
 	$scope.groupSelection = function(groupname, groupid){
+		startLoading()
 		var urlGroup = 'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
 		$http.get(urlGroup).success(function(data){
 			$scope.vehiname		=	data[groupid].vehicleLocations[0].vehicleId;
 			$scope.gName 		= 	data[groupid].group; 
 			$scope.locations 	= 	data;
 			sessionValue($scope.vehiname, $scope.gName);
+			stopLoading()
 		});
 		
 	};
@@ -970,8 +983,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
     $scope.plotHist			=	function() {
     	//$scope.siteCall();
     	//$scope.loading		=	true;
-    	$('#status').show();
-    	$('#preloader').show();
+    	// $('#status').show();
+    	// $('#preloader').show();
+    	startLoading();
     	var valueas 		=   $('#txtv').val();
 		
 			var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
@@ -984,14 +998,16 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 				$scope.topspeedtime		=	data.topSpeedTime;
 				// loadReportApi(loadUrl);
 				$scope.dataArray_click(data.vehicleLocations);
-				$('#status').fadeOut(); 
-				$('#preloader').delay(350).fadeOut('slow');	
+				// $('#status').fadeOut(); 
+				// $('#preloader').delay(350).fadeOut('slow');
+				stopLoading();	
 			});
 		}
 		catch (err){
 			console.log(' err '+err);
-			$('#status').fadeOut(); 
-				$('#preloader').delay(350).fadeOut('slow');	
+			// $('#status').fadeOut(); 
+			// 	$('#preloader').delay(350).fadeOut('slow');
+			stopLoading();	
 		}
 
 			
@@ -1049,11 +1065,11 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	    $scope.figureOutTodosToDisplay();
 	  };
 	  
-  $(window).load(function() {
-		$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');
-		$('body').delay(350).css({'overflow':'visible'});
-});
+//   $(window).load(function() {
+// 		$('#status').fadeOut(); 
+// 		$('#preloader').delay(350).fadeOut('slow');
+// 		$('body').delay(350).css({'overflow':'visible'});
+// });
 
 });
 app.factory('vamo_sysservice', function($http, $q){

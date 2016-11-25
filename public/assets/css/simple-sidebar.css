@@ -397,7 +397,7 @@ border-width: 10px;
 	.error{ display:none;}
 
 	.box > .loading-img, .loading-img,#status, #status02{
-		width: 150px;height: 150px;z-index: 9999;position: absolute;left: 50%;top: 50%;background-image: url(../imgs/loading.gif);background-repeat: no-repeat;background-position: center;background-color:#f4f4f4;margin: -100px 0 0 -100px; border-radius: 3px
+		width: 150px;height: 150px;z-index: 9999;position: absolute;left: 50%;top: 50%;background-image: url(../imgs/loading.gif);background-repeat: no-repeat;background-position: center;margin: -100px 0 0 -100px; border-radius: 3px
     } 
 	
 

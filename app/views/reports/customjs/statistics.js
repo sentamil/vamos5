@@ -110,17 +110,17 @@ $scope.genericFunction 	= 	function(vehicleID, index){
 }
 
 //loading start function
-var startLoading		= function () {
-	$('#status').show(); 
-	$('#preloader').show();
-};
+// var startLoading		= function () {
+// 	$('#status').show(); 
+// 	$('#preloader').show();
+// };
 
 //loading stop function
-var stopLoading		= function () {
-	$('#status').fadeOut(); 
-	$('#preloader').delay(350).fadeOut('slow');
-	$('body').delay(350).css({'overflow':'visible'});
-};
+// var stopLoading		= function () {
+// 	$('#status').fadeOut(); 
+// 	$('#preloader').delay(350).fadeOut('slow');
+// 	$('body').delay(350).css({'overflow':'visible'});
+// };
 
 
 //trim colon function

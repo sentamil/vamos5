@@ -1179,6 +1179,39 @@ $redis->hset('H_Device_Cpy_Map',$deviceId,$fcode);
 // redirect
 Session::flash ( 'message', 'Successfully updated ' . $vehicleId . '!' );
 
+/*
+    checking old and new refdata for sending mail...
+
+*/
+if($vehicleRefData != $refDataJson)
+{
+    $devices=array();
+    $devicestypes=array();
+    $updated_Value = json_decode($refDataJson,true);
+    foreach ($vehicleRefData as $old_Key => $old_Value)
+    {
+        log::info("------old_Key-----");
+
+        if($updated_Value[$old_Key] != $old_Value){
+
+                log::info($old_Value);
+                $devices = array_add($devices, $old_Key,$old_Value);
+                $devicestypes = array_add($devicestypes, $old_Key,$updated_Value[$old_Key]);
+        }
+    }
+    Session::put('email','arun.vamosys@gmail.com');
+    Mail::queue('emails.updateDetails', array('fname'=>$fcode,'userId'=>$vehicleId, 'oldRef'=>$devices, 'newRef'=>$devicestypes), function($message)
+    {
+        Log::info("Inside email :" . Session::get ( 'email' ));
+        $message->to(Session::pull ( 'email' ))->subject('Vehicle data updated');
+    });
+
+    log::info( "Message sent one  successfully...");
+}
+
+
+
+
 return Redirect::to ( 'vdmVehicles' );
 //            return VdmVehicleController::edit($vehicleId);
 }

@@ -25,15 +25,15 @@
   [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
       display: none !important;
    }
-  
+  div h6 {font-size: bold}
 </style>
 </head>
-<div id="preloader" >
+<!-- <div id="preloader" > -->
     <div id="status">&nbsp;</div>
-</div>
-<div id="preloader02" >
+<!-- </div> -->
+<!-- <div id="preloader02" >
     <div id="status02">&nbsp;</div>
-</div>
+</div> -->
 <body ng-controller="mainCtrl" class="ng-cloak">
         <div id="wrapper" >
         <div id="sidebar-wrapper">
@@ -348,7 +348,7 @@
                                 <td colspan="10">
                                   <div class="row">
                                     <div class="col-lg-2" style="border-right: solid 1px #808080">
-                                      <h6>Vehicle ID</h6>
+                                      <h6>Vehicle Name</h6>
                                         
                                         <h6>{{hisloc.shortName}}</h6>
                                     </div>
@@ -404,7 +404,7 @@
                                         <h6>{{hisloc.shortName}}</h6>
                                     </div>
                                     <div class="col-md-2"  style="border-right: solid 1px #808080">
-                                      <h6>odoDistance</h6>
+                                      <h6>odoDistance</`>
                                         
                                         <h6>{{hisloc.odoDistance}}</h6>
                                     </div>
