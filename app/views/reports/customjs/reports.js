@@ -83,8 +83,8 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	$scope.today 		  =   new Date();
 	 
 	$scope.sort = {       
-                sortingOrder : 'id',
-                reverse : false
+                sortingOrder : 'date',
+                reverse : true
             };
     $scope.$watch("url", function (val) {
   		startLoading();

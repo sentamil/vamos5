@@ -272,11 +272,11 @@ background-color: #ffffff;
 								    </tr> -->
 									<tr style="text-align:center">
 										<th width="10%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">Vehicle</th>
-										<!-- <th ng-hide="true" style="text-align:center;">Vehicle Name</th> -->
+								   <!-- <th ng-hide="true" style="text-align:center;">Vehicle Name</th> -->
 										<th width="5%" class="id" custom-sort order="'regNo'" sort="sort" style="text-align:center;">RegNo</th>
+										<th width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">LastSeen</th>
 										<th width="5%" class="id" custom-sort order="'driverName'" sort="sort" style="text-align:center;">Driver</th>
 										<!-- <th ng-hide="true">Mobile Number</th> -->
-										<th width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">LastSeen</th>
 										<th width="5%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;">KMs</th>
 										<th width="5%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed</th>
 										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;">Position</th>
@@ -289,12 +289,12 @@ background-color: #ffffff;
 									</tr>
 									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 11px">
 										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.shortName}}</a></td>
-										<!-- <td ng-hide="true"></td> -->
+								   <!-- <td ng-hide="true"></td> -->
 										<td>{{user.regNo}}</td>
+										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{user.driverName}}</td>
 										<!-- <td ng-hide="true">{{user.mobileNo}}</td> -->
-										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-										<td>{{user.distanceCovered}}</td>
+									    <td>{{user.distanceCovered}}</td>
 										<td>{{user.speed}}</td>
 										<td ng-switch on="user.position">
 			                                <span ng-switch-when="S"><img title="Vehicle Standing" src="assets/imgs/orange.png"/></span>
