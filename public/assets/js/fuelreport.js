@@ -23,8 +23,8 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	// console.log(' value in tabValue '+$scope.tabValue);
 
 	$scope.sort = {       
-                sortingOrder : 'id',
-                reverse : false
+                sortingOrder : 'date',
+                reverse : true
             };
 
 	function formatAMPM(date) {

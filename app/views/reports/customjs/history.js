@@ -18,20 +18,21 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.addressFuel 		= 	[];
 	// $scope.location	    	=	[];
 	$scope.ltrs 			= 	[];
-	$scope.fuelDate 		= 	[];
-	$scope.tabactive 		=	true;
-	$scope.interval	    	=	getParameterByName('interval')?getParameterByName('interval'):10;
+	$scope.fuelDate 	= 	[];
+	$scope.tabactive 	=	true;
+	$scope.interval	  =	getParameterByName('interval')?getParameterByName('interval'):10;
 	$scope.sort = {       
-                sortingOrder : 'id',
-                reverse : false
+                sortingOrder : 'date',
+                reverse : true
             };
+   
      
      // $scope.itemsPerPage = 5;
   	 // $scope.currentPage = 0;
      // $scope.items = [];
 
      
-     $scope.filteredTodos = [];
+   $scope.filteredTodos = [];
 	 $scope.itemsPerPage = 10;
 	 $scope.currentPage = 1;
      
@@ -75,7 +76,8 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	}
 
 
-	function eventButton(eventdate)
+
+function eventButton(eventdate)
 	{
 		$scope.buttonClick = eventdate;
 		serviceCallEvent();
@@ -1026,8 +1028,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 		
 		
      }
-     
-     
+ 
  	
  	
  	function dateStringFormat(d) {
