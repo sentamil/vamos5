@@ -207,20 +207,24 @@ function eventButton(eventdate)
    		$scope.loading	=	true;
    		try{
 	   		$http.get(histurl).success(function(data){
-				$scope.loading			=	false;
-				$scope.hist				=	data;			
-				$scope.topspeedtime		=	data.topSpeedTime;
-				$scope.dataArray(data.vehicleLocations);
+	   			if(data.vehicleLocations != null){
 
-				//$scope.dataGeofence(data.gfTrip);		
-				var fromNow 			= 	new Date(data.fromDateTime.replace('IST',''));
-				var toNow 				= 	new Date(data.toDateTime.replace('IST',''));
-				$scope.fromNowTS		=	fromNow.getTime();
-				$scope.toNowTS			=	toNow.getTime();	
-				$scope.fromtime			=	formatAMPM($scope.fromNowTS);
-	   			$scope.totime			=	formatAMPM($scope.toNowTS);
-				$scope.fromdate			=	$scope.getTodayDate($scope.fromNowTS);
-				$scope.todate			=	$scope.getTodayDate($scope.toNowTS);
+					$scope.loading			=	false;
+					$scope.hist				=	data;			
+					$scope.topspeedtime		=	data.topSpeedTime;
+					$scope.dataArray(data.vehicleLocations);
+
+					//$scope.dataGeofence(data.gfTrip);		
+					var fromNow 			= 	new Date(data.fromDateTime.replace('IST',''));
+					var toNow 				= 	new Date(data.toDateTime.replace('IST',''));
+					$scope.fromNowTS		=	fromNow.getTime();
+					$scope.toNowTS			=	toNow.getTime();	
+					$scope.fromtime			=	formatAMPM($scope.fromNowTS);
+		   			$scope.totime			=	formatAMPM($scope.toNowTS);
+					$scope.fromdate			=	$scope.getTodayDate($scope.fromNowTS);
+					$scope.todate			=	$scope.getTodayDate($scope.toNowTS);
+	   			
+	   			}
 				// $scope.eventCall();
 				// $scope.siteCall();
 				stopLoading()

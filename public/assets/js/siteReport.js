@@ -308,6 +308,34 @@ function plottinGraphs(valueGraph, timeData){
 					
 				$scope.siteData = responseVal;
 
+
+				/*
+					FOR TEMPORARY LOAD
+				*/
+
+				if(tab == 'load')
+                {
+                    $scope.siteData ={};
+                    $scope.siteData.load =[];
+                    var spLoading ;
+                    try
+                    {
+
+
+                            angular.forEach(responseVal.load, function(value, keyLoad){
+                            	spLoading = splitColon(value.load);
+                                $scope.siteData.load.push({'date':value.date, 'lat':value.lat, 'lng': value.lng, 'Axle1': spLoading[0], 'Axle2': spLoading[1], 'Axle3': spLoading[2], 'Axle4': spLoading[3], 'Axle5': spLoading[4], 'Axle6': spLoading[5], 'Axle7': spLoading[6], 'Axle8': spLoading[7],  'LoadTruck': spLoading[8], 'LoadTrailer': spLoading[9], 'TotalLoadTruck': spLoading[10], 'TotalLoadTrailer': spLoading[11]})
+                            })
+
+                    }
+                    catch(err)
+                    {
+
+                    }
+
+
+                }
+
 				// if(tab == 'rfid')
 				// 	forRfitOnly(responseVal);
 
@@ -486,12 +514,12 @@ if(tab == 'tripkms')
       map.setCenter(myLatlng);
   });
 
-  	jQuery('#mapmodals')
- 	.on('shown.bs.modal',
-      function(){
-        google.maps.event.trigger(map,'resize',{});
-        map.setCenter(myLatlng);
-     });
+  // 	jQuery('#mapmodals')
+ 	// .on('shown.bs.modal',
+  //     function(){
+  //       google.maps.event.trigger(map,'resize',{});
+  //       map.setCenter(myLatlng);
+  //    });
 
  	var latLanPath =[];
  	var marker, markerList =[];
