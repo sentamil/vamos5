@@ -104,13 +104,24 @@ display: none;
     border-left:1px solid #fff;
     /*border-right:1px solid #fff;*/
     text-align: center;
-    align: right;
+    /*align: right;*/
     width: 10vw;
     position:relative;
-    
+    /*text-overflow: ellipsis; 
+    overflow: hidden; */
     /*top: 10px*/
     padding: 10px 15px;
+    /*white-space: nowrap;*/
+    /*overflow : hidden;*/
 }
+
+
+/*.menus ul > #userId:after{
+    content:'';
+    clear:both;
+    display:table;
+}*/
+
 
 @media only screen and (max-width: 768px) {
     .menus ul > #userId {
@@ -138,6 +149,9 @@ display: none;
 }
 .menus a:hover {
     text-decoration:none;
+    color: #fff;
+
+    /*overflow: auto !important;*/
     /*background:#595959;*/
 
 
@@ -157,6 +171,7 @@ display: none;
 .menus li ul li {
     width:200px;
     background-color: #fff;
+    /*z-index: 99999;*/
 
     
      /*background-color:yellow;*/

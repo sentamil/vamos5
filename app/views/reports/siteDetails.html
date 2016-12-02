@@ -19,17 +19,7 @@
         #map_canvas{
             height:94vh; width:100%; margin-top: 35px;
         }
-        #pac-input{
-            border-radius: 3px;
-            height: 30px;
-            width: 200px;
-            top: -25px;
-            left: 200px;
-            max-width: 200px;
-            z-index: 9999;
-            font-size: 12px;
-            font-weight: bold;
-        }
+       
         
     </style>
 </head>
@@ -39,10 +29,11 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
                 <li class="track"><a href="../public/track"><div></div><label>Track</label></a></li>
-                <li class="history"><a href="../public/track?maps=replay"><div></div><label>History</label></a></li>
+                <!-- <li class="history"><a href="../public/track?maps=replay"><div></div><label>History</label></a></li> -->
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
                 <li class="admin"><a href="../public/settings"><div></div><label>Scheduled</label></a></li>
+                <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
                 <!-- <li class="settings"><a href="../public/settings"  class="active"><div></div><label>Settings</label></a></li>
                 <li class="admin"><a href="javascript:void(0);"><div></div><label>Admin</label></a></li> -->
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
@@ -56,7 +47,7 @@
             <div class="container-fluid">
                 <div id="testLoad">
                 </div>
-                <input id="pac-input" type="text" placeholder="search box"></input>
+                <input id="pac-input" type="text" placeholder="Enter a location"></input>
                 <div style="position: absolute;top: 50px;right: 20px; z-index:999; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
                     <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Add Sites</div>
                         <div class="siteInput" > 

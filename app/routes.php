@@ -167,6 +167,14 @@ Route::get('/settings', function() {
     return View::make('maps.settings');
 });
 
+
+Route::get('/fms', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    return View::make('maps.fms');
+});
+
 Route::get('/rfidTag', function() {
     if (!Auth::check()) {
         return Redirect::to('login');

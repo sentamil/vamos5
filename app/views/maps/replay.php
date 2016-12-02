@@ -40,10 +40,11 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
                 <li class="track"><a href="../public/track"><div></div><label>Track</label></a></li>
-                <li class="history"><a href="../public/track?maps=replay" class="active"><div></div><label>History</label></a></li>
+                <!-- <li class="history"><a href="../public/track?maps=replay" class="active"><div></div><label>History</label></a></li> -->
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
                 <li class="admin"><a href="../public/settings"><div></div><label>Scheduled</label></a></li>
+                <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;">

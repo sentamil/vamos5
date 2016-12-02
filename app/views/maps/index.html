@@ -24,11 +24,6 @@
      #container-speed{  width: 170px; height: 100px;}
      #container-fuel{  width: 170px; height: 100px;}
 
-     [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-        display: none !important;
-     }
-
-  
 </style>
 </head>
 
@@ -49,15 +44,16 @@
 
                 </li>
                 <li class="track"><a href="javascript:void(0);" class="active"><div></div><label>Track</label></a></li>
-                <li class="history"><a href="../public/track?maps=replay"><div></div><label>History</label></a></li>
+                <!-- <li class="history"><a href="../public/track?maps=replay"><div></div><label>History</label></a></li> -->
                 <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
                 <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
                 <li class="admin"><a href="../public/settings"><div></div><label>Scheduled</label></a></li>
+                <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
                 <li style="margin-bottom: 15px;"><div class="right-inner-addon" align="center"><i class="fa fa-search"></i><input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" /></div>
-                <select ng-model="vehicleStatus" style="width:127px; margin-top: 5px; font-size: 12px;" ng-cloak>
+                <select ng-model="vehicleStatus" style="width:127px; margin-top: 5px; font-size: 12px;">
                     <option value="ALL">All ({{totalVehicles}})</option>
                     <option value="ON">ON ({{vehicleOnline}})</option>
                     <option value="OFF">OFF ({{attention}})</option>
@@ -66,10 +62,11 @@
                     <option value="S">Idle ({{idleCount}})</option>
                     <option value="O">Overspeed ({{overspeedCount}})</option>
                 </select>
+               
                 </li>
-                <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
+                <li ng-repeat="location in locations02" title="{{trimColon(location.group)}}"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" >{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}" ><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a>
+                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}" title="{{loc.shortName}}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a>
                            <!--  data-toggle="tooltip" data-original-title="<div align='left'><span>Speed</span> &nbsp;-&nbsp; {{loc.speed}}; <br> <span>Ignition</span> &nbsp;-&nbsp; {{loc.ignitionStatus}} <br> <span>Address</span> &nbsp;-&nbsp; {{loc.address}}  </div>" tooltip-loader -->
                         </li>
 
@@ -86,19 +83,19 @@
                         <div class="topContent" style="visibility: hidden">
                             <div class="row">
                                 <div class="col-md-2" align="center" id="totalvehicles">
-                                    <h6 ng-cloak>Total Vehicles - <span>( {{totalVehicles}} )</span></h6>
+                                    <h6>Total Vehicles - <span>( {{totalVehicles}} )</span></h6>
                                 </div>
                                 <div class="col-md-6 col-lg-2">
-                                    <h6 ng-cloak>Vehicles Online - <span>( {{vehicleOnline}} )</span></h6>
+                                    <h6>Vehicles Online - <span>( {{vehicleOnline}} )</span></h6>
                                 </div>
                                 <div class="col-md-2" id="totalalerts">
-                                    <h6 ng-cloak>Alarms - <span>( {{alertstrack}} )</span></h6>
+                                    <h6>Alarms - <span>( {{alertstrack}} )</span></h6>
                                 </div>
                                 <div class="col-md-2" id="totalAttention">
-                                    <h6 ng-cloak>Attention - <span>( {{attention}} )</span></h6>
+                                    <h6>Attention - <span>( {{attention}} )</span></h6>
                                 </div>
                                 <div class="col-md-6 col-lg-4">
-                                    <h6 ng-cloak>Overall Distance <span>( {{distanceCovered}} Km)</span></h6>
+                                    <h6>Overall Distance <span>( {{distanceCovered}} Km)</span></h6>
                                 </div>
                             </div>
                         </div>
@@ -289,7 +286,7 @@
                                </div>
                                <div class="nearbyTable">
                                 <h3>NearBy Vehicles <a href="#" style="position:absolute; top:10px; right:10px;" ng-click="nearBy();">X</a></h3>
-                                <h5 ng-cloak>Your Place - {{nearbyLocs.fromAddress}}</h5>   
+                                <h5>Your Place - {{nearbyLocs.fromAddress}}</h5>   
                                 <div>
                                     <table cellpadding="0" cellspacing="0">
                                         <thead>
@@ -301,9 +298,9 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="nearbyLoc in nearbyLocs.vehicleDetails">
-                                                <td ng-cloak>({{nearbyLoc.shortName}})</td>
-                                                <td align="right" ng-cloak>{{nearbyLoc.distance}}</td>
-                                                <td ng-cloak>{{nearbyLoc.address}}</td>
+                                                <td>({{nearbyLoc.shortName}})</td>
+                                                <td align="right">{{nearbyLoc.distance}}</td>
+                                                <td>{{nearbyLoc.address}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -424,11 +421,12 @@
                                 </div>
                         </div>
                         <a href="javascript:void(0);" class="contentexpand"><img src="assets/imgs/add.png"/></a>
-                        <div>
-                            <div id="maploc">
-                                <map id="map_canvas" style="height:94vh; width:100%; margin-top: 35px;"></map>
+                        <!-- <div> -->
+                            <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
+                            <div id="maploc" style="height:94vh; width:100%; margin-top: 35px;">
+                                <!-- <map id="map_canvas" style="height:94vh; width:100%; margin-top: 35px;"></map> -->
                             </div>
-                        </div>
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>
@@ -574,7 +572,7 @@ var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
 var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
 
 if(apikey_url != null || apikey_url != undefined)
-        url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url;
+        url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places";
 
    function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
      if (scriptsCollection[startIndex]) {
@@ -595,8 +593,8 @@ if(apikey_url != null || apikey_url != undefined)
  
    // An array of scripts you want to load in order
    var scriptLibrary = [];
-   scriptLibrary.push("assets/js/jquery-1.11.0.js");
    scriptLibrary.push("assets/js/static.js");
+   scriptLibrary.push("assets/js/jquery-1.11.0.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");

@@ -146,6 +146,7 @@
     color: #fff;
 	padding-top:12px;
 	padding-bottom:1px;
+
 	
 }
 
@@ -202,9 +203,13 @@ z-index:-1;
 
 
 }
-.sidebar-subnav >li > a{ border-bottom:1px solid #ccc; background:url('../imgs/marker-s-red.png') no-repeat 5px center; font-size:14px; text-decoration:none;color:#666;
-font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight"; padding:5px 0 5px 27px;
-font-weight:normal; margin-bottom:10px; display:inline-block; width:90%; }
+.sidebar-subnav >li > a{ border-bottom:1px solid #ccc; background:url('../imgs/marker-s-red.png') no-repeat 0px center; font-size:12px; text-decoration:none;color:#666;
+font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight"; padding:5px 0px 5px 20px;
+font-weight:bold; margin-bottom:10px; display:inline-block; width:90%;   display:inline-block;
+    width:150px;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis; }
 
 .sidebar-subnav li nav li a.active{ background:#000 !important; }
 
@@ -216,7 +221,13 @@ color:#888;
 font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight";
 font-weight:normal;
 font-size:12px;
+
 padding-left:0px;
+width:150px;
+white-space: nowrap;
+overflow:hidden !important;
+text-overflow: ellipsis;
+
 }
 .sidebar-subnav li li a.red span{ color:red;}
 
@@ -324,6 +335,7 @@ li a label{ width:100%; display:block;}
 .settings a>div, .settings a:hover>div{ background:url('../imgs/settings.png') no-repeat center center; width:100%; height:32px;}
 .stastics a>div, .stastics a.hover>div{ background:url('../imgs/stastics.png') no-repeat center center; width:100%; height:32px;}
 .admin a>div, .admin a.hover>div{ background:url('../imgs/sch.png') no-repeat center center; width:100%; height:32px;}
+.fms a>div, .admin a.hover>div{ background:url('../imgs/fms.png') no-repeat center center; width:100%; height:32px;}
 
 .track a.active>div{ background:url('../imgs/trackActive.png') no-repeat center center; width:100%; height:30px;}
 .history a.active>div{ background:url('../imgs/historyActive.png') no-repeat center center; width:100%; height:30px;}
@@ -331,6 +343,7 @@ li a label{ width:100%; display:block;}
 .settings a.active>div{ background:url('../imgs/settingsActive.png') no-repeat center center; width:100%; height:32px;}
 .stastics a.active>div{ background:url('../imgs/stasticsActive.png') no-repeat center center; width:100%; height:32px;}
 .admin a.active>div{ background:url('../imgs/schActive.png') no-repeat center center; width:100%; height:32px;}
+.fms a.active>div{ background:url('../imgs/fmsActive.png') no-repeat center center; width:100%; height:32px;}
 
 .bottomContent{ /*opacity:0.8;*/ background:#fff; position: absolute; bottom: 0; width: 100%; height: auto; z-index: 9;border-top: 1px solid #bbb;}
 .contentbClose{ right:10px; bottom:20px; position:absolute; z-index:99;}
@@ -665,3 +678,18 @@ input[type=range]:focus::-ms-fill-upper {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
  }
+#pac-input{
+           border-radius: 3px;
+            height: 30px;
+            width: 200px;
+            top: -25px;
+            left: 200px;
+            max-width: 200px;
+            z-index: 9;
+            font-size: 12px;
+            font-weight: bold;
+        }
+#pac-input:focus {
+    outline: none;
+    border-color: #f4f4f4;
+}

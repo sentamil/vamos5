@@ -120,6 +120,14 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		$("#testLoad").load("../public/menu");
 	}
 
+var markerSearch = new google.maps.Marker({});
+// var markerSearch =[];
+
+
+  
+  
+  
+
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
 			$scope.selected=undefined;
@@ -138,7 +146,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
 				$scope.zoomLevel = 6;
 				$scope.support = data[$scope.gIndex].supportDetails;
-				$scope.initilize('map_canvas');
+				$scope.initilize('maploc');
 				// if($scope.makerType == undefined)
 				markerChange($scope.makerType);
 			}
@@ -150,7 +158,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		if($scope.locations02!=undefined){
 			$scope.selected=undefined;
 			$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, val);
-			$scope.initilize('map_canvas');
+			$scope.initilize('maploc');
 		}
 	});
 		
@@ -431,7 +439,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 			+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 			+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 
-			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_self">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp;'
+			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp;'
 			+'</div>';
 			
 			// var	drop1 = document.getElementById("ddlViewBy");
@@ -694,6 +702,8 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 		});
 	}
 	
+	
+
 	$scope.initial02 = function(){
 		//console.log(' marker click ')
 		
@@ -1042,9 +1052,31 @@ function locat_address(locs) {
 		//for the polygen draw
 		polygenFunction(location02);
 
-   		$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');
-		$('body').delay(350).css({'overflow':'visible'});
+  //  		$('#status').fadeOut(); 
+		// $('#preloader').delay(350).fadeOut('slow');
+		// $('body').delay(350).css({'overflow':'visible'});
+	stopLoading();
+
+
+
+	var input_value   =  document.getElementById('pac-input');
+  	var sbox     =  new google.maps.places.SearchBox(input_value);
+	// search box function
+  	sbox.addListener('places_changed', function() {
+	    markerSearch.setMap(null);
+	    var places = sbox.getPlaces();
+	    markerSearch = new google.maps.Marker({
+	    	position: new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()),
+	    	animation: google.maps.Animation.BOUNCE,
+   			map: $scope.map,
+    
+  		});
+	  	console.log(' lat lan  '+places[0].geometry.location.lat(), places[0].geometry.location.lng())
+	    $scope.map.setCenter(new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()));
+	    $scope.map.setZoom(13);
+	  });
+
+
    	}
 	
 	//click and resolve address
@@ -1378,6 +1410,9 @@ function locat_address(locs) {
 // 		$('#preloader').delay(350).fadeOut('slow');
 // 		$('body').delay(350).css({'overflow':'visible'});
 // });
+
+
+
 }])
 
 .directive('ngEnter', function () {
@@ -1681,4 +1716,5 @@ $(document).ready(function(e) {
             document.body.style.zoom="90%";
         }
     });
+
 
