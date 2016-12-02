@@ -276,11 +276,11 @@
                               </div>
                           </div> -->
 
-                                  <div style="position: fixed;top: 50px;left: 380px; z-index:99; background-color: #fff; padding:2px; border-radius: 2px; cursor: pointer;" class="viewList">
+                                  <div style="position: fixed;top: 10px;left: 150px; z-index:99; background-color: #fff; padding:2px; border-radius: 2px; cursor: pointer;" class="viewList">
 
                             <img src="assets/imgs/add.png" />
                             
-                            <label><input type="text" value="0.0" id="latinput" style="width:265px"  readonly /></label>
+                            <label><input type="text" value="0.0" id="latinput" style="width:265px; height: 20px; "  readonly /></label>
                             
                         </div>
                         <div style="position: fixed;top: 80px;left: 380px; z-index:99; background-color: #fff; padding: 5px; border-radius: 2px; cursor: pointer;  width: 250px" class="legendlist">
