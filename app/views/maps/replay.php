@@ -20,11 +20,9 @@
 <![endif]-->
 <style type="text/css">
   #map_canvas{
-    height:94vh; width:100%; margin-top: 35px;
+    height:100vh; width:100%; 
   }
-  [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-      display: none !important;
-   }
+  
   div h6 {font-size: bold}
 </style>
 </head>
@@ -35,42 +33,16 @@
     <div id="status02">&nbsp;</div>
 </div> -->
 <body ng-controller="mainCtrl" class="ng-cloak">
-        <div id="wrapper" >
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
-                <li class="track"><a href="../public/track"><div></div><label>Track</label></a></li>
-                <!-- <li class="history"><a href="../public/track?maps=replay" class="active"><div></div><label>History</label></a></li> -->
-                <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
-                <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-                <li class="admin"><a href="../public/settings"><div></div><label>Scheduled</label></a></li>
-                <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
-                <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
-            </ul>
-            <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;">
-                <li style="padding-left:25px;">
-                        <div class="right-inner-addon" align="center">
-                    <i class="fa fa-search"></i>
-                    <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
-                    </div>
-                </li>
-                <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak>{{trimColon(location.group)}}</a>
-                    <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:selected==$index}"><a href="javascript:void(0);" ng-class="{red:loc.status == 'OFF'}" ng-click="genericFunction(loc.vehicleId, $index, loc.shortName)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/> <span>{{loc.shortName}}</span></a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+        <!-- <div> -->
+        
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div id="testLoad"></div>
-                        </div>
+                    
                         <div id="minmax">
                             <img src="assets/imgs/add.png" />
                         </div>
-                        <div id="contentmin" class="rightsection" style="position: absolute;margin-top: -20px;right: 10px; z-index:9; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
+                        <div id="contentmin" class="rightsection" style="position: absolute;margin-top: 0px;right: 10px; z-index:9; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
                                  <table cellpadding="0" cellspacing="0" class="dynData">
                                           <tbody>
                                                 <tr>
@@ -470,7 +442,7 @@
             </div>
         </div>
         <!-- /#page-content-wrapper -->
-    </div>
+    <!-- </div> -->
      
     <div class="modal fade" id="myModal">
       <div class="modal-dialog">
