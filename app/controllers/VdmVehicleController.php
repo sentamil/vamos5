@@ -644,8 +644,6 @@ public function edit($id) {
         }
 
 
-
-
         $refData = array_add($refData, 'orgId', $orgId);
         $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
         $refData= array_add($refData,'parkingAlert',$parkingAlert);
@@ -683,6 +681,9 @@ public function edit($id) {
         $protocol = VdmFranchiseController::getProtocal();
 
         return View::make ( 'vdm.vehicles.edit', array (
+
+
+
             'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with ('protocol', $protocol)->with ('routeName',$routeLIST);
     }catch(\Exception $e)
     {
@@ -1179,7 +1180,129 @@ $redis->hset('H_Device_Cpy_Map',$deviceId,$fcode);
 // redirect
 Session::flash ( 'message', 'Successfully updated ' . $vehicleId . '!' );
 
+/*
+    checking old and new refdata for sending mail...
+
+$devices=null;
+				$devicestypes=null;
+				$i=0;
+				foreach($details as $key => $value)
+				{
+					$valueData=json_decode($value,true);
+					$devices = array_add($devices, $i,$valueData['deviceid']);
+					$devicestypes = array_add($devicestypes,$i,$valueData['deviceidtype']);
+
+
+*/
+
+log::info('     gettype of the var     ');
+$refVehicle   = json_encode ( $vehicleRefData );
+log::info(gettype($refVehicle));
+log::info(gettype($refDataJson));
+if($refVehicle != $refDataJson)
+{  
+        $devices=array();
+        $devicestypes=array();
+ $mapping_Array = array(
+
+        "shortName" => "Vehicle Name",
+        "deviceModel" => "Device Model",
+        "regNo" => "Vehicle Registration Number",
+        "vehicleType" => "Vehicle Type",
+        "oprName" => "Telecom Operator Name",
+        "mobileNo" => "Mobile Number for Alerts",
+        "overSpeedLimit" => "OverSpeed Limit",
+        "odoDistance" => "Odometer Reading",
+        "driverName" => "Driver Name",
+        "gpsSimNo" => "GPS Sim Number",
+        "email" => "Email for Notification",
+        "orgId" => "Org/College Name",
+        "altShortName" => "Alternate Vehicle Name",
+        "fuelType" => "Fuel Type",
+        "isRfid" => "IsRFID",
+        "rfidType" => "Rfid Type",
+        "Licence" => "Licence",
+        "Payment_Mode" => "Payment Mode",
+        "descriptionStatus" => "Description",
+        "ipAddress" => "IP Address",
+        "portNo" => "Port Number",
+        "analog1" => "Analog input 1",
+        "analog2" => "Analog input 2",
+        "digital1" => "Digital input 1",
+        "digital2" => "Digital input 2",
+        "serial1" => "Serial input 1",
+        "serial2" => "Serial input 2",
+        "digitalout" => "Digital output",
+        "mintemp" => "Minimum Temperature",
+        "maxtemp" => "Maximum Temperature",
+        "routeName" => "Route Name",
+
+    );
+    $updated_Value  = json_decode($refDataJson,true);
+    // $oldJsonValue   = json_decode($refVehicle,true);
+    foreach ($updated_Value as $update_Key => $update_Value)
+    {
+        try{
+
+	log::info("------old_Key-----");
+        log::info($update_Key);
+        log::info($update_Value);
+        log::info($updated_Value[$update_Key]);
+//if(isset($vehicleRefData[$update_Key])){
+        if($vehicleRefData[$update_Key] != $update_Value){
+
+                log::info(' mapping ' );
+                log::info(isset($mapping_Array[$update_Key]));
+                if(isset($mapping_Array[$update_Key]))
+                {
+                        $devices = array_add($devices, $mapping_Array[$update_Key],$vehicleRefData[$update_Key]);
+                        $devicestypes = array_add($devicestypes, $mapping_Array[$update_Key],$updated_Value[$update_Key]);
+                }
+        }
+//} else {
+
+
+ //           $devices = array_add($devices, $mapping_Array[$update_Key],"");
+  //          $devicestypes = array_add($devicestypes, $mapping_Array[$update_Key],$updated_Value[$update_Key]);
+
+   //     }
+}catch(\Exception $e)
+        {
+            Log::info($vehicleId.'--------------------inside Exception--------------------------------');
+                $devices = array_add($devices, $mapping_Array[$update_Key],"");
+                        $devicestypes = array_add($devicestypes, $mapping_Array[$update_Key],$updated_Value[$update_Key]);
+                log::info($e);
+        }
+    }
+
+if($ownership == 'OWN'){
+
+        $gettingMail    =   $redis->hget ( 'H_Franchise' , $fcode );
+        $emailKeys      =   'email1';
+
+    } else{
+
+        $gettingMail    =   $redis->hget ( 'H_DealerDetails_' . $fcode, $ownership );
+        $emailKeys      =   'email';
+
+    }
+    $gettingMail=json_decode($gettingMail,true);
+    log::info(" --------  gettingMail  ------");
+    log::info($ownership);
+    log::info($gettingMail[$emailKeys]);
+
+    Session::put('email','arun.vamosys@gmail.com');
+    Mail::queue('emails.updateDetails', array('fname'=>$fcode,'userId'=>$vehicleId, 'oldRef'=>$devices, 'newRef'=>$devicestypes), function($message)
+    {
+        Log::info("Inside email :" . Session::get ( 'email' ));
+        $message->to(Session::pull ( 'email' ))->subject('Vehicle data updated');
+    });
+
+    log::info( "Message sent one  successfully...");
+}
+
 return Redirect::to ( 'vdmVehicles' );
+
 //            return VdmVehicleController::edit($vehicleId);
 }
 }

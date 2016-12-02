@@ -31,8 +31,10 @@ public function reportScheduling(){
 
 	$servername = $franchiesJson;
 	
-	if (!$servername){
-		$servername = "188.166.237.200";
+	//if (!$servername){
+	if (strlen($servername) > 0 && strlen(trim($servername) == 0)){
+		// $servername = "188.166.237.200";
+		return 'Ipaddress Failed !!!';
 	}
 	
 	$usernamedb = "root";
@@ -113,8 +115,8 @@ public function getValue(){
 	$franchiesJson 	= 	$redis->hget('H_Franchise_Mysql_DatabaseIP', $fcode);
 	$servername 	= 	$franchiesJson;
 	$valueList 		= 	[];
-	if (!$servername){
-		$servername = "188.166.237.200";
+	if (strlen($servername) > 0 && strlen(trim($servername) == 0)){
+		return 'Ipaddress Failed !!!';
 	}
 	
 	$usernamedb = "root";
@@ -161,8 +163,8 @@ public function reportDelete(){
 	$franchiesJson 	= 	$redis->hget('H_Franchise_Mysql_DatabaseIP', $fcode);
 	$servername 	= 	$franchiesJson;
 	
-	if (!$servername){
-		$servername = "188.166.237.200";
+	if (strlen($servername) > 0 && strlen(trim($servername) == 0)){
+		return 'Ipaddress Failed !!!';
 	}
 	
 	$usernamedb 	= "root";
