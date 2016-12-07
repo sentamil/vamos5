@@ -218,7 +218,7 @@
             $.get('http://'+globalIP+context+'/public/isVirtualUser', function(response) {
             
                 var menuVal =response.trim();
-                if(menuVal == 'false') {
+                if(menuVal == 'true') {
                     // sessionStorage.setItem('isVirtualUser', JSON.stringify(false));
                     var myList = document.getElementById('removeli');
                     myList.innerHTML = '';
