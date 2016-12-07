@@ -562,6 +562,14 @@ Route::get('/getActionReport', function() {
     }      
     Log::info('get Vehicle Locations');    
     return View::make('vls.getActionReport');      
+}); 
+
+Route::get('/isVirtualUser', function() {    
+    if (!Auth::check()) {      
+        return Redirect::to('login');      
+    }      
+    Log::info('isVirtualUser');    
+    return View::make('vls.isVirtualUser');      
 });    
 
 
@@ -573,6 +581,13 @@ Route::get('/addRoutesForOrg', function() {
     return View::make('vls.addRoutesForOrg');      
 }); 
  
+
+Route::get('/groupEdit', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.admin_Auth');
+});
  
 // Route::get('/admin', function() {
 //     if (!Auth::check()) {
@@ -852,6 +867,11 @@ Route::get('storeOrgValues/editRoutes', array('uses' => 'VdmOrganizationControll
 Route::get('storeOrgValues/deleteRoutes', array('uses' => 'VdmOrganizationController@_deleteRoutes'));
 Route::get('storeOrgValues/mapHistory',array('uses'=>'VdmOrganizationController@_mapHistory'));
 
+//arun Route::post('ScheduledController/reportScheduling', array('uses' => 'ScheduledController@reportScheduling'));
+Route::post('VdmGroup/removingGroup', array('uses'=>'VdmGroupController@removeGroup'));
+Route::post('VdmGroup/showGroup', array('uses'=>'VdmGroupController@_showGroup'));
+Route::post('VdmGroup/saveGroup', array('uses'=>'VdmGroupController@_saveGroup'));
+Route::post('VdmGroup/groupId', array('uses'=>'VdmGroupController@groupIdCheck'));
  
 Route::get('/setPOIName', function() {
     if (!Auth::check()) {

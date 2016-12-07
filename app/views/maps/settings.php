@@ -93,7 +93,7 @@
                 <tbody>
                   <tr ng-repeat="vehicleName in vehicles">
                     <td><input type="checkbox" ng-model="vehiId[$index]"/></td>
-                    <td>{{vehicleName.shortName}}{{}}</td>
+                    <td>{{vehicleName.shortName}}</td>
                     <td>{{from}}&nbsp;hrs</td>
                     <td>{{to}}&nbsp;hrs</td>
                     <td id="checking">

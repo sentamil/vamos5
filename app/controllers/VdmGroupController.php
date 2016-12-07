@@ -387,6 +387,8 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		$groupValue = $redis->SISMEMBER('S_Groups_'.$fcode, $newGroupId.':'.$fcode);
 		if($groupValue == $newGroupId)
 		{
+			log::info($groupValue);
+			log::info($newGroupId);
 			return 'fail';
 		}
 		else{
@@ -394,5 +396,172 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		}
 		Log::info(' groupValue  '.$groupValue);
 	}
+
+
+	// remove group from user
+	public function removeGroup(){
+
+		if(!Auth::check()){
+			return Redirect::to('login');
+		}
+		$username =	Auth::user()->username;
+		$redis = Redis::connection();
+		$fcode = $redis->hget('H_UserId_Cust_Map',$username.':fcode');
+
+		$grpNameId = Input::get ('grpName');
+		$redis->srem($username,$grpNameId);
+		
+		return 'sucess';
+		}
+
+
+	// show vehicles from user
+        public function _showGroup(){
+
+                if(!Auth::check()){
+                        return Redirect::to('login');
+                }
+                $username =     Auth::user()->username;
+                $redis = Redis::connection();
+                $fcode = $redis->hget('H_UserId_Cust_Map',$username.':fcode');
+
+                $grpName = Input::get ('grpName');
+                $g_List         = $redis->smembers($username);
+                $vehiList = [];
+                if($grpName !== ''){
+                        if($g_List && $g_List !== '' && sizeof($g_List)>0){
+                                
+                                
+                                foreach ( $g_List as $g_Name ) {
+                                        $g_level_vehi   =       $redis->smembers($g_Name);
+                                                foreach ($g_level_vehi as $key => $vehicles) {
+                                                        $check  = ($grpName == $g_Name)? true : false;
+                                                        $vehiList[] =  array('vehicles' => $vehicles, 'check' => $check);
+                                                }
+
+                                }
+
+
+                                $_data = array();
+                                foreach ($vehiList as $v) {
+                                  if (isset($_data['vehicles'])) {
+                                    continue;
+                                  }
+                                  $_data[] = $v['vehicles'];
+                                }
+
+                                
+                                $_data = array_unique($_data);
+                                log::info($_data);
+
+                                $g_vehi         =       $redis->smembers($grpName);
+                                $vehiList = [];
+                                foreach ($_data as $key => $value) {
+                                        $check = false;
+                                        foreach ($g_vehi as $ke => $val) {
+                                                if($val == $value)
+                                                        $check = true;
+                                        }
+                                        $vehiList[] = array('vehicles' => $value, 'check' => $check);
+                                }
+
+
+
+                        }
+                }
+
+		
+		else{
+                    log::info('new group');
+
+                /*
+                        for new group
+                */
+                if($g_List && $g_List !== '' && sizeof($g_List)>0){
+
+                    $_data = array();
+                    foreach ( $g_List as $g_Name ) {
+                            $g_level_vehi   =       $redis->smembers($g_Name);
+                            foreach ($g_level_vehi as $key => $vehicles) {
+                                    // $check       = ($grpName == $g_Name)? true : false;
+                                    array_push($_data,  $vehicles);
+                            }
+
+                    }
+                    // avoid duplicate value
+
+                    // $_data = array();
+                    // foreach ($vehiList as $v) {
+                    //   if (isset($_data['vehicles'])) {
+                    //     continue;
+                    //   }
+                    //   $_data[] = $v['vehicles'];
+                    // }
+					log::info($_data);
+                    $_data = array_unique($_data);
+                    log::info($_data);
+                    $vehiList =[];
+                    foreach ($_data as $key => $value) {
+                            $vehiList[] =  array('vehicles' => $value, 'check' => false);
+                    }
+                }
+            }
+
+
+            log::info($vehiList);
+
+            return $vehiList;
+    }
+
+
+
+
+	//save group for user 
+	public function _saveGroup(){
+
+		log::info(' i am in save function');
+
+		if(!Auth::check()){
+			return Redirect::to('login');
+		}
+		$username 	=	Auth::user()->username;
+		$redis 		= 	Redis::connection();
+		$fcode 		= 	$redis->hget('H_UserId_Cust_Map',$username.':fcode');
+		$grpName 	= 	Input::get ('grpName');
+		$newValue 	= 	Input::get ('newValu');
+		$vehList 	= 	Input::get ('grplist');
+		if(strpos($grpName, $fcode) === false){
+			$grpName = $grpName .':'.$fcode;
+		}
+
+
+		if($newValue !== ''){
+			$value1=$redis->SISMEMBER('S_Groups_' . $fcode, $grpName);
+			if($value1==1)
+			{
+				
+				return '';
+			}
+			$redis->sadd('S_Groups_' . $fcode, $grpName);
+			$redis->sadd ( $username, $grpName );
+		}
+		
+
+
+
+
+
+		$redis->del($grpName);
+		log::info(' group del ');		
+		foreach($vehList as $vehi) {
+			$redis->sadd($grpName,$vehi);
+		}
+		
+		log::info(' group insert ');
+		
+		return 'sucess';
+	
+	}
+
 
 }

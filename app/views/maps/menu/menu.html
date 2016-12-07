@@ -16,6 +16,7 @@
                        <a href="../public/password_check" id="addsites">AddSites / Geo Fence</a>
                  <!--   </div> -->
                 </li>
+                <li id="removeli"><a href="../public/groupEdit">Edit Group</a></li>
             </ul>
         </li>
         <li class="cl-effect-5">
@@ -207,6 +208,27 @@
                 else
                     $(this).attr("href", 'password_check') 
             });
+
+
+            
+            // var isVir = JSON.parse(sessionStorage.getItem('isVirtualUser'));
+            // if(isVir){
+            var globalIP = document.location.host;
+            var context = '/gps';
+            $.get('http://'+globalIP+context+'/public/isVirtualUser', function(response) {
+            
+                var menuVal =response.trim();
+                if(menuVal == 'false') {
+                    // sessionStorage.setItem('isVirtualUser', JSON.stringify(false));
+                    var myList = document.getElementById('removeli');
+                    myList.innerHTML = '';
+                }
+            
+            }).error(function(){
+                console.log('error in isVirtualUser');
+            });
+            // }
+
     
 </script>
 
