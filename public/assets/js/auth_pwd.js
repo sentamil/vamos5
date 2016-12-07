@@ -199,7 +199,7 @@ $scope.checkAll   = function(){
     });
   }  
 
-($scope._tabValue == true)?initial():'';
+($scope._tabValue == true)?initial():stopLoading();
 
 
   $scope.trimColon = function(textVal){
