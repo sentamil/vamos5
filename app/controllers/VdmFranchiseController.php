@@ -53,7 +53,7 @@ public static function dbIp()
 {
 		$dbIp=array();
 
-		$dbIp[0]='10.130.59.209';
+		$dbIp[0]='139.59.236.117';
 		$dbIp[1]='188.166.244.126';
 
 
