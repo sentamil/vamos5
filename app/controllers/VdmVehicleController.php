@@ -1269,8 +1269,8 @@ if($refVehicle != $refDataJson)
 }catch(\Exception $e)
         {
             Log::info($vehicleId.'--------------------inside Exception--------------------------------');
-                $devices = array_add($devices, $mapping_Array[$update_Key],"");
-                        $devicestypes = array_add($devicestypes, $mapping_Array[$update_Key],$updated_Value[$update_Key]);
+                //$devices = array_add($devices, $mapping_Array[$update_Key],"");
+                //$devicestypes = array_add($devicestypes, $mapping_Array[$update_Key],$updated_Value[$update_Key]);
                 log::info($e);
         }
     }
@@ -1291,7 +1291,7 @@ if($ownership == 'OWN'){
     log::info($ownership);
     log::info($gettingMail[$emailKeys]);
 
-    Session::put('email','arun.vamosys@gmail.com');
+    Session::put('email',$gettingMail[$emailKeys]);
     Mail::queue('emails.updateDetails', array('fname'=>$fcode,'userId'=>$vehicleId, 'oldRef'=>$devices, 'newRef'=>$devicestypes), function($message)
     {
         Log::info("Inside email :" . Session::get ( 'email' ));
