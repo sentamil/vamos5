@@ -564,41 +564,43 @@ background-color: #ffffff;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-			   			 <tab heading="Temperature" select="alertMe('temperaturereport')" active="tabTemperature" ng-hide="true">
-			   			 	<p style="margin:0" class="page-header">Temperature Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 <tab heading="A/C" select="alertMe('acreport')" active="tabac">
+			   			 	<p style="margin:0" class="page-header">A/C Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 			   			 	<br>
-			   			 	<div id="temperatureChart" style="min-width:700px; max-width:700px; width: 700px; height: 300px"></div>
-			   			 	<div class="box-body table-responsive" id="temperaturereport">
+			   			 	
+			   			 	<div class="box-body table-responsive" id="acreport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
 				   			 	 			<td>Vehicle Group</td>
 										  	<td>{{trimColon(vgroup)}}</td>
 										  	<td>Vehicle Name</td>
-										  	<td>{{hist.shortName}}</td>	
+										  	<td colspan="2">{{hist.shortName}}</td>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="3"></td></tr>
+			   			 	 			<tr><td colspan="5	"></td></tr>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th class="id"  custom-sort order="'date'" sort="sort"  style="text-align:center;" width="25%">Date &amp; Time</th>
-											<th class="id"  custom-sort order="'temperature'" sort="sort"  style="text-align:center;" width="20%">Status</th>
-											<th class="id" custom-sort order="'address'" sort="sort" style="text-align: center;" width="35%">Nearest Location</th>
+											<th style="text-align:center;" width="20%">Date &amp; Time</th>
+											<th style="text-align:center;" width="15%">Status</th>
+											<th style="text-align:center;" width="15%">Duration</th>
+											<th style="text-align: center;" width="35%">Nearest Location</th>
+											
 											<th class="id" style="text-align: center;" width="15%">G-Map</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
-			   			 	 		<tr class="active" style="text-align:center" ng-repeat="temperature in temperatureData | orderBy:sort.sortingOrder:sort.reverse">
-			   			 	 			<td>{{temperature.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-			   			 	 			<td>{{temperature.temperature}}</td>
-			   			 	 			<td>
-			   			 	 			{{temperature.address}} 
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="ac in acReport">
+			   			 	 			<td>{{ac.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+			   			 	 			<td>{{ac.vehicleBusy | uppercase}}</td>
+			   			 	 			<td rowspan="2" ng-if="ac.vehicleBusy == 'yes'">{{msToTime(acReport[$index+1].date-ac.date)}} </td>
+			   			 	 			<td> {{ac.address}}
 			   			 	 				<!-- <p ng-if="ignitionignitionignition.address!=null">{{ignition.address}}</p>
 											<p ng-if="ignitionignition.address==null && addressFuel[$index]!=null">{{addressFuel[$index]}}</p>
 											<p ng-if="ignition.address==null && addressFuel[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p> -->
 										</td> 
-			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{temperature.latitude}},{{temperature.longitude}}" target="_blank">Link</a></td>
+			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ac.latitude}},{{ac.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if="temperatureData==null || temperatureData.length == 0" align="center">
-										<td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+			   			 	 		<tr ng-if="acReport==null || acReport.length == 0" align="center">
+										<td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>

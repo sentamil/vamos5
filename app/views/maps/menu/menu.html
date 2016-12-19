@@ -74,6 +74,7 @@
                     <li><a id="tripkms" href=""> Trip Summary</a></li>
                     
                     <li><a id="alarm" href="">Alarm</a></li>
+                    <li><a id="ac" href="">A/C</a></li>
 
                 </ul>
             </li>
@@ -187,6 +188,10 @@
                 $(this).attr("href", 'alarm?vid='+vid+'&vg='+gname+'&tn=alarm')
             })
 
+            $('#ac').click(function(){
+                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=acreport')
+            })
+
             $('#rfid').click(function(){
                 $(this).attr("href", 'rfidTag?vid='+vid+'&vg='+gname+'&tn=rfid')
             })
@@ -216,8 +221,8 @@
             // var isVir = JSON.parse(sessionStorage.getItem('isVirtualUser'));
             // if(isVir){
             var globalIP = document.location.host;
-            var context = '/gps';
-            $.get('http://'+globalIP+context+'/public/isVirtualUser', function(response) {
+            var contextMenu = '/gps';
+            $.get('http://'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
             
                 var menuVal =response.trim();
                 if(menuVal == 'true') {

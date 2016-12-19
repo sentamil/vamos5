@@ -32,9 +32,9 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
      // $scope.items = [];
 
      
-   $scope.filteredTodos = [];
-	 $scope.itemsPerPage = 10;
-	 $scope.currentPage = 1;
+   	$scope.filteredTodos = [];
+	$scope.itemsPerPage = 10;
+	$scope.currentPage = 1;
      
  	/*$scope.gap = 5;
    	$scope.itemsPerPage = 5;
@@ -158,7 +158,7 @@ function eventButton(eventdate)
 			$scope.tabload  			=	false;
 			$scope.tabfuel  			=	false;
 			$scope.tabignition 			=	false;
-			$scope.tabTemperature 		= 	false;
+			$scope.tabac 				= 	false;
     	switch(tabId){
     		case 'movement':
     			$scope.tabmovement 			=	true;
@@ -187,8 +187,8 @@ function eventButton(eventdate)
     		case 'ignition':
     			$scope.tabignition 			=	true;
     			break;
-    		case 'temp':
-    			$scope.tabTemperature 		= 	true;
+    		case 'acreport':
+    			$scope.tabac 				= 	true;
     			break;
     		default:
     			$scope.tabmovement 			=	true; 
@@ -254,7 +254,7 @@ function eventButton(eventdate)
    			case 'eventReport':
    				$scope.recursiveEvent($scope.eventReportData,0);
    				break;
-   			case 'loadreport':
+   			case 'acreport':
    				// $scope.recursiveLoad($scope.loadreport,0);
    				break;
    			case 'fuelreport':
@@ -266,40 +266,87 @@ function eventButton(eventdate)
    		}
    	}
 
+   	function _pairFilter(_data, _yes, _no, _status)
+   	{
+   		var _checkStatus =_no ,_pairList 	= [];
+   		angular.forEach(_data, function(value, key){
+
+
+   			if(_pairList.length <= 0){
+                if(value[_status] == _yes)
+                	_pairList.push(value)
+            } else if(_pairList.length >0 )
+            {
+                if(value[_status] == _checkStatus){
+                    _pairList.push(value)
+                    if(_pairList[_pairList.length-1][_status] == _yes)
+                        _checkStatus = _no;
+                    else
+                        _checkStatus = _yes
+                }
+            }
+
+   			
+
+   		});
+
+   		if(_pairList.length>1)
+	   		if(_pairList.length%2==0)
+	   			return _pairList;
+	   		else{
+	   			 _pairList.pop();
+	   			return _pairList;
+	   	}
+
+   		// angular.forEach(_pairList, function(v){
+
+   		// console.log(v.vehicleBusy)
+   		// })
+
+   	}
+
 
    	function ignitionFilter(ignitionValue)
    	{
-   		var ignitionStatus ='OFF', ignitionlist =[];
+
+   		$scope.ignitionData 	=_pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
+
+   		// var ignitionStatus ='OFF', ignitionlist =[];
    		
-   		$scope.ignitionData = [];
-   		angular.forEach(ignitionValue, function(value, key){
-   			// for (var i = 0; i < list.length; i++) {
-            if(ignitionlist.length <= 0){
-                if(value.ignitionStatus == 'ON')
-                ignitionlist.push(value)
-            } else if(ignitionlist.length >0 )
-            {
-                if(value.ignitionStatus == ignitionStatus){
-                    ignitionlist.push(value)
-                    if(ignitionlist[ignitionlist.length-1].ignitionStatus == 'ON')
-                        ignitionStatus = 'OFF';
-                    else
-                        ignitionStatus = 'ON'
-                }
-            }
+   		// $scope.ignitionData = [];
+   		// angular.forEach(ignitionValue, function(value, key){
+   		// 	// for (var i = 0; i < list.length; i++) {
+     //        if(ignitionlist.length <= 0){
+     //            if(value['ignitionStatus'] == 'ON')
+     //            ignitionlist.push(value)
+     //        } else if(ignitionlist.length >0 )
+     //        {
+     //            if(value['ignitionStatus'] == ignitionStatus){
+     //                ignitionlist.push(value)
+     //                if(ignitionlist[ignitionlist.length-1]['ignitionStatus'] == 'ON')
+     //                    ignitionStatus = 'OFF';
+     //                else
+     //                    ignitionStatus = 'ON'
+     //            }
+     //        }
             
-        // };
-	   	});
-	   	//console.log(' list '+ignitionlist)
-	   	if(ignitionlist.length>1)
-	   		if(ignitionlist.length%2==0)
-	   			$scope.ignitionData    =	ignitionlist;
-	   		else{
-	   			 ignitionlist.pop();
-	   			 $scope.ignitionData = ignitionlist;
-	   	}
+     //    // };
+	   	// });
+	   	// //console.log(' list '+ignitionlist)
+	   	// if(ignitionlist.length>1)
+	   	// 	if(ignitionlist.length%2==0)
+	   	// 		$scope.ignitionData    =	ignitionlist;
+	   	// 	else{
+	   	// 		 ignitionlist.pop();
+	   	// 		 $scope.ignitionData = ignitionlist;
+	   	// }
    	}
 
+
+   	function acFilter(_acData){
+
+   		$scope.acReport 	=_pairFilter(_acData, 'yes', 'no', 'vehicleBusy');
+   	}
 
 
    	//for load report invoke new api
@@ -324,22 +371,39 @@ function eventButton(eventdate)
    		return _returnObj;
    	}
 
+
+
+   	function _globalFilter(data)
+   	{	
+   		try{
+	   		if(data || data.vehicleLocations != null || data.vehicleLocations != undefined)
+	   		{
+		   		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
+				$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
+				$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
+				$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
+				$scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
+				$scope.fuelValue 		= 	filter(data);
+				ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
+				ignitionFilter(ignitionValue);
+				acFilter(data)
+			}
+		} catch (error) {
+			stopLoading();
+		}
+   	}
+
+
    	//for initial loading
    	$scope.dataArray			=	function(data) {
-   		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
-		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
-		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
-		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
-		$scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
-
-		$scope.fuelValue 		= 	filter(data);
+   		
+   		_globalFilter(data);
 		if(tabId == 'fuel')
 		{
 			$scope.fuelChart($scope.fuelValue);
 			$scope.recursiveFuel($scope.fuelValue, 0);
 		}
-		ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
-		ignitionFilter(ignitionValue);
+		
 		// loadReportApi("http://"+getIP+context+"/public/getLoadReport?vehicleId="+prodId);
 		$scope.recursive1($scope.movementdata,0);
 		//console.log(' data----> '+$scope.downloadid)
@@ -347,18 +411,23 @@ function eventButton(eventdate)
 
    	// for submit button click
    	$scope.dataArray_click		=	function(data) {
-   		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
-		$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
-		$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
-		$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
-		//$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!nill"}))
-		$scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
-		$scope.fuelValue=[];
-		if(data)
-		$scope.fuelValue 		= 	filter(data);
-		ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
-		ignitionFilter(ignitionValue);
-		$scope.alertMe_click($scope.downloadid);
+   		_globalFilter(data)
+   		// if(data && data.vehicleLocations != null)
+   		// {
+   // 			$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
+			// $scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
+			// $scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
+			// $scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
+			//$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!nill"}))
+			// $scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
+			// $scope.fuelValue=[];
+			
+			// $scope.fuelValue 		= 	filter(data);
+			// ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
+			// ignitionFilter(ignitionValue);
+			
+			$scope.alertMe_click($scope.downloadid);
+		// }
    	};
 
 
@@ -874,8 +943,8 @@ function eventButton(eventdate)
 	   		case 'ignitionreport':
 	   			$scope.downloadid 	=	'ignitionreport'
 	   			break;
-	   		case 'temperaturereport':
-	   			$scope.downloadid 	=	'temperaturereport'
+	   		case 'acreport':
+	   			$scope.downloadid 	=	'acreport'
 	   			break;
 			default:
 				break;
