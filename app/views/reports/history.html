@@ -590,7 +590,10 @@ background-color: #ffffff;
 			   			 	 	<tbody>
 			   			 	 		<tr class="active" style="text-align:center" ng-repeat="ac in acReport">
 			   			 	 			<td>{{ac.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-			   			 	 			<td>{{ac.vehicleBusy | uppercase}}</td>
+			   			 	 			<td>
+			   			 	 				<span ng-if="ac.vehicleBusy == 'yes'">ON</span>
+			   			 	 				<span ng-if="ac.vehicleBusy == 'no'">OFF</span>
+			   			 	 			</td>
 			   			 	 			<td rowspan="2" ng-if="ac.vehicleBusy == 'yes'">{{msToTime(acReport[$index+1].date-ac.date)}} </td>
 			   			 	 			<td> {{ac.address}}
 			   			 	 				<!-- <p ng-if="ignitionignitionignition.address!=null">{{ignition.address}}</p>
