@@ -65,6 +65,12 @@ Route::get('/apiAcess', function() {
 
 });
 
+Route::get('/faq', function() {
+    Log::info(' faq ');
+    return View::make('maps.fqa');
+
+});
+
 Route::get('/live', function() {
     return Redirect::to('login');
 });
@@ -661,6 +667,8 @@ Route::get('passwordremind', array('uses' => 'RemindersController@getRemind'));
 // route to process the form
 //Route::group(array('before' => 'adminauth'), function(){
 Route::post('login', array('before' => 'csrf', 'uses' => 'HomeController@doLogin'));
+Route::get('login', array('uses' => 'HomeController@doLogin'));
+Route::get('aUthName', array('uses' => 'HomeController@authName'));
 //});
 Route::get('logout', array('uses' => 'HomeController@doLogout'));
  

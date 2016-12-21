@@ -102,6 +102,7 @@
           </div>
          
       </span>
+      <a href="/vamo/public/faq" style="font-size: 10px; color: #fff" target="blank">FAQ</a>
       <label style="font-size: 10px; color: #fff">
        <input name="remember" type="checkbox" /> Remember Me
       </label>

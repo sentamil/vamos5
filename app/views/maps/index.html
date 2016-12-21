@@ -25,6 +25,38 @@
      #container-fuel{  width: 170px; height: 100px;}
 
 </style>
+
+ 
+
+<script src="assets/js/static.js"></script>
+<script src="assets/js/jquery-1.11.0.js"></script>
+<script type="text/javascript">
+    
+    var aUthName = [];
+    try{
+
+        $.ajax({
+
+            async: false,
+            method: 'GET', 
+            url: "aUthName",
+            // data: {"orgId":$scope.orgIds},
+            success: function (response) {
+
+                console.log(response)
+                aUthName = response;
+                sessionStorage.setItem('apiKey', JSON.stringify(aUthName[0]));
+                sessionStorage.setItem('userIdName', JSON.stringify('username'+","+aUthName[1]));
+            }
+        })
+        
+        
+    }catch (err){
+
+        // sp[1] = 'DEMO';
+        console.log(err)
+    }
+</script>
 </head>
 
     <div id="status">&nbsp;</div>
@@ -597,7 +629,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/jquery-1.11.0.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
-   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+   // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    scriptLibrary.push("http://code.highcharts.com/highcharts.js");
@@ -619,6 +651,7 @@ if(apikey_url != null || apikey_url != undefined)
        // application is "ready to be executed"
        // startProgram();
    });
+
 </script>
 
    

@@ -281,12 +281,34 @@ class HomeController extends BaseController {
     }
 
 
+    public function authName() {
+
+    	log::info(' inside the api key ');
+    	$assetValue = array();
+		$username = Auth::user()->username;
+		$redis = Redis::connection ();
+		$fcodeKey = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
+		$getFranchise=json_decode($franchiseDetails,true);
+		// log::info($getFranchise);
+		
+		if(isset($getFranchise['apiKey'])==1)
+			$apiKey=$getFranchise['apiKey'];
+		else
+			$apiKey='';
+
+		$assetValue[] = $apiKey;
+		$assetValue[] = $username;
+
+        return $assetValue;
+    }
 
 	public function doLogout()
 	{
 		Auth::logout(); // log the user out of our application
 		// return View::make('logout');
-		return View::make('logout');
+		// return View::make('logout');
+		return Redirect::to('login');
 		//return Redirect::to('logoutWeb'); // redirect the user to the login screen
 	}
 

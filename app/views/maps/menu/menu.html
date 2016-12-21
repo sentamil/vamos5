@@ -134,9 +134,37 @@
 </nav>
 </div>
 <script type="text/javascript">
-    var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
-    var sp = menuValue.split(",");
-    $('#valueUser').text("  "+sp[1]);
+
+
+
+    
+
+    // var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
+    // var sp = [];
+    // try{
+
+    //     sp = menuValue.split(",");
+        
+    // }catch (err){
+    //     $.ajax({
+
+    //         async: false,
+    //         method: 'GET', 
+    //         url: "aUthName",
+    //         // data: {"orgId":$scope.orgIds},
+    //         success: function (response) {
+
+    //             console.log(response)
+    //             sp[1] = response[1];
+    //         }
+    //     })
+    //     // sp[1] = 'DEMO';
+    //     // console.log(document.location)
+    // }
+
+var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
+        sp1 = menuValue.split(",");
+    $('#valueUser').text("  "+sp1[1]);
 
 
     var obj = JSON.parse(sessionStorage.getItem('user'));

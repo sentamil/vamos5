@@ -74,7 +74,7 @@
 												<th style="text-align: center;">Choose</th>
 												<th style="text-align: center;">Device ID</th>
 												<th style="text-align: center;">Device Type</th>
-												<th style="text-align: center;">Operate</th>
+												<th style="text-align: center;">Action</th>
 												
 											</tr>
 										</thead>
@@ -91,8 +91,8 @@
 													
 													<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/create/'. $devices[$key-1]) }}">Details</a>
 													
-													<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/migration/' . $value) }}">Track</a>
-													<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/migration/' . $value) }}">History</a>
+													<!-- <a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/migration/' . $value) }}">Track</a>
+													<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/migration/' . $value) }}">History</a> -->
 													
 												</td>
 
