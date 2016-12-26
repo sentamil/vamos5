@@ -177,11 +177,12 @@ app.directive('tooltips', function ($document, $compile) {
       var tip = $compile('<span ng-class="tipClass">'+
         '<table style="border: 1px; border-collapse:collapse; width:100%;">'+
         '<tr>'+'<th>'+'</th>'+'<th>'+'</th>'+'</tr>'+
-        '<tr>'+'<td style="padding:5px 1px 5px 5px;text-align:left;">'+'Vehicle Name'+'</td>'+'<td>'+'{{ loc.shortName }}'+'</td>'+'</tr>'+
-        '<tr>'+'<td style="padding:0 1px 5px 7px;text-align:left;">'+'Ignition Status'+'</td>'+'<td>'+'{{ loc.ignitionStatus }}'+'</td>'+'</tr>'+
-        '<tr>'+'<td style="padding:0 1px 5px 7px;text-align:left;">'+'Speed'+'</td>'+'<td>'+'{{ loc.speed }}'+'</td>'+'</tr>'+
-        '<tr>'+'<td style="padding:0 1px 5px 7px;text-align:left;">'+'Odo Distance'+'</td>'+'<td>'+'{{ loc.odoDistance }}'+'</td>'+'</tr>'+
-        '<tr>'+'<td style="padding:0 1px 5px 7px;text-align:left;">'+'Last Seen'+'</td>'+'<td>'+'{{ loc.lastSeen }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td style="padding:5px 5px 5px 8px;text-align:left;">'+'Group Name'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ trimColon(location.group) }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td style="padding:0px 5px 5px 8px;text-align:left;">'+'Vehicle Name'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ loc.shortName }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td style="padding:0 5px 5px 8px;text-align:left;">'+'Ignition Status'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ loc.ignitionStatus }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td style="padding:0 5px 5px 8px;text-align:left;">'+'Speed'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ loc.speed }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td style="padding:0 5px 5px 8px;text-align:left;">'+'Odo Distance'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ loc.odoDistance }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td style="padding:0 5px 5px 8px;text-align:left;">'+'Last Seen'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ loc.lastSeen }}'+'</td>'+'</tr>'+
         '</table>'+
         '</span>')(scope),
           tipClassName = 'tooltips',
