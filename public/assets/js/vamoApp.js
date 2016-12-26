@@ -41,7 +41,6 @@ if(wwwSplit[0]=="www"){
 
   $('#imagesrc').attr('src', imgName);
 
-
 var gmarkers=[];
 var ginfowindow=[];
 var geomarker=[];
@@ -96,7 +95,11 @@ $(function() {
 
 
 function splitColon(spValue){
-  return spValue.split(':');
+  
+  var splv;
+  splv=spValue.split(":");
+
+  return splv;
 }
 
 function getParameterByName(name) {
@@ -161,32 +164,88 @@ return {
             return ('icon-chevron-' + ((scope.sort.reverse) ? 'down' : 'up'));
         }
         else{            
-            return'icon-sort' 
+            return 'icon-sort' 
         } 
     };      
   }// end link
 }
-})
+});
 
-// (function(){
+app.directive('tooltips', function ($document, $compile) {
+  return {
+    restrict: 'A',
+    scope: true,
+    link: function (scope, element, attrs) {
 
-// var exportTable = function(){
-// var link = function($scope, elm, attr){
-// $scope.$on(‘export-pdf’, function(e, d){
-//       elm.tableExport({type:’pdf’, escape:’false’});
-//  });
-// $scope.$on(‘export-excel’, function(e, d){
-//        elm.tableExport({type:’excel’, escape:false});
-//  });
-// $scope.$on(‘export-doc’, function(e, d){
-//      elm.tableExport({type: ‘doc’, escape:false});
-//  });
-// }
-// return {
-//   restrict: ‘C’,
-//   link: link
-//    }
-//  }
-// app.directive(‘exportTable’, exportTable);
-// })();
+      var tip = $compile('<span ng-class="tipClass">'+
+        '<table style="border: 1px; border-collapse:collapse; width:100%;">'+
+        '<tr>'+'<th>'+'</th>'+'<th>'+'</th>'+'</tr>'+
+        '<tr>'+'<td style="padding:5px 1px 5px 5px;text-align:left;">'+'Vehicle Name'+'</td>'+'<td>'+'{{ loc.shortName }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td style="padding:0 1px 5px 7px;text-align:left;">'+'Ignition Status'+'</td>'+'<td>'+'{{ loc.ignitionStatus }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td style="padding:0 1px 5px 7px;text-align:left;">'+'Speed'+'</td>'+'<td>'+'{{ loc.speed }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td style="padding:0 1px 5px 7px;text-align:left;">'+'Odo Distance'+'</td>'+'<td>'+'{{ loc.odoDistance }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td style="padding:0 1px 5px 7px;text-align:left;">'+'Last Seen'+'</td>'+'<td>'+'{{ loc.lastSeen }}'+'</td>'+'</tr>'+
+        '</table>'+
+        '</span>')(scope),
+          tipClassName = 'tooltips',
+          tipActiveClassName = 'tooltips-show';
+
+      scope.tipClass = [tipClassName];
+      scope.text = attrs.tooltips;
+      
+      if(attrs.tooltipsPosition) {
+        scope.tipClass.push('tooltips-' + attrs.tooltipsPosition);
+      }
+      else {
+       scope.tipClass.push('tooltips-down'); 
+      }
+      $document.find('#sidebar-wrapper').append(tip);
+      
+      element.bind('mouseover', function (e) {
+        tip.addClass(tipActiveClassName);
+        
+        var pos = e.target.getBoundingClientRect(),
+            offset = tip.offset(),
+            tipHeight = tip.outerHeight(),
+            tipWidth = tip.outerWidth(),
+            elWidth = pos.width || pos.right - pos.left,
+            elHeight = pos.height || pos.bottom - pos.top,
+            tipOffset = 10;
+        
+        if(tip.hasClass('tooltips-right')) {
+          offset.top = pos.top - (tipHeight / 2) + (elHeight / 2);
+          offset.left = pos.right + tipOffset;
+        }
+        else if(tip.hasClass('tooltips-left')) {
+          offset.top = pos.top - (tipHeight / 2) + (elHeight / 2);
+          offset.left = pos.left - tipWidth - tipOffset;
+        }
+        else if(tip.hasClass('tooltips-down')) {
+          offset.top = pos.top + elHeight + tipOffset;
+          offset.left = pos.left - (tipWidth / 2) + (elWidth / 2);
+        }
+        else {
+          offset.top = pos.top - tipHeight - tipOffset;
+          offset.left = pos.left - (tipWidth / 2) + (elWidth / 2);
+        }
+
+        tip.offset(offset);
+      });
+      
+      element.bind('mouseout', function () {
+        tip.removeClass(tipActiveClassName);
+      });
+
+      tip.bind('mouseover', function () {
+        tip.addClass(tipActiveClassName);
+      });
+
+      tip.bind('mouseout', function () {
+        tip.removeClass(tipActiveClassName);
+      });
+
+      
+    }
+  }
+});
 
