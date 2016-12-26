@@ -41,6 +41,7 @@ if(wwwSplit[0]=="www"){
 
   $('#imagesrc').attr('src', imgName);
 
+
 var gmarkers=[];
 var ginfowindow=[];
 var geomarker=[];
@@ -95,11 +96,7 @@ $(function() {
 
 
 function splitColon(spValue){
-  
-  var splv;
-  splv=spValue.split(":");
-
-  return splv;
+  return spValue.split(':');
 }
 
 function getParameterByName(name) {
@@ -164,7 +161,7 @@ return {
             return ('icon-chevron-' + ((scope.sort.reverse) ? 'down' : 'up'));
         }
         else{            
-            return 'icon-sort' 
+            return'icon-sort' 
         } 
     };      
   }// end link
