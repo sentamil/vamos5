@@ -4,7 +4,10 @@ var getIP	=	globalIP;
 
 app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	//$scope.getLocation1(13.0401945,80.2153889);
-	
+
+
+	// $location.path('http://localhost/vamo/public/track?maps=replay&vehicleId=MSS-TN52-W-9969&gid=MSS-BUS:SMP').replace().reload(false)
+
 	$scope.overallEnable	= true;
 	$scope.oaddress	    	=	[];
 	$scope.maddress	    	=	[];
@@ -270,23 +273,20 @@ function eventButton(eventdate)
    	{
    		var _checkStatus =_no ,_pairList 	= [];
    		angular.forEach(_data, function(value, key){
-
-
+        
    			if(_pairList.length <= 0){
-                if(value[_status] == _yes)
-                	_pairList.push(value)
+              if(value[_status] == _yes)
+              	_pairList.push(value)
             } else if(_pairList.length >0 )
             {
-                if(value[_status] == _checkStatus){
-                    _pairList.push(value)
-                    if(_pairList[_pairList.length-1][_status] == _yes)
-                        _checkStatus = _no;
-                    else
-                        _checkStatus = _yes
-                }
+              if(value[_status] == _checkStatus){
+                  _pairList.push(value)
+                  if(_pairList[_pairList.length-1][_status] == _yes)
+                      _checkStatus = _no;
+                  else
+                      _checkStatus = _yes
+              }
             }
-
-   			
 
    		});
 
@@ -298,62 +298,24 @@ function eventButton(eventdate)
 	   			return _pairList;
 	   	}
 
-   		// angular.forEach(_pairList, function(v){
-
-   		// console.log(v.vehicleBusy)
-   		// })
-
    	}
 
 
-   	function ignitionFilter(ignitionValue)
-   	{
+   	// function ignitionFilter(ignitionValue)
+   	// {
 
-   		$scope.ignitionData 	=_pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
+   	// 	$scope.ignitionData 	=_pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
 
-   		// var ignitionStatus ='OFF', ignitionlist =[];
-   		
-   		// $scope.ignitionData = [];
-   		// angular.forEach(ignitionValue, function(value, key){
-   		// 	// for (var i = 0; i < list.length; i++) {
-     //        if(ignitionlist.length <= 0){
-     //            if(value['ignitionStatus'] == 'ON')
-     //            ignitionlist.push(value)
-     //        } else if(ignitionlist.length >0 )
-     //        {
-     //            if(value['ignitionStatus'] == ignitionStatus){
-     //                ignitionlist.push(value)
-     //                if(ignitionlist[ignitionlist.length-1]['ignitionStatus'] == 'ON')
-     //                    ignitionStatus = 'OFF';
-     //                else
-     //                    ignitionStatus = 'ON'
-     //            }
-     //        }
-            
-     //    // };
-	   	// });
-	   	// //console.log(' list '+ignitionlist)
-	   	// if(ignitionlist.length>1)
-	   	// 	if(ignitionlist.length%2==0)
-	   	// 		$scope.ignitionData    =	ignitionlist;
-	   	// 	else{
-	   	// 		 ignitionlist.pop();
-	   	// 		 $scope.ignitionData = ignitionlist;
-	   	// }
-   	}
+   	// }
 
 
-   	function acFilter(_acData){
+   	// function acFilter(_acData){
 
-   		$scope.acReport 	=_pairFilter(_acData, 'yes', 'no', 'vehicleBusy');
-   	}
+   	// 	$scope.acReport 	=_pairFilter(_acData, 'yes', 'no', 'vehicleBusy');
+   	// }
 
 
-   	//for load report invoke new api
-   	//http://188.166.237.200/vamo/public/getLoadReport?vehicleId=SENSEL-01&fromDate=2016-05-24&fromTime=0:0:0&toDate=2016-05-24&toTime=12:41:41
-   	//var url ="http://"+getIP+context+"/public/getSiteReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&site=true";
-   	//var loadUrl = "http://"+getIP+context+"/public/getLoadReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime);
-   	function loadReportApi(url){
+   function loadReportApi(url){
    		//var loadUrl = "http://"+getIP+context+"/public/getLoadReport?vehicleId="+prodId;
    		$http.get(url).success(function(loadresponse){
    			$scope.loadreport 		= 	 loadresponse;
@@ -375,18 +337,30 @@ function eventButton(eventdate)
 
    	function _globalFilter(data)
    	{	
+      $scope.parkeddata       = [];
+      $scope.overspeeddata    = [];
+      $scope.movementdata     = [];
+      $scope.idlereport       = [];
+      $scope.temperatureData  = [];
+      $scope.fuelValue        = [];
+      $scope.ignitionData     = [];
+      $scope.acReport         = [];
+
    		try{
+        
 	   		if(data || data.vehicleLocations != null || data.vehicleLocations != undefined)
 	   		{
-		   		$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
-				$scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
-				$scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
-				$scope.idlereport       =   ($filter('filter')(data, {'position':"S"}));
-				$scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
-				$scope.fuelValue 		= 	filter(data);
-				ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
-				ignitionFilter(ignitionValue);
-				acFilter(data)
+  		   	$scope.parkeddata		   =	($filter('filter')(data, {'position':"P"}));
+  				$scope.overspeeddata	 =	($filter('filter')(data, {'isOverSpeed':"Y"}));
+  				$scope.movementdata		 =	($filter('filter')(data, {'position':"M"}));
+  				$scope.idlereport      =  ($filter('filter')(data, {'position':"S"}));
+  				$scope.temperatureData = 	($filter('filter')(data, {'temperature': "0"}));
+  				$scope.fuelValue 		   = 	filter(data);
+  				ignitionValue		 	     = 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
+          $scope.ignitionData    =  _pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
+          $scope.acReport        =  _pairFilter(_acData, 'yes', 'no', 'vehicleBusy');
+  				// ignitionFilter(ignitionValue);
+  				// acFilter(data)
 			}
 		} catch (error) {
 			stopLoading();
@@ -411,23 +385,10 @@ function eventButton(eventdate)
 
    	// for submit button click
    	$scope.dataArray_click		=	function(data) {
-   		_globalFilter(data)
-   		// if(data && data.vehicleLocations != null)
-   		// {
-   // 			$scope.parkeddata		=	($filter('filter')(data, {'position':"P"}));
-			// $scope.overspeeddata	=	($filter('filter')(data, {'isOverSpeed':"Y"}));
-			// $scope.movementdata		=	($filter('filter')(data, {'position':"M"}));
-			// $scope.idlereport       =   ($filter('filter')(data, {'position':"S"}))
-			//$scope.loadreport 		= 	($filter('filter')(data, {'loadTruck': "!nill"}))
-			// $scope.temperatureData	= 	($filter('filter')(data, {'temperature': "0"}));
-			// $scope.fuelValue=[];
-			
-			// $scope.fuelValue 		= 	filter(data);
-			// ignitionValue		 	= 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
-			// ignitionFilter(ignitionValue);
-			
-			$scope.alertMe_click($scope.downloadid);
-		// }
+   		
+      _globalFilter(data)
+   		$scope.alertMe_click($scope.downloadid);
+		
    	};
 
 
