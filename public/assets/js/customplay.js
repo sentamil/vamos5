@@ -1143,10 +1143,10 @@ if($scope.markerstart){
 		}else{
 			if($scope.hisloc.error!=null){
 				// $('#myModal').modal();
-				alert('Please selected date before 7 days / No data found')
+				// alert('Please selected date before 7 days / No data found')
 			}
 		}
-		// stopLoading();
+		stopLoading();
 	}
 	$scope.addMarker= function(pos){
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
@@ -1445,6 +1445,5 @@ if($scope.markerstart){
 	});
 
 });
-
 
 
