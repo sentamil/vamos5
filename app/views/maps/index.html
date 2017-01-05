@@ -23,10 +23,7 @@
      /*#map_canvas{ width:100%; height:100%;}  */
      #container-speed{  width: 170px; height: 100px;}
      #container-fuel{  width: 170px; height: 100px;}
-
 </style>
-
- 
 
 <script src="assets/js/static.js"></script>
 <script src="assets/js/jquery-1.11.0.js"></script>
@@ -96,9 +93,14 @@
                 </select>
                
                 </li>
-                <li ng-repeat="location in locations02" title="{{trimColon(location.group)}}"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" >{{trimColon(location.group)}}</a>
-                    <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox " ng-class="{active:selected==$index}" title="{{loc.shortName}}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a>
+                <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ><span title="{{trimColon(location.group)}}">{{trimColon(location.group)}}</span></a>
+                    
+                    <ul class="nav"  style="max-height: 400px; overflow-y: auto;">
+                        <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox" ng-class="{active:selected==$index}">
+                        <a href="javascript:void(0);"  ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)">
+                          <img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>
+                        
+                        <span  tooltips tooltips-position="right"> {{loc.shortName}} </span> </a> 
                            <!--  data-toggle="tooltip" data-original-title="<div align='left'><span>Speed</span> &nbsp;-&nbsp; {{loc.speed}}; <br> <span>Ignition</span> &nbsp;-&nbsp; {{loc.ignitionStatus}} <br> <span>Address</span> &nbsp;-&nbsp; {{loc.address}}  </div>" tooltip-loader -->
                         </li>
 
