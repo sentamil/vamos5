@@ -348,7 +348,7 @@ function eventButton(eventdate)
 
    		try{
         
-	   		if(data || data.vehicleLocations != null || data.vehicleLocations != undefined)
+	   		if(data || data.length > 0)
 	   		{
   		   	$scope.parkeddata		   =	($filter('filter')(data, {'position':"P"}));
   				$scope.overspeeddata	 =	($filter('filter')(data, {'isOverSpeed':"Y"}));
@@ -358,7 +358,7 @@ function eventButton(eventdate)
   				$scope.fuelValue 		   = 	filter(data);
   				ignitionValue		 	     = 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
           $scope.ignitionData    =  _pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
-          $scope.acReport        =  _pairFilter(_acData, 'yes', 'no', 'vehicleBusy');
+          $scope.acReport        =  _pairFilter(data, 'yes', 'no', 'vehicleBusy');
   				// ignitionFilter(ignitionValue);
   				// acFilter(data)
 			}
