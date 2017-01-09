@@ -19,11 +19,104 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 <style type="text/css">
-  #map_canvas{
-    height:100vh; width:100%; 
-  }
+
+#container{
+  max-width: 480px;
+  max-height: 200px;
+}
+
+.pane {
+  display: inline-block;
+  overflow-y: scroll;
+  max-height:300px;
+}
+.pane > .tables {
+  width: 100%;  
+  text-align: center;
+  margin: auto;
+  font-size: 10px;
+  border-collapse: collapse;
+  table-layout: fixed;  
+}
+div.pane  td{
+  border-top:  0.5px solid #d9d9d9;
+  border-right:  0.5px solid #d9d9d9;
+  padding:  2px;
+}
+
+
+div.pane tr:hover td{
+  background-color: #ebebff;
+}
+
+div.pane tr:first-child td {
+  padding: 3px 1px 3px 1px;
+  font-weight: bolder;
+}
+
+div.pane .gap td {
+  padding: 3px 1px 3px 1px;
+  font-weight: bolder;
+}
+
+div.pane tr:nth-child(odd){background-color: #e6e6e6;}
+
+#map_canvas{
+  height:100vh; width:100%; 
+}
   
-  div h6 {font-size: bold}
+div h6 {font-size: bold}
+
+.tabs{
+  margin-left: -40px;
+
+}
+
+.tabs>li{
+  font-size: 11px; 
+  list-style-type: none;
+  display: inline-block;
+  background: -webkit-linear-gradient(#f2f2f2, #d9d9d9, #cccccc); /* Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#f2f2f2, #d9d9d9, #cccccc); /* Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#f2f2f2, #d9d9d9, #cccccc); /* Firefox 3.6 to 15 */
+  background: linear-gradient(#f2f2f2, #d9d9d9, #cccccc); /* Standard syntax (must be last) */
+  padding: 2px 2px 2px 2px;   
+  margin-right:  -5px;
+  border-top: 1px solid #ccc; 
+  border-right: 1px solid #ccc; 
+  border-left: 1px solid #ccc; 
+}
+
+.tabs>li>a{
+  padding: 5px; 
+  text-decoration: none;
+  color: #333333;
+}
+
+.tabs>li:hover{
+  background-color:  #fff;
+  border-top: 2px solid #3C8DBC;
+}
+
+.current{
+  padding: 5px;
+  border-top:  2px solid #009aa5;
+  border-right:  1px solid #808080;
+  border-left:  1px solid #808080;
+  background-color:  #fff;
+}
+
+
+.tabs ~ div{
+  margin-top: -10px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 1px;
+}
+
+
+
+
 </style>
 </head>
 <!-- <div id="preloader" > -->
@@ -33,248 +126,417 @@
     <div id="status02">&nbsp;</div>
 </div> -->
 <body ng-controller="mainCtrl" class="ng-cloak">
-        <!-- <div> -->
-        
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
+  <div id="page-content-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <div id="minmax1">
+          <img src="assets/imgs/add.png" />
+        </div>
+        <div id="contentreply" style=" background-color: #fff">
+          <div class="bg_bright">
+            <table cellpadding="0" cellspacing="0" class="dynData">
+              <tbody>
+                <tr>
+                  <td style="text-align:center; font-weight:bold;">Vehicle Name</td>
+                  <td id="vehiid" style="text-align:center; font-weight:bold !important;"><h3></h3></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-group form-inline" style="margin-bottom: 5px">
+            <div class="input-group datecomp">
+              <input type="text" class="sizeInput" style="" ng-model="fromdate" id="dateFrom" placeholder="From date">
+                 <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
+            </div>
+            <div class="input-group datecomp">
+              <input type="text" class="sizeInput" ng-model="fromtime" id="timeFrom" placeholder="From time">
+            </div>
+            <div class="input-group datecomp">
+              <input type="text" class="sizeInput"  ng-model="todate" id="dateTo" placeholder="To date">
+              <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
+            </div>
+            <div class="input-group datecomp">
+              <input type="text" class="sizeInput" ng-model="totime" id="timeTo" placeholder="To time" >
+              <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
+            </div>
+            <div class="input-group ">
+              <button ng-click="plotting()" class="sizeInput" style="font-weight:bold;">Plot</button>
+            </div>
+          </div>
+                          
+          <div class="form-group form-inline" style="margin-bottom: 5px">
+            <div class="input-group">
+              <button ng-click="playhis()" id="playButton" style="display:none"><i class="glyphicon glyphicon-play"></i></button>
+              <button ng-click="pausehis()" id="pauseButton"><i class="glyphicon glyphicon-pause"></i></button>
+              <button ng-click="animated()" id="replaybutton"><i class="glyphicon glyphicon-repeat"></i></button>
+              <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
+            </div>
+
+            <div class="input-group speedbutt " id="animatecontrols" ng-init="speedval=100">
+              <!-- <label>Speed :</label> -->
+              <input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="speedval" value="200" type="radio" />
+              <span>Slow</span>
+              <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="100" />
+              <span>Normal</span>
+              <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="20" />
+              <span>Fast</span>
+            </div>
+
+            <div class="input-group ">
+              <label>Stops&nbsp;</label>
+              <select id="traffic" title="Suggested Stops" style="width: 80px;height: 25px;" ng-model="geoStops" ng-change="goeValueChange()" ng-options="geo.stopName as geo.stopName for geo in geoStop.geoFence"></select>
+              <a ng-hide="true" href="../public/printStops?vName={{shortVehiId}}&vid={{trackVehID}}" target="_blank">Print</a>
+            </div>
+
+            <div class="input-group">
+              <button data-target="#myModal1" data-toggle="modal" ng-click="getOrd()" class="sizeInput">Routes</button>
+              <!-- <button ng-click="hideShowTable()" id="btnValue">ShowDetails</button> -->
+            </div>
+          </div>
+          <div>
                     
-                        <div id="minmax">
-                            <img src="assets/imgs/add.png" />
-                        </div>
-                        <div id="contentmin" class="rightsection" style="position: absolute;margin-top: 0px;right: 10px; z-index:9; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
-                                 <table cellpadding="0" cellspacing="0" class="dynData">
-                                          <tbody>
-                                                <tr>
-                                                  <td style="text-align:center; font-weight:bold;">Vehicle Name</td>
-                                                    <td id="vehiid" style="text-align:center; font-weight:bold !important;"><h3></h3></td>
-                                                    
-                                                </tr>
-                                            </tbody>
-                                            </table>
-                                                
-                                <div>
-                                  <div class="form-group" style="width:140px; margin-right:10px; float:left">
-                                      <div class="input-group datecomp">
-                                            <input type="text" class="form-control placholdercolor" ng-model="fromdate" id="dateFrom" placeholder="From date">
-                                            <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
-                                      </div>
-                                    </div>
+            <ul class='tabs'>
+              <li ng-click="addressResolve('movement')"><a href='#movement'>Movement</a></li>
+              <li ng-click="addressResolve('overspeed')"><a href='#overspeed'>OverSpeed</a></li>
+              <li ng-click="addressResolve('parked')"><a href='#parked'>Parked</a></li>
+              <li ng-click="addressResolve('idle')"><a href='#idle'>Idle</a></li>
+              <li ng-click="addressResolve('fuel')"><a href='#fuel'>Fuel</a></li>
+              <li ng-click="addressResolve('ignition')"><a href='#ignition'>Ignition</a></li>
+              <li ng-click="addressResolve('acc')"><a href='#acc'>A/C</a></li>
+            </ul>
+
+            <!-- movement -->
+            <div id='movement' class="pane">
+              
+              <table class="tables">
+                <tr>
+                  <td colspan="2">Vehicle Group</td>
+                  <td>{{trimColon(groupname)}}</td>
+                  <td colspan="2">Vehicle Name</td>
+                  <td colspan="2">{{hisloc.shortName}}</td>         
+                </tr>
+                <tr class="gap">
+                  <td colspan="2">Regn No</td>
+                  <td> {{hisloc.regNo}}</td>
+                  <td colspan="2">Speed Limit</td>
+                  <td colspan="2"> {{hisloc.overSpeedLimit}}</td>
+                </tr>
+                
+              </table>
+              
+              <table class="tables">
+                
+                <tr style="border-top: 1px solid #d9d9d9">
+                  <td width="15%">Date&amp;Time</td>
+                  <td width="7%">Max(KM)</td>
+                  <td width="35%">Address</td>
+                  <td width="10%">G-Map</td>
+                  <td width="7%">Dist</td>
+                  <td width="15%">C-Dist(KM)</td>
+                  <td width="10%">Odo(KM)</td>
+                </tr>
+                <tr ng-repeat="move in movementdata">
+                  <td>{{move.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{move.speed}}</td>
+                  <td>
+                    <p ng-if="move.address!=null">{{move.address}}</p>
+                    <p ng-if="move.address==null && moveaddress[$index]!=null">{{moveaddress[$index]}}</p>
+                    <p ng-if="move.address==null && moveaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+                  </td>
+                  <td><a href="https://www.google.com/maps?q=loc:{{move.latitude}},{{move.longitude}}" target="_blank">Link</a></td>
+                  <td>{{move.tmpDistance}}</td>
+                  <td>{{move.distanceCovered}}</td>
+                  <td>{{move.odoDistance}}</td>
+                </tr>
+                <tr ng-if="movementdata.length == 0 || movementdata == undefined">
+                  <td colspan="7" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- overspeed -->
+            <div id='overspeed' class="pane">
+              <table class="tables">
+                <tr>
+                  <td colspan="2">Vehicle Group</td>
+                  <td>{{trimColon(groupname)}}</td>
+                  <td colspan="2">Vehicle Name</td>
+                  <td colspan="2">{{hisloc.shortName}}</td>         
+                </tr>
+                <tr class="gap">
+                  <td colspan="2">Regn No</td>
+                  <td> {{hisloc.regNo}}</td>
+                  <td colspan="2">Speed Limit</td>
+                  <td colspan="2"> {{hisloc.overSpeedLimit}}</td>
+                </tr>
+                  
+              </table>
+              <table class="tables">
+
+                <tr>
+                  <td width="15%">Date&amp;Time</td>
+                  <td width="13%">Speed(KM)</td>
+                  <td width="25%">Address</td>
+                  <td width="10%">G-Map</td>
+                  <td width="17%">Duration</td>
+                  <td width="10%">Trip(Km)</td>
+                  <td width="10%">Odo(KM)</td>
+                </tr>
+                
+                <tr ng-repeat="over in overspeeddata">
+                  <td>{{over.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{over.speed}}</td>
+                  <td>
+                    <p ng-if="over.address!=null">{{over.address}}</p>
+                    <p ng-if="over.address==null && overaddress[$index]!=null">{{overaddress[$index]}}</p>
+                    <p ng-if="over.address==null && overaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+                  </td>
+                  <td><a href="https://www.google.com/maps?q=loc:{{over.latitude}},{{over.longitude}}" target="_blank">Link</a></td>
+                  <td>{{msToTime(over.movingTime)}}</td>
+                  <td>{{over.odoDistance}}</td>
+                  <td>{{over.tripDistance}}</td>
+                </tr>
+                <tr ng-if="overspeeddata.length == 0 || overspeeddata == undefined">
+                  <td colspan="7" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- parked -->
+            <div id='parked' class="pane">
+              <table class="tables">
+                <tr>
+                  <td>Vehicle Group</td>
+                  <td>{{trimColon(groupname)}}</td>
+                  <td>Vehicle Name</td>
+                  <td>{{hisloc.shortName}}</td>         
+                </tr>
+                  
+              </table>
+              <table class="tables">
+
+                <tr>
+                  <td width="15%">Date&amp;Time</td>
+                  <td width="15%">Duration</td>
+                  <td width="60%">Address</td>
+                  <td width="10%">G-Map</td>
+                </tr>
+                
+                <tr ng-repeat="park in parkeddata">
+                  <td>{{park.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{msToTime(park.parkedTime)}}</td>
+                  <td>
+                    <p ng-if="park.address!=null">{{park.address}}</p>
+                    <p ng-if="park.address==null && parkaddress[$index]!=null">{{parkaddress[$index]}}</p>
+                    <p ng-if="park.address==null && parkaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+                  </td>
+                  <td><a href="https://www.google.com/maps?q=loc:{{park.latitude}},{{park.longitude}}" target="_blank">Link</a></td>
+                </tr>
+                <tr ng-if="parkeddata.length == 0 || parkeddata == undefined">
+                  <td colspan="4" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- idle -->
+            <div id='idle' class="pane">
+                <table class="tables">
+                  <tr>
+                    <td>Vehicle Group</td>
+                    <td>{{trimColon(groupname)}}</td>
+                    <td>Vehicle Name</td>
+                    <td>{{hisloc.shortName}}</td>         
+                  </tr>
+                    
+                </table>
+                <table class="tables">
+
+                  <tr>
+                    <td width="15%">Date&amp;Time</td>
+                    <td width="15%">Duration</td>
+                    <td width="60%">Address</td>
+                    <td width="10%">G-Map</td>
+                  </tr>
+                  
+                  <tr ng-repeat="idle in idlereport">
+                    <td>{{idle.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{msToTime(idle.idleTime)}}</td>
+                    <td>
+                      <p ng-if="idle.address!=null">{{idle.address}}</p>
+                      <p ng-if="idle.address==null && idleaddress[$index]!=null">{{idleaddress[$index]}}</p>
+                      <p ng-if="idle.address==null && idleaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+                    </td>
+                    <td><a href="https://www.google.com/maps?q=loc:{{idle.latitude}},{{idle.longitude}}" target="_blank">Link</a></td>
+                  </tr>
+                  <tr ng-if="idlereport.length == 0 || idlereport == undefined">
+                  <td colspan="4" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                </tr>
+                </table>
+            </div>
+
+            <!-- fuel report -->
+            <div id='fuel' class="pane">
+              <div id="container"></div>
+              <table class="tables">
+                <tr>
+                  <td width="15%">Date &amp; Time</td>
+                  <td width="15%">Fuel (ltr)</td>
+                  <td width="60%">Nearest Location</td>
+                  <td width="10%">G-Map</td>
+                </tr>   
+                <tr ng-repeat="fuelR in fuelValue">
+                  <td>{{fuelR.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{fuelR.fuelLitre}}</td>
+                  <td>
+                      <p ng-if="fuelR.address!=null">{{fuelR.address}}</p>
+                      <p ng-if="fuelR.address==null && fueladdress[$index]!=null">{{fueladdress[$index]}}</p>
+                      <p ng-if="fuelR.address==null && fueladdress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+                    </td>
+                  <td><a href="https://www.google.com/maps?q=loc:{{fuelR.latitude}},{{fuelR.longitude}}" target="_blank">Link</a></td>
+                </tr>
+                <tr ng-if="fuelValue.length == 0 || fuelValue == undefined">
+                  <td colspan="4" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- ignition -->
+            <div id='ignition' class="pane">
+              <table class="tables">
+                <tr>
+                  <td>Vehicle Group</td>
+                  <td>{{trimColon(groupname)}}</td>
+                  <td>Vehicle Name</td>
+                  <td>{{hisloc.shortName}}</td>         
+                </tr>
+                  
+              </table>
+              <table class="tables">
+                
+                  <tr>
+                    <td width="15%">Date &amp; Time</td>
+                    <td width="10%">Status</td>
+                    <td width="15%">Duration</td>
+                    <td width="50%">Nearest Location</td>
+                    <td width="10%">G-Map</td>
+                </tr>
+                <tr ng-repeat="ignition in ignitValue">
+                  <td>{{ignition.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{ignition.ignitionStatus}}</td>
+                  <td rowspan="2" ng-if="ignition.ignitionStatus == 'ON'">{{msToTime(ignitValue[$index+1].date-ignition.date)}}</td>
+                  
+                  <td>
+                    <p ng-if="ignition.address!=null">{{ignition.address}}</p>
+                    <p ng-if="ignition.address==null && igniaddress[$index]!=null">{{igniaddress[$index]}}</p>
+                    <p ng-if="ignition.address==null && igniaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+                  </td>
+                  <td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td>
+                </tr>
+                <tr ng-if="ignitValue.length == 0 || ignitValue == undefined">
+                  <td colspan="5" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                </tr>
+              </table>
+             
+            </div>
+
+            <!-- ac report -->
+            <div id='acc' class="pane">
+              <table class="tables">
+                <tr>
+                  <td>Vehicle Group</td>
+                  <td>{{trimColon(groupname)}}</td>
+                  <td>Vehicle Name</td>
+                  <td>{{hisloc.shortName}}</td>         
+                </tr>
+                  
+              </table>
+              <table class="tables">
+                <tr>
+                  <td width="15%">Date &amp; Time</td>
+                  <td width="10%">Status</td>
+                  <td width="15%">Duration</td>
+                  <td width="50%">Nearest Location</td>
+                  <td width="10%">G-Map</td>
+                </tr>
+                <tr ng-repeat="acc in acReport">
+                  <td>{{acc.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                  <td>
+                    <span ng-if="acc.vehicleBusy == 'yes'">ON</span>
+                    <span ng-if="acc.vehicleBusy == 'no'">OFF</span>
+                  </td>
+                  <td rowspan="2" ng-if="acc.vehicleBusy == 'yes'">{{msToTime(acReport[$index+1].date-acc.date)}}</td>
+                  
+                  <td>
+                    <p ng-if="acc.address!=null">{{acc.address}}</p>
+                    <p ng-if="acc.address==null && acc_address[$index]!=null">{{acc_address[$index]}}</p>
+                    <p ng-if="acc.address==null && acc_address[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+                  </td>
+                  <td><a href="https://www.google.com/maps?q=loc:{{add.latitude}},{{add.longitude}}" target="_blank">Link</a></td>
+                </tr>
+                <tr ng-if="acReport.length == 0 || acReport == undefined">
+                  <td colspan="5" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+
+          <div class="modal fade" id="myModal1" role="dialog" data-backdrop="false" style=" top: 70px;">
+            <div class="modal-dialog modal-md">
+              <div class="modal-content">
+                <div class="modal-header" style="height:45px;padding-top:7px;">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4> Save Route </h4> 
+                </div>
+                <div class="modal-body" >
+                  <label for="error" style="color: #ec0808">{{error}}</label>
+                  <div style="float:left;">      
+                    <input type="text" class="form-control" ng-model="routeName" placeholder="Enter Route Name" style="width:470px; height: 30px">
+                  </div>   
+                  <div style="float: right; padding-right:20px">
+                    <button type="button" ng-click="routesSubmit()" class="btn btn-default"  style="height:30px;text-align: center;padding-top:5px; " >Save</button>
+                  </div>
+                  
+                </div>
+                <br>
+                <div class="panel-body" style="height: 275px; overflow: scroll; border: 1px solid #f4f4f4">
+                    <table class="dynData">
+                      <thead>
+                        <tr style="padding: 5px; background-color: #f4f4f4">
+                          <th>&nbsp;Routes Name</th>
+                          <th>Edit</th>
+                          <th>Delete</th>
+                        </tr>
+                      </thead>
+                      <tr ng-repeat="route in routedValue">
+                        <td ng-click="getMap(route)"><a  data-target="#myModal2" data-toggle="modal" style="cursor: pointer;">{{route}}</a></td>
+                        <td id="editAction"><a class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span> </a></td>
+                        <td ng-click="deleteRouteName(route)"><a class="btn btn-xs btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
+                      </tr>
+                    </table>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>  
+                            <!-- <div class="row"> -->
+                            <!-- class="col-lg-7" style=" width: 70%; float: left; margin-left: 10px; margin-right: 10px" -->
+                              <!-- <div> -->
+                                <map id="map_canvas"></map>
+                              <!-- </div> -->
+
+
+                              <!-- <div class="col-lg-4" style="background-color: #196481; position: relative; float: right; height: 100vh; width: 28% !important; ">
                                 
-                                  <div class="form-group" style="width:125px; float:left">
-                                      <div class="input-group datecomp">
-                                            <input type="text" class="form-control placholdercolor" ng-model="fromtime" id="timeFrom" placeholder="From time">
-                                            <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
-                                      </div>
-                                    </div>
-                               </div>
-                                    <div>
-                                      <div class="form-group" style="width:140px; margin-right:10px;  float:left">
-                                          <div class="input-group datecomp">
-                                                <input type="text" class="form-control placholdercolor" ng-model="todate" id="dateTo" placeholder="To date">
-                                                <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
-                                          </div>
-                                        </div>
-                                      <div class="form-group" style="width:125px; float:left ">
-                                          <div class="input-group datecomp">
-                                                <input type="text" class="form-control placholdercolor" ng-model="totime" id="timeTo" placeholder="To time" >
-                                                <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
-                                          </div>
-                                        </div>
-                                    </div>
-                                    <div class=" speedbutt" id="animatecontrols" style="padding-top: 5px;" ng-init="speedval=100">
-                                <label>Speed :</label>
-                                <input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="speedval" value="200" type="radio" /><span>Slow</span>
-                                <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="100" /><span>Normal</span>
-                                <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="20" /><span>Fast</span>
-                                    <button ng-click="plotting()" style="width:75px;">Plot</button>
-                              </div>
-                              <div class=""  style="padding-top: 5px; float:left;">
-                                    <button ng-click="playhis()" id="playButton" style="display:none"><i class="glyphicon glyphicon-play"></i></button>
-                                    <button ng-click="pausehis()" id="pauseButton"><i class="glyphicon glyphicon-pause"></i></button>
-                                    <button ng-click="animated()" id="replaybutton"><i class="glyphicon glyphicon-repeat"></i></button>
-                                    <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
-                                     
-                                </div>
-                                <div style="padding: 5px; float:left;">
-                                        <label>Stops :</label>
-                                        <select id="traffic" title="Suggested Stops" style="width: 120px;height: 25px;" ng-model="geoStops" ng-change="goeValueChange()" ng-options="geo.stopName as geo.stopName for geo in geoStop.geoFence">
-                                           <!-- <option ng-repeat="geo in geoStop.geoFence" value="{{geo.stopName}}">{{geo.stopName}}</option> -->
-                                        </select>
-                                        <a ng-hide="true" href="../public/printStops?vName={{shortVehiId}}&vid={{trackVehID}}" target="_blank">Print</a>
-                                        
-                                </div>
-                                   
-                               <!--  <div>
-
-                                   
-                                    
-                                    <table cellpadding="0" cellspacing="0" class="dynData">
-                                      <tbody>
-                                             <tr>
-                                              <td>odoDistance</td>
-                                                <td id="vehdevtype"><h3><span></span> kms</h3></td>
-                                                
-                                            </tr>
-                                            <tr>
-                                                <td >Total Idle Time</td>
-                                                <td id="vehstat"><h3>-</h3></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Total Running Time</td>
-                                                <td id="toddist"> <h3>-</h3></td>
-                                            </tr>
-                                             <tr>
-                                              <td>Total Parked Time</td>
-                                                <td id="mobno"><h3></h3></td>
-                                            </tr>
-                                            <tr>
-                                                <td><span></span> Trip Distance</td>
-                                                <td id="regno"><h3><span></span> kms</h3> </td>
-                                            </tr>
-                                    </table>
-                                </div> -->
-                            <div class="latlong" style="bottom: 130px;width:275px; ">
-                            <!-- <label><input type="text" value="0.0" id="latinput" style="width:265px"  readonly /></label> -->
-                            </div>
-                            <!-- <div id="lastseen"></div><div id="lstseendate"></div> -->
-                              <div style="margin-top: 7px; float:left; font-size: 12px">
-                                <button data-target="#myModal1" data-toggle="modal" ng-click="getOrd()">Routes</button>
-                                <button ng-click="hideShowTable()" id="btnValue">ShowDetails</button>
-                              </div>
-
-                              <div class="modal fade" id="myModal1" role="dialog" data-backdrop="false" style=" top: 70px">
-                                    <div class="modal-dialog modal-md">
-                                      <div class="modal-content">
-                                        <div class="modal-header" style="height:45px;padding-top:7px;">
-                                       
-                                         <!-- <div> --><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                          <h4> Save Route </h4> 
-                                            <!-- </div> -->
-                                        </div>
-                                        <div class="modal-body" >
-                                            
-                                             <label for="error" style="color: #ec0808">{{error}}</label>
-                                            <!-- <br> -->
-                                             <!--  <select class="form-control" ng-model="selectedOrdId" ng-options="geo for geo in orgIds">
-                                                <option style="display:none" value="">Select Org Name</option>
-                                              </select>
-                                            
-                                              <br> -->
-                                              <!-- <input type="text" class="form-control" ng-model="trackVehID" placeholder="Vehicle Id"> -->
-                                          <!--    <br> -->
-                                           <div style="float:left;">      
-                                            <input type="text" class="form-control" ng-model="routeName" placeholder="Enter Route Name" style="width:470px; height: 30px">
-                                            <!--   <br> -->
-                                            </div>   
-                                            <div style="float: right; padding-right:20px">
-                                          <button type="button" ng-click="routesSubmit()" class="btn btn-default"  style="height:30px;text-align: center;padding-top:5px; " >Save</button>
-                                             
-                                         <!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                                          </div>
-                                       </div>
-
-                                         <br>
-
-                                        <div class="col-md-12" style="height: 275px; overflow: scroll;">
-                                    <!--    <br> -->
-                                          <!-- <ul class="list-group">
-                                            <li class="list-group-item">Routes</li>
-                                            <li class="list-group-item" ng-repeat="route in routedValue">{{route}}</li>
-                                            
-                                          </ul> -->
-                                         
-                                            <table class="dynData table-fixed" style="overflow: scroll;">
-                                            <thead>
-                                                <tr>
-                                                 <th>&nbsp;Routes Name</th>
-                                                <th>Edit</th>
-                                                <th>Delete</th>
-                                                </tr>
-                                              </thead>
-                                              
-                                            
-                                              <tr ng-repeat="route in routedValue">
-                                                <td ng-click="getMap(route)"><a  data-target="#myModal2" data-toggle="modal" style="cursor: pointer;">{{route}}</a></td>
-                                                <td id="editAction"><a class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span> </a></td>
-                                                <td ng-click="deleteRouteName(route)"><a class="btn btn-xs btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
-                                              </tr>
-                                            </table>
-
-                                        </div>
-                                        <div class="modal-footer">
-                                          
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-
-
-
-
-                               <!--  <div class="legendlist">
-
-                                  <h3><b>Vehicle Status</b></h3>
-                                    <div>
-                                      <table cellpadding="0" cellspacing="0">
-                                          <tbody>
-                                                <tr>
-                                                  <td>Milestone</td>
-                                                    <td><img src="assets/imgs/milestone.png"/></td>
-                                                    <td>Idle</td>
-                                                    <td><img src="assets/imgs/orange.png"/></td>
-                                                </tr>
-                                                 <tr>
-                                                  <td>Parked</td>
-                                                    <td><img src="assets/imgs/flag.png"/></td>
-                                                    <td>Start</td>
-                                                    <td><img src="assets/imgs/startflagico.png"/></td>
-                                                </tr>
-                                                 <tr>
-                                                  <td>End</td>
-                                                    <td><img src="assets/imgs/endflagico.png"/></td>
-                                                    <td>No Data</td>
-                                                    <td><img src="assets/imgs/gray.png"/></td>
-                                                </tr>
-                                        </table>
-                                    </div>
-                                </div> -->
-                            </div>
-
-                            <map id="map_canvas"></map>
+                              </div> -->
+                            <!-- </div> -->
                             <!--input id="pac-input" class="controls" type="text" placeholder="Location Search"/-->
                             <div class="error" style="position:absolute; height:100%; background:#fff; top:0; left:0;  width:100%;" align="center">
                               <p style="padding:10px; background:#fff; margin-top:200px; display:inline-block;">No Data Found. Please select another date range</p>
                             </div>
-                             <!--  <div class="bottomContent" style="display:none;">
-                            <div class="row">
-                            <div class="col-md-4 col-lg-2" align="center" id="vehiid">
-                                    <h6>Vehicle ID</h6>
-                                      <h3>-</h3>
-                                  </div>
-                                  <div class="col-md-2" align="center" id="vehdevtype">
-                                    <h6>odoDistance</h6>
-                                      <h3>-</h3>
-                                  </div>
-                                  <div class="col-md-2" align="center" id="vehstat">
-                                    <h6>Total Idle Time</h6>
-                                      <h3>-</h3>
-                                  </div>
-                                  
-                                  <div class="col-md-4 col-lg-2" align="center" id="toddist">
-                                    <h6>Total Running Time</h6>
-                                      <h3>-</h3>
-                                  </div>
-                                  <div class="col-md-2" align="center" id="mobno">
-                                    <h6>Total Parked Time</h6>
-                                      <h3>-</h3>
-                                  </div>
-                                  <div class="col-md-2" align="center" id="regno">
-                                    <h6>Trip Distance</h6>
-                                      <h3><span>-</span>&nbsp;km</h3>
-                                  </div>
-                              </div>
-                          </div> -->
+                            
 
                                   <div style="position: fixed;top: 10px;left: 150px; z-index:99; background-color: #fff; padding:2px; border-radius: 2px; cursor: pointer;" class="viewList">
 
@@ -283,164 +545,38 @@
                             <label><input type="text" value="0.0" id="latinput" style="width:265px; height: 20px; "  readonly /></label>
                             
                         </div>
-                        <div style="position: fixed;top: 80px;left: 380px; z-index:99; background-color: #fff; padding: 5px; border-radius: 2px; cursor: pointer;  width: 250px" class="legendlist">
-                        <div >
-
-                                  <h3><b>Vehicle Status</b></h3>
-                                    <div>
-                                      <table cellpadding="0" cellspacing="0">
-                                          <tbody>
-                                                <tr>
-                                                  <td>Milestone</td>
-                                                    <td><img src="assets/imgs/milestone.png"/></td>
-                                                    <td>Idle</td>
-                                                    <td><img src="assets/imgs/orange.png"/></td>
-                                                </tr>
-                                                 <tr>
-                                                  <td>Parked</td>
-                                                    <td><img src="assets/imgs/flag.png"/></td>
-                                                    <td>Start</td>
-                                                    <td><img src="assets/imgs/startflagico.png"/></td>
-                                                </tr>
-                                                 <tr>
-                                                  <td>End</td>
-                                                    <td><img src="assets/imgs/endflagico.png"/></td>
-                                                    <td>No Data</td>
-                                                    <td><img src="assets/imgs/gray.png"/></td>
-                                                </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                                </div>
-                                
-                        <div style="position: fixed; bottom: 0px; z-index: 1; background-color: #fff;" id="historyDetails" >
-                        <!-- <div> -->
-                          <table class="table-striped table-bordered table-condensed table-hover">
-                            <thead>
-                              <tr>
-                                <td colspan="10">
-                                  <div class="row">
-                                    <div class="col-lg-2" style="border-right: solid 1px #808080">
-                                      <h6>Vehicle Name</h6>
-                                        
-                                        <h6>{{hisloc.shortName}}</h6>
-                                    </div>
-                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
-                                      <h6>odoDistance</h6>
-                                        
-                                        <h6>{{hisloc.odoDistance}}</h6>
-                                    </div>
-                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
-                                      <h6>Total Idle Time</h6>
-                                        <h6>{{timeCalculate(hisloc.totalIdleTime)}}</h6>
-                                    </div>
-                                    
-                                    <div class="col-lg-2"  style="border-right: solid 1px #808080">
-                                      <h6>Total Running Time</h6>
-                                        <h6>{{timeCalculate(hisloc.totalRunningTime)}}</h6>
-                                    </div>
-                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
-                                      <h6>Total Parked Time</h6>
-                                        <h6>{{timeCalculate(hisloc.totalParkedTime)}}</h6>
-                                    </div>
-                                    <div class="col-md-2">
-                                      <h6>Trip Distance</h6>
-                                        <h6>{{hisloc.tripDistance}}&nbsp;km</h6>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <th width="5%">S NO</th>
-                                <th width="15%">Date &amp; Time</td>
-                                <th width="7%">Speed Km/h</th>
-                                <th width="35%">Address</th>
-                                <th width="8%">Position</th>
-                                <th width="8%">TripDistance</th>
-                                <th width="8%">Ignition</th>
-                                <th width="8%">OdoDistance</th>
-                                <th width="8%">PowerStatus</th>
-                                <th width="8%">DeviceVolt</th>
-                              </tr>
-                            </thead>
-                          </table>
-                        <!-- </div> -->
-                        <div style="width: 100%; height: 30vh; overflow: auto">
-                          <table class="table-striped table-bordered table-condensed table-hover">
-                            <!-- <thead>
-                              <tr>
-                                <td colspan="10">
-                                  <div class="row">
-                                    <div class="col-lg-2" style="border-right: solid 1px #808080">
-                                      <h6>Vehicle ID</h6>
-                                        
-                                        <h6>{{hisloc.shortName}}</h6>
-                                    </div>
-                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
-                                      <h6>odoDistance</`>
-                                        
-                                        <h6>{{hisloc.odoDistance}}</h6>
-                                    </div>
-                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
-                                      <h6>Total Idle Time</h6>
-                                        <h6>{{timeCalculate(hisloc.totalIdleTime)}}</h6>
-                                    </div>
-                                    
-                                    <div class="col-lg-2"  style="border-right: solid 1px #808080">
-                                      <h6>Total Running Time</h6>
-                                        <h6>{{timeCalculate(hisloc.totalRunningTime)}}</h6>
-                                    </div>
-                                    <div class="col-md-2"  style="border-right: solid 1px #808080">
-                                      <h6>Total Parked Time</h6>
-                                        <h6>{{timeCalculate(hisloc.totalParkedTime)}}</h6>
-                                    </div>
-                                    <div class="col-md-2">
-                                      <h6>Trip Distance</h6>
-                                        <h6>{{hisloc.tripDistance}}&nbsp;km</h6>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <th width="5%">S NO</th>
-                                <th width="13%">Date &amp; Time</td>
-                                <th width="7%">Speed Km/h</th>
-                                <th width="35%">Address</th>
-                                <th width="5%">Position</th>
-                                <th width="5%">TripDistance</th>
-                                <th width="5%">IgnitionStatus</th>
-                                <th width="5%">OdoDistance</th>
-                                <th width="5%">PowerStatus</th>
-                                <th width="5%">DeviceVolt</th>
-                              </tr>
-                            </thead> -->
-                            <tbody>
-                              <tr ng-repeat="hist in hisloc.vehicleLocations">
-                                <td width="5%">{{hist.rowId}}</td>
-                                <td width="12%">{{hist.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                <td width="7%">{{hist.speed}}</td>
-                                <td width="29%">{{hist.address}}</td>
-                                <td width="8%" ng-switch on="hist.position">
-                                  <span ng-switch-when="S"><img title="Vehicle Standing" src="assets/imgs/orange.png"/></span>
-                                  <span ng-switch-when="M"><img title="Vehicle Moving" src="assets/imgs/green.png"/></span>
-                                  <span ng-switch-when="P"><img title="Vehicle Parked" src="assets/imgs/flag.png"/></span>
-                                  <span ng-switch-when="U"><img title="Vehicle NoData" src="assets/imgs/gray.png"/></span>
-                                </td>
-                                <td width="8%">{{hist.tripDistance}}</td>
-                                <td width="8%">{{hist.ignitionStatus}}</td>
-                                <td width="8%">{{hist.odoDistance}}</td>
-                                <td width="8%">{{hist.powerStatus}}</td>
-                                <td width="8%">{{hist.deviceVolt}}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                        <div style="position: fixed;top: 50px;left: 180px; z-index:99; background-color: #fff; padding: 5px; border-radius: 2px; cursor: pointer;  width: 250px" class="legendlist">
+                          <div>
+                            <h3><b>Vehicle Status</b></h3>
+                            <div>
+                              <table cellpadding="0" cellspacing="0">
+                                <tbody>
+                                  <tr>
+                                    <td>Milestone</td>
+                                      <td><img src="assets/imgs/milestone.png"/></td>
+                                      <td>Idle</td>
+                                      <td><img src="assets/imgs/orange.png"/></td>
+                                  </tr>
+                                   <tr>
+                                    <td>Parked</td>
+                                      <td><img src="assets/imgs/flag.png"/></td>
+                                      <td>Start</td>
+                                      <td><img src="assets/imgs/startflagico.png"/></td>
+                                  </tr>
+                                   <tr>
+                                    <td>End</td>
+                                      <td><img src="assets/imgs/endflagico.png"/></td>
+                                      <td>No Data</td>
+                                      <td><img src="assets/imgs/gray.png"/></td>
+                                  </tr>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                          
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
+        <!-- </div> -->
         <!-- /#page-content-wrapper -->
     <!-- </div> -->
      
@@ -464,23 +600,23 @@
 
 
    <div class="modal fade" id="myModal2" role="dialog"  style="top:30px;">
-                                    <div class="modal-dialog modal-md" style="width:700px;height:500px"  >
-                                      <div class="modal-content">
-                                        <div class="modal-header" style="height:45px; padding-top: 7px;">
-                                         <!-- <div> --><button  type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true" style="color:white;">&times;</span></button>
-                                        
-                                             <h4>{{windowRouteName}}</h4>
-                                            <!-- </div> -->
-                                        </div>
-                                    <div class="modal-body" style="padding:5px 5px 5px 5px;">
-                                          
-                                         <div id="dvMap" style="width:100%;height:450px;"></div>
+    <div class="modal-dialog modal-md" style="width:700px;height:500px"  >
+      <div class="modal-content">
+        <div class="modal-header" style="height:45px; padding-top: 7px;">
+         <!-- <div> --><button  type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true" style="color:white;">&times;</span></button>
+        
+             <h4>{{windowRouteName}}</h4>
+            <!-- </div> -->
+        </div>
+    <div class="modal-body" style="padding:5px 5px 5px 5px;">
+          
+         <div id="dvMap" style="width:100%;height:450px;"></div>
 
-                                         </div>
-                                        
-                                      </div>
-                                    </div>
-                                  </div>    
+         </div>
+        
+      </div>
+    </div>
+  </div>    
    <!--  <script src="assets/js/static.js"></script>
     <script src="assets/js/jquery-1.11.0.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -495,6 +631,7 @@
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/unique.js"></script>
     <script src="assets/js/customplay.js"></script> -->
+
     <script>
 
  
@@ -524,19 +661,25 @@ if(apikey_url != null || apikey_url != undefined)
  
    // An array of scripts you want to load in order
    var scriptLibrary = [];
-   scriptLibrary.push("assets/js/jquery-1.11.0.js");
    scriptLibrary.push("assets/js/static.js");
+   scriptLibrary.push("assets/js/jquery-1.11.0.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
-   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
-   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   scriptLibrary.push(url);
+
+   // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
+   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
+
+
+
+   // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+   scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    
-   scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
+   // scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
    // scriptLibrary.push("http://code.highcharts.com/highcharts.js");
    // scriptLibrary.push("http://code.highcharts.com/highcharts-more.js");
    // scriptLibrary.push("http://code.highcharts.com/modules/solid-gauge.js");
    scriptLibrary.push("assets/js/markerwithlabel.js");
+   scriptLibrary.push("assets/js/highcharts.js");
    
    scriptLibrary.push("assets/js/moment.js");
    scriptLibrary.push("assets/js/bootstrap-datetimepicker.js");

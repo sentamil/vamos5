@@ -32,7 +32,7 @@ app.directive('map', function($http) {
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
 					scope.hisloc = locs;
-					
+					scope._tableValue(locs);
 					if(data.fromDateTime=='' || data.fromDateTime==undefined || data.fromDateTime=='NaN-aN-aN'){ 
 						if(data.error==null){}else{
 							$('.alert-danger').show();
@@ -43,10 +43,10 @@ app.directive('map', function($http) {
 					}else{
 						$('.alert-danger').hide();
 						if(data.error==null){
-							var fromNow =new Date(data.fromDateTime.replace('IST',''));
-							var toNow 	= new Date(data.toDateTime.replace('IST',''));
-							scope.fromNowTS		    =	fromNow.getTime();
-							scope.toNowTS			=	toNow.getTime();	
+							// var fromNow =new Date(data.fromDateTime.replace('IST',''));
+							// var toNow 	= new Date(data.toDateTimeUTC);
+							scope.fromNowTS		    =	data.fromDateTimeUTC;
+							scope.toNowTS			=	data.toDateTimeUTC;	
 							function formatAMPM(date) {
 								  var date = new Date(date);
 								  var hours = date.getHours();
@@ -311,6 +311,15 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
 	};
 
+
+	$scope.moveaddress    	=	[];
+	$scope.overaddress    	=	[];
+	$scope.parkaddress     	=	[];
+	$scope.idleaddress    	=	[];
+	$scope.fueladdress  	=   [];
+	$scope.igniaddress  	=   [];
+	$scope.acc_address   	=   [];
+
 	// //loading start function
 	// $scope.startLoading		= function () {
 	// 	$('#status').show(); 
@@ -332,6 +341,291 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 
 	$scope.loading	=	true;
 	
+	function _pairFilter(_data, _yes, _no, _status)
+   	{
+   		var _checkStatus =_no ,_pairList 	= [];
+   		angular.forEach(_data, function(value, key){
+        
+   			if(_pairList.length <= 0){
+              if(value[_status] == _yes)
+              	_pairList.push(value)
+            } else if(_pairList.length >0 )
+            {
+              if(value[_status] == _checkStatus){
+                  _pairList.push(value)
+                  if(_pairList[_pairList.length-1][_status] == _yes)
+                      _checkStatus = _no;
+                  else
+                      _checkStatus = _yes
+              }
+            }
+
+   		});
+
+   		if(_pairList.length>1)
+	   		if(_pairList.length%2==0)
+	   			return _pairList;
+	   		else{
+	   			 _pairList.pop();
+	   			return _pairList;
+	   	}
+
+   	}
+
+   	function filter(obj){
+   		var _returnObj = [];
+   		if(obj)
+   			angular.forEach(obj,function(val, key){
+   				if(val.fuelLitre >0)
+   					_returnObj.push(val)
+   			})
+   		return _returnObj;
+   	}
+
+   	$scope.fuelChart 	= 	function(data){
+		var ltrs 		=	[];
+		var fuelDate 	=	[];
+		try{
+			if(data.length)
+				for (var i = 0; i < data.length; i++) {
+					if(data[i].fuelLitre !='0' || data[i].fuelLitre !='0.0')
+					{
+						ltrs.push(data[i].fuelLitre);
+						var dar = $filter('date')(data[i].date, "dd/MM/yyyy HH:mm:ss");
+						fuelDate.push(dar)
+					}
+				};
+		}
+		catch (err){
+			console.log(err.message)
+		}
+		
+	$(function () {
+   
+        $('#container').highcharts({
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Fuel Report'
+            },
+          
+             xAxis: {
+            categories: fuelDate
+        		},
+            
+            yAxis: {
+                title: {
+                    text: 'Fuel'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Fuel Level',
+                data: ltrs
+            }]
+        });
+
+});
+	}
+
+	$scope._tableValue = function(_value){
+		// if(_value && _value.vehicleLocations != null){
+		if(_value && _value.vehicleLocations != null && _value.vehicleLocations != undefined) {
+
+			var ignitionValue		= 	($filter('filter')(_value.vehicleLocations, {'ignitionStatus': "!undefined"}))
+
+			$scope.parkeddata		=	($filter('filter')(_value.vehicleLocations, {'position':"P"}));
+			$scope.overspeeddata	=	($filter('filter')(_value.vehicleLocations, {'isOverSpeed':"Y"}));
+			$scope.movementdata		=	($filter('filter')(_value.vehicleLocations, {'position':"M"}));
+			$scope.idlereport       =   ($filter('filter')(_value.vehicleLocations, {'position':"S"}));
+			$scope.ignitValue 		= 	_pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
+			$scope.acReport 		=	_pairFilter(_value.vehicleLocations, 'yes', 'no', 'vehicleBusy');
+			$scope.fuelValue 		= 	filter(_value.vehicleLocations)
+			
+			if($scope.fuelValue.length > 0)
+				$scope.fuelChart($scope.fuelValue);
+			// console.log($scope.ignitValue);
+		}
+		console.log(" scope.ignitValue ");
+	}
+
+
+	function google_api_call(tempurlMo, index1, _stat) {
+			// console.log(' temperature ')
+			// 	$scope.av = "adasdas"
+	// 	$scope.moveaddress    	=	[];
+	// $scope.overaddress    	=	[];
+	// $scope.parkaddress     	=	[];
+	// $scope.idleaddress    	=	[];
+	// $scope.fueladdress  	=   [];
+	// $scope.igniaddress  	=   [];
+	// $scope.acc_address   	=   [];
+		$http.get(tempurlMo).success(function(data){
+			// $.ajax({
+
+   //          async: false,
+   //          method: 'GET', 
+   //          url: tempurlMo,
+   //          success: function (data) {
+
+                console.log(data)
+                // aUthName = response;
+                // sessionStorage.setItem('apiKey', JSON.stringify(aUthName[0]));
+                // sessionStorage.setItem('userIdName', JSON.stringify('username'+","+aUthName[1]));
+                switch (_stat){
+				case 'movement':
+					console.log(_stat);
+					$scope.moveaddress[index1] = data.results[0].formatted_address;
+				break;
+				case 'overspeed':
+					console.log(_stat);
+					// $scope.overaddress[index1] = data.results[0].formatted_address;
+					$scope.overaddress[index1] = data.results[0].formatted_address;
+				break;
+				case 'parked':
+					console.log(_stat);
+					$scope.parkaddress[index1] = data.results[0].formatted_address;
+				break;
+				case 'idle':
+					console.log(_stat);
+					$scope.idleaddress[index1] = data.results[0].formatted_address;
+				break;
+				case 'fuel':
+					console.log(_stat);
+					$scope.fueladdress[index1] = data.results[0].formatted_address;
+				break;
+				case 'ignition':
+					console.log(_stat);
+					$scope.igniaddress[index1] = data.results[0].formatted_address;
+				break;
+				case 'acc':
+					console.log(_stat);
+					$scope.acc_address[index1] = data.results[0].formatted_address;
+				break;
+
+			}
+        //     }
+        // })
+			
+			// $scope.moveaddress[index1] = data.results[0].formatted_address;
+			// var t = vamo_sysservice.geocodeToserver(latMo,lonMo,data.results[0].formatted_address);
+		})
+	};
+	
+var queue1 = [];
+	var delaying = (function () {
+  		
+  		
+
+	  	function processQueue1() {
+		    if (queue1.length > 0) {
+		      setTimeout(function () {
+		        queue1.shift().cb();
+		        processQueue1();
+		      }, queue1[0].delay);
+		    }
+	  	}
+
+	  	return function delayed(delay, cb) {
+	    	queue1.push({ delay: delay, cb: cb });
+
+	    	if (queue1.length === 1) {
+	      	processQueue1();
+	    	}
+	  	};
+
+	}());
+
+
+	$scope.recursive   = function(location_over, _stat, _address){
+   		// console.log(va)
+   		var indexs = 0;
+   		angular.forEach(location_over, function(value, primaryKey){
+    		indexs = primaryKey;
+    		if(location_over[indexs].address == undefined && _address[indexs] == undefined)
+				{
+					//console.log(' address over speed'+indexs)
+					var latOv		 =	location_over[indexs].latitude;
+				 	var lonOv		 =	location_over[indexs].longitude;
+					var tempurlOv	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latOv+','+lonOv+"&sensor=true";
+					//console.log(' in overspeed '+indexs)
+					delaying(3000, function (indexs) {
+					      return function () {
+					        google_api_call(tempurlOv, indexs, _stat);
+					      };
+					    }(indexs));
+				}
+    	})
+
+	}
+
+
+	$scope.addressResolve 	= function(tabVal){
+		
+		queue1 = [];
+		switch (tabVal){
+			case 'movement':
+				$scope.recursive($scope.movementdata, tabVal, $scope.moveaddress);
+			break;
+
+			case 'overspeed':
+				$scope.recursive($scope.overspeeddata, tabVal, $scope.overaddress);
+			break;
+
+			case 'parked': 
+				$scope.recursive($scope.parkeddata, tabVal, $scope.parkaddress);
+			break;
+
+			case 'idle':
+				$scope.recursive($scope.idlereport, tabVal, $scope.idleaddress);
+			break;
+
+			case 'fuel':
+				$scope.recursive($scope.fuelValue, tabVal, $scope.fueladdress);
+			break;
+
+			case 'ignition':
+				$scope.recursive($scope.ignitValue, tabVal, $scope.igniaddress);
+			break;
+
+			case 'acc':
+				$scope.recursive($scope.acReport, tabVal, $scope.acc_address);
+			break;
+		}
+
+	}
+
 	// $http.get($scope.url).success(function(data){
 		
 	// 	$scope.locations = data;
@@ -1062,6 +1356,16 @@ if($scope.markerstart){
 	//     return new Date(mdy[2], mdy[0]-1, mdy[1]);
 	// }
 	
+	$scope.msToTime		=	function(ms) {
+        days = Math.floor(ms / (24*60*60*1000));
+	    daysms=ms % (24*60*60*1000);
+	    hours = Math.floor((daysms)/(60*60*1000));
+	    hoursms=ms % (60*60*1000);
+	    minutes = Math.floor((hoursms)/(60*1000));
+	    minutesms=ms % (60*1000);
+	    sec = Math.floor((minutesms)/(1000));
+	    return days+"d : "+hours+"h : "+minutes+"m : "+sec+"s";
+    }
 
 
 	function utcdateConvert(milliseconds){
@@ -1398,8 +1702,8 @@ if($scope.markerstart){
 	}
 
 	$(document).ready(function(){
-        $('#minmax').click(function(){
-            $('#contentmin').animate({
+        $('#minmax1').click(function(){
+            $('#contentreply').animate({
                 height: 'toggle'
             },500);
         });
@@ -1444,6 +1748,45 @@ if($scope.markerstart){
 
 	});
 
+
+	$('ul.tabs').each(function(){
+  // For each set of tabs, we want to keep track of
+  // which tab is active and its associated content
+  var $active, $content, $links = $(this).find('a');
+
+  // If the location.hash matches one of the links, use that as the active tab.
+  // If no match is found, use the first link as the initial active tab.
+  $active = $($links.filter('[href="'+location.hash+'"]')[0] || $links[0]);
+  $active.addClass('current');
+
+  $content = $($active[0].hash);
+
+  // Hide the remaining content
+  $links.not($active).each(function () {
+    $(this.hash).hide();
+  });
+
+  // Bind the click event handler
+  $(this).on('click', 'a', function(e){
+    // Make the old tab inactive.
+    $active.removeClass('current');
+    $content.hide();
+
+    // Update the variables with the new link and content
+    $active = $(this);
+    $content = $(this.hash);
+
+    // Make the tab active.
+    $active.addClass('current');
+    $content.show();
+
+    // Prevent the anchor's default click action
+    e.preventDefault();
+  });
 });
+
+
+});
+
 
 

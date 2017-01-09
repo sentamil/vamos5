@@ -273,13 +273,12 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 	function monthlyFunction(){
 		var webServiceUrl 	=	'';
 		var date 			= 	new Date();
-		$scope.month 		= 	monthNames[date.getMonth()-1];
 		$scope.year 		=	date.getFullYear();
 		if(date.getMonth()	== 0)
-			date.getMonth 	= 1;
-		$scope.fromdate 	=	$scope.month+','+date.getFullYear();
+			$scope.year 		=	date.getFullYear() -1;
+		$scope.month 		= 	monthNames[(date.getMonth() == 0) ? 11 : date.getMonth()-1];
+		$scope.fromdate 	=	$scope.month+','+$scope.year;
 		if($scope.groupVeh 	== true)	{
-
 			webServiceUrl 	= 	'http://'+globalIP+context+'/public/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
 		} else {
 			webServiceUrl 	=	'http://'+globalIP+context+'/public/getIndividualDriverPerformance?groupId='+$scope.groupName+'&vehicleId='+$scope.vehicleId+'&month='+$scope.month+'&year='+$scope.year;

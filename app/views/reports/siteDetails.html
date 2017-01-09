@@ -20,7 +20,6 @@
             height:94vh; width:100%; margin-top: 35px;
         }
        
-        
     </style>
 </head>
 <body ng-app="mapApp">
@@ -81,6 +80,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2" align="center">
+                                            
                                             <input type="button" value="Create" ng-click="drawline()"/>
                                             <input type="button" value="Update" ng-click="updateDrawline()"/>
                                             <input type="button" value="Clear Map" ng-click="clearline()"/>
@@ -120,7 +120,7 @@
                         </div>       
                     </div>
                 <div id="maploc">
-                    <div id="map_canvas" style="height:100vh; width:100%;" center="center"></div>
+                    <div id="map_canvas"  center="center"></div>
                 </div>
             </div>
         </div>
@@ -143,10 +143,9 @@
     <script>
 
     var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
-    var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
-
+    var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,drawing";
     if(apikey_url != null || apikey_url != undefined)
-        url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places";
+        url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places,drawing";
 
     function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
      if (scriptsCollection[startIndex]) {

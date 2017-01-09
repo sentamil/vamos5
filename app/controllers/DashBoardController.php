@@ -154,7 +154,17 @@ class DashBoardController extends \BaseController {
 		return View::make ( 'vdm.vehicles.dashboard')->with('count',$count)->with('dealerId',$dealerId)->with('vechile',$vechile)->with('temp',$temp)->with('vechileEx',$vechileEx)->with('vechileEx1',$vechileEx1)->with('prsentMonthCount',$prsentMonthCount)->with('nextMonthCount',$nextMonthCount)->with('prevMonthCount',$prevMonthCount);
 	}
 	
+public function getprevmonth($curmonth, $prevmonth)
+{
+	$monthlist 	= [1,2,3,4,5,6,7,8,9,10,11,12];
+	return ($curmonth < $prevmonth) ? $monthlist[(count($monthlist)-($prevmonth - $curmonth))-1] : $monthlist[(count($monthlist)-($curmonth - $prevmonth))-1];
+}
 
+public function getnextmonth($curmonth, $nextmonth)
+{
+	$monthlist 	= [1,2,3,4,5,6,7,8,9,10,11,12];
+	return ((($curmonth+$nextmonth) < 12)? $monthlist[($curmonth+$nextmonth)-1] : $monthlist[(($curmonth+$nextmonth)-count($monthlist))-1]);
+}
 
 public function index() {
 		if (! Auth::check () ) {
@@ -183,13 +193,25 @@ public function index() {
 						$month=date("m");
 						$year=date("Y");
 
-				            $prsentMonthCount=DB::table('Vehicle_details')
-				            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month-1,$year), DashBoardController::getDateT(59,59,23,15,$month,$year)))->where('belongs_to', $username)->count();
+						log::info(' month_ ' .$month.' _year_ '.$year);
+						log::info(DashBoardController::getprevmonth($month, 7));
+						log::info(DashBoardController::getDateT(59,59,23,15,$month,$year));
+
+						
+
+				$prsentMonthCount=DB::table('Vehicle_details')
+				            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,DashBoardController::getprevmonth($month, 1),$year), DashBoardController::getDateT(59,59,23,15,$month,$year)))->where('belongs_to', $username)->count();
+
+				            
 
 	           $prevMonthCount=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month-2,$year), DashBoardController::getDateT(59,59,23,15,$month-1,$year)))->where('belongs_to', $username)->count();
+	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,DashBoardController::getprevmonth($month, 2),$year), DashBoardController::getDateT(59,59,23,15,DashBoardController::getprevmonth($month, 1),$year)))->where('belongs_to', $username)->count();
+	            
+	            log::info($prevMonthCount);
+				log::info(' prev ');
+
 				$nextMonthCount=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month,$year), DashBoardController::getDateT(59,59,23,15,$month+1,$year)))->where('belongs_to', $username)->count();
+	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month,$year), DashBoardController::getDateT(59,59,23,15,DashBoardController::getnextmonth($month, 1),$year)))->where('belongs_to', $username)->count();
 			}
 			else if(Session::get('cur')=='admin')
 			{
@@ -215,12 +237,12 @@ public function index() {
 						// log::info( 'ndate --->' . DashBoardController::getDateT(59,59,23,15,$month+1,$year));
 
 				$prsentMonthCount=DB::table('Vehicle_details')
-				            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month-1,$year), DashBoardController::getDateT(59,59,23,15,$month,$year)))->count();
+				            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,DashBoardController::getprevmonth($month, 1),$year), DashBoardController::getDateT(59,59,23,15,$month,$year)))->count();
 
 	           $prevMonthCount=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month-2,$year), DashBoardController::getDateT(59,59,23,15,$month-1,$year)))->count();
+	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,DashBoardController::getprevmonth($month, 2),$year), DashBoardController::getDateT(59,59,23,15,DashBoardController::getprevmonth($month, 1),$year)))->count();
 				$nextMonthCount=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month,$year), DashBoardController::getDateT(59,59,23,15,$month+1,$year)))->count();
+	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month,$year), DashBoardController::getDateT(59,59,23,15,DashBoardController::getnextmonth($month, 1),$year)))->count();
 
 			}
 
