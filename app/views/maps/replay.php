@@ -671,7 +671,7 @@ if(apikey_url != null || apikey_url != undefined)
 
 
    // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+   scriptLibrary.push(url);
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    
    // scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
