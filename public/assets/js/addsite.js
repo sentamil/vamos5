@@ -19,7 +19,8 @@ app.controller('mainCtrl',function($scope, $http){
   var dropDown        = [];
   var polygenList     = [];
   var polygenColor;
-  var editableColor   = {"editable": true, "strokeColor": 'red', "fillColor": "#f4f4f4", "fillOpacity": .5, "strokeWeight": 3};
+  var polygenShapList = [];
+  var editableColor   = {"editable": true, "strokeColor": '#000', "fillColor": "#7cbae8", "fillOpacity": .7, "strokeWeight": 1};
   marker = new google.maps.Marker({});
   var oldName         = '';
   $scope.url          = 'http://'+getIP+context+'/public/viewSite';
@@ -39,6 +40,23 @@ app.controller('mainCtrl',function($scope, $http){
                         };
 
   $scope.map         = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  
+
+  // var polygon = new google.maps.Polygon({
+  //       editable: true,
+  //       strokeOpacity: 0,
+  //       strokeWeight: 0,
+  //       fillColor: '#00FF00',
+  //       fillOpacity: .6,
+  //       paths: [
+  //       new google.maps.LatLng(39, 4),
+  //       new google.maps.LatLng(34, 24),
+  //       new google.maps.LatLng(43, 24),
+  //       new google.maps.LatLng(39, 4)],
+  //       map: $scope.map
+  //   });
+
+
   var polygenValue;
   var shapes = [];
   var drawingManager = new google.maps.drawing.DrawingManager({
@@ -77,7 +95,8 @@ app.controller('mainCtrl',function($scope, $http){
 
   var list  =[];
   $scope.$watch('url', function(){
-    serviceCall()
+    serviceCall();
+    stopLoading();
   });
   
 
@@ -86,8 +105,6 @@ app.controller('mainCtrl',function($scope, $http){
 //     console.log(coordinates.length);
 //     console.log(coordinates);
 // });
-
-
 
 
 function listLatLng(_latlng){
@@ -116,8 +133,25 @@ google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygo
     listLatLng(polygon.getPath().getArray());
     shapes.push(polygon);
   });
+  google.maps.event.addListener(polygon.getPath(), 'remove_at', function () {
+    listLatLng(polygon.getPath().getArray());
+    shapes.push(polygon);
+  });
 
 });
+
+$('#add').hide();
+$("#update").hide();
+$scope.AddClear = function(){
+
+  $('#add').hide();
+  $('#create').show();
+  $scope.textValue  = '';
+  $scope.dropValue  = '';
+  $scope.orgID      = '';
+  $scope.clearline();
+
+}
 
 
   var input_value   =  document.getElementById('pac-input');
@@ -142,35 +176,52 @@ google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygo
    //create button click
   $scope.drawline   =   function()
   {
-
+    startLoading();
+    $scope.toast    = '';
     // if(polygenValue)
-    shapes[0].setEditable(false);
-    var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
-    var text        = $scope.textValue;
-    var drop        = $scope.dropValue;
-    var org         = $scope.orgID;
-    // post request
-    if(text && drop && latlanList.length>=3 && org)
+    try
     {
-      $.post( URL_ROOT+'store', {
-        '_token': $('meta[name=csrf-token]').attr('content'),
-        'siteName': text,
-        'siteType': drop,
-        'org':org,
-        'latLng': latlanList,
-      })
-      .done(function(data) {
-        console.log("Sucess");
-      })
-      .fail(function() {
-        console.log("fail");
-      });
-     
-    }else{
-      
-      console.log(' enter all field ')
+
+      shapes[0].setEditable(false);
+      var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
+      var text        = $scope.textValue.replace(/\s/g, '');
+      var drop        = $scope.dropValue;
+      var org         = $scope.orgID;
+      // post request
+      if(text && drop && latlanList.length>=3 && org)
+      {
+        $.post( URL_ROOT+'store', {
+          '_token': $('meta[name=csrf-token]').attr('content'),
+          'siteName': text,
+          'siteType': drop,
+          'org':org,
+          'latLng': latlanList,
+        })
+        .done(function(data) {
+          console.log("Sucess");
+          $scope.toast = "Sucessfully Created ...";
+          serviceCall();
+          myFunction();
+          $('#add').show();
+          $('#create').hide();
+          stopLoading();
+        })
+        .fail(function() {
+          console.log("fail");
+          stopLoading();
+        });
+       
+      }
+
+    } catch (err)
+    {
+      console.log(err)
+      $scope.toast = "Enter all the field / Mark the Site ";
+      myFunction();
+      stopLoading();
     }
-    serviceCall();
+    
+    
   }
 
   //create new json
@@ -297,15 +348,30 @@ google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygo
           seclat        = sp[0];
           seclan        = sp[1];
       }
-      polygenColor = new google.maps.Polygon({
-            path: polygenList,
-            strokeColor: "#282828",
-            strokeWeight: 1,
-            fillColor: '#808080',
-            fillOpacity: 0.50,
-            map: $scope.map
-        });
+      polygenColor = new google.maps.Polygon(editableColor)
+            // editable: true,
+            // path: polygenList,
+            // strokeColor: "#282828",
+            // strokeWeight: 1,
+            // fillColor: '#808080',
+            // fillOpacity: 0.50,
+            // map: $scope.map
+        // });
       
+        polygenColor.setPath(polygenList);
+        polygenColor.setMap($scope.map);
+
+
+      var latlngbounds = new google.maps.LatLngBounds();
+      for (var i=0; i<polygenColor.getPath().length; i++) {
+        
+        var point = new google.maps.LatLng(polygenColor.getPath().b[i].lat(), polygenColor.getPath().b[i].lng());
+        latlngbounds.extend(point);
+    }
+    console.log(latlngbounds);
+    
+
+
       var labelAnchorpos = new google.maps.Point(19, 0);  ///12, 37
       $scope.marker = new MarkerWithLabel({
          position: centerMarker(polygenList), 
@@ -316,29 +382,57 @@ google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygo
          labelClass: "labels", 
          labelInBackground: false
       });
-      $scope.map.setCenter(centerMarker(polygenList)); 
-      $scope.map.setZoom(14);  
+      // $scope.map.setCenter(centerMarker(polygenList)); 
+      // $scope.map.setZoom(14);  
+      $scope.map.fitBounds(latlngbounds);
+
+    
+    $scope.map.setCenter(latlngbounds.getCenter());
     }
   }
+
+  // $scope.changeColor  = function(){
+  //   return "black"
+  // }
 
   
   //inside the table td click function
   $scope.siteNameClick  =   function(user)
-  {
-      // if (drawingManager.getDrawingMode() != null) {
-          // for (var i = 0; i < shapes.length; i++) {
-          //     shapes[i].setMap(null);
-          // }
-          // shapes = [];
-      // }
-      clearShaps()
-      drawingManager.set('drawingMode'); 
-      oldName             = user.siteName;
-      $scope.textValue    = user.siteName;
-      $scope.dropValue    = user.siteType;
-      $scope.orgID        = user.orgId;
-      var split           = user.latLng.split(",");
-      polygenFunction(split);
+  { 
+    $('#add').show();
+    $('#create').hide();
+    $("#update").show();
+    clearShaps()
+    drawingManager.set('drawingMode'); 
+    oldName             = user.siteName;
+    $scope.textValue    = user.siteName;
+    $scope.dropValue    = user.siteType;
+    $scope.orgID        = user.orgId;
+    var split           = user.latLng.split(",");
+    polygenFunction(split);
+    polygenColor.getPaths().forEach(function (path, index) {
+      console.log(path);
+      google.maps.event.addListener(path, 'insert_at', function () {
+        console.log('insert_at event');
+        listLatLng(path.b);
+        $("#update").attr('class', 'black');
+      });
+
+      google.maps.event.addListener(path, 'remove_at', function (s, t) {
+        console.log('remove_at event');
+        listLatLng(path.b);
+        $("#update").attr('class', '');
+      });
+
+      google.maps.event.addListener(path, 'set_at', function () {
+        console.log('set_at event');
+        listLatLng(path.b);
+        $("#update").attr('class', 'black');
+        // $scope.changeColor();
+        
+      });
+    });
+
   }
 
   //join the add site function
@@ -364,40 +458,55 @@ google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygo
   // function for the update button
   $scope.updateDrawline   =   function()
   {
-    //console.log(' updateDrawline '+latlanList.length)
+    startLoading();
+    $scope.toast    =  '';
     var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
-    var text        = $scope.textValue;
+    var text        = $scope.textValue.replace(/\s/g, '');
     var drop        = $scope.dropValue;
     var org         = $scope.orgID;
-    //console.log(' old value '+oldName)
-    // post request for update
-    if(text && drop && latlanList.length>=3 && org && oldName)
+    try
     {
-      $.post( URL_ROOT+'update', {
-        '_token': $('meta[name=csrf-token]').attr('content'),
-        'siteName': text,
-        'siteNameOld': oldName,
-        'siteType': drop,
-        'org':org,
-        'latLng': latlanList,
-      })
-      .done(function(data) {
-        console.log("Sucess");
-      })
-      .fail(function() {
-        console.log("fail");
-      });
-     
-    }else{
-     
-      console.log(' enter all field ')
+      if(text && drop && latlanList.length>=3 && org && oldName)
+      {
+        $.post( URL_ROOT+'update', {
+          '_token': $('meta[name=csrf-token]').attr('content'),
+          'siteName': text,
+          'siteNameOld': oldName,
+          'siteType': drop,
+          'org':org,
+          'latLng': latlanList,
+        })
+        .done(function(data) {
+          console.log("Sucess");
+          $scope.toast = "Sucessfully Updated ...";
+          serviceCall();
+          myFunction();
+          $("#update").attr('class', '');
+          stopLoading();
+        })
+        .fail(function() {
+          console.log("fail");
+          stopLoading();
+        });
+       
+      }
     }
-    serviceCall();
+    catch(err)
+    { 
+      console.log(err);
+      $scope.toast = "Enter all the field / Mark the Site ";
+      myFunction();
+      stopLoading();
+    }
+    
+    
   }
 
   //delete function 
   $scope.deleteClick  =   function(response)
   {
+    startLoading();
+    $scope.toast  = '';
     var URL_ROOT    = "AddSiteController/";  
     if(response)
     {
@@ -408,17 +517,25 @@ google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygo
       })
       .done(function(data) {
         console.log("Sucess");
+        $scope.toast = "Sucessfully Deleted ...";
+        serviceCall();
+        myFunction();
+        $scope.AddClear();
+        stopLoading();
       })
       .fail(function() {
         console.log("fail");
+        stopLoading();
       });
      
-    }else{
-     
-      console.log(' enter all field ')
     }
-    serviceCall();
   }
+
+function myFunction() {
+    var x = document.getElementById("snackbar")
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
 
 $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();

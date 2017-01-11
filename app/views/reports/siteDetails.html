@@ -19,11 +19,11 @@
         #map_canvas{
             height:94vh; width:100%; margin-top: 35px;
         }
-       
     </style>
+<div id="status">&nbsp;</div>
 </head>
 <body ng-app="mapApp">
-    <div id="wrapper-site" ng-controller="mainCtrl">
+    <div id="wrapper-site" ng-controller="mainCtrl" class="ng-cloak">
         <div id="sidebar-wrapper-site">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
@@ -44,11 +44,11 @@
 
         <div id="page-content-wrapper">
             <div class="container-fluid">
-                <div id="testLoad">
-                </div>
+                <div id="testLoad"></div>
                 <input id="pac-input" type="text" placeholder="Enter a location"></input>
                 <div style="position: absolute;top: 50px;right: 20px; z-index:999; width: 300px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;">
-                    <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Add Sites</div>
+
+                    <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Add Sites </div>
                         <div class="siteInput" > 
                             <table cellpadding="0" cellspacing="0">
                                 <tbody>
@@ -81,8 +81,9 @@
                                     <tr>
                                         <td colspan="2" align="center">
                                             
-                                            <input type="button" value="Create" ng-click="drawline()"/>
-                                            <input type="button" value="Update" ng-click="updateDrawline()"/>
+                                            <input id="add" type="button" value="Add Site" ng-click="AddClear()"/>
+                                            <input id="create" type="button" value="Create" ng-click="drawline()"/>
+                                            <input id="update" type="button" value="Update" ng-click="updateDrawline()"/>
                                             <input type="button" value="Clear Map" ng-click="clearline()"/>
                                             
                                         </td>                            
@@ -99,7 +100,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="3">
-                                                <input type"input" placeholder="Site Name" ng-model="search" style="width:100%; font-weight: bold; font-size: 12px; padding : 2px"/>
+                                                <input type="input" placeholder="Site Name" ng-model="search" style="width:100%; font-weight: bold; font-size: 12px; padding : 2px"/>
                                             </td>
                                         </tr>
                                     </thead>       
@@ -126,7 +127,7 @@
         </div>
 
 
-
+<div id="snackbar">{{toast}}</div>
 
     </div>
     <!-- <script src="assets/js/static.js"></script>
@@ -171,7 +172,7 @@
     scriptLibrary.push("assets/js/jquery.min.js");
     scriptLibrary.push(url);
    
-    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
+    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
     scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
     scriptLibrary.push("assets/js/bootstrap.min.js");
     scriptLibrary.push("assets/js/markerwithlabel.js");

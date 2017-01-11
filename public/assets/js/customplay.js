@@ -27,7 +27,7 @@ app.directive('map', function($http) {
 				return result;
 			}
 		 	scope.$watch("hisurl", function (val) {
-		 		// startLoading(); 
+		 		startLoading();
 		 		if(scope.hisurl != undefined)
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
@@ -82,29 +82,6 @@ app.directive('map', function($http) {
 							
 							};
 	            			scope.map = new google.maps.Map(document.getElementById(attrs.id), myOptions);
-/*
-	            			 var input01 = (document.getElementById('pac-input'));
-  							scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input01);
-  							var searchBox = new google.maps.places.SearchBox((input01));
-  							
-  							google.maps.event.addListener(searchBox, 'places_changed', function() {
-							    var places = searchBox.getPlaces();
-							
-							    if (places.length == 0) {
-							      return;
-							    }
-							    var bounds = new google.maps.LatLngBounds();
-							   for (var i = 0, place; place = places[i]; i++) {
-							      bounds.extend(place.geometry.location);
-							    }
-							    scope.map.fitBounds(bounds);
-							  });
-  							google.maps.event.addListener(scope.map, 'bounds_changed', function() {
-							    var bounds = scope.map.getBounds();
-							    searchBox.setBounds(bounds);
-							  });
-*/							
-
 
 							
 							//draw the geo code
@@ -461,7 +438,21 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 
 	$scope._tableValue = function(_value){
 		// if(_value && _value.vehicleLocations != null){
-		if(_value && _value.vehicleLocations != null && _value.vehicleLocations != undefined) {
+		$scope.moveaddress    	=	[];
+		$scope.overaddress    	=	[];
+		$scope.parkaddress     	=	[];
+		$scope.idleaddress    	=	[];
+		$scope.fueladdress  	=   [];
+		$scope.igniaddress  	=   [];
+		$scope.acc_address   	=   [];
+		$scope.parkeddata		=	[];
+		$scope.overspeeddata	=	[];
+		$scope.movementdata		=	[];
+		$scope.idlereport       =   [];
+		$scope.ignitValue 		= 	[];
+		$scope.acReport 		=	[];
+		$scope.fuelValue 		= 	[];
+		if(_value && _value.vehicleLocations != null) {
 
 			var ignitionValue		= 	($filter('filter')(_value.vehicleLocations, {'ignitionStatus': "!undefined"}))
 
