@@ -167,7 +167,7 @@
     <script src="assets/js/customtrack.js"></script> -->
     <script>
 
-var apikey_url = 'AIzaSyDY9lNthKAcaSCcQGKMcilI5aYWAeru9wc';//JSON.parse(sessionStorage.getItem('apiKey'));
+var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
 // var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
 
 // if(apikey_url != null || apikey_url != undefined)

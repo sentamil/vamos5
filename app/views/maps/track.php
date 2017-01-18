@@ -20,106 +20,137 @@
             width:100%;
             height: 100vh; 
         }
-         #container-speed{  width: 170px; height: 100px;}
-     #container-fuel{  width: 170px; height: 100px;}
-         .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
+        #container-speed{  width: 170px; height: 100px;}
+        #container-fuel{  width: 170px; height: 100px;}
+        .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
+        div.pane  td{
+          border:  0.5px solid #d9d9d9;
+          padding:  2px;
+          word-wrap: break-word;
+        }
     </style>
 </head>
 <body ng-app="mapApp">
-    <div id="wrapper" ng-controller="mainCtrl" style="padding-left:0 !important;">
+    <div id="wrapper" ng-controller="mainCtrl" style="padding-left:0 !important;" class="ng-cloak">
         
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
                         <div id="maploc">
-                            <div id="pac-input01">
-                                <div>
-                                    <input type="button" id="traffic" ng-click="check()" value="Traffic" />
-                                </div> 
-                            </div>
                             <map id="map_canvas"></map>
                         </div>
                     </div>
-                    <div id="minmax" style="position: absolute;top: 0px;right: 10px; z-index:999999">
+                    <div id="minmax1" style="position: absolute;top: 6px;right: 6px; z-index:999">
                             <img src="assets/imgs/add.png" />
                         </div>
-                    <div class="rightSection" id="contentmin">
-                        <table cellpadding="0" cellspacing="0" style="font-size:12px; word-wrap: break-word;" class="trackDetails">
-                            <tr>
-                                <td style="width:50%">Vehicle Name</td>
-                                <td id="vehiid" style="width:50%"><span></span></td>
-                            </tr>
-                            <tr>
-                                <td style="width:50%">odoDistance</td>
-                                <td id="vehdevtype" style="width:50%"><span></span> Km</td>
-                            </tr>
-                            <tr>
-                                <td style="width:50%">Speed Limit</td>
-                                <td id="mobno"><span></span> Km/h</td>
-                            </tr>
-                            <!-- <tr>
-                                <td colspan="2"><div id="container-speed"></div></td>
-                            </tr> -->
-                            <tr>
-                                <td style="width:50%">Today Distance</td>
-                                <td id="toddist"><span><span></span>&nbsp;Km</span></td>
-                            </tr>
-                            <tr>
-                                <td style="width:50%"><span id="positiontime">Position </span>Time</td>
-                                <td id="regno"><span></span></td>
-                            </tr>
-                            <tr>
-                                <td style="width:50%">Address</td>
-                                <td id="lastseentrack"><span></span></td>
-                            </tr>
-                            <tr>
-                                <td style="width:50%">DeviceVolt</td>
-                                <td id="deviceVolt"><span></span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div class="latlong"><label>LatLong<input type="text"  style="width:230px" value="0.0" id="latinput" readonly/> <br/> POI : <input type="text" style="width:153px;" id="poival" placeholder="Enter Point of Interest" ng-enter="enterkeypress()" /> <button ng-click="enterkeypress()">Save</button></label></div>
-                                </td>
-                                
-                            </tr>
-                        </table>
+                    <div id="contentreply">
                         
-                        <h3 style="font-size:14px; text-align:center; margin-top:0;">Vehicle Status</h3>
-                        <div class="tracklegend">
-                            <table cellpadding="0" cellspacing="0" style="font-size:12px; word-wrap: break-word;">
-                                <tbody>
-                                    <tr>
-                                        <td style="width:25%">Moving</td>
-                                        <td align="center"><img src="assets/imgs/green.png"/></td>
-                                        <td style="width:25%">Parked</td>
-                                        <td align="center"><img src="assets/imgs/flag.png"/></td>
-                                    </tr>
-                                     <tr>
-                                        <td>Overspeed</td>
-                                        <td align="center"><img src="assets/imgs/red.png"/></td>
-                                        <td>Standing</td>
-                                        <td align="center"><img src="assets/imgs/orange.png"/></td>
-                                    </tr>
-                                     <tr>
-                                        <td>Geo Fence</td>
-                                        <td align="center"><img src="assets/imgs/blue.png"/></td>
-                                        <td>No Data</td>
-                                        <td align="center"><img src="assets/imgs/gray.png"/></td>
-                                    </tr>
+                        <div class="form-group form-inline" style="margin-bottom: 5px">
+                            <div class="input-group datecomp">
+                              <input type="button" id="traffic" ng-click="check()" value="Traffic" class="sizeInput"/>
+                            </div>
+                            <div class="input-group datecomp">
+                              <input type="text" value="0.0" id="latinput" class="sizeInput" style="width:200px" readonly/>
+                            </div>
+                            <div class="input-group datecomp">
+                                <input type="text" class="sizeInput" id="poival" placeholder="Point of Interest" ng-enter="enterkeypress()" /> 
+                            </div>
+                            <div class="input-group datecomp">
+                                <button ng-click="enterkeypress()" class="sizeInput">Save</button>
+                            </div>
+                            
+                        </div>
+                        <div class="pane">
+                            <table class="tables">
+                                <tr>
+                                  <td>VehicleName</td>
+                                  <td>{{histVal[0].shortName}}</td>         
+                                  <td>SpeedLimit</td>
+                                  <td>{{histVal[0].overSpeedLimit}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Reg No</td>
+                                    <td>{{histVal[0].regNo}}</td>
+                                    <td>DeviceVolt</td>
+                                    <td>{{histVal[0].deviceVolt}}</td>
+                                </tr>
                             </table>
                         </div>
-                    </div>
-                     <div id="graphsId">
-                            <div>
-                                <div>Speed - <label id="speed"></label>&nbsp;Km/h</div>
-                                <div id="container-speed"></div>
-                            </div>
-                            <div>
-                                <div>Tank Size - <label id="fuel"></label>&nbsp;Ltr</div>
-                                <div id="container-fuel"></div>
-                            </div>
+
+                        <div class="pane">
+                         
+                            <table class="tables">
+                                <tr>
+                                    <td width="15%">Date&amp;Time</td>
+                                    <td width="10%">Odo km</td>
+                                    <td width="20%" colspan="2">Position</td>
+                                    <td width="10%">Max km</td>
+                                    <td width="35%">Address</td>
+                                    <!-- <td width="10%">DeviceVolt</td> -->
+                                    <td width="10%">G-Map</td>
+                                </tr>
+                                <tr ng-repeat="liveVal in histVal">
+                                    <td>{{liveVal.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                                    <td>{{liveVal.odoDistance }}</td>
+                                    
+                                    <td ng-switch on="liveVal.position">
+                                        <span ng-switch-when="S">Standing</span>
+                                        <span ng-switch-when="M">Moving</span>
+                                        <span ng-switch-when="P">Parked</span>
+                                        <span ng-switch-when="U">NoData</span>
+                                    </td>
+                                    <td ng-switch on="liveVal.position">
+                                        <span ng-switch-when="S">{{timems(liveVal.idleTime)}}</span>
+                                        <span ng-switch-when="M">{{timems(liveVal.movingTime)}}</span>
+                                        <span ng-switch-when="P">{{timems(liveVal.parkedTime)}}</span>
+                                        <span ng-switch-when="U">{{timems(liveVal.noDataTime)}}</span>
+                                    </td>
+                                    <td>{{liveVal.speed}}</td>
+                                    <td>{{liveVal.address }}</td>
+                                    <!-- <td width="10%">{{liveVal.deviceVolt }}</td> -->
+                                    <td><a href="https://www.google.com/maps?q=loc:{{liveVal.latitude}},{{liveVal.longitude}}" target="_blank">Link</a></td>
+                                </tr>
+                                <tr ng-if="histVal.length == 0">
+                                    <td colspan="7" class="err"><h6>No Data Found!</h6></td>
+                                </tr>
+                            </table>
                         </div>
+                        
+                        <div class="pane">
+                            <table class="tables">
+                                <tr>
+                                    <td>Moving</td>
+                                    <td ><img src="assets/imgs/green.png"/></td>
+                                    <td >Parked</td>
+                                    <td ><img src="assets/imgs/flag.png"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Overspeed</td>
+                                    <td align="center"><img src="assets/imgs/red.png"/></td>
+                                    <td>Standing</td>
+                                    <td align="center"><img src="assets/imgs/orange.png"/></td>
+                                </tr>
+                                 <tr>
+                                    <td>Geo Fence</td>
+                                    <td align="center"><img src="assets/imgs/blue.png"/></td>
+                                    <td>No Data</td>
+                                    <td align="center"><img src="assets/imgs/gray.png"/></td>
+                                </tr>
+                            </table>
+                         
+                        </div>
+                    </div>
+                    <div id="graphsId">
+                        <div>
+                            <div>Speed - <label id="speed"></label>&nbsp;Km/h</div>
+                            <div id="container-speed"></div>
+                        </div>
+                        <div>
+                            <div>Tank Size - <label id="fuel"></label>&nbsp;Ltr</div>
+                            <div id="container-fuel"></div>
+                        </div>
+                    </div>
                     <!--div id="lastseentrack" style="top:0; height: auto; bottom:auto">&nbsp;</div-->
                    <!-- <div class="latlong"><label><input type="text"  style="width:265px" value="0.0" id="latinput" readonly/> POI : <input type="text" style="width:300px;" id="poival" placeholder="Enter Point of Interest" ng-enter="enterkeypress()" /> <button ng-click="enterkeypress()">Save</button></label><!--<label>Longitude : <input type="text" value="0.0" id="lnginput" readonly/></label></div>-->
                          <!-- div class="bottomContent">
@@ -201,7 +232,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/static.js");
    scriptLibrary.push("assets/js/jquery-1.11.0.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
-   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
+   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
    // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    scriptLibrary.push("http://code.highcharts.com/highcharts.js");
@@ -230,6 +261,7 @@ if(apikey_url != null || apikey_url != undefined)
        // application is "ready to be executed"
        // startProgram();
    });
+
     </script>
 </body>
 </html>

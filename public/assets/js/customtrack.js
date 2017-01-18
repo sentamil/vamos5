@@ -10,7 +10,7 @@ app.directive('map', function($http, vamoservice) {
 					zoom: 13,zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
 					center: new google.maps.LatLng(locs.latitude, locs.longitude),
 					mapTypeId: google.maps.MapTypeId.ROADMAP/*,
-					styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}] */
+					*/
             	};
             	scope.map = new google.maps.Map(document.getElementById(attrs.id), myOptions);
 				google.maps.event.addListener(scope.map, 'click', function(event) {
@@ -101,11 +101,14 @@ app.directive('map', function($http, vamoservice) {
 			    (function latlan(){
 			    	vamoservice.getDataCall(scope.urlVeh).then(function(response) {
 			    		if(response.latLngOld != undefined)
+		    			{
 				    		for (var i = 0; i < response.latLngOld.length; i++) {
 				    			sp = response.latLngOld[i].split(',');
 				    			lineDraw(sp[0], sp[1]);
 				    		};
-			    		});
+				    		// scope.histVal.push(response);
+			    		}
+			    	});
 			    }());	
 			    // vamoservice.getDataCall(uro).then(function(response) {
 			    // 	if(response.latLngOld.length)
@@ -130,6 +133,12 @@ app.directive('map', function($http, vamoservice) {
 		  	
 		  setInterval(function() {
 		   		vamoservice.getDataCall(scope.url).then(function(data) {
+		   			if(data != '' && data){
+		   				if(data.position == 'M')
+		   					scope.histVal.unshift(data);
+		   				else
+		   					scope.histVal[0]=data;
+		   			}
 		   			var locs = data;
 					// var myOptions = {
 					// 	zoom: 13,
@@ -239,8 +248,10 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 	$scope.inter = 0;
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
+	$scope.histVal 	= [];
 	vamoservice.getDataCall($scope.url).then(function(data) {
 		$scope.locations = data;
+		$scope.histVal.push(data);
 		var url = 'http://'+globalIP+context+'/public//getGeoFenceView?'+res[1];
 				$scope.createGeofence(url)
 	});
@@ -252,7 +263,25 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 		});
 	}
 
-	
+	$scope.timems = function(t){
+		
+		    var cd = 24 * 60 * 60 * 1000,
+		        ch = 60 * 60 * 1000,
+		        d = Math.floor(t / cd),
+		        h = Math.floor( (t - d * cd) / ch),
+		        m = Math.round( (t - d * cd - h * ch) / 60000),
+		        pad = function(n){ return n < 10 ? '0' + n : n; };
+		  if( m === 60 ){
+		    h++;
+		    m = 0;
+		  }
+		  if( h === 24 ){
+		    d++;
+		    h = 0;
+		  }
+		  return [d+'d', pad(h)+'h', pad(m)+'m'].join(':');
+		
+	}
 
 	$scope.getLocation = function(lat,lon, callback){
 		geocoder = new google.maps.Geocoder();
@@ -542,8 +571,8 @@ $(document).ready(function(e) {
 
 
     $(document).ready(function(){
-        $('#minmax').click(function(){
-            $('#contentmin').animate({
+        $('#minmax1').click(function(){
+            $('#contentreply').animate({
                 height: 'toggle'
             },2000);
         });
