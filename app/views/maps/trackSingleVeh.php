@@ -30,16 +30,18 @@
       'id': getParameterByName('userID')
 
       };
-      
-    $.post('{{ route("ajax.apiKeyAcess") }}',postValue)
-      .done(function(data) {
-        
-       
-            sessionStorage.setItem('apiKey', JSON.stringify(data));
-            
-          }).fail(function() {
-            console.log("fail");
-      });
+      $.ajax({
+
+            async: false,
+            method: 'post', 
+            url: 'getApiKeys',
+            data: postValue,
+            success: function (response) {
+
+                console.log(response)
+                sessionStorage.setItem('apiKey', JSON.stringify(response));
+            }
+        })
     </script>
 
     <style type="text/css">

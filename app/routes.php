@@ -657,6 +657,7 @@ Route::get('password/reset/{token}', array('uses' => 'RemindersController@reset'
 Route::post('password/reset/{token}', array('before' => 'csrf', 'uses' => 'RemindersController@update', 'as' => 'password.update'));
  
 Route::post('userIds', array('as' => 'ajax.apiKeyAcess', 'uses'=>'HomeController@getApi')); 
+Route::post('getApiKeys', array('uses'=>'HomeController@getApi')); 
 
 
  
