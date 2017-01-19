@@ -436,6 +436,67 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 });
 	}
 
+
+	$scope.speedKms 	= 	function(data){
+		var ltrs 		=	[];
+		var fuelDate 	=	[];
+		try{
+			if(data.length)
+				for (var i = 0; i < data.length; i++) {
+					if(data[i].speed !='0')
+					{
+						ltrs.push(data[i].speed);
+						var dar = $filter('date')(data[i].date, "dd/MM/yyyy HH:mm:ss");
+						fuelDate.push(dar)
+					}
+				};
+		}
+		catch (err){
+			console.log(err.message)
+		}
+		
+	$(function () {
+   
+        $('#speedGraph').highcharts({
+            chart: {
+            type: 'line'
+        },
+        title: {
+            text: ''
+        },
+       subtitle: {
+            text: 'Speed km/h'
+        },
+        xAxis: {
+            categories: fuelDate
+        },
+        yAxis: {
+            title: {
+                text: ''
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: false
+                },
+                enableMouseTracking: true
+            }
+        },
+        // legend: {
+        //     enabled: false
+        // },
+
+        series: [{
+            name: 'km/h',
+            data: ltrs
+        }]
+        });
+
+	});
+}
+
+
 	$scope._tableValue = function(_value){
 		// if(_value && _value.vehicleLocations != null){
 		$scope.moveaddress    	=	[];
@@ -464,11 +525,11 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 			$scope.acReport 		=	_pairFilter(_value.vehicleLocations, 'yes', 'no', 'vehicleBusy');
 			$scope.fuelValue 		= 	filter(_value.vehicleLocations)
 			
-			if($scope.fuelValue.length > 0)
-				$scope.fuelChart($scope.fuelValue);
 			// console.log($scope.ignitValue);
 		}
-		console.log(" scope.ignitValue ");
+		$scope.speedKms($scope.movementdata);
+		$scope.fuelChart($scope.fuelValue);
+	
 	}
 
 

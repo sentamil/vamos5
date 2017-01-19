@@ -20,9 +20,10 @@
 <![endif]-->
 <style type="text/css">
 
-#container{
-  max-width: 480px;
-  max-height: 200px;
+#container, #speedGraph{
+  max-width: 480px !important;
+  max-height: 200px !important;
+  min-width: 480px; height: 200px; margin: 0 auto
 }
 
 </style>
@@ -115,7 +116,7 @@
 
             <!-- movement -->
             <div id='movement' class="pane">
-              
+            <div id="speedGraph"></div>
               <table class="tables">
                 <tr>
                   <td colspan="2">Vehicle Group</td>
@@ -386,6 +387,7 @@
                 </tr>
               </table>
             </div>
+
           </div>
 
 

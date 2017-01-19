@@ -37,21 +37,19 @@
             url: 'getApiKeys',
             data: postValue,
             success: function (response) {
-
-                console.log(response)
-                sessionStorage.setItem('apiKey', JSON.stringify(response));
+              sessionStorage.setItem('apiKey', JSON.stringify(response));
             }
         })
     </script>
 
     <style type="text/css">
-        #map_canvas{
-            width:100%;
-            height: 100vh; 
-        }
-         #container-speed{  width: 170px; height: 100px;}
-     #container-fuel{  width: 170px; height: 100px;}
-         .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
+      #map_canvas{
+        width:100%;
+        height: 100vh; 
+      }
+      #container-speed{  width: 170px; height: 100px;}
+      #container-fuel{  width: 170px; height: 100px;}
+      .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
     </style>
 </head>
 <body ng-app="mapApp">
