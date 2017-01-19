@@ -539,9 +539,9 @@
                                 <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
                                           
                             </td>
-                             <td  ng-switch on="user.powerStatus">
-                                <span ng-switch-when="OFF"><img src="assets/imgs/wr.png"/></span>
-                                <span ng-switch-when="ON"><img src="assets/imgs/rt.png"/></span>
+                             <td>{{user.powerStatus}}
+                                <!-- <span ng-switch-when="OFF"><img src="assets/imgs/wr.png"/></span>
+                                <span ng-switch-when="ON"><img src="assets/imgs/rt.png"/></span> -->
                             </td>
                             <td>{{user.regNo}}</td>
                             <td>{{user.driverName}}</td>

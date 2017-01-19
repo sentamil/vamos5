@@ -15,6 +15,33 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <!-- <script src="assets/js/static.js"></script> -->
+    <script src="assets/js/jquery-1.11.0.js"></script>
+    <script type="text/javascript">
+      function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+
+      var postValue = {
+      'id': getParameterByName('userID')
+
+      };
+      
+    $.post('{{ route("ajax.apiKeyAcess") }}',postValue)
+      .done(function(data) {
+        
+       
+            sessionStorage.setItem('apiKey', JSON.stringify(data));
+            
+          }).fail(function() {
+            console.log("fail");
+      });
+    </script>
+
     <style type="text/css">
         #map_canvas{
             width:100%;
@@ -192,6 +219,7 @@ var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
  
    // An array of scripts you want to load in order
    var scriptLibrary = [];
+   
    
    scriptLibrary.push("assets/js/static.js");
    scriptLibrary.push("assets/js/jquery-1.11.0.js");

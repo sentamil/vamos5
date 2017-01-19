@@ -509,7 +509,7 @@ var markerSearch = new google.maps.Marker({});
 				
 				$scope.final_data = result;
 				
-    			var url='../public/track?vehicleId='+result.trim()+'&maps=track';
+    			var url='../public/track?vehicleId='+result.trim()+'&maps=track'+'&userID='+sp1[1];
 				window.open(url,'_blank');
 				
 			})
