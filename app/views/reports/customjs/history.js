@@ -218,14 +218,14 @@ function eventButton(eventdate)
 					$scope.dataArray(data.vehicleLocations);
 
 					//$scope.dataGeofence(data.gfTrip);		
-					var fromNow 			= 	new Date(data.fromDateTime.replace('IST',''));
-					var toNow 				= 	new Date(data.toDateTime.replace('IST',''));
-					$scope.fromNowTS		=	fromNow.getTime();
-					$scope.toNowTS			=	toNow.getTime();	
+					var fromNow 			  = new Date(data.fromDateTime.replace('IST',''));
+					var toNow 				  = new Date(data.toDateTime.replace('IST',''));
+					$scope.fromNowTS		=	data.fromDateTimeUTC;
+					$scope.toNowTS			=	data.toDateTimeUTC;	
 					$scope.fromtime			=	formatAMPM($scope.fromNowTS);
-		   			$scope.totime			=	formatAMPM($scope.toNowTS);
+		   		$scope.totime			  =	formatAMPM($scope.toNowTS);
 					$scope.fromdate			=	$scope.getTodayDate($scope.fromNowTS);
-					$scope.todate			=	$scope.getTodayDate($scope.toNowTS);
+					$scope.todate			  =	$scope.getTodayDate($scope.toNowTS);
 	   			
 	   			}
 				// $scope.eventCall();
@@ -1024,7 +1024,8 @@ function eventButton(eventdate)
     	startLoading();
     	var valueas 		=   $('#txtv').val();
 		
-			var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
+      var histurl     = "http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
+			// var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
 			//var loadUrl 		= 	"http://"+getIP+context+"/public//getLoadReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime);
 		try{
 			$http.get(histurl).success(function(data){
