@@ -191,7 +191,7 @@
                   <td width="50%">Address</td>
                   <td width="15%">G-Map</td>
                 </tr>
-                <tr ng-repeat="move in movementdata">
+                <tr ng-repeat="move in movementdata" ng-click="markerPoup(move)">
                   <td>{{move.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{move.speed}}</td>
                   <td>
@@ -239,7 +239,7 @@
                   <td width="10%">Odo(KM)</td>
                 </tr>
                 
-                <tr ng-repeat="over in overspeeddata">
+                <tr ng-repeat="over in overspeeddata" ng-click="markerPoup(over)">
                   <td>{{over.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{over.speed}}</td>
                   <td>
@@ -278,7 +278,7 @@
                   <td width="10%">G-Map</td>
                 </tr>
                 
-                <tr ng-repeat="park in parkeddata">
+                <tr ng-repeat="park in parkeddata" ng-click="markerPoup(park)">
                   <td>{{park.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{msToTime(park.parkedTime)}}</td>
                   <td>
@@ -314,7 +314,7 @@
                     <td width="10%">G-Map</td>
                   </tr>
                   
-                  <tr ng-repeat="idle in idlereport">
+                  <tr ng-repeat="idle in idlereport" ng-click="markerPoup(idle)">
                     <td>{{idle.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                     <td>{{msToTime(idle.idleTime)}}</td>
                     <td>
@@ -340,7 +340,7 @@
                   <td width="60%">Nearest Location</td>
                   <td width="10%">G-Map</td>
                 </tr>   
-                <tr ng-repeat="fuelR in fuelValue">
+                <tr ng-repeat="fuelR in fuelValue" ng-click="markerPoup(fuelR)">
                   <td>{{fuelR.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{fuelR.fuelLitre}}</td>
                   <td>
@@ -376,7 +376,7 @@
                     <td width="50%">Nearest Location</td>
                     <td width="10%">G-Map</td>
                 </tr>
-                <tr ng-repeat="ignition in ignitValue">
+                <tr ng-repeat="ignition in ignitValue" ng-click="markerPoup(ignition)">
                   <td>{{ignition.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                   <td>{{ignition.ignitionStatus}}</td>
                   <td rowspan="2" ng-if="ignition.ignitionStatus == 'ON'">{{msToTime(ignitValue[$index+1].date-ignition.date)}}</td>
@@ -414,7 +414,7 @@
                   <td width="50%">Nearest Location</td>
                   <td width="10%">G-Map</td>
                 </tr>
-                <tr ng-repeat="acc in acReport">
+                <tr ng-repeat="acc in acReport" ng-click="markerPoup(acc)">
                   <td>{{acc.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                   <td>
                     <span ng-if="acc.vehicleBusy == 'yes'">ON</span>
