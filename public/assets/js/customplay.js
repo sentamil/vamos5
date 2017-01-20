@@ -282,6 +282,7 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 	$scope.tempadd01='';
 	$scope.cityCircle=[];
 	$scope.geoMarkerDetails={};
+	$scope.popupmarker;
 	$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations';
 	$scope.getTodayDate  =	function(date) {
 		var date = new Date(date);
@@ -459,8 +460,8 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
    
         $('#speedGraph').highcharts({
             chart: {
-            type: 'line'
-        },
+                zoomType: 'x'
+            },
         title: {
             text: ''
         },
@@ -476,18 +477,45 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
             }
         },
         plotOptions: {
-            line: {
-                dataLabels: {
-                    enabled: false
-                },
-                enableMouseTracking: true
-            }
-        },
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+        // plotOptions: {
+        //     line: {
+        //         dataLabels: {
+        //             enabled: false
+        //         },
+        //         enableMouseTracking: true
+        //     }
+        // },
         // legend: {
         //     enabled: false
         // },
 
         series: [{
+        	type: 'area',
             name: 'km/h',
             data: ltrs
         }]
@@ -1054,6 +1082,26 @@ $( "#historyDetails" ).hide();
 			$scope.error  = "* Date Required/Please fill all the field";
 		}
 
+	}
+
+	$scope.markerPoup 	= 	function(val)
+	{
+		
+		var labelAnchorpos = new google.maps.Point(250, 0);	///12, 37
+		if($scope.popupmarker !== undefined)
+			$scope.popupmarker.setMap(null);
+		$scope.popupmarker = new MarkerWithLabel({
+	    	position: new google.maps.LatLng(val.latitude, val.longitude),
+	    	icon: 'assets/imgs/popup.png',
+	    	// animation: google.maps.Animation.BOUNCE,
+	    	labelContent: '<table class="tabpop"><tr><td>Date&amp;Time </td><td>'+dateFormat(val.date)+'</td></tr><tr><td>'+'Speed(km/h) </td><td>'+val.speed+'</td></tr><tr><td>'+'OdoDist(km)</td><td>'+val.odoDistance+'</td></tr><tr><td colspan="2">'+val.address+'</td></tr></table',
+			labelAnchor: labelAnchorpos,
+			labelClass: "singpop", 
+   			map: $scope.map,
+    
+  		});
+        $scope.map.setCenter($scope.popupmarker.getPosition());
+  		$scope.map.setZoom(13);
 	}
 
 	$scope.deleteRouteName 	= function(deleteValue){

@@ -609,7 +609,7 @@ var markerSearch = new google.maps.Marker({});
 		total  			 = parseInt(dataVal.speed);
 		$('#vehdevtype #val').text(dataVal.odoDistance);
 		$('#mobno #val').text(dataVal.overSpeedLimit);
-		$('#positiontime #val').text(vamoservice.statusTime(dataVal).tempcaption);
+		$('#positiontime').text(vamoservice.statusTime(dataVal).tempcaption);
 		$('#regno #val').text(vamoservice.statusTime(dataVal).temptime);
 		$('#driverName #val').text(dataVal.driverName);
 		//var t0 = new Date(utcdateConvert(dataVal.date)).toString();

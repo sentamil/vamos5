@@ -416,7 +416,8 @@
                                                     
                                                 </tr> -->
                                                 <tr>
-                                                    <td id="positiontime"><span></span> Time</td>
+                                                    <td ><span id="positiontime">Position </span>Time</td>
+                                                    <!-- <td style="width:50%"><span id="positiontime">Position </span>Time</td> -->
                                                     <td id="regno"><span id="val"></span></td>
                                                 </tr>
                                                 <tr>
@@ -505,7 +506,8 @@
                             <th style="text-align:center;" class="id" custom-sort order="'position'" sort="sort"><div style="width: 70px;">Position</div></th>
                             <th style="text-align:center;" class="id" custom-sort order="'status'" sort="sort"><div style="width: 70px;">GPS</div></th>
                             <th style="text-align:center;" class="id" custom-sort order="'ignitionStatus'" sort="sort"><div style="width: 70px;">Ignition</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'powerStatus'" sort="sort"><div style="width: 100px;">Battery</div></th>
+                            <th style="text-align:center;" class="id" custom-sort order="'powerStatus'" sort="sort"><div style="width: 100px;">VehBat</div></th>
+                            <th style="text-align:center;" class="id" custom-sort order="'deviceStatus'" sort="sort"><div style="width: 100px;">DevBat</div></th>
                             <th style="text-align:center;" class="id" custom-sort order="'regNo'" sort="sort"><div style="width: 100px;">Regn No</div></th>
                             <th style="text-align:center;" class="id" custom-sort order="'driverName'" sort="sort"><div style="width: 100px;">Driver Name</div></th>
                             
@@ -543,6 +545,7 @@
                                 <!-- <span ng-switch-when="OFF"><img src="assets/imgs/wr.png"/></span>
                                 <span ng-switch-when="ON"><img src="assets/imgs/rt.png"/></span> -->
                             </td>
+                            <td>{{user.deviceStatus}}</td>
                             <td>{{user.regNo}}</td>
                             <td>{{user.driverName}}</td>
                             

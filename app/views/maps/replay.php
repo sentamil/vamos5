@@ -106,6 +106,7 @@
                     
             <ul class='tabs'>
               <li ng-click="addressResolve('movement')"><a href='#movement'>Movement</a></li>
+              <li ng-click="addressResolve('movement')"><a href='#speed'>Speed</a></li>
               <li ng-click="addressResolve('overspeed')"><a href='#overspeed'>OverSpeed</a></li>
               <li ng-click="addressResolve('parked')"><a href='#parked'>Parked</a></li>
               <li ng-click="addressResolve('idle')"><a href='#idle'>Idle</a></li>
@@ -116,7 +117,6 @@
 
             <!-- movement -->
             <div id='movement' class="pane">
-            <div id="speedGraph"></div>
               <table class="tables">
                 <tr>
                   <td colspan="2">Vehicle Group</td>
@@ -144,7 +144,7 @@
                   <td width="15%">C-Dist(KM)</td>
                   <td width="10%">Odo(KM)</td>
                 </tr>
-                <tr ng-repeat="move in movementdata">
+                <tr ng-repeat="move in movementdata" ng-click="markerPoup(move)">
                   <td>{{move.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{move.speed}}</td>
                   <td>
@@ -159,6 +159,53 @@
                 </tr>
                 <tr ng-if="movementdata.length == 0 || movementdata == undefined">
                   <td colspan="7" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- speed report -->
+
+            <div id='speed' class="pane">
+            <div id="speedGraph"></div>
+              <table class="tables">
+                <tr>
+                  <td colspan="2">Vehicle Name</td>
+                  <td colspan="2">{{hisloc.shortName}}</td>
+                  <td colspan="2">Speed Limit</td>
+                  <td>{{hisloc.overSpeedLimit}}</td>         
+                </tr>
+                <!-- <tr class="gap">
+                  <td colspan="2">Regn No</td>
+                  <td> {{hisloc.regNo}}</td>
+                  <td colspan="2">Speed Limit</td>
+                  <td colspan="2"> {{hisloc.overSpeedLimit}}</td>
+                </tr> -->
+                
+              </table>
+              
+              <table class="tables">
+                
+                <tr style="border-top: 1px solid #d9d9d9">
+                  <td width="20%">Date&amp;Time</td>
+                  <td width="15%">Max(KM)</td>
+                  <td width="50%">Address</td>
+                  <td width="15%">G-Map</td>
+                </tr>
+                <tr ng-repeat="move in movementdata">
+                  <td>{{move.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{move.speed}}</td>
+                  <td>
+                    <p ng-if="move.address!=null">{{move.address}}</p>
+                    <p ng-if="move.address==null && moveaddress[$index]!=null">{{moveaddress[$index]}}</p>
+                    <p ng-if="move.address==null && moveaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+                  </td>
+                  <td><a href="https://www.google.com/maps?q=loc:{{move.latitude}},{{move.longitude}}" target="_blank">Link</a></td>
+                 <!--  <td>{{move.tmpDistance}}</td>
+                  <td>{{move.distanceCovered}}</td>
+                  <td>{{move.odoDistance}}</td> -->
+                </tr>
+                <tr ng-if="movementdata.length == 0 || movementdata == undefined">
+                  <td colspan="4" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
               </table>
             </div>
