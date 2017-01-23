@@ -114,7 +114,7 @@ function plottinGraphs(valueGraph, timeData){
     	$scope.sort 	= 	sortByDate('startTime')        						
 	else if (tab == 'rfid')
 		$scope.sort 	= 	sortByDate('fromTime')
-    else if(tab == 'alarmTime')
+    else if(tab == 'alarm')
     	$scope.sort 	= 	sortByDate('alarmTime') 
     	
 	//global declartion
