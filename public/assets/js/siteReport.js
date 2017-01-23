@@ -107,6 +107,7 @@ function plottinGraphs(valueGraph, timeData){
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
 
+	var tab = getParameterByName('tn');
 	$scope.sort = sortByDate('date');
                 
     if(tab == 'tripkms' || tab == 'site' || tab == 'multiSite')
@@ -120,7 +121,6 @@ function plottinGraphs(valueGraph, timeData){
 
 	$scope.locations = [];
 	$scope.url = 'http://'+globalIP+context+'/public/getVehicleLocations?group='+getParameterByName('vg');
-	var tab = getParameterByName('tn');
 
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
