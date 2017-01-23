@@ -99,6 +99,15 @@ function splitColon(spValue){
   return spValue.split(':');
 }
 
+
+function sortByDate(field){
+  var sort = {       
+                sortingOrder : field,
+                reverse : false
+    };
+    return sort;
+}
+
 function getParameterByName(name) {
       name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
       var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -175,14 +184,14 @@ app.directive('tooltips', function ($document, $compile) {
     link: function (scope, element, attrs) {
 
       var tip = $compile('<span ng-class="tipClass">'+
-        '<table style="border: 1px; border-collapse:collapse; width:100%;">'+
-        '<tr>'+'<th>'+'</th>'+'<th>'+'</th>'+'</tr>'+
-        '<tr>'+'<td style="padding:5px 5px 5px 8px;text-align:left;">'+'Group Name'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ trimColon(location.group) }}'+'</td>'+'</tr>'+
-        '<tr>'+'<td style="padding:0px 5px 5px 8px;text-align:left;">'+'Vehicle Name'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ loc.shortName }}'+'</td>'+'</tr>'+
-        '<tr>'+'<td style="padding:0 5px 5px 8px;text-align:left;">'+'Ignition Status'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ loc.ignitionStatus }}'+'</td>'+'</tr>'+
-        '<tr>'+'<td style="padding:0 5px 5px 8px;text-align:left;">'+'Speed'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ loc.speed }}'+'</td>'+'</tr>'+
-        '<tr>'+'<td style="padding:0 5px 5px 8px;text-align:left;">'+'Odo Distance'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ loc.odoDistance }}'+'</td>'+'</tr>'+
-        '<tr>'+'<td style="padding:0 5px 5px 8px;text-align:left;">'+'Last Seen'+'</td>'+'<td style="padding:0 0 0 5px;text-align:left;">'+'{{ loc.lastSeen }}'+'</td>'+'</tr>'+
+        '<table class="tabStyles">'+
+        // '<tr>'+'<th>'+'</th>'+'<th>'+'</th>'+'<th>'+'</th>'+'</tr>'+
+        '<tr>'+'<td colspan="2">'+'{{ loc.lastSeen }}'+'</td>'+'<td colspan="2">'+'{{ loc.shortName }}'+'</td>'+'</tr>'+
+        
+        '<tr>'+'<td>'+'Odo(kms)'+'</td>'+'<td>'+'{{ loc.odoDistance }}'+'</td>'+'<td>'+'Covered(kms)'+'</td>'+'<td>'+'{{ loc.distanceCovered}}'+'</td>'+'</tr>'+
+        '<tr>'+'<td>'+'Ignition'+'</td>'+'<td>'+'{{ loc.ignitionStatus }}'+'</td>'+'<td>'+'MaxSpeed(kms)'+'</td>'+'<td>'+'{{ loc.overSpeedLimit }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td>'+'DeviceVolt'+'</td>'+'<td>'+'{{ loc.deviceVolt }}'+'</td>'+'<td>'+'Speed(kms)'+'</td>'+'<td>'+'{{loc.speed}}'+'</td>'+'</tr>'+
+        '<tr>'+'<td colspan="4">'+'{{ loc.address }}'+'</td></tr>'+
         '</table>'+
         '</span>')(scope),
           tipClassName = 'tooltips',

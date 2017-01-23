@@ -111,7 +111,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	}
 
 	$scope.sort = {       
-                sortingOrder : 'id',
+                sortingOrder : 'lastSeen',
                 reverse : false
             };
 

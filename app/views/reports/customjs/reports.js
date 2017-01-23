@@ -5,17 +5,29 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	//$("#testLoad").load("../public/menu");
 	var getUrl  =   document.location.href;
 	var index   =   getUrl.split("=")[1];
+	
+	$scope.startTime 	=	function(dat){
+		$scope.sort = sortByDate(dat)
+	}
+
+
+
+	$scope.startTime('date');
+
 	if(index == 1){
 		$scope.actTab 	=	true;
 		$(window).load(function(){
         	$('#myModal').modal('show');
     	});
 	}
-	else if(index ==2 )
+	else if(index ==2 ){
 		$scope.siteTab 		=	true;
+		$scope.sort = sortByDate('startTime');
+	}
 
-		
-	$scope.tab 		=	true;
+	
+	
+	$scope.tab 			=	true;
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
 	$scope.newAddr      = 	{};
@@ -82,10 +94,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	$scope.consoldateData =   [];
 	$scope.today 		  =   new Date();
 	 
-	$scope.sort = {       
-                sortingOrder : 'date',
-                reverse : true
-            };
+	
     $scope.$watch("url", function (val) {
   		startLoading();
 	 	$http.get($scope.url).success(function(data){
@@ -243,6 +252,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	$scope.consoldateTrip = function(valu)
 	{	
 		startLoading();
+		$scope.sort = sortByDate('startTime');
 		// $('#preloader').show(); 
 		// $('#preloader02').show();
 		// $scope.tripValu = valu;

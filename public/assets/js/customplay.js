@@ -1101,7 +1101,7 @@ $( "#historyDetails" ).hide();
     
   		});
         $scope.map.setCenter($scope.popupmarker.getPosition());
-  		$scope.map.setZoom(13);
+  		// $scope.map.setZoom(13);
 	}
 
 	$scope.deleteRouteName 	= function(deleteValue){

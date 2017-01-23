@@ -18,23 +18,21 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
   	$scope.interval				= 	10;
   	$scope.siteEntry 			=	0;
 	$scope.siteExit 			=	0;
-	//loading start function
-	var startLoading		= function () {
-		$('#status').show(); 
-		$('#preloader').show();
-	};
+	// //loading start function
+	// var startLoading		= function () {
+	// 	$('#status').show(); 
+	// 	$('#preloader').show();
+	// };
 
-	//loading stop function
-	var stopLoading		= function () {
-		$('#status').fadeOut(); 
-		$('#preloader').delay(350).fadeOut('slow');
-		$('body').delay(350).css({'overflow':'visible'});
-	};
+	// //loading stop function
+	// var stopLoading		= function () {
+	// 	$('#status').fadeOut(); 
+	// 	$('#preloader').delay(350).fadeOut('slow');
+	// 	$('body').delay(350).css({'overflow':'visible'});
+	// };
 
-	$scope.sort = {       
-                sortingOrder : 'id',
-                reverse : false
-            };
+	$scope.sort = sortByDate('startTime');
+                
 	function getParameterByName(name) {
     	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),

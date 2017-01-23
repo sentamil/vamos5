@@ -5,17 +5,16 @@ var getUrl  =   document.location.href;
 var tabId 	= 	'executive';
 var index   =   getUrl.split("=")[1];
 	if(index) {
-		tabId 		= 	'poi';
-		$scope.downloadid = 'poi';
-		$scope.actTab 	=	true;
+		tabId 				= 'poi';
+		$scope.downloadid 	= 'poi';
+		$scope.actTab 		= true;
+		$scope.sort 		= sortByDate('time')
 	} else {
-		$scope.downloadid 	= 	'executive';
+		$scope.downloadid 	= 'executive';
+		$scope.sort 		= sortByDate('date')
 	}
 
-$scope.sort = {       
-                sortingOrder : 'id',
-                reverse : false
-            };
+
 
 //Global Variable declaration 
 $scope.url 			= 	'http://'+globalIP+context+'/public//getVehicleLocations';
@@ -324,15 +323,16 @@ $scope.alertMe 		= 	function(tabClick)
 	if(avoidOnload == true)
 	switch (tabClick){
 		case 'executive':
-			tabId 	=	'executive';
-			//console.log('executive');
-			$scope.downloadid 	= 	'executive';
+			tabId 				= 'executive';
+			$scope.sort 		= sortByDate('date');
+			$scope.downloadid 	= 'executive';
 			startLoading();
 			serviceCall();
 			break;
 		case 'poi':
-			tabId	=	'poi';
-			$scope.downloadid 	= 	'poi';
+			$scope.sort 		= sortByDate('time');
+			tabId				= 'poi';
+			$scope.downloadid 	= 'poi';
 			startLoading();
 			serviceCall();
 			//console.log('poi');

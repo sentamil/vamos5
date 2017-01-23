@@ -491,7 +491,7 @@ border-width: 10px;
 .dynData h3{ font-size:12px; margin:0; padding-left:10px; font-weight:normal;}
 #menuView {position: absolute;top: 175px;left: 5px; z-index:99; padding: 5px; font-size: 11px;}
 #draggable {position: absolute;top: 70px;left: 130px; z-index:99; width: 250px;padding: 7px;background: #fff; -webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
-#contentmin{position: fixed;top: 70px;right: 20px; z-index:99; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}
+#contentmin{position: fixed;top: 50px;right: 20px; z-index:99; width: 250px;padding: 10px;background: #fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}
 #contentreply{position: fixed;top: 2px;right: 2px; z-index:99; width: 500px;padding: 5px;background: #fff;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;}
 .sizeInput {width:92px; height: 25px; font-size: 11px; margin-right: 1px }
 input[name="anispeed"] { margin-left: 10px}
@@ -642,7 +642,7 @@ input[type=range]:focus::-ms-fill-upper {
 /*rightside selection*/
 #minmax
 {
-	position: fixed;top: 5px;right: 30px; z-index:99; background-color: #fff; padding-right: 2px; padding-left: 2px; padding-top:2px;padding-bottom:2px; border-radius: 2px; cursor: pointer;
+	position: fixed;top: 40px;right: 15px; z-index:999; background-color: #fff; padding: 2px;  border-radius: 2px; cursor: pointer;background-color: yellow;
 }
 
 #minmax1{
@@ -679,7 +679,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 #graphsId{
-	position: absolute; bottom: 40px; left: 30px; z-index:999999; display: flex; display: -webkit-flex; text-align: center; background-color: #f4f4f4; border-top: 2px solid #357ebd; border-radius: 4px; width: 360px; height: 140px; padding: 10px 10px 10px 10px; font-weight: bold;
+	position: absolute; bottom: 40px; left: 30px; z-index:999; display: flex; display: -webkit-flex; text-align: center; background-color: #f4f4f4; border-top: 2px solid #357ebd; border-radius: 4px; width: 360px; height: 140px; padding: 10px 10px 10px 10px; font-weight: bold;
 }
 
 
@@ -728,19 +728,35 @@ table tr th{
 
  .tooltips {
   display: none;
-  background-color: #555;
-  padding: 7px 10px;
-  width: 250px;
-  color: #fff;
+  background-color: #fcfcfc;
+  /*padding: 7px 10px;*/
+  /*width: 250px;*/
+  /*color: #fff;*/
+  /*opacity: 0.9;*/
+  border-radius: 2px;
+  /*transition: opacity 0.7s;*/
+  /*overflow: hidden;*/
   opacity: 0.8;
-  border-radius: 4px;
-  transition: opacity 0.9s;
-  overflow: hidden;
+  z-index: 9999;
+  box-shadow: 1px 1px 5px #888888;
 }
 
 .tooltips-show {
   display: inline-block;
+  /*transition: opacity 0.7s;*/
 }
+
+.tabStyles{
+	table-layout: auto; border-collapse:collapse; width: 250px;
+}
+/*style="                       padding:5px 5px 5px 8px;text-align:center;font-size:12px;font-weight:bold;border-bottom: 0.5px solid #DFE2D0;border-top: 0.5px solid #DFE2D0;color:#666666;"*/
+.tabStyles tr:first-child td:nth-child(2) {border-right: 0;font-weight:bold; text-align: center;}
+.tabStyles tr:first-child td:nth-child(1) {border-right: 0.5px solid #DFE2D0;text-align: center;}
+.tabStyles tr td {padding:4px 7px 4px 7px ;text-align:left;font-size:11px;font-weight:bold;color:#666666;border-bottom: 0.5px solid #DFE2D0;border-right: 0.5px solid #DFE2D0;}
+.tabStyles tr td:nth-child(even){font-weight:normal; }
+.tabStyles tr td:nth-child(odd) {border-right: 0}	
+.tabStyles tr td:nth-child(4) {border-right: 0}
+.tabStyles tr:last-child td{border-bottom: 0px;font-weight:normal; text-align: center;}	
 
  #snackbar {
     visibility: hidden;

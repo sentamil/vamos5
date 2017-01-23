@@ -127,8 +127,8 @@
                 <tr class="gap">
                   <td colspan="2">Regn No</td>
                   <td> {{hisloc.regNo}}</td>
-                  <td colspan="2">Speed Limit</td>
-                  <td colspan="2"> {{hisloc.overSpeedLimit}}</td>
+                  <td colspan="2">TripDist(KM)</td>
+                  <td colspan="2"> {{hisloc.tripDistance}}</td>
                 </tr>
                 
               </table>
@@ -171,7 +171,7 @@
                 <tr>
                   <td colspan="2">Vehicle Name</td>
                   <td colspan="2">{{hisloc.shortName}}</td>
-                  <td colspan="2">Speed Limit</td>
+                  <td colspan="2">Speed Limit(KM)</td>
                   <td>{{hisloc.overSpeedLimit}}</td>         
                 </tr>
                 <!-- <tr class="gap">
@@ -222,7 +222,7 @@
                 <tr class="gap">
                   <td colspan="2">Regn No</td>
                   <td> {{hisloc.regNo}}</td>
-                  <td colspan="2">Speed Limit</td>
+                  <td colspan="2">Speed Limit(KM)</td>
                   <td colspan="2"> {{hisloc.overSpeedLimit}}</td>
                 </tr>
                   

@@ -107,10 +107,15 @@ function plottinGraphs(valueGraph, timeData){
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
 
-	$scope.sort = {       
-                sortingOrder : 'date',
-                reverse : true
-            };
+	$scope.sort = sortByDate('date');
+                
+    if(tab == 'tripkms' || tab == 'site' || tab == 'multiSite')
+    	$scope.sort 	= 	sortByDate('startTime')        						
+	else if (tab == 'rfid')
+		$scope.sort 	= 	sortByDate('fromTime')
+    else
+    	$scope.sort 	= 	sortByDate('alarmTime') 
+    	
 	//global declartion
 
 	$scope.locations = [];

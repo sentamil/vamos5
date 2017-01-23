@@ -24,10 +24,7 @@ app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
 	$scope.fuelDate 	= 	[];
 	$scope.tabactive 	=	true;
 	$scope.interval	  =	getParameterByName('interval')?getParameterByName('interval'):10;
-	$scope.sort = {       
-                sortingOrder : 'date',
-                reverse : true
-            };
+	$scope.sort = sortByDate('date');
    
      
      // $scope.itemsPerPage = 5;
