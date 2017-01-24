@@ -7,7 +7,8 @@ $scope.vehicles         = [];
 $scope.checkingValue    = {};
 $scope.vehiId           = [];
 
-$scope.hours            = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+$scope.hoursFrom        = ['0:00','1:00','2:00','3:00','4:00','5:00','6:00','7:00','8:00','9:00','10:00', '11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00']
+$scope.hoursTo          = ['0:59','1:59','2:59','3:59','4:59','5:59','6:59','7:59','8:59','9:59','10:59','11:59','12:59','13:59','14:59','15:59','16:59','17:59','18:59','19:59','20:59','21:59','22:59','23:59'];
 $scope.reports          = ['Movement (M)','OverSpeed (O)','Site (S)', 'POI (PI)']; //,'Fuel (F)','Temperature (T)'
 var url                 = 'http://'+globalIP+context+'/public//getVehicleLocations';
 var menuValue           = JSON.parse(sessionStorage.getItem('userIdName'));
@@ -200,7 +201,7 @@ function checkUndefined(value){
 $scope.storeValue   = function(){
 
   startLoading();
-  if($scope.vehiId.length && $scope.mailId  && $scope.mailId != '' && $scope.from || $scope.from==0 && $scope.to){
+  if($scope.vehiId.length && $scope.mailId  && $scope.mailId != '' && $scope.from  && $scope.to){
     var reportsList = [];
     angular.forEach($scope.vehiId,function(val,id){
       
