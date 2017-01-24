@@ -70,14 +70,14 @@
                       </th>
                       <th class="id" style="text-align:center;" width="20%">Vehicle Name</th>
                       <th class="id" sort="sort" style="text-align:center;" width="15%"> 
-                        <select class="selectpicker" data-width="100px"  ng-options="option+' hrs' for option in hours" ng-model="from">
+                        <select class="selectpicker" data-width="100px"  ng-options="option+' hrs' for option in hoursFrom" ng-model="from">
                         <option style="display:none" value="">From</option>
                             <!-- <option>From Hours</option> -->
                             <!-- <option ng-repeat="x in hours">{{x}}&nbsp;hour</option> -->
                           </select>
                       </th>
                       <th class="id" sort="sort" style="text-align: center;" width="15%">
-                        <select class="selectpicker" data-width="100px"  ng-options="option+' hrs' for option in hours" ng-model="to">
+                        <select class="selectpicker" data-width="100px"  ng-options="option+' hrs' for option in hoursTo" ng-model="to">
                         <option style="display:none" value="">To</option>
                             <!-- <option>From Hours</option> -->
                             <!-- <option ng-repeat="x in hours">{{x}}&nbsp;hour</option> -->
