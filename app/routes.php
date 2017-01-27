@@ -106,6 +106,13 @@ Route::get('/ElectionCommisionTrustedClient', function() {
     }
 });
 
+Route::get('/passWd', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('maps.reset');
+});
+
 
 Route::get('/history', function() {
     if (!Auth::check()) {
@@ -686,6 +693,9 @@ Route::get('liveReport', array('uses' => 'ReportsController@liveReport'));
  ) );
  
 Route::get('ipAddressManager', array('uses' => 'HomeController@ipAddressManager'));
+
+// Route::post('oldPwdChange', array('uses' => 'RemindersController@menuResetPassword'));
+Route::post('updatePwd', array('uses' => 'RemindersController@menuUpdatePassword'));
  
 Route::get('reverseGeoLocation', array('uses' => 'HomeController@reverseGeoLocation'));
  

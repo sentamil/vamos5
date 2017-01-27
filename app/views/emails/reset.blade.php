@@ -1,5 +1,5 @@
 
-<h5>Hi !</h5>
+<h4>Hi !</h4>
  
 <p>To reset your password, complete this form: {{$url}}</p>
 

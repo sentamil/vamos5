@@ -139,6 +139,7 @@ app.directive('map', function($http, vamoservice) {
 		   				else
 		   					scope.histVal[0]=data;
 		   			}
+		   			
 		   			var locs = data;
 					// var myOptions = {
 					// 	zoom: 13,
@@ -232,6 +233,9 @@ app.directive('map', function($http, vamoservice) {
 			        
 			        scope.startlatlong = scope.endlatlong;
 			        google.maps.event.trigger(document.getElementById('maploc'), "resize");
+
+			        if(scope.histVal.length > 200)
+		   				scope.histVal = scope.histVal.slice(0, scope.histVal.length - 50);
 		   		
 		   		});
 		   }, 10000);

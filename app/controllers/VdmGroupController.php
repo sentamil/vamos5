@@ -307,33 +307,72 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 	 */
 	public function update($id)
 	{
-		if(!Auth::check()) {
+	  	if(!Auth::check()) {
             return Redirect::to('login');
         }
-        //TODO Add validation
+      
 
-        $username = Auth::user()->username;
-        $groupId       = Input::get('groupId');
-        $vehicleList      = Input::get('vehicleList');
-        $redis = Redis::connection();
+        $username       = Auth::user()->username;
+        $groupId        = Input::get('groupId');
+        $vehicleList    = Input::get('vehicleList');
+        $redis          = Redis::connection();
+        $oldVehi        = $redis->smembers($id);
+        
         $redis->del($id);
-        log::info(gettype($vehicleList));
-        log::info(sizeof($vehicleList));
+        $updateVehi     = array();
+        
+        
         if($vehicleList != NULL || sizeof($vehicleList) > 0)
         {
-            log::info(' vehicles are available !!!!');
-            foreach($vehicleList as $vehi) {
-                $vehicle  = explode(" || ",$vehi)[0];
-                $redis->sadd($id,$vehicle);
-            }
-            Session::flash('message', 'Successfully updated ' . $id . '!');
-            return Redirect::to('vdmGroups');
+        	log::info(' vehicles are available !!!!');
+        	foreach($vehicleList as $vehi) {
+        		$vehicle  = explode(" || ",$vehi)[0];
+        		$redis->sadd($id,$vehicle);
+        		$updateVehi[]   = $vehicle;
+
+        	}
+
+        	$mailId = array();
+        	$fcode      =       $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        	$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+        	$franchiseDetails=json_decode($franDetails_json,true);
+        	if(isset($franchiseDetails['email1'])==1){
+                            // $mailId[]    =       $franchiseDetails['email1'];
+        		$mailId[]               = $franchiseDetails['email1'];
+        		log::info(array_values($mailId));
+        	}
+        	
+        	if(Session::get('cur')=='dealer')
+        	{
+        		log::info( '------login 1---------- '.$redis->hget ( 'H_UserId_Cust_Map', $username . ':email' ));
+                $mailId[] =   $redis->hget ( 'H_UserId_Cust_Map', $username . ':email' );
+        		
+        		
+        	}
+        	// else if(Session::get('cur')=='admin')
+        	// {
+        	// 	log::info( '------login 2---------- '.Session::get('cur'));
+        	// }
+                    //Session::put('email',$mailId);
+        	log::info('  before sending mail ');
+        	log::info(array_values($mailId));
+        	if(sizeof($mailId) > 0)
+	        	Mail::queue('emails.group', array('username'=>$username, 'groupName'=>$id, 'oldVehi'=>$oldVehi, 'newVehi'=>$updateVehi), function($message) use ($mailId)
+	        	{
+	                //Log::info("Inside email :" . Session::get ( 'email' ));
+	        		$message->to($mailId)->subject('Group Updated');
+	        	});
+
+
+        	Session::flash('message', 'Successfully updated ' . $id . '!');
+        	return Redirect::to('vdmGroups');
         }else {
-        
-            log::info(' vehicles are not available  !!!!');
-            return Redirect::to('vdmGroups/' . $id . '/edit')->with('message','Please select any one vehicle .  ');
-        
+
+        	log::info(' vehicles are not available  !!!!');
+        	return Redirect::to('vdmGroups/' . $id . '/edit')->with('message','Please select any one vehicle .  ');
+
         }
+
     }
 
 

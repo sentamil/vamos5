@@ -195,10 +195,10 @@
     <script>
 
 var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
-// var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
+var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
 
-// if(apikey_url != null || apikey_url != undefined)
-      var url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url;
+if(apikey_url != null || apikey_url != undefined)
+  url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url;
 
    function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
      if (scriptsCollection[startIndex]) {

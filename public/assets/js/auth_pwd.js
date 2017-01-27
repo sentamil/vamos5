@@ -237,4 +237,120 @@ $scope.checkAll   = function(){
     })
   }
 
+
+
+// $scope.hideDialog   = false;
+$scope.error        = '';
+  // //old password checking
+
+  // $scope.oldPwdCheck  = function(){
+
+  //   console.log(' value '+$scope.oldValue)
+  //   if($scope.oldValue != '' || $scope.oldValue != undefined)
+  //     $.ajax({
+  //         async: false,
+  //         method: 'POST', 
+  //         url: "oldPwdChange",
+  //         data: {'pwd': $scope.oldValue},
+  //         success: function (response) {
+  //           if(response =='sucess'){
+                
+  //               $scope.hideDialog   = true;
+  //               $scope.error        = '';
+  //           } else {
+
+  //             $scope.hideDialog   = false;
+  //             $scope.error        = '* Enter correct password.'
+
+  //           }
+  //         },
+  //         fail:function() {
+  //           $scope.hideDialog   = false;
+  //           $scope.error        = '* Connection Fails.'
+  //         }
+  //       });    
+  //   }
+
+    /*
+      update password
+    */
+
+    $scope.updatePwd  = function(){
+      startLoading();
+      $scope.error        = '';
+      // if(($scope.oldValue != '' || $scope.oldValue != undefined) && ($scope.firstVal == $scope.reEnterVal) && ($scope.firstVal !=undefined ||$scope.firstVal.length >= 5 ))
+      // {
+        // console.log($scope.reEnterVal);
+        // $.ajax({
+        //   async: false,
+        //   method: 'POST', 
+        //   url: "updatePwd",
+        //   data: {'pwd': $scope.firstVal},
+        //   success: function (response) {
+        //     if(response =='sucess'){
+        //       console.log(response);
+        //       $scope.error = "Updated Sucessfully ."
+
+        //     } else {
+        //       $scope.hideDialog   = false;
+        //       $scope.error        = '* Connection Fails.'  
+        //     }
+        //   },
+        //   fail:function() {
+        //     $scope.hideDialog   = false;
+        //     $scope.error        = '* Connection Fails.'
+        //   }
+        // });  
+      //   $scope.error        = "Sucessfully";
+      // }else
+      // {
+      //   $scope.error        = "* Password miss matching / Password strength above 5 characters.";
+      // }
+      // setTimeout(function () {
+      //   document.location.href = 'login';
+        
+      // }, 1000); 
+      if($scope.oldValue == '' || $scope.oldValue == undefined && $scope.firstVal == '' || $scope.firstVal == undefined && $scope.reEnterVal == '' || $scope.reEnterVal == undefined){
+
+        $scope.error        = "* Fill all Fields ."; 
+        
+      } else {
+
+        if($scope.oldValue != $scope.firstVal && $scope.oldValue != $scope.reEnterVal && $scope.firstVal == $scope.reEnterVal && $scope.firstVal.length >= 5){
+
+          $.ajax({
+            async: false,
+            method: 'POST', 
+            url: "updatePwd",
+            data: {'pwd': $scope.firstVal, 'old': $scope.oldValue},
+            success: function (response) {
+              if(response =='sucess'){
+                console.log(response);
+                $scope.error = "Updated Sucessfully ."
+                 setTimeout(function () {
+                    document.location.href = 'login';
+                    
+                  }, 1000); 
+                
+              } else if(response == 'oldPwd'){
+                $scope.error = "Old password is wrong ."                
+              }
+            },
+            fail:function() {
+              
+              $scope.error        = '* Connection Fails .'
+            }
+          });  
+
+        } else {
+
+          $scope.error        = "* Dnt match old password and new password / password length more then five characters .";
+            
+        }
+
+      }
+      stopLoading();
+     
+    }
+
 });

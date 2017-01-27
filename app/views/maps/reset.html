@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<title>GPS</title>
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="assets/css/jVanilla.css" rel="stylesheet">
+<link href="assets/css/simple-sidebar.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
+<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
+
+</head>
+<div id="status">&nbsp;</div>
+<body ng-app="mapApp">
+
+
+<div ng-controller="mainCtrl" class="bg_color ng-cloak">
+<div class="wrapper">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <!-- <div class="modal-header" style="padding: 2px">   id="pwdModal" tabindex="-1" role="dialog" aria-hidden="true" 
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >×</button>
+          <h4 class="text-center">Reset Password?</h4>
+      </div> -->
+        <div class="modal-header" style="padding:5px; padding-left: 10px; padding-right: 10px">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+            <h5> Reset Password </h5> 
+        </div>
+      <!-- <div > -->
+          <div class="col-md-12">
+              <div class="alert alert-info" ng-if="error != ''">
+                  <strong>{{error}}</strong>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body"  >
+                        <div class="text-center">
+                          
+                          <!-- <p>If you have forgotten your password you can reset it here.</p> -->
+                            <div class="panel-body"  style="padding: 0px"> 
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input class="form-control input-sm" placeholder="Current Password" ng-model="oldValue" >
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control input-sm" placeholder="New Password" ng-model="firstVal">
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control input-sm" placeholder="Re-Enter New Password" ng-model="reEnterVal">
+                                    </div>
+                                    <div class="col-md-12">
+                                    <!-- <input class="btn btn-sm btn-primary btn-block" value="Check" type="submit" ng-click="oldPwdCheck()" ng-hide="hideDialog"> -->
+                                    <input class="btn btn-sm btn-primary btn-block" value="Submit" type="submit" ng-click="updatePwd()" >
+                                    <!-- </div><div class="col-md-6">
+                                    <button class="btn btn-sm btn-block" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                    </div> -->
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      <!-- </div> -->
+      <div class="modal-footer" style="padding: 0px">
+         <!--  <div class="col-md-12">
+          <button class="btn btn-sm" data-dismiss="modal" aria-hidden="true">Cancel</button>
+          </div>     -->
+      </div>
+  </div>
+  </div>
+</div>
+</div>
+
+<script src="assets/js/static.js"></script>
+<script src="assets/js/jquery-1.11.0.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
+<!-- <script src="assets/js/bootstrap.min.js"></script> -->
+
+<script src="assets/js/vamoApp.js"></script>
+<script src="assets/js/services.js"></script>
+<script src="assets/js/auth_pwd.js"></script>
+
+</body>
+
+</html>

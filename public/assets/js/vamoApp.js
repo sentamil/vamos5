@@ -186,7 +186,7 @@ app.directive('tooltips', function ($document, $compile) {
       var tip = $compile('<span ng-class="tipClass">'+
         '<table class="tabStyles">'+
         // '<tr>'+'<th>'+'</th>'+'<th>'+'</th>'+'<th>'+'</th>'+'</tr>'+
-        '<tr>'+'<td colspan="2">'+'{{ loc.lastSeen }}'+'</td>'+'<td colspan="2">'+'{{ loc.shortName }}'+'</td>'+'</tr>'+
+        '<tr>'+'<td colspan="2">'+'{{ loc.date | date:"yyyy-MM-dd HH:mm:ss" }}'+'</td>'+'<td colspan="2">'+'{{ loc.shortName }}'+'</td>'+'</tr>'+
         
         '<tr>'+'<td>'+'Odo(kms)'+'</td>'+'<td>'+'{{ loc.odoDistance }}'+'</td>'+'<td>'+'Covered(kms)'+'</td>'+'<td>'+'{{ loc.distanceCovered}}'+'</td>'+'</tr>'+
         '<tr>'+'<td>'+'Ignition'+'</td>'+'<td>'+'{{ loc.ignitionStatus }}'+'</td>'+'<td>'+'MaxSpeed(kms)'+'</td>'+'<td>'+'{{ loc.overSpeedLimit }}'+'</td>'+'</tr>'+
@@ -255,4 +255,3 @@ app.directive('tooltips', function ($document, $compile) {
     }
   }
 });
-

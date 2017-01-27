@@ -900,3 +900,7 @@ div h6 {font-size: bold}
   border-color: #808080;
   border-width: 1px;
 }
+
+.bg_color{
+	background-color: #fefefe; outline: none;
+}

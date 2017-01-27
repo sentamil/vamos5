@@ -27,7 +27,7 @@ app.directive('map', function($http) {
 				return result;
 			}
 		 	scope.$watch("hisurl", function (val) {
-		 		startLoading();
+		 		// startLoading();
 		 		if(scope.hisurl != undefined)
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
@@ -1518,8 +1518,10 @@ if($scope.markerstart){
 					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
 				else if(days < 7)  
 					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-				else
-					alert('Please selected date before 7 days / No data found')
+				else{
+					alert('Please selected date before 7 days / No data found');
+					stopLoading();
+				}
 			}
 		}
 		if($scope.hisurlold!=$scope.hisurl){	
@@ -1545,12 +1547,13 @@ if($scope.markerstart){
 			$('#lastseen').html('<strong>From Date & time :</strong> -');
 			$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
 		}else{
-			if($scope.hisloc.error!=null){
+			if($scope.hisloc.error!=null || $scope.hisloc.error == undefined){
 				// $('#myModal').modal();
 				// alert('Please selected date before 7 days / No data found')
+				stopLoading();
 			}
 		}
-		stopLoading();
+		// stopLoading();
 	}
 	$scope.addMarker= function(pos){
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);

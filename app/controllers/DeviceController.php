@@ -22,9 +22,18 @@ class DeviceController extends \BaseController {
 		$deviceMap=array();
 		for($i =0;$i<count($devicesList);$i++){
 			$vechicle=$redis->hget ( 'H_Vehicle_Device_Map_' . $fcode, $devicesList[$i] );
+			
+
 			if($vechicle!==null)
 			{
-				$deviceMap = array_add($deviceMap,$i,$vechicle.','.$devicesList[$i]);
+				$refData 	= $redis->hget ( 'H_RefData_' . $fcode, $vechicle );
+				$refData	= json_decode($refData,true);
+				$orgId 		= isset($refData['OWN'])?$refData['OWN']:' ';
+				// log::info(isset($refData['OWN']));
+				// log::info($orgId);
+				// log::info('  dealer name   ');
+				
+				$deviceMap 	= array_add($deviceMap,$i,$vechicle.','.$devicesList[$i].','.$orgId);
 			}
 			
 			$temp++;
