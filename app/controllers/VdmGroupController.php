@@ -308,27 +308,33 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 	public function update($id)
 	{
 		if(!Auth::check()) {
-			return Redirect::to('login');
-		}
-		//TODO Add validation
-		
-			$username = Auth::user()->username;
-			$groupId       = Input::get('groupId');
-			$vehicleList      = Input::get('vehicleList');
-			$redis = Redis::connection();
-			$redis->del($id);
-			
-			foreach($vehicleList as $vehi) {
-				$vehicle  = explode(" || ",$vehi)[0];
-				$redis->sadd($id,$vehicle);
-			}
-			
-	
-				
-				// redirect
- 			Session::flash('message', 'Successfully updated ' . $id . '!');
- 			return Redirect::to('vdmGroups');
-	}
+            return Redirect::to('login');
+        }
+        //TODO Add validation
+
+        $username = Auth::user()->username;
+        $groupId       = Input::get('groupId');
+        $vehicleList      = Input::get('vehicleList');
+        $redis = Redis::connection();
+        $redis->del($id);
+        log::info(gettype($vehicleList));
+        log::info(sizeof($vehicleList));
+        if($vehicleList != NULL || sizeof($vehicleList) > 0)
+        {
+            log::info(' vehicles are available !!!!');
+            foreach($vehicleList as $vehi) {
+                $vehicle  = explode(" || ",$vehi)[0];
+                $redis->sadd($id,$vehicle);
+            }
+            Session::flash('message', 'Successfully updated ' . $id . '!');
+            return Redirect::to('vdmGroups');
+        }else {
+        
+            log::info(' vehicles are not available  !!!!');
+            return Redirect::to('vdmGroups/' . $id . '/edit')->with('message','Please select any one vehicle .  ');
+        
+        }
+    }
 
 
 	/**
