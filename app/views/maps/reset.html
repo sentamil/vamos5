@@ -45,16 +45,20 @@
                             <div class="panel-body"  style="padding: 0px"> 
                                 <fieldset>
                                     <div class="form-group">
-                                        <input class="form-control input-sm" placeholder="Current Password" ng-model="oldValue" >
+                                        <input class="form-control input-sm" placeholder="Current Password" ng-model="oldValue" ng-show="check">
+                                        <input class="form-control input-sm" placeholder="Current Password" ng-model="oldValue" type="password" ng-hide="check">
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control input-sm" placeholder="New Password" ng-model="firstVal">
+                                        <input class="form-control input-sm" placeholder="New Password" ng-model="firstVal" ng-show="check">
+                                        <input class="form-control input-sm" placeholder="New Password" ng-model="firstVal" type="password" ng-hide="check">
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control input-sm" placeholder="Re-Enter New Password" ng-model="reEnterVal">
+                                        <input class="form-control input-sm" placeholder="Re-Enter New Password" ng-model="reEnterVal" ng-show="check">
+                                        <input class="form-control input-sm" placeholder="Re-Enter New Password" ng-model="reEnterVal" type="password" ng-hide="check">
                                     </div>
                                     <div class="col-md-12">
                                     <!-- <input class="btn btn-sm btn-primary btn-block" value="Check" type="submit" ng-click="oldPwdCheck()" ng-hide="hideDialog"> -->
+                                    <label class="checkbox pull-left"><input type="checkbox" value="" ng-model="check">Show Password</label>
                                     <input class="btn btn-sm btn-primary btn-block" value="Submit" type="submit" ng-click="updatePwd()" >
                                     <!-- </div><div class="col-md-6">
                                     <button class="btn btn-sm btn-block" data-dismiss="modal" aria-hidden="true">Cancel</button>
