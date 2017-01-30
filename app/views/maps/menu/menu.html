@@ -11,7 +11,7 @@
                 <li><a id="history" href="" target="_blank">History</a></li>
                 <li><a id="singleTrack" href="">Single Track</a></li>
                 <li><a id="multiTrack" href="">Multi Track</a></li>
-                <li><a href="../public/track?maps=replay&rt=routes">Routes</a></li>
+                <li class="removeli"><a href="../public/track?maps=replay&rt=routes">Routes</a></li>
                 <li><!-- <a id="addsites">Admin</a>
                    <div  style="padding-left: 10px"> -->
                        <a href="../public/password_check" id="addsites">AddSites / Geo Fence</a>
@@ -125,8 +125,8 @@
            
             <span class="glyphicon glyphicon-user"><span id="valueUser" style="font-size:12px; font-weight: bold; font-family: Helvetica"></span></span>  
             <ul>
-                <li class ="removeli"><a href="../public/groupEdit">Edit Group</a></li>
-                <li class ="removeli"><a  href="../public/passWd" >Reset Password</a></li>
+                <li class="removeli"><a href="../public/groupEdit">Edit Group</a></li>
+                <li class="removeli"><a  href="../public/passWd" >Reset Password</a></li>
             </ul>
         </li>
         
@@ -258,9 +258,13 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             
                 var menuVal =response.trim();
                 if(menuVal == 'true') {
+
+
                     // sessionStorage.setItem('isVirtualUser', JSON.stringify(false));
                     var myList = document.getElementsByClassName('removeli');
-                    myList.innerHTML = '';
+                    for (var i = 0; myList.length > i ; i++) {
+                        myList[i].innerHTML = '';
+                    }
                 }
             
             }).error(function(){
