@@ -125,8 +125,8 @@
            
             <span class="glyphicon glyphicon-user"><span id="valueUser" style="font-size:12px; font-weight: bold; font-family: Helvetica"></span></span>  
             <ul>
-                <li id="removeli"><a href="../public/groupEdit">Edit Group</a></li>
-                <li><a  href="../public/passWd" >Reset Password</a></li>
+                <li class ="removeli"><a href="../public/groupEdit">Edit Group</a></li>
+                <li class ="removeli"><a  href="../public/passWd" >Reset Password</a></li>
             </ul>
         </li>
         
@@ -259,7 +259,7 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
                 var menuVal =response.trim();
                 if(menuVal == 'true') {
                     // sessionStorage.setItem('isVirtualUser', JSON.stringify(false));
-                    var myList = document.getElementById('removeli');
+                    var myList = document.getElementsByClassName('removeli');
                     myList.innerHTML = '';
                 }
             
