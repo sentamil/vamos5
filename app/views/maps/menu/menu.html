@@ -95,11 +95,12 @@
                    
                     <li><a id="ignition" href=""> Ignition </a></li>
                     <li><a id="temp" href=""> Temperature</a></li>
-                    <!-- <li><a id="temp" href=""> Temperature Deviation</a></li> -->
+                    <li><a id="tempdev" href=""> Temperature Deviation</a></li>
                     <li><a id="fuel" href=""> Fuel </a></li>
                     <li><a href="../public/fuel">Distance &amp; Time</a></li>
                     <li><a href="../public/fuel?tab=fuelfill">Fuel Fill</a></li>
                     <li><a id="rfid" href="">Rfid</a></li>
+                    <!-- <li><a id="camera" href="">Camera</a></li> -->
             </ul>
         </li>
         <!-- <li class="cl-effect-5">
@@ -216,6 +217,10 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
                 // console.log(' clck ')
                 $(this).attr("href", 'temperature?vid='+vid+'&vg='+gname+'&tn=temperature')
             });
+            $('#tempdev').click(function() {
+                // console.log(' clck ')
+                $(this).attr("href", 'temperature?vid='+vid+'&vg='+gname+'&tn=temperatureDev')
+            });
             $('#alarm').click(function(){
                 $(this).attr("href", 'alarm?vid='+vid+'&vg='+gname+'&tn=alarm')
             })
@@ -226,6 +231,10 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
 
             $('#rfid').click(function(){
                 $(this).attr("href", 'rfidTag?vid='+vid+'&vg='+gname+'&tn=rfid')
+            })
+            
+            $('#camera').click(function(){
+                $(this).attr("href", 'camera?vid='+vid+'&vg='+gname+'&tn=camera')
             })
 
             $('#multiTrack').click(function(){

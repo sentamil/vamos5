@@ -31,7 +31,7 @@ app.directive('map', function($http) {
 		 		if(scope.hisurl != undefined)
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
-					scope.hisloc = locs;
+		 			scope.hisloc = locs;
 					scope._tableValue(locs);
 					if(data.fromDateTime=='' || data.fromDateTime==undefined || data.fromDateTime=='NaN-aN-aN'){ 
 						if(data.error==null){}else{
@@ -167,81 +167,82 @@ app.directive('map', function($http) {
 						   	  	if(locs.vehicleLocations[i].isOverSpeed=='Y'){
 								   	    	var pscolorval = '#ff0000';
 								   	   }else{
-								   	   		var pscolorval = '#068b03';
+								   	   		var pscolorval = '#6dd538';
+								   	   		// var pscolorval = '#38d552';
+								   	   		// var pscolorval = '#068b03';
 								   	   }
 						   	  scope.polylinearr.push(pscolorval);
-						   	  
-						   	  if(locs.vehicleLocations[i].mileKal=='Y'){
-						   	  		scope.pointMarker(locs.vehicleLocations[i]);
-						   	    	scope.pointinfowindow(scope.map, gsmarker[i], locs.vehicleLocations[i]);
-						   	   }
+						   	  // if(locs.vehicleLocations[i].mileKal=='Y'){
+						   	  // 		scope.pointMarker(locs.vehicleLocations[i]);
+						   	  //   	scope.pointinfowindow(scope.map, gsmarker[i], locs.vehicleLocations[i]);
+						   	  //  }
 					   		}
-		  	  				var latLngBounds = new google.maps.LatLngBounds();
+						   	scope.polylineCtrl();
+
+					   		console.log(scope.path.length);
+							
+		  	  // 				var latLngBounds = new google.maps.LatLngBounds();
 			  				var j=0;
-			  				 var tempFlag=false;
-			  				 for(var k=0;k<locs.vehicleLocations.length;k++){
-				  				 if(locs.vehicleLocations[k].position =='M' && tempFlag==false){
-				  				 	var firstval = k;
+			  		// 		 var tempFlag=false;
+			  		// 		 for(var k=0;k<locs.vehicleLocations.length;k++){
+				  	// 			 if(locs.vehicleLocations[k].position =='M' && tempFlag==false){
+				  	// 			 	var firstval = k;
 				  				 	
-				  					 tempFlag=true;
-							  	 }
-						  	 }
-					  			if(firstval==undefined){
-					  				firstval=0;
-					  			}
-					  			
-						  		for(var i = 0; i < scope.path.length; i++) {
-									latLngBounds.extend(scope.path[i]);
-									if(locs.vehicleLocations[i].position!=undefined){
-										if(locs.vehicleLocations[i].position=='P' || locs.vehicleLocations[i].position=='S' || locs.vehicleLocations[i].insideGeoFence=='Y' ){
+				  	// 				 tempFlag=true;
+							//   	 }
+						 //  	 }
+					  // 			if(firstval==undefined){
+					  // 				firstval=0;
+					  // 			}
+					  		// 	var latLngBounds = new google.maps.LatLngBounds();
+						  	// 	for(var i = 0; i < scope.path.length; i++) {
+									// latLngBounds.extend(scope.path[i]);
+									// if(locs.vehicleLocations[i].position!=undefined){
+									// 	if(locs.vehicleLocations[i].position=='P' || locs.vehicleLocations[i].position=='S' || locs.vehicleLocations[i].insideGeoFence=='Y' ){
 											
-											scope.addMarker({ lat: locs.vehicleLocations[i].latitude, lng: locs.vehicleLocations[i].longitude , data: locs.vehicleLocations[i], path:scope.path[i]});
-											scope.infoBox(scope.map, gmarkers[j], locs.vehicleLocations[i]);
-											j++;
-										}
+									// 		scope.addMarker({ lat: locs.vehicleLocations[i].latitude, lng: locs.vehicleLocations[i].longitude , data: locs.vehicleLocations[i], path:scope.path[i]});
+									// 		scope.infoBox(scope.map, gmarkers[j], locs.vehicleLocations[i]);
+									// 		j++;
+									// 	}
 										
-									}
-						  		}
+									// }
+						  	// 	}
 					  		
-			  				var lastval = locs.vehicleLocations.length-1;
-			  					 scope.addMarkerstart({ lat: locs.vehicleLocations[firstval].latitude, lng: locs.vehicleLocations[firstval].longitude , data: locs.vehicleLocations[firstval], path:scope.path[firstval]});
+			  		// 		var lastval = locs.vehicleLocations.length-1;
+			  		// 		scope.addMarkerstart({ lat: locs.vehicleLocations[firstval].latitude, lng: locs.vehicleLocations[firstval].longitude , data: locs.vehicleLocations[firstval], path:scope.path[firstval]});
 							  	
-							scope.addMarkerend({ 
-								lat: locs.vehicleLocations[lastval].latitude, 
-								lng: locs.vehicleLocations[lastval].longitude, 
-								data: locs.vehicleLocations[lastval], 
-								path:scope.path[lastval]
-							});
-							 var lineSymbol = {
-						        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-						        scale: 3,
-						        strokeColor: '#ff0000'
-						    };
-						  	scope.polyline = new google.maps.Polyline({
-								map: scope.map,
-								path: scope.path,
-								strokeColor: '#068b03',
-								strokeOpacity: 0.7,
-								strokeWeight: 3,
-								icons: [{
-						            icon: lineSymbol,
-						            offset: '100%'
-						        }],
-								clickable: true
-						  	});
+							// scope.addMarkerend({ lat: locs.vehicleLocations[lastval].latitude, lng: locs.vehicleLocations[lastval].longitude, data: locs.vehicleLocations[lastval], path:scope.path[lastval] });
+							
+							// var lineSymbol = {
+						 //        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+						 //        scale: 3,
+						 //        strokeColor: '#ff0000'
+						 //    };
+						 //  	scope.polyline = new google.maps.Polyline({
+							// 	map: scope.map,
+							// 	path: scope.path,
+							// 	strokeColor: '#068b03',
+							// 	strokeOpacity: 0.7,
+							// 	strokeWeight: 3,
+							// 	icons: [{
+						 //            icon: lineSymbol,
+						 //            offset: '100%'
+						 //        }],
+							// 	clickable: true
+						 //  	});
 						  	
-						  	if(scope.path.length>1){
-					   			for(var i=0;i<scope.path.length-1;i++){
-					   				scope.polyline1[i] = new google.maps.Polyline({
-										map: scope.map,
-										path: [scope.path[i], scope.path[i+1]],
-										strokeColor: scope.polylinearr[i],
-										strokeOpacity: 0.7,
-										strokeWeight: 2,
+						 //  	if(scope.path.length>1){
+					  //  			for(var i=0;i<scope.path.length-1;i++){
+					  //  				scope.polyline1[i] = new google.maps.Polyline({
+							// 			map: scope.map,
+							// 			path: [scope.path[i], scope.path[i+1]],
+							// 			strokeColor: scope.polylinearr[i],
+							// 			strokeOpacity: 0.7,
+							// 			strokeWeight: 2,
 										
-								  	});
-					   			}
-					   		}
+							// 	  	});
+					  //  			}
+					  //  		}
 						  	
 						  	scope.pointDistances=[];
 						  	var sphericalLib = google.maps.geometry.spherical;
@@ -252,12 +253,12 @@ app.directive('map', function($http) {
 						        scope.pointDistances[i] = 100 * sphericalLib.computeDistanceBetween(scope.path[i], pointZero) / wholeDist;
 						    }
 						    
-						    window.setTimeout(function () {
-						    	scope.animated();
-						    },1000);
+						    // window.setTimeout(function () {
+						    // 	scope.animated();
+						    // },1000);
 						    
 						    $('#replaybutton').removeAttr('disabled');
-			  				scope.map.fitBounds(latLngBounds);	
+			  				// scope.map.fitBounds(latLngBounds);	
 			  				
 						}else{
 							$('.error').show();
@@ -1084,12 +1085,18 @@ $( "#historyDetails" ).hide();
 
 	}
 
+
+	function td_click()
+	{
+		if($scope.popupmarker !== undefined)
+			$scope.popupmarker.setMap(null);
+	}
+
 	$scope.markerPoup 	= 	function(val)
 	{
 		
 		var labelAnchorpos = new google.maps.Point(250, 0);	///12, 37
-		if($scope.popupmarker !== undefined)
-			$scope.popupmarker.setMap(null);
+		td_click();
 		$scope.popupmarker = new MarkerWithLabel({
 	    	position: new google.maps.LatLng(val.latitude, val.longitude),
 	    	icon: 'assets/imgs/popup.png',
@@ -1492,6 +1499,7 @@ if($scope.markerstart){
 	}
 	$scope.plotting = function(){
 		startLoading();
+		td_click();
 		$scope.hisurlold = $scope.hisurl;
 		var fromdate = document.getElementById('dateFrom').value;
 		var todate = document.getElementById('dateTo').value;
@@ -1688,15 +1696,15 @@ if($scope.markerstart){
 			}
 			infoWindow.open(map, marker);	
 		});
-		(function(marker, data, contentString) {
-		  google.maps.event.addListener(marker, "click", function(e) {
-		  	for(j=0;j<ginfowindow.length;j++){
+		// (function(marker, data, contentString) {
+		//   google.maps.event.addListener(marker, "click", function(e) {
+		//   	for(j=0;j<ginfowindow.length;j++){
 		  		
-				ginfowindow[j].close();
-			}
-			infoWindow.open(map, marker);
-		  });	
-		})(marker, data);
+		// 		ginfowindow[j].close();
+		// 	}
+		// 	infoWindow.open(map, marker);
+		//   });	
+		// })(marker, data);
 	}
 	$scope.imgsrc = function(img){
 		return img;
@@ -1802,6 +1810,238 @@ if($scope.markerstart){
             $scope.polyline.set('icons', icons);
             window.clearInterval(id);
         }   
+	}
+
+
+	var markerhead, intervalPoly;
+	$scope.polylineCheck 	= false;
+	$scope.markerPark 		= [];
+	
+	function myStopFunction() {
+	    clearInterval(intervalPoly);
+	}
+
+	function markerClear(){
+
+		for(var i=0; i<gmarkers.length; i++){
+				gmarkers[i].setMap(null);
+			}
+			if($scope.polylineLoad)
+		if($scope.polylineLoad.length >0)
+			for (var i = $scope.polylineLoad[0].length - 1; i >= 0; i--) {
+				$scope.polylineLoad[0][i].setMap(null);
+			}
+
+	}
+
+	$scope.polylineCtrl 	= function(){
+		startLoading();
+		myStopFunction();
+		// $scope.polylinearr = [];
+		markerClear();
+		gmarkers=[];
+		ginfowindow=[];
+		// contentString = [];
+		// gsmarker=[];
+		// gsinfoWindow=[];
+		var j =0;
+		window.clearInterval(id);
+		$('.radioBut').hide(0).delay(5000).show(100);
+		// $('.hideClass').hide();
+		/*
+			loadall in map polyline
+		*/
+
+
+		if($scope.polylineCheck == false){
+			$('.hideClass').hide();
+			var lineCount 	=	 0;
+			// markerClear();
+			// var lineSymbol = {
+		 //        path: 'M 0.5,-1 0.5,1 M -0.5,-1 -0.5,1',
+		 //        strokeOpacity: 1,
+		 //        strokeWeight: 1,
+		 //        scale: 3
+		 //    };
+			  var doubleLine = {
+		       	path: 'M 0,-1 0,1',
+		        strokeOpacity: 1,
+		        strokeWeight: 3,
+		        scale: 5
+		    //     path: 'M 0.5,-1 0.5,1 M -0.5,-1 -0.5,1',
+		    // strokeOpacity: 0.6,
+		    // strokeWeight: 2,
+		    // scale: 5
+
+		    };
+	    				
+	    	if($scope.polyline && $scope.markerstart && $scope.markerend){
+						
+						$scope.polyline.setMap(null);
+						$scope.markerstart.setMap(null);
+						$scope.markerend.setMap(null);
+					}
+	    				
+
+						
+			$scope.polylineLoad 	=[];
+			function myTimer() {
+				if($scope.path.length == lineCount+1){
+			  		myStopFunction()
+				}
+				
+				if($scope.path.length != lineCount+1){
+					if(markerhead){
+						
+						markerhead.setMap(null);
+					} 
+
+					var rotationd = getBearing($scope.path[lineCount].lat(), $scope.path[lineCount].lng(), $scope.path[lineCount+1].lat(), $scope.path[lineCount+1].lng());
+				
+					markerhead = new google.maps.Marker({
+				        position: $scope.path[lineCount+1],
+				        icon: 
+				        {
+				            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+				            scale: 5,
+				            strokeWeight: 1,
+				            fillColor: $scope.polylinearr[lineCount],
+				            // fillColor: '#a8d6e9',
+				            fillOpacity: 1,
+				            anchor: new google.maps.Point(0, 2.6),
+				            rotation: rotationd,
+				        },
+
+			    	});
+
+			    	markerhead.setMap($scope.map);
+
+			    // for(var i=0;i<$scope.path.length-1;i++){
+   					$scope.polyline1[lineCount] = new google.maps.Polyline({
+						map: $scope.map,
+						path: [$scope.path[lineCount], $scope.path[lineCount+1]],
+						strokeColor: $scope.polylinearr[lineCount],
+						strokeOpacity: 0,
+						// strokeOpacity: 1,
+						strokeWeight: 3,
+						icons: [{
+				            icon: doubleLine,
+				            offset: '50%',
+				            repeat: '15px'
+				        }],
+
+
+				
+						clickable: true
+					
+			  		});
+   					$scope.map.panTo($scope.path[lineCount]);
+   					var latLngBounds = new google.maps.LatLngBounds();
+			  		// for(var i = 0; i < $scope.path.length; i++) {
+						latLngBounds.extend($scope.path[lineCount]);
+						if($scope.hisloc.vehicleLocations[lineCount])
+						if($scope.hisloc.vehicleLocations[lineCount].position!=undefined){
+							if($scope.hisloc.vehicleLocations[lineCount].position=='P' || $scope.hisloc.vehicleLocations[lineCount].position=='S' || $scope.hisloc.vehicleLocations[lineCount].insideGeoFence=='Y' ){
+								
+								$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[lineCount].latitude, lng: $scope.hisloc.vehicleLocations[lineCount].longitude , data: $scope.hisloc.vehicleLocations[lineCount], path:$scope.path[lineCount]});
+								$scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[lineCount]);
+			  					// $scope.markerPark.push($scope.marker)
+								j++;
+							}
+							
+						}
+			  		// }
+
+			  		$scope.polylineLoad.push($scope.polyline1);
+			  	lineCount++;
+			  	
+				}
+			}
+
+	   		intervalPoly = setInterval(function(){ myTimer() }, 600);
+
+
+			
+
+
+		} else {
+			// var j =0;
+			$('.hideClass').show();
+			if(markerhead){
+				markerhead.setMap(null);
+				markerhead=null;
+				myStopFunction();
+				
+			}
+					 var tempFlag=false;
+			  				 for(var k=0;k<$scope.hisloc.vehicleLocations.length;k++){
+				  				 if($scope.hisloc.vehicleLocations[k].position =='M' && tempFlag==false){
+				  				 	var firstval = k;
+				  				 	
+				  					 tempFlag=true;
+							  	 }
+						  	 }
+					  			if(firstval==undefined){
+					  				firstval=0;
+					  			}
+					var lastval = $scope.hisloc.vehicleLocations.length-1;
+			  				$scope.addMarkerstart({ lat: $scope.hisloc.vehicleLocations[firstval].latitude, lng: $scope.hisloc.vehicleLocations[firstval].longitude , data: $scope.hisloc.vehicleLocations[firstval], path:$scope.path[firstval]});
+							  	
+							$scope.addMarkerend({ lat: $scope.hisloc.vehicleLocations[lastval].latitude, lng: $scope.hisloc.vehicleLocations[lastval].longitude, data: $scope.hisloc.vehicleLocations[lastval], path:$scope.path[lastval] });
+							
+							var lineSymbol = {
+						        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+						        scale: 3,
+						        strokeColor: '#ff0000'
+						    };
+						  	$scope.polyline = new google.maps.Polyline({
+								map: $scope.map,
+								path: $scope.path,
+								strokeColor: '#068b03',
+								strokeOpacity: 0.7,
+								strokeWeight: 3,
+								icons: [{
+						            icon: lineSymbol,
+						            offset: '100%'
+						        }],
+								clickable: true
+						  	});
+
+						  	var latLngBounds = new google.maps.LatLngBounds();
+						  		for(var i = 0; i < $scope.path.length; i++) {
+									latLngBounds.extend($scope.path[i]);
+									if($scope.hisloc.vehicleLocations[i])
+									if($scope.hisloc.vehicleLocations[i].position!=undefined){
+										if($scope.hisloc.vehicleLocations[i].position=='P' || $scope.hisloc.vehicleLocations[i].position=='S' || $scope.hisloc.vehicleLocations[i].insideGeoFence=='Y' ){
+											
+											$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[i].latitude, lng: $scope.hisloc.vehicleLocations[i].longitude , data: $scope.hisloc.vehicleLocations[i], path:$scope.path[i]});
+											$scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[i]);
+											// $scope.markerPark.push($scope.marker)
+											j++;
+										}
+										
+									}
+						  		}
+						  	
+						  	// if($scope.path.length>1){
+					   	// 		for(var i=0;i<$scope.path.length-1;i++){
+					   	// 			$scope.polyline1[i] = new google.maps.Polyline({
+									// 	map: $scope.map,
+									// 	path: [$scope.path[i], $scope.path[i+1]],
+									// 	strokeColor: $scope.polylinearr[i],
+									// 	strokeOpacity: 0.7,
+									// 	strokeWeight: 2,
+										
+								 //  	});
+					   	// 		}
+					   	// 	}
+					   	window.setTimeout(function () {
+						    	$scope.animated();
+						    },1000);
+		}
+		// console.log($scope.path)
+		// console.log($scope.polylineCheck)
+		stopLoading();
 	}
 
 	$(document).ready(function(){

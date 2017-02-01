@@ -74,14 +74,14 @@
           </div>
                           
           <div class="form-group form-inline" style="margin-bottom: 5px">
-            <div class="input-group">
+            <div class="input-group hideClass">
               <button ng-click="playhis()" id="playButton" style="display:none"><i class="glyphicon glyphicon-play"></i></button>
               <button ng-click="pausehis()" id="pauseButton"><i class="glyphicon glyphicon-pause"></i></button>
               <button ng-click="animated()" id="replaybutton"><i class="glyphicon glyphicon-repeat"></i></button>
               <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
             </div>
 
-            <div class="input-group speedbutt " id="animatecontrols" ng-init="speedval=100">
+            <div class="input-group speedbutt hideClass" id="animatecontrols" ng-init="speedval=100">
               <!-- <label>Speed :</label> -->
               <input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="speedval" value="200" type="radio" />
               <span>Slow</span>
@@ -499,9 +499,18 @@
 
                             <img src="assets/imgs/add.png" />
                             
-                            <label><input type="text" value="0.0" id="latinput" style="width:265px; height: 20px; "  readonly /></label>
+                            <label><input type="text" value="0.0" id="latinput" style="width:120px; height: 20px; "  readonly /></label>
                             
                         </div>
+                        <div class="radioBut"><label><input type="checkbox" name="track" ng-model="polylineCheck" ng-click=polylineCtrl() >
+                        LoadAll
+                      </label>
+                      <!-- <label>
+                        <input type="radio" name="track" >
+                        stepbystep  
+                      </label> -->
+                      </div>
+
                         <div style="position: fixed;top: 50px;left: 180px; z-index:99; background-color: #fff; padding: 5px; border-radius: 2px; cursor: pointer;  width: 250px" class="legendlist">
                           <div>
                             <h3><b>Vehicle Status</b></h3>

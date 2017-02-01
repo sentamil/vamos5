@@ -69,7 +69,7 @@
        <div class="box box-primary">
         <!-- <div class="row"> -->
                 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
-                    <h3 class="box-title">Temperature Report</h3>
+                    <h3 class="box-title">{{tempCation}}</h3>
                 </div>
                 <div class="row">
                     <div class="col-md-1" align="center"></div>
@@ -134,7 +134,7 @@
                     </div>
                 
                 <div class="box-body" id="temperature">
-                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">Temperature Report<span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
+                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">{{tempCation}}<span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
                             
                                 <table class="table table-bordered table-striped table-condensed table-hover">
                                     <thead>
@@ -153,13 +153,13 @@
                                         </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="active" style="text-align:center" ng-repeat="temper in siteData.temperature | orderBy:sort.sortingOrder:sort.reverse">
+                                    <tr class="active" style="text-align:center" ng-repeat="temper in siteData | orderBy:sort.sortingOrder:sort.reverse">
                                         <td>{{temper.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td>{{temper.temperature}}</td>
                                         <td>{{temper.address}}</td>
                                         <td><a href="https://www.google.com/maps?q=loc:{{temper.lat}},{{temper.lng}}" target="_blank">Link</a></td>
                                     </tr>
-                                    <tr ng-if="siteData.temperature==null || siteData.temperature.length==0"  align="center">
+                                    <tr ng-if="siteData==null || siteData.length==0"  align="center">
                                         <td colspan="4"class="err"><h5>No Data Found! Choose some other date</h5></td>
                                     </tr>
                                 </tbody>

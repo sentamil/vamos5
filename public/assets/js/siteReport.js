@@ -1,6 +1,8 @@
 app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, vamoservice, $filter){
 
-	
+$scope.g_Url 	=	"http://"+globalIP+context+"/public";
+
+
 
 // trip summary , 	site report, trip report , rfid Report, multiple sites
 
@@ -200,29 +202,33 @@ function plottinGraphs(valueGraph, timeData){
 		var urlWebservice;
 		switch  (tab){
 			case  'site' : 
-				urlWebservice 	= 	"http://"+globalIP+context+"/public/getSiteReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&site=true";
+				urlWebservice 	= 	$scope.g_Url+"/getSiteReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&site=true";
 				break;
 			case 'trip' :
-				urlWebservice 	= 	"http://"+globalIP+context+"/public/getTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval;
+				urlWebservice 	= 	$scope.g_Url+"/getTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval;
 				break;
 			case 'tripkms' :
-				urlWebservice 	= 	"http://"+globalIP+context+"/public/getTripSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				urlWebservice 	= 	$scope.g_Url+"/getTripSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
 			case 'load' :           
-				urlWebservice 	=	"http://"+globalIP+context+"/public/getLoadReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				urlWebservice 	=	$scope.g_Url+"/getLoadReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
-			case 'temperature' :
-				urlWebservice 	= 	"http://"+globalIP+context+"/public/getTemperatureReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval=-1";
+			case 'temperature': case 'temperatureDev':
+				urlWebservice 	= 	$scope.g_Url+"/getTemperatureReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval=-1";
+				if (tab == 'temperatureDev')
+					$scope.tempCation 	= "Temperature Deviation";
+				else if (tab == 'temperature')
+					$scope.tempCation 	= "Temperature Roport";
 				break;
 			case 'alarm' :
-				urlWebservice   =  "http://"+globalIP+context+"/public/getAlarmReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				urlWebservice   =  $scope.g_Url+"/getAlarmReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
 			case 'rfid' :
-				urlWebservice   =  "http://"+globalIP+context+"/public/getRfidReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				urlWebservice   =  $scope.g_Url+"/getRfidReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
 			case 'multiSite' :
 				try{
-					urlWebservice   =  "http://"+globalIP+context+"/public/getSiteSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&stopTime="+$scope.interval+"&language=en"+"&site1="+$scope._site1.siteName+"&site2="+$scope._site2.siteName;
+					urlWebservice   =  $scope.g_Url+"/getSiteSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&stopTime="+$scope.interval+"&language=en"+"&site1="+$scope._site1.siteName+"&site2="+$scope._site2.siteName;
 				}
 				catch (e){
 					stopLoading();
@@ -355,15 +361,29 @@ function plottinGraphs(valueGraph, timeData){
 						}
 					})
 
-				if(tab == 'temperature'){
+				if(tab == 'temperature' || tab == 'temperatureDev'){
+					$scope.siteData = [];
 					angular.forEach(responseVal.temperature, function(graphValue, graphKey){
 					//var time = moment(graphValue.date).format("DD-MM-YYYY h:mm:ss");
-						graphList.push(Number(graphValue.temperature));
-						graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"))
-						// plottinGraphs(temperature);
+						if(graphValue.isdeviation == 'No' && tab == 'temperature'){
+							
+							graphList.push(Number(graphValue.temperature));
+							graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"));
+							$scope.siteData.push(graphValue);
+							// plottinGraphs(temperature);
+						} else if(graphValue.isdeviation == 'Yes' && tab == 'temperatureDev'){
+							
+							graphList.push(Number(graphValue.temperature));
+							graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"));
+							$scope.siteData.push(graphValue);
+						}	
 					})
 					plottinGraphs(graphList, graphTime);
-				}
+				} 
+				// else if(tab == 'temperatureDev'){
+				// 	$scope.siteData = [];
+
+				// }
 
 				$scope.siteEntry 	=	entry;
 				$scope.siteExit 	=	exit;
@@ -440,7 +460,7 @@ function plottinGraphs(valueGraph, timeData){
 		$scope.gName 	= 	groupName;
 		$scope.uiGroup 	= 	$scope.trimColon(groupName);
 		$scope.gIndex	=	groupId;
-		var url  		= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupName;
+		var url  		= 	$scope.g_Url+"/getVehicleLocations?group="+groupName;
 		vamoservice.getDataCall(url).then(function(response){
 			stopLoading();
 			$scope.vehicle_list = response;
@@ -586,7 +606,7 @@ if(tab == 'tripkms')
         endDate 	= 	$filter('date')(inputValue.endTime, 'yyyy-MM-dd');
         startTime	= 	$filter('date')(inputValue.startTime, 'HH:mm:ss');
         endTime		= 	$filter('date')(inputValue.endTime, 'HH:mm:ss');
-        var url 	= 	"http://"+globalIP+context+"/public/getVehicleHistory?vehicleId="+vehicleDetails.vehicleId+"&fromDate="+startDate+"&fromTime="+startTime+"&toDate="+endDate+"&toTime="+endTime+'&fromDateUTC='+utcFormat(startDate,startTime)+'&toDateUTC='+utcFormat(endDate,endTime);
+        var url 	= 	$scope.g_Url+"/getVehicleHistory?vehicleId="+vehicleDetails.vehicleId+"&fromDate="+startDate+"&fromTime="+startTime+"&toDate="+endDate+"&toTime="+endTime+'&fromDateUTC='+utcFormat(startDate,startTime)+'&toDateUTC='+utcFormat(endDate,endTime);
  		vamoservice.getDataCall(url).then(function(dataGet){
  			// if(dataGet.vehicleLocations[0] || dataGet.vehicleLocations[dataGet.vehicleLocations.length-1])
  			// 	startEndMarker(val.latitude, val.longitude);

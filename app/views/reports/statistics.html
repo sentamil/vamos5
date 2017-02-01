@@ -139,6 +139,9 @@ background-color: #ffffff;
                      <tabset class="nav-tabs-custom">
 
                          <tab select="alertMe('executive')" heading="Executive"  active="tabActive">
+                         <div class="form-group pull-right">
+                                <input type="search" class="form-control input-sm" placeholder="Search" ng-model="searchboxExe" name="search" />
+                            </div>
                              <h4 style="margin:0" class="page-header">Executive</h4>
                              <div id='executive'>
                               <table class="table table-bordered table-condensed table-hover table-striped">
@@ -160,7 +163,7 @@ background-color: #ffffff;
                                         <td width="7%" class="id" custom-sort order="'totalIdleTime'" sort="sort" style="text-align:center;">Idle</td>
                                        
                                     </tr>
-                                    <tr ng-repeat="user in execGroupReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 12px">
+                                    <tr ng-repeat="user in execGroupReportData | orderBy:sort.sortingOrder:sort.reverse | filter:searchboxExe" class="active" style="text-align:center; font-size: 12px">
                                         <td>{{user.shortName}}</td>
                                         <td>{{user.date}}</td>
                                         <td>{{user.distanceToday}}</td>

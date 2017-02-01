@@ -650,6 +650,11 @@ input[type=range]:focus::-ms-fill-upper {
 
 }
 
+.radioBut{
+	position: fixed;top: 10px;left:320px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
+
+}
+
 #flexcolor{
 	background-color: #f4f4f4; display: flex; -webkit-flex; -ms-flex: 1;
 }
