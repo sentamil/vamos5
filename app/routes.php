@@ -194,6 +194,12 @@ Route::get('/rfidTag', function() {
     }
     return View::make('reports.rfidReport');
 });
+Route::get('/camera', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.cameraReport');
+});
  
 View::addExtension('html', 'php');
 Route::get('/menu', function() {
@@ -529,6 +535,14 @@ Route::get('getDistanceTimeFuelReport', function(){
 });
  
  
+// Route::get('/getPictures', function() {
+//     if (!Auth::check()) {
+//         return Redirect::to('login');
+//     }
+//     Log::info('getPictures');
+//     return View::make('vls.getPictures');
+// });
+
 Route::get('/getIndividualDriverPerformance', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -807,6 +821,7 @@ Route::post('vdmVehicles/calibrate/count', array('uses'=>'VdmVehicleController@c
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
 Route::resource('Licence', 'LicenceController');
+
 Route::get('vdmUsers/notification/{param}', array('uses' => 'VdmUserController@notification'));
 Route::post('vdmUsers/updateNotification', array('uses' => 'VdmUserController@updateNotification'));
 
@@ -875,6 +890,8 @@ Route::post('vdmFranchises/updateAddCount', array('uses' => 'VdmFranchiseControl
 Route::post('vdmFranchises/findFransList', array('uses' => 'VdmFranchiseController@findFransList'));
 Route::post('vdmFranchises/findUsersList', array('uses' => 'VdmFranchiseController@findUsersList'));
  
+Route::get('notificationFrontend', array('uses' => 'VdmUserController@notificationFrontend'));
+Route::post('notificationFrontendUpdate', array('uses' => 'VdmUserController@notificationFrontendUpdate'));
  // for scheduled reports
 Route::post('ScheduledController/reportScheduling', array('uses' => 'ScheduledController@reportScheduling'));
 Route::get('ScheduledController/getValue', array('uses' => 'ScheduledController@getValue'));
@@ -891,6 +908,7 @@ Route::post('VdmGroup/removingGroup', array('uses'=>'VdmGroupController@removeGr
 Route::post('VdmGroup/showGroup', array('uses'=>'VdmGroupController@_showGroup'));
 Route::post('VdmGroup/saveGroup', array('uses'=>'VdmGroupController@_saveGroup'));
 Route::post('VdmGroup/groupId', array('uses'=>'VdmGroupController@groupIdCheck'));
+
  
 Route::get('/setPOIName', function() {
     if (!Auth::check()) {
