@@ -127,7 +127,8 @@
             <span class="glyphicon glyphicon-user"><span id="valueUser" style="font-size:12px; font-weight: bold; font-family: Helvetica"></span></span>  
             <ul>
                 <li class="removeli"><a href="../public/groupEdit">Edit Group</a></li>
-                <li class="removeli"><a  href="../public/passWd" >Reset Password</a></li>
+                <li class="removeli"><a  href="../public/passWd?userlevel=notify" >Edit Notification</a></li>
+                <li class="removeli"><a  href="../public/passWd?userlevel=reset" >Reset Password</a></li>
             </ul>
         </li>
         
@@ -259,27 +260,27 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
 
 
             
-            // var isVir = JSON.parse(sessionStorage.getItem('isVirtualUser'));
-            // if(isVir){
-            var globalIP = document.location.host;
-            var contextMenu = '/gps';
-            $.get('http://'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
-            
-                var menuVal =response.trim();
-                if(menuVal == 'true') {
+            var isVir = JSON.parse(sessionStorage.getItem('isVirtualUser'));
+            if(isVir == null || isVir == undefined){
+                var globalIP = document.location.host;
+                var contextMenu = '/gps';
+                $.get('http://'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
+                
+                    var menuVal =response.trim();
+                    sessionStorage.setItem('isVirtualUser', JSON.stringify(menuVal));
+                    if(menuVal == 'true') {
 
-
-                    // sessionStorage.setItem('isVirtualUser', JSON.stringify(false));
-                    var myList = document.getElementsByClassName('removeli');
-                    for (var i = 0; myList.length > i ; i++) {
-                        myList[i].innerHTML = '';
+                        var myList = document.getElementsByClassName('removeli');
+                        for (var i = 0; myList.length > i ; i++) {
+                            myList[i].innerHTML = '';
+                        }
                     }
-                }
-            
-            }).error(function(){
-                console.log('error in isVirtualUser');
-            });
-            // }
+                
+                }).error(function(){
+                    console.log('error in isVirtualUser');
+                });
+            }
+
 
     
 </script>

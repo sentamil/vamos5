@@ -5,6 +5,45 @@ $scope._tabValue    = url.includes("groupEdit");
 var _gUrl           = 'http://'+globalIP+context+'/public/getVehicleLocations';
 
 $scope.sort         = {sortingOrder : 'vehicles', reverse : true };
+$scope.notifyUpdate = [];
+
+// $scope.selectEdit   = (getParameterByName('userlevel') == 'reset') ? true : (getParameterByName('userlevel') == 'notify') : false;
+
+$scope.checkValue = function(value){
+  if(value == 'true'){
+    return true;
+  }
+  else  if(value == 'false')
+    return false;
+}
+
+
+
+if(getParameterByName('userlevel') == 'reset')
+  $scope.selectEdit = true;
+else if(getParameterByName('userlevel') == 'notify'){
+  startLoading();
+  $scope.selectEdit = false;
+  $scope.notify   = [{'check': true, 'value' : 'lowbat', 'caption':'LOW BATTERY'}];
+  
+  $.ajax({
+      
+      async: false,
+        method: 'GET', 
+        url: 'notificationFrontend',
+        // data: {"orgId":},
+        success: function (response) {
+          if (response != 'fail')
+            $scope.notificationValue = response;
+            angular.forEach($scope.notificationValue, function(ke, val){
+              $scope.notifyUpdate.push($scope.checkValue(ke));
+            })
+        }
+    })
+
+  startLoading();
+}
+
 
 /*
   remove group from this user 
@@ -239,38 +278,7 @@ $scope.checkAll   = function(){
 
 
 
-// $scope.hideDialog   = false;
 $scope.error        = '';
-  // //old password checking
-
-  // $scope.oldPwdCheck  = function(){
-
-  //   console.log(' value '+$scope.oldValue)
-  //   if($scope.oldValue != '' || $scope.oldValue != undefined)
-  //     $.ajax({
-  //         async: false,
-  //         method: 'POST', 
-  //         url: "oldPwdChange",
-  //         data: {'pwd': $scope.oldValue},
-  //         success: function (response) {
-  //           if(response =='sucess'){
-                
-  //               $scope.hideDialog   = true;
-  //               $scope.error        = '';
-  //           } else {
-
-  //             $scope.hideDialog   = false;
-  //             $scope.error        = '* Enter correct password.'
-
-  //           }
-  //         },
-  //         fail:function() {
-  //           $scope.hideDialog   = false;
-  //           $scope.error        = '* Connection Fails.'
-  //         }
-  //       });    
-  //   }
-
     /*
       update password
     */
@@ -278,38 +286,7 @@ $scope.error        = '';
     $scope.updatePwd  = function(){
       startLoading();
       $scope.error        = '';
-      // if(($scope.oldValue != '' || $scope.oldValue != undefined) && ($scope.firstVal == $scope.reEnterVal) && ($scope.firstVal !=undefined ||$scope.firstVal.length >= 5 ))
-      // {
-        // console.log($scope.reEnterVal);
-        // $.ajax({
-        //   async: false,
-        //   method: 'POST', 
-        //   url: "updatePwd",
-        //   data: {'pwd': $scope.firstVal},
-        //   success: function (response) {
-        //     if(response =='sucess'){
-        //       console.log(response);
-        //       $scope.error = "Updated Sucessfully ."
-
-        //     } else {
-        //       $scope.hideDialog   = false;
-        //       $scope.error        = '* Connection Fails.'  
-        //     }
-        //   },
-        //   fail:function() {
-        //     $scope.hideDialog   = false;
-        //     $scope.error        = '* Connection Fails.'
-        //   }
-        // });  
-      //   $scope.error        = "Sucessfully";
-      // }else
-      // {
-      //   $scope.error        = "* Password miss matching / Password strength above 5 characters.";
-      // }
-      // setTimeout(function () {
-      //   document.location.href = 'login';
-        
-      // }, 1000); 
+      
       if($scope.oldValue == '' || $scope.oldValue == undefined && $scope.firstVal == '' || $scope.firstVal == undefined && $scope.reEnterVal == '' || $scope.reEnterVal == undefined){
 
         $scope.error        = "* Fill all Fields ."; 
@@ -352,5 +329,34 @@ $scope.error        = '';
       stopLoading();
      
     }
+
+
+
+  $scope.updateNotify   = function(){
+    var count = 0;
+    var selectNotiy = [];
+    angular.forEach($scope.notificationValue, function(val, key){
+
+        if($scope.notifyUpdate[count] == true)
+          selectNotiy.push(key);
+          count ++;
+    
+    })
+    var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
+    sp1 = menuValue.split(",");
+    $.ajax({
+      
+      async: false,
+        method: 'POST', 
+        url: 'notificationFrontendUpdate',
+        data: {"userId":sp1[1], "notificationGroups" : selectNotiy},
+        success: function (response) {
+          if (response == 'success')
+            location.reload();
+          else if (response == 'fail')
+            console.log(' check console Some problem... ');
+        }
+    })
+  }
 
 });

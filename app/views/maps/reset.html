@@ -15,6 +15,14 @@
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
+<style type="text/css">
+  
+.dialog_header {
+  padding:5px; padding-left: 10px; padding-right: 10px; letter-spacing: 1px;
+
+}
+</style>
+
 </head>
 <div id="status">&nbsp;</div>
 <body ng-app="mapApp">
@@ -23,12 +31,8 @@
 <div ng-controller="mainCtrl" class="bg_color ng-cloak">
 <div class="wrapper">
   <div class="modal-dialog">
-  <div class="modal-content">
-      <!-- <div class="modal-header" style="padding: 2px">   id="pwdModal" tabindex="-1" role="dialog" aria-hidden="true" 
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >×</button>
-          <h4 class="text-center">Reset Password?</h4>
-      </div> -->
-        <div class="modal-header" style="padding:5px; padding-left: 10px; padding-right: 10px">
+  <div class="modal-content" ng-show="selectEdit">
+      <div class="modal-header" style="padding:5px; padding-left: 10px; padding-right: 10px">
             <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
             <h5> Reset Password </h5> 
         </div>
@@ -78,6 +82,41 @@
           <button class="btn btn-sm" data-dismiss="modal" aria-hidden="true">Cancel</button>
           </div>     -->
       </div>
+  </div>
+
+  <div class="modal-content" ng-hide="selectEdit">
+    <div class="modal-header dialog_header">
+            <h5> Edit Notification </h5> 
+        </div>
+    <div class="well" style="height: 350px; overflow: scroll;">
+    
+      <li class="list-group-item" ng-repeat="(key, val) in notificationValue">
+        <label ><input type="checkbox" ng-model="notifyUpdate[$index]" ng-checked="checkValue(val)"/> {{key}}</label>
+        <!-- <label ng-if="val==false"><input type="checkbox"  ng-checked="false" /> {{key}} {{val}}</label> -->
+      </li>
+      <!-- <li class="list-group-item"><input type="checkbox"/> LOW BATTERY</li>
+      <li class="list-group-item"><input type="checkbox"/> TEMPERATURE</li>
+      <li class="list-group-item"><input type="checkbox"/> ACC ON/OFF</li>
+      <li class="list-group-item"><input type="checkbox"/> OVERSPEED</li>
+      <li class="list-group-item"><input type="checkbox"/> ROUTE DEVIATION</li>  
+      <li class="list-group-item"><input type="checkbox"/> AREA ENTRY/EXIT</li>  
+      <li class="list-group-item"><input type="checkbox"/> AREA ENTRY/EXIT LEVEL 1</li>  
+      <li class="list-group-item"><input type="checkbox"/> AREA ENTRY/EXIT LEVEL 2</li>
+      <li class="list-group-item"><input type="checkbox"/> AREA ENTRY/EXIT LEVEL 3</li>  
+      <li class="list-group-item"><input type="checkbox"/> GEOFENCE</li>  
+      <li class="list-group-item"><input type="checkbox"/> FUEL</li>  
+      <li class="list-group-item"><input type="checkbox"/> SHOCK</li>  
+      <li class="list-group-item"><input type="checkbox"/> AC ON/OFF</li>  
+      <li class="list-group-item"><input type="checkbox"/> OFFLINE</li>  
+      <li class="list-group-item"><input type="checkbox"/> SOS</li>  
+      <li class="list-group-item"><input type="checkbox"/> BACK TO ONLINE</li>  
+      <li class="list-group-item"><input type="checkbox"/> POWER CUTOFF</li> -->
+    </div>
+    <div class="modal-footer dialog_header">
+        <button type="button" class="btn btn-primary" ng-click="updateNotify()">Update</button>
+        <button type="button" class="btn btn-default">Close</button>
+      </div>
+  
   </div>
   </div>
 </div>
