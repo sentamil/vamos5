@@ -353,28 +353,42 @@ class VdmUserController extends \BaseController {
 		) )->with ( 'notificationGroups', $notificationGroups )
 		->with('notificationArray',$notificationArray);
 	}
-	
 
+public function updateFn()
+{
+	$userId = Input::get ( 'userId' );
+	if (! Auth::check ()) {
+		return Redirect::to ( 'login' );
+	}
+	$username = Auth::user ()->username;
+	$redis = Redis::connection ();
+	$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+	$notificationGroups = Input::get ( 'notificationGroups' );
+	if(count($notificationGroups)>0)
+	{
+		$notification=implode(",",$notificationGroups);
+		$redis->hset("H_Notification_Map_User",$userId,$notification);
+	} else {
+		$redis->hset("H_Notification_Map_User",$userId,'');
+	}
+
+	log::info($userId);
+}
+
+
+	
 
 
 public function updateNotification() {
 	
-		$userId = Input::get ( 'userId' );
-		Log::info('user id '.$userId);
-		if (! Auth::check ()) {
-			return Redirect::to ( 'login' );
-		}
-		$username = Auth::user ()->username;
-		$redis = Redis::connection ();
-		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-		$notificationGroups = Input::get ( 'notificationGroups' );
-		if(count($notificationGroups)>0)
-		{
-			$notification=implode(",",$notificationGroups);
-			$redis->hset("H_Notification_Map_User",$userId,$notification);
-		}
-		Session::flash ( 'message', 'Successfully updated  Notification' . $userId . '!' );
-		return Redirect::to ( 'vdmUsers' );
+	// $userId = Input::get ( 'userId' );
+	// if (! Auth::check ()) {
+	// 	return Redirect::to ( 'login' );
+	// }
+	$notify= new VdmUserController;
+	$notify->updateFn();
+	// Session::flash ( 'message', 'Successfully updated  Notification' . $userId . '!' );
+	return Redirect::to ( 'vdmUsers' );
 		
 	}
 
@@ -513,6 +527,56 @@ public function updateNotification() {
       	if($userId== 'ADMIN' || $userId == 'Admin' || $userId == 'admin'){
       		return 'Name with admin not acceptable ';
       	}
+	}
+
+
+	public function notificationFrontend() {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$notificationset = 'S_VAMOS_NOTIFICATION';
+		$notification=$redis->hget("H_Notification_Map_User",$username);
+		$notificationArray=array();
+		if($notification!==null)
+		{
+			$notificationArray=explode(",",$notification);
+		}
+		$groupList = $redis->smembers ( $notificationset);
+		$notificationGroups = array();
+		foreach ( $groupList as $key => $value ) {
+
+			$notificationGroups = array_add ( $notificationGroups, $value, $value );
+			$notificationGroups[$value] = 'false';
+			
+			if(sizeof($notificationArray) > 0)
+			{
+				foreach ($notificationArray as $ky => $val) {
+				
+					if($val ==  $value){
+						$notificationGroups[$value] = 'true';
+					}
+				}
+			}
+
+		}
+        
+        
+		return (sizeof($notificationGroups) > 0) ? $notificationGroups : 'fail';
+	}
+
+	public function notificationFrontendUpdate(){
+
+		try{
+			$notify= new VdmUserController;
+			$notify->updateFn();
+			return 'success';
+		}catch(\Exception $e) {
+			return 'fail';
+		}
 	}
 
 }
