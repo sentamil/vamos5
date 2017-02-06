@@ -1261,7 +1261,9 @@ public function users()
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
 			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'deviceModel'=>$deviceModel);
 				
-		
+			$getOldIp 	= $redis->hget('H_Franchise_Mysql_DatabaseIP', $fcode);
+
+
 			$val = $redis->sadd('S_Franchises',$fcode);
 				
 			log::info(" redis return code :"+$val);
@@ -1324,6 +1326,75 @@ public function users()
 			->where('username', $userId)
 			->update(array('email' => $email1));
 			
+			$mappingFn = array (
+					'fname' => 'Franchise Name',
+					'description' => 'Description',
+					'landline' => 'Landline Number',
+					'mobileNo1' => 'Mobile Number1',					
+					'mobileNo2' => 'Mobile Number2',
+					'email1' => 'Email 1',
+					'email2' => 'Email 2',
+					'userId' => 'User Id',
+					'fullAddress' => 'Full Address',
+					'otherDetails' => 'Other Details',
+					'numberofLicence' => 'Number of Licence',
+					'availableLincence'=>'Available licence',
+					'website'=>'website',
+					'smsSender'=>'smsSender',
+					'smsProvider'=>'smsProvider',
+					'providerUserName'=>'SMS Provider User Name',
+					'providerPassword'=>'SMS Provider Password',	
+					//'eFDSchedular'=>$eFDSchedular,
+					'timeZone'=>'Time Zone',
+					'apiKey'=>'Api Key',	
+					'backUpDays'=>'DB BackupDays',
+					'dbType'=>'DB Type',
+					'dbIP'=>'DB IP',
+					
+			);
+			$oldFranch = array();
+			$NewFranch = array();
+
+			try {
+		
+				$fransNew 	=	json_decode($detailsJson,true);
+
+				if(($franchiseDetails !== $fransNew) || ($getOldIp != $dbIp)){
+
+					log::info(' change arun ');
+					if($getOldIp != $dbIp){
+						$oldFranch 	= array_add($oldFranch, $mappingFn['dbIP'], $getOldIp);
+						$NewFranch 	= array_add($NewFranch, $mappingFn['dbIP'], $dbIp);
+					}
+					foreach ($fransNew as $key => $value) {
+						if(isset($franchiseDetails[$key]) != 1){
+							log::info(' object key null ');
+							$oldFranch 	= array_add($oldFranch, $mappingFn[$key], '');
+							$NewFranch 	= array_add($NewFranch, $mappingFn[$key], $value);
+							
+						} else if($franchiseDetails[$key] != $value){
+
+							log::info(' object value change  ');
+							$oldFranch 	= array_add($oldFranch, $mappingFn[$key], $franchiseDetails[$key]);
+							$NewFranch 	= array_add($NewFranch, $mappingFn[$key], $value);
+
+						}
+						
+					}
+
+
+				}
+
+				Session::put('email', $email1);
+				$response=Mail::send('emails.franchies', array('url'=>$fname, 'old'=>$oldFranch, 'new'=>$NewFranch), function($message){
+					$message->to(Session::pull ( 'email' ))->subject('Franchises Details Updated !');
+				});	
+
+			} catch (Exception $e) {
+					
+				log::info(' mail error ');
+				log::info($e);
+			}
 	
 
 		}

@@ -21,20 +21,20 @@ th {
 }
 
 </style></head>
-<h4>Hi, {{ $username}}!</h4>
+<h4>Hi, {{ $url}}!</h4>
 
-<p>The following group is Updated.</p>
+<p>The following group is Franchises.</p>
 
-<p>Group Name -  {{$groupName}}</p>
+<p>Franchises Name -  {{$url}}</p>
 <table>
   <tr>
     
-    <td colspan="2" class="caption">Old Vehicles</td>
+    <td colspan="2" class="caption">Old Details</td>
     
 </tr>
 <tbody>
-@if(isset($oldVehi))
-@foreach($oldVehi as $key => $value)
+@if(isset($old))
+@foreach($old as $key => $value)
   <tr>
     <td>{{$key}}</td>
     <td>{{$value}}</td>
@@ -44,11 +44,11 @@ th {
 
 <tr>
     
-    <td colspan="2" class="caption">Updated Vehicles</td>
+    <td colspan="2" class="caption">Updated Details</td>
     
 </tr>
-@if(isset($newVehi))
-@foreach($newVehi as $key => $value)
+@if(isset($new))
+@foreach($new as $key => $value)
   <tr>
     <td>{{$key}}</td>
     <td>{{$value}}</td>

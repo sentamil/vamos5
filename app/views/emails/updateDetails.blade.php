@@ -3,6 +3,9 @@
 <style>
 table, td, th {
     border: 1px solid black;
+    background: #f2f2f2;
+    padding: 5px;
+    font-weight: bolder;
 }
 
 table {
