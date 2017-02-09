@@ -307,94 +307,96 @@ function plottinGraphs(valueGraph, timeData){
 		$scope.siteData = [];
 		var urlUTC;
 			urlUTC = url+'&fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
-		if (url != undefined)
-		vamoservice.getDataCall(urlUTC).then(function(responseVal){
-			try{
-				if(tab == 'alarm')
-					try{
-						$scope.recursive(responseVal.alarmList,0);
-					} catch (er){
-						console.log(' address Solving '+er);
-					}
-					
-				$scope.siteData = responseVal;
-
-
-				/*
-					FOR TEMPORARY LOAD
-				*/
-
-				if(tab == 'load')
-                {
-                    $scope.siteData ={};
-                    $scope.siteData.load =[];
-                    var spLoading ;
-                    try
-                    {
-
-
-                            angular.forEach(responseVal.load, function(value, keyLoad){
-                            	spLoading = splitColon(value.load);
-                                $scope.siteData.load.push({'date':value.date, 'lat':value.lat, 'lng': value.lng, 'Axle1': spLoading[0], 'Axle2': spLoading[1], 'Axle3': spLoading[2], 'Axle4': spLoading[3], 'Axle5': spLoading[4], 'Axle6': spLoading[5], 'Axle7': spLoading[6], 'Axle8': spLoading[7],  'LoadTruck': spLoading[8], 'LoadTrailer': spLoading[9], 'TotalLoadTruck': spLoading[10], 'TotalLoadTrailer': spLoading[11]})
-                            })
-
-                    }
-                    catch(err)
-                    {
-
-                    }
-
-
-                }
-
-				// if(tab == 'rfid')
-				// 	forRfitOnly(responseVal);
-
-				var entry=0,exit=0; 
-				if (tab == 'site')
-					angular.forEach(responseVal, function(val, key){
-						if(tab == 'site'){
-							if(val.state == 'SiteExit')
-								exit++ 
-							else if (val.state == 'SiteEntry')
-								entry++
+		if ((url != undefined) && (checkXssProtection($scope.uiDate.fromdate) == true) && (checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true)){
+			vamoservice.getDataCall(urlUTC).then(function(responseVal){
+				try{
+					if(tab == 'alarm')
+						try{
+							$scope.recursive(responseVal.alarmList,0);
+						} catch (er){
+							console.log(' address Solving '+er);
 						}
-					})
+						
+					$scope.siteData = responseVal;
 
-				if(tab == 'temperature' || tab == 'temperatureDev'){
-					$scope.siteData = [];
-					angular.forEach(responseVal.temperature, function(graphValue, graphKey){
-					//var time = moment(graphValue.date).format("DD-MM-YYYY h:mm:ss");
-						if(graphValue.isdeviation == 'No' && tab == 'temperature'){
-							
-							graphList.push(Number(graphValue.temperature));
-							graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"));
-							$scope.siteData.push(graphValue);
-							// plottinGraphs(temperature);
-						} else if(graphValue.isdeviation == 'Yes' && tab == 'temperatureDev'){
-							
-							graphList.push(Number(graphValue.temperature));
-							graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"));
-							$scope.siteData.push(graphValue);
-						}	
-					})
-					plottinGraphs(graphList, graphTime);
-				} 
-				// else if(tab == 'temperatureDev'){
-				// 	$scope.siteData = [];
 
-				// }
+					/*
+						FOR TEMPORARY LOAD
+					*/
 
-				$scope.siteEntry 	=	entry;
-				$scope.siteExit 	=	exit;
+					if(tab == 'load')
+	                {
+	                    $scope.siteData ={};
+	                    $scope.siteData.load =[];
+	                    var spLoading ;
+	                    try
+	                    {
 
-				stopLoading();	
-			} catch (err){
-				console.log(' print err '+err);
-				stopLoading();	
-			}
-			
-		});
+
+	                            angular.forEach(responseVal.load, function(value, keyLoad){
+	                            	spLoading = splitColon(value.load);
+	                                $scope.siteData.load.push({'date':value.date, 'lat':value.lat, 'lng': value.lng, 'Axle1': spLoading[0], 'Axle2': spLoading[1], 'Axle3': spLoading[2], 'Axle4': spLoading[3], 'Axle5': spLoading[4], 'Axle6': spLoading[5], 'Axle7': spLoading[6], 'Axle8': spLoading[7],  'LoadTruck': spLoading[8], 'LoadTrailer': spLoading[9], 'TotalLoadTruck': spLoading[10], 'TotalLoadTrailer': spLoading[11]})
+	                            })
+
+	                    }
+	                    catch(err)
+	                    {
+
+	                    }
+
+
+	                }
+
+					// if(tab == 'rfid')
+					// 	forRfitOnly(responseVal);
+
+					var entry=0,exit=0; 
+					if (tab == 'site')
+						angular.forEach(responseVal, function(val, key){
+							if(tab == 'site'){
+								if(val.state == 'SiteExit')
+									exit++ 
+								else if (val.state == 'SiteEntry')
+									entry++
+							}
+						})
+
+					if(tab == 'temperature' || tab == 'temperatureDev'){
+						$scope.siteData = [];
+						angular.forEach(responseVal.temperature, function(graphValue, graphKey){
+						//var time = moment(graphValue.date).format("DD-MM-YYYY h:mm:ss");
+							if(graphValue.isdeviation == 'No' && tab == 'temperature'){
+								
+								graphList.push(Number(graphValue.temperature));
+								graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"));
+								$scope.siteData.push(graphValue);
+								// plottinGraphs(temperature);
+							} else if(graphValue.isdeviation == 'Yes' && tab == 'temperatureDev'){
+								
+								graphList.push(Number(graphValue.temperature));
+								graphTime.push(moment(graphValue.date).format("DD-MM-YYYY h:mm:ss"));
+								$scope.siteData.push(graphValue);
+							}	
+						})
+						plottinGraphs(graphList, graphTime);
+					} 
+					// else if(tab == 'temperatureDev'){
+					// 	$scope.siteData = [];
+
+					// }
+
+					$scope.siteEntry 	=	entry;
+					$scope.siteExit 	=	exit;
+
+					stopLoading();	
+				} catch (err){
+					console.log(' print err '+err);
+					stopLoading();	
+				}
+				
+			});
+		} else
+			stopLoading();
 	}
 
 	// initial method

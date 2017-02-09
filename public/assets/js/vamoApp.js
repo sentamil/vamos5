@@ -48,6 +48,7 @@ var geomarker=[];
 var geoinfo=[];
 
 var app = angular.module('mapApp',['ui.bootstrap']);
+// var app = angular.module('mapApp',['ui.bootstrap', 'ngSanitize']);
 
 
   /*! Idle Timer - v0.9.2 - 2013-08-04
@@ -142,6 +143,30 @@ function getParameterByName(name) {
           results = regex.exec(location.search);
       return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
+
+function checkXssProtection(str){
+
+  var regex     = /<\/?[^>]+(>|$)/g;
+  var enc       = encodeURI(str);
+  var dec       = decodeURI(str);
+  var replaced  = enc.search(regex) >= 0;
+  var replaced1 = dec.search(regex) >= 0;
+
+  return (replaced == false && replaced1 == false) ? true : false ;
+  // if(replaced == false && replaced1 == false){
+      
+    
+  //   return true;
+
+  // } else {
+
+    
+  //   return false;
+
+  // }
+
+}
+
 
 function todaydate(){
   var today = new Date();

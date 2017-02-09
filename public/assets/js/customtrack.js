@@ -244,7 +244,7 @@ app.directive('map', function($http, vamoservice) {
 });
 app.controller('mainCtrl',function($scope, $http, vamoservice){ 
 	var res = document.location.href.split("?");
-	$scope.vehicleno = res[1].trim();
+	$scope.vehicleno = getParameterByName('vehicleId');
 	$scope.url = 'http://'+globalIP+context+'/public/getSelectedVehicleLocation?'+res[1];
 	$scope.urlVeh = 'http://'+globalIP+context+'/public/getSelectedVehicleLocation1?'+res[1];
 	$scope.path = [];
@@ -302,11 +302,13 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 		  });
     };
 	$scope.enterkeypress = function(){
-		var url = 'http://'+globalIP+context+'/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
-		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
-			vamoservice.getDataCall(url).then(function(data) {
-			 	document.getElementById('poival').value='';
-			});
+		if(checkXssProtection(document.getElementById('poival').value) == true){
+			var poiUrl = 'http://'+globalIP+context+'/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+			if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
+				vamoservice.getDataCall(poiUrl).then(function(data) {
+				 	document.getElementById('poival').value='';
+				});
+			}
 		}
 	}
 	$scope.trafficLayer = new google.maps.TrafficLayer();

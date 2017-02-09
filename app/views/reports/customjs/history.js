@@ -1013,42 +1013,38 @@ function eventButton(eventdate)
     }
     //submit button click function
     $scope.buttonClick;
-    $scope.plotHist			=	function() {
-    	//$scope.siteCall();
-    	//$scope.loading		=	true;
-    	// $('#status').show();
-    	// $('#preloader').show();
-    	startLoading();
-    	var valueas 		=   $('#txtv').val();
-		
+  $scope.plotHist			=	function() {
+    if((checkXssProtection($scope.fromdate) == true) && (checkXssProtection($scope.todate) == true) && (checkXssProtection($scope.fromtime) == true) && (checkXssProtection($scope.totime) == true))
+  	{
+      startLoading();
+      var valueas     =   $('#txtv').val();
       var histurl     = "http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
-			// var histurl			=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
-			//var loadUrl 		= 	"http://"+getIP+context+"/public//getLoadReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime);
-		try{
-			$http.get(histurl).success(function(data){
-				
-				//$scope.loading			=	false;
-				$scope.hist				=	data;
-				$scope.topspeedtime		=	data.topSpeedTime;
-				// loadReportApi(loadUrl);
-				$scope.dataArray_click(data.vehicleLocations);
-				// $('#status').fadeOut(); 
-				// $('#preloader').delay(350).fadeOut('slow');
-				stopLoading();	
-			});
-		}
-		catch (err){
-			console.log(' err '+err);
-			// $('#status').fadeOut(); 
-			// 	$('#preloader').delay(350).fadeOut('slow');
-			stopLoading();	
-		}
+      // var histurl      = "http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
+      //var loadUrl     =   "http://"+getIP+context+"/public//getLoadReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime);
+    try{
+      $http.get(histurl).success(function(data){
+        
+        //$scope.loading      = false;
+        $scope.hist       = data;
+        $scope.topspeedtime   = data.topSpeedTime;
+        // loadReportApi(loadUrl);
+        $scope.dataArray_click(data.vehicleLocations);
+        // $('#status').fadeOut(); 
+        // $('#preloader').delay(350).fadeOut('slow');
+        stopLoading();  
+      });
+    }
+    catch (err){
+      console.log(' err '+err);
+      // $('#status').fadeOut(); 
+      //  $('#preloader').delay(350).fadeOut('slow');
+      stopLoading();  
+    }
+    }
+    
 
-			
-			// $scope.loading	=	false;
-		// }
-		// console.log(' true or false  '+$scope.buttonClick)
-     }
+
+  }
      
    
      //pdf method

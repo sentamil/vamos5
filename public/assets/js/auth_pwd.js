@@ -252,31 +252,32 @@ $scope.checkAll   = function(){
   $scope.passwordConfirm  = function(){
 
     startLoading();
-    var password  = $scope.pwd;
-    var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
-    $.post(URL_ROOT+'checkPwd',{
-        '_token': $('meta[name=csrf-token]').attr('content'),
-        'pwd': password,
-    }).done(function(data){
-        console.log('Sucess---------->' + data+location.pathname);
+    if(checkXssProtection($scope.pwd) == true){
+      var password  = $scope.pwd;
+      var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
+      $.post(URL_ROOT+'checkPwd',{
+          '_token': $('meta[name=csrf-token]').attr('content'),
+          'pwd': password,
+      }).done(function(data){
+          console.log('Sucess---------->' + data+location.pathname);
+          stopLoading();
+          if(data == 'incorrect')
+            $scope.statusUi   = "Invalid Password"; 
+          else if (data == 'correct'){
+            var path = context+'/public/track?maps=sites'
+            location.href = path;
+            sessionStorage.setItem('auth', 'sitesVal');
+          }
+            
+                 
+      }).fail(function(){
         stopLoading();
-        if(data == 'incorrect')
-          $scope.statusUi   = "Invalid Password"; 
-        else if (data == 'correct'){
-          var path = context+'/public/track?maps=sites'
-          location.href = path;
-          sessionStorage.setItem('auth', 'sitesVal');
-        }
-          
-               
-    }).fail(function(){
-      stopLoading();
-        console.log('fail');
-        $scope.statusUi   = "Response Failure";  
-    })
+          console.log('fail');
+          $scope.statusUi   = "Response Failure";  
+      })
+    }
+    stopLoading();
   }
-
-
 
 $scope.error        = '';
     /*
@@ -285,46 +286,49 @@ $scope.error        = '';
 
     $scope.updatePwd  = function(){
       startLoading();
+
       $scope.error        = '';
-      
-      if($scope.oldValue == '' || $scope.oldValue == undefined && $scope.firstVal == '' || $scope.firstVal == undefined && $scope.reEnterVal == '' || $scope.reEnterVal == undefined){
+      if((checkXssProtection($scope.oldValue) == true) && (checkXssProtection($scope.firstVal) == true) && (checkXssProtection($scope.reEnterVal) == true))
+      {
+        if($scope.oldValue == '' || $scope.oldValue == undefined && $scope.firstVal == '' || $scope.firstVal == undefined && $scope.reEnterVal == '' || $scope.reEnterVal == undefined){
 
-        $scope.error        = "* Fill all Fields ."; 
-        
-      } else {
-
-        if($scope.oldValue != $scope.firstVal && $scope.oldValue != $scope.reEnterVal && $scope.firstVal == $scope.reEnterVal && $scope.firstVal.length >= 5){
-
-          $.ajax({
-            async: false,
-            method: 'POST', 
-            url: "updatePwd",
-            data: {'pwd': $scope.firstVal, 'old': $scope.oldValue},
-            success: function (response) {
-              if(response =='sucess'){
-                console.log(response);
-                $scope.error = "Updated Sucessfully ."
-                 setTimeout(function () {
-                    document.location.href = 'login';
-                    
-                  }, 1000); 
-                
-              } else if(response == 'oldPwd'){
-                $scope.error = "Old password is wrong ."                
-              }
-            },
-            fail:function() {
-              
-              $scope.error        = '* Connection Fails .'
-            }
-          });  
-
+          $scope.error        = "* Fill all Fields ."; 
+          
         } else {
 
-          $scope.error        = "* Dnt match old password and new password / password length more then five characters .";
-            
-        }
+          if($scope.oldValue != $scope.firstVal && $scope.oldValue != $scope.reEnterVal && $scope.firstVal == $scope.reEnterVal && $scope.firstVal.length >= 5){
 
+            $.ajax({
+              async: false,
+              method: 'POST', 
+              url: "updatePwd",
+              data: {'pwd': $scope.firstVal, 'old': $scope.oldValue},
+              success: function (response) {
+                if(response =='sucess'){
+                  console.log(response);
+                  $scope.error = "Updated Sucessfully ."
+                   setTimeout(function () {
+                      document.location.href = 'login';
+                      
+                    }, 1000); 
+                  
+                } else if(response == 'oldPwd'){
+                  $scope.error = "Old password is wrong ."                
+                }
+              },
+              fail:function() {
+                
+                $scope.error        = '* Connection Fails .'
+              }
+            });  
+
+          } else {
+
+            $scope.error        = "* Dnt match old password and new password / password length more then five characters .";
+              
+          }
+
+        }
       }
       stopLoading();
      

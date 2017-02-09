@@ -178,7 +178,7 @@ $scope.AddClear = function(){
   {
     startLoading();
     $scope.toast    = '';
-    // if(polygenValue)
+    if(checkXssProtection($scope.textValue) == true)
     try
     {
 
@@ -220,7 +220,7 @@ $scope.AddClear = function(){
       myFunction();
       stopLoading();
     }
-    
+    stopLoading();
     
   }
 
@@ -464,6 +464,7 @@ $scope.AddClear = function(){
     var text        = $scope.textValue.replace(/\s/g, '');
     var drop        = $scope.dropValue;
     var org         = $scope.orgID;
+    if(checkXssProtection($scope.textValue) == true)
     try
     {
       if(text && drop && latlanList.length>=3 && org && oldName)
@@ -498,7 +499,7 @@ $scope.AddClear = function(){
       myFunction();
       stopLoading();
     }
-    
+    stopLoading();
     
   }
 

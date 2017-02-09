@@ -277,36 +277,50 @@ $scope.msToTime = function(ms)
 
 function serviceCall(){
 	// $scope.execGroupReportData 	=	[];
-	if(tabId ==	'executive'){
-		var groupUrl		=	'http://'+globalIP+context+'/public//getExecutiveReport?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-		vamoservice.getDataCall(groupUrl).then(function(responseGroup){
-			if(vehicleSelected){
-				$scope.donut 	= 	true;
-				$scope.bar 		=	false;
-				$('#singleDiv').show(500);
-				$scope.execGroupReportData	=	($filter('filter')(responseGroup.execReportData, {'vehicleId':vehicleSelected}));
-				barLoad(vehicleSelected);
-			} else {
-				$scope.donut 	= 	false;
-				$scope.bar 		=	true;
-				$('#singleDiv').hide();
-				$scope.execGroupReportData	=	responseGroup.execReportData;
-				donutLoad(responseGroup);
-			}
-			stopLoading();
-		})
-	}else if(tabId == 'poi' || $scope.actTab == true){
-		$scope.donut 		= 	true;
-		$scope.bar 			= 	true;
-		$('#singleDiv').hide();
-		var poiUrl 			=	'http://'+globalIP+context+'/public//getPoiHistory?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-		vamoservice.getDataCall(poiUrl).then(function(responsePoi){
-			$scope.geofencedata			=		[];
-			if(responsePoi.history !=null)
-			if(responsePoi.history.length>0)
-				$scope.geofencedata		=   	responsePoi.history;
-			stopLoading();
-		})
+	if((checkXssProtection($scope.fromdate) == true) && (checkXssProtection($scope.todate) == true)){
+		if(tabId ==	'executive'){
+			var groupUrl		=	'http://'+globalIP+context+'/public//getExecutiveReport?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+			console.log(groupUrl);
+			vamoservice.getDataCall(groupUrl).then(function(responseGroup){
+				var tagsCheck 	= (responseGroup.error) ? true :  false;
+				// console.log($scope.to_trusted($scope.fromdate));
+				if(tagsCheck == false)
+				if(vehicleSelected){
+					$scope.donut 	= 	true;
+					$scope.bar 		=	false;
+					$('#singleDiv').show(500);
+					$scope.execGroupReportData	=	($filter('filter')(responseGroup.execReportData, {'vehicleId':vehicleSelected}));
+					barLoad(vehicleSelected);
+				} else {
+					$scope.donut 	= 	false;
+					$scope.bar 		=	true;
+					$('#singleDiv').hide();
+					$scope.execGroupReportData	=	responseGroup.execReportData;
+					donutLoad(responseGroup);
+				}
+				stopLoading();
+			})
+		}else if(tabId == 'poi' || $scope.actTab == true){
+			$scope.donut 		= 	true;
+			$scope.bar 			= 	true;
+			$('#singleDiv').hide();
+			var poiUrl 			=	'http://'+globalIP+context+'/public//getPoiHistory?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+			vamoservice.getDataCall(poiUrl).then(function(responsePoi){
+				$scope.geofencedata			=		[];
+				if(responsePoi.history !=null)
+				if(responsePoi.history.length>0)
+					$scope.geofencedata		=   	responsePoi.history;
+				stopLoading();
+			})
+		}
+	} else {
+		$scope.barArray1			= [];
+   		$scope.barArray2			= [];
+   		$scope.execGroupReportData	= [];
+		$scope.geofencedata			= [];
+   		barLoad(vehicleSelected);
+		donutLoad('');
+		stopLoading();
 	}
 }
 

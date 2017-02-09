@@ -201,49 +201,53 @@ function checkUndefined(value){
 $scope.storeValue   = function(){
 
   startLoading();
-  if($scope.vehiId.length && $scope.mailId  && $scope.mailId != '' && $scope.from  && $scope.to){
-    var reportsList = [];
-    angular.forEach($scope.vehiId,function(val,id){
-      
-      var reports = '';
-      
-      if($scope.vehiId[id] == true && $scope.from != undefined && $scope.to != undefined && $scope.vehicles[id].vehicleId != null && $scope.vehicles[id].vehicleId != ''){
-        try{ reports += $scope.checkingValue.move[id] == true ?  'movement,' : ''; }catch (e){}
-        try{ reports += $scope.checkingValue.over[id] == true ?  'overspeed,' : ''; }catch (e){}
-        try{ reports += $scope.checkingValue.site[id] == true ?  'site,' : ''; }catch (e){}
-        try{ reports += $scope.checkingValue.poi[id] == true ?  'poi,' : ''; }catch (e){}
-        // try{ reports += $scope.checkingValue.temp[id] == true ?  'temperature,' : ''; } 
-        // catch (e){}
-        reportsList.push([sp[1],reports, $scope.vehicles[id].vehicleId, $scope.from, $scope.to, $scope.mailId, $scope.groupSelected]);
+  if((checkXssProtection($scope.mailId) == true))
+    if($scope.vehiId.length && $scope.mailId  && $scope.mailId != '' && $scope.from  && $scope.to){
+      var reportsList = [];
+      angular.forEach($scope.vehiId,function(val,id){
         
-
-
+        var reports = '';
         
+        if($scope.vehiId[id] == true && $scope.from != undefined && $scope.to != undefined && $scope.vehicles[id].vehicleId != null && $scope.vehicles[id].vehicleId != ''){
+          try{ reports += $scope.checkingValue.move[id] == true ?  'movement,' : ''; }catch (e){}
+          try{ reports += $scope.checkingValue.over[id] == true ?  'overspeed,' : ''; }catch (e){}
+          try{ reports += $scope.checkingValue.site[id] == true ?  'site,' : ''; }catch (e){}
+          try{ reports += $scope.checkingValue.poi[id] == true ?  'poi,' : ''; }catch (e){}
+          // try{ reports += $scope.checkingValue.temp[id] == true ?  'temperature,' : ''; } 
+          // catch (e){}
+          reportsList.push([sp[1],reports, $scope.vehicles[id].vehicleId, $scope.from, $scope.to, $scope.mailId, $scope.groupSelected]);
+          
 
+
+          
+
+        }
+       
+      })
+
+    $.ajax({
+            async: false,
+            method: 'POST', 
+            url: "ScheduledController/reportScheduling",
+            data: {'reportList': reportsList,'userName':sp[1],'groupName': $scope.groupSelected},//{'userName':sp[1],'vehicle': $scope.vehicles[id].vehicleId,'report': reportsList,'fromt': $scope.from,'tot': $scope.to,'mail':$scope.mailId,'groupName': $scope.groupSelected.group}, // a JSON object to send back
+            success: function (response) {
+              stopLoading();
+              location.reload();
+            }
+          });
+  }
+    else{
+      stopLoading();
+      $scope.error = "* Please fill all field"
+      var countUp = function() {
+        $scope.error = '';
+          
       }
-     
-    })
-
-  $.ajax({
-          async: false,
-          method: 'POST', 
-          url: "ScheduledController/reportScheduling",
-          data: {'reportList': reportsList,'userName':sp[1],'groupName': $scope.groupSelected},//{'userName':sp[1],'vehicle': $scope.vehicles[id].vehicleId,'report': reportsList,'fromt': $scope.from,'tot': $scope.to,'mail':$scope.mailId,'groupName': $scope.groupSelected.group}, // a JSON object to send back
-          success: function (response) {
-            stopLoading();
-            location.reload();
-          }
-        });
-}
+      
+      $timeout(countUp, 5000);
+    }
   else{
     stopLoading();
-    $scope.error = "* Please fill all field"
-    var countUp = function() {
-      $scope.error = '';
-        
-    }
-    
-    $timeout(countUp, 5000);
   }
 }
 

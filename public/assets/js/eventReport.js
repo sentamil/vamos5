@@ -174,22 +174,26 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 	// service call for the event report
 
 	function webServiceCall(){
-		var url 	= "http://"+globalIP+context+"/public//getActionReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.uiValue.stop+"&stopMints="+$scope.uiValue.stopmins+"&idle="+$scope.uiValue.idle+"&idleMints="+$scope.uiValue.idlemins+"&notReachable="+$scope.uiValue.notreach+"&notReachableMints="+$scope.uiValue.notreachmins+"&overspeed="+$scope.uiValue.speed+"&speed="+$scope.uiValue.speedkms+"&location="+$scope.uiValue.locat+"&site="+$scope.uiValue.site+'&fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
 		$scope.siteData = [];
-		vamoservice.getDataCall(url).then(function(responseVal){
-			$scope.recursiveEvent(responseVal, 0);
-			$scope.eventData = responseVal;
-			var entry=0,exit=0; 
-			angular.forEach(responseVal, function(val, key){
-				if(val.state == 'SiteExit')
-					exit++ 
-				else if (val.state == 'SiteEntry')
-					entry++
-			})
-			$scope.siteEntry 	=	entry;
-			$scope.siteExit 	=	exit;
-			stopLoading();
-		});
+		if((checkXssProtection($scope.uiDate.fromdate) == true) && (checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true)) {
+			
+			var url 	= "http://"+globalIP+context+"/public//getActionReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.uiValue.stop+"&stopMints="+$scope.uiValue.stopmins+"&idle="+$scope.uiValue.idle+"&idleMints="+$scope.uiValue.idlemins+"&notReachable="+$scope.uiValue.notreach+"&notReachableMints="+$scope.uiValue.notreachmins+"&overspeed="+$scope.uiValue.speed+"&speed="+$scope.uiValue.speedkms+"&location="+$scope.uiValue.locat+"&site="+$scope.uiValue.site+'&fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
+			vamoservice.getDataCall(url).then(function(responseVal){
+				$scope.recursiveEvent(responseVal, 0);
+				$scope.eventData = responseVal;
+				var entry=0,exit=0; 
+				angular.forEach(responseVal, function(val, key){
+					if(val.state == 'SiteExit')
+						exit++ 
+					else if (val.state == 'SiteEntry')
+						entry++
+				})
+				$scope.siteEntry 	=	entry;
+				$scope.siteExit 	=	exit;
+				stopLoading();
+			});
+		}
+		stopLoading();
 	}
 
 	// initial method

@@ -344,23 +344,26 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 	}
 
 	$scope.submitButton 	= 	function(){
-		startLoading();
-		var webServiceUrl   = 	'';
-		if(status == 'daily')
-			webServiceUrl   	=   'http://'+globalIP+context+'/public/getDriverPerformanceDaily?vehicleId='+$scope.vehicleId+'&fromDate='+$scope.fromdateDaily+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todateDaily+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
-		else if(status == 'monthly') 
-			if($scope.groupVeh == true)
-			{
-				monthYear();
-				webServiceUrl 	= 	'http://'+globalIP+context+'/public/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
-			}  
-			else
-			{
-				monthYear();
-				webServiceUrl 	=	'http://'+globalIP+context+'/public/getIndividualDriverPerformance?groupId='+$scope.groupName+'&vehicleId='+$scope.vehicleId+'&month='+$scope.month+'&year='+$scope.year;		
-			}
-				
-		OverallDriverPerformance(webServiceUrl);
+		if((checkXssProtection($scope.fromdate) == true) || ((checkXssProtection($scope.fromdateDaily) == true) && (checkXssProtection($scope.fromTime) == true) && (checkXssProtection($scope.fromTime) == true) && (checkXssProtection($scope.todateDaily) == true))) {
+			
+			startLoading();
+			var webServiceUrl   = 	'';
+			if(status == 'daily')
+				webServiceUrl   	=   'http://'+globalIP+context+'/public/getDriverPerformanceDaily?vehicleId='+$scope.vehicleId+'&fromDate='+$scope.fromdateDaily+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todateDaily+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
+			else if(status == 'monthly') 
+				if($scope.groupVeh == true)
+				{
+					monthYear();
+					webServiceUrl 	= 	'http://'+globalIP+context+'/public/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
+				}  
+				else
+				{
+					monthYear();
+					webServiceUrl 	=	'http://'+globalIP+context+'/public/getIndividualDriverPerformance?groupId='+$scope.groupName+'&vehicleId='+$scope.vehicleId+'&month='+$scope.month+'&year='+$scope.year;		
+				}
+					
+			OverallDriverPerformance(webServiceUrl);
+		}
 	}
 
 	// $scope.modalSpeed = false; 

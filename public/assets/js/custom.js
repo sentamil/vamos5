@@ -251,6 +251,7 @@ var markerSearch = new google.maps.Marker({});
 	}
 	//for edit details in the right side div
 	document.getElementById("inputEdit").disabled = true;
+	
 	function editableValue()
 	{
 		document.getElementById("inputEdit").disabled = false;
@@ -259,29 +260,32 @@ var markerSearch = new google.maps.Marker({});
 	//update function in the right side div
 	$scope.updateDetails	= 	function()
 	{
-		var URL_ROOT = "vdmVehicles/"; 
-		$.post( URL_ROOT+'updateLive/'+$scope.vehicleid, {
-        '_token': $('meta[name=csrf-token]').attr('content'),
-  		'shortName':$scope.vehShort,
-        'odoDistance': $scope.ododis,
-  	    'overSpeedLimit':$scope.spLimit,
-        'driverName': $scope.driName,
-        'mobileNo' :$scope.mobileNo,
-        'regNo': $scope.refname,
-		'vehicleType':$scope.vehType,
-		})
-	    .done(function(data) {
-    	updateCall();
-        console.log("Sucess");
-	    })
-	    .fail(function() {
- 		updateCall();
-        console.log("fail");
- 	    });
- 	    
-		document.getElementById("inputEdit").disabled = false;
-		$("#editable").hide();
-		$("#viewable").show();
+		if((checkXssProtection($scope.ododis) == true) && (checkXssProtection($scope.vehShort) == true) && (checkXssProtection($scope.spLimit) == true) && (checkXssProtection($scope.driName) == true) && (checkXssProtection($scope.mobileNo) == true) && (checkXssProtection($scope.refname) == true))
+		{	
+			var URL_ROOT = "vdmVehicles/"; 
+			$.post( URL_ROOT+'updateLive/'+$scope.vehicleid, {
+	        '_token': $('meta[name=csrf-token]').attr('content'),
+	  		'shortName':$scope.vehShort,
+	        'odoDistance': $scope.ododis,
+	  	    'overSpeedLimit':$scope.spLimit,
+	        'driverName': $scope.driName,
+	        'mobileNo' :$scope.mobileNo,
+	        'regNo': $scope.refname,
+			'vehicleType':$scope.vehType,
+			})
+		    .done(function(data) {
+	    	updateCall();
+	        console.log("Sucess");
+		    })
+		    .fail(function() {
+	 		updateCall();
+	        console.log("fail");
+	 	    });
+	 	    
+			document.getElementById("inputEdit").disabled = false;
+			$("#editable").hide();
+			$("#viewable").show();
+		}
 	}
 
 
@@ -497,24 +501,27 @@ var markerSearch = new google.maps.Marker({});
 		//console.log('inside the methods')
 		var mailId = document.getElementById("mail").value;
 		var phone  = document.getElementById("phone").value;
-		if(vehi == 0 && days ==0)
-		console.log('select correctly')	
-		else
-		{
-			$scope.split_fcode($scope.fcode[0].group);
-			var f_code = $scope.split_fcode($scope.fcode[0].group);
-			var f_code_url ='http://'+globalIP+context+'/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
-			var ecrypt_code_url = '';
-			$http.get(f_code_url).success(function(result){
-				
-				$scope.final_data = result;
-				
-    			var url='../public/track?vehicleId='+result.trim()+'&maps=track'+'&userID='+sp1[1];
-				window.open(url,'_blank');
-				
-			})
+		if((checkXssProtection(mailId) == true) && (checkXssProtection(phone) == true)){
+			if(vehi == 0 && days ==0)
+				console.log('select correctly')	
+			else
+			{
+				$scope.split_fcode($scope.fcode[0].group);
+				var f_code = $scope.split_fcode($scope.fcode[0].group);
+				var f_code_url ='http://'+globalIP+context+'/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
+				var ecrypt_code_url = '';
+				$http.get(f_code_url).success(function(result){
+					
+					$scope.final_data = result;
+					
+	    			var url='../public/track?vehicleId='+result.trim()+'&maps=track'+'&userID='+sp1[1];
+					window.open(url,'_blank');
+					
+				})
+			}
+		} 
+
 	}
-}
 	
 
 	
@@ -1132,9 +1139,11 @@ function locat_address(locs) {
 			
 		angular.forEach($scope.locations, function(valu, key){
 			
-			img = ($scope.makerType == 'markerChange')? 'assets/imgs/'+valu.vehicleType+'.png' : vamoservice.iconURL(valu)
+			// img = ($scope.makerType == 'markerChange')? 'assets/imgs/'+'Car2'+'.png' : vamoservice.iconURL(valu)
+			img = ($scope.makerType == 'markerChange')? 'assets/imgs/'+valu.vehicleType+'.png' : vamoservice.iconURL(valu);
 			if($scope.makerType == 'markerChange')
 				icon = {scaledSize: new google.maps.Size(30, 30),url: img} //scaledSize: new google.maps.Size(25, 25)
+				// icon = {scaledSize: new google.maps.Size(30, 30),url: img} //scaledSize: new google.maps.Size(25, 25) valu.vehicleType
 			else
 				icon = {url: img}
 			gmarkers[key].setIcon(icon);

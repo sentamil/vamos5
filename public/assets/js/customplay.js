@@ -1056,32 +1056,33 @@ $( "#historyDetails" ).hide();
 		var todate 		= document.getElementById('dateTo').value;
 		var fromtime 	= document.getElementById('timeFrom').value;
 		var totime 		= document.getElementById('timeTo').value;
-		try{
-			$scope.error = (!fromdate || !todate || !fromtime || !totime)? "Date Required/Please fill all the field":  "";
-			if($scope.error == "")
-				{
-					var utcFrom 	= utcFormat(fromdate, $scope.timeconversion(fromtime));
-					var utcTo 		= utcFormat(todate, $scope.timeconversion(totime));
-					var _routeUrl 	= 'http://'+globalIP+context+'/public/addRoutesForOrg?vehicleId='+$scope.trackVehID+'&fromDateUTC='+utcFrom+'&toDateUTC='+utcTo+'&routeName='+removeSpace_Join($scope.routeName);
-					if(!$scope.trackVehID == "" && !$scope.routeName == "")
-						$http.get(_routeUrl).success(function(response){
-							if(response.trim()== "false"){
-								$scope.error = "* Already having this Route Name"
-							} else if (response.trim()== "true"){
-								$scope.error = "* Successfully Stored"
-							} else
-								$scope.error = "* Try again"
-						})
-					else
-						throw $scope.error;
+		if((checkXssProtection(fromdate) == true) && (checkXssProtection(todate) == true) && (checkXssProtection(fromtime) == true) && (checkXssProtection(totime) == true) && (checkXssProtection($scope.routeName) == true))
+			try{
+				$scope.error = (!fromdate || !todate || !fromtime || !totime)? "Date Required/Please fill all the field":  "";
+				if($scope.error == "")
+					{
+						var utcFrom 	= utcFormat(fromdate, $scope.timeconversion(fromtime));
+						var utcTo 		= utcFormat(todate, $scope.timeconversion(totime));
+						var _routeUrl 	= 'http://'+globalIP+context+'/public/addRoutesForOrg?vehicleId='+$scope.trackVehID+'&fromDateUTC='+utcFrom+'&toDateUTC='+utcTo+'&routeName='+removeSpace_Join($scope.routeName);
+						if(!$scope.trackVehID == "" && !$scope.routeName == "")
+							$http.get(_routeUrl).success(function(response){
+								if(response.trim()== "false"){
+									$scope.error = "* Already having this Route Name"
+								} else if (response.trim()== "true"){
+									$scope.error = "* Successfully Stored"
+								} else
+									$scope.error = "* Try again"
+							})
+						else
+							throw $scope.error;
 
-				} else 
-					throw $scope.error;
-				getRouteNames();
-		}catch(err){
-			console.log(' error --> '+err)
-			$scope.error  = "* Date Required/Please fill all the field";
-		}
+					} else 
+						throw $scope.error;
+					getRouteNames();
+			}catch(err){
+				console.log(' error --> '+err)
+				$scope.error  = "* Date Required/Please fill all the field";
+			}
 
 	}
 
@@ -1498,67 +1499,70 @@ if($scope.markerstart){
 		return sHours+":"+sMinutes+":00";
 	}
 	$scope.plotting = function(){
-		startLoading();
-		td_click();
-		$scope.hisurlold = $scope.hisurl;
+		
 		var fromdate = document.getElementById('dateFrom').value;
 		var todate = document.getElementById('dateTo').value;
-		if(document.getElementById('timeFrom').value==''){
-			var fromtime = "00:00:00";
-		}else{
-			var fromtime = $scope.timeconversion(document.getElementById('timeFrom').value);
-		}
-		if(document.getElementById('timeTo').value==''){
-			var totime = "00:00:00";
-		}else{
-			var totime = $scope.timeconversion(document.getElementById('timeTo').value);
-		}
-		if(document.getElementById('dateFrom').value==''){
-			if(document.getElementById('dateTo').value==''){
-				$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
-			}
-		}else{
-			if(document.getElementById('dateTo').value==''){
-				$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
+		if((checkXssProtection(fromdate) == true) && (checkXssProtection(todate) == true) && (checkXssProtection(document.getElementById('timeTo').value) == true) && (checkXssProtection(document.getElementById('timeFrom').value) == true)){
+			startLoading();
+			td_click();
+			$scope.hisurlold = $scope.hisurl;
+			if(document.getElementById('timeFrom').value==''){
+				var fromtime = "00:00:00";
 			}else{
-				var days =daydiff(new Date(fromdate), new Date(todate));
-				if(days<3)
-					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-				else if(days < 7)  
-					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-				else{
-					alert('Please selected date before 7 days / No data found');
-					stopLoading();
+				var fromtime = $scope.timeconversion(document.getElementById('timeFrom').value);
+			}
+			if(document.getElementById('timeTo').value==''){
+				var totime = "00:00:00";
+			}else{
+				var totime = $scope.timeconversion(document.getElementById('timeTo').value);
+			}
+			if(document.getElementById('dateFrom').value==''){
+				if(document.getElementById('dateTo').value==''){
+					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
+				}
+			}else{
+				if(document.getElementById('dateTo').value==''){
+					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
+				}else{
+					var days =daydiff(new Date(fromdate), new Date(todate));
+					if(days<3)
+						$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+					else if(days < 7)  
+						$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+					else{
+						alert('Please selected date before 7 days / No data found');
+						stopLoading();
+					}
 				}
 			}
-		}
-		if($scope.hisurlold!=$scope.hisurl){	
-			for(var i=0; i<gmarkers.length; i++){
-				gmarkers[i].setMap(null);
-			}
-			for(var i=0; i<$scope.polyline1.length; i++){
-				$scope.polyline1[i].setMap(null);
-			}
-			
-			$scope.polyline.setMap(null);
-			$scope.markerstart.setMap(null);
-			$scope.markerend.setMap(null);
-			$scope.path = [];
-			$scope.polylinearr = [];
-			gmarkers=[];
-			ginfowindow=[];
-			contentString = [];
-			gsmarker=[];
-			gsinfoWindow=[];
-			window.clearInterval(id);
-			$('#replaybutton').attr('disabled','disabled');
-			$('#lastseen').html('<strong>From Date & time :</strong> -');
-			$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
-		}else{
-			if($scope.hisloc.error!=null || $scope.hisloc.error == undefined){
-				// $('#myModal').modal();
-				// alert('Please selected date before 7 days / No data found')
-				stopLoading();
+			if($scope.hisurlold!=$scope.hisurl){	
+				for(var i=0; i<gmarkers.length; i++){
+					gmarkers[i].setMap(null);
+				}
+				for(var i=0; i<$scope.polyline1.length; i++){
+					$scope.polyline1[i].setMap(null);
+				}
+				
+				$scope.polyline.setMap(null);
+				$scope.markerstart.setMap(null);
+				$scope.markerend.setMap(null);
+				$scope.path = [];
+				$scope.polylinearr = [];
+				gmarkers=[];
+				ginfowindow=[];
+				contentString = [];
+				gsmarker=[];
+				gsinfoWindow=[];
+				window.clearInterval(id);
+				$('#replaybutton').attr('disabled','disabled');
+				$('#lastseen').html('<strong>From Date & time :</strong> -');
+				$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
+			}else{
+				if($scope.hisloc.error!=null || $scope.hisloc.error == undefined){
+					// $('#myModal').modal();
+					// alert('Please selected date before 7 days / No data found')
+					stopLoading();
+				}
 			}
 		}
 		// stopLoading();

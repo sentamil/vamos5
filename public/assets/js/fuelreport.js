@@ -10,12 +10,12 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	// $scope.kms 	  = 10;
 
 
-	function getParameterByName(name) {
-    	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-	        results = regex.exec(location.search);
-	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-	}
+	// function getParameterByName(name) {
+ //    	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	//     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	//         results = regex.exec(location.search);
+	//     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	// }
 
 	var tabValue			=	getParameterByName('tab');
 
@@ -354,10 +354,11 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	{
 		// $('#perloader').show();
 		// $('#preloader02').show();
+
 		$http.get(url).success(function(data)
 		{
-			$('#status02').fadeOut(); 
-			$('#preloader02').delay(350).fadeOut('slow');
+			// $('#status02').fadeOut(); 
+			// $('#preloader02').delay(350).fadeOut('slow');
 			if(data.length>0)
 			{
 				$scope.fuelTotal 	= 	data;
@@ -369,7 +370,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 				$scope.fuelTotal	= 	[];
 			}
 				
-				
+			stopLoading();
 		})
 		
 	}
@@ -390,8 +391,10 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	}
 	
 	$scope.getValue 	= function(data)
-	{	$('#status02').show(); 
-		$('#preloader02').show(); 
+	{
+		// $('#status02').show(); 
+		// $('#preloader02').show(); 
+		startLoading();
 		switch(data)
 		{
 			case 'vehicle':
@@ -431,21 +434,24 @@ app.controller('mainFuel', function($scope, $http, $filter){
     	$scope.report 		=	document.getElementById	("fuelValue").value
     	var kms 			=   document.getElementsByClassName("kms")[0].value;
     	var hrs 			=   document.getElementsByClassName("hrs")[0].value;
-    	if($scope.report=="distance")
-    	{
-    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms+'&fromDateUTC='+utcFormat(fromd,convert_to_24h(fromt))+'&toDateUTC='+utcFormat(tod,convert_to_24h(tot));
-    		serviceCall(distanceUrl);
-    		$("#fill").hide(1000);
-    		$("#eventReport").show(1000);
-    		
-    	}
-    	else if($scope.report == "fill")
-    	{
-    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&fuelDrop='+drop+'&fuelFill='+fill+'&fromDateUTC='+utcFormat(fromd,convert_to_24h(fromt))+'&toDateUTC='+utcFormat(tod,convert_to_24h(tot));
-    		serviceCall(distanceUrl);
-    		$("#eventReport").hide(1000);
-    		$("#fill").show(1000);
-    	}
+    	if((checkXssProtection(fromd) == true) && (checkXssProtection(fromt) == true) && (checkXssProtection(tod) == true) && (checkXssProtection(tot) == true)){
+	    	if($scope.report=="distance")
+	    	{
+	    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms+'&fromDateUTC='+utcFormat(fromd,convert_to_24h(fromt))+'&toDateUTC='+utcFormat(tod,convert_to_24h(tot));
+	    		serviceCall(distanceUrl);
+	    		$("#fill").hide(1000);
+	    		$("#eventReport").show(1000);
+	    		
+	    	}
+	    	else if($scope.report == "fill")
+	    	{
+	    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&fuelDrop='+drop+'&fuelFill='+fill+'&fromDateUTC='+utcFormat(fromd,convert_to_24h(fromt))+'&toDateUTC='+utcFormat(tod,convert_to_24h(tot));
+	    		serviceCall(distanceUrl);
+	    		$("#eventReport").hide(1000);
+	    		$("#fill").show(1000);
+	    	}
+	    } else
+	    	stopLoading();
 	}
 	$(window).load(function() {
 		$('#status').hide(); 
