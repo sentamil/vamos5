@@ -53,13 +53,16 @@ public static function dbIp()
 {
 		$dbIp=array();
 
-		$dbIp[0]='128.199.255.133';
-		$dbIp[1]='188.166.244.126';
+		// $dbIp[0]='128.199.255.133';
+		// $dbIp[1]='188.166.244.126';
 		
-
-
-
-	return $dbIp;
+		$redis = Redis::connection ();
+		$ipList = $redis->smembers('S_DB_Details');
+		foreach ($ipList as  $key => $ip) {
+	    	$dbIp=array_add($dbIp, $key, $ip);
+		}
+		log::info(array_values($dbIp));
+		return $dbIp;
 }
 
 
