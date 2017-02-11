@@ -32,12 +32,12 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 	// 	$('body').delay(350).css({'overflow':'visible'});
 	// };
 
-	function getParameterByName(name) {
-    	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-	        results = regex.exec(location.search);
-	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-	}
+	// function getParameterByName(name) {
+ //    	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	//     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	//         results = regex.exec(location.search);
+	//     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	// }
 
 
 	//initial functions
@@ -262,7 +262,8 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
     };
 
 	function dailyFunction(){
-		$scope.fromNowTS		=	new Date();
+		var dateObj 			= 	new Date();
+		$scope.fromNowTS		=	new Date(dateObj.setDate(dateObj.getDate()-1));
 		$scope.totime 			= 	formatAMPM($scope.fromNowTS.getTime());
 		$scope.fromdateDaily	=	getTodayDate($scope.fromNowTS);
 		$scope.todateDaily		=	getTodayDate($scope.fromNowTS);
@@ -316,7 +317,8 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		if(status == 'monthly')
 			monthlyFunction();
 		else if(status == 'daily')
-			dailyFunction();
+			console.log('daily');
+			// dailyFunction();
 	}
 
 
