@@ -390,6 +390,15 @@ Route::get('/getDriverPerformanceDaily', function() {
     Log::info('getDriverPerformanceDaily');
     return View::make('vls.getDriverPerformanceDaily');
 });
+
+
+Route::get('/getDailyDriverPerformance', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getDailyDriverPerformance');
+    return View::make('vls.getDailyDriverPerformance');
+});
  
 Route::get('/getSiteReport', function() {
     if (!Auth::check()) {

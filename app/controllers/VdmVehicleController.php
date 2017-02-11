@@ -1245,9 +1245,9 @@ if($refVehicle != $refDataJson)
         try{
 
 	log::info("------old_Key-----");
-        log::info($update_Key);
-        log::info($update_Value);
-        log::info($updated_Value[$update_Key]);
+        // log::info($update_Key);
+        // log::info($update_Value);
+        // log::info($updated_Value[$update_Key]);
 //if(isset($vehicleRefData[$update_Key])){
         if($vehicleRefData[$update_Key] != $update_Value){
 

@@ -266,7 +266,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		$scope.totime 			= 	formatAMPM($scope.fromNowTS.getTime());
 		$scope.fromdateDaily	=	getTodayDate($scope.fromNowTS);
 		$scope.todateDaily		=	getTodayDate($scope.fromNowTS);
-		var webServiceUrl   	=   'http://'+globalIP+context+'/public/getDriverPerformanceDaily?vehicleId='+$scope.vehicleId+'&fromDate='+$scope.fromdateDaily+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todateDaily+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
+		var webServiceUrl   	=   'http://'+globalIP+context+'/public/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromUtcTime='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toUtcTime='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
 		OverallDriverPerformance(webServiceUrl);
 	}
 
@@ -349,7 +349,8 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			startLoading();
 			var webServiceUrl   = 	'';
 			if(status == 'daily')
-				webServiceUrl   	=   'http://'+globalIP+context+'/public/getDriverPerformanceDaily?vehicleId='+$scope.vehicleId+'&fromDate='+$scope.fromdateDaily+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todateDaily+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
+				webServiceUrl   	=   'http://'+globalIP+context+'/public/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromUtcTime='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toUtcTime='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
+				// webServiceUrl   	=   'http://'+globalIP+context+'/public/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromDate='+$scope.fromdateDaily+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todateDaily+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
 			else if(status == 'monthly') 
 				if($scope.groupVeh == true)
 				{
