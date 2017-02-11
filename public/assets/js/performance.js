@@ -317,7 +317,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		if(status == 'monthly')
 			monthlyFunction();
 		else if(status == 'daily')
-			console.log('daily');
+			stopLoading();
 			// dailyFunction();
 	}
 
