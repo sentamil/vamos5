@@ -308,7 +308,7 @@ class VdmDealersController extends \BaseController {
 			$path = $_SERVER['REQUEST_URI'];
 			$pathValue =  explode("/", $path);
 			
-			
+			$oldDealerList  = $redis->hget( 'H_DealerDetails_'.$fcode, $dealerid );
 			
 			$mobileNo = Input::get ( 'mobileNo' );
 			$email = Input::get ( 'email' );
@@ -332,7 +332,67 @@ class VdmDealersController extends \BaseController {
 			$redis->hmset ( 'H_UserId_Cust_Map', $dealerid . ':fcode', $fcode, $dealerid . ':mobileNo', $mobileNo,$dealerid.':email',$email );
 			
 
+			$oldDealerList = json_decode($oldDealerList, true);
+
 			$imageName = $this->utilMethod($website);
+
+			$mailId = array();
+        	$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+        	$franchiseDetails=json_decode($franDetails_json,true);
+        	if(isset($franchiseDetails['email1'])==1){
+                $mailId[]               = $franchiseDetails['email1'];
+        		log::info(array_values($mailId));
+        	}
+
+        	$oldList = array();
+        	$newList = array();
+
+        	if($oldDealerList['mobileNo'] != $mobileNo){
+        		$oldList = array_add($oldList, 'Mobile No ', $oldDealerList['mobileNo']);
+        		$newList = array_add($newList, 'Mobile No ', $mobileNo);        		
+        	}
+
+        	if($oldDealerList['email'] != $email){
+        		$oldList = array_add($oldList, 'Email ', $oldDealerList['email']);
+        		$newList = array_add($newList, 'Email ', $email);        			
+        	}
+
+        	if($oldDealerList['website'] != $website){
+        		$oldList = array_add($oldList, 'website ', $oldDealerList['website']);
+        		$newList = array_add($newList, 'website ', $website);        			
+        	}
+        	if($oldDealerList['smsSender'] != $smsSender){
+        		$oldList = array_add($oldList, 'Sms Sender ', $oldDealerList['smsSender']);
+        		$newList = array_add($newList, 'Sms Sender ', $smsSender);        			
+        	}
+        	if($oldDealerList['smsProvider'] != $smsProvider){
+        		$oldList = array_add($oldList, 'Sms Provider ', $oldDealerList['smsProvider']);
+        		$newList = array_add($newList, 'Sms Provider ', $smsProvider);        			
+        	}
+
+        	if($oldDealerList['providerUserName'] != $providerUserName){
+        		$oldList = array_add($oldList, 'Provider UserName ', $oldDealerList['providerUserName']);
+        		$newList = array_add($newList, 'Provider UserName ', $providerUserName);        			
+        	}
+        	if($oldDealerList['providerPassword'] != $providerPassword){
+        		$oldList = array_add($oldList, 'Provider Password ', $oldDealerList['providerPassword']);
+        		$newList = array_add($newList, 'Provider Password ', $providerPassword);        			
+        	}
+
+        	if((count($oldList) >0) && (count($newList) >0))
+	        	if(sizeof($mailId) > 0)
+	        		try{
+	        			log::info(' inside the try function ');
+	        			$caption = "Dealer Id";
+			        	Mail::queue('emails.user', array('username'=>$fcode, 'groupName'=>$dealerid, 'oldVehi'=>$oldList, 'newVehi'=> $newList, 'cap'=>$caption), function($message) use ($mailId, $dealerid)
+			        	{
+			                //Log::info("Inside email :" . Session::get ( 'email' ));
+			        		$message->to($mailId)->subject('Dealer Name Updated -' . $dealerid);
+			        	});
+			        } catch(\Swift_TransportException $e){
+				        log::info($e->getMessage());
+				    }
+
 			
 			$upload_folder = '/var/www/'.$pathValue[1].'/public/uploads/'; ///var/www/gitsrc/vamos/public/assets/imgs/
 			if (Input::hasFile('logo_smallEdit'))

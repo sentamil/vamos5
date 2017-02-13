@@ -357,10 +357,10 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
         	log::info('  before sending mail ');
         	log::info(array_values($mailId));
         	if(sizeof($mailId) > 0)
-	        	Mail::queue('emails.group', array('username'=>$username, 'groupName'=>$id, 'oldVehi'=>$oldVehi, 'newVehi'=>$updateVehi), function($message) use ($mailId)
+	        	Mail::queue('emails.group', array('username'=>$username, 'groupName'=>$id, 'oldVehi'=>$oldVehi, 'newVehi'=>$updateVehi), function($message) use ($mailId, $id)
 	        	{
 	                //Log::info("Inside email :" . Session::get ( 'email' ));
-	        		$message->to($mailId)->subject('Group Updated');
+	        		$message->to($mailId)->subject('Group Updated -' . $id);
 	        	});
 
 

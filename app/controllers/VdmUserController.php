@@ -405,10 +405,15 @@ public function updateNotification() {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
 		}
-		$username = Auth::user ()->username;
-		$redis = Redis::connection ();
-		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-		
+		$username 	= Auth::user ()->username;
+		$redis 		= Redis::connection ();
+		$fcode 		= $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
+		$oldMob 	= $redis->hget ( 'H_UserId_Cust_Map', $userId . ':mobileNo' );
+		$oldmail	= $redis->hget ( 'H_UserId_Cust_Map', $userId . ':email' );
+		$oldVirtual = $redis->sismember ( 'S_Users_Virtual_'. $fcode,  $userId);
+		$oldGroup	= (array) $redis->smembers( $userId );
+
+
 		$rules = array (
 				'mobileNo' => 'required',
 				'email' => 'required',
@@ -418,7 +423,7 @@ public function updateNotification() {
 		if ($validator->fails ()) {
 			Log::error('VDM User Controller update validation failed');
 			Session::flash ( 'message', 'Update failed. Please check logs for more details' . '!' );
-			return Redirect::to ( 'vdmUsers/update' )->withErrors ( $validator );
+			return Redirect::to ( 'vdmUsers/'.$id.'/edit' )->withErrors ( $validator );
 		} else {
 			// store
 			
@@ -443,6 +448,62 @@ public function updateNotification() {
 			 	$redis->srem ( 'S_Users_Virtual_' . $fcode, $userId );
 			 }
 			
+
+			$mailId = array();
+        	$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+        	$franchiseDetails=json_decode($franDetails_json,true);
+        	if(isset($franchiseDetails['email1'])==1){
+                $mailId[]               = $franchiseDetails['email1'];
+        		log::info(array_values($mailId));
+        	}
+        	
+        	if(Session::get('cur')=='dealer')
+        	{
+        		log::info( '------login 1---------- '.$redis->hget ( 'H_UserId_Cust_Map', $username . ':email' ));
+                $mailId[] =   $redis->hget ( 'H_UserId_Cust_Map', $username . ':email' );
+        		
+        	}
+
+        	$oldList = array();
+        	$newList = array();
+
+        	if($mobileNo != $oldMob){
+				$oldList = array_add($oldList, 'Mobile No ', $oldMob);
+        		$newList = array_add($newList, 'Mobile No ', $mobileNo);        		
+        	}
+
+        	if($oldmail != $email){
+        		$oldList = array_add($oldList, 'Email ', $oldmail);
+        		$newList = array_add($newList, 'Email ', $email);        			
+        	}
+
+        	if($redis->sismember ( 'S_Users_Virtual_'. $fcode,  $userId) != $oldVirtual){
+        		$oldList = array_add($oldList, 'Virtual Account ', (($oldVirtual == 1) ? true : false));
+        		$newList = array_add($newList, 'Virtual Account ', (($redis->sismember ( 'S_Users_Virtual_'. $fcode,  $userId) ==1 )? true : false));       	
+        	}
+
+        	if($vehicleGroups != $oldGroup){
+        		$oldList = array_add($oldList, 'Group List ', implode(",",$vehicleGroups));
+        		$newList = array_add($newList, 'Group List ', implode(",",$oldGroup));
+        	}
+        	
+        	
+        	// log::info(array_values($oldList));
+        	// log::info(array_values($newList));
+        	// log::info(array_values($mailId));
+        	if((count($oldList) >0) && (count($newList) >0))
+	        	if(sizeof($mailId) > 0)
+	        		try{
+	        			log::info(' inside the try function ');
+	        			$caption = "User Id";
+			        	Mail::queue('emails.user', array('username'=>$fcode, 'groupName'=>$id, 'oldVehi'=>$oldList, 'newVehi'=> $newList, 'cap'=>$caption), function($message) use ($mailId, $id)
+			        	{
+			                //Log::info("Inside email :" . Session::get ( 'email' ));
+			        		$message->to($mailId)->subject('User Id Updated -' . $id);
+			        	});
+			        } catch(\Swift_TransportException $e){
+				        log::info($e->getMessage());
+				    }
            // 
            /* $orgsList = Input::get ( 'orgsList' );
             // $orgs = $redis->smembers('S_Orgs_' .$userId . '_' . $fcode);
