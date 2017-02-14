@@ -926,6 +926,7 @@ public function addpoi()
             $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
             $redis->sadd('S_Organisations_'. $fcode, $organizationId);
 			$orgDataJson1=$redis->hget('H_Organisations_'.$fcode,$organizationId );
+			$oldOrgData = $orgDataJson1;
 			$orgDataJson1 = json_decode ( $orgDataJson1, true );
         
         $radius =isset($orgDataJson1['radius'])?$orgDataJson1['radius']:'';
@@ -980,12 +981,39 @@ public function addpoi()
 					'schoolPattern'=>$smsPattern,
             );
             
+            $mapping_Array = array(
+
+		        'mobile' => 'Mobile',
+                'email' => 'Email',
+                'address' => 'Address',
+                'description' => 'Description',
+				'startTime' => 'Start Time',
+				'endTime'  => 'End Time',
+				'atc' => 'AfterNoon Trip Cron',
+				'etc' =>'Evening Trip Cron',
+				'mtc' =>'Morning Trip Cron',
+				'parkingAlert'=>'Parking Alert',
+				'idleAlert'=>'Idle Alert',
+				'parkDuration'=>'Park Duration',
+				'idleDuration'=>'Idle Duration',
+				'overspeedalert'=>'Over Speed Alert',
+				'sendGeoFenceSMS'=>'Send GeoFence SMS',
+				'radius'=>'Radius',
+				'smsSender'=>'SMS Sender',
+				'sosAlert'=>'SOS Alert',
+				'live'=>'Show Live Site',
+				'smsProvider'=>'SMS Provider',
+				'providerUserName'=>'Provider UserName',
+				'providerPassword'=>'Provider Password',
+				'schoolPattern'=>'SMS Pattern',
+
+		    );
+
+
             $orgDataJson = json_encode ( $orgDataArr );
-         
-            
-           
-            
-            $redis->hset('H_Organisations_'.$fcode,$organizationId,$orgDataJson );
+         	
+
+         	$redis->hset('H_Organisations_'.$fcode,$organizationId,$orgDataJson );
             
             $routesArr = explode(",",$mobile);
             
@@ -1031,6 +1059,67 @@ public function addpoi()
 			$redis->hset('H_Scheduler_'.$fcode,'getReadyForAfternoonSchoolTrips_'.$organizationId,$atcjson);
 			
 			}
+
+           
+            $oldOrg = array();
+			$NewOrg = array();
+
+
+			$mailId = array();
+        	$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+        	$franchiseDetails=json_decode($franDetails_json,true);
+        	if(isset($franchiseDetails['email1'])==1){
+                $mailId[]               = $franchiseDetails['email1'];
+        		log::info(array_values($mailId));
+        	}
+
+        	if(Session::get('cur')=='dealer')
+        	{
+        		log::info( '------login 1---------- '.$redis->hget ( 'H_UserId_Cust_Map', $username . ':email' ));
+                $mailId[] =   $redis->hget ( 'H_UserId_Cust_Map', $username . ':email' );
+        		
+        	}
+
+          	if($oldOrgData != $orgDataJson){
+
+          	
+          		log::info(' change value ');
+          		$updateJson 	= json_decode($orgDataJson, true);
+          		foreach ($updateJson as $key => $value) {
+          			
+          			if(isset($orgDataJson1[$key]) == 1) {
+          				
+          				if($orgDataJson1[$key] != $updateJson[$key]){
+          					$oldOrg 	= array_add($oldOrg, $mapping_Array[$key], $orgDataJson1[$key]);
+          					$NewOrg 	= array_add($NewOrg, $mapping_Array[$key], $updateJson[$key]);
+          				}
+          			} else {
+
+          				$oldOrg 	= array_add($oldOrg, $mapping_Array[$key], '');
+          				$NewOrg 	= array_add($NewOrg, $mapping_Array[$key], $updateJson[$key]);
+          			}
+          			
+          		}
+
+          		
+          // 	if((count($oldList) >0) && (count($newList) >0))
+	        	if(sizeof($mailId) > 0)
+	        		try{
+	        			log::info(' inside the try function ');
+	        			$caption = "Organization Id";
+			        	Mail::queue('emails.user', array('username'=>$fcode, 'groupName'=>$id, 'oldVehi'=>$oldOrg, 'newVehi'=> $NewOrg, 'cap'=>$caption), function($message) use ($mailId, $id)
+			        	{
+			                //Log::info("Inside email :" . Session::get ( 'email' ));
+			        		$message->to($mailId)->subject(' Organization Updated -' . $id);
+			        	});
+			        } catch(\Swift_TransportException $e){
+				        log::info($e->getMessage());
+				    }
+
+          	
+          	} 
+            
+            
            
 
 

@@ -1288,14 +1288,14 @@ if($ownership == 'OWN'){
     }
     $gettingMail=json_decode($gettingMail,true);
     log::info(" --------  gettingMail  ------");
-    log::info($ownership);
-    log::info($gettingMail[$emailKeys]);
+    // log::info($ownership);
+    // log::info($gettingMail[$emailKeys]);
 
     Session::put('email',$gettingMail[$emailKeys]);
-    Mail::queue('emails.updateDetails', array('fname'=>$fcode,'userId'=>$vehicleId, 'oldRef'=>$devices, 'newRef'=>$devicestypes), function($message)
+    Mail::queue('emails.updateDetails', array('fname'=>$fcode,'userId'=>$vehicleId, 'oldRef'=>$devices, 'newRef'=>$devicestypes), function($message) use ($vehicleId)
     {
         Log::info("Inside email :" . Session::get ( 'email' ));
-        $message->to(Session::pull ( 'email' ))->subject('Vehicle data updated');
+        $message->to(Session::pull ( 'email' ))->subject('Vehicle data updated -'.$vehicleId);
     });
 
     log::info( "Message sent one  successfully...");
