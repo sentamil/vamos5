@@ -218,7 +218,7 @@ function plottinGraphs(valueGraph, timeData){
 				if (tab == 'temperatureDev')
 					$scope.tempCation 	= "Temperature Deviation";
 				else if (tab == 'temperature')
-					$scope.tempCation 	= "Temperature Roport";
+					$scope.tempCation 	= "Temperature Report";
 				break;
 			case 'alarm' :
 				urlWebservice   =  $scope.g_Url+"/getAlarmReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
