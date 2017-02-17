@@ -253,11 +253,21 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.histVal 	= [];
+
+	$('#graphsId').hide();
 	vamoservice.getDataCall($scope.url).then(function(data) {
 		$scope.locations = data;
 		$scope.histVal.push(data);
 		var url = 'http://'+globalIP+context+'/public//getGeoFenceView?'+res[1];
-				$scope.createGeofence(url)
+				$scope.createGeofence(url);
+
+				$scope.vehiclFuel=graphChange($scope.locations.fuel);
+                  if($scope.vehiclFuel==true){
+                     $('#graphsId').removeClass('graphsCls');
+                  }else{
+		             $('#graphsId').addClass('graphsCls');
+	              }
+                  $('#graphsId').show();
 	});
     $scope.addMarker= function(pos){
 	   var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
