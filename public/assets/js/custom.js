@@ -78,6 +78,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	$scope.clickflagVal =0;
 	$scope.nearbyflag = false;
 	$scope.groupMap=false;
+	$scope.vehiclFuel=true;
 	var tempdistVal = 0;
 	// var mcOptions={};
 	var markerCluster;
