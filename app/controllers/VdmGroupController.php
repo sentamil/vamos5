@@ -449,12 +449,25 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		if(!Auth::check()){
 			return Redirect::to('login');
 		}
-		$username =	Auth::user()->username;
-		$redis = Redis::connection();
-		$fcode = $redis->hget('H_UserId_Cust_Map',$username.':fcode');
+		$username 	=	Auth::user()->username;
+		$redis 		= Redis::connection();
+		$fcode 		= $redis->hget('H_UserId_Cust_Map',$username.':fcode');
+		$ownerShip	=	$redis->hget('H_UserId_Cust_Map', $username.':OWN');
 
 		$grpNameId = Input::get ('grpName');
-		$redis->srem($username,$grpNameId);
+		$redis->srem('S_Groups_' . $fcode,$grpNameId);
+		if($ownerShip == 'admin')
+			$redis->srem('S_Groups_Admin_'.$fcode,$grpNameId );
+		else
+			$redis->srem('S_Groups_Dealer_'.$ownerShip.'_'.$fcode,$grpNameId );
+		$redis->del($grpNameId);
+		$userList = $redis->smembers('S_Users_' . $fcode);
+		
+		foreach ( $userList as $user ) {
+			$redis->srem($user,$grpNameId);
+		}
+
+
 		
 		return 'sucess';
 		}
@@ -478,11 +491,11 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
                                 
                                 
                                 foreach ( $g_List as $g_Name ) {
-                                        $g_level_vehi   =       $redis->smembers($g_Name);
-                                                foreach ($g_level_vehi as $key => $vehicles) {
-                                                        $check  = ($grpName == $g_Name)? true : false;
-                                                        $vehiList[] =  array('vehicles' => $vehicles, 'check' => $check);
-                                                }
+                                    $g_level_vehi   =       $redis->smembers($g_Name);
+                                        foreach ($g_level_vehi as $key => $vehicles) {
+                                            $check  = ($grpName == $g_Name)? true : false;
+                                            $vehiList[] =  array('vehicles' => $vehicles, 'check' => $check);
+                                        }
 
                                 }
 
@@ -497,7 +510,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 
                                 
                                 $_data = array_unique($_data);
-                                log::info($_data);
+                                // log::info($_data);
 
                                 $g_vehi         =       $redis->smembers($grpName);
                                 $vehiList = [];
@@ -542,9 +555,9 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
                     //   }
                     //   $_data[] = $v['vehicles'];
                     // }
-					log::info($_data);
+					// log::info($_data);
                     $_data = array_unique($_data);
-                    log::info($_data);
+                    // log::info($_data);
                     $vehiList =[];
                     foreach ($_data as $key => $value) {
                             $vehiList[] =  array('vehicles' => $value, 'check' => false);
@@ -553,7 +566,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
             }
 
 
-            log::info($vehiList);
+            // log::info($vehiList);
 
             return $vehiList;
     }
@@ -575,6 +588,14 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		$grpName 	= 	Input::get ('grpName');
 		$newValue 	= 	Input::get ('newValu');
 		$vehList 	= 	Input::get ('grplist');
+
+		$ownerShip	=	$redis->hget('H_UserId_Cust_Map', $username.':OWN');
+
+
+		log::info('  ownerShip ');
+		log::info($ownerShip);
+
+
 		if(strpos($grpName, $fcode) === false){
 			$grpName = $grpName .':'.$fcode;
 		}
@@ -589,12 +610,12 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 			}
 			$redis->sadd('S_Groups_' . $fcode, $grpName);
 			$redis->sadd ( $username, $grpName );
+			if($ownerShip == 'admin')
+				$redis->sadd('S_Groups_Admin_'.$fcode,$grpName);
+			else
+				$redis->sadd('S_Groups_Dealer_'.$ownerShip.'_'.$fcode,$grpName);
 		}
 		
-
-
-
-
 
 		$redis->del($grpName);
 		log::info(' group del ');		
