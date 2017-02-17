@@ -242,8 +242,16 @@ var markerSearch = new google.maps.Marker({});
 			else
 			{
 				$scope.removeTask(vehicleno);
-				sessionValue(vehicleno, $scope.gName)
-				$('#graphsId').show(500);
+				sessionValue(vehicleno, $scope.gName);
+
+				$scope.vehiclFuel=graphChange(individualVehicle[0].fuel);
+				if($scope.vehiclFuel==true){
+                    $('#graphsId').removeClass('graphsCls');
+                }else{
+					$('#graphsId').addClass('graphsCls');
+			    }
+                $('#graphsId').show();
+
 				editableValue();
 			}
 		// })	
@@ -577,7 +585,17 @@ var markerSearch = new google.maps.Marker({});
 			
 			$scope.vehicleno = pos.data.vehicleId;
 			$scope.assignValue(pos.data);
-			$('#graphsId').show(500);
+			$scope.$apply(function(){
+		       $scope.vehiclFuel=graphChange(pos.data.fuel);
+            });
+
+			if($scope.vehiclFuel==true){
+               $('#graphsId').removeClass('graphsCls');
+            }else{
+			   $('#graphsId').addClass('graphsCls');
+            }
+            $('#graphsId').show();
+
 			editableValue();
 
 			fetchingAddress(pos.data);

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,10 +14,7 @@
 <link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
-
- <!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
- 
-
+<!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
 <style type="text/css">
      /*#map_canvas{ width:100%; height:100%;}  */
      #container-speed{  width: 170px; height: 100px;}
@@ -256,11 +252,12 @@
                                 <div>Speed - <label id="speed"></label>&nbsp;Km/h</div>
                                 <div id="container-speed"></div>
                             </div>
-                            <div>
+                            <div ng-show="vehiclFuel">
                                 <div>Tank Size - <label id="fuel"></label>&nbsp;Ltr</div>
                                 <div id="container-fuel"></div>
-                            </div>
+                            </div> 
                         </div>
+                        
                         <div id="contentmin" class="rightsection">
                                <input type="button" id="traffic" ng-click="check()" value="Traffic" />
                                <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>

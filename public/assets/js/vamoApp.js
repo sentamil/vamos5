@@ -109,6 +109,10 @@ function sortByDate(field){
     return sort;
 }
 
+function graphChange(vehifuel){
+  return vehifuel == 'yes' ? true : false;
+}
+
 function radians(n) {
   return n * (Math.PI / 180);
 }

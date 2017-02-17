@@ -20,8 +20,6 @@
             width:100%;
             height: 100vh; 
         }
-        #container-speed{  width: 170px; height: 100px;}
-        #container-fuel{  width: 170px; height: 100px;}
         .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
         div.pane  td{
           border:  0.5px solid #d9d9d9;
@@ -146,7 +144,7 @@
                             <div>Speed - <label id="speed"></label>&nbsp;Km/h</div>
                             <div id="container-speed"></div>
                         </div>
-                        <div>
+                        <div ng-show="vehiclFuel">
                             <div>Tank Size - <label id="fuel"></label>&nbsp;Ltr</div>
                             <div id="container-fuel"></div>
                         </div>
