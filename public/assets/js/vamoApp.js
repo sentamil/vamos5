@@ -110,7 +110,7 @@ function sortByDate(field){
 }
 
 function graphChange(vehifuel){
-  return vehifuel == 'yes' ? true : false;
+  return vehifuel != 0 ? true : false;
 }
 
 function radians(n) {

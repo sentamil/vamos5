@@ -245,7 +245,7 @@ var markerSearch = new google.maps.Marker({});
 				$scope.removeTask(vehicleno);
 				sessionValue(vehicleno, $scope.gName);
 
-				$scope.vehiclFuel=graphChange(individualVehicle[0].fuel);
+				$scope.vehiclFuel=graphChange(individualVehicle[0].fuelLitre);
 				if($scope.vehiclFuel==true){
                     $('#graphsId').removeClass('graphsCls');
                 }else{
@@ -587,7 +587,7 @@ var markerSearch = new google.maps.Marker({});
 			$scope.vehicleno = pos.data.vehicleId;
 			$scope.assignValue(pos.data);
 			$scope.$apply(function(){
-		       $scope.vehiclFuel=graphChange(pos.data.fuel);
+		       $scope.vehiclFuel=graphChange(pos.data.fuelLitre);
             });
 
 			if($scope.vehiclFuel==true){

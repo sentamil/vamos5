@@ -261,7 +261,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 		var url = 'http://'+globalIP+context+'/public//getGeoFenceView?'+res[1];
 				$scope.createGeofence(url);
 
-				$scope.vehiclFuel=graphChange($scope.locations.fuel);
+				$scope.vehiclFuel=graphChange($scope.locations.fuelLitre);
                   if($scope.vehiclFuel==true){
                      $('#graphsId').removeClass('graphsCls');
                   }else{
