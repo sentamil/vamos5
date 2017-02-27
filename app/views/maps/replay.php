@@ -234,7 +234,7 @@
                   <td width="13%">Speed(KM)</td>
                   <td width="25%">Address</td>
                   <td width="10%">G-Map</td>
-                  <td width="17%">Duration</td>
+                  <td width="17%">Duration (h:m:s)</td>
                   <td width="10%">Trip(Km)</td>
                   <td width="10%">Odo(KM)</td>
                 </tr>
@@ -273,7 +273,7 @@
 
                 <tr>
                   <td width="15%">Date&amp;Time</td>
-                  <td width="15%">Duration</td>
+                  <td width="15%">Duration (h:m:s)</td>
                   <td width="60%">Address</td>
                   <td width="10%">G-Map</td>
                 </tr>
@@ -309,7 +309,7 @@
 
                   <tr>
                     <td width="15%">Date&amp;Time</td>
-                    <td width="15%">Duration</td>
+                    <td width="15%">Duration (h:m:s)</td>
                     <td width="60%">Address</td>
                     <td width="10%">G-Map</td>
                   </tr>
@@ -372,7 +372,7 @@
                   <tr>
                     <td width="15%">Date &amp; Time</td>
                     <td width="10%">Status</td>
-                    <td width="15%">Duration</td>
+                    <td width="15%">Duration (h:m:s)</td>
                     <td width="50%">Nearest Location</td>
                     <td width="10%">G-Map</td>
                 </tr>
@@ -410,7 +410,7 @@
                 <tr>
                   <td width="15%">Date &amp; Time</td>
                   <td width="10%">Status</td>
-                  <td width="15%">Duration</td>
+                  <td width="15%">Duration (h:m:s)</td>
                   <td width="50%">Nearest Location</td>
                   <td width="10%">G-Map</td>
                 </tr>

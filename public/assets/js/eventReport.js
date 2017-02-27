@@ -88,15 +88,15 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
     {
         days = Math.floor(ms / (24 * 60 * 60 * 1000));
 	  	daysms = ms % (24 * 60 * 60 * 1000);
-		hours = Math.floor((daysms) / (60 * 60 * 1000));
+		hours = Math.floor((ms) / (60 * 60 * 1000));
 		hoursms = ms % (60 * 60 * 1000);
 		minutes = Math.floor((hoursms) / (60 * 1000));
 		minutesms = ms % (60 * 1000);
 		seconds = Math.floor((minutesms) / 1000);
-		if(days==0)
-			return hours +" h "+minutes+" m "+seconds+" s ";
-		else
-			return days+" d "+hours +" h "+minutes+" m "+seconds+" s ";
+		// if(days==0)
+		// 	return hours +" h "+minutes+" m "+seconds+" s ";
+		// else
+			return hours +":"+minutes+":"+seconds;
 	}
    	
 	var delayed4 = (function () {

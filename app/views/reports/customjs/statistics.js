@@ -268,10 +268,10 @@ $scope.msToTime = function(ms)
 		minutes = Math.floor((hoursms) / (60 * 1000));
 		minutesms = ms % (60 * 1000);
 		seconds = Math.floor((minutesms) / 1000);
-		if(days==0)
-			return hours +" h "+minutes+" m "+seconds+" s ";
-		else
-			return days+" d "+hours +" h "+minutes+" m "+seconds+" s ";
+		// if(days==0)
+		// 	return hours +" h "+minutes+" m "+seconds+" s ";
+		// else
+			return hours +":"+minutes+":"+seconds;
 	}
 	
 
