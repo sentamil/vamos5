@@ -281,11 +281,12 @@ background-color: #ffffff;
 										<th width="5%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;">KMs</th>
 										<th width="5%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed</th>
 										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;">Position</th>
+										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;">Duration H:M:S</th>
 										<th width="5%" class="id" custom-sort order="'status'" sort="sort" style="text-align:center;">GPS</th>
 										<th width="5%" class="id" custom-sort order="'loadTruck'" sort="sort" style="text-align:center;">Load</th>
 										<th width="5%" class="id" custom-sort order="'vehicleBusy'" sort="sort" style="text-align:center;">A/C</th>
 										<th width="5%" class="id" custom-sort order="'temperature'" sort="sort" style="text-align:center;">&#8451;</th>
-										<th width="40%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
+										<th width="35%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
 										<th width="5%" style="text-align:center;">GMap</th>
 									</tr>
 									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 11px">
@@ -302,6 +303,12 @@ background-color: #ffffff;
 			                                <span ng-switch-when="M"><img title="Vehicle Moving" src="assets/imgs/green.png"/></span>
 			                                <span ng-switch-when="P"><img title="Vehicle Parked" src="assets/imgs/flag.png"/></span>
 			                                <span ng-switch-when="U"><img title="Vehicle NoData" src="assets/imgs/gray.png"/></span>
+			                            </td>
+			                            <td ng-switch on="user.position">
+			                            	<span ng-switch-when="S">{{msToTime(user.idleTime)}}</span>
+			                                <span ng-switch-when="M">{{msToTime(user.movingTime)}}</span>
+			                                <span ng-switch-when="P">{{msToTime(user.parkedTime)}}</span>
+			                                <span ng-switch-when="U">{{msToTime(user.noDataTime)}}</span>
 			                            </td>
 			                            <td ng-switch on="user.status">
 			                                <span ng-switch-when="OFF"><img title="GPS OFF" src="assets/imgs/gof.png"/></span>
