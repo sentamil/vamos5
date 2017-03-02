@@ -128,7 +128,7 @@ class AddSiteController extends \BaseController {
 		$orgId=Input::get ( 'org' );
 		$ch = curl_init();
 		$siteType= curl_escape($ch,$siteType);
-		$url = 'http://' .$ipaddress . ':9000/saveSite?latLng=' . implode(",",$latLng) . '&fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .$siteName.'&siteType='.$siteType.'&userId='.$username;
+		$url = 'http://' .$ipaddress . ':9000/saveSite?latLng=' . implode(",",$latLng) . '&fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .rawurlencode($siteName).'&siteType='.$siteType.'&userId='.$username;
 		 
 		
 		$url=htmlspecialchars_decode($url);
@@ -173,7 +173,7 @@ class AddSiteController extends \BaseController {
 		 $orgId=Input::get ( 'org' );
 		 $ch = curl_init();
 		 $siteType= curl_escape($ch,$siteType);
-		 $url = 'http://' .$ipaddress . ':9000/saveSite?latLng=' . implode(",",$latLng) . '&fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .$siteName.'&siteType='.$siteType.'&userId='.$username.'&type='.'update'.'&siteNameOld='.$siteNameOld;
+		 $url = 'http://' .$ipaddress . ':9000/saveSite?latLng=' . implode(",",$latLng) . '&fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .rawurlencode($siteName).'&siteType='.$siteType.'&userId='.$username.'&type='.'update'.'&siteNameOld='.rawurlencode($siteNameOld);
 		 
 		
 		$url=htmlspecialchars_decode($url);
@@ -208,7 +208,7 @@ class AddSiteController extends \BaseController {
 		);       
 		 $ch = curl_init();
 		 //$siteType= curl_escape($ch,$siteType);
-		 $url = 'http://' .$ipaddress . ':9000/deleteSite?fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .$siteName.'&userId='.$username;		
+		 $url = 'http://' .$ipaddress . ':9000/deleteSite?fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .rawurlencode($siteName).'&userId='.$username;		
 		$url=htmlspecialchars_decode($url);
 		//urlencode($url);
 		log::info( ' url :' . $url);		 

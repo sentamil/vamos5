@@ -143,7 +143,7 @@ google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygo
 $('#add').hide();
 $("#update").hide();
 $scope.AddClear = function(){
-
+  $("#update").hide();
   $('#add').hide();
   $('#create').show();
   $scope.textValue  = '';
@@ -184,7 +184,7 @@ $scope.AddClear = function(){
 
       shapes[0].setEditable(false);
       var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
-      var text        = $scope.textValue.replace(/\s/g, '');
+      var text        = $scope.textValue;
       var drop        = $scope.dropValue;
       var org         = $scope.orgID;
       // post request
@@ -234,7 +234,7 @@ $scope.AddClear = function(){
       mergeList       = [];
       dropDown=[];
       $scope.dropDownList=response;
-      if(response != "")
+      if(response != "" && response.siteParent != undefined)
       for(var i = 0; response.siteParent.length>i; i++)
       {
         if(response.siteParent[i]!=undefined)
@@ -461,7 +461,7 @@ $scope.AddClear = function(){
     startLoading();
     $scope.toast    =  '';
     var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
-    var text        = $scope.textValue.replace(/\s/g, '');
+    var text        = $scope.textValue;
     var drop        = $scope.dropValue;
     var org         = $scope.orgID;
     if(checkXssProtection($scope.textValue) == true)
