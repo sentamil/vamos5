@@ -6,14 +6,6 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	var getUrl  =   document.location.href;
 	var index   =   getUrl.split("=")[1];
 	
-	$scope.startTime 	=	function(dat){
-		$scope.sort = sortByDate(dat)
-	}
-
-
-
-	$scope.startTime('date');
-
 	if(index == 1){
 		$scope.actTab 	=	true;
 		$(window).load(function(){
@@ -23,6 +15,10 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	else if(index ==2 ){
 		$scope.siteTab 		=	true;
 		$scope.sort = sortByDate('startTime');
+	}
+	else {
+		$scope.actTab 	=	false;
+		$scope.siteTab 	=	false;
 	}
 
 	
@@ -93,10 +89,12 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	$scope.vehigroup;
 	$scope.consoldateData =   [];
 	$scope.today 		  =   new Date();
+	$("#testLoad").load("../public/menu");
 	 
-	
-    $scope.$watch("url", function (val) {
-  		startLoading();
+
+	$scope._globalInit 	= function() {
+	 	
+	 	startLoading();
 	 	$http.get($scope.url).success(function(data){
 	 		if(data.length >0 && data != ''){
 
@@ -104,7 +102,6 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 				$scope.vehigroup    =   data[$scope.groupId].group;
 				$scope.vehiname		=	data[$scope.groupId].vehicleLocations[0].vehicleId;
 				sessionStorage.setItem('user', JSON.stringify($scope.vehiname+','+$scope.vehigroup));
-				$("#testLoad").load("../public/menu");
 				angular.forEach(data, function(value, key) {
 					   if(value.totalVehicles) {
 					  		$scope.data1		=	data[key];
@@ -117,7 +114,29 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 			}
 			stopLoading();
 		}).error(function(){stopLoading();});
+
+	};
+	
+
+	var promise;
+
+	$scope.startTime 	= function(dat, val){
+
+		$scope.sort 	= sortByDate(dat);
+		if(val == 'reload' || val == undefined)
+			$scope.siteTab 	= false, $scope.actTab 	= false;
+		promise 		= $interval( function(){ $scope._globalInit();}, 5000);
+		
+	}
+
+	$scope.startTime('date', index);
+
+    $scope.$watch("url", function (val) {
+  		
+  		$scope._globalInit();
+
 	});
+
     // address resolving with delay function
 	$scope.selectMe = function(consoldateData)
     {
@@ -193,13 +212,18 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	};
 
 
-	
+	$scope.stop = function() {
+
+		// console.log(value);
+      	$interval.cancel(promise);
+    };
 
 	$scope.consoldate1 =  function()
 	{
 		// $('#preloader').show(); 
 		// $('#preloader02').show();
 		startLoading();
+		$scope.stop();
 		$scope.fromdate1   =  document.getElementById("dateFrom").value;
 		$scope.fromTime    =  document.getElementById("timeFrom").value;
 		$scope.todate1     =  document.getElementById("dateTo").value;
@@ -236,6 +260,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		// $('#preloader').show(); 
 		// $('#preloader02').show();
 		startLoading();
+		$scope.stop();
 		$scope.dateFunction();
 		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
 		service(conUrl);
@@ -255,6 +280,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	$scope.consoldateTrip = function(valu)
 	{	
 		startLoading();
+		$scope.stop();
 		$scope.sort = sortByDate('startTime');
 		// $('#preloader').show(); 
 		// $('#preloader02').show();
@@ -290,6 +316,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 
 	$scope.dialogBox 	=	function()
 	{
+		$scope.stop();
 		$scope.tab = false;
 		$scope.fromdate1   =  document.getElementById("dateFrom").value;
 		$scope.fromTime    =  document.getElementById("timeFrom").value;

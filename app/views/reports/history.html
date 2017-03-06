@@ -293,33 +293,35 @@ background-color: #ffffff;
 									  	<td colspan="1"><b>Vehicle Group</b></td>
 									  	<td>{{trimColon(vgroup)}}</td>
 									  	<td colspan="1"><b>Vehicle Name</b></td>
-									  	<td colspan="1">{{hist.shortName}}</td>
+									  	<td colspan="2">{{hist.shortName}}</td>
 									  	<!-- <td ng-hide="true" colspan="2"><b>Register No</b></td>
 								       	<td ng-hide="true">{{hist.regNo}}</td>	 -->			
 								  	</tr>
-								  	<tr><td colspan="4"></td></tr>
+								  	<tr><td colspan="5"></td></tr>
 									<tr style="text-align:center;font-weight: bold;">
 										
-										<th style="text-align:center;" custom-sort order="'date'" sort="sort" >Parked Time</th>
-										<th width="12%" style="text-align:center;">G-Map</th>
+										<th style="text-align:center;" custom-sort order="'date'" sort="sort" >Start</th>
+										<th style="text-align:center;" custom-sort order="'date'" sort="sort" >End</th>
 										<th width="40%" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
-										<th width="15%" custom-sort order="'parkedTime'" sort="sort"  style="text-align:center;">Duration (h:m:s)</th>
+										<th width="20%" custom-sort order="'parkedTime'" sort="sort"  style="text-align:center;">Duration (h:m:s)</th>
+										<th width="10%" style="text-align:center;">G-Map</th>
 										<!-- <th width="20%" colspan="2" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Total Parked Time</th> -->
 									</tr></thead>
 									<tbody>
 									<tr ng-repeat="user in parkeddata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
 										
-										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
+										<td>{{user.startParkedTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+										<td>{{user.endParkedTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td> 
 											<p ng-if="user.address!=null">{{user.address}}</p>
 											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && saddressStop[$index]!=null">{{saddressStop[$index]}}</p>
 											<p ng-if="user.address==null && saddressStop[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
 										</td>
 										<td>{{getParkedCorrectHours(user.parkedTime)}}</td>
+										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
 									</tr>
 									<tr ng-if="parkeddata==null || parkeddata.length==0" align="center">
-										<td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
 									</tr>
 									</tbody>								
 							</table>

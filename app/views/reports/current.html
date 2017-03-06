@@ -107,7 +107,7 @@ background-color: #ffffff;
    
        <div class="col-md-12">
 	       	<tabset class="nav-tabs-custom">
-			   			 <tab heading="Current Status Report" id="tabs" ng-click="startTime('date')">
+			   			 <tab heading="Current Status Report" id="tabs" ng-click="startTime('date', 'reload')">
 			   			 	<div class="box box-primary1">
 
 		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
@@ -250,6 +250,7 @@ background-color: #ffffff;
 		        </div>
 		       
 		        <div class="box-body" id="statusreport">
+
 		           <table class="table table-striped table-bordered table-condensed table-hover" id="table_address">
 		           				  <!--  <tr ng-hide ="true" style="font-weight: bold;">
 									  	<td>Vehicle Group : {{data1.group}}</td>					  
@@ -289,7 +290,7 @@ background-color: #ffffff;
 										<th width="35%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
 										<th width="5%" style="text-align:center;">GMap</th>
 									</tr>
-									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 11px">
+									<tr ng-repeat="user in data1.vehicleLocations track by $index| orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 11px">
 										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.shortName}}</a></td>
 								   <!-- <td ng-hide="true"></td> -->
 										<td>{{user.regNo}}</td>
@@ -300,7 +301,10 @@ background-color: #ffffff;
 										<td>{{user.speed}}</td>
 										<td ng-switch on="user.position">
 			                                <span ng-switch-when="S"><img title="Vehicle Standing" src="assets/imgs/orange.png"/></span>
-			                                <span ng-switch-when="M"><img title="Vehicle Moving" src="assets/imgs/green.png"/></span>
+			                                <span ng-switch-when="M">
+			                                	<span ng-if="user.color == 'R'"><img src="assets/imgs/red.png"></span>
+			                                	<span ng-if="user.color == 'G'"><img src="assets/imgs/green.png"></span>
+			                                </span>
 			                                <span ng-switch-when="P"><img title="Vehicle Parked" src="assets/imgs/flag.png"/></span>
 			                                <span ng-switch-when="U"><img title="Vehicle NoData" src="assets/imgs/gray.png"/></span>
 			                            </td>
