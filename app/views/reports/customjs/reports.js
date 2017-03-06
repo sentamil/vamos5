@@ -125,7 +125,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		$scope.sort 	= sortByDate(dat);
 		if(val == 'reload' || val == undefined)
 			$scope.siteTab 	= false, $scope.actTab 	= false;
-		promise 		= $interval( function(){ $scope._globalInit();}, 5000);
+		promise 		= $interval( function(){ $scope._globalInit();}, 60000);
 		
 	}
 
