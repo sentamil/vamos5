@@ -202,7 +202,7 @@ var markerSearch = new google.maps.Marker({});
 				$('#lastseen').text(count); 
 			});
 		else
-			$('#lastseen').text(pos.address);
+			$('#lastseen').text(pos.address.split('<br>Address :')[1] ? pos.address.split('<br>Address :')[1] : pos.address);
 	}
 
 	$scope.drawLine = function(loc1, loc2){
@@ -1439,7 +1439,10 @@ function locat_address(locs) {
 // 		$('body').delay(350).css({'overflow':'visible'});
 // });
 
+$scope.starSplit 	=	function(val){
 
+	return val.split('<br>');
+}
 
 }])
 
@@ -1482,6 +1485,8 @@ function locat_address(locs) {
 // 		$('#preloader').delay(350).fadeOut('slow');
 // 		$('body').delay(350).css({'overflow':'visible'});
 // });
+
+
 $(document).ready(function(e) {
     $('.contentClose').click(function(){
 		$('.topContent').fadeOut(100);

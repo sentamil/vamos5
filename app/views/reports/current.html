@@ -330,13 +330,13 @@ background-color: #ffffff;
 			                                <span ng-switch-when="no" style="color: #00ce2f">OFF</span>
 			                            </td>
 			                            <td>{{user.temperature}}</td>
-										<td ng-if="user.address!=null" >{{user.address}}</td>
+										<td ng-if="user.address!=null" star-Break address={{user.address}}>{{user.address}}</td>
 										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
 										<td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>														
 									</tr>
 									<tr ng-if="data1.vehicleLocations==null">
-										<td colspan="13" class="err"><h5>No Data Found ! Try Again</h5></td>
+										<td colspan="14" class="err"><h5>No Data Found ! Try Again</h5></td>
 									</tr>
 								</table>		
 		        </div>
@@ -624,7 +624,7 @@ background-color: #ffffff;
 										
 									</tr>
 									<tr ng-if="tripData.mulitple.length==0 || tripData.mulitple==' ' || tripData.mulitple==null" align="center">
-										<td colspan="9" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
 									</tr>
 								</table>
 		                	</div>
