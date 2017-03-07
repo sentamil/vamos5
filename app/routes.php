@@ -416,7 +416,13 @@ Route::get('/getVehicleExp', function() {
     return View::make('vls.getVehicleExp');
 });
  
- 
+Route::get('/getPictures', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get Camera Pictures');
+    return View::make('vls.getPictures');
+});
  
 Route::get('/getPoiHistory', function() {
     if (!Auth::check()) {

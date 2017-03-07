@@ -285,6 +285,8 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 	$scope.geoMarkerDetails={};
 	$scope.popupmarker;
 	$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations';
+	var VehiType;
+    var vehicIcon=[];
 	$scope.getTodayDate  =	function(date) {
 		var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
@@ -770,6 +772,7 @@ var queue1 = [];
 				$scope.shortVehiId 	= $scope.locations[0].vehicleLocations[0].shortName;
 				$scope.selected 	= 0;
 				$('#vehiid h3').text($scope.shortVehiId);
+				VehiType = $scope.locations[0].vehicleLocations[0].vehicleType;
 			
 			} else { 
 
@@ -781,6 +784,7 @@ var queue1 = [];
 							if(val.vehicleId == $scope.trackVehID){
 								$scope.selected 	=	k;
 								$('#vehiid h3').text(val.shortName);
+								VehiType = val.vehicleType;
 							}
 						})
 						
@@ -1889,6 +1893,7 @@ if($scope.markerstart){
 
 						
 			$scope.polylineLoad 	=[];
+			vehicIcon=vehiclesChange(VehiType); 
 			function myTimer() {
 				if($scope.path.length == lineCount+1){
 			  		myStopFunction()
@@ -1906,14 +1911,20 @@ if($scope.markerstart){
 				        position: $scope.path[lineCount+1],
 				        icon: 
 				        {
-				            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-				            scale: 5,
-				            strokeWeight: 1,
-				            fillColor: $scope.polylinearr[lineCount],
-				            // fillColor: '#a8d6e9',
-				            fillOpacity: 1,
-				            anchor: new google.maps.Point(0, 2.6),
-				            rotation: rotationd,
+				          path:vehicIcon[0],
+				          scale:vehicIcon[1],
+						  strokeWeight: 1,
+				          fillColor: $scope.polylinearr[lineCount],
+				          fillOpacity: 1,
+				          anchor:vehicIcon[2],
+				          rotation: rotationd,
+				        /*path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+				          scale: 5,
+				          strokeWeight: 1,
+				          fillColor: $scope.polylinearr[lineCount],
+				        //fillColor: '#a8d6e9',
+				          fillOpacity: 1,
+				          anchor: new google.maps.Point(0, 2.6),*/
 				        },
 
 			    	});
