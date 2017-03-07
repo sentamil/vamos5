@@ -97,7 +97,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	 	startLoading();
 	 	$http.get($scope.url).success(function(data){
 	 		if(data.length >0 && data != ''){
-
+	 			$scope.locations 	= [];
 				$scope.locations 	= 	data;
 				$scope.vehigroup    =   data[$scope.groupId].group;
 				$scope.vehiname		=	data[$scope.groupId].vehicleLocations[0].vehicleId;

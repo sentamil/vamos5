@@ -269,6 +269,20 @@ return {
 }
 });
 
+app.directive('starBreak', function($compile) {
+    return {
+        restrict: 'A',
+        transclude: true,
+        link: function(scope, element, attrs) {
+            // scope.value = attrs.address.split('**');
+            // scope.value[0] = scope.value[0] ? scope.value[0]: '';
+            // scope.value[1] = scope.value[1] ? scope.value[1]: '';
+            element.html(attrs.address);
+            $compile(element.contents())(scope);
+        }
+    }
+});
+
 app.directive('tooltips', function ($document, $compile) {
   return {
     restrict: 'A',
@@ -288,7 +302,6 @@ app.directive('tooltips', function ($document, $compile) {
         '</span>')(scope),
           tipClassName = 'tooltips',
           tipActiveClassName = 'tooltips-show';
-
       scope.tipClass = [tipClassName];
       scope.text = attrs.tooltips;
       
@@ -347,3 +360,5 @@ app.directive('tooltips', function ($document, $compile) {
     }
   }
 });
+
+

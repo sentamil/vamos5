@@ -522,7 +522,10 @@
                         </tr>
                         <tr ng-repeat="user in mapTable | orderBy:sort.sortingOrder:sort.reverse" style="text-align:center; cursor: pointer" ng-mouseover="mouseJump(user)" ng-click="tabletd(user)">
                             <td>{{user.shortName}}</td>
-                            <td>{{user.address}}</td>
+                            <td>
+                                <div>{{starSplit(user.address)[0]}}</div>
+                                <div>{{starSplit(user.address)[1]}}</div>
+                            </td>
                             <td ng-switch on="user.position">
                                 <span ng-switch-when="S"><img title="Vehicle Standing" src="assets/imgs/orange.png"/></span>
                                 <span ng-switch-when="M"><img title="Vehicle Moving" src="assets/imgs/green.png"/></span>

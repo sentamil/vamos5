@@ -63,7 +63,7 @@ app.directive('map', function($http) {
 							scope.fromdate			=	scope.getTodayDate(scope.fromNowTS);
 							scope.todate			=	scope.getTodayDate(scope.toNowTS);
 							
-							$('#vehiid h6').text(locs.shortName);
+							$('#vehiid h3').text(locs.shortName);
 							// $('#toddist h6').text(scope.timeCalculate(locs.totalRunningTime));
 							// $('#vehstat h6').text(scope.timeCalculate(locs.totalIdleTime));
 							// $('#vehdevtype h6 span').text(locs.odoDistance);
@@ -771,6 +771,7 @@ var queue1 = [];
 				$scope.trackVehID 	= $scope.locations[0].vehicleLocations[0].vehicleId;
 				$scope.shortVehiId 	= $scope.locations[0].vehicleLocations[0].shortName;
 				$scope.selected 	= 0;
+				$scope.sels
 				$('#vehiid h3').text($scope.shortVehiId);
 				VehiType = $scope.locations[0].vehicleLocations[0].vehicleType;
 			
@@ -778,7 +779,7 @@ var queue1 = [];
 
 				$scope.trackVehID  	= getParameterByName('vehicleId');
 				angular.forEach(response, function(value, key){
-					if($scope.groupname 	= value.group)
+					if($scope.groupname 	== value.group)
 					{	
 						angular.forEach(value.vehicleLocations, function(val, k){
 							if(val.vehicleId == $scope.trackVehID){
@@ -1091,29 +1092,39 @@ $( "#historyDetails" ).hide();
 	}
 
 
-	function td_click()
+	$scope.popUpMarkerNull =function()
 	{
-		if($scope.popupmarker !== undefined)
+		if($scope.popupmarker !== undefined){
 			$scope.popupmarker.setMap(null);
+			$scope.infowindow .setMap(null);
+		}
 	}
 
+	
 	$scope.markerPoup 	= 	function(val)
 	{
 		
-		var labelAnchorpos = new google.maps.Point(250, 0);	///12, 37
-		td_click();
-		$scope.popupmarker = new MarkerWithLabel({
+		$scope.popUpMarkerNull();
+		var contentString 	=	'<table class="tabpop"><tr><td>Date&amp;Time </td><td>'+dateFormat(val.date)+'</td></tr><tr><td>'+'Speed(km/h) </td><td>'+val.speed+'</td></tr><tr><td>'+'OdoDist(km)</td><td>'+val.odoDistance+'</td></tr><tr><td colspan="2">'+val.address+'</td></tr></table';
+	  	$scope.infowindow = new InfoBubble({
+	  		maxWidth: 400,	
+			maxHeight:170,
+	  		content: contentString,
+		});
+		
+	  	$scope.popupmarker = new google.maps.Marker({
 	    	position: new google.maps.LatLng(val.latitude, val.longitude),
 	    	icon: 'assets/imgs/popup.png',
-	    	// animation: google.maps.Animation.BOUNCE,
-	    	labelContent: '<table class="tabpop"><tr><td>Date&amp;Time </td><td>'+dateFormat(val.date)+'</td></tr><tr><td>'+'Speed(km/h) </td><td>'+val.speed+'</td></tr><tr><td>'+'OdoDist(km)</td><td>'+val.odoDistance+'</td></tr><tr><td colspan="2">'+val.address+'</td></tr></table',
-			labelAnchor: labelAnchorpos,
-			labelClass: "singpop", 
-   			map: $scope.map,
-    
-  		});
-        $scope.map.setCenter($scope.popupmarker.getPosition());
-  		// $scope.map.setZoom(13);
+	    	map: $scope.map
+	  	});
+	  	$scope.infowindow.open($scope.map, $scope.popupmarker);
+	  	// $scope.popupmarker.setMap($scope.map);
+	  	
+
+		google.maps.event.addListener($scope.infowindow,'closeclick',function(){
+		   $scope.popUpMarkerNull();
+		});
+
 	}
 
 	$scope.deleteRouteName 	= function(deleteValue){
@@ -1508,7 +1519,7 @@ if($scope.markerstart){
 		var todate = document.getElementById('dateTo').value;
 		if((checkXssProtection(fromdate) == true) && (checkXssProtection(todate) == true) && (checkXssProtection(document.getElementById('timeTo').value) == true) && (checkXssProtection(document.getElementById('timeFrom').value) == true)){
 			startLoading();
-			td_click();
+			$scope.popUpMarkerNull();
 			$scope.hisurlold = $scope.hisurl;
 			if(document.getElementById('timeFrom').value==''){
 				var fromtime = "00:00:00";
