@@ -265,7 +265,7 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             if(isVir == null || isVir == undefined){
                 var globalIP = document.location.host;
                 var contextMenu = '/gps';
-                $.get('http://'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
+                $.get('https://'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
                 
                     var menuVal =response.trim();
                     sessionStorage.setItem('isVirtualUser', JSON.stringify(menuVal));
