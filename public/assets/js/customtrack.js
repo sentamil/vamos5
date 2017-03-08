@@ -430,11 +430,11 @@ $(document).on('pageshow', '#maploc', function(e, data){
         }
     };
 });
-app.controller('mainCtrl',function($scope, $http, vamoservice){ 
+app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function($scope, $http, vamoservice, GLOBAL){ 
 	var res = document.location.href.split("?");
 	$scope.vehicleno = getParameterByName('vehicleId');
-	$scope.url = 'http://'+globalIP+context+'/public/getSelectedVehicleLocation?'+res[1];
-	$scope.urlVeh = 'http://'+globalIP+context+'/public/getSelectedVehicleLocation1?'+res[1];
+	$scope.url = GLOBAL.DOMAIN_NAME+'/getSelectedVehicleLocation?'+res[1];
+	$scope.urlVeh = GLOBAL.DOMAIN_NAME+'/getSelectedVehicleLocation1?'+res[1];
 	$scope.path = [];
 	$scope.firstPath=[];
 	$scope.speedval =[];
@@ -448,7 +448,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 	vamoservice.getDataCall($scope.url).then(function(data) {
 		$scope.locations = data;
 		$scope.histVal.push(data);
-		var url = 'http://'+globalIP+context+'/public//getGeoFenceView?'+res[1];
+		var url = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?'+res[1];
 				$scope.createGeofence(url);
 
 				$scope.vehiclFuel=graphChange($scope.locations.fuelLitre);
@@ -503,7 +503,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
     };
 	$scope.enterkeypress = function(){
 		if(checkXssProtection(document.getElementById('poival').value) == true){
-			var poiUrl = 'http://'+globalIP+context+'/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+			var poiUrl = GLOBAL.DOMAIN_NAME+'/setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
 			if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
 				vamoservice.getDataCall(poiUrl).then(function(data) {
 				 	document.getElementById('poival').value='';
@@ -582,7 +582,7 @@ app.controller('mainCtrl',function($scope, $http, vamoservice){
 			}
 		})
 	}          
-});
+}]);
 
 $(document).ready(function(e) {
 	$('#container-speed').highcharts({

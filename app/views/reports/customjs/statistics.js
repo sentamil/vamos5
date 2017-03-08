@@ -1,4 +1,4 @@
-app.controller('mainCtrl', ['$scope', '$filter','vamoservice', function($scope, $filter, vamoservice){
+app.controller('mainCtrl', ['$scope', '$filter','vamoservice', '_global', function($scope, $filter, vamoservice, GLOBAL){
 
 // tab view
 var getUrl  =   document.location.href;
@@ -17,7 +17,7 @@ var index   =   getUrl.split("=")[1];
 
 
 //Global Variable declaration 
-$scope.url 			= 	'http://'+globalIP+context+'/public//getVehicleLocations';
+$scope.url 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 var clickStatus 	= 	'groupButton';
 $scope.donut 		= 	false;
 $scope.bar 			=	true;
@@ -87,7 +87,7 @@ $scope.groupSelection 	=	function(groupName, groupId) {
 	vehicleSelected 		=	'';
 	$scope.viewGroup.group 	= 	groupName;
 	startLoading();
-	var groupUrl 			= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupName;
+	var groupUrl 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupName;
 	vamoservice.getDataCall(groupUrl).then(function(groupResponse){
 		$scope.trackVehID       =   groupResponse[groupId].vehicleLocations[0].vehicleId;
    		$scope.groupname 		=	groupName;
@@ -279,8 +279,7 @@ function serviceCall(){
 	// $scope.execGroupReportData 	=	[];
 	if((checkXssProtection($scope.fromdate) == true) && (checkXssProtection($scope.todate) == true)){
 		if(tabId ==	'executive'){
-			var groupUrl		=	'http://'+globalIP+context+'/public//getExecutiveReport?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-			console.log(groupUrl);
+			var groupUrl		=	GLOBAL.DOMAIN_NAME+'/getExecutiveReport?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 			vamoservice.getDataCall(groupUrl).then(function(responseGroup){
 				var tagsCheck 	= (responseGroup.error) ? true :  false;
 				// console.log($scope.to_trusted($scope.fromdate));
@@ -304,7 +303,7 @@ function serviceCall(){
 			$scope.donut 		= 	true;
 			$scope.bar 			= 	true;
 			$('#singleDiv').hide();
-			var poiUrl 			=	'http://'+globalIP+context+'/public//getPoiHistory?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+			var poiUrl 			=	GLOBAL.DOMAIN_NAME+'/getPoiHistory?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
 			vamoservice.getDataCall(poiUrl).then(function(responsePoi){
 				$scope.geofencedata			=		[];
 				if(responsePoi.history !=null)

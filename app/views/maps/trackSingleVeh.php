@@ -229,9 +229,9 @@ if(apikey_url != null || apikey_url != undefined)
    // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
-   scriptLibrary.push("http://code.highcharts.com/highcharts.js");
-   scriptLibrary.push("http://code.highcharts.com/highcharts-more.js");
-   scriptLibrary.push("http://code.highcharts.com/modules/solid-gauge.js");
+   scriptLibrary.push("https://code.highcharts.com/highcharts.js");
+   scriptLibrary.push("https://code.highcharts.com/highcharts-more.js");
+   scriptLibrary.push("https://code.highcharts.com/modules/solid-gauge.js");
    scriptLibrary.push("assets/js/markerwithlabel.js");
    scriptLibrary.push("assets/js/infobubble.js");
    scriptLibrary.push("assets/js/infobox.js");

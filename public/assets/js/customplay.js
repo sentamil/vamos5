@@ -9,7 +9,7 @@ var contentString = [];
 var contentString01=[];
 var id;
 var geomarker=[], geoinfo=[];
-app.directive('map', function($http) {
+app.directive('map', ['$http', '_global', function($http, GLOBAL) {
     return {
         restrict: 'E',
         replace: true,
@@ -86,7 +86,7 @@ app.directive('map', function($http) {
 							
 							//draw the geo code
 							// (function geosite(){
-								var geoUrl = 'http://'+globalIP+context+'/public/viewSite';
+								var geoUrl = GLOBAL.DOMAIN_NAME+'/viewSite';
 								// var myOptions = {
 								// 	zoom: Number(6),zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
 								// 	center: new google.maps.LatLng(0,0),
@@ -266,7 +266,7 @@ app.directive('map', function($http) {
 							$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
 						}
 					}
-					var url = 'http://'+globalIP+context+'/public//getGeoFenceView?vehicleId='+scope.trackVehID;
+					var url = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?vehicleId='+scope.trackVehID;
 		
 				scope.createGeofence(url);
 				stopLoading();
@@ -274,8 +274,8 @@ app.directive('map', function($http) {
 		 	});
         }
     };
-});
-app.controller('mainCtrl',function($scope, $http, $q, $filter){
+}]);
+app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function($scope, $http, $q, $filter, GLOBAL){
 	$scope.locations = [];
 	$scope.path = [];
 	$scope.polylinearr=[];
@@ -284,7 +284,7 @@ app.controller('mainCtrl',function($scope, $http, $q, $filter){
 	$scope.cityCircle=[];
 	$scope.geoMarkerDetails={};
 	$scope.popupmarker;
-	$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations';
+	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	var VehiType;
     var vehicIcon=[];
 	$scope.getTodayDate  =	function(date) {
@@ -661,7 +661,7 @@ var queue1 = [];
 					//console.log(' address over speed'+indexs)
 					var latOv		 =	location_over[indexs].latitude;
 				 	var lonOv		 =	location_over[indexs].longitude;
-					var tempurlOv	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latOv+','+lonOv+"&sensor=true";
+					var tempurlOv	 =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latOv+','+lonOv+"&sensor=true";
 					//console.log(' in overspeed '+indexs)
 					delaying(3000, function (indexs) {
 					      return function () {
@@ -795,7 +795,7 @@ var queue1 = [];
 
 			}
 		sessionValue($scope.trackVehID, $scope.groupname)
-		$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
+		$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
 		// stopLoading();
 		})
@@ -897,7 +897,7 @@ var queue1 = [];
 	/*
 		getting Org ids
 	*/
-	var url_site    = 'http://'+globalIP+context+'/public/viewSite';
+	var url_site    = GLOBAL.DOMAIN_NAME+'/viewSite';
 
 	
 	
@@ -1068,7 +1068,7 @@ $( "#historyDetails" ).hide();
 					{
 						var utcFrom 	= utcFormat(fromdate, $scope.timeconversion(fromtime));
 						var utcTo 		= utcFormat(todate, $scope.timeconversion(totime));
-						var _routeUrl 	= 'http://'+globalIP+context+'/public/addRoutesForOrg?vehicleId='+$scope.trackVehID+'&fromDateUTC='+utcFrom+'&toDateUTC='+utcTo+'&routeName='+removeSpace_Join($scope.routeName);
+						var _routeUrl 	= GLOBAL.DOMAIN_NAME+'/addRoutesForOrg?vehicleId='+$scope.trackVehID+'&fromDateUTC='+utcFrom+'&toDateUTC='+utcTo+'&routeName='+removeSpace_Join($scope.routeName);
 						if(!$scope.trackVehID == "" && !$scope.routeName == "")
 							$http.get(_routeUrl).success(function(response){
 								if(response.trim()== "false"){
@@ -1313,7 +1313,7 @@ function animateMapZoomTo(map, targetZoom) {
 	$scope.groupSelection = function(groupname, groupid){
 		startLoading();
 		 $scope.selected=0;
-		 $scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group=' + groupname;
+		 $scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group=' + groupname;
 		 $scope.gIndex = groupid;
 		 gmarkers=[];
 		 ginfowindow=[];
@@ -1352,7 +1352,7 @@ if($scope.markerstart){
 			$scope.groupname 	= data[$scope.gIndex].group;
 			$scope.trackVehID 	= $scope.locations[$scope.gIndex].vehicleLocations[$scope.selected].vehicleId;
 			sessionValue($scope.trackVehID, $scope.groupname);
-			$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
+			$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
 			$('.nav-second-level li').eq(0).children('a').addClass('active');
 			$scope.loading	=	false;
 			
@@ -1424,7 +1424,7 @@ if($scope.markerstart){
 	}
 	$scope.locationname="";
 	$scope.getLocation = function(lat,lon, callback){
-		var tempurl01 =  "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon;
+		var tempurl01 =  "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon;
 		var t = $.ajax({
 			dataType:"json",
 			url: tempurl01,
@@ -1533,17 +1533,17 @@ if($scope.markerstart){
 			}
 			if(document.getElementById('dateFrom').value==''){
 				if(document.getElementById('dateTo').value==''){
-					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID;
+					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
 				}
 			}else{
 				if(document.getElementById('dateTo').value==''){
-					$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
+					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
 				}else{
 					var days =daydiff(new Date(fromdate), new Date(todate));
 					if(days<3)
-						$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
 					else if(days < 7)  
-						$scope.hisurl = 'http://'+globalIP+context+'/public//getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
 					else{
 						alert('Please selected date before 7 days / No data found');
 						stopLoading();
@@ -2155,6 +2155,6 @@ if($scope.markerstart){
 });
 
 
-});
+}]);
 
 

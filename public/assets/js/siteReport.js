@@ -1,6 +1,6 @@
-app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, vamoservice, $filter){
+app.controller('mainCtrl',['$scope','vamoservice','$filter','_global', function($scope, vamoservice, $filter, GLOBAL){
 
-$scope.g_Url 	=	"http://"+globalIP+context+"/public";
+$scope.g_Url 	=	GLOBAL.DOMAIN_NAME;
 
 
 
@@ -122,7 +122,7 @@ function plottinGraphs(valueGraph, timeData){
 	//global declartion
 
 	$scope.locations = [];
-	$scope.url = 'http://'+globalIP+context+'/public/getVehicleLocations?group='+getParameterByName('vg');
+	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
 
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
@@ -187,7 +187,7 @@ function plottinGraphs(valueGraph, timeData){
 	
 	function getSite(){
 		var data;
-		var urlSite = 'http://'+globalIP+context+'/public/viewSite';
+		var urlSite = GLOBAL.DOMAIN_NAME+'/viewSite';
 		$.ajax({
 	    	url:urlSite, 
 	    	async: false,   
@@ -280,7 +280,7 @@ function plottinGraphs(valueGraph, timeData){
 			{
 				var latFuel		 =	locationFuel[index6].lat;
 			 	var lonFuel		 =	locationFuel[index6].lng;
-				var tempurlFuel =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latFuel+','+lonFuel+"&sensor=true";
+				var tempurlFuel =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latFuel+','+lonFuel+"&sensor=true";
 				delayed6(2000, function (index6) {
 				      return function () {
 				        google_api_call(tempurlFuel, index6, latFuel, lonFuel);

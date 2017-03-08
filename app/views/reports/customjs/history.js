@@ -2,7 +2,7 @@
 var getIP	=	globalIP;
 //var app = angular.module('hist',['ui.bootstrap']);
 
-app.controller('histCtrl',function($scope, $http, $filter, vamo_sysservice){
+app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($scope, $http, $filter, GLOBAL){
 	//$scope.getLocation1(13.0401945,80.2153889);
 
 
@@ -95,7 +95,7 @@ function eventButton(eventdate)
     	var speedEvent 		= 	document.getElementById ("overspeed1").value
     	var locEvent 		=   document.getElementById ("location").checked;
     	var siteEvent 		= 	document.getElementById ("site").checked;
-    	var urlEvent 	= "http://"+getIP+context+"/public//getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+stoppage+"&stopMints="+stopMints+"&idle="+idleEvent+"&idleMints="+idleMints+"&notReachable="+notReachable+"&notReachableMints="+notReachMints+"&overspeed="+overspeedEvent+"&speed="+speedEvent+"&location="+locEvent+"&site="+siteEvent;
+    	var urlEvent 	= GLOBAL.DOMAIN_NAME+"/getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+stoppage+"&stopMints="+stopMints+"&idle="+idleEvent+"&idleMints="+idleMints+"&notReachable="+notReachable+"&notReachableMints="+notReachMints+"&overspeed="+overspeedEvent+"&speed="+speedEvent+"&location="+locEvent+"&site="+siteEvent;
     	//console.log(' inside the method '+ urlEvent)
 
     	$http.get(urlEvent).success(function(eventRes){
@@ -135,7 +135,7 @@ function eventButton(eventdate)
     //site web service
     $scope.siteCall       =     function()
     {
-    	var url ="http://"+getIP+context+"/public/getSiteReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&site=true";
+    	var url =GLOBAL.DOMAIN_NAME+"/getSiteReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&site=true";
     	// console.log(' asd '+url);
     	$http.get(url).success(function(siteval){
     		$scope.siteReport=[];
@@ -203,7 +203,7 @@ function eventButton(eventdate)
    		console.log(' new  '+prodId)
    		startLoading();
    		$scope.id	=	prodId;
-   		var histurl	=	"http://"+getIP+context+"/public/getVehicleHistory?vehicleId="+getParameterByName('vid')+"&interval="+$scope.interval;
+   		var histurl	=	GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+getParameterByName('vid')+"&interval="+$scope.interval;
    		$scope.loading	=	true;
    		try{
 	   		$http.get(histurl).success(function(data){
@@ -400,7 +400,7 @@ function eventButton(eventdate)
 					//console.log(' address over speed'+indexs)
 					var latOv		 =	location_over[indexs].latitude;
 				 	var lonOv		 =	location_over[indexs].longitude;
-					var tempurlOv	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latOv+','+lonOv+"&sensor=true";
+					var tempurlOv	 =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latOv+','+lonOv+"&sensor=true";
 					//console.log(' in overspeed '+indexs)
 					delayed(3000, function (indexs) {
 					      return function () {
@@ -438,7 +438,7 @@ function eventButton(eventdate)
 					//console.log(' address movementreport'+index1)
 					var latMo		 =	locations[index1].latitude;
 				 	var lonMo		 =	locations[index1].longitude;
-					var tempurlMo	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latMo+','+lonMo+"&sensor=true";
+					var tempurlMo	 =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latMo+','+lonMo+"&sensor=true";
 					//console.log('  movement report  '+index1)
 					delayed1(3000, function (index1) {
 					      return function () {
@@ -595,7 +595,7 @@ function eventButton(eventdate)
 
 	$scope.address_click = function(data, ind)
 	{
-		var urlAddress 		=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
+		var urlAddress 		=	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
 		$http.get(urlAddress).success(function(response)
 		{
 			data.address 	=	response.results[0].formatted_address;
@@ -620,7 +620,7 @@ function eventButton(eventdate)
 					//console.log(' address stop'+index2)
 					var latStop		 =	locationStop[index2].latitude;
 				 	var lonStop		 =	locationStop[index2].longitude;
-					var tempurlStop	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latStop+','+lonStop+"&sensor=true";
+					var tempurlStop	 =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latStop+','+lonStop+"&sensor=true";
 					//console.log('  stopped or parked '+index2)
 					delayed2(3000, function (index2) {
 					      return function () {
@@ -652,7 +652,7 @@ function eventButton(eventdate)
 					//console.log(' address idle'+index3)
 					var latIdle		 =	locationIdle[index3].latitude;
 				 	var lonIdle		 =	locationIdle[index3].longitude;
-					var tempurlIdle	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latIdle+','+lonIdle+"&sensor=true";
+					var tempurlIdle	 =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latIdle+','+lonIdle+"&sensor=true";
 					delayed3(3000, function (index3) {
 					      return function () {
 					        google_api_call_Idle(tempurlIdle, index3, latIdle, lonIdle);
@@ -673,7 +673,7 @@ function eventButton(eventdate)
 			{
 				var latEvent		 =	locationEvent[index4].latitude;
 			 	var lonEvent		 =	locationEvent[index4].longitude;
-				var tempurlEvent =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
+				var tempurlEvent =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
 				delayed4(2000, function (index4) {
 				      return function () {
 				        google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent);
@@ -700,7 +700,7 @@ function eventButton(eventdate)
 			{
 				var latLoad		 =	locationLoad[index5].latitude;
 			 	var lonLoad		 =	locationLoad[index5].longitude;
-				var tempurlLoad =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latLoad+','+lonLoad+"&sensor=true";
+				var tempurlLoad =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latLoad+','+lonLoad+"&sensor=true";
 				delayed5(2000, function (index5) {
 				      return function () {
 				        google_api_call_Load(tempurlLoad, index5, latLoad, lonLoad);
@@ -726,7 +726,7 @@ function eventButton(eventdate)
 			{
 				var latFuel		 =	locationFuel[index6].latitude;
 			 	var lonFuel		 =	locationFuel[index6].longitude;
-				var tempurlFuel =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latFuel+','+lonFuel+"&sensor=true";
+				var tempurlFuel =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latFuel+','+lonFuel+"&sensor=true";
 				delayed6(2000, function (index6) {
 				      return function () {
 				        google_api_call_Fuel(tempurlFuel, index6, latFuel, lonFuel);
@@ -777,7 +777,7 @@ function eventButton(eventdate)
 
 	$("#testLoad").load("../public/menu");
 	// $scope.url = 'http://'+getIP+context+'/public//getVehicleLocations';
-	$scope.url = 'http://'+getIP+context+'/public/getVehicleLocations?group='+getParameterByName('vg');
+	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
 
 	$scope.$watch("url", function (val) {
 	 	$http.get($scope.url).success(function(data){
@@ -820,7 +820,7 @@ function eventButton(eventdate)
 
 	$scope.groupSelection = function(groupname, groupid){
 		startLoading()
-		var urlGroup = 'http://'+getIP+context+'/public//getVehicleLocations?group='+groupname;
+		var urlGroup = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupname;
 		$http.get(urlGroup).success(function(data){
 			$scope.vehiname		=	data[groupid].vehicleLocations[0].vehicleId;
 			$scope.gName 		= 	data[groupid].group; 
@@ -1019,7 +1019,7 @@ function eventButton(eventdate)
   	{
       startLoading();
       var valueas     =   $('#txtv').val();
-      var histurl     = "http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
+      var histurl     = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
       // var histurl      = "http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
       //var loadUrl     =   "http://"+getIP+context+"/public//getLoadReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime);
     try{
@@ -1050,7 +1050,7 @@ function eventButton(eventdate)
    
      //pdf method
      $scope.pdfHist			=		function() {  	
-		var histurl	=	"http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;			
+		var histurl	=	GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;			
 		//console.log(histurl);		
 
 		$http.get(histurl).success(function(data){
@@ -1094,35 +1094,29 @@ function eventButton(eventdate)
 		$scope.pageChanged = function() {
 	    $scope.figureOutTodosToDisplay();
 	  };
-	  
-//   $(window).load(function() {
-// 		$('#status').fadeOut(); 
-// 		$('#preloader').delay(350).fadeOut('slow');
-// 		$('body').delay(350).css({'overflow':'visible'});
-// });
-
-});
-app.factory('vamo_sysservice', function($http, $q){
-	return {
-		geocodeToserver: function (lat, lng, address) {
-		  try { 
-				var reversegeourl = 'http://'+globalIP+'/vamo/public/store?geoLocation='+lat+','+lng+'&geoAddress='+address;
-			    return this.getDataCall(reversegeourl);
-			}
-			catch(err){ console.log(err); }
+	
+}]);
+// app.factory('vamo_sysservice', function($http, $q){
+// 	return {
+// 		geocodeToserver: function (lat, lng, address) {
+// 		  try { 
+// 				var reversegeourl = GLOBAL.DOMAIN_NAME+'/store?geoLocation='+lat+','+lng+'&geoAddress='+address;
+// 			    return this.getDataCall(reversegeourl);
+// 			}
+// 			catch(err){ console.log(err); }
 		  
-		},
-        getDataCall: function(url){
-        	var defdata = $q.defer();
-        	$http.get(url).success(function(data){
-            	 defdata.resolve(data);
-			}).error(function() {
-                    defdata.reject("Failed to get data");
-            });
-			return defdata.promise;
-        }
-    }
-});
+// 		},
+//         getDataCall: function(url){
+//         	var defdata = $q.defer();
+//         	$http.get(url).success(function(data){
+//             	 defdata.resolve(data);
+// 			}).error(function() {
+//                     defdata.reject("Failed to get data");
+//             });
+// 			return defdata.promise;
+//         }
+//     }
+// });
 
 
 app.directive("getLocation", function () {

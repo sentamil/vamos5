@@ -1,8 +1,8 @@
-app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $http, vamoservice){
+app.controller('mainCtrl',['$scope', '$http','vamoservice', '_global', function($scope, $http, vamoservice, GLOBAL){
 	console.log(' inside the controller ')
 
 	//Global Variable
-	$scope.url 			= 	'http://'+globalIP+context+'/public/getVehicleLocations';
+	$scope.url 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	$scope.gIndex		=	0;
 	$scope.fromTime 	=   '12:00 AM';
 	var arrangeMonthList=[];
@@ -267,7 +267,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		$scope.totime 			= 	formatAMPM($scope.fromNowTS.getTime());
 		$scope.fromdateDaily	=	getTodayDate($scope.fromNowTS);
 		$scope.todateDaily		=	getTodayDate($scope.fromNowTS);
-		var webServiceUrl   	=   'http://'+globalIP+context+'/public/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromUtcTime='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toUtcTime='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
+		var webServiceUrl   	=   GLOBAL.DOMAIN_NAME+'/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromUtcTime='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toUtcTime='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
 		OverallDriverPerformance(webServiceUrl);
 	}
 
@@ -280,9 +280,9 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		$scope.month 		= 	monthNames[(date.getMonth() == 0) ? 11 : date.getMonth()-1];
 		$scope.fromdate 	=	$scope.month+','+$scope.year;
 		if($scope.groupVeh 	== true)	{
-			webServiceUrl 	= 	'http://'+globalIP+context+'/public/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
+			webServiceUrl 	= 	GLOBAL.DOMAIN_NAME+'/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
 		} else {
-			webServiceUrl 	=	'http://'+globalIP+context+'/public/getIndividualDriverPerformance?groupId='+$scope.groupName+'&vehicleId='+$scope.vehicleId+'&month='+$scope.month+'&year='+$scope.year;
+			webServiceUrl 	=	GLOBAL.DOMAIN_NAME+'/getIndividualDriverPerformance?groupId='+$scope.groupName+'&vehicleId='+$scope.vehicleId+'&month='+$scope.month+'&year='+$scope.year;
 		}
 		OverallDriverPerformance(webServiceUrl);
 	}
@@ -295,7 +295,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 		$scope.gIndex		=	rowId;
 		$scope.groupName 	=	groupname;
 		$scope.groupVeh		=	true;
-		var groupUrl 		= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupname;
+		var groupUrl 		= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupname;
 		vamoservice.getDataCall(groupUrl).then(function(data) {
 			sessionValue($scope.vehicleId, $scope.groupName);
 			$scope.vehicleId 	  = data[$scope.gIndex].vehicleLocations[0].vehicleId;
@@ -351,18 +351,18 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			startLoading();
 			var webServiceUrl   = 	'';
 			if(status == 'daily')
-				webServiceUrl   	=   'http://'+globalIP+context+'/public/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromUtcTime='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toUtcTime='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
+				webServiceUrl   	=   GLOBAL.DOMAIN_NAME+'/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromUtcTime='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toUtcTime='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
 				// webServiceUrl   	=   'http://'+globalIP+context+'/public/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromDate='+$scope.fromdateDaily+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todateDaily+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
 			else if(status == 'monthly') 
 				if($scope.groupVeh == true)
 				{
 					monthYear();
-					webServiceUrl 	= 	'http://'+globalIP+context+'/public/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
+					webServiceUrl 	= 	GLOBAL.DOMAIN_NAME+'/getOverallDriverPerformance?groupId='+$scope.groupName+'&month='+$scope.month+'&year='+$scope.year;
 				}  
 				else
 				{
 					monthYear();
-					webServiceUrl 	=	'http://'+globalIP+context+'/public/getIndividualDriverPerformance?groupId='+$scope.groupName+'&vehicleId='+$scope.vehicleId+'&month='+$scope.month+'&year='+$scope.year;		
+					webServiceUrl 	=	GLOBAL.DOMAIN_NAME+'/getIndividualDriverPerformance?groupId='+$scope.groupName+'&vehicleId='+$scope.vehicleId+'&month='+$scope.month+'&year='+$scope.year;		
 				}
 					
 			OverallDriverPerformance(webServiceUrl);
@@ -576,7 +576,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			longutide = splitting[1]
 			speed=splitting[3]
 			slow=splitting[2];
-			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			tempurl1 = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
 			detailedJson.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
 			
 		});
@@ -593,7 +593,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			longutide = splitting[1]
 			speed=splitting[3]
 			slow=splitting[2];
-			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			tempurl1 = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
 			detailedJson1.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
 		});
 		$scope.aggressive=detailedJson1;
@@ -609,7 +609,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			longutide = splitting[1]
 			speed=splitting[3]
 			slow=splitting[2];
-			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			tempurl1 = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
 			detailedJson2.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
 		});
 		$scope.harsh=detailedJson2;
@@ -624,7 +624,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			longutide = splitting[1]
 			speed=splitting[3]
 			slow=splitting[2];
-			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			tempurl1 = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
 			detailedJson3.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
 		});
 		$scope.veryharsh=detailedJson3;
@@ -639,7 +639,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', function($scope, $ht
 			longutide = splitting[1]
 			speed=splitting[3]
 			slow=splitting[2];
-			tempurl1 = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
+			tempurl1 = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+','+longutide+"&sensor=true";
 			detailedJson4.push({'address': tempurl1,'speed1' : speed,'slow' : slow,'latitude': latitude,'longutide': longutide,'time':splitting[4]});
 		});
 		$scope.worst=detailedJson4;

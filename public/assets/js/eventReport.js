@@ -1,4 +1,4 @@
-app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, vamoservice, $filter){
+app.controller('mainCtrl',['$scope','vamoservice','$filter', '_global', function($scope, vamoservice, $filter, GLOBAL){
 	
 
 	//global declaration
@@ -43,7 +43,7 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 	//global declartion
 
 	$scope.locations = [];
-	$scope.url = 'http://'+globalIP+context+'/public/getVehicleLocations?group='+getParameterByName('vg');
+	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
 	$scope.gIndex =0;
 
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
@@ -138,7 +138,7 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 			{
 				var latEvent		 =	locationEvent[index4].latitude;
 			 	var lonEvent		 =	locationEvent[index4].longitude;
-				var tempurlEvent =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
+				var tempurlEvent =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
 				delayed4(2000, function (index4) {
 				      return function () {
 				        google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent);
@@ -177,7 +177,7 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		$scope.siteData = [];
 		if((checkXssProtection($scope.uiDate.fromdate) == true) && (checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true)) {
 			
-			var url 	= "http://"+globalIP+context+"/public//getActionReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.uiValue.stop+"&stopMints="+$scope.uiValue.stopmins+"&idle="+$scope.uiValue.idle+"&idleMints="+$scope.uiValue.idlemins+"&notReachable="+$scope.uiValue.notreach+"&notReachableMints="+$scope.uiValue.notreachmins+"&overspeed="+$scope.uiValue.speed+"&speed="+$scope.uiValue.speedkms+"&location="+$scope.uiValue.locat+"&site="+$scope.uiValue.site+'&fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
+			var url 	= GLOBAL.DOMAIN_NAME+"/getActionReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.uiValue.stop+"&stopMints="+$scope.uiValue.stopmins+"&idle="+$scope.uiValue.idle+"&idleMints="+$scope.uiValue.idlemins+"&notReachable="+$scope.uiValue.notreach+"&notReachableMints="+$scope.uiValue.notreachmins+"&overspeed="+$scope.uiValue.speed+"&speed="+$scope.uiValue.speedkms+"&location="+$scope.uiValue.locat+"&site="+$scope.uiValue.site+'&fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
 			vamoservice.getDataCall(url).then(function(responseVal){
 				$scope.recursiveEvent(responseVal, 0);
 				$scope.eventData = responseVal;
@@ -235,7 +235,7 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter', function($scope, va
 		$scope.gName 	= 	groupName;
 		$scope.uiGroup 	= 	$scope.trimColon(groupName);
 		$scope.gIndex	=	groupId;
-		var url  		= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupName;
+		var url  		= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupName;
 		vamoservice.getDataCall(url).then(function(response){
 			stopLoading();
 			$scope.vehicle_list = response;

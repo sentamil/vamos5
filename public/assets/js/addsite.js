@@ -1,6 +1,6 @@
 var getIP = globalIP;
 
-app.controller('mainCtrl',function($scope, $http){
+app.controller('mainCtrl',['$scope', '$http', function($scope, $http){
 
   var line;
   var lineList        = [];
@@ -23,7 +23,7 @@ app.controller('mainCtrl',function($scope, $http){
   var editableColor   = {"editable": true, "strokeColor": '#000', "fillColor": "#7cbae8", "fillOpacity": .7, "strokeWeight": 1};
   marker = new google.maps.Marker({});
   var oldName         = '';
-  $scope.url          = 'http://'+getIP+context+'/public/viewSite';
+  $scope.url          = GLOBAL.DOMAIN_NAME+'/viewSite';
   var myOptions       = {
                           zoom: 7,
                           center: new google.maps.LatLng(12.993803, 80.193075),
@@ -41,22 +41,6 @@ app.controller('mainCtrl',function($scope, $http){
 
   $scope.map         = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
   
-
-  // var polygon = new google.maps.Polygon({
-  //       editable: true,
-  //       strokeOpacity: 0,
-  //       strokeWeight: 0,
-  //       fillColor: '#00FF00',
-  //       fillOpacity: .6,
-  //       paths: [
-  //       new google.maps.LatLng(39, 4),
-  //       new google.maps.LatLng(34, 24),
-  //       new google.maps.LatLng(43, 24),
-  //       new google.maps.LatLng(39, 4)],
-  //       map: $scope.map
-  //   });
-
-
   var polygenValue;
   var shapes = [];
   var drawingManager = new google.maps.drawing.DrawingManager({
@@ -84,12 +68,6 @@ app.controller('mainCtrl',function($scope, $http){
           // }
         });
 
-
-  // $scope.map.data.setControls(['Polygon']);
-  //   $scope.map.data.setStyle({
-  //       editable: true,
-  //       draggable: true
-  //   });
   drawingManager.setMap($scope.map);
 
 
@@ -100,11 +78,7 @@ app.controller('mainCtrl',function($scope, $http){
   });
   
 
-//   google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
-//     var coordinates = (polygon.getPath().getArray());
-//     console.log(coordinates.length);
-//     console.log(coordinates);
-// });
+
 
 
 function listLatLng(_latlng){
@@ -229,7 +203,7 @@ $scope.AddClear = function(){
   {
     //$scope.orgIdlist    = [];
 
-    var url_site          = 'http://'+getIP+context+'/public/viewSite';
+    var url_site          = GLOBAL.DOMAIN_NAME+'/viewSite';
     $http.get(url_site).success(function(response){
       mergeList       = [];
       dropDown=[];
@@ -250,14 +224,7 @@ $scope.AddClear = function(){
     });
   }
 
-  //direct map click 
-  // google.maps.event.addListener($scope.map, 'click', function(event) {
-  //   var latClick   = event.latLng.lat();
-  //   var lanclick   = event.latLng.lng();
-  //   pointToPoint(latClick, lanclick);
-  // });
-
-
+  
   // draw two lat lan as line in map function
   function pointToPoint(lat, lan)
   { 
@@ -543,4 +510,4 @@ $(document).ready(function(){
     });
     //menu loading
     $("#testLoad").load("../public/menu");
-});
+}]);

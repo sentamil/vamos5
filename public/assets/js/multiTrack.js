@@ -1,10 +1,10 @@
-app.controller('mainCtrl',function($scope, $http, vamoservice){
+app.controller('mainCtrl',['$scope', 'vamoservice','_global', function($scope, vamoservice, GLOBAL){
 
 //Global Variables
 $scope.selectScreen 		= ['screen1'];
-getVehicleLocations 		= 'http://'+globalIP+context+'/public//getVehicleLocations';
-getSelectedVehicleLocation  = 'http://'+globalIP+context+'/public/getSelectedVehicleLocation?vehicleId='
-getSelectedVehicleLocation1 = 'http://'+globalIP+context+'/public/getSelectedVehicleLocation1?vehicleId='
+getVehicleLocations 		= GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+getSelectedVehicleLocation  = GLOBAL.DOMAIN_NAME+'/getSelectedVehicleLocation?vehicleId='
+getSelectedVehicleLocation1 = GLOBAL.DOMAIN_NAME+'/getSelectedVehicleLocation1?vehicleId='
 path1 =[];
 path2 =[];
 path3 =[];
@@ -64,7 +64,7 @@ function resolveAddress(response)
 {	var address = ' ';
 	try
 	{
-		var addressUrl 	= 	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+response.latitude+','+response.longitude+"&sensor=true"
+		var addressUrl 	= 	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+response.latitude+','+response.longitude+"&sensor=true"
 		address = (response.address==undefined? getJoke(addressUrl) : response.address)
 		return address;
 	} 
@@ -440,4 +440,4 @@ setInterval(function(){
 	}
 }, 10000)
 
-});
+}]);

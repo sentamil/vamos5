@@ -1,6 +1,6 @@
 //comment by satheesh ++...
 var getIP	=	globalIP;
-app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
+app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global', function($scope, $http, $timeout, $interval, GLOBAL){
 	
 	//$("#testLoad").load("../public/menu");
 	var getUrl  =   document.location.href;
@@ -28,7 +28,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	$scope.mainlist		=	[];
 	$scope.newAddr      = 	{};
 	$scope.groupId 		=   0;
-	$scope.url 			= 	'http://'+getIP+context+'/public/getVehicleLocations';
+	$scope.url 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	
 	$scope.getTodayDate1  =	function(date) {
      	var date = new Date(date);
@@ -84,7 +84,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 
 	
 
-	$scope.url 			  =   'http://'+getIP+context+'/public//getVehicleLocations';
+	$scope.url 			  =   GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	$scope.fromTime       =   '12:00 AM';
 	$scope.vehigroup;
 	$scope.consoldateData =   [];
@@ -148,7 +148,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
     			{
     				if(value.address == undefined)
     				{
-    					var url_address	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+value.latitude+','+value.longitude+"&sensor=true";
+    					var url_address	 =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+value.latitude+','+value.longitude+"&sensor=true";
     					var latCon       =  value.latitude;
     					var loncon		 =  value.longitude;
     					delayed(3000, function (index1, index2) {
@@ -230,7 +230,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		$scope.totime      =  document.getElementById("timeTo").value;
 		if((checkXssProtection($scope.fromdate1) == true) && (checkXssProtection($scope.fromTime) == true) && (checkXssProtection($scope.todate1) == true) && (checkXssProtection($scope.totime) == true)){
 
-			var conUrl1        =  'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
+			var conUrl1        =  GLOBAL.DOMAIN_NAME+'/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
 			var days = daydiff(new Date($scope.fromdate1), new Date($scope.todate1));
 			if(days <= 3)
 				service(conUrl1);
@@ -262,7 +262,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 		startLoading();
 		$scope.stop();
 		$scope.dateFunction();
-		var conUrl              =   'http://'+getIP+context+'/public/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
+		var conUrl              =   GLOBAL.DOMAIN_NAME+'/getOverallVehicleHistory?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todate1+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
 		service(conUrl);
 	}
 	
@@ -296,7 +296,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 			
 		else
 			$scope.dateFunction(); 
-		var conUrl              =   'http://'+getIP+context+'/public/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.fromdate1+'&toTime='+convert_to_24h($scope.totime)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
+		var conUrl              =   GLOBAL.DOMAIN_NAME+'/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.fromdate1+'&toTime='+convert_to_24h($scope.totime)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
 		
 		$scope.tripData 	=	[];
 		if(checkXssProtection($scope.fromdate1) == true){
@@ -339,7 +339,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 
     $scope.address_click = function(data, ind)
 	{
-		var urlAddress 		=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
+		var urlAddress 		=	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
 		$http.get(urlAddress).success(function(response)
 		{
 			data.address 	=	response.results[0].formatted_address;
@@ -372,7 +372,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 					//console.log(' address idle'+index3)
 					var latIdle		 =	location[index3].latitude;
 				 	var lonIdle		 =	location[index3].longitude;
-					var tempurlIdle	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latIdle+','+lonIdle+"&sensor=true";
+					var tempurlIdle	 =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latIdle+','+lonIdle+"&sensor=true";
 					//console.log(' Idle report  '+index3)
 					delayed1(3000, function (index3) {
 					      return function () {
@@ -420,7 +420,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	};
 	$scope.getLocation	=	function(lat,lon,ind) {
 		console.log(' calling function ')
-		var tempurl	 =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
+		var tempurl	 =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
 		$scope.loading	=	true;
 		$http.get(tempurl).success(function(data){	
 			$scope.locationname = data.results[0].formatted_address;
@@ -431,7 +431,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	};
 	
 	$scope.getStatusReport		=		function() {
-		 $scope.url = 'http://'+getIP+context+'/public//getVehicleLocations?group='+$scope.vvid;
+		 $scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+$scope.vvid;
 	}
 	
 	$scope.getTodayDate		=		function() {
@@ -467,7 +467,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
 	$scope.groupSelection = function(groupname, groupid){
 		$scope.groupId 	= 	groupid;
 		$scope.vehigroup = groupname;
-		$scope.url     	= 	'http://'+getIP+context+'/public//getVehicleLocations?group='+$scope.vehigroup;
+		$scope.url     	= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+$scope.vehigroup;
 		$('#preloader').show(); 
 		$('#preloader02').show();
 		if($('#consoldate').attr('id')=='consoldate')
@@ -493,7 +493,7 @@ app.controller('mainCtrl',function($scope, $http, $timeout, $interval){
     };
     
     
-});
+}]);
 
 app.directive("getLocation", function () {
   return {

@@ -1,8 +1,8 @@
-app.controller('mainCtrl',function($scope, $location, vamoservice){
+app.controller('mainCtrl',['$scope', '$location', 'vamoservice','_global', function($scope, $location, vamoservice, GLOBAL){
 	
 var url             = $location.absUrl();
 $scope._tabValue    = url.includes("groupEdit");
-var _gUrl           = 'http://'+globalIP+context+'/public/getVehicleLocations';
+var _gUrl           = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 
 $scope.sort         = {sortingOrder : 'vehicles', reverse : true };
 $scope.notifyUpdate = [];
@@ -363,4 +363,4 @@ $scope.error        = '';
     })
   }
 
-});
+}]);

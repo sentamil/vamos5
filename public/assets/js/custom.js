@@ -52,7 +52,7 @@ app.filter('statusfilter', function(){
 	}
 });
  
-app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($scope, $http, vamoservice, $filter, statusfilter){
+app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', '_global', function($scope, $http, vamoservice, $filter, GLOBAL){
 	
 	$scope.locations = [];
 	$scope.nearbyLocs =[];
@@ -68,7 +68,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', function($
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
-	$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations';
+	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	$scope.historyfor='';
 	$scope.map =  null;
 	$scope.flightpathall = []; 
@@ -300,7 +300,7 @@ var markerSearch = new google.maps.Marker({});
 
 	function updateCall()
 	{
-		var url = 'http://'+globalIP+context+'/public//getVehicleLocations';
+		var url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 		$http.get(url).success(function(response){
 			for (var i = 0; i < response[$scope.gIndex].vehicleLocations.length; i++) 
 			{
@@ -418,7 +418,7 @@ var markerSearch = new google.maps.Marker({});
     	$('#preloader').show();
 		$scope.selected=undefined;
 		$scope.dynamicvehicledetails1=false;
-		$scope.url = 'http://'+globalIP+context+'/public//getVehicleLocations?group=' + groupname;
+		$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group=' + groupname;
 		
 		$scope.gIndex = groupid;
 		
@@ -517,7 +517,7 @@ var markerSearch = new google.maps.Marker({});
 			{
 				$scope.split_fcode($scope.fcode[0].group);
 				var f_code = $scope.split_fcode($scope.fcode[0].group);
-				var f_code_url ='http://'+globalIP+context+'/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
+				var f_code_url = GLOBAL.DOMAIN_NAME+'/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
 				var ecrypt_code_url = '';
 				$http.get(f_code_url).success(function(result){
 					
@@ -651,7 +651,7 @@ var markerSearch = new google.maps.Marker({});
 	}
 	
 	$scope.enterkeypress = function(){
-		var url = 'http://'+globalIP+context+'/public//setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
+		var url = GLOBAL.DOMAIN_NAME+'/setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
 		if(document.getElementById('poival').value=='' || $scope.vehicleno==''){}else{
 			vamoservice.getDataCall(url).then(function(data) {
 			 	document.getElementById('poival').value='';
@@ -930,7 +930,7 @@ function locat_address(locs) {
 
 
 	function siteInvoke(val){
-		var url_site          = 'http://'+globalIP+context+'/public/viewSite';
+		var url_site          = GLOBAL.DOMAIN_NAME+'/viewSite';
 		vamoservice.getDataCall(url_site).then(function(data) {
 			// console.log(data)
 			if(data.siteParent)
@@ -1012,7 +1012,7 @@ function locat_address(locs) {
 				}else if($scope.nearbyflag==true){
 					// $('#status02').show(); 
 					// $('#preloader02').show(); 
-					var tempurl = 'http://'+globalIP+context+'/public//getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
+					var tempurl = GLOBAL.DOMAIN_NAME+'/getNearByVehicles?lat='+event.latLng.lat()+'&lng='+event.latLng.lng();
 					
 					$http.get(tempurl).success(function(data){
 						$scope.nearbyLocs = data;
@@ -1109,7 +1109,7 @@ function locat_address(locs) {
 	$scope.address_click = function(data, ind)
 	{
 		console.log(' inside the address function')
-		var tdurl 		=	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
+		var tdurl 		=	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+data.latitude+','+data.longitude+"&sensor=true"
 		vamoservice.getDataCall(tdurl).then(function(response) {
 			console.log(response)
 			// data.address 	=	response.results[0].formatted_address;
@@ -1145,7 +1145,7 @@ function locat_address(locs) {
 					ginfowindow[j].close();
 				}
 				ginfowindow[i].open($scope.map,gmarkers[i]);
-				var url = 'http://'+globalIP+context+'/public//getGeoFenceView?vehicleId='+$scope.vehicleno;
+				var url = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?vehicleId='+$scope.vehicleno;
 				$scope.createGeofence(url);
 				
 			}

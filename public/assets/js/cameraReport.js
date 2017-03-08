@@ -1,4 +1,4 @@
-app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', function($scope,$http,vamoservice, $filter){
+app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', function($scope,$http,vamoservice, $filter, GLOBAL){
 
 //global declaration
 	$scope.uiDate 				=	{};
@@ -66,13 +66,11 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', function($s
 
   			}
 
-   //http://128.199.159.130:9000/getPictures?userId=GT03Test&vehicleId=GT03ATest&date=20170302&sTime=17&eTime=18
-
    function webCall(){
 
    	$scope.imgData=[];
 
-    var imgUrl ='http://'+globalIP+context+'/public/getPictures?vehicleId='+vehcId+'&date='+$scope.trimHyphen($scope.uiDate.fromdate)+'&sTime='+$scope.trimColon($scope.uiDate.fromtime)+'&eTime='+$scope.trimColon($scope.uiDate.totime);
+    var imgUrl = GLOBAL.DOMAIN_NAME+'/getPictures?vehicleId='+vehcId+'&date='+$scope.trimHyphen($scope.uiDate.fromdate)+'&sTime='+$scope.trimColon($scope.uiDate.fromtime)+'&eTime='+$scope.trimColon($scope.uiDate.totime);
       console.log(imgUrl);
 
         $http.get(imgUrl).success(function(data){
@@ -95,7 +93,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', function($s
 	//global declartion
 
 	$scope.locations = [];
-	$scope.url = 'http://'+globalIP+context+'/public/getVehicleLocations?group='+getParameterByName('vg');
+	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
 	$scope.gIndex =0;
 
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
@@ -161,7 +159,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', function($s
 			{
 				var latEvent		 =	locationEvent[index4].latitude;
 			 	var lonEvent		 =	locationEvent[index4].longitude;
-				var tempurlEvent =	"http://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
+				var tempurlEvent =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
 				delayed4(2000, function (index4) {
 				      return function () {
 				        google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent);
@@ -280,7 +278,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', function($s
 		$scope.gName 	= 	groupName;
 		$scope.uiGroup 	= 	$scope.trimColon(groupName);
 		$scope.gIndex	=	groupId;
-		var url  		= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupName;
+		var url  		= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupName;
 		vamoservice.getDataCall(url).then(function(response){
 			stopLoading();
 			$scope.vehicle_list = response;

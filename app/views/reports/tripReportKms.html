@@ -355,10 +355,10 @@ background-color: #ffffff;
     <script>
 
     var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
-var url = "http://maps.google.com/maps/api/js?sensor=false";
+var url = "https://maps.google.com/maps/api/js?sensor=false";
 
 if(apikey_url != null ||  apikey_url != undefined)
-        url = "http://maps.google.com/maps/api/js?key="+apikey_url;
+        url = "https://maps.google.com/maps/api/js?key="+apikey_url;
     
    function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
      if (scriptsCollection[startIndex]) {
@@ -396,7 +396,7 @@ if(apikey_url != null ||  apikey_url != undefined)
    
    
 
-   scriptLibrary.push("http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js");
+   scriptLibrary.push("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js");
 
 
    // scriptLibrary.push("assets/js/infobubble.js");
