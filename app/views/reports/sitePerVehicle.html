@@ -180,11 +180,16 @@ background-color: #ffffff;
         <div class="col-md-12">
             <div class="box box-primary">
                     <div class="pull-right">
+                    <!-- <input type="search" class="form-control input-sm" placeholder="Search" ng-model="searchboxExe" name="search" /> -->
                         <img style="cursor: pointer;" ng-click="exportData('sitereport')"  src="../app/views/reports/image/xls.png" />
                         <img style="cursor: pointer;" ng-click="exportDataCSV('sitereport')"  src="../app/views/reports/image/csv.jpeg" />
                     </div>
                     <div class="box-body" id="sitereport">
-                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">Site Report <span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
+                <div class="empty" align="center"></div> 
+                <p style="margin:0" class="page-header">Site Report 
+                <span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span>
+                <!-- <div class="pull-right"><input type="search" class="form-control input-sm" placeholder="Search" ng-model="searchboxExe" name="search" /> --></div>
+                </p> 
                             
                                 <table class="table table-bordered table-striped table-condensed table-hover">
                                     <thead>
@@ -192,9 +197,10 @@ background-color: #ffffff;
                                             <td>Vehicle Group</td>
                                             <td>{{uiGroup}}</td>
                                             <td>Vehicle Name</td>
-                                            <td colspan="2">{{shortNam}}</td>   
+                                            <td>{{shortNam}}</td>
+                                            <td><input type="search" class="form-control input-sm" placeholder="Search" ng-model="searchboxExe" name="search" /></td>   
                                         </tr>
-                                        <tr><td colspan="4"></td></tr>
+                                        <tr><td colspan="5"></td></tr>
                                         <tr style="text-align:center;font-weight: bold;">
                                             <th class="id" custom-sort order="'startTime'" sort="sort" style="text-align:center;" width="25%">Date &amp; Time</th>
                                             <th class="id" custom-sort order="'state'" sort="sort" style="text-align:center;" width="15%">Status</th>
@@ -204,7 +210,7 @@ background-color: #ffffff;
                                         </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="active" style="text-align:center" ng-repeat="ignition in siteData | orderBy:sort.sortingOrder:sort.reverse">
+                                    <tr class="active" style="text-align:center" ng-repeat="ignition in siteData | orderBy:sort.sortingOrder:sort.reverse | filter:searchboxExe">
                                         <td>{{ignition.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td>{{ignition.state}}</td>
                                        <td>
@@ -220,7 +226,7 @@ background-color: #ffffff;
                                         <!-- <td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td> -->
                                     </tr>
                                     <tr align="center">
-                                        <td ng-if="siteData=='' || siteData.length==0" colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                        <td ng-if="siteData=='' || siteData.length==0" colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                     </tr>
                                 </tbody>
                                 </table>
