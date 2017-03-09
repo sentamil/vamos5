@@ -1,0 +1,20 @@
+#!/bin/bash
+set -x
+#GET LATEST UPDATE PRODUCTION_JAR FILE
+l=$(gsutil ls -l gs://production_jar/ |  awk '{print }' | tail -2 | grep gs://production_jar/easyLocater-rest-service | awk '{print $3}')
+ll="gsutil cp $l"
+cd /prd/vamos/backend2016/
+cc=$($ll .)
+s=$(gsutil ls -l gs://production_jar/ |  awk '{print }' | tail -2 | grep gs://production_jar/easyLocater-rest-service | awk '{print $3}' | awk -F'r/' '{print $2}')
+#r=$(echo "$l" | awk -F'r/' '{print $2}')
+jar xvf /prd/vamos/backend2016/$s
+
+cp /prd/vamos/backend2016/restServices.sh /prd/vamos/codebase/restServices/
+cp /prd/vamos/backend2016/scheduler.sh /prd/vamos/codebase/scheduler/
+cp /prd/vamos/backend2016/deviceCapture.sh /prd/vamos/codebase/deviceCapture/
+
+#PULL NEW CODE
+cd /var/www/gitsrc/vamos/
+#pull=$(git reset --hard origin/master;git pull origin master)
+echo -ne '\n' |git reset --hard origin/master
+echo -ne '\n' |git pull origin master
