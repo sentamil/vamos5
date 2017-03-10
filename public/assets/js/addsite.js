@@ -1,6 +1,6 @@
 var getIP = globalIP;
 
-app.controller('mainCtrl',['$scope', '$http', function($scope, $http){
+app.controller('mainCtrl',['$scope', '$http', '_global', function($scope, $http, GLOBAL){
 
   var line;
   var lineList        = [];
