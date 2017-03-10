@@ -3,12 +3,16 @@ app.controller('mainCtrl', ['$scope', '$filter','vamoservice', '_global', functi
 // tab view
 var getUrl  =   document.location.href;
 var tabId 	= 	'executive';
-var index   =   getUrl.split("=")[1];
-	if(index) {
+var index   =   getParameterByName("ind");
+	if(index == 1) {
 		tabId 				= 'poi';
 		$scope.downloadid 	= 'poi';
 		$scope.actTab 		= true;
 		$scope.sort 		= sortByDate('time')
+	} else if(index == 2){
+		$scope.downloadid 	= 'consolidated';
+		$scope.actCons 		= true;
+		$scope.sort 		= sortByDate('date')
 	} else {
 		$scope.downloadid 	= 'executive';
 		$scope.sort 		= sortByDate('date')
@@ -336,19 +340,26 @@ $scope.alertMe 		= 	function(tabClick)
 	if(avoidOnload == true)
 	switch (tabClick){
 		case 'executive':
+			startLoading();
 			tabId 				= 'executive';
 			$scope.sort 		= sortByDate('date');
 			$scope.downloadid 	= 'executive';
-			startLoading();
 			serviceCall();
 			break;
 		case 'poi':
+			startLoading();
 			$scope.sort 		= sortByDate('time');
 			tabId				= 'poi';
 			$scope.downloadid 	= 'poi';
-			startLoading();
 			serviceCall();
 			//console.log('poi');
+			break;
+		case 'consolidated' :
+			startLoading();
+			$scope.sort 		= sortByDate('date');
+			tabId 				= 'executive';
+			$scope.downloadid 	= 'consolidated';
+			serviceCall();
 			break;
 		default :
 			break;

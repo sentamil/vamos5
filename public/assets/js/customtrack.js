@@ -39,19 +39,17 @@ app.directive('map', function($http, vamoservice) {
 				fuelLtr 		 = parseInt(locs.fuelLitre);
 				total  			 = parseInt(locs.speed);
 				
-
-				if(data.address == null || data.address == undefined || data.address == ' ')
+				if((data && data != '') && (data.address == null || data.address == undefined || data.address == ' '))
 					scope.getLocation(locs.latitude, locs.longitude, function(count){
 						$('#lastseentrack').text(count);
 						data.address = count;
 						scope.addres = count;  
  
-                                   if(data.position == 'M'){
-		   					             scope.histVal.unshift(data);
-                                            }
-		   				                   else{
-		   					                 scope.histVal[0]=data;
-		   				                        }
+                        if(data.position == 'M'){
+			            	scope.histVal.unshift(data);
+                        }else{
+			            	scope.histVal[0]=data;
+		                }
 
 					});
 				else{
@@ -343,7 +341,7 @@ $(document).on('pageshow', '#maploc', function(e, data){
 					// 	$('#lastseentrack').text(count); 
 					// });
 
-					if(data.address == null || data.address == undefined || data.address == ' '){
+					if((data && data != '') && (data.address == null || data.address == undefined || data.address == ' ')){
 						scope.getLocation(locs.latitude, locs.longitude, function(count){
 							$('#lastseentrack').text(count);
 							data.address = count;

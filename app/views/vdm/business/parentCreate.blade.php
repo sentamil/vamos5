@@ -234,7 +234,7 @@
 													<tr style="height: 50px">
 														<td class="col-md-2">{{ Form::text('shortName'.$i, Input::old('shortName'), array('class' => 'form-control','placeholder'=>'Vehicle Name')) }} </td>
 														<td class="col-md-2">{{ Form::text('regNo'.$i, Input::old('regNo'), array('class' => 'form-control','placeholder'=>'Reg No')) }}</td>
-														<td class="col-md-2">{{ Form::select('vehicleType'.$i, array( 'Car'=>'Vehicle Type','Car' => 'Car', 'Truck' => 'Truck','Bus' => 'Bus'), Input::old('vehicleType'), array('class' => 'form-control')) }}</td>
+														<td class="col-md-2">{{ Form::select('vehicleType'.$i, array( 'Car'=>'Vehicle Type','Car' => 'Car', 'Truck' => 'Truck','Bus' => 'Bus', 'Bike' => 'Bike'), Input::old('vehicleType'), array('class' => 'form-control')) }}</td>
 														<td class="col-md-2">{{ Form::select('oprName'.$i, array('airtel'=>'Operator', 'airtel' => 'airtel', 'reliance' => 'reliance','idea' => 'idea'), Input::old('oprName'), array('class' => 'form-control')) }}</td>
 														<td class="col-md-2">{{ Form::select('fuel'.$i,  array( 'no' => 'Fuel No','yes' => 'Fuel Yes' ), Input::old('fuel'), array('class' => 'form-control')) }}</td>
 														<td class="col-md-2">{{ Form::text('altShortName'.$i, Input::old('altShortName'), array('class' => 'form-control','placeholder'=>'Alternate Short Name')) }}</td>

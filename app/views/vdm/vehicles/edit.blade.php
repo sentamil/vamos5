@@ -45,7 +45,7 @@
 
 								<div class="form-group">
 									{{ Form::label('vehicleType', 'Vehicle Type') }}
-									{{ Form::select('vehicleType', array( 'Car' => 'Car', 'Truck' => 'Truck','Bus'=>'Bus'), $refData['vehicleType'], array('class' => 'form-control')) }}           
+									{{ Form::select('vehicleType', array( 'Car' => 'Car', 'Truck' => 'Truck','Bus'=>'Bus', 'Bike' => 'Bike'), $refData['vehicleType'], array('class' => 'form-control')) }}           
 								</div>
 
 								<div class="form-group">

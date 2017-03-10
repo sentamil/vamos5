@@ -95,7 +95,7 @@
 		$.post('{{ route("ajax.groupIdCheck") }}',postValue)
 			.done(function(data) {
 				if(data=='fail')
-				$('#validation').text('No groups available ,Please select another user');
+				$('#validation').text('This Group is taken, Try another');
         		console.log("Sucess-------->"+data);
         		
       		}).fail(function() {

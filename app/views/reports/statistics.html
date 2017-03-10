@@ -138,11 +138,11 @@ background-color: #ffffff;
                    
                      <tabset class="nav-tabs-custom">
 
-                         <tab select="alertMe('executive')" heading="Executive"  active="tabActive">
+                         <tab select="alertMe('executive')" heading="Daily"  active="tabActive">
                          <div class="form-group pull-right">
                                 <input type="search" class="form-control input-sm" placeholder="Search" ng-model="searchboxExe" name="search" />
                             </div>
-                             <h4 style="margin:0" class="page-header">Executive</h4>
+                             <h4 style="margin:0" class="page-header">Daily</h4>
                              <div id='executive'>
                               <table class="table table-bordered table-condensed table-hover table-striped">
                                     <tr ng-hide="true" style="font-weight: bold;">
@@ -214,6 +214,55 @@ background-color: #ffffff;
                                     </tr>           
                             </table>
                           
+                            </div>
+                         </tab>
+
+                         <tab select="alertMe('consolidated')" heading="Consolidated" active="actCons"> 
+                            <div class="form-group pull-right">
+                                <input type="search" class="form-control input-sm" placeholder="Search" ng-model="searchboxExe" name="search" />
+                            </div>
+                             <h4 style="margin:0" class="page-header">Consolidated</h4>
+                             <div id='consolidated'>
+                              <table class="table table-bordered table-condensed table-hover table-striped">
+                                    <tr ng-hide="true" style="font-weight: bold;">
+                                        <td>Vehicle Group : {{data1.group}}</td>                      
+                                        <td style="text-align: right;">Report Date : {{fromdate}} - {{todate}}</td>             
+                                    </tr>
+                                   
+                                    <tr style="text-align:center; font-weight: bold;">
+                                        <td>StartDate</td>
+                                        <td>EndDate</td>
+                                        <td custom-sort order="'user[0]'" sort="sort" style="text-align:center;">VehicleName</td>
+                                        <td custom-sort order="'user[1]'" sort="sort" style="text-align:center;">Distance Kms</td>
+                                        <!-- <td width="15%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">Distance (Kms)</td>
+                                        <td width="55%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Distance (Kms)</td> -->
+                                        <!-- <td width="7%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">ParkCount</td>
+                                        <td width="7%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">OverSpeed Count</td>
+                                        <td width="7%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Start</td>
+                                        <td width="7%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo End</td>
+                                       
+                                        <td width="7%" class="id" custom-sort order="'totalRunningTime'" sort="sort" style="text-align:center;">Moving (h:m:s)</td>
+                                        <td width="7%" class="id" custom-sort order="'totalIdleTime'" sort="sort" style="text-align:center;">Idle (h:m:s)</td> -->
+                                       
+                                    </tr>
+                                    <tr ng-repeat="user in barArray | orderBy:sort.sortingOrder:sort.reverse | filter:searchboxExe" ng-if ="user.distanceMonth !=0" style="text-align:center; font-size: 12px">
+                                        <td>{{fromdate}}</td>
+                                        <td>{{todate}}</td>
+                                        <td>{{user[0]}}</td>
+                                        <td>{{user[1]}}</td>
+                                        <!-- <td>{{user.distanceMonth}}</td>
+                                        <td>{{user.address}}</td> -->
+                                        <!-- <td>{{user.parkingCount}}</td>
+                                        <td>{{user.overSpeedInstances}}</td>
+                                        <td>{{user.odoOpeningReading}}</td>
+                                        <td>{{user.odoClosingReading}}</td>
+                                        <td>{{msToTime(user.totalRunningTime)}}</td>
+                                        <td>{{msToTime(user.totalIdleTime)}}</td> -->
+                                       </tr>
+                                     <tr ng-if="execGroupReportData=='' || execGroupReportData==null || execGroupReportData.length==0" align="center">
+                                        <td colspan="9" class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                     </tr>
+                                </table>
                             </div>
                          </tab>
                      </tabset>
