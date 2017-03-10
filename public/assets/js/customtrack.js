@@ -45,6 +45,14 @@ app.directive('map', function($http, vamoservice) {
 						$('#lastseentrack').text(count);
 						data.address = count;
 						scope.addres = count;  
+ 
+                                   if(data.position == 'M'){
+		   					             scope.histVal.unshift(data);
+                                            }
+		   				                   else{
+		   					                 scope.histVal[0]=data;
+		   				                        }
+
 					});
 				else{
 						$('#lastseentrack').text(data.address);
@@ -293,12 +301,12 @@ $(document).on('pageshow', '#maploc', function(e, data){
                      linesCount=0;
                     }
 
-		   			if(data != '' && data){
+		   		/*	if(data != '' && data){
 		   				if(data.position == 'M')
 		   					scope.histVal.unshift(data);
 		   				else
 		   					scope.histVal[0]=data;
-		   			}
+		   			}*/
 		   			
 		   			var locs = data;
 
@@ -335,22 +343,31 @@ $(document).on('pageshow', '#maploc', function(e, data){
 					// 	$('#lastseentrack').text(count); 
 					// });
 
-
-					if(data.address == null || data.address == undefined || data.address == ' ')
+					if(data.address == null || data.address == undefined || data.address == ' '){
 						scope.getLocation(locs.latitude, locs.longitude, function(count){
 							$('#lastseentrack').text(count);
 							data.address = count;
 							scope.addres = count;  
-						});
+                             
+
+                                   if(data.position == 'M'){
+		   					             scope.histVal.unshift(data);
+                                            }
+		   				                   else{
+		   					                 scope.histVal[0]=data;
+		   				                        }
+
+						                   });
+					}
 					else{
 						$('#lastseentrack').text(data.address);
 						scope.addres = data.address;   
 					}
-           			
-           scope.path.push(new google.maps.LatLng(data.latitude, data.longitude));
+
+           
+                scope.path.push(new google.maps.LatLng(data.latitude, data.longitude));
                       
            			
-					
 					if(scope.path.length>1){
 					 	var latLngBounds = new google.maps.LatLngBounds();
 						latLngBounds.extend(scope.path[scope.path.length-1]);
@@ -445,9 +462,44 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
     $scope.rotationd=null;
 
 	$('#graphsId').hide();
+
+
+
+
+	$scope.getLocation = function(lat,lon, callback){
+		geocoder = new google.maps.Geocoder();
+		var latlng = new google.maps.LatLng(lat, lon);
+		geocoder.geocode({'latLng': latlng}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+			  if (results[1]) {
+				if(typeof callback === "function") callback(results[1].formatted_address)
+			  } else {
+				//alert('No results found');
+			  }
+			} else {
+			}
+		  });
+    };
+
+
+
 	vamoservice.getDataCall($scope.url).then(function(data) {
-		$scope.locations = data;
-		$scope.histVal.push(data);
+
+	    $scope.locations = data;
+	/*	var locs=data;
+	             $scope.getLocation(locs.latitude, locs.longitude, function(count){
+						data.address = count;
+						//$scope.addres = count;  
+ 
+                                   if(data.position == 'M'){
+		   					             $scope.histVal.push(data);
+                                            }
+		   				                   else{
+		   					                 $scope.histVal[0]=data;
+		   				                    }
+					});*/
+	//	$scope.histVal.push(data);
+
 		var url = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?'+res[1];
 				$scope.createGeofence(url);
 
@@ -459,6 +511,8 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 	              }
                   $('#graphsId').show();
 	});
+
+
     $scope.addMarker= function(pos){
 	   var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
 	   var marker = new google.maps.Marker({
@@ -487,20 +541,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 		
 	}
 
-	$scope.getLocation = function(lat,lon, callback){
-		geocoder = new google.maps.Geocoder();
-		var latlng = new google.maps.LatLng(lat, lon);
-		geocoder.geocode({'latLng': latlng}, function(results, status) {
-			if (status == google.maps.GeocoderStatus.OK) {
-			  if (results[1]) {
-				if(typeof callback === "function") callback(results[1].formatted_address)
-			  } else {
-				//alert('No results found');
-			  }
-			} else {
-			}
-		  });
-    };
+
 	$scope.enterkeypress = function(){
 		if(checkXssProtection(document.getElementById('poival').value) == true){
 			var poiUrl = GLOBAL.DOMAIN_NAME+'/setPOIName?vehicleId='+$scope.vehicleno+'&poiName='+document.getElementById('poival').value;
