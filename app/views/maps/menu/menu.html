@@ -12,7 +12,7 @@
                 <li><a id="singleTrack" href="">Single Track</a></li>
                 <li><a id="multiTrack" href="">Multi Track</a></li>
                 <li class="removeli"><a href="../public/track?maps=replay&rt=routes">Routes</a></li>
-                <li><!-- <a id="addsites">Admin</a>
+                <li class="removeli"><!-- <a id="addsites">Admin</a>
                    <div  style="padding-left: 10px"> -->
                        <a href="../public/password_check" id="addsites">AddSites / Geo Fence</a>
                  <!--   </div> -->
@@ -267,7 +267,7 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             if(isVir == null || isVir == undefined){
                 var globalIP = document.location.host;
                 var contextMenu = '/gps';
-                $.get('https://'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
+                $.get('//'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
                 
                     var menuVal =response.trim();
                     sessionStorage.setItem('isVirtualUser', JSON.stringify(menuVal));
