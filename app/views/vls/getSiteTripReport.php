@@ -1,5 +1,5 @@
 <?php
-Log::info("Get multi site getSiteSummary...");
+Log::info("Get multi site getSiteTripReport...");
 
 $input = Input::all();
 $redis = Redis::connection ();
@@ -7,7 +7,7 @@ $ipaddress = $redis->get('ipaddress');
 
 
 if (! Auth::check ()) {
-	return Redirect::to ( 'login' );
+  return Redirect::to ( 'login' );
 }
 
 $username = Auth::user ()->username;
@@ -25,10 +25,10 @@ $web="web";
  $parameters="{$parameters}&{$web}={$val}";
  log::info( ' parameters :' . $parameters);
 
-		 $url = 'http://' .$ipaddress .':9000/getSiteSummary' . $parameters;
-		// $url=htmlspecialchars_decode($url);
-		 log::info( 'Routing to backed  :' . $url );
-     $url = str_replace ( ' ', '%20', $url);
+    $url = 'http://' .$ipaddress .':9000/getSiteTripReport' . $parameters;
+    $url=htmlspecialchars_decode($url);
+    $url = str_replace ( ' ', '%20', $url);
+    log::info( 'Routing to backed  :' . $url );
 
     $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
@@ -37,11 +37,14 @@ $web="web";
   curl_setopt($ch, CURLOPT_TIMEOUT, 20);
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
   $response = curl_exec($ch);
-	 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+   $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
   curl_close($ch);
 log::info( 'curl status  :' .$httpCode  );
 
 echo $response;
 ?>
+
+
+
 
 

@@ -75,12 +75,9 @@ Route::get('/live', function() {
     return Redirect::to('login');
 });
 
-Route::get('/replay', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    return View::make('maps.replay');
-});
+// Route::get('/replay', function(){
+//     return View::make('maps.double');
+// });
 
 
 Route::get('/newUI', function(){
@@ -276,6 +273,14 @@ Route::get('multiSite', function(){
     return View::make('reports.multiSiteReport');
 });
 
+Route::get('tripSite', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    Log::info(' tripSite ');
+    return View::make('reports.multiSiteReport');
+});
+
 Route::get('/printStops', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -340,6 +345,14 @@ Route::get('/getTripSummary', function() {
     Log::info('get getTripSummary');
     return View::make('vls.getTripSummary');
 });
+
+Route::get('/getSiteTripReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get getSiteTripReport');
+    return View::make('vls.getSiteTripReport');
+});
  
 Route::get('/getActionReport', function() {
     if (!Auth::check()) {
@@ -347,6 +360,22 @@ Route::get('/getActionReport', function() {
     }
     Log::info('get Vehicle Locations');
     return View::make('vls.getActionReport');
+});
+
+Route::post('/addMobileNumberSubscription', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get addMobileNumberSubscription');
+    return View::make('vls.addMobileNumberSubscription');
+});
+
+Route::get('/getSpecificRouteDetails', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get getSpecificRouteDetails');
+    return View::make('vls.getSpecificRouteDetails');
 });
  
 
@@ -416,13 +445,7 @@ Route::get('/getVehicleExp', function() {
     return View::make('vls.getVehicleExp');
 });
  
-Route::get('/getPictures', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    Log::info('get Camera Pictures');
-    return View::make('vls.getPictures');
-});
+ 
  
 Route::get('/getPoiHistory', function() {
     if (!Auth::check()) {

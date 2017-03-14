@@ -111,13 +111,26 @@ function plottinGraphs(valueGraph, timeData){
 
 	var tab = getParameterByName('tn');
 	$scope.sort = sortByDate('date');
-                
+	
+	/*
+		THIS TWO VARIABLES FOR MUITLE SITE AND SITE TRIP REPORT ONLY
+	*/
+	$scope.caption 		= 'Multiple Site Report';
+	$scope.hideShow 	= false;
+
     if(tab == 'tripkms' || tab == 'site' || tab == 'multiSite')
     	$scope.sort 	= 	sortByDate('startTime')        						
 	else if (tab == 'rfid')
 		$scope.sort 	= 	sortByDate('fromTime')
     else if(tab == 'alarm')
-    	$scope.sort 	= 	sortByDate('alarmTime') 
+    	$scope.sort 	= 	sortByDate('alarmTime')
+    else if(tab == 'tripSite'){
+
+    	$scope.caption 	= 'Site Trip';
+    	$scope.hideShow = true;	
+
+
+    } 
     	
 	//global declartion
 
@@ -235,6 +248,10 @@ function plottinGraphs(valueGraph, timeData){
 					return
 				}
 				break;
+			case 'tripSite':
+				urlWebservice   =  $scope.g_Url+"/getSiteTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&language=en"+"&site1="+$scope._site1.siteName+"&site2="+$scope._site2.siteName;				
+				
+				break;
 			default :
 				break;
 			}
@@ -294,6 +311,13 @@ function plottinGraphs(valueGraph, timeData){
 	$scope.rfidSplit 	= 	function(value, index){
 		var _tageValue = value.split(';');
 		return (index == 'one') ? _tageValue[0] :  _tageValue[1];
+	}
+
+
+	$scope.histRedirect 	=	function(obj, ind){
+		var url_Hist 		= '../public/track?maps=replay&vehicleId='+$scope.vehiname+'&gid='+$scope.gName;
+		var ind_list 		= (ind % 2) ? [ind-1, ind] : [ind, ind+1];
+		window.open(url_Hist+'&fTime='+obj[ind_list[0]].startTime+'&tTime='+obj[ind_list[1]].endTime, '_blank');
 	}
 
 
@@ -415,14 +439,15 @@ function plottinGraphs(valueGraph, timeData){
 						angular.forEach(data[$scope.gIndex].vehicleLocations, function(value, keys){
 							if($scope.vehiname == value.vehicleId){
 								$scope.shortNam	= value.shortName;
-								if(tab == 'multiSite')
+								if(tab == 'multiSite' || tab == 'tripSite')
 								{
 									$scope.orgId 	= value.orgId;
 									var siteValue = getSite();
 									angular.forEach(JSON.parse(siteValue).siteParent, function(val, key){
 						      			if(val.orgId == $scope.orgId){
 						      				if(val.site.length > 0){
-						      					siteNames.push({'siteName':'All'});
+						      					if(tab == 'multiSite')
+						      						siteNames.push({'siteName':'All'});
 						      					angular.forEach(val.site, function(siteName, keys){
 							      					siteNames.push(siteName);
 
