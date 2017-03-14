@@ -796,7 +796,12 @@ var queue1 = [];
 
 			}
 		sessionValue($scope.trackVehID, $scope.groupname)
-		$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
+
+		if(getParameterByName('fTime') && getParameterByName('tTime'))
+			$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDateUTC='+getParameterByName('fTime')+'&toDateUTC='+getParameterByName('tTime');			
+		else
+			$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
+			
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
 		// stopLoading();
 		})
