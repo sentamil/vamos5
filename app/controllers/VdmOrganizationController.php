@@ -1298,4 +1298,24 @@ public function _deleteRoutes(){
 	// return 'true';
 }
 
+public function getStopName(){
+
+	log::info('###### getStopeName function starts ######');
+	if(!Auth::check()) {
+        return Redirect::to('login');
+    }
+    $redis 		= Redis::connection ();
+    $username 	= Auth::user()->username;
+    $fcode 		= $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+    $orgIds 	= Input::get('orgId');
+    $stopName 	= [];
+    if(count($orgIds) > 0)
+    	foreach ($orgIds as $k => $val) {
+	    	$stopName	 	=  array_add($stopName, $val, $redis->smembers('S_Organisation_Route_'.$val.'_'.$fcode));
+	    }
+	log::info('###### getStopeName function end ######');
+    return $stopName;
+
+}
+
 }

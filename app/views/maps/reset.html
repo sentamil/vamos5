@@ -131,7 +131,7 @@
           <div class="panel-body" ng-hide="switchingVar">
           <h6 style="color: red">{{error}}</h6>
           <div class="col-md-3">
-            <select ng-options="vehi.shortName for vehi in vehiStopList" ng-model="selectVechicleId" class="form-control" ng-change="_addDetails()">
+            <select ng-options="vehi for vehi in vehiStopList" ng-model="selectRouteName" class="form-control" ng-change="_addDetails()">
               <option style="display:none" value="">Select Vehicle</option>
             </select>
           </div>
@@ -147,7 +147,7 @@
                   <th>StudentName</th>
                   <th>MobileNo</th>
                   <th>Standard</th>
-                  <th>BusStop</th>
+                  <th width="25%">BusStop</th>
                   
                   <th>Edit &nbsp;|&nbsp; Delete</th>
               </thead>
@@ -200,7 +200,7 @@
                   <th>StudentName</th>
                   <th>MobileNo</th>
                   <th>Standard</th>
-                  <th>BusStop</th>
+                  <th width="25%">BusStop</th>
                   
               </thead>
               <tbody>
@@ -209,7 +209,7 @@
                   <td>{{value.name}}</td>
                   <td>{{value.mobileNumber}}</td>
                   <td>{{value.class}}</td>
-                  <td>{{value.busStop}}</td>
+                  <td>{{value.BusStopName}}</td>
                 </tr>
                 <tr ng-if="searchValue.studentDetails.length == 0" class="err"><td colspan="5"><h5>No Data Found!</h5></td></tr>
               </tbody>

@@ -542,6 +542,15 @@ Route::get('/getGeoFenceView', function() {
  
     return View::make('vls.getGeoFenceView');
 });
+
+Route::get('/getBusStops', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get getBusStops');
+ 
+    return View::make('vls.getBusStops');
+});
  
 Route::get('/getSelectedVehicleLocation', function() {
  
@@ -908,6 +917,7 @@ Route::post('vdmOrganization/addpoi', array('uses' => 'VdmOrganizationController
 Route::post('vdmOrganization/updateNotification', array('uses' => 'VdmOrganizationController@updateNotification'));
 
 
+
  
 Route::get('vdmOrganization/{param}/poiEdit', array('uses' => 'VdmOrganizationController@poiEdit'));
  
@@ -919,8 +929,8 @@ Route::get('vdmOrganization/{param}/getSmsReport', array('uses' => 'VdmOrganizat
 Route::resource('vdmOrganization', 'VdmOrganizationController');
 Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleController@analogCalibrate'));
  
- 
 });   //admin auth ends here
+
 Route::post('AddSiteController/store', array('uses' => 'AddSiteController@store'));
 Route::post('AddSiteController/update', array('uses' => 'AddSiteController@update'));
 Route::post('AddSiteController/delete', array('uses' => 'AddSiteController@delete'));
@@ -957,6 +967,7 @@ Route::get('storeOrgValues/val', array('uses' => 'VdmOrganizationController@stor
 Route::get('storeOrgValues/editRoutes', array('uses' => 'VdmOrganizationController@_editRoutes'));
 Route::get('storeOrgValues/deleteRoutes', array('uses' => 'VdmOrganizationController@_deleteRoutes'));
 Route::get('storeOrgValues/mapHistory',array('uses'=>'VdmOrganizationController@_mapHistory'));
+Route::get('VdmOrg/getStopName',array('uses'=>'VdmOrganizationController@getStopName'));
 
 //arun Route::post('ScheduledController/reportScheduling', array('uses' => 'ScheduledController@reportScheduling'));
 Route::post('VdmGroup/removingGroup', array('uses'=>'VdmGroupController@removeGroup'));

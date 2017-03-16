@@ -161,8 +161,6 @@ function validCharCheck(val){return (/^[a-zA-Z ]{1,40}$/).test(val) ? true : fal
 
 function removeColonStar(val){return val.match(/^([a-zA-Z0-9 ]+)$/) ? true : false};
 
-function removeAlt(valu){return valu.split('Alt').join('') };
-
 function vehiclesChange(vehiTyp){
  //var vehiLogo;
  var vehiAnch=[];

@@ -9,9 +9,9 @@ if (! Auth::check ()) {
 }
 
 $username = Auth::user ()->username;
-$vehiId       = Input::get('vehicleId');
+$vehiId       = Input::get('orgId');
 $stuDetails   = Input::get('studentDetails');
-$data = array('vehicleId' => $vehiId, 'studentDetails'=>$stuDetails, 'userId'=>$username);
+$data = array('orgId' => $vehiId, 'studentDetails'=>$stuDetails, 'userId'=>$username);
 $url = 'http://' .$ipaddress . ':9000/addMobileNumberSubscription';
 log::info( ' Routing to backed :' . $url);
 $ch = curl_init();
@@ -21,7 +21,9 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 $response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
+log::info( 'curl status  :' .$httpCode  );
 echo $response;
 ?>
 

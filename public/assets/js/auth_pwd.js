@@ -7,6 +7,7 @@ var _addUrl         = GLOBAL.DOMAIN_NAME+'/addMobileNumberSubscription';
 var _showUrl        = GLOBAL.DOMAIN_NAME+'/getSpecificRouteDetails';
 var _deleteUrl      = GLOBAL.DOMAIN_NAME+'/stopSmsSubscription';
 var _searchUrl      = GLOBAL.DOMAIN_NAME+'/getStudentDetailsOfSpecifyNum';
+var _siteUrl        = GLOBAL.DOMAIN_NAME+'/viewSite';
 $scope.switchingVar = false;
 $scope.caption      = "MobileNo Search";
 $scope.sort         = {sortingOrder : 'vehicles', reverse : true };
@@ -216,6 +217,41 @@ else if(getParameterByName('userlevel') == 'notify'){
     
   }
 
+/*
+  for get orgId
+*/
+function getOrgValue(val){
+  var orgId   = '';
+  angular.forEach($scope.routeNameList, function(org, k){
+    angular.forEach(org, function(stop, key){
+      if(val == stop){
+        orgId = k
+        return;
+      }
+    })
+  });
+  return orgId;
+}
+
+/*
+  get bus stops 
+*/
+function _getBustopValue(id){
+  var _returnValue;
+  angular.forEach($scope.stopList, function(value, key){
+    if(value.poiId == id){
+      _returnValue = value;
+      return;
+    }
+  });
+  return _returnValue;
+}
+
+
+/*
+  check null values
+*/
+
 function _assignValue (obj, status){
 // return
   switch (status){
@@ -253,10 +289,6 @@ $scope.submitValue  = function(){
   
   for (var i = 0; i < $scope.rowsValue.length; i++) {
 
-    console.log(mobNumCheckTenDigit(_assignValue($scope.rowsValue[i], 'num')));
-    console.log(validCharCheck(_assignValue($scope.rowsValue[i], 'name')));
-    console.log(removeColonStar(_assignValue($scope.rowsValue[i], 'std')));
-
     if(validCharCheck(_assignValue($scope.rowsValue[i], 'name')) == false){
       statusValue = false, $scope.error = '* Enter name without special characters in '+( i+1 )+' th row.';
       return;
@@ -271,7 +303,7 @@ $scope.submitValue  = function(){
     }
 
 
-    _url +=$scope.selectVechicleId.shortName+':'+_assignValue($scope.rowsValue[i], 'name')+':'+_assignValue($scope.rowsValue[i], 'num')+':'+_assignValue($scope.rowsValue[i], 'std')+':'+_assignValue($scope.rowsValue[i], 'stId')+':'+_assignValue($scope.rowsValue[i], 'id')+'*';
+    _url +=$scope.selectRouteName+':'+_assignValue($scope.rowsValue[i], 'name')+':'+_assignValue($scope.rowsValue[i], 'num')+':'+_assignValue($scope.rowsValue[i], 'std')+':'+_assignValue($scope.rowsValue[i], 'stId')+':'+_assignValue($scope.rowsValue[i], 'id')+'*';
    
   }
   if(statusValue){
@@ -280,28 +312,18 @@ $scope.submitValue  = function(){
       method: 'POST', 
       url: _addUrl,
       data: {
-        'vehicleId' : $scope.selectVechicleId.vehicles,
+        'orgId' : getOrgValue($scope.selectRouteName),
         'studentDetails' : _url,
       },
       success: function (response) {
-
-          console.log(response)
+        console.log(response)
       }
     });
     $scope._addDetails();
   }
 }
 
-function _getBustopValue(id){
-  var _returnValue;
-  angular.forEach($scope.stopList, function(value, key){
-    if(value.poiId == id){
-      _returnValue = value;
-      return;
-    }
-  });
-  return _returnValue;
-}
+
 
 function _editGlobal(ind){
 
@@ -393,13 +415,14 @@ $scope._deleteMobNum    = function(index){
     url: _deleteUrl,
     data: {
       'mobNum' : $scope.rowsValue[index].mNum,
-      'vehicleId' : $scope.selectVechicleId.vehicles,
+      'orgId' : getOrgValue($scope.selectRouteName),
       
     },
     success: function (response) {
 
-        console.log(response)
-        console.log(typeof [$scope.rowsValue[index].mNum])
+      console.log(response)
+     
+      
     }
   });
   $scope.rowsValue.splice(index, 1);
@@ -415,7 +438,7 @@ $scope._deleteMobNum    = function(index){
 
 function showStop() {
   
-  var _showStopUrl  = _showUrl+'?routeNo='+$scope.selectVechicleId.shortName;
+  var _showStopUrl  = _showUrl+'?routeNo='+$scope.selectRouteName;
   vamoservice.getDataCall(_showStopUrl).then(function(value){
 
     $scope.rowsValue =[];
@@ -426,8 +449,6 @@ function showStop() {
 
 
     });
-    console.log(' value  '+ $scope.rowsValue);
-
   })
 
 }
@@ -458,20 +479,20 @@ $scope.addRows      = function(counts){
     }
 
 }
+
   
 $scope._addDetails  = function(){
   startLoading();
   $scope.stopList   = [];
-  var _geoUrl       = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?vehicleId='+$scope.selectVechicleId.vehicles;
+  var _geoUrl       = GLOBAL.DOMAIN_NAME+'/getBusStops?routeNo='+$scope.selectRouteName+'&orgId='+getOrgValue($scope.selectRouteName);
   
   vamoservice.getDataCall(_geoUrl).then(function(data) {
 
-    console.log('###### response ######');
-    console.log(data);
-    if((data && data != '') && (data.geoFence.length > 0)){
-      angular.forEach(data.geoFence, function(value, key){
-        if((value && value != '') && (parseInt(value.poiName) >= 0))
-          $scope.stopList.push({'stop' :value.stopName, 'poiId' :value.poiName})
+    if((data && data != '') && (data.studentDetails.length > 0)){
+      angular.forEach(data.studentDetails, function(value, key){
+
+        if((value && value != '') && (parseInt(value['BusStopId']) >= 0))
+          $scope.stopList.push({'stop' :value['BusStopName'], 'poiId' :value['BusStopId']})
 
       });
 
@@ -484,22 +505,47 @@ $scope._addDetails  = function(){
 
 }
 
-function _addStops() {
-  $scope.editGroup('');
+
+function getRouteName (){
+
   $scope.vehiStopList   = [];
-  angular.forEach($scope.vehiList, function(value, key){
-    if(value.shortName.trim() != '')
-      value.shortName = removeAlt(value.shortName),
-      $scope.vehiStopList.push(value);
+  var stopList          = [];
+  vamoservice.getDataCall(_siteUrl).then(function(value, key){
 
-  });
-  if($scope.vehiStopList.length >0){
-    $scope.selectVechicleId = $scope.vehiStopList[0];
-    $scope._addDetails();
-    showStop();
+    if((value && value != '') && (value.orgIds && value.orgIds.length > 0))
+      $.ajax({
+        async: false,
+        method: 'GET', 
+        url: 'VdmOrg/getStopName',
+        data: {
+          'orgId' : value.orgIds,
+        },
+        success: function (response) {
+          $scope.routeNameList  = response;
+          angular.forEach(response, function(value, key){
+            angular.forEach(value, function(val, key){
+                stopList.push(val);
+              })
+            
 
-  }
+          });
+          $scope.vehiStopList   = stopList;
+          if($scope.vehiStopList.length >0){
+            $scope.selectRouteName = $scope.vehiStopList[0];
+            $scope._addDetails();
+            // showStop();
 
+          }
+        }
+      });
+  })
+
+}
+
+
+
+function _addStops() {
+  getRouteName();
 }
 
 
