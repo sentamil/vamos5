@@ -473,9 +473,18 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		}
 
 
+	public function _getRef_data($vId, $fcode){
+
+		$redis 		= Redis::connection();
+		$refData 	= $redis->hget ( 'H_RefData_' . $fcode, $vId );
+		$refData	= json_decode($refData,true);
+		return isset($refData['shortName'])?$refData['shortName']:' ';
+
+	}
+
 	// show vehicles from user
         public function _showGroup(){
-
+        		log::info(' arun here ');
                 if(!Auth::check()){
                         return Redirect::to('login');
                 }
@@ -520,10 +529,10 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
                                                 if($val == $value)
                                                         $check = true;
                                         }
-                                        $vehiList[] = array('vehicles' => $value, 'check' => $check);
+                                        // log::info($redis->hget ( 'H_RefData_' . $fcode, $value ));
+                                        	// $redis->hget ( 'H_RefData_' . $fcode, $value );
+                                        $vehiList[] = array('vehicles' => $value, 'check' => $check, 'shortName' => $this->_getRef_data($value, $fcode));
                                 }
-
-
 
                         }
                 }
@@ -560,7 +569,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
                     // log::info($_data);
                     $vehiList =[];
                     foreach ($_data as $key => $value) {
-                            $vehiList[] =  array('vehicles' => $value, 'check' => false);
+                            $vehiList[] =  array('vehicles' => $value, 'check' => false, 'shortName' => $this->_getRef_data($value, $fcode));
                     }
                 }
             }

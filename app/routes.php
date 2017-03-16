@@ -370,6 +370,23 @@ Route::post('/addMobileNumberSubscription', function() {
     return View::make('vls.addMobileNumberSubscription');
 });
 
+
+Route::post('/stopSmsSubscription', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get stopSmsSubscription');
+    return View::make('vls.stopSmsSubscription');
+});
+
+Route::get('/getStudentDetailsOfSpecifyNum', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get getStudentDetailsOfSpecifyNum');
+    return View::make('vls.getStudentDetailsOfSpecifyNum');
+});
+
 Route::get('/getSpecificRouteDetails', function() {
     if (!Auth::check()) {
         return Redirect::to('login');

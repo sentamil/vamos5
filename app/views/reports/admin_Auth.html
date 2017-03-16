@@ -112,12 +112,14 @@
                     <table id="mytable" class="table table-bordred table-hover" cellspacing="0" width="100%">
                         <thead>
                             <th><input type="checkbox" ng-model="check_box" ng-click="checkAll()"/></th>
-                            <th custom-sort order="'shortName'" sort="sort">VehicleName</th>
+                            <th>VehicleName</th>
+                            <!-- <th>ShortName</th> -->
                         </thead>
                         <tbody>
-                            <tr ng-repeat="vehi in vehiList | orderBy:sort.sortingOrder:sort.reverse">
+                            <tr ng-repeat="vehi in vehiList">
                                 <td><input type="checkbox" ng-model="vehi.check" ng-checked="vehi.check" /></td>
-                                <td>{{vehi.vehicles}}</td>
+                                <!-- <td>{{vehi.vehicles}}</td> -->
+                                <td>{{vehi.shortName}}</td>
                                 
                             </tr>
                         </tbody>

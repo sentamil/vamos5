@@ -1679,6 +1679,7 @@ $(document).ready(function(e) {
         }
        var chartFuel = $('#container-fuel').highcharts(), point;
         if (chartFuel) {
+        	chartFuel.yAxis[0].update({max:tankSize});
             point = chartFuel.series[0].points[0];
             point.update(fuelLtr);
 //            if(tankSize==0)

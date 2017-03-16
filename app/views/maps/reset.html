@@ -30,7 +30,10 @@
 
 <div ng-controller="mainCtrl" class="bg_color ng-cloak">
 <div class="wrapper">
-  <div class="modal-dialog">
+
+  <!-- part one -->
+  <div class="modal-dialog" ng-hide="selectStopEdit">
+  <!-- reset -->
   <div class="modal-content" ng-show="selectEdit">
       <div class="modal-header" style="padding:5px; padding-left: 10px; padding-right: 10px">
             <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
@@ -78,12 +81,10 @@
             </div>
       <!-- </div> -->
       <div class="modal-footer" style="padding: 0px">
-         <!--  <div class="col-md-12">
-          <button class="btn btn-sm" data-dismiss="modal" aria-hidden="true">Cancel</button>
-          </div>     -->
+        
       </div>
   </div>
-
+  <!-- notification -->
   <div class="modal-content" ng-hide="selectEdit">
     <div class="modal-header dialog_header">
             <h5> Edit Notification </h5> 
@@ -92,25 +93,8 @@
     
       <li class="list-group-item" ng-repeat="(key, val) in notificationValue">
         <label ><input type="checkbox" ng-model="notifyUpdate[$index]" ng-checked="checkValue(val)"/> {{key}}</label>
-        <!-- <label ng-if="val==false"><input type="checkbox"  ng-checked="false" /> {{key}} {{val}}</label> -->
       </li>
-      <!-- <li class="list-group-item"><input type="checkbox"/> LOW BATTERY</li>
-      <li class="list-group-item"><input type="checkbox"/> TEMPERATURE</li>
-      <li class="list-group-item"><input type="checkbox"/> ACC ON/OFF</li>
-      <li class="list-group-item"><input type="checkbox"/> OVERSPEED</li>
-      <li class="list-group-item"><input type="checkbox"/> ROUTE DEVIATION</li>  
-      <li class="list-group-item"><input type="checkbox"/> AREA ENTRY/EXIT</li>  
-      <li class="list-group-item"><input type="checkbox"/> AREA ENTRY/EXIT LEVEL 1</li>  
-      <li class="list-group-item"><input type="checkbox"/> AREA ENTRY/EXIT LEVEL 2</li>
-      <li class="list-group-item"><input type="checkbox"/> AREA ENTRY/EXIT LEVEL 3</li>  
-      <li class="list-group-item"><input type="checkbox"/> GEOFENCE</li>  
-      <li class="list-group-item"><input type="checkbox"/> FUEL</li>  
-      <li class="list-group-item"><input type="checkbox"/> SHOCK</li>  
-      <li class="list-group-item"><input type="checkbox"/> AC ON/OFF</li>  
-      <li class="list-group-item"><input type="checkbox"/> OFFLINE</li>  
-      <li class="list-group-item"><input type="checkbox"/> SOS</li>  
-      <li class="list-group-item"><input type="checkbox"/> BACK TO ONLINE</li>  
-      <li class="list-group-item"><input type="checkbox"/> POWER CUTOFF</li> -->
+      
     </div>
     <div class="modal-footer dialog_header">
       <div class="col-md-6">
@@ -122,7 +106,119 @@
       </div>
   
   </div>
+
+  
   </div>
+  <!-- part two -->
+  <!-- <div ng-show="selectStopEdit"></div> -->
+    <div class="container" ng-show="selectStopEdit">
+        
+        <div class="panel panel-default">
+          <div class="panel-heading"><b>Bus Stops</b>
+          <!-- <div class="col-md-1">
+            <span class="pull-right"><input class="btn btn-xs btn-danger pull-right" type="button" value="{{caption}}" ng-click="switching()"></span>
+
+            <span class="pull-right"><a class="btn btn-sm btn-default btn-block" href="../public/track">Home</a></span>
+
+            
+          </div> -->
+          <div class="btn-group pull-right row">
+            <div class="col-md-1"><input class="btn btn-xs btn-danger pull-right" type="button" value="{{caption}}" ng-click="switching()"></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1"> <a class="btn btn-xs btn-default pull-right" href="../public/track">Home</a></div>
+           </div>
+          </div>
+          <div class="panel-body" ng-hide="switchingVar">
+          <h6 style="color: red">{{error}}</h6>
+          <div class="col-md-3">
+            <select ng-options="vehi.shortName for vehi in vehiStopList" ng-model="selectVechicleId" class="form-control" ng-change="_addDetails()">
+              <option style="display:none" value="">Select Vehicle</option>
+            </select>
+          </div>
+          <!-- <div class="col-md-3">
+             <input type="text" class="form-control" placeholder="Phone Number Search..." >
+             <div style="font-size: 9px; text-align: center;">mob num1, mob num2,...,mob num n</div>
+          </div> -->
+          <hr>
+          
+           <table class="table table-bordred table-hover">
+              <thead>
+                  <!-- <th>SNo</th> -->
+                  <th>StudentName</th>
+                  <th>MobileNo</th>
+                  <th>Standard</th>
+                  <th>BusStop</th>
+                  
+                  <th>Edit &nbsp;|&nbsp; Delete</th>
+              </thead>
+              <tbody>
+                <tr ng-repeat = "row in rowsValue">
+                  <td><input type="text" ng-if="row.sName == ''" ng-model="row.sNameNew" class="form-control input-sm">{{row.sName}}</td>
+                  <td><input type="text" ng-if="row.mNum == ''" ng-model="row.mNumNew" class="form-control input-sm">{{row.mNum}}</td>
+                  <td><input type="text" ng-if="row.std == ''" ng-model="row.stdNew" class="form-control input-sm">{{row.std}}</td>
+                  <td>
+                  <select ng-if="row.poiIds == ''" ng-options="vehi.stop for vehi in stopList" ng-model="row.poiId" class="form-control input-sm">
+                    <option style="display:none" value="">Select BusStop</option>
+                  </select>{{row.poiIds}}
+                  </td>
+                  
+                  <td><button class="btn btn-default btn-xs" ng-click="_editStop($index, 'one')"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;&nbsp;<button class="btn btn-default btn-xs" ng-click="_deleteMobNum($index)"><span class="glyphicon glyphicon-trash"></span></button></td>
+                </tr>
+                <tr ng-if="rowsValue.length == 0" class="err"><td colspan="5"><h5>No Data Found!</h5></td></tr>
+              </tbody>
+          </table>
+          <hr>
+          <div class="col-md-3">
+            <div class="input-group">
+              <input type="number" class="form-control" placeholder="Add Rows" min="0" ng-model="counts">
+              <span class="input-group-addon" ng-click="addRows(counts)"><a class="glyphicon glyphicon-plus" style="text-decoration: none; cursor: pointer;"></a> </span>
+            </div>
+          </div>
+          <div class="col-md-7"></div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-primary btn-block" ng-click="submitValue()">Submit</button>
+          </div>
+         
+
+          </div>
+          <!-- for searching panel -->
+          <div class="panel-body" ng-show="switchingVar">
+            <h6 style="color: red">{{error}}</h6>
+          
+          <div class="col-md-3">
+             <input type="text" class="form-control" placeholder="MobileNo Search..." ng-model="mobileNo">
+             <div style="font-size: 9px; text-align: center;">mob num1, mob num2,...,mob num n</div>
+          </div>
+          <div class="col-md-3">
+             <input type="button" class="btn btn-primary btn-block" value="Search" ng-click="searchingMobile(mobileNo)">
+             
+          </div>
+          <hr>
+          <table class="table table-bordred table-hover">
+              <thead>
+                  <th>Route</th>
+                  <th>StudentName</th>
+                  <th>MobileNo</th>
+                  <th>Standard</th>
+                  <th>BusStop</th>
+                  
+              </thead>
+              <tbody>
+                <tr ng-repeat = "value in searchValue.studentDetails">
+                  <td>{{value.route}}</td>
+                  <td>{{value.name}}</td>
+                  <td>{{value.mobileNumber}}</td>
+                  <td>{{value.class}}</td>
+                  <td>{{value.busStop}}</td>
+                </tr>
+                <tr ng-if="searchValue.studentDetails.length == 0" class="err"><td colspan="5"><h5>No Data Found!</h5></td></tr>
+              </tbody>
+          </table>
+          </div>
+        </div>
+
+    </div>
+
 </div>
 </div>
 

@@ -1,12 +1,17 @@
-app.controller('mainCtrl',['$scope', '$location', 'vamoservice','_global', function($scope, $location, vamoservice, GLOBAL){
+app.controller('mainCtrl',['$scope', '$location', 'vamoservice','_global', '$http', function($scope, $location, vamoservice, GLOBAL, $http){
 	
 var url             = $location.absUrl();
 $scope._tabValue    = url.includes("groupEdit");
 var _gUrl           = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
-
+var _addUrl         = GLOBAL.DOMAIN_NAME+'/addMobileNumberSubscription';
+var _showUrl        = GLOBAL.DOMAIN_NAME+'/getSpecificRouteDetails';
+var _deleteUrl      = GLOBAL.DOMAIN_NAME+'/stopSmsSubscription';
+var _searchUrl      = GLOBAL.DOMAIN_NAME+'/getStudentDetailsOfSpecifyNum';
+$scope.switchingVar = false;
+$scope.caption      = "MobileNo Search";
 $scope.sort         = {sortingOrder : 'vehicles', reverse : true };
 $scope.notifyUpdate = [];
-
+$scope.rowsValue    = [];
 // $scope.selectEdit   = (getParameterByName('userlevel') == 'reset') ? true : (getParameterByName('userlevel') == 'notify') : false;
 
 $scope.checkValue = function(value){
@@ -18,7 +23,8 @@ $scope.checkValue = function(value){
 }
 
 
-
+  $scope.selectStopEdit = false;
+  // $scope.selectEdit     = false;
 if(getParameterByName('userlevel') == 'reset')
   $scope.selectEdit = true;
 else if(getParameterByName('userlevel') == 'notify'){
@@ -42,6 +48,9 @@ else if(getParameterByName('userlevel') == 'notify'){
     })
 
   startLoading();
+} else if(getParameterByName('userlevel') == 'busStop'){
+
+  $scope.selectStopEdit = true;
 }
 
 
@@ -207,7 +216,223 @@ else if(getParameterByName('userlevel') == 'notify'){
     
   }
 
-// $scope.check_box = false;
+function _assignValue (obj, status){
+// return
+  switch (status){
+
+    case 'name':
+      return (obj.sNameNew == undefined) ? obj.sName : obj.sNameNew;
+      break;
+    case 'num':
+      return (obj.mNumNew == undefined) ? obj.mNum : obj.mNumNew;
+      break;
+    case 'std':
+      return (obj.stdNew == undefined) ? obj.std : obj.stdNew;
+      break;
+    case 'stId':
+      return (obj.poiId == undefined) ? obj.stopId : obj.poiId.poiId;
+    case 'id':
+      return (obj.id == undefined) ? 0 : obj.id;
+      break;
+
+  }
+}
+
+
+$scope.submitValue  = function(){
+
+  $scope.error = '';
+  $scope.rowsCount = 0;
+  var statusValue = true;
+  console.log($scope.rowsValue);
+
+  /*
+    validation
+  */
+  var _url = '';
+  
+  for (var i = 0; i < $scope.rowsValue.length; i++) {
+
+    console.log(mobNumCheckTenDigit(_assignValue($scope.rowsValue[i], 'num')));
+    console.log(validCharCheck(_assignValue($scope.rowsValue[i], 'name')));
+    console.log(removeColonStar(_assignValue($scope.rowsValue[i], 'std')));
+
+    if(validCharCheck(_assignValue($scope.rowsValue[i], 'name')) == false){
+      statusValue = false, $scope.error = '* Enter name without special characters in '+( i+1 )+' th row.';
+      return;
+    }
+    if(mobNumCheckTenDigit(_assignValue($scope.rowsValue[i], 'num')) == false){
+      statusValue = false, $scope.error = '* Enter ten digit mobile number in '+( i+1 )+' th row.';
+      return;
+    }
+    if(removeColonStar(_assignValue($scope.rowsValue[i], 'std')) == false){
+      statusValue = false, $scope.error = '* Dnt use special characters '+( i+1 )+' th row.';
+      return;
+    }
+
+
+    _url +=$scope.selectVechicleId.shortName+':'+_assignValue($scope.rowsValue[i], 'name')+':'+_assignValue($scope.rowsValue[i], 'num')+':'+_assignValue($scope.rowsValue[i], 'std')+':'+_assignValue($scope.rowsValue[i], 'stId')+':'+_assignValue($scope.rowsValue[i], 'id')+'*';
+   
+  }
+  if(statusValue){
+    $.ajax({
+      async: false,
+      method: 'POST', 
+      url: _addUrl,
+      data: {
+        'vehicleId' : $scope.selectVechicleId.vehicles,
+        'studentDetails' : _url,
+      },
+      success: function (response) {
+
+          console.log(response)
+      }
+    });
+    $scope._addDetails();
+  }
+}
+
+function _getBustopValue(id){
+  var _returnValue;
+  angular.forEach($scope.stopList, function(value, key){
+    if(value.poiId == id){
+      _returnValue = value;
+      return;
+    }
+  });
+  return _returnValue;
+}
+
+function _editGlobal(ind){
+
+  $scope.rowsValue[ind].sNameNew = ($scope.rowsValue[ind].sName) ? $scope.rowsValue[ind].sName : '';
+  $scope.rowsValue[ind].sName = '';
+  $scope.rowsValue[ind].mNumNew = ($scope.rowsValue[ind].mNum) ? $scope.rowsValue[ind].mNum : '';
+  $scope.rowsValue[ind].mNum = '';
+  $scope.rowsValue[ind].stdNew = ($scope.rowsValue[ind].std) ? $scope.rowsValue[ind].std : '';
+  $scope.rowsValue[ind].std = '';
+  $scope.rowsValue[ind].poiId = (_getBustopValue($scope.rowsValue[ind].stopId)) ? _getBustopValue($scope.rowsValue[ind].stopId) : '';
+  $scope.rowsValue[ind].poiIds = '';
+
+}
+
+
+/*
+  Switching function
+*/
+$scope.switching  = function(){
+
+  if($scope.switchingVar == false)
+    $scope.switchingVar = true,$scope.caption      = "Add Details";
+  else
+    $scope.switchingVar = false, $scope.caption      = "MobileNo Search";
+
+}
+
+
+
+/*
+    searching mobile number function
+  
+*/
+$scope.searchingMobile  = function(mobile){
+  $scope.error      = '';
+  var _addMobileNo  = '', statusValue = true, _serviceUrl = '';
+  mobile  = splitComma(mobile);
+  for (var i = 0; i < mobile.length; i++) {
+    if(mobNumCheckTenDigit(mobile[i]) == false){
+      statusValue   = false ,$scope.error = '* Enter ten digit mobile number for each.';
+      return;
+    }
+    _addMobileNo  += mobile[i]+',';
+  }
+  _serviceUrl    = _searchUrl+'?mobileNo='+_addMobileNo;
+  if(statusValue)
+    vamoservice.getDataCall(_serviceUrl).then(function(value){
+      
+      console.log(value)
+      $scope.searchValue  = value
+
+    });
+    
+
+}
+
+
+/*
+  edit bus stops
+
+*/
+$scope._editStop  = function(ind, status){
+  startLoading();
+  
+  console.log($scope.rowsValue);
+  console.log($scope.stopList);
+
+  if(status == 'one'){
+    _editGlobal(ind);
+  }
+  // else if(status == 'all')
+  //   for (var i = 0; i < $scope.rowsValue.length; i++) {
+  //     _editGlobal(i);
+  //   }
+  stopLoading();
+}
+
+/*
+  delete busstop values
+*/
+
+$scope._deleteMobNum    = function(index){
+
+  $scope.error = '';
+  console.log(' _deleteMobNum ');
+  $.ajax({
+    async: false,
+    method: 'POST', 
+    url: _deleteUrl,
+    data: {
+      'mobNum' : $scope.rowsValue[index].mNum,
+      'vehicleId' : $scope.selectVechicleId.vehicles,
+      
+    },
+    success: function (response) {
+
+        console.log(response)
+        console.log(typeof [$scope.rowsValue[index].mNum])
+    }
+  });
+  $scope.rowsValue.splice(index, 1);
+  // $scope._addDetails();
+}
+
+
+
+/*
+  * show the stop details   
+*/
+
+
+function showStop() {
+  
+  var _showStopUrl  = _showUrl+'?routeNo='+$scope.selectVechicleId.shortName;
+  vamoservice.getDataCall(_showStopUrl).then(function(value){
+
+    $scope.rowsValue =[];
+    var busStopValue;
+    angular.forEach(value.studentDetails, function(val, key){
+      busStopValue = _getBustopValue(val.busStop);
+      $scope.rowsValue.push({'sName' : val.name, 'mNum': val.mobileNumber, 'std' : val.class, 'poiIds' : busStopValue.stop, 'stopId' : val.busStop, 'id' : val.rowId});
+
+
+    });
+    console.log(' value  '+ $scope.rowsValue);
+
+  })
+
+}
+
+
 /*
   check all vehicle 
 */
@@ -219,6 +444,63 @@ $scope.checkAll   = function(){
 
 }
 
+/*
+    add rows
+*/
+
+$scope.addRows      = function(counts){
+
+  console.log(' inside the row function '+counts);
+  // $scope.rowsValue  = [];
+  $scope.rowsCount  = counts;
+  for (var i=0; i<counts; i++) {
+      $scope.rowsValue.push({'sName' : '', 'mNum': '', 'std' : '', 'poiIds' : ''});  
+    }
+
+}
+  
+$scope._addDetails  = function(){
+  startLoading();
+  $scope.stopList   = [];
+  var _geoUrl       = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?vehicleId='+$scope.selectVechicleId.vehicles;
+  
+  vamoservice.getDataCall(_geoUrl).then(function(data) {
+
+    console.log('###### response ######');
+    console.log(data);
+    if((data && data != '') && (data.geoFence.length > 0)){
+      angular.forEach(data.geoFence, function(value, key){
+        if((value && value != '') && (parseInt(value.poiName) >= 0))
+          $scope.stopList.push({'stop' :value.stopName, 'poiId' :value.poiName})
+
+      });
+
+    }
+
+
+    showStop();
+    stopLoading();
+  });
+
+}
+
+function _addStops() {
+  $scope.editGroup('');
+  $scope.vehiStopList   = [];
+  angular.forEach($scope.vehiList, function(value, key){
+    if(value.shortName.trim() != '')
+      value.shortName = removeAlt(value.shortName),
+      $scope.vehiStopList.push(value);
+
+  });
+  if($scope.vehiStopList.length >0){
+    $scope.selectVechicleId = $scope.vehiStopList[0];
+    $scope._addDetails();
+    showStop();
+
+  }
+
+}
 
 
 /*
@@ -234,11 +516,12 @@ $scope.checkAll   = function(){
       angular.forEach(data, function(value, key){
         $scope.groupList.push({'groupName': value.group});
       })
+      $scope.selectStopEdit == true ? _addStops() : console.log(' Fuck off !! ');
       stopLoading();
     });
   }  
 
-($scope._tabValue == true)?initial():stopLoading();
+($scope._tabValue == true || $scope.selectStopEdit == true)?initial():stopLoading();
 
 
   $scope.trimColon = function(textVal){
