@@ -292,14 +292,17 @@ $scope.submitValue  = function(){
 
     if(validCharCheck(_assignValue($scope.rowsValue[i], 'name')) == false){
       statusValue = false, $scope.error = '* Enter Student Name, without special characters in '+( i+1 )+' th row .';
+      stopLoading();
       return;
     }
     if(mobNumCheckTenDigit(_assignValue($scope.rowsValue[i], 'num')) == false){
       statusValue = false, $scope.error = '* Enter Mobile No, as 10 or 12 digit in '+( i+1 )+' th row.';
+      stopLoading();
       return;
     }
     if(removeColonStar(_assignValue($scope.rowsValue[i], 'std')) == false){
       statusValue = false, $scope.error = '* Enter Standard, dnt use special characters '+( i+1 )+' th row.';
+      stopLoading();
       return;
     }
 
@@ -366,6 +369,7 @@ $scope.searchingMobile  = function(mobile){
   for (var i = 0; i < mobile.length; i++) {
     if(mobNumCheckTenDigit(mobile[i]) == false){
       statusValue   = false ,$scope.error = '* Enter ten digit mobile number for each.';
+      stopLoading();
       return;
     }
     _addMobileNo  += mobile[i]+',';
