@@ -32,7 +32,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
      //            $http.get(scope.hisurl).success(function(data){
 		 		var url = val;
 		 		if(url.indexOf("&interval=1") <= 0){
-		 			url 	= scope.hisurl+'&interval=5';
+		 			url 	= scope.hisurl+'&interval=1';
 		 			console.log(url)
 		 		}
 		 		scope.path = [];
