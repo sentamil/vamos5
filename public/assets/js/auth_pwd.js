@@ -290,15 +290,15 @@ $scope.submitValue  = function(){
   for (var i = 0; i < $scope.rowsValue.length; i++) {
 
     if(validCharCheck(_assignValue($scope.rowsValue[i], 'name')) == false){
-      statusValue = false, $scope.error = '* Enter name without special characters in '+( i+1 )+' th row.';
+      statusValue = false, $scope.error = '* Enter Student Name, without special characters in '+( i+1 )+' th row .';
       return;
     }
     if(mobNumCheckTenDigit(_assignValue($scope.rowsValue[i], 'num')) == false){
-      statusValue = false, $scope.error = '* Enter ten digit mobile number in '+( i+1 )+' th row.';
+      statusValue = false, $scope.error = '* Enter Mobile No, as ten digit in '+( i+1 )+' th row.';
       return;
     }
     if(removeColonStar(_assignValue($scope.rowsValue[i], 'std')) == false){
-      statusValue = false, $scope.error = '* Dnt use special characters '+( i+1 )+' th row.';
+      statusValue = false, $scope.error = '* Enter Standard, dnt use special characters '+( i+1 )+' th row.';
       return;
     }
 
