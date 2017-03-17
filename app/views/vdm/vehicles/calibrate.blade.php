@@ -21,7 +21,7 @@
                 		<br>
                 		<div class="row">
                 			<div class="col-md-3"></div>
-                			<div class="col-md-3">{{ Form::label('deviceId', 'Device Id') }}</div>
+                			<div class="col-md-3">{{ Form::label('deviceId', 'Device Id / IMEI No') }}</div>
                 			<div class="col-md-3">{{ Form::text('deviceId', $deviceId, array('class' => 'form-control','disabled' => 'disabled')) }}</div>
                             <!-- {{Form::text('countAdd',Input::old('countAdd'), array('id'=>'countValue'))}} -->
                 		</div>

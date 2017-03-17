@@ -17,8 +17,9 @@
                 	<div class="row">	
                 		<div class="col-sm-9">
 							<div class="row">
+							<h5><font color='red', size='1px'>{{ Form::label('#Dealer name is case sensitive and space is not allowed') }}</font></h5>
 								<div class="col-md-3">
-									{{ Form::label('dealerId', 'Dealer ID') }}
+									{{ Form::label('dealerId', 'Dealer Name / Dealer ID') }}
 								</div>
 								<div class="col-md-6">
 									{{ Form::text('dealerId', Input::old('dealerId'), array('class' => 'form-control',  'required' => 'required', 'placeholder'=>'Dealer Id', 'id'=>'dealerName')) }}

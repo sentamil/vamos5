@@ -17,8 +17,9 @@
 						</div>
   	              				<div class="row">
   	              					<div class="col-md-12">
+									<h5><font color='red', size='1px'>{{ Form::label('#Group name is case sensitive and space is not allowed') }}</font></h5>
 		  	              				<div class="col-md-2">
-		  	              					<h5>{{ Form::label('groupId', 'Group ID') }}</h5>
+		  	              					<h5>{{ Form::label('groupId', 'Group Name / Group ID') }}</h5>
 		  	              				</div>
 										<div class="col-md-4">{{ Form::text('groupId', Input::old('groupId'), array('class' => 'form-control', 'placeholder'=>'Group Id','required'=>'required','id'=>'groupName')) }}</div>
 		                				<div class="col-md-3" style="text-align: right">

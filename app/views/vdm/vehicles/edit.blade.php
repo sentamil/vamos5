@@ -23,13 +23,13 @@
 									{{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control','disabled' => 'disabled')) }}
 								</div>
 								<div class="form-group">
-									{{ Form::label('deviceId', 'Device Id') }}
+									{{ Form::label('deviceId', 'Device Id / IMEI No') }}
 									<br/>
 									{{ Form::text('deviceId', $refData['deviceId'], array('class' => 'form-control','disabled' => 'disabled')) }}
 
 								</div>
 								<div class="form-group">
-									{{ Form::label('shortName', 'Vehicle Name') }}
+									{{ Form::label('shortName', 'Vehicle Name / Vehicle Id') }}
 									{{ Form::text('shortName', $refData['shortName'], array('class' => 'form-control')) }}
 								</div>
 
