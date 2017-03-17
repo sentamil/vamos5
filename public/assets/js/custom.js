@@ -915,7 +915,8 @@ function locat_address(locs) {
 	var googleLatAndLong = new google.maps.LatLng(locs.lat, locs.lng);
 	var labelAnchorpos = new google.maps.Point(70, 80);
 	$scope.marker = new MarkerWithLabel({
-        position: googleLatAndLong, 
+        position: googleLatAndLong,
+        icon: 'assets/imgs/area_loc.png', 
         map: $scope.map,
         color: '#fff',
        	labelClass: "labels1",
