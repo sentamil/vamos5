@@ -28,9 +28,16 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 			}
 		 	scope.$watch("hisurl", function (val) {
 		 		// startLoading();
+		 		// if(scope.hisurl != undefined)
+     //            $http.get(scope.hisurl).success(function(data){
+		 		var url = val;
+		 		if(url.indexOf("&interval=1") <= 0){
+		 			url 	= scope.hisurl+'&interval=5';
+		 			console.log(url)
+		 		}
 		 		scope.path = [];
-		 		if(scope.hisurl != undefined)
-		   		$http.get(scope.hisurl).success(function(data){
+		 		if(url != undefined)
+		   		$http.get(url).success(function(data){
 		   			var locs = data;
 		 			scope.hisloc = locs;
 					scope._tableValue(locs);
