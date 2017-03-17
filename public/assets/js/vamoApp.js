@@ -155,7 +155,7 @@ function utcFormat(d,t){return new Date(d+' '+t).getTime();}
 
 function removeSpace_Join(valu){return valu.split(' ').join('_')}
 
-function mobNumCheckTenDigit(val){return (/^\d{10}{12}$/.test(val)? true: false )};
+function mobNumCheckTenDigit(val){return (/^\d{10,12}$/.test(val)? true: false )};
 
 function validCharCheck(val){return (/^[a-zA-Z ]{1,30}$/).test(val) ? true : false};
 
