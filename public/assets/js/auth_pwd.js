@@ -277,6 +277,7 @@ function _assignValue (obj, status){
 
 $scope.submitValue  = function(){
 
+  startLoading();
   $scope.error = '';
   $scope.rowsCount = 0;
   var statusValue = true;
@@ -294,7 +295,7 @@ $scope.submitValue  = function(){
       return;
     }
     if(mobNumCheckTenDigit(_assignValue($scope.rowsValue[i], 'num')) == false){
-      statusValue = false, $scope.error = '* Enter Mobile No, as ten digit in '+( i+1 )+' th row.';
+      statusValue = false, $scope.error = '* Enter Mobile No, as 10 or 12 digit in '+( i+1 )+' th row.';
       return;
     }
     if(removeColonStar(_assignValue($scope.rowsValue[i], 'std')) == false){
@@ -321,6 +322,7 @@ $scope.submitValue  = function(){
     });
     $scope._addDetails();
   }
+  stopLoading();
 }
 
 
