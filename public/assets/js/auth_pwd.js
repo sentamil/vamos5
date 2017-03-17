@@ -487,7 +487,7 @@ $scope._addDetails  = function(){
   var _geoUrl       = GLOBAL.DOMAIN_NAME+'/getBusStops?routeNo='+$scope.selectRouteName+'&orgId='+getOrgValue($scope.selectRouteName);
   
   vamoservice.getDataCall(_geoUrl).then(function(data) {
-
+    try{
     if((data && data != '') && (data.studentDetails.length > 0)){
       angular.forEach(data.studentDetails, function(value, key){
 
@@ -498,9 +498,10 @@ $scope._addDetails  = function(){
 
     }
 
-
     showStop();
-    stopLoading();
+    stopLoading()
+  }catch (err){stopLoading()}
+
   });
 
 }
