@@ -290,21 +290,21 @@ $scope.submitValue  = function(){
   
   for (var i = 0; i < $scope.rowsValue.length; i++) {
 
-    if(validCharCheck(_assignValue($scope.rowsValue[i], 'name')) == false){
-      statusValue = false, $scope.error = '* Enter Student Name, without special characters in '+( i+1 )+' th row .';
-      stopLoading();
-      return;
-    }
+    // if(validCharCheck(_assignValue($scope.rowsValue[i], 'name')) == false){
+    //   statusValue = false, $scope.error = '* Enter Student Name, without special characters in '+( i+1 )+' th row .';
+    //   stopLoading();
+    //   return;
+    // }
     if(mobNumCheckTenDigit(_assignValue($scope.rowsValue[i], 'num')) == false){
       statusValue = false, $scope.error = '* Enter Mobile No, as 10 or 12 digit in '+( i+1 )+' th row.';
       stopLoading();
       return;
     }
-    if(removeColonStar(_assignValue($scope.rowsValue[i], 'std')) == false){
-      statusValue = false, $scope.error = '* Enter Standard, dnt use special characters '+( i+1 )+' th row.';
-      stopLoading();
-      return;
-    }
+    // if(removeColonStar(_assignValue($scope.rowsValue[i], 'std')) == false){
+    //   statusValue = false, $scope.error = '* Enter Standard, dnt use special characters '+( i+1 )+' th row.';
+    //   stopLoading();
+    //   return;
+    // }
 
 
     _url +=$scope.selectRouteName+':'+_assignValue($scope.rowsValue[i], 'name')+':'+_assignValue($scope.rowsValue[i], 'num')+':'+_assignValue($scope.rowsValue[i], 'std')+':'+_assignValue($scope.rowsValue[i], 'stId')+':'+_assignValue($scope.rowsValue[i], 'id')+'*';
@@ -352,7 +352,7 @@ $scope.switching  = function(){
   if($scope.switchingVar == false)
     $scope.switchingVar = true,$scope.caption      = "Add Details";
   else
-    $scope.switchingVar = false, $scope.caption      = "MobileNo Search";
+    $scope.switchingVar = false, $scope.caption      = "Back";
 
 }
 
@@ -394,8 +394,8 @@ $scope.searchingMobile  = function(mobile){
 $scope._editStop  = function(ind, status){
   startLoading();
   
-  console.log($scope.rowsValue);
-  console.log($scope.stopList);
+  // console.log($scope.rowsValue);
+  // console.log($scope.stopList);
 
   if(status == 'one'){
     _editGlobal(ind);
