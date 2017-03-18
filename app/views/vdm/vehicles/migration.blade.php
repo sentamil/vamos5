@@ -28,7 +28,7 @@
                 		<br>
                 		<div class="row">
                 			<div class="col-md-2"></div>
-                			<div class="col-md-3">{{ Form::label('deviceId', 'Device Id :') }}</div>
+                			<div class="col-md-3">{{ Form::label('deviceId', 'Device Id / IMEI No :') }}</div>
                 			<div class="col-md-4">{{ Form::text('deviceId', $deviceId, array('class' => 'form-control','required'=>'required')) }}</div>
                 		</div>
                 		<br>

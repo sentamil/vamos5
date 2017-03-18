@@ -31,7 +31,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 		 		scope.path = [];
 		 		if(scope.hisurl != undefined)
 		   		$http.get(scope.hisurl).success(function(data){
-		 			var locs = data;
+		   			var locs = data;
 		 			scope.hisloc = locs;
 					scope._tableValue(locs);
 					if(data.fromDateTime=='' || data.fromDateTime==undefined || data.fromDateTime=='NaN-aN-aN'){ 
@@ -286,8 +286,17 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 	$scope.geoMarkerDetails={};
 	$scope.popupmarker;
 	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+	$scope.markerValue=0;
 	var VehiType;
     var vehicIcon=[];
+
+    $('.hideClass').hide();
+    $('#pauseButton').hide();
+    $('#playButton').hide();      
+    $('#stopButton').hide();   
+    $('#replayButton').hide(); 
+
+
 	$scope.getTodayDate  =	function(date) {
 		var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
@@ -796,12 +805,7 @@ var queue1 = [];
 
 			}
 		sessionValue($scope.trackVehID, $scope.groupname)
-
-		if(getParameterByName('fTime') && getParameterByName('tTime'))
-			$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDateUTC='+getParameterByName('fTime')+'&toDateUTC='+getParameterByName('tTime');			
-		else
-			$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
-			
+		$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
 		// stopLoading();
 		})
@@ -1277,7 +1281,7 @@ function animateMapZoomTo(map, targetZoom) {
 						// enableEventPropagation: true
 					// };
 					// var labelinfo = new InfoBox(myOptions);
-					// labelinfo.open($scope.map);
+					// labelinfo.open($scope.map);simple
 					// labelinfo.setPosition($scope.cityCircle[i].getCenter());
 					// geoinfo.push(labelinfo);
 										
@@ -1563,8 +1567,8 @@ if($scope.markerstart){
 				for(var i=0; i<$scope.polyline1.length; i++){
 					$scope.polyline1[i].setMap(null);
 				}
-				
-				$scope.polyline.setMap(null);
+
+			    $scope.polyline.setMap(null);
 				$scope.markerstart.setMap(null);
 				$scope.markerend.setMap(null);
 				$scope.path = [];
@@ -1574,18 +1578,28 @@ if($scope.markerstart){
 				contentString = [];
 				gsmarker=[];
 				gsinfoWindow=[];
-				window.clearInterval(id);
+				//window.clearInterval(id);
+			if($scope.markerValue==1){
+
+                 window.clearInterval(timeInterval);
+                 $scope.infosWindow.close();
+                 $scope.infosWindow=null;
+		         $scope.markerheads.setMap(null);
+               }
+
 				$('#replaybutton').attr('disabled','disabled');
 				$('#lastseen').html('<strong>From Date & time :</strong> -');
 				$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
+
 			}else{
 				if($scope.hisloc.error!=null || $scope.hisloc.error == undefined){
 					// $('#myModal').modal();
 					// alert('Please selected date before 7 days / No data found')
-					stopLoading();
+					//stopLoading();
 				}
 			}
 		}
+
 		// stopLoading();
 	}
 	$scope.addMarker= function(pos){
@@ -1746,102 +1760,40 @@ if($scope.markerstart){
 			$scope.printadd(dateFormat(data.date), b, data.tripDistance, count, marker, map, data); 
 		});
 	};
-	$scope.gcount =0;
-	$scope.gscount =0;
-	$scope.animated = function(){
-	    var count = 0;
-	    var offset;
-	    var sentiel = -1;
-	    var i = 0;
-	    window.clearInterval(id);
-	    var tempint=$scope.speedval;
-	    id = window.setInterval(function () {
-	        count = (count + 1) % 200;
-	        offset = count /2;
-	        $scope.gcount = count;
-	        var icons = $scope.polyline.get('icons');
-	        if(icons != undefined){
-	        	icons[0].offset = (offset) + '%';
-	        	$scope.polyline.set('icons', icons);    
-	        	if ($scope.polyline.get('icons')[0].offset == "99.5%") {
-		            icons[0].offset = '100%';
-		            $scope.polyline.set('icons', icons);
-		            window.clearInterval(id);
-		        }
-	        } else {window.clearInterval(id);}
-	        
-	    }, tempint);
-	}
-	
-	$scope.pausehis= function(){
-		$('#pauseButton').hide();
-		$('#playButton').show();	
-		 window.clearInterval(id);
-		 $scope.gscount = $scope.gcount;
-		 console.log(' val '+$scope.gscount)
-
-		 // google.maps.event.addListener($scope.map, "click", function(e) {
-			 console.log(" maps "+$scope.path)
-		 //  })
-	}
-	
-	$scope.speedchange=function(){
-		window.clearInterval(id);
-		 $scope.gscount = $scope.gcount;
-		 $scope.playhis();
-	}
-	
-	$scope.playhis=function(){
-		$('#playButton').hide();
-		$('#pauseButton').show();	
-		var count = $scope.gscount;
-	    var offset;
-	    var sentiel = -1;
-	     window.clearInterval(id);
-	     var tempint=$scope.speedval;
-	    id = window.setInterval(function () {
-	    	
-	        count = (count + 1) % 200;
-	        offset = count /2;
-	        $scope.gcount = count;
-	        var icons = $scope.polyline.get('icons');
-	        icons[0].offset = (offset) + '%';
-	        $scope.polyline.set('icons', icons);
-	        
-	        if ($scope.polyline.get('icons')[0].offset == "99.5%") {
-	            icons[0].offset = '100%';
-	            $scope.polyline.set('icons', icons);
-	            window.clearInterval(id);
-	        }
-	        tempint=$scope.speedval;
-	    }, tempint);
-	}
-	
-	$scope.stophis=function(){
-		var count = 0;
-	    var offset;
-	    var sentiel = -1;
-	    
-	    window.clearInterval(id);
-	    var tempint=$scope.speedval;
-	    count = (count + 1) % 200;
-	    offset = count /2;
-	    var icons = $scope.polyline.get('icons');
-	    icons[0].offset = (offset) + '%';
-	    $scope.polyline.set('icons', icons);
-	        
-        if ($scope.polyline.get('icons')[0].offset == "99.5%") {
-            icons[0].offset = '100%';
-            $scope.polyline.set('icons', icons);
-            window.clearInterval(id);
-        }   
-	}
 
 
-	var markerhead, intervalPoly;
+
+    $scope.trimComma = function(textVal){
+
+    	var strValues;
+    	var splitValue = textVal.split(/[,]+/);
+
+        var strLen=splitValue.length;
+
+        switch(strLen){
+             
+              case 0:
+               strValues='No Data';
+               break;
+              case 1:
+               strValues=splitValue[0];
+               break;
+              case 2:
+               strValues=splitValue[0]+','+splitValue[1];
+               break;
+              default:
+               strValues=splitValue[0]+','+splitValue[1]+','+splitValue[2];
+               break;
+        }
+     return  strValues;
+	}
+
+    var markerhead, intervalPoly;
+    var timeInterval;
+
 	$scope.polylineCheck 	= false;
 	$scope.markerPark 		= [];
-	
+
 	function myStopFunction() {
 	    clearInterval(intervalPoly);
 	}
@@ -1859,10 +1811,80 @@ if($scope.markerstart){
 
 	}
 
+	var pcount=0;
+    $scope.timeDelay=20;
+
+    function timerSet(){
+
+    	if($scope.hisloc.vehicleLocations.length!= pcount+1){
+
+	       	var latlngs = new google.maps.LatLng($scope.hisloc.vehicleLocations[pcount+1].latitude,$scope.hisloc.vehicleLocations[pcount+1].longitude);
+    	 //  if(($scope.hisloc.vehicleLocations[pcount].latitude+''+$scope.hisloc.vehicleLocations[pcount].longitude)!=($scope.hisloc.vehicleLocations[pcount+1].latitude+''+$scope.hisloc.vehicleLocations[pcount+1].latitude)){
+             $scope.rotationsd = getBearing($scope.hisloc.vehicleLocations[pcount].latitude,$scope.hisloc.vehicleLocations[pcount].longitude,$scope.hisloc.vehicleLocations[pcount+1].latitude,$scope.hisloc.vehicleLocations[pcount+1].longitude);                
+	                 
+                                 
+				                $scope.markerheads.setIcon({
+                                      path:vehicIcon[0],
+				                      scale:vehicIcon[1],
+						              strokeWeight: 1,
+						              fillColor:'#6dd538',
+				                      fillOpacity: 1,
+				                      anchor:vehicIcon[2],
+				                      rotation:$scope.rotationsd,
+				                });
+
+				                if(pcount==0){
+				                	$scope.markerheads.setMap($scope.map);
+				                }
+
+                                $scope.markerheads.setPosition(latlngs);
+
+				                 var contenttString ='<table style="max-width:150px;min-width:150px;max-height:100px;min-height:100px;">'
+				                                            +'<tbody>'
+				                                              +'<tr>'
+				                                                 +'<td style="font-size:10px;float:left;font-weight:bold;max-height:15px;min-height:15px;">'+'Odo:'+'</td>'
+				                                                 +'<td style="max-height:15px;min-height:15px;float:right;padding-right:25px;font-size:10px;font-weight:bold;">'+$scope.hisloc.vehicleLocations[pcount].odoDistance+'</td>'
+				                                              +'</tr>'
+				                                              +'<tr>'
+				                                                 +'<td style="font-size:10px;float:left;font-weight:bold;max-height:15px;min-height:15px;">'+'Ignition:'+'</td>'
+				                                                 +'<td style="max-height:15px;min-height:15px;float:right;padding-right:40px;font-size:10px;font-weight:bold;">'+$scope.hisloc.vehicleLocations[pcount].ignitionStatus+'</td>'
+				                                              +'</tr>'
+				                                              +'<tr>'
+				                                                 +'<td style="font-size:10px;float:left;font-weight:bold;max-height:15px;min-height:15px;">'+'Last Seen:'+'</td>'
+				                                                 +'<td style="max-height:15px;min-height:15px;float:right;font-size:10px;font-weight:bold;">'+$scope.hisloc.vehicleLocations[pcount].lastSeen+'</td>'
+				                                              +'</tr>'	
+				                                              +'<tr style="max-width:150px;min-width:150px;">'			                                            
+				                                                 +'<td colspan="2" style="max-height:55px;min-height:55px;font-size:10px;font-weight:bold;">'+$scope.trimComma($scope.hisloc.vehicleLocations[pcount].address)+'</td>'
+				                                                 +'<td style="max-height:55px;min-height:55x;">'+'</td>'
+				                                              +'</tr>'
+                                                          +'</tbody>'
+				                                      +'</table>'
+
+
+				             $scope.infosWindow.setContent(contenttString);
+				             $scope.infosWindow.setPosition(latlngs);
+
+				             if(pcount==0){
+                              $scope.infosWindow.open($scope.map,$scope.markerheads);
+                            }
+       
+                            $scope.map.panTo(latlngs);
+    // }
+      pcount++;
+     }
+     else{
+
+      $('#pauseButton').hide();
+      $('#playButton').hide();      
+       $('#stopButton').hide();   
+        $('#replayButton').show();  
+     } 
+}
+
 	$scope.polylineCtrl 	= function(){
 		startLoading();
 		myStopFunction();
-		// $scope.polylinearr = [];
+     // $scope.polylinearr = [];
 		markerClear();
 		gmarkers=[];
 		ginfowindow=[];
@@ -1870,16 +1892,23 @@ if($scope.markerstart){
 		// gsmarker=[];
 		// gsinfoWindow=[];
 		var j =0;
-		window.clearInterval(id);
+	//	window.clearInterval(id);
 		$('.radioBut').hide(0).delay(5000).show(100);
 		// $('.hideClass').hide();
 		/*
 			loadall in map polyline
 		*/
 
+       vehicIcon=vehiclesChange(VehiType);
 
 		if($scope.polylineCheck == false){
+
 			$('.hideClass').hide();
+			   $('#pauseButton').hide();
+                 $('#playButton').hide();      
+                   $('#stopButton').hide();   
+                     $('#replayButton').hide(); 
+
 			var lineCount 	=	 0;
 			// markerClear();
 			// var lineSymbol = {
@@ -1899,7 +1928,15 @@ if($scope.markerstart){
 		    // scale: 5
 
 		    };
-	    				
+
+            if($scope.markerValue==1){
+                window.clearInterval(timeInterval);
+                 $scope.infosWindow.close();
+                 $scope.infosWindow=null;
+				   $scope.markerheads.setMap(null);
+                   $scope.markerheads=null;
+            }
+
 	    	if($scope.polyline && $scope.markerstart && $scope.markerend){
 						
 						$scope.polyline.setMap(null);
@@ -1907,10 +1944,8 @@ if($scope.markerstart){
 						$scope.markerend.setMap(null);
 					}
 	    				
-
-						
 			$scope.polylineLoad 	=[];
-			vehicIcon=vehiclesChange(VehiType); 
+			//vehicIcon=vehiclesChange(VehiType); 
 			function myTimer() {
 				if($scope.path.length == lineCount+1){
 			  		myStopFunction()
@@ -1918,11 +1953,10 @@ if($scope.markerstart){
 				
 				if($scope.path.length != lineCount+1){
 					if(markerhead){
-						
-						markerhead.setMap(null);
-					} 
+					    markerhead.setMap(null);
+				          } 
 
-					var rotationd = getBearing($scope.path[lineCount].lat(), $scope.path[lineCount].lng(), $scope.path[lineCount+1].lat(), $scope.path[lineCount+1].lng());
+				    var rotationd = getBearing($scope.path[lineCount].lat(), $scope.path[lineCount].lng(), $scope.path[lineCount+1].lat(), $scope.path[lineCount+1].lng());
 				
 					markerhead = new google.maps.Marker({
 				        position: $scope.path[lineCount+1],
@@ -1954,7 +1988,7 @@ if($scope.markerstart){
 						path: [$scope.path[lineCount], $scope.path[lineCount+1]],
 						strokeColor: $scope.polylinearr[lineCount],
 						strokeOpacity: 0,
-						// strokeOpacity: 1,
+					  //strokeOpacity: 1,
 						strokeWeight: 3,
 						icons: [{
 				            icon: doubleLine,
@@ -1962,12 +1996,11 @@ if($scope.markerstart){
 				            repeat: '15px'
 				        }],
 
-
-				
 						clickable: true
-					
-			  		});
+				    });
+
    					$scope.map.panTo($scope.path[lineCount]);
+
    					var latLngBounds = new google.maps.LatLngBounds();
 			  		// for(var i = 0; i < $scope.path.length; i++) {
 						latLngBounds.extend($scope.path[lineCount]);
@@ -1980,7 +2013,6 @@ if($scope.markerstart){
 			  					// $scope.markerPark.push($scope.marker)
 								j++;
 							}
-							
 						}
 			  		// }
 
@@ -1990,21 +2022,23 @@ if($scope.markerstart){
 				}
 			}
 
-	   		intervalPoly = setInterval(function(){ myTimer() }, 600);
+	   	intervalPoly = setInterval(function(){ myTimer() }, 600);
+    }
+    else{
+		// var j =0;
+		 $('.hideClass').show();
+	     $('#playButton').hide();
+         $('#replayButton').show();
+         $('#pauseButton').show(); 
+         $('#stopButton').show();
+ 
 
-
-			
-
-
-		} else {
-			// var j =0;
-			$('.hideClass').show();
 			if(markerhead){
 				markerhead.setMap(null);
 				markerhead=null;
 				myStopFunction();
-				
 			}
+
 					 var tempFlag=false;
 			  				 for(var k=0;k<$scope.hisloc.vehicleLocations.length;k++){
 				  				 if($scope.hisloc.vehicleLocations[k].position =='M' && tempFlag==false){
@@ -2016,32 +2050,43 @@ if($scope.markerstart){
 					  			if(firstval==undefined){
 					  				firstval=0;
 					  			}
-					var lastval = $scope.hisloc.vehicleLocations.length-1;
-			  				$scope.addMarkerstart({ lat: $scope.hisloc.vehicleLocations[firstval].latitude, lng: $scope.hisloc.vehicleLocations[firstval].longitude , data: $scope.hisloc.vehicleLocations[firstval], path:$scope.path[firstval]});
-							  	
-							$scope.addMarkerend({ lat: $scope.hisloc.vehicleLocations[lastval].latitude, lng: $scope.hisloc.vehicleLocations[lastval].longitude, data: $scope.hisloc.vehicleLocations[lastval], path:$scope.path[lastval] });
+				    var lastval = $scope.hisloc.vehicleLocations.length-1;
+			  		$scope.addMarkerstart({ lat: $scope.hisloc.vehicleLocations[firstval].latitude, lng: $scope.hisloc.vehicleLocations[firstval].longitude , data: $scope.hisloc.vehicleLocations[firstval], path:$scope.path[firstval]});
+					$scope.addMarkerend({ lat: $scope.hisloc.vehicleLocations[lastval].latitude, lng: $scope.hisloc.vehicleLocations[lastval].longitude, data: $scope.hisloc.vehicleLocations[lastval], path:$scope.path[lastval] });
 							
-							var lineSymbol = {
-						        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-						        scale: 3,
-						        strokeColor: '#ff0000'
-						    };
+						/*	var lineSymbol = {
+						      path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+						      scale: 3,
+						    };*/
 						  	$scope.polyline = new google.maps.Polyline({
 								map: $scope.map,
 								path: $scope.path,
 								strokeColor: '#068b03',
 								strokeOpacity: 0.7,
 								strokeWeight: 3,
-								icons: [{
+								/*icons: [{
 						            icon: lineSymbol,
-						            offset: '100%'
-						        }],
+						           offset: '100%'
+						        }],*/
 								clickable: true
 						  	});
 
-						  	var latLngBounds = new google.maps.LatLngBounds();
-						  		for(var i = 0; i < $scope.path.length; i++) {
-									latLngBounds.extend($scope.path[i]);
+   				    $scope.markerheads = new google.maps.Marker();
+				    $scope.infosWindow = new google.maps.InfoWindow({maxWidth:200});
+
+                    $scope.markerheads.addListener('click', function() {
+					    $scope.infosWindow.open($scope.map,$scope.markerheads);
+					});
+
+				    $scope.markerValue=1;
+
+                    pcount=0;
+                    timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay);
+			
+			
+					    var latLngBounds = new google.maps.LatLngBounds();
+						    for(var i = 0; i < $scope.path.length; i++) {
+								latLngBounds.extend($scope.path[i]);
 									if($scope.hisloc.vehicleLocations[i])
 									if($scope.hisloc.vehicleLocations[i].position!=undefined){
 										if($scope.hisloc.vehicleLocations[i].position=='P' || $scope.hisloc.vehicleLocations[i].position=='S' || $scope.hisloc.vehicleLocations[i].insideGeoFence=='Y' ){
@@ -2054,27 +2099,68 @@ if($scope.markerstart){
 										
 									}
 						  		}
-						  	
-						  	// if($scope.path.length>1){
-					   	// 		for(var i=0;i<$scope.path.length-1;i++){
-					   	// 			$scope.polyline1[i] = new google.maps.Polyline({
-									// 	map: $scope.map,
-									// 	path: [$scope.path[i], $scope.path[i+1]],
-									// 	strokeColor: $scope.polylinearr[i],
-									// 	strokeOpacity: 0.7,
-									// 	strokeWeight: 2,
-										
-								 //  	});
-					   	// 		}
-					   	// 	}
-					   	window.setTimeout(function () {
-						    	$scope.animated();
-						    },1000);
+
 		}
 		// console.log($scope.path)
 		// console.log($scope.polylineCheck)
 		stopLoading();
 	}
+
+	$scope.replays= function(){
+
+	    $('#playButton').hide();
+	    $('#replayButton').show();
+		$('#stopButton').show();	
+	    $('#pauseButton').show();
+
+        window.clearInterval(timeInterval);               
+
+        pcount=0; 
+        timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay);
+	}
+	
+	$scope.pausehis= function(){
+
+       $('#stopButton').hide();	
+	    $('#pauseButton').hide();
+		 $('#replayButton').hide();
+		   $('#playButton').show();
+		   
+        window.clearInterval(timeInterval);
+    }
+
+	$scope.speedchange=function(){
+
+	     $('#playButton').hide();
+			$('#replayButton').show();
+		     $('#stopButton').show();	
+			  $('#pauseButton').show();
+
+		window.clearInterval(timeInterval);
+    	timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay );
+	}
+	
+	$scope.playhis=function(){
+
+	    	$('#playButton').hide();
+			$('#replayButton').show();
+		      $('#stopButton').show();	
+			  $('#pauseButton').show();
+
+	    window.clearInterval(timeInterval);		  
+        timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay );
+	}
+
+	$scope.stophis=function(){
+
+         $('#stopButton').hide();	
+			  $('#pauseButton').hide();
+         	      $('#replayButton').show();
+         	         $('#playButton').show();
+
+        window.clearInterval(timeInterval);
+	}
+
 
 	$(document).ready(function(){
         $('#minmax1').click(function(){

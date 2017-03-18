@@ -356,7 +356,7 @@ li a label{ width:100%; display:block;}
 .multi { width: 200px; color: #0d0d0d; font-size: 10px; font-weight:bold; text-align: left; word-wrap: break-word;background: #f4f4f4; border: 1px solid #0d0d0d; padding: 2px; border-radius: 0 10px 10px 10px}
 .singpop { width: 250px; color: #0d0d0d; font-size: 10px; text-align: left;background: #fefefe;  padding: 2px; border-radius: 5px 0 5px 5px}
 .tabpop{width:250px;word-wrap:break-word;table-layout:fixed}
-.tabpop td{padding: 3px}
+.tabpop td{padding: 5px}
 .tabpop tr{border-bottom: 1px solid #cecece;}
 .tabpop tr td{border-right: 1px solid #cecece;}
 .tabpop tr:last-child{border-bottom: 0}
@@ -644,6 +644,10 @@ input[type=range]:focus::-ms-fill-upper {
 {
 	position: fixed;top: 40px;right: 15px; z-index:999; background-color: #fff; padding: 2px;  border-radius: 2px; cursor: pointer;background-color: yellow;
 }
+/*#togl_buton
+{
+	/*position:relative;bottom:70px;right:2%;z-index:999; background-color: #fff; padding: 2px;  border-radius: 2px; cursor: pointer;background-color:grey;
+}*/
 
 #minmax1{
 	position: fixed;top: 0px;right: 0px; z-index:999; background-color: yellow; padding-right: 2px; padding-left: 2px; padding-top:2px;padding-bottom:2px; border-radius: 2px; cursor: pointer;
@@ -911,4 +915,23 @@ div h6 {font-size: bold}
 
 .bg_color{
 	background-color: #fefefe; outline: none;
+}
+
+.details_box_bottom {
+    max-width:500px;
+    position:absolute;
+    background-color:#fcfcfc;
+    opacity:0.6;
+    color: black;
+    font-family:sans-serif; 
+    font-size:11px;
+    font-weight: bold;
+    padding: 0 4px 0 4px;
+    border: none;
+    border-radius:1px;
+    left:16%;
+    bottom:0;
+    z-index:999;
+    text-align: center; 
+    word-wrap: break-word;
 }

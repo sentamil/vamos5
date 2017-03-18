@@ -46,8 +46,10 @@
             <table cellpadding="0" cellspacing="0" class="dynData">
               <tbody>
                 <tr>
-                  <td style="text-align:center; font-weight:bold;">Vehicle Name</td>
-                  <td id="vehiid" style="text-align:center; font-weight:bold !important;"><h3></h3></td>
+                  <td style="font-weight:bold;">Vehicle Name</td>
+                  <td id="vehiid" style="font-weight:bold !important;"><h3></h3></td>
+                  <td style="font-weight:bold;">TripDist(KM)</td>
+                  <td style="float:left;">{{hisloc.tripDistance}}</td>
                 </tr>
               </tbody>
             </table>
@@ -73,36 +75,21 @@
             </div>
           </div>
                           
-          <div class="form-group form-inline" style="margin-bottom: 5px">
-            <div class="input-group hideClass">
-              <button ng-click="playhis()" id="playButton" style="display:none"><i class="glyphicon glyphicon-play"></i></button>
-              <button ng-click="pausehis()" id="pauseButton"><i class="glyphicon glyphicon-pause"></i></button>
-              <button ng-click="animated()" id="replaybutton"><i class="glyphicon glyphicon-repeat"></i></button>
-              <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
-            </div>
-
-            <div class="input-group speedbutt hideClass" id="animatecontrols" ng-init="speedval=100">
-              <!-- <label>Speed :</label> -->
-              <input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="speedval" value="200" type="radio" />
-              <span>Slow</span>
-              <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="100" />
-              <span>Normal</span>
-              <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="speedval" value="20" />
-              <span>Fast</span>
-            </div>
-
-            <div class="input-group ">
+    <!--      <div class="form-group form-inline" style="margin-bottom: 5px">
+             <div class="input-group ">
               <label>Stops&nbsp;</label>
               <select id="traffic" title="Suggested Stops" style="width: 80px;height: 25px;" ng-model="geoStops" ng-change="goeValueChange()" ng-options="geo.stopName as geo.stopName for geo in geoStop.geoFence"></select>
               <a ng-hide="true" href="../public/printStops?vName={{shortVehiId}}&vid={{trackVehID}}" target="_blank">Print</a>
             </div>
 
             <div class="input-group">
-              <button data-target="#myModal1" data-toggle="modal" ng-click="getOrd()" class="sizeInput">Routes</button>
+              <button data-target="#myModal1" data-toggle="modal" ng-click="getOrd()" class="sizeInput">Routes</button> -->
               <!-- <button ng-click="hideShowTable()" id="btnValue">ShowDetails</button> -->
-            </div>
-          </div>
-          <div>
+        <!--    </div>
+
+          </div> -->
+
+           <div>
                     
             <ul class='tabs'>
               <li ng-click="addressResolve('movement')"><a href='#movement'>Movement</a></li>
@@ -117,7 +104,7 @@
 
             <!-- movement -->
             <div id='movement' class="pane">
-              <table class="tables">
+            <!--  <table class="tables">
                 <tr>
                   <td colspan="2">Vehicle Group</td>
                   <td>{{trimColon(groupname)}}</td>
@@ -129,7 +116,7 @@
                   <td> {{hisloc.regNo}}</td>
                   <td colspan="2">TripDist(KM)</td>
                   <td colspan="2"> {{hisloc.tripDistance}}</td>
-                </tr>
+                </tr>-->
                 
               </table>
               
@@ -140,7 +127,7 @@
                   <td width="7%">Max(KM)</td>
                   <td width="35%">Address</td>
                   <td width="10%">G-Map</td>
-                  <td width="7%">Dist</td>
+                  <!-- <td width="7%">Dist</td> -->
                   <td width="15%">C-Dist(KM)</td>
                   <td width="10%">Odo(KM)</td>
                 </tr>
@@ -153,12 +140,12 @@
                     <p ng-if="move.address==null && moveaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
                   </td>
                   <td><a href="https://www.google.com/maps?q=loc:{{move.latitude}},{{move.longitude}}" target="_blank">Link</a></td>
-                  <td>{{move.tmpDistance}}</td>
+                  <!-- <td>{{move.tmpDistance}}</td> -->
                   <td>{{move.distanceCovered}}</td>
                   <td>{{move.odoDistance}}</td>
                 </tr>
                 <tr ng-if="movementdata.length == 0 || movementdata == undefined">
-                  <td colspan="7" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                  <td colspan="6" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
               </table>
             </div>
@@ -435,7 +422,35 @@
               </table>
             </div>
 
+
           </div>
+
+
+        <div class="form-group form-inline" style="margin-bottom: 5px;padding-left: 10px;">
+            <div class="input-group">
+              <button ng-click="playhis()" id="playButton" style="display:none"><i class="glyphicon glyphicon-play"></i></button>
+              <button ng-click="pausehis()" id="pauseButton"><i class="glyphicon glyphicon-pause"></i></button>
+              <button ng-click="replays()" id="replayButton"><i class="glyphicon glyphicon-repeat"></i></button>
+              <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
+            </div>
+
+            <div class="input-group speedbutt hideClass" id="animatecontrols" ng-init="timeDelay=20" style="padding-left:30px;">
+              <!-- <label>Speed :</label> -->
+              <input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="timeDelay" value="80" type="radio" />
+              <span>Slow</span>
+              <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="timeDelay" value="50" />
+              <span>Normal</span>
+              <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="timeDelay" value="20" />
+              <span>Fast</span>
+            </div>
+           
+           <div class="input-group" style="float:right;padding-right:10px;">
+              <button data-target="#myModal1" data-toggle="modal" ng-click="getOrd()" class="sizeInput">Routes</button> 
+              <!-- <button ng-click="hideShowTable()" id="btnValue">ShowDetails</button> -->
+         </div>
+
+
+        </div>
 
 
           <div class="modal fade" id="myModal1" role="dialog" data-backdrop="false" style=" top: 70px;">
@@ -634,10 +649,10 @@ if(apikey_url != null || apikey_url != undefined)
    // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
 
-
-
    // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   scriptLibrary.push(url);
+  scriptLibrary.push(url);
+   // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+ 
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    
    // scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");

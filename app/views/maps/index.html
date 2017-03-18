@@ -247,6 +247,10 @@
                                 </div>
                         </div>
 
+
+                 <!--  <div class="togl_buton"  ng-show="toglButtn" ng-click="toglButon()"> <img src="assets/imgs/Up-Arrows.png"/></div>-->
+                   <div class="details_box_bottom">Support Details: {{support}}</div>
+
                         <div id="graphsId">
                             <div>
                                 <div>Speed - <label id="speed"></label>&nbsp;Km/h</div>
@@ -448,8 +452,8 @@
                                        
                                     </div>
                                     <!-- <div id="container-speed"></div> -->
-                                    <h3>Support details</h3>
-                                    <div align="center" style="word-wrap: break-word;"><p>{{support}}</p></div>
+                                  <!--  <h3>Support details</h3>
+                                    <div align="center" style="word-wrap: break-word;"><p>{{support}}</p></div>-->
                                 </div>
                         </div>
                         <a href="javascript:void(0);" class="contentexpand"><img src="assets/imgs/add.png"/></a>
@@ -634,8 +638,9 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/jquery-1.11.0.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
-   // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   scriptLibrary.push(url);
+ //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+ scriptLibrary.push(url);
+   // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    scriptLibrary.push("//code.highcharts.com/highcharts.js");
    scriptLibrary.push("//code.highcharts.com/highcharts-more.js");

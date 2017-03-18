@@ -9,11 +9,11 @@
 <div class="row">
 		<div class="col-md-4">
 	<div class="form-group">
-		{{ Form::label('vehicleId', 'Vehicle Id :')  }}
+		{{ Form::label('vehicleId', 'Vehicle Name / Vehicle Id')  }}
 		 {{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control','disabled' => 'disabled')) }}
 	</div>
 	<div class="form-group">
-		{{ Form::label('deviceId', 'Device Id') }}
+		{{ Form::label('deviceId', 'Device Name / Device Id') }}
 		<br/>
 		{{ Form::text('deviceId', $refData['deviceId'], array('class' => 'form-control','disabled' => 'disabled')) }}
 
