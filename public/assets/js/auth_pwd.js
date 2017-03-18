@@ -350,9 +350,9 @@ function _editGlobal(ind){
 $scope.switching  = function(){
 
   if($scope.switchingVar == false)
-    $scope.switchingVar = true,$scope.caption      = "Add Details";
+    $scope.switchingVar = true,$scope.caption      = "Back";
   else
-    $scope.switchingVar = false, $scope.caption      = "Back";
+    $scope.switchingVar = false, $scope.caption      = "MobileNo Search";
 
 }
 
