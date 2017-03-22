@@ -153,16 +153,16 @@
               </thead>
               <tbody>
                 <tr ng-repeat = "row in rowsValue">
-                  <td><input type="text" ng-if="row.sName == ''" ng-model="row.sNameNew" class="form-control input-sm">{{row.sName}}</td>
-                  <td><input type="text" ng-if="row.mNum == ''" ng-model="row.mNumNew" class="form-control input-sm">{{row.mNum}}</td>
-                  <td><input type="text" ng-if="row.std == ''" ng-model="row.stdNew" class="form-control input-sm">{{row.std}}</td>
+                  <td><input type="text" ng-if="row.sName == ' '" ng-model="row.sNameNew" class="form-control input-sm">{{row.sName}}</td>
+                  <td><input type="text" ng-if="row.mNum == ' '" ng-model="row.mNumNew" class="form-control input-sm">{{row.mNum}}</td>
+                  <td><input type="text" ng-if="row.std == ' '" ng-model="row.stdNew" class="form-control input-sm">{{row.std}}</td>
                   <td>
                   <select ng-if="row.poiIds == ''" ng-options="vehi.stop for vehi in stopList" ng-model="row.poiId" class="form-control input-sm">
                     <option style="display:none" value="">Select BusStop</option>
                   </select>{{row.poiIds}}
                   </td>
                   
-                  <td><button class="btn btn-default btn-xs" ng-click="_editStop($index, 'one')"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;&nbsp;<button class="btn btn-default btn-xs" ng-click="_deleteMobNum($index)"><span class="glyphicon glyphicon-trash"></span></button></td>
+                  <td><button class="btn btn-default btn-xs" ng-click="_editStop($index, 'one')" ng-if="row.mNum != ' '"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;&nbsp;<button class="btn btn-default btn-xs" ng-click="_undoEdit($index, 'one')" ng-if="row.mNum == ' '"><span class="glyphicon glyphicon-ok"></span></button>&nbsp;&nbsp;<button class="btn btn-default btn-xs" ng-click="_deleteMobNum($index)"><span class="glyphicon glyphicon-trash"></span></button></td>
                 </tr>
                 <tr ng-if="rowsValue.length == 0" class="err"><td colspan="5"><h5>No Data Found!</h5></td></tr>
               </tbody>
@@ -215,6 +215,7 @@
               </tbody>
           </table>
           </div>
+          <div id="snackbar">{{toast}}</div>
         </div>
 
     </div>

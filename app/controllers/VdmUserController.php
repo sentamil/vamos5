@@ -453,7 +453,7 @@ public function updateNotification() {
         	$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
         	$franchiseDetails=json_decode($franDetails_json,true);
         	if(isset($franchiseDetails['email1'])==1){
-                $mailId[]               = $franchiseDetails['email1'];
+                $mailId[]               = $franchiseDetails['email2'];
         		log::info(array_values($mailId));
         	}
         	

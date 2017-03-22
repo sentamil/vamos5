@@ -132,6 +132,11 @@ function checkXssProtection(str){
   
 }
 
+function toastMsg() {
+    var x = document.getElementById("snackbar")
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
 
 function todaydate(){
   var today = new Date();
@@ -160,6 +165,10 @@ function mobNumCheckTenDigit(val){return (/^((\d{10})|(\d{12}))$/.test(val)? tru
 function validCharCheck(val){return (/^[a-zA-Z ]{1,30}$/).test(val) ? true : false};
 
 function removeColonStar(val){return val.match(/^([a-zA-Z0-9 ]+)$/) ? true : false};
+
+function isEmpty(val){return val.trim() ? true : false};
+
+function trimed(val){return val.trim()};
 
 function vehiclesChange(vehiTyp){
  //var vehiLogo;

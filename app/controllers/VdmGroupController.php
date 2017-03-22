@@ -336,9 +336,9 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
         	$fcode      =       $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
         	$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
         	$franchiseDetails=json_decode($franDetails_json,true);
-        	if(isset($franchiseDetails['email1'])==1){
+        	if(isset($franchiseDetails['email2'])==1){
                             // $mailId[]    =       $franchiseDetails['email1'];
-        		$mailId[]               = $franchiseDetails['email1'];
+        		$mailId[]               = $franchiseDetails['email2'];
         		log::info(array_values($mailId));
         	}
         	
@@ -586,7 +586,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 	//save group for user 
 	public function _saveGroup(){
 
-		log::info(' i am in save function');
+		log::info(' save function');
 
 		if(!Auth::check()){
 			return Redirect::to('login');
@@ -597,9 +597,9 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		$grpName 	= 	Input::get ('grpName');
 		$newValue 	= 	Input::get ('newValu');
 		$vehList 	= 	Input::get ('grplist');
-
+		$mailId 	= 	array();
 		$ownerShip	=	$redis->hget('H_UserId_Cust_Map', $username.':OWN');
-
+		$oldVehi    = 	$redis->smembers($grpName);
 
 		log::info('  ownerShip ');
 		log::info($ownerShip);
@@ -609,12 +609,20 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 			$grpName = $grpName .':'.$fcode;
 		}
 
+    	
+    	$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+    	$franchiseDetails=json_decode($franDetails_json,true);
 
+    	if(isset($franchiseDetails['email2'])==1)
+    		$mailId[]               = $franchiseDetails['email2'];
+    		    	
+    	if(Session::get('cur')=='dealer')
+    		$mailId[] =   $redis->hget ( 'H_UserId_Cust_Map', $username . ':email' );
+    		
 		if($newValue !== ''){
 			$value1=$redis->SISMEMBER('S_Groups_' . $fcode, $grpName);
 			if($value1==1)
 			{
-				
 				return '';
 			}
 			$redis->sadd('S_Groups_' . $fcode, $grpName);
@@ -625,15 +633,20 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 				$redis->sadd('S_Groups_Dealer_'.$ownerShip.'_'.$fcode,$grpName);
 		}
 		
-
 		$redis->del($grpName);
 		log::info(' group del ');		
 		foreach($vehList as $vehi) {
 			$redis->sadd($grpName,$vehi);
 		}
 		
+		if(sizeof($mailId) > 0)
+        	Mail::queue('emails.group', array('username'=>$username, 'groupName'=>$grpName, 'oldVehi'=>$oldVehi, 'newVehi'=>$vehList), function($message) use ($mailId, $grpName)
+        	{
+                //Log::info("Inside email :" . Session::get ( 'email' ));
+        		$message->to($mailId)->subject('Group Updated -' . $grpName);
+        	});
+
 		log::info(' group insert ');
-		
 		return 'sucess';
 	
 	}

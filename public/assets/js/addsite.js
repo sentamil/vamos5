@@ -175,7 +175,7 @@ $scope.AddClear = function(){
           console.log("Sucess");
           $scope.toast = "Sucessfully Created ...";
           serviceCall();
-          myFunction();
+          toastMsg();
           $('#add').show();
           $('#create').hide();
           stopLoading();
@@ -191,7 +191,7 @@ $scope.AddClear = function(){
     {
       console.log(err)
       $scope.toast = "Enter all the field / Mark the Site ";
-      myFunction();
+      toastMsg();
       stopLoading();
     }
     stopLoading();
@@ -448,7 +448,7 @@ $scope.AddClear = function(){
           console.log("Sucess");
           $scope.toast = "Sucessfully Updated ...";
           serviceCall();
-          myFunction();
+          toastMsg();
           $("#update").attr('class', '');
           stopLoading();
         })
@@ -463,7 +463,7 @@ $scope.AddClear = function(){
     { 
       console.log(err);
       $scope.toast = "Enter all the field / Mark the Site ";
-      myFunction();
+      toastMsg();
       stopLoading();
     }
     stopLoading();
@@ -487,7 +487,7 @@ $scope.AddClear = function(){
         console.log("Sucess");
         $scope.toast = "Sucessfully Deleted ...";
         serviceCall();
-        myFunction();
+        toastMsg();
         $scope.AddClear();
         stopLoading();
       })
@@ -499,11 +499,7 @@ $scope.AddClear = function(){
     }
   }
 
-function myFunction() {
-    var x = document.getElementById("snackbar")
-    x.className = "show";
-    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-}
+
 
 $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();

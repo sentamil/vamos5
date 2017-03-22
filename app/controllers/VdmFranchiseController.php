@@ -1384,7 +1384,7 @@ public function users()
 
 				}
 
-				Session::put('email', $email1);
+				Session::put('email', $email2);
 				$response=Mail::send('emails.franchies', array('url'=>$fname, 'old'=>$oldFranch, 'new'=>$NewFranch), function($message){
 					$message->to(Session::pull ( 'email' ))->subject('Franchises Details Updated !');
 				});	

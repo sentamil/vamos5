@@ -339,8 +339,8 @@ class VdmDealersController extends \BaseController {
 			$mailId = array();
         	$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
         	$franchiseDetails=json_decode($franDetails_json,true);
-        	if(isset($franchiseDetails['email1'])==1){
-                $mailId[]               = $franchiseDetails['email1'];
+        	if(isset($franchiseDetails['email2'])==1){
+                $mailId[]               = $franchiseDetails['email2'];
         		log::info(array_values($mailId));
         	}
 

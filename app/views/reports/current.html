@@ -330,7 +330,7 @@ background-color: #ffffff;
 			                                <span ng-switch-when="no" style="color: #00ce2f">OFF</span>
 			                            </td>
 			                            <td>{{user.temperature}}</td>
-										<td ng-if="user.address!=null" star-Break address={{user.address}}>{{user.address}}</td>
+										<td ng-if="user.address!=null" address={{user.address}}>{{user.address}}</td>
 										<td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
 										<td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>														

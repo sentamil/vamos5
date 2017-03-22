@@ -17,8 +17,8 @@
 <div id="status">&nbsp;</div>
 <body ng-app = "mapApp">
     <div ng-controller = "mainCtrl" class="ng-cloak">
-        <div id="wrapper">
-            <div id="sidebar-wrapper">
+        <div id="wrapper-site">
+            <div id="sidebar-wrapper-site">
                 <ul class="sidebar-nav">
                     <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
                     <li class="track"><a href="../public/track"><div></div><label>Track</label></a></li>
@@ -29,7 +29,7 @@
                     <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
                     <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
                 </ul>
-                <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
+                <!-- <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
                     <li style="margin-bottom: 15px;"><div class="right-inner-addon" align="center"><i class="fa fa-search"></i><input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" /></div>
                     </li>
                     <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ng-cloak >{{trimColon(location.group)}}</a>
@@ -38,7 +38,7 @@
 
                         </ul>
                     </li>
-                </ul>
+                </ul> -->
             </div>
             <div id="testLoad"></div>
             <div style="position: relative; min-height: 1px; padding-right: 15px; padding-left: 15px; top: 40px; background-color: #fcfcfc; margin: 10px; border-radius: 3px; border: 0.7px solid #dcdcdc; ">
@@ -48,7 +48,7 @@
                   <!-- <select class="form-control" ng-options="trimColon(grpName.group) for grpName in locations02" ng-model="groupName" ng-change="groupChange()">
                      <option style="display:none" value="">Select Group</option>
                   </select> -->
-                  <select ng-options="groups.group as groups.group for groups in locations02" ng-model="groupSelected" ng-change="groupChange()" class="form-control" id="colorChange">
+                  <select ng-options="groups.group as trimColon(groups.group) for groups in locations02" ng-model="groupSelected" ng-change="groupChange()" class="form-control" id="colorChange">
                             <option style="display:none" value="">Select Group</option>
                         </select>
                 </div>

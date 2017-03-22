@@ -48,7 +48,7 @@ $.ajax({
                   angular.forEach(response, function(innerValue, innerKey){
                     if(value.vehicleId == innerValue.vehicleId){
                       $scope.vehiId[key] = true;
-                      console.log(innerValue.reports)
+                      // console.log(innerValue.reports)
                       var reportsValue  =  innerValue.reports.split(',');
                       try{
 
@@ -253,6 +253,7 @@ $scope.storeValue   = function(){
 
 
 function forNull(){
+  $scope.selectId           = false;
   $scope.checkingValue.move = [];
   $scope.checkingValue.over = [];
   $scope.checkingValue.site = [];
@@ -290,7 +291,7 @@ $scope.changeValue =  function(reportName){
 }
 
 $scope.groupChange  = function(){
-
+  startLoading();
   forNull();
   // $scope.checkingValue.temp = [];
   $scope.vehiId             = [];
@@ -303,6 +304,7 @@ $scope.groupChange  = function(){
     // addVehi(res[key].vehicleLocations);
     fetchController($scope.groupSelected);
     // fetchController($scope.groupSelected.group);
+    stopLoading();
   });
 }
 

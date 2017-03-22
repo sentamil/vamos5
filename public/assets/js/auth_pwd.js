@@ -9,6 +9,7 @@ var _deleteUrl      = GLOBAL.DOMAIN_NAME+'/stopSmsSubscription';
 var _searchUrl      = GLOBAL.DOMAIN_NAME+'/getStudentDetailsOfSpecifyNum';
 var _siteUrl        = GLOBAL.DOMAIN_NAME+'/viewSite';
 $scope.switchingVar = false;
+// $scope.switchEdit   = false;
 $scope.caption      = "MobileNo Search";
 $scope.sort         = {sortingOrder : 'vehicles', reverse : true };
 $scope.notifyUpdate = [];
@@ -281,8 +282,7 @@ $scope.submitValue  = function(){
   $scope.error = '';
   $scope.rowsCount = 0;
   var statusValue = true;
-  console.log($scope.rowsValue);
-
+  
   /*
     validation
   */
@@ -295,8 +295,16 @@ $scope.submitValue  = function(){
     //   stopLoading();
     //   return;
     // }
-    if(mobNumCheckTenDigit(_assignValue($scope.rowsValue[i], 'num')) == false){
-      statusValue = false, $scope.error = '* Enter Mobile No, as 10 or 12 digit in '+( i+1 )+' th row.';
+    if(checkXssProtection(_assignValue($scope.rowsValue[i], 'name')) && checkXssProtection(_assignValue($scope.rowsValue[i], 'num')) && checkXssProtection(_assignValue($scope.rowsValue[i], 'std')))
+    {
+      if(mobNumCheckTenDigit(_assignValue($scope.rowsValue[i], 'num')) == false){
+        statusValue = false, $scope.error = '* Enter Mobile No, as 10 or 12 digit in '+( i+1 )+' th row.';
+        stopLoading();
+        return;
+      }
+    } 
+    else {
+      statusValue = false, $scope.error = '* Not Valid Data in '+( i+1 )+' th row.';
       stopLoading();
       return;
     }
@@ -321,6 +329,10 @@ $scope.submitValue  = function(){
       },
       success: function (response) {
         console.log(response)
+        if(response.trim() == 'Success'){
+          $scope.toast = response;
+          toastMsg()
+        }
       }
     });
     $scope._addDetails();
@@ -332,14 +344,14 @@ $scope.submitValue  = function(){
 
 function _editGlobal(ind){
 
-  $scope.rowsValue[ind].sNameNew = ($scope.rowsValue[ind].sName) ? $scope.rowsValue[ind].sName : '';
-  $scope.rowsValue[ind].sName = '';
-  $scope.rowsValue[ind].mNumNew = ($scope.rowsValue[ind].mNum) ? $scope.rowsValue[ind].mNum : '';
-  $scope.rowsValue[ind].mNum = '';
-  $scope.rowsValue[ind].stdNew = ($scope.rowsValue[ind].std) ? $scope.rowsValue[ind].std : '';
-  $scope.rowsValue[ind].std = '';
-  $scope.rowsValue[ind].poiId = (_getBustopValue($scope.rowsValue[ind].stopId)) ? _getBustopValue($scope.rowsValue[ind].stopId) : '';
-  $scope.rowsValue[ind].poiIds = '';
+  $scope.rowsValue[ind].sNameNew  = ($scope.rowsValue[ind].sName) ? $scope.rowsValue[ind].sName : '';
+  $scope.rowsValue[ind].sName     = ' ';
+  $scope.rowsValue[ind].mNumNew   = ($scope.rowsValue[ind].mNum) ? $scope.rowsValue[ind].mNum : '';
+  $scope.rowsValue[ind].mNum      = ' ';
+  $scope.rowsValue[ind].stdNew    = ($scope.rowsValue[ind].std) ? $scope.rowsValue[ind].std : '';
+  $scope.rowsValue[ind].std       = ' ';
+  $scope.rowsValue[ind].poiId     = (_getBustopValue($scope.rowsValue[ind].stopId)) ? _getBustopValue($scope.rowsValue[ind].stopId) : '';
+  $scope.rowsValue[ind].poiIds    = '';
 
 }
 
@@ -396,6 +408,7 @@ $scope._editStop  = function(ind, status){
   
   // console.log($scope.rowsValue);
   // console.log($scope.stopList);
+  // $scope.switchEdit   = true;
 
   if(status == 'one'){
     _editGlobal(ind);
@@ -405,6 +418,23 @@ $scope._editStop  = function(ind, status){
   //     _editGlobal(i);
   //   }
   stopLoading();
+}
+
+
+/*
+  undo edit
+*/
+
+$scope._undoEdit  = function(ind, status){
+
+  
+  $scope.rowsValue[ind].sName     = ($scope.rowsValue[ind].sNameNew) ? $scope.rowsValue[ind].sNameNew : '';
+  $scope.rowsValue[ind].mNum      = ($scope.rowsValue[ind].mNumNew) ? $scope.rowsValue[ind].mNumNew : '';
+  $scope.rowsValue[ind].std       = ($scope.rowsValue[ind].stdNew) ? $scope.rowsValue[ind].stdNew : '';
+  // $scope.rowsValue[ind].poiIds    = _getBustopValue($scope.rowsValue[ind].stopId).stop;
+  $scope.rowsValue[ind].poiIds    = _getBustopValue($scope.rowsValue[ind].poiId.poiId).stop;
+  // $scope.rowsValue[ind].poiIds    = ($scope.rowsValue[ind].stopId == $scope.rowsValue[ind].poiId.poiId) ? _getBustopValue($scope.rowsValue[ind].stopId).stop : ;
+
 }
 
 /*
@@ -425,7 +455,7 @@ $scope._deleteMobNum    = function(index){
       
     },
     success: function (response) {
-
+      // if(response)
       console.log(response)
      
       
@@ -451,7 +481,7 @@ function showStop() {
     var busStopValue;
     angular.forEach(value.studentDetails, function(val, key){
       busStopValue = _getBustopValue(val.busStop);
-      $scope.rowsValue.push({'sName' : val.name, 'mNum': val.mobileNumber, 'std' : val.class, 'poiIds' : busStopValue.stop, 'stopId' : val.busStop, 'id' : val.rowId});
+      $scope.rowsValue.push({'sName' : trimed(val.name), 'mNum': trimed(val.mobileNumber), 'std' : trimed(val.class), 'poiIds' : busStopValue.stop, 'stopId' : val.busStop, 'id' : val.rowId});
 
 
     });
@@ -481,7 +511,7 @@ $scope.addRows      = function(counts){
   // $scope.rowsValue  = [];
   $scope.rowsCount  = counts;
   for (var i=0; i<counts; i++) {
-      $scope.rowsValue.push({'sName' : '', 'mNum': '', 'std' : '', 'poiIds' : ''});  
+      $scope.rowsValue.push({'sName' : ' ', 'mNum': ' ', 'std' : ' ', 'poiIds' : ''});  
     }
 
 }

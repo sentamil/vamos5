@@ -1278,7 +1278,7 @@ if($refVehicle != $refDataJson)
 if($ownership == 'OWN'){
 
         $gettingMail    =   $redis->hget ( 'H_Franchise' , $fcode );
-        $emailKeys      =   'email1';
+        $emailKeys      =   'email2';
 
     } else{
 
