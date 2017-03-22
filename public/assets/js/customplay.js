@@ -286,6 +286,7 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 	$scope.geoMarkerDetails={};
 	$scope.popupmarker;
 	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+    $scope.vehicle_list=[];
 	$scope.markerValue=0;
 	var VehiType;
     var vehicIcon=[];
@@ -296,12 +297,10 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
     $('#stopButton').hide();   
     $('#replayButton').hide(); 
 
-
 	$scope.getTodayDate  =	function(date) {
 		var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
 	};
-
 
 	$scope.moveaddress    	=	[];
 	$scope.overaddress    	=	[];
@@ -765,7 +764,6 @@ var queue1 = [];
 
 	}
 
-
 	(function init(){
 		startLoading()
 		var url;
@@ -781,8 +779,7 @@ var queue1 = [];
 				$scope.trackVehID 	= $scope.locations[0].vehicleLocations[0].vehicleId;
 				$scope.shortVehiId 	= $scope.locations[0].vehicleLocations[0].shortName;
 				$scope.selected 	= 0;
-				$scope.sels
-				$('#vehiid h3').text($scope.shortVehiId);
+		      //$('#vehiid h3').text($scope.shortVehiId);
 				VehiType = $scope.locations[0].vehicleLocations[0].vehicleType;
 			
 			} else { 
@@ -792,14 +789,16 @@ var queue1 = [];
 					if($scope.groupname 	== value.group)
 					{	
 						angular.forEach(value.vehicleLocations, function(val, k){
+
+                            $scope.vehicle_list.push({'vehiID' : val.vehicleId, 'vName' : val.shortName});
+
 							if(val.vehicleId == $scope.trackVehID){
 								$scope.selected 	=	k;
-								$('#vehiid h3').text(val.shortName);
+							  //$('#vehiid h3').text(val.shortName);
 								VehiType = val.vehicleType;
 							}
 						})
-						
-						// $scope.locations 	= response;
+					//$scope.locations = response;
 					}	
 				})
 
@@ -1102,16 +1101,16 @@ $( "#historyDetails" ).hide();
 	}
 
 
-	$scope.popUpMarkerNull =function()
+/*	$scope.popUpMarkerNull =function()
 	{
 		if($scope.popupmarker !== undefined){
 			$scope.popupmarker.setMap(null);
 			$scope.infowindow .setMap(null);
 		}
 	}
-
+*/
 	
-	$scope.markerPoup 	= 	function(val)
+/*	$scope.markerPoup 	= 	function(val)
 	{
 		
 		$scope.popUpMarkerNull();
@@ -1135,7 +1134,7 @@ $( "#historyDetails" ).hide();
 		   $scope.popUpMarkerNull();
 		});
 
-	}
+	}*/
 
 	$scope.deleteRouteName 	= function(deleteValue){
 		// $scope.routeName = deleteValue;
@@ -1229,9 +1228,6 @@ $('.dynData').on("click", "#editAction", function(event){
  //                    $(rowEdit).children('.sub').html('Success');
  //                })
  //            })
-
-
-
 
 
 function animateMapZoomTo(map, targetZoom) {
@@ -1524,12 +1520,11 @@ if($scope.markerstart){
 		return sHours+":"+sMinutes+":00";
 	}
 	$scope.plotting = function(){
-		
 		var fromdate = document.getElementById('dateFrom').value;
 		var todate = document.getElementById('dateTo').value;
 		if((checkXssProtection(fromdate) == true) && (checkXssProtection(todate) == true) && (checkXssProtection(document.getElementById('timeTo').value) == true) && (checkXssProtection(document.getElementById('timeFrom').value) == true)){
 			startLoading();
-			$scope.popUpMarkerNull();
+		//	$scope.popUpMarkerNull();
 			$scope.hisurlold = $scope.hisurl;
 			if(document.getElementById('timeFrom').value==''){
 				var fromtime = "00:00:00";
@@ -1568,9 +1563,6 @@ if($scope.markerstart){
 					$scope.polyline1[i].setMap(null);
 				}
 
-			    $scope.polyline.setMap(null);
-				$scope.markerstart.setMap(null);
-				$scope.markerend.setMap(null);
 				$scope.path = [];
 				$scope.polylinearr = [];
 				gmarkers=[];
@@ -1578,13 +1570,25 @@ if($scope.markerstart){
 				contentString = [];
 				gsmarker=[];
 				gsinfoWindow=[];
-				//window.clearInterval(id);
-			if($scope.markerValue==1){
+           
+            if($scope.mhValue==1){
+	           window.clearInterval(intervalPoly);	
+                if($scope.markerValue != 1){
+	               $scope.infosWindows.close();
+	               $scope.infosWindows=null;
+		           $scope.markerhead.setMap(null);
+                 }
+		    }  
 
-                 window.clearInterval(timeInterval);
-                 $scope.infosWindow.close();
-                 $scope.infosWindow=null;
-		         $scope.markerheads.setMap(null);
+			if($scope.markerValue==1){
+                window.clearInterval(timeInterval);
+			    $scope.polyline.setMap(null);
+				$scope.markerstart.setMap(null);
+				$scope.markerend.setMap(null);
+                $scope.infosWindow.close();
+                $scope.infosWindow=null;
+		        $scope.markerheads.setMap(null);
+		        $scope.markerValue=0;
                }
 
 				$('#replaybutton').attr('disabled','disabled');
@@ -1812,7 +1816,7 @@ if($scope.markerstart){
 	}
 
 	var pcount=0;
-    $scope.timeDelay=20;
+    $scope.timeDelay=180;
 
     function timerSet(){
 
@@ -1827,7 +1831,7 @@ if($scope.markerstart){
                                       path:vehicIcon[0],
 				                      scale:vehicIcon[1],
 						              strokeWeight: 1,
-						              fillColor:'#6dd538',
+						              fillColor:$scope.polylinearr[pcount],
 				                      fillOpacity: 1,
 				                      anchor:vehicIcon[2],
 				                      rotation:$scope.rotationsd,
@@ -1839,27 +1843,21 @@ if($scope.markerstart){
 
                                 $scope.markerheads.setPosition(latlngs);
 
-				                 var contenttString ='<table style="max-width:150px;min-width:150px;max-height:100px;min-height:100px;">'
-				                                            +'<tbody>'
-				                                              +'<tr>'
-				                                                 +'<td style="font-size:10px;float:left;font-weight:bold;max-height:15px;min-height:15px;">'+'Odo:'+'</td>'
-				                                                 +'<td style="max-height:15px;min-height:15px;float:right;padding-right:25px;font-size:10px;font-weight:bold;">'+$scope.hisloc.vehicleLocations[pcount].odoDistance+'</td>'
-				                                              +'</tr>'
-				                                              +'<tr>'
-				                                                 +'<td style="font-size:10px;float:left;font-weight:bold;max-height:15px;min-height:15px;">'+'Ignition:'+'</td>'
-				                                                 +'<td style="max-height:15px;min-height:15px;float:right;padding-right:40px;font-size:10px;font-weight:bold;">'+$scope.hisloc.vehicleLocations[pcount].ignitionStatus+'</td>'
-				                                              +'</tr>'
-				                                              +'<tr>'
-				                                                 +'<td style="font-size:10px;float:left;font-weight:bold;max-height:15px;min-height:15px;">'+'Last Seen:'+'</td>'
-				                                                 +'<td style="max-height:15px;min-height:15px;float:right;font-size:10px;font-weight:bold;">'+$scope.hisloc.vehicleLocations[pcount].lastSeen+'</td>'
-				                                              +'</tr>'	
-				                                              +'<tr style="max-width:150px;min-width:150px;">'			                                            
-				                                                 +'<td colspan="2" style="max-height:55px;min-height:55px;font-size:10px;font-weight:bold;">'+$scope.trimComma($scope.hisloc.vehicleLocations[pcount].address)+'</td>'
-				                                                 +'<td style="max-height:55px;min-height:55x;">'+'</td>'
-				                                              +'</tr>'
-                                                          +'</tbody>'
-				                                      +'</table>'
+				                 var contenttString ='<table class="infoTables">'
+				                        +'<tbody>'
 
+	                                        +'<tr>'+'<td>'+'Odo (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount].odoDistance+'</td>'+'</tr>'
+				                                             
+				                            +'<tr>'+'<td>'+'Dist (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount].distanceCovered+'</td>'+'</tr>'      
+				                                      
+					                        +'<tr>'+'<td>'+'Speed (kmph):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount].speed+'</td>'+'</tr>'
+				                                                 
+				                            +'<tr>'+'<td>'+'Last Seen:'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount].lastSeen+'</td>'+'</tr>'
+				                                          
+				                            +'<tr style="max-width:150px;min-width:150px;">'+'<td colspan="2" style="max-height:60px;min-height:60px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[pcount].address)+'</td>'+'<td style="max-height:60px;min-height:60px;">'+'</td>'+'</tr>'			                                            
+				           		       
+				           		        +'</tbody>'
+				                       +'</table>';
 
 				             $scope.infosWindow.setContent(contenttString);
 				             $scope.infosWindow.setPosition(latlngs);
@@ -1892,13 +1890,13 @@ if($scope.markerstart){
 		// gsmarker=[];
 		// gsinfoWindow=[];
 		var j =0;
-	//	window.clearInterval(id);
+
 		$('.radioBut').hide(0).delay(5000).show(100);
 		// $('.hideClass').hide();
 		/*
 			loadall in map polyline
 		*/
-
+  
        vehicIcon=vehiclesChange(VehiType);
 
 		if($scope.polylineCheck == false){
@@ -1909,7 +1907,7 @@ if($scope.markerstart){
                    $('#stopButton').hide();   
                      $('#replayButton').hide(); 
 
-			var lineCount 	=	 0;
+//			var lineCount 	=	 0;
 			// markerClear();
 			// var lineSymbol = {
 		 //        path: 'M 0.5,-1 0.5,1 M -0.5,-1 -0.5,1',
@@ -1935,6 +1933,7 @@ if($scope.markerstart){
                  $scope.infosWindow=null;
 				   $scope.markerheads.setMap(null);
                    $scope.markerheads=null;
+                   $scope.markerValue=0;
             }
 
 	    	if($scope.polyline && $scope.markerstart && $scope.markerend){
@@ -1946,19 +1945,17 @@ if($scope.markerstart){
 	    				
 			$scope.polylineLoad 	=[];
 			//vehicIcon=vehiclesChange(VehiType); 
-			function myTimer() {
-				if($scope.path.length == lineCount+1){
+	function myTimer() {
+
+		if($scope.path.length == lineCount+1){
 			  		myStopFunction()
 				}
 				
-				if($scope.path.length != lineCount+1){
-					if(markerhead){
-					    markerhead.setMap(null);
-				          } 
+		if($scope.path.length != lineCount+1){
 
-				    var rotationd = getBearing($scope.path[lineCount].lat(), $scope.path[lineCount].lng(), $scope.path[lineCount+1].lat(), $scope.path[lineCount+1].lng());
+	    var rotationd = getBearing($scope.path[lineCount].lat(), $scope.path[lineCount].lng(), $scope.path[lineCount+1].lat(), $scope.path[lineCount+1].lng());
 				
-					markerhead = new google.maps.Marker({
+			/*	markerhead = new google.maps.Marker({
 				        position: $scope.path[lineCount+1],
 				        icon: 
 				        {
@@ -1976,11 +1973,24 @@ if($scope.markerstart){
 				        //fillColor: '#a8d6e9',
 				          fillOpacity: 1,
 				          anchor: new google.maps.Point(0, 2.6),*/
-				        },
+				    /*    },
 
-			    	});
+			    	}); */
 
-			    	markerhead.setMap($scope.map);
+			    	   $scope.markerhead.setIcon({
+                                path:vehicIcon[0],
+				                scale:vehicIcon[1],
+						        strokeWeight: 1,
+				                fillColor: $scope.polylinearr[lineCount],
+				                fillOpacity: 1,
+				                anchor:vehicIcon[2],
+				                rotation: rotationd,
+				                });
+
+                 if(lineCount == 0){
+			         $scope.markerhead.setMap($scope.map);
+                  }
+                    $scope.markerhead.setPosition($scope.path[lineCount+1]);
 
 			    // for(var i=0;i<$scope.path.length-1;i++){
    					$scope.polyline1[lineCount] = new google.maps.Polyline({
@@ -1999,13 +2009,36 @@ if($scope.markerstart){
 						clickable: true
 				    });
 
-   					$scope.map.panTo($scope.path[lineCount]);
+                 var contentsString ='<table class="infoTables">'
+				                        +'<tbody>'
 
-   					var latLngBounds = new google.maps.LatLngBounds();
+	                                        +'<tr>'+'<td>'+'Odo (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[lineCount].odoDistance+'</td>'+'</tr>'
+				                                             
+				                            +'<tr>'+'<td>'+'Dist (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[lineCount].distanceCovered+'</td>'+'</tr>'      
+				                                      
+					                        +'<tr>'+'<td>'+'Speed (kmph):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[lineCount].speed+'</td>'+'</tr>'
+				                                                 
+				                            +'<tr>'+'<td>'+'Last Seen:'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[lineCount].lastSeen+'</td>'+'</tr>'
+				                                          
+				                            +'<tr style="max-width:150px;min-width:150px;">'+'<td colspan="2" style="max-height:60px;min-height:60px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[lineCount].address)+'</td>'+'<td style="max-height:60px;min-height:60px;">'+'</td>'+'</tr>'			                                            
+				           		       
+				           		        +'</tbody>'
+				                       +'</table>';
+
+				            $scope.infosWindows.setContent(contentsString);
+				            $scope.infosWindows.setPosition($scope.path[lineCount+1]);
+
+                            if(lineCount == 0){
+                              $scope.infosWindows.open($scope.map,$scope.markerhead);
+                            }
+
+            				$scope.map.panTo($scope.path[lineCount]);
+
+   			//	var latLngBounds = new google.maps.LatLngBounds();
 			  		// for(var i = 0; i < $scope.path.length; i++) {
-						latLngBounds.extend($scope.path[lineCount]);
-						if($scope.hisloc.vehicleLocations[lineCount])
-						if($scope.hisloc.vehicleLocations[lineCount].position!=undefined){
+					//	latLngBounds.extend($scope.path[lineCount]);
+						//if($scope.hisloc.vehicleLocations[lineCount])
+					 /* if($scope.hisloc.vehicleLocations[lineCount].position!=undefined){
 							if($scope.hisloc.vehicleLocations[lineCount].position=='P' || $scope.hisloc.vehicleLocations[lineCount].position=='S' || $scope.hisloc.vehicleLocations[lineCount].insideGeoFence=='Y' ){
 								
 								$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[lineCount].latitude, lng: $scope.hisloc.vehicleLocations[lineCount].longitude , data: $scope.hisloc.vehicleLocations[lineCount], path:$scope.path[lineCount]});
@@ -2013,7 +2046,7 @@ if($scope.markerstart){
 			  					// $scope.markerPark.push($scope.marker)
 								j++;
 							}
-						}
+						}*/
 			  		// }
 
 			  		$scope.polylineLoad.push($scope.polyline1);
@@ -2021,6 +2054,17 @@ if($scope.markerstart){
 			  	
 				}
 			}
+
+			    var lineCount =	0;
+
+			    $scope.markerhead = new google.maps.Marker();
+                $scope.infosWindows = new google.maps.InfoWindow({maxWidth:180}); 
+
+			    $scope.mhValue=1;
+
+     		    $scope.markerhead.addListener('click', function() {
+					$scope.infosWindows.open($scope.map,$scope.markerhead);
+			    });
 
 	   	intervalPoly = setInterval(function(){ myTimer() }, 600);
     }
@@ -2032,12 +2076,14 @@ if($scope.markerstart){
          $('#pauseButton').show(); 
          $('#stopButton').show();
  
-
-			if(markerhead){
-				markerhead.setMap(null);
-				markerhead=null;
-				myStopFunction();
-			}
+          if($scope.markerhead){
+          	      $scope.infosWindows.close();
+                  $scope.infosWindows=null;
+				  $scope.markerhead.setMap(null);
+				  $scope.markerhead=null;
+            }
+			
+		
 
 					 var tempFlag=false;
 			  				 for(var k=0;k<$scope.hisloc.vehicleLocations.length;k++){
@@ -2072,7 +2118,7 @@ if($scope.markerstart){
 						  	});
 
    				    $scope.markerheads = new google.maps.Marker();
-				    $scope.infosWindow = new google.maps.InfoWindow({maxWidth:200});
+				    $scope.infosWindow = new google.maps.InfoWindow({maxWidth:180});
 
                     $scope.markerheads.addListener('click', function() {
 					    $scope.infosWindow.open($scope.map,$scope.markerheads);
@@ -2084,7 +2130,7 @@ if($scope.markerstart){
                     timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay);
 			
 			
-					    var latLngBounds = new google.maps.LatLngBounds();
+					/*    var latLngBounds = new google.maps.LatLngBounds();
 						    for(var i = 0; i < $scope.path.length; i++) {
 								latLngBounds.extend($scope.path[i]);
 									if($scope.hisloc.vehicleLocations[i])
@@ -2098,7 +2144,7 @@ if($scope.markerstart){
 										}
 										
 									}
-						  		}
+						  		}*/
 
 		}
 		// console.log($scope.path)

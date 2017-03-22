@@ -47,8 +47,13 @@
               <tbody>
                 <tr>
                   <td style="font-weight:bold;">Vehicle Name</td>
-                  <td id="vehiid" style="font-weight:bold !important;"><h3></h3></td>
-                  <td style="font-weight:bold;">TripDist(KM)</td>
+                  <!--<td id="vehiid" style="font-weight:bold !important;"><h3></h3></td>-->
+                      <td style="float:left;padding-left:10px;"> 
+                            <select ng-model="trackVehID" style="background-color: #f9f9f9;padding:0 3px 0 3px;">
+                                  <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
+                              </select>
+                      </td>
+                  <td style="font-weight:bold;">TripDist (kms)</td>
                   <td style="float:left;">{{hisloc.tripDistance}}</td>
                 </tr>
               </tbody>
@@ -124,12 +129,12 @@
                 
                 <tr style="border-top: 1px solid #d9d9d9">
                   <td width="15%">Date&amp;Time</td>
-                  <td width="7%">Max(KM)</td>
+                  <td width="7%">Max (kms)</td>
                   <td width="35%">Address</td>
                   <td width="10%">G-Map</td>
                   <!-- <td width="7%">Dist</td> -->
-                  <td width="15%">C-Dist(KM)</td>
-                  <td width="10%">Odo(KM)</td>
+                  <td width="15%">C-Dist (kms)</td>
+                  <td width="10%">Odo (kms)</td>
                 </tr>
                 <tr ng-repeat="move in movementdata" ng-click="markerPoup(move)">
                   <td>{{move.date | date:'yy-MM-dd HH:mm:ss'}}</td>
@@ -174,7 +179,7 @@
                 
                 <tr style="border-top: 1px solid #d9d9d9">
                   <td width="20%">Date&amp;Time</td>
-                  <td width="15%">Max(KM)</td>
+                  <td width="15%">Max (kms)</td>
                   <td width="50%">Address</td>
                   <td width="15%">G-Map</td>
                 </tr>
@@ -209,7 +214,7 @@
                 <tr class="gap">
                   <td colspan="2">Regn No</td>
                   <td> {{hisloc.regNo}}</td>
-                  <td colspan="2">Speed Limit(KM)</td>
+                  <td colspan="2">Speed Limit (kms)</td>
                   <td colspan="2"> {{hisloc.overSpeedLimit}}</td>
                 </tr>
                   
@@ -218,12 +223,12 @@
 
                 <tr>
                   <td width="15%">Date&amp;Time</td>
-                  <td width="13%">Speed(KM)</td>
+                  <td width="13%">Speed (kms)</td>
                   <td width="25%">Address</td>
                   <td width="10%">G-Map</td>
                   <td width="17%">Duration (h:m:s)</td>
-                  <td width="10%">Trip(Km)</td>
-                  <td width="10%">Odo(KM)</td>
+                  <td width="10%">Trip (kms)</td>
+                  <td width="10%">Odo (kms)</td>
                 </tr>
                 
                 <tr ng-repeat="over in overspeeddata" ng-click="markerPoup(over)">
@@ -434,11 +439,11 @@
               <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
             </div>
 
-            <div class="input-group speedbutt hideClass" id="animatecontrols" ng-init="timeDelay=20" style="padding-left:30px;">
+            <div class="input-group speedbutt hideClass" id="animatecontrols" ng-init="timeDelay=180" style="padding-left:30px;">
               <!-- <label>Speed :</label> -->
-              <input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="timeDelay" value="80" type="radio" />
+              <input name="anispeed" checked="checked" ng-click="speedchange()" ng-model="timeDelay" value="180" type="radio" />
               <span>Slow</span>
-              <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="timeDelay" value="50" />
+              <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="timeDelay" value="100" />
               <span>Normal</span>
               <input name="anispeed" type="radio" ng-click="speedchange()" ng-model="timeDelay" value="20" />
               <span>Fast</span>
@@ -640,45 +645,36 @@ if(apikey_url != null || apikey_url != undefined)
      }
    }
  
-   // An array of scripts you want to load in order
+ //An array of scripts you want to load in order
    var scriptLibrary = [];
    scriptLibrary.push("assets/js/static.js");
    scriptLibrary.push("assets/js/jquery-1.11.0.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
-
-   // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
+ //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
-
-   // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-  scriptLibrary.push(url);
-   // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
- 
+ //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+   scriptLibrary.push(url);
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
-   
-   // scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
-   // scriptLibrary.push("http://code.highcharts.com/highcharts.js");
-   // scriptLibrary.push("http://code.highcharts.com/highcharts-more.js");
-   // scriptLibrary.push("http://code.highcharts.com/modules/solid-gauge.js");
+ //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
+ //scriptLibrary.push("http://code.highcharts.com/highcharts.js");
+ //scriptLibrary.push("http://code.highcharts.com/highcharts-more.js");
+ //scriptLibrary.push("http://code.highcharts.com/modules/solid-gauge.js");
    scriptLibrary.push("assets/js/markerwithlabel.js");
    scriptLibrary.push("assets/js/highcharts.js");
-   
    scriptLibrary.push("assets/js/moment.js");
    scriptLibrary.push("assets/js/bootstrap-datetimepicker.js");
    scriptLibrary.push("assets/js/infobubble.js");
    scriptLibrary.push("assets/js/infobox.js");
    scriptLibrary.push("assets/js/vamoApp.js");
-   // scriptLibrary.push("assets/js/services.js");
+ //scriptLibrary.push("assets/js/services.js");
    scriptLibrary.push("assets/js/customplay.js");
 
-
-
- 
-   // Pass the array of scripts you want loaded in order and a callback function to invoke when its done
+ //Pass the array of scripts you want loaded in order and a callback function to invoke when its done
    loadJsFilesSequentially(scriptLibrary, 0, function(){
        // application is "ready to be executed"
        // startProgram();
    });
-   
     // $(document).ready(function(){
     //     $('#minmax').click(function(){
     //         $('#contentmin').animate({
@@ -708,5 +704,4 @@ if(apikey_url != null || apikey_url != undefined)
     //     });
         </script>
 </body>
-
 </html>
