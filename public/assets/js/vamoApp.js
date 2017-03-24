@@ -170,6 +170,12 @@ function isEmpty(val){return val.trim() ? true : false};
 
 function trimed(val){return val.trim()};
 
+function getTodayDate(date) {
+  var date = new Date(date);
+  return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
+};
+
+
 function vehiclesChange(vehiTyp){
  //var vehiLogo;
  var vehiAnch=[];

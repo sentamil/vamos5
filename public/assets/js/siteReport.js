@@ -125,13 +125,12 @@ function plottinGraphs(valueGraph, timeData){
     else if(tab == 'alarm')
     	$scope.sort 	= 	sortByDate('alarmTime')
     else if(tab == 'tripSite'){
-
     	$scope.caption 	= 'Site Trip';
     	$scope.hideShow = true;	
-
-
-    } 
-    	
+	} else if(tab == 'dailyFuel') {
+		$scope.caption 	= 'Daily Fuel Burn';
+    	$scope.sort 	= 	sortByDate('time');
+	}
 	//global declartion
 
 	$scope.locations = [];
@@ -139,7 +138,7 @@ function plottinGraphs(valueGraph, timeData){
 
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
-		return textVal.split(":")[0].trim();
+		return (textVal != undefined) ? textVal.split(":")[0].trim() : textVal;
 	}
 
 
@@ -148,10 +147,10 @@ function plottinGraphs(valueGraph, timeData){
 		$("#testLoad").load("../public/menu");
 	}
 	
-	function getTodayDate(date) {
-     	var date = new Date(date);
-    	return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
-    };
+	// function getTodayDate(date) {
+ //     	var date = new Date(date);
+ //    	return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
+ //    };
 
     function convert_to_24h(time_str) {
 		//console.log(time_str);
@@ -250,7 +249,10 @@ function plottinGraphs(valueGraph, timeData){
 				break;
 			case 'tripSite':
 				urlWebservice   =  $scope.g_Url+"/getSiteTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&language=en"+"&site1="+$scope._site1.siteName+"&site2="+$scope._site2.siteName;				
-				
+				break;
+			case 'dailyFuel':
+				urlWebservice   =  $scope.g_Url+"/getFuelReportDaily?vehicleId="+$scope.vehiname;
+				// urlWebservice   =  $scope.g_Url+"/getFuelReportDaily?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&language=en"+"&site1="+$scope._site1.siteName+"&site2="+$scope._site2.siteName;				
 				break;
 			default :
 				break;
@@ -446,7 +448,7 @@ function plottinGraphs(valueGraph, timeData){
 									angular.forEach(JSON.parse(siteValue).siteParent, function(val, key){
 						      			if(val.orgId == $scope.orgId){
 						      				if(val.site.length > 0){
-						      					if(tab == 'multiSite')
+						      					// if(tab == 'multiSite')
 						      						siteNames.push({'siteName':'All'});
 						      					angular.forEach(val.site, function(siteName, keys){
 							      					siteNames.push(siteName);
@@ -476,6 +478,17 @@ function plottinGraphs(valueGraph, timeData){
 		  	$scope.uiDate.fromtime		=	'12:00 AM';
 		  	$scope.uiDate.todate		=	getTodayDate($scope.fromNowTS);
 		  	$scope.uiDate.totime 		=	formatAMPM($scope.fromNowTS.getTime());
+		  	if(tab == 'tripSite'){
+		  		$scope.fromNowTS1			=	new Date().getTime() - 86400000;
+				$scope.uiDate.fromdate 		=	getTodayDate($scope.fromNowTS.setDate($scope.fromNowTS.getDate()-7));
+			  	$scope.uiDate.fromtime		=	'12:00 AM';
+			  	$scope.uiDate.todate		=	getTodayDate($scope.fromNowTS1);
+			  	$scope.uiDate.totime 		=	'11:59 PM';
+		  		// $ new Date().getTime() - 86400000
+		  		// console.log(' dailyFuel condition ');
+		  		// console.log(' dailyFuel condition '+ $scope.uiDate.fromdate);
+
+		  	}
 		  	webServiceCall();
 		  	stopLoading();
 		});	

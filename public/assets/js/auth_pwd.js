@@ -519,6 +519,7 @@ $scope.addRows      = function(counts){
   
 $scope._addDetails  = function(){
   startLoading();
+  $scope.error      = '';
   $scope.stopList   = [];
   var _geoUrl       = GLOBAL.DOMAIN_NAME+'/getBusStops?routeNo='+$scope.selectRouteName+'&orgId='+getOrgValue($scope.selectRouteName);
   

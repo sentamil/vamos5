@@ -960,3 +960,10 @@ div h6 {font-size: bold}
 .infoTables tr:nth-child(3) td:nth-child(even){padding-right:40px;}
 .infoTables tr:nth-child(4) td:nth-child(even){padding-right:0}	
 .infoTables tr:last-child td{float:unset;text-align:center;  max-height:60px;min-height:60px;}
+
+
+.bg{
+	background-color: #bde9df !important;
+	font-weight: bold;
+
+}
