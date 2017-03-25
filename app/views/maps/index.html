@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
-<!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
+
 <style type="text/css">
      /*#map_canvas{ width:100%; height:100%;}  */
      #container-speed{  width: 170px; height: 100px;}
@@ -318,6 +318,29 @@
                                     </div>
                                   </div>
 
+
+
+                                  <!-- The Modal -->
+<div id="poi" class="poi_Modal">
+    <!-- <div class="modal-header">
+        <span>Modal Header</span>  
+        <span class="close">&times;</span>
+    </div> -->
+  <!-- Modal content -->
+  <div class="poi-content">
+    <!-- <span class="close1">&times;</span> -->
+    <!-- <h5>Add Site</h5> -->
+    <div class="row">
+        <div class="col-md-6"><input type="text" class="form-control" placeholder="Site Name" ng-model="poiName"></div>
+        <div class="col-md-3"><button type="button" class="btn btn-default" ng-click="submitPoi(poiName)">Save Site</button></div>
+        <div class="col-md-3"><button type="button" class="btn btn-default poi_close" >Close</button></div>
+    </div>
+    
+    
+  </div>
+
+</div>
+
                                </div>
                                <div class="nearbyTable">
                                 <h3>NearBy Vehicles <a href="#" style="position:absolute; top:10px; right:10px;" ng-click="nearBy();">X</a></h3>
@@ -579,9 +602,11 @@
     </div>
     
 
+<div id="snackbar">{{toast}}</div>
+
  
 </div>
-    <div class="modal fade" id="myModal">
+    <!-- <div class="modal fade" id="myModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -596,7 +621,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
      
    
     
@@ -639,7 +664,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/bootstrap.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
- scriptLibrary.push(url);
+scriptLibrary.push(url);
    // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    scriptLibrary.push("//code.highcharts.com/highcharts.js");

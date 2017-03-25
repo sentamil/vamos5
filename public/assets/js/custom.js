@@ -52,7 +52,7 @@ app.filter('statusfilter', function(){
 	}
 });
  
-app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', '_global', function($scope, $http, vamoservice, $filter, GLOBAL){
+app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter', '_global', function($scope,$compile, $http, vamoservice, $filter, GLOBAL){
 	
 	$scope.locations = [];
 	$scope.nearbyLocs =[];
@@ -73,7 +73,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', '_global',
 	$scope.map =  null;
 	$scope.flightpathall = []; 
 	$scope.clickflag = false;
-	
+	$scope._addPoi 	= 	false;
 	$scope.checkVal=false;
 	$scope.clickflagVal =0;
 	$scope.nearbyflag = false;
@@ -84,6 +84,9 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice','$filter', '_global',
 	var markerCluster;
 	var vehicleids=[];
 	var polygenList=[];
+	
+	$scope.orgIds 	= [];
+
 	var mcOptions = {
     maxZoom: 11,
     styles: [
@@ -435,7 +438,17 @@ var markerSearch = new google.maps.Marker({});
 		// $('#preloader').delay(350).fadeOut('slow');
 		// $('body').delay(350).css({'overflow':'visible'});
 	}
+	var modal = document.getElementById('poi');
+	var span = document.getElementsByClassName("poi_close")[0];
 	
+	function popUp_Open_Close(){
+
+		modal.style.display = "block";
+		modal.style.zIndex= 99999;
+		span.onclick = function() {
+		    modal.style.display = "none";
+		}
+	}
 
 	$scope.infoBoxed = function(map, marker, vehicleID, lat, lng, data){
 		
@@ -452,15 +465,15 @@ var markerSearch = new google.maps.Marker({});
 			+'<div><b style="width:100px; display:inline-block;">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 			+'<div><b style="width:100px; display:inline-block;">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 
-			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp;'
+			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp; <a href="#" ng-click="addPoi('+lat+','+lng+')">Save Site</a>'
 			+'</div>';
-			
+			 var compiled = $compile(contentString)($scope);
 			// var	drop1 = document.getElementById("ddlViewBy");
 			// var drop_value1= drop1.options[drop1.selectedIndex].value;
 			var infowindow = new InfoBubble({
 			maxWidth: 400,	
 			maxHeight:170,
-			 content: contentString
+			 content: compiled[0]
 			});
 
 			ginfowindow.push(infowindow);
@@ -495,6 +508,78 @@ var markerSearch = new google.maps.Marker({});
 	}
 
 
+	function calcLatLongForDrawShapes(longitude, lat, distance, bearing) {
+	 var EARTH_RADIUS_EQUATOR = 6378140.0;
+     var RADIAN = 180 / Math.PI;
+
+ 	 var b = bearing / RADIAN;
+ 	 var lon = longitude / RADIAN;
+ 	 var lat = lat / RADIAN;
+ 	 var f = 1/298.257;
+ 	 var e = 0.08181922;
+ 		
+ 	 var R = EARTH_RADIUS_EQUATOR * (1 - e * e) / Math.pow( (1 - e*e * Math.pow(Math.sin(lat),2)), 1.5);	
+ 	 var psi = distance/R;
+ 	 var phi = Math.PI/2 - lat;
+ 	 var arccos = Math.cos(psi) * Math.cos(phi) + Math.sin(psi) * Math.sin(phi) * Math.cos(b);
+ 	 var latA = (Math.PI/2 - Math.acos(arccos)) * RADIAN;
+
+ 	 var arcsin = Math.sin(b) * Math.sin(psi) / Math.sin(phi);
+ 	 var longA = (lon - Math.asin(arcsin)) * RADIAN;
+
+ 	 return latA+':'+longA;
+ 	};
+
+
+ 	 //create save site
+  $scope.markPoi   =   function(textValue, latlanList)
+  {
+   	
+   	$scope.toast    = '';
+    if(checkXssProtection(textValue) == true)
+    try
+    {
+
+      var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
+      var text        = textValue;
+      var drop        = 'Home Site';
+      var org         = $scope.orgIds[0];
+      
+      // post request
+      if(text && drop && latlanList.length>=3 && org)
+      {
+      	$.ajax({
+	        async: false,
+	        method: 'POST', 
+	        'url' : URL_ROOT+'store',
+	        data: {'_token': $('meta[name=csrf-token]').attr('content'), 'siteName': text, 'siteType': drop, 'org':org, 'latLng': latlanList},
+	        success: function (response) {
+	          console.log("Sucess");
+	          $scope.toast = "Sucessfully Created ...";
+	          
+	          toastMsg();
+	          stopLoading();
+	        }
+      	}).fail(function() {
+          console.log("fail");
+          stopLoading();
+        });
+       
+      } else {
+      	$scope.toast = "Enter all the field / Mark the Site ";
+      }
+
+    } catch (err)
+    {
+      console.log(err)
+      $scope.toast = "Enter all the field / Mark the Site ";
+      toastMsg();
+      stopLoading();
+    }
+    stopLoading();
+    
+  }
+
 	//split methods
 	$scope.split_fcode = function(fcode){
 		var str = $scope.fcode[0].group;
@@ -504,7 +589,43 @@ var markerSearch = new google.maps.Marker({});
 		return strFine;
 	}
 	
-	
+	$scope.addPoi 	= function(lat, lng){
+
+		$scope.poiLat	=	lat;
+		$scope.poiLng	=	lng;
+		popUp_Open_Close();
+
+	}
+
+	$scope.submitPoi	= function(poiName){
+
+		var width 	= 1000;
+		var latlngList 	= [];
+
+		if($scope.map.getZoom()>5 && $scope.map.getZoom()<=8)
+			width = 1000;
+		else if($scope.map.getZoom()>8 && $scope.map.getZoom()<=12)
+			width = 100;
+		else if($scope.map.getZoom()>12 && $scope.map.getZoom()<=15)
+			width = 10;
+		else if($scope.map.getZoom()>15)
+			width = 1;
+			
+		var radius = (Math.sqrt (2 * (width * width))) / 2;
+		
+		latlngList[0] 	= calcLatLongForDrawShapes($scope.poiLng, $scope.poiLat, radius, 45)
+		latlngList[1] 	= calcLatLongForDrawShapes($scope.poiLng, $scope.poiLat, radius, -45)
+		latlngList[2] 	= calcLatLongForDrawShapes($scope.poiLng, $scope.poiLat, radius, -135)
+		latlngList[3] 	= calcLatLongForDrawShapes($scope.poiLng, $scope.poiLat, radius, 45)
+
+		console.log(latlngList);
+
+		$scope.markPoi(poiName, latlngList)
+
+		modal.style.display = "none";
+
+	}
+
 	$scope.getMailIdPhoneNo = function(vehi, days)
 	{
 		//console.log('inside the methods')
@@ -767,6 +888,7 @@ var markerSearch = new google.maps.Marker({});
 			 gmarkers[i].icon = vamoservice.iconURL(temp);
 			 gmarkers[i].setPosition(latlng);
 			 gmarkers[i].setMap($scope.map);
+			 // $scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);	
 			 if(temp.vehicleId==$scope.vehicleno){
 				 $scope.assignValue(temp);
 				 $scope.selected=i;
@@ -934,7 +1056,7 @@ function locat_address(locs) {
 		var url_site          = GLOBAL.DOMAIN_NAME+'/viewSite';
 		vamoservice.getDataCall(url_site).then(function(data) {
 			// console.log(data)
-			if(data.siteParent)
+			if(data.siteParent && $scope._addPoi == false)
 			 	angular.forEach(data.siteParent, function(value, key){
 					//console.log(' value'+key)
 					if(val == value.orgId){
@@ -948,7 +1070,10 @@ function locat_address(locs) {
 							locat_address(locs);
 						})
 					}
-			 });
+				});
+			if(data && data.orgIds != undefined && $scope._addPoi == true)
+				$scope.orgIds 	= data.orgIds;
+
 		})
 	}
 
@@ -967,6 +1092,11 @@ function locat_address(locs) {
 				//service call to site details
 				siteInvoke(value);
 			});
+		else {
+			$scope._addPoi 	= 	true; 
+			siteInvoke();
+
+		}
 	}
 
 
