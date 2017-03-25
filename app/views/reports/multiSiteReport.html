@@ -313,10 +313,10 @@ background-color: #ffffff;
                                         <tr><th colspan="9"></th></tr>
                                         <tr style="text-align:center;font-weight: bold;">
                                                                                             
-                                            <th>Start Time</th>
                                             <th>Start Location</th>
-                                            <th>End Time</th>
+                                            <th>Start Time</th>
                                             <th>End Location</th>
+                                            <th>End Time</th>
                                             <th>Duration (h:m:s)</th>
                                             <th>Moving (h:m:s)</th>
                                             <th>Stoppage (h:m:s)</th>
@@ -326,8 +326,8 @@ background-color: #ffffff;
                                 </thead>
                                 <tbody ng-repeat="multipleSite in siteData.history  track by $index| orderBy:sort.sortingOrder:sort.reverse">
                                     <tr class="active" style="text-align:center" ng-repeat="multiple in multipleSite" ng-if="$even"> 
-                                        <td ng-if-start="multiple.state != 'TST'">{{multiple.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                        <td>{{multiple.state | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                        <td ng-if-start="multiple.state != 'TST'">{{multiple.state | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                        <td>{{multiple.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td>{{multipleSite[$index+1].state}}</td>
                                         <td>{{multipleSite[$index+1].endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td>
