@@ -200,7 +200,9 @@
 			 
 			 <a href="Routes"> <span class="nav-label">Organisation</span><span class="fa arrow"></span></a>
 			  <ul class="nav nav-second-level">
-                     
+                     <li>
+               <a href="vdmOrganization/Scan"> <span class="nav-label">Organization Search</span></a>
+            </li>
 					 <li>
                <a href="vdmOrganization"> <span class="nav-label">Organization List</span></a>
             </li>
