@@ -187,7 +187,7 @@
           
           <div class="col-md-3">
              <input type="text" class="form-control" placeholder="MobileNo Search..." ng-model="mobileNo">
-             <div style="font-size: 9px; text-align: center;">mob num1, mob num2,...,mob num n</div>
+             <div style="font-size: 9px; text-align: center;">Num1,Num2,... Dnt try space</div>
           </div>
           <div class="col-md-3">
              <input type="button" class="btn btn-primary btn-block" value="Search" ng-click="searchingMobile(mobileNo)">
@@ -211,8 +211,8 @@
                   <td>{{value.class}}</td>
                   <td>{{value.BusStopName}}</td>
                 </tr>
-                <tr ng-if="searchValue.studentDetails.length == 0" class="err"><td colspan="5"><h5>No Data Found!</h5></td></tr>
               </tbody>
+              <tr ng-if="searchValue.error != null" class="err"><td colspan="5"><h6>{{searchValue.error}}</h6></td></tr>
           </table>
           </div>
           <div id="snackbar">{{toast}}</div>

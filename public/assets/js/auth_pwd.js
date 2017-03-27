@@ -329,10 +329,10 @@ $scope.submitValue  = function(){
       },
       success: function (response) {
         console.log(response)
-        if(response.trim() == 'Success'){
+        // if(response.trim() == 'Success'){
           $scope.toast = response;
           toastMsg()
-        }
+        // }
       }
     });
     $scope._addDetails();
@@ -376,22 +376,23 @@ $scope.switching  = function(){
 */
 $scope.searchingMobile  = function(mobile){
   $scope.error      = '';
-  var _addMobileNo  = '', statusValue = true, _serviceUrl = '';
+  var _addMobileNo  = '', statusValue = true, _serviceUrl = '', checkNull = '';
   mobile  = splitComma(mobile);
   for (var i = 0; i < mobile.length; i++) {
-    if(mobNumCheckTenDigit(mobile[i]) == false){
-      statusValue   = false ,$scope.error = '* Enter ten digit mobile number for each.';
+    checkNull = removeSpace(mobile[i]);
+    if(mobNumCheckTenDigit(checkNull) == false){
+      statusValue   = false ,$scope.error = '* Enter 10 or 12 digit mobile number for each.';
       stopLoading();
       return;
     }
-    _addMobileNo  += mobile[i]+',';
+    _addMobileNo  += checkNull+',';
   }
   _serviceUrl    = _searchUrl+'?mobileNo='+_addMobileNo;
   if(statusValue)
     vamoservice.getDataCall(_serviceUrl).then(function(value){
       
-      console.log(value)
-      $scope.searchValue  = value
+      // console.log(value)
+      $scope.searchValue  = value;
 
     });
     
