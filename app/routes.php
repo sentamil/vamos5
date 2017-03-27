@@ -916,6 +916,9 @@ Route::get('vdmOrganization/placeOfInterest', array('uses' => 'VdmOrganizationCo
 Route::post('vdmOrganization/addpoi', array('uses' => 'VdmOrganizationController@addpoi'));
 Route::post('vdmOrganization/updateNotification', array('uses' => 'VdmOrganizationController@updateNotification'));
 
+///Advance scan for ORGANIZATION
+Route::get('vdmOrganization/Scan', array('uses' => 'VdmOrganizationController@Search'));
+Route::post('vdmOrganization/adhi', array('uses' => 'VdmOrganizationController@Scan'));
 
 
  

@@ -710,7 +710,42 @@ public function addpoi()
                 'orgList' => $orgList 
         ) );
     }
+    
+	public function Search()
+    {
+        log::info(' advance search function for organization');
+        $orgLis = [];
+            return View::make('vdm.organization.orgScan')->with('orgList', $orgLis);
+    }
+	
+	//advance search organization
+	public function Scan() {
 
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $username = Auth::user ()->username;
+        log::info( 'User name  ::' . $username);
+        $redis = Redis::connection ();
+        $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		Log::info('fcode=' . $fcode);
+        $orgListId = 'S_Organisations_' . $fcode;
+		$text_word = Input::get('text_word');
+        if(Session::get('cur')=='dealer')
+        {
+            $orgListId = 'S_Organisations_Dealer_'.$username.'_'.$fcode;
+        }
+        else if(Session::get('cur')=='admin')
+        {
+            $orgListId = 'S_Organisations_Admin_'.$fcode;
+        }
+        $orgLis = $redis->smembers($orgListId);
+		$cou = $redis->SCARD($orgListId);
+        $orgLi = $redis->sScan( $orgListId, 0,  'count', $cou, 'match', "*".$text_word."*"); 
+		log::info(' organization advance search function end');
+		return View::make ( 'vdm.organization.orgScan', array ('orgList' => $orgLi[1] ));
+    } 
+	
     public function destroy($id)
     {
         if(!Auth::check()) {
