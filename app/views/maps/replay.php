@@ -48,9 +48,9 @@
                 <tr>
                   <td style="font-weight:bold;">Vehicle Name</td>
                   <!--<td id="vehiid" style="font-weight:bold !important;"><h3></h3></td>-->
-                      <td style="float:left;padding-left:10px;"> 
-                            <select ng-model="trackVehID" style="background-color: #f9f9f9;padding:0 3px 0 3px;">
-                                  <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
+                    <td style="float:left;padding-left:10px;"> 
+                      <select ng-model="trackVehID" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
+                              <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
                               </select>
                       </td>
                   <td style="font-weight:bold;">TripDist (kms)</td>
@@ -129,12 +129,12 @@
                 
                 <tr style="border-top: 1px solid #d9d9d9">
                   <td width="15%">Date&amp;Time</td>
-                  <td width="7%">Max (kms)</td>
-                  <td width="35%">Address</td>
+                  <td width="10%">Max (kmph)</td>
+                  <td width="37%">Address</td>
                   <td width="10%">G-Map</td>
                   <!-- <td width="7%">Dist</td> -->
-                  <td width="15%">C-Dist (kms)</td>
-                  <td width="10%">Odo (kms)</td>
+                  <td width="10%">C-Dist (kms)</td>
+                  <td width="18%">Odo (kms)</td>
                 </tr>
                 <tr ng-repeat="move in movementdata" ng-click="markerPoup(move)">
                   <td>{{move.date | date:'yy-MM-dd HH:mm:ss'}}</td>
@@ -163,7 +163,7 @@
                 <tr>
                   <td colspan="2">Vehicle Name</td>
                   <td colspan="2">{{hisloc.shortName}}</td>
-                  <td colspan="2">Speed Limit(KM)</td>
+                  <td colspan="2">Speed Limit(kmph)</td>
                   <td>{{hisloc.overSpeedLimit}}</td>         
                 </tr>
                 <!-- <tr class="gap">
@@ -179,9 +179,9 @@
                 
                 <tr style="border-top: 1px solid #d9d9d9">
                   <td width="20%">Date&amp;Time</td>
-                  <td width="15%">Max (kms)</td>
+                  <td width="20%">Max (kmph)</td>
                   <td width="50%">Address</td>
-                  <td width="15%">G-Map</td>
+                  <td width="10%">G-Map</td>
                 </tr>
                 <tr ng-repeat="move in movementdata" ng-click="markerPoup(move)">
                   <td>{{move.date | date:'yy-MM-dd HH:mm:ss'}}</td>
@@ -214,7 +214,7 @@
                 <tr class="gap">
                   <td colspan="2">Regn No</td>
                   <td> {{hisloc.regNo}}</td>
-                  <td colspan="2">Speed Limit (kms)</td>
+                  <td colspan="2">Speed Limit (kmph)</td>
                   <td colspan="2"> {{hisloc.overSpeedLimit}}</td>
                 </tr>
                   
@@ -223,10 +223,10 @@
 
                 <tr>
                   <td width="15%">Date&amp;Time</td>
-                  <td width="13%">Speed (kms)</td>
+                  <td width="15%">Speed (kmph)</td>
                   <td width="25%">Address</td>
                   <td width="10%">G-Map</td>
-                  <td width="17%">Duration (h:m:s)</td>
+                  <td width="15%">Duration (h:m:s)</td>
                   <td width="10%">Trip (kms)</td>
                   <td width="10%">Odo (kms)</td>
                 </tr>

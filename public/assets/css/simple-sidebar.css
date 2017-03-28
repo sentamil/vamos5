@@ -355,7 +355,7 @@ li a label{ width:100%; display:block;}
 .maps {font-size: 14px; font-weight:bold;}
 .multi { width: 200px; color: #0d0d0d; font-size: 10px; font-weight:bold; text-align: left; word-wrap: break-word;background: #f4f4f4; border: 1px solid #0d0d0d; padding: 2px; border-radius: 0 10px 10px 10px}
 .singpop { width: 250px; color: #0d0d0d; font-size: 10px; text-align: left;background: #fefefe;  padding: 2px; border-radius: 5px 0 5px 5px}
-.tabpop{width:250px;word-wrap:break-word;table-layout:fixed}
+.tabpop{width:200px;word-wrap:break-word;table-layout:fixed}
 .tabpop td{padding: 5px}
 .tabpop tr{border-bottom: 1px solid #cecece;}
 .tabpop tr td{border-right: 1px solid #cecece;}

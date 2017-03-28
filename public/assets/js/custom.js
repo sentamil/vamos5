@@ -87,6 +87,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	
 	$scope.orgIds 	= [];
 
+	$scope.selects=1;
+
 	var mcOptions = {
     maxZoom: 11,
     styles: [
@@ -419,6 +421,7 @@ var markerSearch = new google.maps.Marker({});
 	$scope.groupSelection = function(groupname, groupid){
 		$('#status').show();
     	$('#preloader').show();
+    	$scope.selects=1;
 		$scope.selected=undefined;
 		$scope.dynamicvehicledetails1=false;
 		$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group=' + groupname;
@@ -433,6 +436,7 @@ var markerSearch = new google.maps.Marker({});
 		// ginfowindow=[];
 		clearInterval(setintrvl);
 		markerChange($scope.makerType);
+		$('#graphsId').hide();
 		//$scope.locations02 = vamoservice.getDataCall($scope.url);
 		// $('#status').fadeOut(); 
 		// $('#preloader').delay(350).fadeOut('slow');
@@ -483,11 +487,29 @@ var markerSearch = new google.maps.Marker({});
 					for(var j=0; j<ginfowindow.length;j++){
 						ginfowindow[j].close();
 					}
+                    
+                    $scope.selects=1;
+
 					infowindow.open(map,marker);
 		   		});	
 			})(marker);
+
+
+               google.maps.event.addListener(infowindow, "closeclick", function()
+                {
+
+                  console.log("close click....");
+                  
+                      $scope.selected=undefined;
+                      $scope.selects=0;
+
+                      $('#graphsId').toggle(300);
+                   //   $("#contentmin").toggle();
+
+                    });
+
 		
-	}
+	   }
 
 	// for new window track
 	$scope.days=0;
@@ -879,29 +901,38 @@ var markerSearch = new google.maps.Marker({});
 		$scope.movingCount = movingCount;
 		$scope.idleCount  = idleCount;
 		$scope.overspeedCount = overspeedCount;
+
+
 		
+		
+	
+
 		for (var i = 0; i < gmarkers.length; i++) {
 			var temp = $scope.locations[i];	 
-			 var lat = temp.latitude;
+			/* var lat = temp.latitude;
 			 var lng =  temp.longitude;
 			 var latlng = new google.maps.LatLng(lat,lng);
 			 gmarkers[i].icon = vamoservice.iconURL(temp);
 			 gmarkers[i].setPosition(latlng);
-			 gmarkers[i].setMap($scope.map);
+			 gmarkers[i].setMap($scope.map);*/
 			 // $scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);	
 			 if(temp.vehicleId==$scope.vehicleno){
 				 $scope.assignValue(temp);
+				 if($scope.selects){
 				 $scope.selected=i;
+				}
 				 fetchingAddress(temp);
 				 // $scope.getLocation(lat, lng, function(count){
 					//  $('#lastseen').text(count);
 					//  var t = vamoservice.geocodeToserver(lat,lng,count);
 				 // });	
 			 }
-			 //$scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);
+			// $scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);
 		}
+
 		if($scope.selected!=undefined){
 			$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
+			ginfowindow[$scope.selected].open($scope.map,gmarkers[$scope.selected]);
 		}
 		
 		if($scope.groupMap==true)
@@ -1115,6 +1146,58 @@ function locat_address(locs) {
 		})
 	}
 
+	   
+     function setMapOnAll() {
+        for (var i = 0; i < gmarkers.length; i++) {
+          gmarkers[i].setMap($scope.map);
+        }
+      }
+
+      function clearMarkerss() {
+         for (var i = 0; i < gmarkers.length; i++) {
+          gmarkers[i].setMap(null);
+          // ginfowindow[i].close();
+          ginfowindow[i].setMap(null);
+
+        }
+      }
+
+    $scope.inits=0;
+	$scope.init = function(){
+
+      $scope.inits=$scope.inits+1;
+
+        if( $scope.inits>1){
+
+	       clearMarkerss();
+         }
+
+            var locs = $scope.locations;
+			var length = locs.length;
+			gmarkers=[];
+			ginfowindow=[];
+     
+
+			for (var i = 0; i < length; i++) {
+				var lat = locs[i].latitude;
+				var lng =  locs[i].longitude;
+
+				
+					// console.log(' lat :'+lat+'lan :'+lng+'data :'+locs[i]);
+					// console.log('marker :'+gmarkers[i]+' vehicle ID : '+ locs[i].vehicleId+'  lat  :'+ lat+'lng  :'+ lng);
+					$scope.addMarker({ lat: lat, lng: lng , data: locs[i]});
+					$scope.infoBoxed($scope.map,gmarkers[i], locs[i].vehicleId, lat, lng, locs[i]);	
+				
+			}
+
+
+
+          setMapOnAll();
+
+
+
+		}
+
 	$scope.initilize = function(ID){
 		
 	//	vamoservice.getDataCall($scope.url).then(function(location02) {
@@ -1180,24 +1263,25 @@ function locat_address(locs) {
 			$scope.movingCount = movingCount;
 			$scope.idleCount  = idleCount;
 			$scope.overspeedCount = overspeedCount;
+
+			$scope.init();
 			
-			var length = locs.length;
+		/*	var length = locs.length;
 			gmarkers=[];
 			ginfowindow=[];
 			for (var i = 0; i < length; i++) {
 				var lat = locs[i].latitude;
 				var lng =  locs[i].longitude;
-				
-					// console.log(' lat :'+lat+'lan :'+lng+'data :'+locs[i]);
+				    // console.log(' lat :'+lat+'lan :'+lng+'data :'+locs[i]);
 					// console.log('marker :'+gmarkers[i]+' vehicle ID : '+ locs[i].vehicleId+'  lat  :'+ lat+'lng  :'+ lng);
 					$scope.addMarker({ lat: lat, lng: lng , data: locs[i]});
 					$scope.infoBoxed($scope.map,gmarkers[i], locs[i].vehicleId, lat, lng, locs[i]);	
 				
-			}
+			}*/
 	//	});
 		$scope.loading	=	false;
 		if($scope.selected>-1 && gmarkers[$scope.selected]!=undefined){
-			$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
+			$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 
 		}
 		$(document).on('pageshow', '#maploc', function(e){       
         	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
@@ -1596,6 +1680,7 @@ $scope.starSplit 	=	function(val){
         link: function(scope, element, attrs){
         	scope.$watch("url", function (val) {
 			setintrvl = setInterval(function(){
+                scope.inits=1;
 				vamoservice.getDataCall(scope.url).then(function(data) {
 					if(data.length){
 						scope.selected 		= undefined;
@@ -1603,6 +1688,7 @@ $scope.starSplit 	=	function(val){
 						scope.locations 	= scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
 						scope.zoomLevel 	= scope.zoomLevel;
 						scope.loading		=	true;
+						scope.init();
 						scope.initial02();
 					}
 				}); 
