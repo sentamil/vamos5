@@ -741,7 +741,7 @@ public function addpoi()
         }
         $orgLis = $redis->smembers($orgListId);
 		$cou = $redis->SCARD($orgListId);
-        $orgLi = $redis->sScan( $orgListId, 0,  'count', $cou, 'match', "*".$text_word."*"); 
+        $orgLi = $redis->sScan( $orgListId, 0,  'count', $cou, 'match', $text_word ); 
 		log::info(' organization advance search function end');
 		return View::make ( 'vdm.organization.orgScan', array ('orgList' => $orgLi[1] ));
     } 
