@@ -1115,7 +1115,17 @@ $( "#historyDetails" ).hide();
 	{
 		
 		$scope.popUpMarkerNull();
-		var contentString 	=	'<table class="tabpop"><tr><td>Date&amp;Time </td><td>'+dateFormat(val.date)+'</td></tr><tr><td>'+'Speed(km/h) </td><td>'+val.speed+'</td></tr><tr><td>'+'OdoDist(km)</td><td>'+val.odoDistance+'</td></tr><tr><td colspan="2">'+val.address+'</td></tr></table';
+
+        $scope.popupmarker = new google.maps.Marker({
+	        icon: 'assets/imgs/popup.png',
+	  	});
+
+        var latLngs=new google.maps.LatLng(val.latitude, val.longitude);
+
+        $scope.popupmarker.setMap($scope.map);
+        $scope.popupmarker.setPosition(latLngs);
+
+		var contentString ='<table class="tabpop"><tr><td>Date&amp;Time </td><td>'+dateFormat(val.date)+'</td></tr><tr><td>'+'Speed(km/h) </td><td>'+val.speed+'</td></tr><tr><td>'+'OdoDist(km)</td><td>'+val.odoDistance+'</td></tr><tr><td colspan="2">'+val.address+'</td></tr></table';
 	/*  	$scope.infowindow = new InfoBubble({
 	  		maxWidth: 400,	
 			maxHeight:170,
@@ -1125,18 +1135,10 @@ $( "#historyDetails" ).hide();
 		$scope.infowindow = new google.maps.InfoWindow({ maxWidth: 200,	maxHeight:150 });
 
 		$scope.infowindow.setContent(contentString); 
-        $scope.infowindow.setPosition( new google.maps.LatLng(val.latitude, val.longitude));
+        $scope.infowindow.setPosition(latLngs);
         $scope.infowindow.open($scope.map, $scope.popupmarker);
 
-	  	$scope.popupmarker = new google.maps.Marker({
-	    	position: new google.maps.LatLng(val.latitude, val.longitude),
-	    	icon: 'assets/imgs/popup.png',
-	    	map: $scope.map
-	  	});
-
-	    $scope.popupmarker.setMap($scope.map);
-	  	
-	  	google.maps.event.addListener($scope.infowindow,'closeclick',function(){
+	    google.maps.event.addListener($scope.infowindow,'closeclick',function(){
 		   $scope.popUpMarkerNull();
 		}); 
 
