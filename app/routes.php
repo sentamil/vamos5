@@ -197,6 +197,12 @@ Route::get('/camera', function() {
     }
     return View::make('reports.cameraReport');
 });
+Route::get('/stopReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.stopReport');
+});
  
 View::addExtension('html', 'php');
 Route::get('/menu', function() {
@@ -606,6 +612,14 @@ Route::get('getDistanceTimeFuelReport', function(){
 //     Log::info('getPictures');
 //     return View::make('vls.getPictures');
 // });
+
+ Route::get('/getStoppageReport', function() {
+     if (!Auth::check()) {
+         return Redirect::to('login');
+     }
+    Log::info('getStoppageReport!...');
+    return View::make('vls.getStoppageReport');
+ });
 
 Route::get('/getIndividualDriverPerformance', function() {
     if (!Auth::check()) {

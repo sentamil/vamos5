@@ -27,6 +27,7 @@
                 <li><a href="../public/reports">CURRENT STATUS</a></li>
                 <li><a href="../public/reports?ind=1">Vehicles Consolidated </a></li>
                 <li><a href="../public/reports?ind=2"> Consolidated Site / Location</a></li>
+                <li><a id="stopReport" href="">Stoppage Report</a></li>
                 <!-- <li> <a href="#"> Advanced &nbsp; </a>
                      <div style="padding-left: 10px">
                         <table style="width: 300px; height: 100px;">
@@ -77,8 +78,6 @@
                     
                     <li><a id="alarm" href="">Alarm</a></li>
                     <li><a id="ac" href="">A/C</a></li>
-                
-
                 </ul>
             </li>
         <li class="cl-effect-5">
@@ -244,7 +243,11 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             $('#camera').click(function(){
                 $(this).attr("href", 'camera?vid='+vid+'&vg='+gname+'&tn=camera')
             })
-
+            
+            $('#stopReport').click(function(){
+                $(this).attr("href", 'stopReport?&vg='+gname+'&tn=stopReport')
+            })
+             
             $('#multiTrack').click(function(){
                 $(this).attr("href", 'track?vehicleId='+vid+'&track=multiTrack&maps=mulitple');
                 $(this).attr("target", '_blank');
