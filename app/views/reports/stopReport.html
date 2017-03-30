@@ -189,10 +189,10 @@ background-color: #ffffff;
                              <table class="table table-striped table-bordered table-condensed table-hover" style="padding:10px 0 10px 0;">
                                           
                                         <tbody ng-repeat="data in stopData">
-                                                <tr style="text-align:center;height:30px">
-                                                    <td colspan="2" style="font-size:12px;"><b>Vehicle Id : {{data.vehicleId}}</b></td>
-                                                    <td style="font-size:12px;"><b>Start Time : {{data.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</b></td>
-                                                    <td style="font-size:12px;"><b>End Time : {{data.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</b></td>
+                                            <tr style="text-align:center;height:30px;">
+                                              <td colspan="2" style="font-size:12px;background-color:#C2D2F2;"><b>Vehicle Id : {{data.vehicleId}}</b></td>
+                                              <td style="font-size:12px;background-color:#C2D2F2;"><b>Start Time : {{data.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</b></td>
+                                              <td style="font-size:12px;background-color:#C2D2F2;"><b>End Time : {{data.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</b></td>
                                                 </tr>
                                            
                                                 <tr><td colspan="4" bgcolor="grey"></td><tr>
@@ -209,14 +209,16 @@ background-color: #ffffff;
                                                     <td width="40%">{{subdata.address}}</td>
                                                     <td width="20%">{{msToTime(subdata.stoppageTime)}}</td>
                                                 </tr>
-                                                <tr ng-if="stopData.length==null" >
-                                                    <td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
-                                                </tr>
+                                             
                                                 <tr><td colspan="4" bgcolor="white" style="border-style:none;"></td><tr>
                                                 <tr><td colspan="4" bgcolor="white" style="border-style:none;"></td><tr>
                                                 <tr><td colspan="4" bgcolor="white" style="border-style:none;"></td><tr>
                                                 <tr><td colspan="4" bgcolor="white" style="border-style:none;"></td><tr>
                                         </tbody>
+
+                                           <tr ng-if=" stopData==null || stopData.length==0 || stopData==' ' " style="text-align: center">
+                                                    <td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                                </tr>
 
                                 </table>                        
                         </div>

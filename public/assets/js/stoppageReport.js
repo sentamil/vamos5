@@ -165,16 +165,25 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
     function webCall(){
 
-       $scope.stopData=[];
+      $scope.stopData=[];
 
-   	   var stopUrl = GLOBAL.DOMAIN_NAME+'/getStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName;
+      if((checkXssProtection($scope.uiDate.fromdate) == true) && ((checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true))) {
+
+   	     var stopUrl = GLOBAL.DOMAIN_NAME+'/getStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName;
+      }   
        console.log(stopUrl);
 
-       $http.get(stopUrl).success(function(data){
+        $http.get(stopUrl).success(function(data){
             $scope.stopData=data;
-		});
+            stopLoading();
+		}); 
 
-     // stopLoading();
+	/*	vamoservice.getDataCall(stopUrl).then(function(data){
+           $scope.stopData=data;
+           stopLoading();  
+		});*/ 
+
+        // stopLoading();
     }
 
 	//get the value from the ui
@@ -292,7 +301,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 		getUiValue();
 		webCall();
 		//webServiceCall();
-      stopLoading();
+     // stopLoading();
 	}
 
 	$scope.exportData = function (data) {
