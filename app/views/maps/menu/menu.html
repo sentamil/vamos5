@@ -28,6 +28,7 @@
                 <li><a href="../public/reports?ind=1">Vehicles Consolidated </a></li>
                 <li><a href="../public/reports?ind=2"> Consolidated Site / Location</a></li>
                 <li><a id="stopReport" href="">Stoppage Report</a></li>
+            <!--    <li><a id="unStopReport" href="">Unscheduled Stoppage Report</a></li>-->
                 <!-- <li> <a href="#"> Advanced &nbsp; </a>
                      <div style="padding-left: 10px">
                         <table style="width: 300px; height: 100px;">
@@ -247,6 +248,10 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             $('#stopReport').click(function(){
                 $(this).attr("href", 'stopReport?&vg='+gname+'&tn=stopReport')
             })
+
+        /*    $('#unStopReport').click(function(){
+                $(this).attr("href", 'unStopReport?&vg='+gname+'&tn=unStopReport')
+            })*/
              
             $('#multiTrack').click(function(){
                 $(this).attr("href", 'track?vehicleId='+vid+'&track=multiTrack&maps=mulitple');
@@ -258,8 +263,9 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             });
 
             $('#history').click(function () {
-                $(this).attr("href", "track?maps=replay&vehicleId="+vid)
+                $(this).attr("href", "track?maps=replay&vehicleId="+vid+'&gid='+gname);
             })
+
 
             $('#addsites').click(function(){
                 if(sessionStorage.getItem('auth') == 'sitesVal')
