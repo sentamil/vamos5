@@ -203,6 +203,18 @@ Route::get('/stopReport', function() {
     }
     return View::make('reports.stopReport');
 });
+Route::get('/schStopReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.schStopReport');
+});
+Route::get('/unSchStopReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.unSchStopReport');
+});
  
 View::addExtension('html', 'php');
 Route::get('/menu', function() {
@@ -619,6 +631,14 @@ Route::get('getDistanceTimeFuelReport', function(){
      }
     Log::info('getStoppageReport!...');
     return View::make('vls.getStoppageReport');
+ });
+
+  Route::get('/getUnsceduledSiteStoppageReport', function() {
+     if (!Auth::check()) {
+         return Redirect::to('login');
+     }
+    Log::info('getUnsceduledSiteStoppageReport!...');
+    return View::make('vls.getUnsceduledSiteStoppageReport');
  });
 
 Route::get('/getIndividualDriverPerformance', function() {

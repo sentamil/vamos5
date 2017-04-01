@@ -4,7 +4,8 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	//global declaration
 	$scope.uiDate 				=	{};
 	$scope.uiValue	 			= 	{};
-	/*$scope.addressEvent  		=   [];
+  //$scope.stopData             =   [];
+  /*$scope.addressEvent  		=   [];
   	$scope.uiValue.stop 		= 	true;
   	$scope.uiValue.stopmins 	= 	10;
   	$scope.uiValue.speed 		= 	true;
@@ -32,6 +33,8 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	// };
 
 //	$scope.sort = sortByDate('startTime');
+
+    var tab = getParameterByName('tn');
                 
 	function getParameterByName(name) {
     	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -169,10 +172,23 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
       if((checkXssProtection($scope.uiDate.fromdate) == true) && ((checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true))) {
 
+      	switch(tab)
+         {
+         case 'stopReport':
    	     var stopUrl = GLOBAL.DOMAIN_NAME+'/getStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName;
-      }   
-       console.log(stopUrl);
-
+         break;
+         case 'schStopReport':
+   	     var stopUrl = GLOBAL.DOMAIN_NAME+'/getUnsceduledSiteStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName+'&status=Scheduled';
+         break;
+         case 'unSchStopReport':
+   	     var stopUrl = GLOBAL.DOMAIN_NAME+'/getUnsceduledSiteStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName+'&status=Unscheduled';
+         break;
+         }   
+       
+      }
+      
+        console.log(stopUrl);
+     
         $http.get(stopUrl).success(function(data){
             $scope.stopData=data;
             stopLoading();
