@@ -249,10 +249,12 @@
 
 
                  <!--  <div class="togl_buton"  ng-show="toglButtn" ng-click="toglButon()"> <img src="assets/imgs/Up-Arrows.png"/></div>-->
-        <div class=" alert alert-warning details_box_top"  ng-if="locations02.isDbDown=='Yes' ">
-        <strong>Warning</strong> <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;Sorry for inconvenience, Reports not available. 
-           
-                       </div>
+          <div class="details_box_top" ng-show="dpdown=='Yes'">
+                   
+                    <div class="alert alert-warning">
+                        <span>Sorry for the inconvenience, Reports not available for one hour.</span>
+                    </div>
+                    </div>
 
                    <!-- <div class="details_box_top" ng-if="locations02.isDbDown=='No'"><b>Database is down! </b></div> -->
 

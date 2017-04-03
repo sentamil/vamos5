@@ -140,6 +140,7 @@ var markerSearch = new google.maps.Marker({});
 			$scope.vehicle_list=[];
 			$scope.fcode=[];
 			$scope.locations02 = data;
+			$scope.dpdown = $scope.locations02[0].isDbDown;
 			listVehicleName(data);
 			// menuGroup(data);
 			if(data.length){
@@ -444,7 +445,7 @@ var markerSearch = new google.maps.Marker({});
 	}
 	var modal = document.getElementById('poi');
 	var span = document.getElementsByClassName("poi_close")[0];
-	
+	var span = document.getElementsByClassName("close")[0];
 	function popUp_Open_Close(){
 
 		modal.style.display = "block";
@@ -462,6 +463,7 @@ var markerSearch = new google.maps.Marker({});
 			}else{
 				var classVal = 'red';
 			}
+				
 				var contentString = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
 			+'<div><b style="width:100px; display:inline-block;">Vehicle Name</b> - <span style="font-weight:bold;">'+data.shortName+'</span></div>'
 			
@@ -471,6 +473,8 @@ var markerSearch = new google.maps.Marker({});
 
 			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp; <a href="#" ng-click="addPoi('+lat+','+lng+')">Save Site</a>'
 			+'</div>';
+            
+
 			 var compiled = $compile(contentString)($scope);
 			// var	drop1 = document.getElementById("ddlViewBy");
 			// var drop_value1= drop1.options[drop1.selectedIndex].value;
