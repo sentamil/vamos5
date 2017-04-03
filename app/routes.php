@@ -241,6 +241,14 @@ Route::get('/fuel', function(){
     }
     return View::make('reports.fuel');
 });
+
+Route::get('/fuelAnalytics', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    Log::info(' fuelAnalytics ');
+    return View::make('reports.fuelAnalytics');
+});
  
 View::addExtension('html', 'php');
 Route::get('/downloadreport', function() {
@@ -608,7 +616,15 @@ Route::get('/getFuelDropFillReport', function() {
     Log::info('getFuelDropFillReport');
     return View::make('vls.getFuelDropFillReport');
 });
- 
+
+Route::get('/getFuelReportDaily', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get getFuelReportDaily');
+    return View::make('vls.getFuelReportDaily');
+});
+
 Route::get('getDistanceTimeFuelReport', function(){
     if (!Auth::check()) {
         return Redirect::to('login');

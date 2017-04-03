@@ -931,12 +931,21 @@ div h6 {font-size: bold}
  /* font-weight: bold;*/
     border: none;
     border-radius:2px;
-    left:14%;
+    left:20%;
     bottom:2px;
     z-index:9;
     text-align: center; 
     word-wrap: break-word;
 }
+
+.details_box_top {
+    
+ 	position: fixed; top: 0px; z-index:9999; width: 100%;
+    text-align: center; 
+    word-wrap: break-word;
+   
+  }
+
 
 .infoTables{
     max-width:150px;
@@ -984,23 +993,33 @@ div h6 {font-size: bold}
     background-color: rgba(0,0,0,0.4); 
 }
 
+.poi-header {
+	width: 100%;
+    height:25px;
+    padding: 5px 15px 0 25px;
+    margin:0;
+    background-color: #196481;
+    color: white;
+}
+.poi-body {padding: 10px 16px 10px 16px;}
+
 
 /* Modal Content */
 .poi-content {
     background-color: #fefefe;
     margin: auto;
-    padding: 10px;
+  /*sspadding: 10px;*/
     border: 1px solid #888;
     width: 30%;
     border-radius: 3px;
 }
 
 /* The Close Button */
-/*.close1 {
+.close1 {
     color: #aaaaaa;
     float: right;
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 24px;
+ /*   font-weight: bold;*/
 }
 
 .close1:hover,
@@ -1008,4 +1027,4 @@ div h6 {font-size: bold}
     color: #000;
     text-decoration: none;
     cursor: pointer;
-}*/
+}

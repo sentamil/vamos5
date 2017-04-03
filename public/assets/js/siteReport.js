@@ -478,7 +478,7 @@ function plottinGraphs(valueGraph, timeData){
 		  	$scope.uiDate.fromtime		=	'12:00 AM';
 		  	$scope.uiDate.todate		=	getTodayDate($scope.fromNowTS);
 		  	$scope.uiDate.totime 		=	formatAMPM($scope.fromNowTS.getTime());
-		  	if(tab == 'tripSite'){
+		  	if(tab == 'tripSite' || tab == 'dailyFuel'){
 		  		$scope.fromNowTS1			=	new Date().getTime() - 86400000;
 				$scope.uiDate.fromdate 		=	getTodayDate($scope.fromNowTS.setDate($scope.fromNowTS.getDate()-7));
 			  	$scope.uiDate.fromtime		=	'12:00 AM';
