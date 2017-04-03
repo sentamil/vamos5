@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<title>GPS</title>
+
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
+<link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
+<link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="assets/css/jVanilla.css" rel="stylesheet">
+<link href="assets/css/simple-sidebar.css" rel="stylesheet">
+<link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
+<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
+
+<style>
+.empty{
+    height: 1px; width: 1px; padding-right: 30px; float: left;
+}
+.table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+background-color: #ffffff;
+}
+</style>
+</head>
+<div id="preloader" >
+    <div id="status">&nbsp;</div>
+</div>
+<div id="preloader02" >
+    <div id="status02">&nbsp;</div>
+</div>
+
+<body ng-app="mapApp">
+    <div id="wrapper" ng-controller="mainCtrl" class="ng-cloak">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
+                <li class="track"><a href="../public/track"><div></div><label>Track</label></a></li>
+                <!-- <li class="history"><a href="../public/track?maps=replay"><div></div><label>History</label></a></li> -->
+                <li class="alert01"><a href="../public/reports" ><div></div><label>Reports</label></a></li>
+                <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
+                <li class="admin"><a href="../public/settings"><div></div><label>Scheduled</label></a></li>
+                <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
+                <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
+            </ul>
+            <ul class="sidebar-subnav ">
+                <li style="padding-left:25px;">
+                    <div class="right-inner-addon" align="center"> 
+                    <i class="fa fa-search"></i>
+                    <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
+                    </div>
+                </li>
+                <li ng-repeat="location in vehicle_list" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+                    <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
+                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" ng-class="{active:vehiname ==loc.vehicleId}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+        </div>
+        
+        <div id="testLoad"></div>
+        
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="panel panel-default">
+                 
+                </div>   
+            </div>
+        </div>
+ 
+    <!-- AdminLTE css box-->
+
+    <div class="col-md-12">
+       <div class="box box-primary">
+        <!-- <div class="row"> -->
+                <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
+                    <h3 class="box-title">{{caption}}</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-1" align="center"></div>
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.fromdate" class="form-control placholdercolor" id="dateFrom"  placeholder="From date">
+                                <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-2" align="center" ng-show="hideShow">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.fromtime" class="form-control placholdercolor" id="timeFrom" placeholder="From time">
+                                <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.todate" class="form-control placholdercolor" id="dateTo" placeholder="From date">
+                                <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" align="center" ng-show="hideShow">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.totime" class="form-control placholdercolor" id="timeTo" placeholder="From time">
+                                <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-1" align="center"></div>
+                     <div class="col-md-1" align="center">
+                        <button style="margin-left: -100%; padding : 5px" ng-click="submitFunction()">Submit</button>
+                    </div>
+                </div>
+
+              <!--  </div> -->
+            </div>
+            
+          
+        </div>
+
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div>
+                    <div class="pull-right">
+                        <img style="cursor: pointer;" ng-click="exportData('tripreportkms')"  src="../app/views/reports/image/xls.png" />
+                        <img style="cursor: pointer;" ng-click="exportDataCSV('tripreportkms')"  src="../app/views/reports/image/csv.jpeg" />
+                    </div>
+                    <div class="box-body" id="tripreportkms">
+                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">{{caption}}</p> 
+                <!-- <span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span> -->
+                            <br>
+                                <table class="table table-bordered table-striped table-condensed table-hover">
+                                    <thead style="font-weight: bold;">
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12">Vehicle Name</div></td>
+                                            <td colspan="2"><div class="col-md-12">{{shortNam}}</div></td>
+                                            <td colspan="2"><div class="col-md-12">Group Name</div></td>
+                                            <td colspan="2"><div class="col-md-12">{{trimColon(gName)}}</div></td>
+                                        </tr>
+                                	</thead>
+                                	<tbody>
+	                                    
+	                                    <tr style="font-weight: bold; background-color: #d1d1d1; text-align : center">
+	                                        <td custom-sort order="'time'" sort="sort">Date &#38; Time</td>
+	                                        <td custom-sort order="'distance'" sort="sort">Distance</td>
+	                                        <td custom-sort order="'intFuel'" sort="sort">Start Fuel (ltrs)</td>
+	                                        <td custom-sort order="'finalFuel'" sort="sort">End Fuel (ltrs)</td>
+	                                        <td custom-sort order="'totalFuelConsume'" sort="sort">Fuel Fills</td>
+	                                        <td custom-sort order="'totalFuelDrops'" sort="sort">Fuel Drops</td>
+	                                        <td custom-sort order="'totalFuelFills'" sort="sort">Fuel Consume</td>
+	                                    </tr>
+                                    	<tr>
+                                        	<td colspan="7"></td>
+                                    	</tr>
+	                                    <tr ng-repeat="tripsummary in siteData | orderBy:sort.sortingOrder:sort.reverse" style="text-align : center;">
+	                                        <!-- ng-click="getInput(tripsummary, siteData)" data-toggle="modal" data-target="#mapmodals" -->
+	                                        <td>{{tripsummary.time | date:'yyyy-MM-dd'}}</td>
+	                                        <td>{{tripsummary.distance}}</td>
+	                                        <td>{{tripsummary.intFuel}}</td>
+	                                        <td>{{tripsummary.finalFuel}}</td>
+	                                        <td>{{tripsummary.totalFuelConsume}}</td>
+	                                        <td>{{tripsummary.totalFuelDrops}}</td>
+	                                        <td>{{tripsummary.totalFuelFills}}</td>
+	                                        
+	                                        
+	                                    </tr>
+	                                    <tr  ng-if="siteData==null || siteData.length== 0" align="center">
+	                                        <td colspan="11" class="err"><h5>No Data Found! Choose some other date</h5></td>
+	                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+       <!--  <div class="modal fade" id="myModal" style=" top :70px">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Trip Summary Routes</h4>
+                    </div>
+                    <div class="modal-body" id="map_canvas" style="width: 100%; height: 500px;"></div>
+                   
+                </div>
+            </div>
+        </div> -->
+        <div class="modal fade" id="mapmodals">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myCity">Trip Summary</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="map_container">
+                        <div id="map_canvas" class="map_canvas" style="width: 100%; height: 500px;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+
+
+                   
+    
+    
+
+
+    
+
+  
+   <!--  
+    <script src="assets/js/static.js"></script>
+    <script src="assets/js/jquery-1.11.0.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
+    <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    
+    <script src="../app/views/reports/customjs/html5csv.js"></script>
+    <script src="../app/views/reports/customjs/moment.js"></script>
+    <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
+    <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+    <script src="assets/js/vamoApp.js"></script>
+    <script src="assets/js/services.js"></script>
+    <script src="assets/js/siteReport.js"></script> -->
+
+    <script>
+
+    var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
+var url = "https://maps.google.com/maps/api/js?sensor=false";
+
+if(apikey_url != null ||  apikey_url != undefined)
+        url = "https://maps.google.com/maps/api/js?key="+apikey_url;
+    
+   function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
+     if (scriptsCollection[startIndex]) {
+       var fileref = document.createElement('script');
+       fileref.setAttribute("type","text/javascript");
+       fileref.setAttribute("src", scriptsCollection[startIndex]);
+       fileref.onload = function(){
+         startIndex = startIndex + 1;
+         loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback)
+       };
+ 
+       document.getElementsByTagName("head")[0].appendChild(fileref)
+     }
+     else {
+       librariesLoadedCallback();
+     }
+   }
+ 
+   // An array of scripts you want to load in order
+   var scriptLibrary = [];
+   
+   scriptLibrary.push("assets/js/static.js");
+   scriptLibrary.push("assets/js/jquery-1.11.0.js");
+   scriptLibrary.push("assets/js/bootstrap.min.js");
+   scriptLibrary.push("https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js");
+   scriptLibrary.push("../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js");
+   
+   scriptLibrary.push("../app/views/reports/customjs/html5csv.js");
+   scriptLibrary.push("../app/views/reports/customjs/moment.js");
+   scriptLibrary.push("../app/views/reports/customjs/FileSaver.js");
+   scriptLibrary.push("../app/views/reports/datepicker/bootstrap-datetimepicker.js");
+   scriptLibrary.push("../app/views/reports/datatable/jquery.dataTables.js");
+   
+   
+   
+
+   // scriptLibrary.push("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js");
+
+
+   // scriptLibrary.push("assets/js/infobubble.js");
+   // scriptLibrary.push("assets/js/moment.js");
+   // scriptLibrary.push("assets/js/bootstrap-datetimepicker.js");
+   // scriptLibrary.push("assets/js/infobox.js");
+   scriptLibrary.push("assets/js/vamoApp.js");
+   scriptLibrary.push("assets/js/services.js");
+   scriptLibrary.push("assets/js/siteReport.js");
+
+
+
+ 
+   // Pass the array of scripts you want loaded in order and a callback function to invoke when its done
+   loadJsFilesSequentially(scriptLibrary, 0, function(){
+       // application is "ready to be executed"
+       // startProgram();
+   });
+        
+      
+    //     $("#menu-toggle").click(function(e) {
+    //     e.preventDefault();
+    //     $("#wrapper").toggleClass("toggled");
+    // });
+
+
+  </script>
+    
+</body>
+</html>
+
+
