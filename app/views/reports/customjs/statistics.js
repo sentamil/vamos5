@@ -287,6 +287,7 @@ function serviceCall(){
 			vamoservice.getDataCall(groupUrl).then(function(responseGroup){
 				var tagsCheck 	= (responseGroup.error) ? true :  false;
 				// console.log($scope.to_trusted($scope.fromdate));
+				$scope.execGroupReportData  	=	[];
 				if(tagsCheck == false)
 				if(vehicleSelected){
 					$scope.donut 	= 	true;
@@ -301,6 +302,8 @@ function serviceCall(){
 					$scope.execGroupReportData	=	responseGroup.execReportData;
 					donutLoad(responseGroup);
 				}
+				else
+					barLoad(vehicleSelected),donutLoad(responseGroup);
 				stopLoading();
 			})
 		}else if(tabId == 'poi' || $scope.actTab == true){
