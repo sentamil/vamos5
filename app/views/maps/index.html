@@ -249,6 +249,15 @@
 
 
                  <!--  <div class="togl_buton"  ng-show="toglButtn" ng-click="toglButon()"> <img src="assets/imgs/Up-Arrows.png"/></div>-->
+          <div class="details_box_top" ng-show="dpdown=='Yes'">
+                   
+                    <div class="alert alert-warning">
+                        <span>Sorry for the inconvenience, Reports not available for one hour.</span>
+                    </div>
+                    </div>
+
+                   <!-- <div class="details_box_top" ng-if="locations02.isDbDown=='No'"><b>Database is down! </b></div> -->
+
                    <div class="details_box_bottom"><b>Support Details: </b>{{support}}</div>
 
                         <div id="graphsId">
@@ -328,14 +337,20 @@
     </div> -->
   <!-- Modal content -->
   <div class="poi-content">
+    <div class="poi-header">
+    <!-- <span class="close1">&times;</span> -->
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#ffffff;"><span aria-hidden="true" >&times;</span></button>
+      <span>Save Site</span>  
+       </div>
     <!-- <span class="close1">&times;</span> -->
     <!-- <h5>Add Site</h5> -->
-    <div class="row">
+    <div class="poi-body">
+      <div class="row">
         <div class="col-md-6"><input type="text" class="form-control" placeholder="Site Name" ng-model="poiName"></div>
         <div class="col-md-3"><button type="button" class="btn btn-default" ng-click="submitPoi(poiName)">Save Site</button></div>
         <div class="col-md-3"><button type="button" class="btn btn-default poi_close" >Close</button></div>
-    </div>
-    
+      </div>
+   </div> 
     
   </div>
 
@@ -665,7 +680,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+  // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    scriptLibrary.push("//code.highcharts.com/highcharts.js");
    scriptLibrary.push("//code.highcharts.com/highcharts-more.js");
