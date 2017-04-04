@@ -203,19 +203,7 @@ Route::get('/stopReport', function() {
     }
     return View::make('reports.stopReport');
 });
-Route::get('/schStopReport', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    return View::make('reports.schStopReport');
-});
-Route::get('/unSchStopReport', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
-    return View::make('reports.unSchStopReport');
-});
- 
+
 View::addExtension('html', 'php');
 Route::get('/menu', function() {
     // if (!Auth::check()) {
@@ -223,9 +211,6 @@ Route::get('/menu', function() {
     // }
     return View::make('maps.menu.menu');
 });
- 
- 
-
  
 View::addExtension('html', 'php');
 Route::get('/reports', function() {
@@ -649,13 +634,6 @@ Route::get('/getPictures', function() {
     return View::make('vls.getStoppageReport');
  });
 
-  Route::get('/getUnsceduledSiteStoppageReport', function() {
-     if (!Auth::check()) {
-         return Redirect::to('login');
-     }
-    Log::info('getUnsceduledSiteStoppageReport!...');
-    return View::make('vls.getUnsceduledSiteStoppageReport');
- });
 
 Route::get('/getIndividualDriverPerformance', function() {
     if (!Auth::check()) {

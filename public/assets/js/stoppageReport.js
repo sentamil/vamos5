@@ -1,38 +1,14 @@
 app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', function($scope, $http, vamoservice, $filter, GLOBAL){
 	
 
-	//global declaration
+  //global declaration
 	$scope.uiDate 				=	{};
 	$scope.uiValue	 			= 	{};
+	$scope.geoFence             =   "";
+
   //$scope.stopData             =   [];
-  /*$scope.addressEvent  		=   [];
-  	$scope.uiValue.stop 		= 	true;
-  	$scope.uiValue.stopmins 	= 	10;
-  	$scope.uiValue.speed 		= 	true;
-  	$scope.uiValue.speedkms 	= 	60;
-  	$scope.uiValue.notreach 	= 	true;
-  	$scope.uiValue.notreachmins = 	10;
-  	$scope.uiValue.idle 		=  	true;
-  	$scope.uiValue.idlemins		= 	10;
-  	$scope.uiValue.locat 		=	false;
-  	$scope.uiValue.site 		= 	false;
-  	$scope.interval				= 	10;
-  	$scope.siteEntry 			=	0;
-	$scope.siteExit 			=	0;*/
-	// //loading start function
-	// var startLoading		= function () {
-	// 	$('#status').show(); 
-	// 	$('#preloader').show();
-	// };
 
-	// //loading stop function
-	// var stopLoading		= function () {
-	// 	$('#status').fadeOut(); 
-	// 	$('#preloader').delay(350).fadeOut('slow');
-	// 	$('body').delay(350).css({'overflow':'visible'});
-	// };
-
-//	$scope.sort = sortByDate('startTime');
+  //$scope.sort = sortByDate('startTime');
 
     var tab = getParameterByName('tn');
                 
@@ -172,18 +148,8 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
       if((checkXssProtection($scope.uiDate.fromdate) == true) && ((checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true))) {
 
-      	switch(tab)
-         {
-         case 'stopReport':
+
    	     var stopUrl = GLOBAL.DOMAIN_NAME+'/getStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName;
-         break;
-         case 'schStopReport':
-   	     var stopUrl = GLOBAL.DOMAIN_NAME+'/getUnsceduledSiteStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName+'&status=Scheduled';
-         break;
-         case 'unSchStopReport':
-   	     var stopUrl = GLOBAL.DOMAIN_NAME+'/getUnsceduledSiteStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName+'&status=Unscheduled';
-         break;
-         }   
        
       }
       
