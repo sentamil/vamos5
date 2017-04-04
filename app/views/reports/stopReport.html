@@ -164,23 +164,34 @@ background-color: #ffffff;
         
                 <div>
                     <div class="pull-right">
-                        <img style="cursor: pointer;" ng-click="exportData('tripreport')"  src="../app/views/reports/image/xls.png" />
-                        <img style="cursor: pointer;" ng-click="exportDataCSV('tripreport')"  src="../app/views/reports/image/csv.jpeg" />
+                        <img style="cursor: pointer;" ng-click="exportData('StoppageReport')"  src="../app/views/reports/image/xls.png" />
+                        <img style="cursor: pointer;" ng-click="exportDataCSV('StoppageReport')"  src="../app/views/reports/image/csv.jpeg" />
                         
                     </div>
                     <div class="box-body" id="tripreport">
                 <div class="empty" align="center"></div>
 
-                    <table>
+                    <table ng-init="geoFence='Y'">
                       <tbody> 
                         <tr> 
-                          <td style="font-size:14px;font-weight:bold;padding:0 15px 0 5px"> Vehicle Group :</td>
+                          <td style="font-size:14px;font-weight:bold;padding:0 15px 0 5px"> Select Group :</td>
                            <td style="padding:0 0 0 5px;font-size:12px;">
                             <select ng-model="gName" style="background-color:#f9f9f9;padding:3px 3px 3px 3px;min-width:150px;max-width:150px;height:25px;">
-                                <option ng-repeat="vehi in vehicle_group" value="{{vehi.vgName}}">{{trimColon(vehi.vgName)}}</option>
-                               </select>
-                             </td>
-                         </tr>
+                              <option ng-repeat="vehi in vehicle_group" value="{{vehi.vgName}}">{{trimColon(vehi.vgName)}}</option>
+                            </select>
+                            </td>
+                                <td style="padding:0 0 0 55px"> <input checked="checked" type="radio" ng-model="geoFence" value="Y" />
+                                   <span style="font-size: 12px;padding:0 0 0 5px;font-weight: bold; ">All</span>
+                                </td>
+                                <td style="padding:0 0 0 25px"><input  type="radio" ng-model="geoFence" value="Yes" />
+                                    <span style="font-size: 12px;padding:0 0 0 5px;font-weight: bold; ">Scheduled</span>
+                                </td>
+                                <td style="padding:0 0 0 25px"><input type="radio" ng-model="geoFence" value="No" />
+                                    <span style="font-size: 12px;padding:0 0 0 5px;font-weight: bold; ">Unscheduled</span>
+                                </td>
+                                <td style="font-size:14px;padding:0 0 0 85px"> Group Name :</td>
+                                <td style="font-size:14px;padding:0 0 0 7px"> {{trimColon(gName)}}</td>
+                          </tr>
                        </tbody> 
                       </table>  
 
@@ -194,44 +205,35 @@ background-color: #ffffff;
                                         <td style="font-size:13px;background-color:#C2D2F2;"><b>Start Time : {{data.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</b></td>
                                         <td style="font-size:13px;background-color:#C2D2F2;"><b>End Time : {{data.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</b></td>
                                       </tr>
-                                           
-                                      <tr><td colspan="4" bgcolor="grey"></td><tr>
+                                 <!-- <tr><td colspan="4" bgcolor="grey"></td><tr> -->
                                       <tr>
                                         <td width="20%" style="font-size:12px;background-color:#ecf7fb;"><b>Start Time</b></td>
                                         <td width="20%" style="font-size:12px;background-color:#ecf7fb;"><b>End Time</b></td>
                                         <td width="40%" style="font-size:12px;background-color:#ecf7fb;"><b>Address</b></td>
                                         <td width="20%" style="font-size:12px;background-color:#ecf7fb;"><b>Stoppage Duration (h:m:s)</b></td>
+                                    <!--  <td width="10%" style="font-size:12px;background-color:#ecf7fb;"><b>Geofence</b></td> -->
                                       </tr>
                                      
-                                      <tr ng-repeat="subdata in data.history" style="padding-bottom:20px;" >
-                                         <td width="20%">{{subdata.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                         <td width="20%">{{subdata.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                         <td width="40%">{{subdata.address}}</td>
-                                         <td width="20%">{{msToTime(subdata.stoppageTime)}}</td>
+                                      <tr ng-repeat="subdata in data.history" style="padding-bottom:20px;">
+                                      <td width="20%" ng-show="geoFence==subdata.isInsideGeofence || geoFence=='Y'">{{subdata.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                         <td width="20%" ng-show="geoFence==subdata.isInsideGeofence || geoFence=='Y'">{{subdata.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                         <td width="30%" ng-show="geoFence==subdata.isInsideGeofence || geoFence=='Y'">{{subdata.address}}</td>
+                                         <td width="20%" ng-show="geoFence==subdata.isInsideGeofence || geoFence=='Y'">{{msToTime(subdata.stoppageTime)}}</td>
+                                    <!-- <td width="10%" ng-show="geoFence==subdata.isInsideGeofence || geoFence=='Y'">{{subdata.isInsideGeofence}}</td>-->
                                       </tr>
-
                                       <tr ng-if="data.history==null" style="text-align: center">
-                                          <td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                        <td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                       </tr>
-                                             
-                                      <tr ng-show="data.history!==null"><td colspan="4" bgcolor="white" style="border-style:none;"></td><tr>
-                                      <tr ng-show="data.history!==null"><td colspan="4" bgcolor="white" style="border-style:none;"></td><tr>
-                                      <tr ng-show="data.history!==null"><td colspan="4" bgcolor="white" style="border-style:none;"></td><tr>
-                                      <tr ng-show="data.history!==null"><td colspan="4" bgcolor="white" style="border-style:none;"></td><tr>
+                                      <tr><td colspan="4" bgcolor="grey"></td><tr>
                                 </tbody>
-                                
-                            </table>                        
+                          </table>                        
                         </div>
-
                     </div>
                 </div>
             </div>
 
           </div>
         </div>
-
-
-
 
 
     <script src="assets/js/static.js"></script>

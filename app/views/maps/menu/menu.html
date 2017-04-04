@@ -28,8 +28,7 @@
                 <li><a href="../public/reports?ind=1">Vehicles Consolidated </a></li>
                 <li><a href="../public/reports?ind=2"> Consolidated Site / Location</a></li>
                 <li><a id="stopReport" href="">Stoppage Report</a></li>
-                <!-- <li><a id="schStopReport" href="">Scheduled Stoppage Report</a></li>
-                <li><a id="unSchStopReport" href="">Unscheduled Stoppage Report</a></li> -->
+           
                 <!-- <li> <a href="#"> Advanced &nbsp; </a>
                      <div style="padding-left: 10px">
                         <table style="width: 300px; height: 100px;">
@@ -103,7 +102,6 @@
                     <li><a id="fuel" href=""> Fuel </a></li>
                     <li><a href="../public/fuel">Distance &amp; Time</a></li>
                     <li><a href="../public/fuel?tab=fuelfill">Fuel Fill</a></li>
-                    <!-- <li><a href="" id="fuelDaily">Daily Fuel Burn</a></li> -->
                     <li><a id="rfid" href="">Rfid</a></li>
                     <li><a id="camera" href="">Camera</a></li> 
             </ul>
@@ -250,15 +248,7 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             $('#stopReport').click(function(){
                 $(this).attr("href", 'stopReport?&vg='+gname+'&tn=stopReport')
             })
-            
-            $('#schStopReport').click(function(){
-                $(this).attr("href", 'schStopReport?&vg='+gname+'&tn=schStopReport')
-            }) 
-
-            $('#unSchStopReport').click(function(){
-                $(this).attr("href", 'unSchStopReport?&vg='+gname+'&tn=unSchStopReport')
-            })
-             
+     
             $('#multiTrack').click(function(){
                 $(this).attr("href", 'track?vehicleId='+vid+'&track=multiTrack&maps=mulitple');
                 $(this).attr("target", '_blank');
@@ -272,9 +262,6 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
                 $(this).attr("href", "track?maps=replay&vehicleId="+vid+'&gid='+gname);
             })
 
-            $('#fuelDaily').click(function () {
-                $(this).attr("href", "fuelAnalytics?vid="+vid+'&vg='+gname+'&tn=dailyFuel')
-            })
 
             $('#addsites').click(function(){
                 if(sessionStorage.getItem('auth') == 'sitesVal')
