@@ -245,6 +245,8 @@ function _getBustopValue(id){
       return;
     }
   });
+  if(_returnValue == undefined)
+    _returnValue = $scope.stopList[$scope.stopList.length-1];
   return _returnValue;
 }
 
