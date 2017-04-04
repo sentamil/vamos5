@@ -633,13 +633,13 @@ Route::get('getDistanceTimeFuelReport', function(){
 });
  
  
-// Route::get('/getPictures', function() {
-//     if (!Auth::check()) {
-//         return Redirect::to('login');
-//     }
-//     Log::info('getPictures');
-//     return View::make('vls.getPictures');
-// });
+Route::get('/getPictures', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getPictures');
+    return View::make('vls.getPictures');
+});
 
  Route::get('/getStoppageReport', function() {
      if (!Auth::check()) {
@@ -774,8 +774,8 @@ Route::group(array('before' => 'userauth'), function(){
             return View::make('reports.admin_Auth');
         });
 
-Route::post('vdmVehicles/updateLive/{param}', array('uses' => 'VdmVehicleController@updateLive'));
 
+Route::post('vdmVehicles/updateLive/{param}', array('uses' => 'VdmVehicleController@updateLive'));
 });
  
 // route to show the login form

@@ -129,9 +129,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="minmax">
-                            <img src="assets/imgs/add.png" />
-                        </div>
+                        
                         <div id="menuView">
 
                             <!-- Side Menu -->
@@ -247,18 +245,14 @@
                                 </div>
                         </div>
 
+                    <div class="details_box_top" ng-show="dpdown=='Yes'">
+                        <div class="alert alert-warning">
+                            <span>Sorry for the inconvenience, Reports not available for one hour.</span>
+                        </div>
+                    </div>
 
                  <!--  <div class="togl_buton"  ng-show="toglButtn" ng-click="toglButon()"> <img src="assets/imgs/Up-Arrows.png"/></div>-->
-          <div class="details_box_top" ng-show="dpdown=='Yes'">
-                   
-                    <div class="alert alert-warning">
-                        <span>Sorry for the inconvenience, Reports not available for one hour.</span>
-                    </div>
-                    </div>
-
-                   <!-- <div class="details_box_top" ng-if="locations02.isDbDown=='No'"><b>Database is down! </b></div> -->
-
-                   <div class="details_box_bottom"><b>Support Details: </b>{{support}}</div>
+                   <div class="details_box_bottom">Support Details: {{support}}</div>
 
                         <div id="graphsId">
                             <div>
@@ -272,20 +266,23 @@
                         </div>
                         
                         <div id="contentmin" class="rightsection">
+                        <div id="minmax">
+                            <img src="assets/imgs/add.png" />
+                        </div>
                                <input type="button" id="traffic" ng-click="check()" value="Traffic" />
                                <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>
                                <input type="text" id="distanceVal" value="0" disabled/> <span style="font-size:12px;">Kms</span>
-                               <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px" align="center">Live Tracking <div id="google_translate_element"></div></div>
+                               <div class="_caption_rightSide" align="center">Live Tracking <div id="google_translate_element"></div></div>
                             
                             <div style="display: flex">
                                 
-                                <div style="width:100%; background: #F4F4F4; font-weight: bold; font-size: 12px; padding : 3px">
-                                <select ng-model="days1" style="width:35%; font-weight: bold; font-size: 12px; padding : 3px">
+                                <div >
+                                <select ng-model="days1" class="_button_select">
                                     <option value = "0">Vehicle Id</option>
                                     <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
                                 </select>
 
-                                <select id="Days" ng-model="days" style="height: 18px;">
+                                <select id="Days" ng-model="days"  class="_button_select">
                                     <option value = "0">Days</option>
                                     <option value = "1">1</option>
                                     <option value = "2">2</option>
@@ -337,20 +334,14 @@
     </div> -->
   <!-- Modal content -->
   <div class="poi-content">
-    <div class="poi-header">
-    <!-- <span class="close1">&times;</span> -->
-     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#ffffff;"><span aria-hidden="true" >&times;</span></button>
-      <span>Save Site</span>  
-       </div>
     <!-- <span class="close1">&times;</span> -->
     <!-- <h5>Add Site</h5> -->
-    <div class="poi-body">
-      <div class="row">
+    <div class="row">
         <div class="col-md-6"><input type="text" class="form-control" placeholder="Site Name" ng-model="poiName"></div>
         <div class="col-md-3"><button type="button" class="btn btn-default" ng-click="submitPoi(poiName)">Save Site</button></div>
         <div class="col-md-3"><button type="button" class="btn btn-default poi_close" >Close</button></div>
-      </div>
-   </div> 
+    </div>
+    
     
   </div>
 
@@ -379,33 +370,43 @@
                                     </table>
                                 </div>
                             </div>
-                               <div class="dynamicvehicledetails" ng-init="dynamicvehicledetails1=false" ng-if="dynamicvehicledetails1==true">
-                                <div id="viewable">
-                                    <h3 id="vehiid"><span id="val"></span> Details <input id="inputEdit" type="button" value="Edit"/></h3>
+                               <div class="dynamicvehicledetails">
+                                <div id="viewable" ng-show="_editValue_con">
                                     
-                                    <div>
-                                        <table cellpadding="0" cellspacing="0">
+                                    
+                                    
+                                        <table cellpadding="0" cellspacing="0" class="_alignLeft">
                                             <tbody>
                                                 <tr>
-                                                    <td>Odo</td>
-                                                    <td id="vehdevtype"><span id="val"></span> kms</td>
+                                                    <td>
+                                                        <input class="_button" type="button" value="Edit" ng-modal="_editShow" ng-click="_editShow = true" ng-hide="_editShow" />
+                                                        <input class="_button" type="button" value="Save" ng-click="updateDetails(); _editShow = false" ng-show="_editShow"  ng-modal="_editShow"/>
+                                                    </td>
+                                                    <td ng-show="_editShow"><input type="text" class="_input" ng-model="_editValue._shortName" name="_editValue._shortName" ></td>
+                                                    <td ng-hide="_editShow">{{_editValue._shortName}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Odo </td>
+                                                    <td ng-show="_editShow"><input type="text" class="_input" ng-model="_editValue._odoDista" name="_editValue._odoDista" ></td>
+                                                    <td ng-hide="_editShow"> {{_editValue._odoDista}} kms</td>
                                                     
                                                 </tr>
                                                  <tr>
                                                     <td>Max</td>
-                                                    <td id="mobno"><span id="val"></span> km/h</td>
+                                                    <!-- <td id="mobno"><span id="val"></span> km/h</td> -->
+                                                    <td ng-show="_editShow"><input type="text" class="_input" ng-model="_editValue._overSpeed" name="_editValue._overSpeed" ></td>
+                                                    <td ng-hide="_editShow"> {{_editValue._overSpeed}} km/h</td>
                                                     
                                                 </tr>
                                                 <tr>
                                                     <td><span></span> Driver</td>
-                                                    <td id="driverName"><span id="val"></span></td>
+                                                    <!-- <td id="driverName"><span id="val"></span></td> -->
+                                                    <td ng-show="_editShow"><input type="text" class="_input" ng-model="_editValue._driverName" name="_editValue._driverName" ></td>
+                                                    <td ng-hide="_editShow"> {{_editValue._driverName}}</td>
+
                                                     
                                                 </tr>
-                                                <!-- <tr>
-                                                    <td>Today Distance</td>
-                                                    <td id="toddist"><span id="val"></span> kms</td>
-                                                    
-                                                </tr> -->
+                                               
                                                 <tr>
                                                     <td id="positiontime"><span></span> Time</td>
                                                     <td id="regno"><span id="val"></span></td>
@@ -413,85 +414,36 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Vehicle</td>
-                                                    <td id="vehitype"><span></span></td>
+                                                    <!-- <td id="vehitype"><span></span></td> -->
+                                                    <td ng-show="_editShow">
+                                                        <select ng-options="vehi for vehi in _editValue._vehiTypeList" ng-model="_editValue.vehType" class="_button_select_small">
+                                                          <option style="display:none" value="">Select Vehicle</option>
+                                                        </select>
+                                                    <!--     <input type="text" class="_input" ng-model="_editValue.vehType" name="_editValue.vehType" > -->
+                                                    </td>
+                                                    <td ng-hide="_editShow"> {{_editValue.vehType}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Mobile</td>
-                                                    <td id="mobNo"><span></span></td>
+                                                    <!-- <td id="mobNo"><span></span></td> -->
+                                                    <td ng-show="_editShow"><input type="text" class="_input" ng-model="_editValue._mobileNo" name="_editValue._mobileNo" ></td>
+                                                    <td ng-hide="_editShow"> {{_editValue._mobileNo}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Reg</td>
-                                                    <td id="regNo"><span></span></td>
+                                                    <!-- <td id="regNo"><span></span></td> -->
+                                                    <td ng-show="_editShow"><input type="text" class="_input" ng-model="_editValue._regNo" name="_editValue._regNo" ></td>
+                                                    <td ng-hide="_editShow"> {{_editValue._regNo}}</td>
                                                 </tr>
                                                 
                                         </table>
-                                    </div>
+                                   <div id="rightAddress">
+                                    <div class="_caption_rightSide">Address</div>
+                                    <div align="center" id="lastseen" style="word-wrap: break-word; font-size: 11px; "></div>
                                 </div>
-
-                                <div id="editable">
-                                    <h3 id="vehiid"><input id="val_veh" type="input" ng-model="vehShort"/> Details <input id="inputEdit" type="button" value="Update" ng-click="updateDetails()"/></h3>
+                                </div>
+                                
                                     
-                                    <div>
-                                        <table cellpadding="0" cellspacing="0">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Odo Reading</td>
-                                                    <td id="vehdevtype"><input id="val" type="input" ng-model="ododis"/> kms</td>
-                                                    
-                                                </tr>
-                                                 <tr>
-                                                    <td>Speed Limit</td>
-                                                    <td id="mobno"><input id="val" type="input" ng-model="spLimit"/> km/h</td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                    <td><span></span> Driver Name</td>
-                                                    <td id="driverName"><input id="val" type="input" ng-model="driName"/></td>
-                                                    
-                                                </tr>
-                                                <!-- <tr>
-                                                    <td>Today Distance</td>
-                                                    <td id="toddist"><span id="val"> kms</span></td>
-                                                    
-                                                </tr> -->
-                                                <tr>
-                                                    <td ><span id="positiontime">Position </span>Time</td>
-                                                    <!-- <td style="width:50%"><span id="positiontime">Position </span>Time</td> -->
-                                                    <td id="regno"><span id="val"></span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Vehicle Type</td>
-                                                    <td>
-                                                        <select style="height: 18px; width: 70px" ng-model="vehType">
-                                                            <option value = "Car">Car</option>
-                                                            <option value = "Bike">Bike</option>
-                                                            <option value = "Bus">Bus</option>
-                                                            <option value = "heavy Vehicles">heavy Vehicles</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Mobile No</td>
-                                                    <td id="mobNo"><input id="val" type="input" ng-model="mobileNo"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Reg No</td>
-                                                    <td><input id="val" type="input" ng-model="refname"/></td>
-                                                </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                                    <div id="rightAddress">
-                                        <h3>Address</h3>
-                                        <div align="center" id="lastseen" style="word-wrap: break-word;"></div>
-                                    </div>
-                                    <h3>Last Seen Date & Time</h3>
-                                    <div align="center" id="lstseendate">
-                                       
-                                    </div>
-                                    <!-- <div id="container-speed"></div> -->
-                                  <!--  <h3>Support details</h3>
-                                    <div align="center" style="word-wrap: break-word;"><p>{{support}}</p></div>-->
                                 </div>
                         </div>
                         <a href="javascript:void(0);" class="contentexpand"><img src="assets/imgs/add.png"/></a>
@@ -679,8 +631,8 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/bootstrap.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   scriptLibrary.push(url);
-  // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+    scriptLibrary.push(url);
+   // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
    scriptLibrary.push("//code.highcharts.com/highcharts.js");
    scriptLibrary.push("//code.highcharts.com/highcharts-more.js");
