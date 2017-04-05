@@ -119,7 +119,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 				if($scope.overTab == true)
 					{
 						$scope.consOverspeed(' ');
-						$scope.overTab == false
+					//	$scope.overTab == false;
 					}
 				
 				$scope.recursive($scope.data1.vehicleLocations,0);
