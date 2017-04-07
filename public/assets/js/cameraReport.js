@@ -50,11 +50,8 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	}
  
 
-  var vehcId=getParameterByName('vid');
-//var usersId=getParameterByName('vg');
-//var usrId=$scope.trimColon(usersId);
-//console.log(usrId);
-  console.log(vehcId);
+  // var vehcId=getParameterByName('vid');
+
 
 
   function getUiValue(){
@@ -70,14 +67,11 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
    	$scope.imgData=[];
 
-    var imgUrl = GLOBAL.DOMAIN_NAME+'/getPictures?vehicleId='+vehcId+'&date='+$scope.trimHyphen($scope.uiDate.fromdate)+'&sTime='+$scope.trimColon($scope.uiDate.fromtime)+'&eTime='+$scope.trimColon($scope.uiDate.totime);
-      console.log(imgUrl);
-
-        $http.get(imgUrl).success(function(data){
-
-                  $scope.imgData=data;
-
-		   		});
+    var imgUrl = GLOBAL.DOMAIN_NAME+'/getPictures?vehicleId='+$scope.vehiname+'&date='+$scope.trimHyphen($scope.uiDate.fromdate)+'&sTime='+$scope.trimColon($scope.uiDate.fromtime)+'&eTime='+$scope.trimColon($scope.uiDate.totime);
+      	// console.log(imgUrl);
+      	$http.get(imgUrl).success(function(data){
+  			$scope.imgData=data;
+   		});
  }
 
 
@@ -225,6 +219,29 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 		stopLoading();
 	}
 */
+
+	function _global_date_time(){
+
+		console.log(' timer ')
+		startLoading();
+		$scope.fromNowTS		    =	new Date();
+        $scope.uiDate.fromdate 		=	getTodayDate($scope.fromNowTS);
+        var date_time		 		=	$filter('date')($scope.fromNowTS.getTime(), "HH")
+  		$scope.uiDate.totime 		= 	date_time+":00";
+  		var add_zero 				=  	(parseInt(date_time) -1)+"";
+  		$scope.uiDate.fromtime 		= 	(add_zero.length > 1) ? add_zero+ ":00" : "0"+add_zero+ ":00";
+  		
+  		if(date_time == "00")
+  			$scope.uiDate.fromtime	=	'00:00';
+		  	
+	    webCall();
+	    stopLoading();
+	}
+
+setInterval(_global_date_time, 60000);
+
+
+
 	// initial method
 
 	$scope.$watch("url", function (val) {
@@ -249,25 +266,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 				sessionValue($scope.vehiname, $scope.gName)
 			}
 
-			    $scope.fromNowTS		    =	new Date();
-		        $scope.uiDate.fromdate 		=	getTodayDate($scope.fromNowTS);
-
-		  //	$scope.uiDate.fromtime		=	'12:00 AM';
-		  //	$scope.uiDate.todate		=	getTodayDate($scope.fromNowTS);
-		  //	$scope.uiDate.totime 		=	formatAMPM($scope.fromNowTS.getTime());
-
-		        $scope.uiDate.fromtime		=	'00:00';
-		        var trimFromTime =parseInt($scope.trimColon($scope.uiDate.fromtime));
-
-		             trimFromTime++;
-                         if(trimFromTime<=9){
-                             $scope.uiDate.totime ='0'+trimFromTime+':00';
-	                      }else{
-	                  	     $scope.uiDate.totime =trimFromTime+':00';
-	                        }
-
-		   // webServiceCall();
-		   // webCall();
+			_global_date_time();
 		  	stopLoading();
 		});	
 	});
