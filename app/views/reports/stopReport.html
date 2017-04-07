@@ -154,6 +154,88 @@ background-color: #ffffff;
                 </div>
 
               <!--  </div> -->
+              <div class="row">
+              <div class="col-md-1" align="center"></div>
+
+               <div class="col-md-2" align="center">
+                        <div class="form-group">
+
+                         </div>
+                  </div>
+              </div>
+
+            <div class="row" ng-init="geoFence='Y'">
+
+             <div class="col-md-1" align="center"></div>
+                 <div class="col-md-1" align="center">
+                        <div class="form-group" style="padding-right: 0px;font-size:14px;">
+                      Group :
+                         </div>
+                  </div>   
+                     
+                  <div class="col-md-2" >
+                        <div class="form-group">
+
+                          <select ng-model="gName" style="background-color:#f9f9f9;padding:3px 3px 3px 3px;min-width:150px;max-width:150px;height:25px;">
+                              <option ng-repeat="vehi in vehicle_group" value="{{vehi.vgName}}">{{trimColon(vehi.vgName)}}</option>
+                            </select>
+                         
+                        </div>
+                  </div>  
+
+                        <div class="col-md-2" align="center">
+                       
+
+                                 <input checked="checked" type="radio" ng-model="geoFence" value="Y" style="padding-left: 20px;" />
+                                   <span style="font-size: 12px;padding:0 0 0 5px;font-weight: bold; ">All</span>
+                    
+                      </div>
+                       <div class="col-md-2" >
+                  
+                  <input style="padding-left: 20px;" type="radio" ng-model="geoFence" value="Yes" />
+                                    <span style="font-size: 12px;padding:0 0 0 10;font-weight: bold; ">Scheduled</span>
+                     
+                     
+                      </div>
+
+                       <div class="col-md-2" style="padding:unset;" >
+      
+
+                 <input type="radio" ng-model="geoFence" value="No" />
+                                    <span style="font-size: 12px;padding:0 0 0 0;font-weight: bold; ">Unscheduled</span>
+                             
+                 
+                    
+
+                  </div> 
+
+               <!--    <div class="col-md-3" >
+                     
+
+                  <input  type="radio" ng-model="geoFence" value="Yes" />
+                                    <span style="font-size: 12px;padding:0 0 0 0;font-weight: bold; ">Scheduled</span>
+
+
+
+                 <input type="radio" ng-model="geoFence" value="No" />
+                                    <span style="font-size: 12px;padding:0 0 0 0;font-weight: bold; ">Unscheduled</span>
+                             
+                 
+                         
+                  </div> 
+
+                  <!-- <div class="col-md-2" >
+                      
+
+                 <input type="radio" ng-model="geoFence" value="No" />
+                                    <span style="font-size: 12px;padding:0 0 0 0;font-weight: bold; ">Unscheduled</span>
+                             
+            
+                         
+                  </div> -->
+
+            </div>
+
             </div>
             
           
@@ -169,9 +251,9 @@ background-color: #ffffff;
                     </div>
                 <div class="box-body" id="StoppageReport">
                 <div class="empty" align="center"></div>
-                    <table ng-init="geoFence='Y'">
+               <table >
                       <tbody> 
-                        <tr> 
+                      <!--  <tr> 
                           <td style="font-size:14px;font-weight:bold;padding:0 15px 0 5px"> Select Group :</td>
                            <td style="padding:0 0 0 5px;font-size:12px;">
                             <select ng-model="gName" style="background-color:#f9f9f9;padding:3px 3px 3px 3px;min-width:150px;max-width:150px;height:25px;">
@@ -187,11 +269,21 @@ background-color: #ffffff;
                                 <td style="padding:0 0 0 25px"><input type="radio" ng-model="geoFence" value="No" />
                                     <span style="font-size: 12px;padding:0 0 0 5px;font-weight: bold; ">Unscheduled</span>
                                 </td>
-                                <td style="font-size:14px;padding:0 0 0 85px"> Group Name :</td>
-                                <td style="font-size:14px;padding:0 0 0 7px"> {{trimColon(gName)}}</td>
-                          </tr>
+                               -->
+
+                               <tr>
+
+                              <td style="font-size:14px;padding:0 0 0 85px"> Report :</td>
+                                <td  ng-if="geoFence=='Y'" style="font-size:14px;padding:0 0 0 7px"><span>All</span></td>
+                                 <td ng-if="geoFence=='Yes'" style="font-size:14px;padding:0 0 0 7px"><span>Scheduled</span></td>
+                                  <td ng-if="geoFence=='No'" style="font-size:14px;padding:0 0 0 7px"><span>UnScheduled</span></td>
+
+                                <td style="font-size:14px;padding-left: 60px;"> Group Name :</td>
+                                <td style="font-size:14px;padding:0 0 0 7px;"> {{trimColon(gName)}}</td>
+                            
+                              </tr>
                        </tbody> 
-                      </table>  
+                      </table>
 
                        <div class="row" style="padding-top: 20px;"></div>
 

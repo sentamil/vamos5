@@ -4,7 +4,9 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	
 	//$("#testLoad").load("../public/menu");
 	var getUrl  =   document.location.href;
-	var index   =   getUrl.split("=")[1];
+	//var index   =   getUrl.split("=")[1];
+
+	var index=getParameterByName('ind');
 	
 	if(index == 1){
 		$scope.actTab 	=	true;
@@ -16,9 +18,14 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		$scope.siteTab 		=	true;
 		$scope.sort = sortByDate('startTime');
 	}
+	else if(index ==3 ){
+		$scope.overTab 		=	true;
+
+	}
 	else {
 		$scope.actTab 	=	false;
 		$scope.siteTab 	=	false;
+		$scope.overTab  =   false;
 	}
 
 	
@@ -84,7 +91,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 
 	
 
-	$scope.url 			  =   GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+	//$scope.url 			  =   GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	$scope.fromTime       =   '12:00 AM';
 	$scope.vehigroup;
 	$scope.consoldateData =   [];
@@ -109,6 +116,11 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 				});				
 				if($scope.siteTab == true)
 					{$scope.consoldateTrip();$scope.siteTab == false}
+				if($scope.overTab == true)
+					{
+						$scope.consOverspeed(' ');
+					//	$scope.overTab == false;
+					}
 				
 				$scope.recursive($scope.data1.vehicleLocations,0);
 			}
@@ -308,9 +320,70 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		
 	}
 
+
 	// $scope.consoldateTripButton = function(){
 	// 	console.log('  consoldate trip '+$scope.fromdate1 +$scope.fromTime+$scope.todate1 +$scope.totime);
 	// }
+   /* function getOvrValues(){
+		$scope.fromdate2 	=	$('#ovrFrom').val();
+	  	$scope.fromTime2	=	$('#ovrTimeFrom').val();
+	  	$scope.todate2 		=	$('#ovrTo').val();
+	    $scope.totime2 		=	$('#ovrTimeTo').val();
+ 	
+	}*/
+
+	$scope.consOverspeed = function(valu)
+	{	
+		startLoading();
+
+		$scope.ovrData 	=	[];
+		//$scope.stop();
+	//	$scope.sort = sortByDate('startTime');
+		// $('#preloader').show(); 
+		// $('#preloader02').show();
+		// $scope.tripValu = valu;
+		// console.log(' trip '+valu+'---->'+$scope.checkBox.site+$scope.checkBox.loc);
+		if(valu === 'ovrButon')
+		{
+
+			console.log('ovrButon');
+
+		$scope.fromdate2 	=	$('#ovrFrom').val();
+	  	$scope.fromTime2	=	$('#ovrTimeFrom').val();
+	  	$scope.todate2 		=	$('#ovrTo').val();
+	    $scope.toTime2 		=	$('#ovrTimeTo').val();
+	
+		}
+		else
+		{	
+		    var dateObj 			= 	new Date();
+			$scope.fromNowTS		=	new Date(dateObj.setDate(dateObj.getDate()-1));
+			$scope.fromdate2 		=	getTodayDate($scope.fromNowTS);
+		  	$scope.fromTime2		=	'12:00 AM';
+		  	$scope.todate2		=	getTodayDate($scope.fromNowTS);
+		  //$scope.totime2 		=	formatAMPM($scope.fromNowTS.getTime());
+            $scope.toTime2 		=   '11:59 PM';
+		}
+	
+      if((checkXssProtection($scope.fromdate2) == true) && ((checkXssProtection($scope.fromTime2) == true) && (checkXssProtection($scope.todate2) == true) && (checkXssProtection($scope.toTime2) == true))) {
+
+
+   	  //   var ovrUrl = GLOBAL.DOMAIN_NAME+'/getStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName;
+      
+      var ovrUrl = GLOBAL.DOMAIN_NAME+'/getOverSpeedReport?fromDateUTC='+utcFormat($scope.fromdate2,convert_to_24h($scope.fromTime2))+'&toDateUTC='+utcFormat($scope.todate2,convert_to_24h($scope.toTime2))+'&groupName='+$scope.vehigroup;
+       //            getOverSpeedReport?fromDateUTC=1491264012000&toDateUTC=1491295392000&groupName=MSS-BUS:SMP
+
+      }
+      
+        console.log(ovrUrl);
+     
+        $http.get(ovrUrl).success(function(data){
+            $scope.ovrData=data;
+            stopLoading();
+		}); 
+
+		
+	}
 
 
 
