@@ -227,12 +227,18 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 		$scope.fromNowTS		    =	new Date();
         $scope.uiDate.fromdate 		=	getTodayDate($scope.fromNowTS);
         var date_time		 		=	$filter('date')($scope.fromNowTS.getTime(), "HH")
-  		$scope.uiDate.totime 		= 	date_time+":00";
-  		var add_zero 				=  	(parseInt(date_time) -1)+"";
-  		$scope.uiDate.fromtime 		= 	(add_zero.length > 1) ? add_zero+ ":00" : "0"+add_zero+ ":00";
+        $scope.uiDate.fromtime 		= 	date_time+":00";
+
+
+
+  		// $scope.uiDate.totime 		= 	date_time+":00";
+  		var add_zero 				=  	(parseInt(date_time) +1)+"";
+  		$scope.uiDate.totime 		= 	(add_zero.length > 1) ? add_zero+ ":00" : "0"+add_zero+ ":00";
   		
-  		if(date_time == "00")
-  			$scope.uiDate.fromtime	=	'00:00';
+  		if(date_time == "23"){
+  			$scope.uiDate.fromdate	=	'22:00';
+  			$scope.uiDate.totime	=	'23:00';
+  		}
 		  	
 	    webCall();
 	    stopLoading();
