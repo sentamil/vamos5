@@ -238,7 +238,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	    stopLoading();
 	}
 
-setInterval(_global_date_time, 60000);
+setInterval(_global_date_time, 180000);
 
 
 
