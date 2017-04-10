@@ -54,7 +54,8 @@ tr:nth-of-type(odd) {
                         <div class="row">
 
                            {{ Form::text('text_word' , Input::old('text_word'),  array('class' => 'form-control', 'placeholder'=>'Search Organization'))}}
-                      </div>
+                           <div style="font-size: 9px; text-align: center;"><b>Note : </b> User * from getting all Organizations</div>
+					  </div>
                       
                       </div>
                       <div class="col-md-6">
