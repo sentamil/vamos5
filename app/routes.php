@@ -642,6 +642,14 @@ Route::get('/getPictures', function() {
     return View::make('vls.getOverSpeedReport');
  });
 
+ Route::get('/getExecutiveFuelReport', function() {
+     if (!Auth::check()) {
+         return Redirect::to('login');
+     }
+    Log::info('getExecutiveFuelReport!...');
+    return View::make('vls.getExecutiveFuelReport');
+ });
+
 Route::get('/getIndividualDriverPerformance', function() {
     if (!Auth::check()) {
         return Redirect::to('login');

@@ -1,8 +1,9 @@
-app.controller('mainCtrl', ['$scope', '$filter','vamoservice', '_global', function($scope, $filter, vamoservice, GLOBAL){
+app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global', function($scope, $http, $filter, vamoservice, GLOBAL){
 
 // tab view
 var getUrl  =   document.location.href;
-var tabId 	= 	'executive';
+var tabId ;
+//var tabId 	= 	'executive';
 var index   =   getParameterByName("ind");
 	if(index == 1) {
 		tabId 				= 'poi';
@@ -13,7 +14,17 @@ var index   =   getParameterByName("ind");
 		$scope.downloadid 	= 'consolidated';
 		$scope.actCons 		= true;
 		$scope.sort 		= sortByDate('date')
-	} else {
+	} 
+    else if(index == 3){
+        
+        console.log('index 3...');
+        tabId 				= 'fuel';
+		$scope.downloadid 	= 'fuel';
+		$scope.actFuel 		= true;
+		$scope.sort 		= sortByDate('date')
+	}
+	else {
+		tabId 	= 	'executive';
 		$scope.downloadid 	= 'executive';
 		$scope.sort 		= sortByDate('date')
 	}
@@ -319,6 +330,31 @@ function serviceCall(){
 				stopLoading();
 			})
 		}
+        else if(tabId == 'fuel' || $scope.actFuel == true){
+			$scope.donut 		= 	true;
+			$scope.bar 			= 	true;
+			$('#singleDiv').hide();
+			var fuelUrl =GLOBAL.DOMAIN_NAME+'/getExecutiveFuelReport?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+			
+            console.log(fuelUrl);
+
+			$scope.execFuelData		=		[];
+
+
+            $http.get(fuelUrl).success(function(data){
+
+					$scope.execFuelData	 = data;
+
+				stopLoading();
+			});
+			
+		}
+		else{
+
+			console.log(fuelUrl);
+
+		}
+
 	} else {
 		$scope.barArray1			= [];
    		$scope.barArray2			= [];
@@ -364,6 +400,13 @@ $scope.alertMe 		= 	function(tabClick)
 			$scope.downloadid 	= 'consolidated';
 			serviceCall();
 			break;
+		case 'fuel' :
+			startLoading();
+			$scope.sort 		= sortByDate('date');
+			tabId 				= 'fuel';
+			$scope.downloadid 	= 'fuel';
+			serviceCall();
+			break;	
 		default :
 			break;
 	}

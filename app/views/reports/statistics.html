@@ -265,6 +265,45 @@ background-color: #ffffff;
                                 </table>
                             </div>
                          </tab>
+
+                          <tab select="alertMe('fuel')" heading="Exec Fuel" active="actFuel"> 
+
+                            <div class="form-group pull-right">
+                                <input type="search" class="form-control input-sm" placeholder="Enter VehicleId" align="center" ng-model="searchbox" name="search" />
+                            </div>
+
+                            <h4 style="margin:0" class="page-header">Executive Fuel Report</h4>
+
+                            <div id='fuel'>
+                            <table class="table table-bordered table-striped table-condensed table-hover table-striped">
+                                <thead>
+                                    <tr style="text-align:center" >
+                                    <th class="id" custom-sort order="'date'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Date</th>
+                                    <th class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Vehicle Id </th>
+                                    <th class="id" custom-sort order="'startFuelLevel'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Start Fuel</th>
+                                    <th class="id" custom-sort order="'endFuelLevel'" sort="sort" style="text-align:center;background-color:#C2D2F2;">End Fuel</th>
+                                    <th class="id" custom-sort order="'fuelFills'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Fuel Fill</th>
+                                    <th class="id" custom-sort order="'fuelConsume'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Fuel Consume</th>
+                                    <th class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Dist.Covered</th>
+                                    </tr></thead>
+                        <tr ng-repeat="data in execFuelData | orderBy:sort.sortingOrder:sort.reverse | filter:searchbox" class="active" style="text-align:center" >
+                                      
+                                        <td>{{data.date | date:'yyyy-MM-dd'}}</td>
+                                        <td>{{data.vehicleId}}</td>                                
+                                        <td>{{data.startFuelLevel}}</td>
+                                        <td>{{data.endFuelLevel}}</td>
+                                        <td>{{data.fuelFills}}</td>
+                                        <td>{{data.fuelConsume}}</td>
+                                        <td>{{data.distanceToday}}</td>
+                                    </tr>
+                                    
+                                   <tr ng-if="execFuelData=='' || execFuelData==null || execFuelData.length==0" align="center">
+                                        <td colspan="9" class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                     </tr>          
+                            </table>
+                          
+                            </div>
+                         </tab>
                      </tabset>
                   
                     
