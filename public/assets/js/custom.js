@@ -142,7 +142,12 @@ var markerSearch = new google.maps.Marker({});
 			$scope.vehicle_list=[];
 			$scope.fcode=[];
 			$scope.locations02 = data;
-			$scope.dpdown = $scope.locations02[0].isDbDown;
+			try{
+				$scope.dpdown = $scope.locations02[0].isDbDown;	
+			}catch (err){
+				
+			
+			}
 			listVehicleName(data);
 			// menuGroup(data);
 			if(data.length){
@@ -1123,10 +1128,10 @@ function locat_address(locs) {
 				siteInvoke(value);
 			});
 		else {
-			$scope._addPoi 	= 	true; 
 			siteInvoke();
 
 		}
+		$scope._addPoi 	= 	true; 
 	}
 
 
