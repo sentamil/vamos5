@@ -16,7 +16,7 @@
                 	<div class="panel-body">
                 		<div class="row">
                 			<div class="col-md-2"></div>
-                			<div class="col-md-3">{{ Form::label('vehicleId', 'AssetID :')  }}</div>
+                			<div class="col-md-3">{{ Form::label('vehicleId', 'Asset Id / Vehicle Id :')  }}</div>
                 			<div class="col-md-4"> {{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control', 'required'=>'required')) }}</div>
                 		</div>
                 		<div class="row">
