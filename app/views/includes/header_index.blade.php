@@ -203,9 +203,9 @@
                      <li>
                <a href="vdmOrganization/Scan"> <span class="nav-label">Organization Search</span></a>
             </li>
-					 <li>
+					<!-- <li>
                <a href="vdmOrganization"> <span class="nav-label">Organization List</span></a>
-            </li>
+            </li>-->
 			<li>  <a href="vdmOrganization/create"> <span class="nav-label">Add Organization</span></a></li>
                 
 			 <li>  <a href="vdmOrganization/placeOfInterest"> <span class="nav-label">Add POI</span></a></li>

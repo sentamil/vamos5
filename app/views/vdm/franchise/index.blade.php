@@ -22,10 +22,10 @@
 				 
 			<!-- we will also add show, edit, and delete buttons -->
 			<td>
-				{{ Form::open(array('url' => 'vdmFranchises/' . $value, 'class' => 'pull-right')) }}
+				<!--{{ Form::open(array('url' => 'vdmFranchises/' . $value, 'class' => 'pull-right')) }}
 					{{ Form::hidden('_method', 'DELETE') }}
 					{{ Form::submit('Remove this Franchise', array('class' => 'btn btn-warning')) }}
-				{{ Form::close() }}
+				{{ Form::close() }}-->
 
 				<a class="btn btn-small btn-success" href="{{ URL::to('vdmFranchises/' . $value) }}">Show this Franchise</a>
 
