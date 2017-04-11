@@ -309,7 +309,7 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 	$scope.fueladdress  	=   [];
 	$scope.igniaddress  	=   [];
 	$scope.acc_address   	=   [];
-
+    $scope.stop_address   	=   [];
 	// //loading start function
 	// $scope.startLoading		= function () {
 	// 	$('#status').show(); 
@@ -362,7 +362,7 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 
    	}
 
-   	function filter(obj){
+/*   	function filter(obj){
    		var _returnObj = [];
    		if(obj)
    			angular.forEach(obj,function(val, key){
@@ -370,7 +370,46 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
    					_returnObj.push(val)
    			})
    		return _returnObj;
+   	}*/
+
+
+   	function filter(obj,name){
+   		var _returnObj = [];
+   		if(name=='fuel'){
+   			angular.forEach(obj,function(val, key){
+
+   				if(val.fuelLitre >0)
+   				{
+   					_returnObj.push(val)
+   				}
+
+
+   			})
+
+   		}
+   		else if(name=='stoppage'){
+
+   			angular.forEach(obj,function(val, key){
+
+   				if(val.stoppageTime >0)
+   				{
+   					_returnObj.push(val)
+   				}
+   			})
+   		}
+   		else if(name=='ovrspd'){
+
+   			angular.forEach(obj,function(val, key){
+
+   				if(val.overSpeedTime >0)
+   				{
+   					_returnObj.push(val)
+   				}
+   			})
+   		}
+   	return _returnObj;
    	}
+
 
    	$scope.fuelChart 	= 	function(data){
 		var ltrs 		=	[];
@@ -546,24 +585,30 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 		$scope.fueladdress  	=   [];
 		$scope.igniaddress  	=   [];
 		$scope.acc_address   	=   [];
+		$scope.stop_address     =   [];
 		$scope.parkeddata		=	[];
 		$scope.overspeeddata	=	[];
 		$scope.movementdata		=	[];
 		$scope.idlereport       =   [];
 		$scope.ignitValue 		= 	[];
 		$scope.acReport 		=	[];
+		$scope.stopReport 		=	[];
 		$scope.fuelValue 		= 	[];
+
 		if(_value && _value.vehicleLocations != null) {
 
 			var ignitionValue		= 	($filter('filter')(_value.vehicleLocations, {'ignitionStatus': "!undefined"}))
 
 			$scope.parkeddata		=	($filter('filter')(_value.vehicleLocations, {'position':"P"}));
-			$scope.overspeeddata	=	($filter('filter')(_value.vehicleLocations, {'isOverSpeed':"Y"}));
+		//	$scope.overspeeddata	=	($filter('filter')(_value.vehicleLocations, {'isOverSpeed':"Y"}));
+			$scope.overspeeddata	=	filter(_value.vehicleLocations,'ovrspd');
 			$scope.movementdata		=	($filter('filter')(_value.vehicleLocations, {'position':"M"}));
 			$scope.idlereport       =   ($filter('filter')(_value.vehicleLocations, {'position':"S"}));
 			$scope.ignitValue 		= 	_pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
 			$scope.acReport 		=	_pairFilter(_value.vehicleLocations, 'yes', 'no', 'vehicleBusy');
-			$scope.fuelValue 		= 	filter(_value.vehicleLocations)
+		//	$scope.fuelValue 		= 	filter(_value.vehicleLocations);
+		    $scope.fuelValue 		= 	filter(_value.vehicleLocations,'fuel');
+			$scope.stopReport 		=   filter(_value.vehicleLocations,'stoppage');
 			
 			// console.log($scope.ignitValue);
 		}
@@ -624,6 +669,11 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 				case 'acc':
 					console.log(_stat);
 					$scope.acc_address[index1] = data.results[0].formatted_address;
+				break;
+                
+                case 'stoppage':
+					console.log(_stat);
+					$scope.stop_address[index1] = data.results[0].formatted_address;
 				break;
 
 			}
@@ -713,6 +763,10 @@ var queue1 = [];
 
 			case 'acc':
 				$scope.recursive($scope.acReport, tabVal, $scope.acc_address);
+			break;
+
+			case 'stoppage':
+				$scope.recursive($scope.stopReport, tabVal, $scope.stop_address);
 			break;
 		}
 

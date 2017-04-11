@@ -105,6 +105,7 @@
               <li ng-click="addressResolve('fuel')"><a href='#fuel'>Fuel</a></li>
               <li ng-click="addressResolve('ignition')"><a href='#ignition'>Ignition</a></li>
               <li ng-click="addressResolve('acc')"><a href='#acc'>A/C</a></li>
+              <li ng-click="addressResolve('stoppage')"><a href='#stoppage'>Stoppage</a></li>
             </ul>
 
             <!-- movement -->
@@ -426,7 +427,45 @@
                 </tr>
               </table>
             </div>
+            
+            <!-- stoppage report -->
+            <div id='stoppage' class="pane">
+              <table class="tables">
+                <tr>
+                  <td>Vehicle Group</td>
+                  <td>{{trimColon(groupname)}}</td>
+                  <td>Vehicle Name</td>
+                  <td>{{hisloc.shortName}}</td>         
+                </tr>
+                  
+              </table>
+              <table class="tables">
+                 <tr>
+                  <td width="15%">Date&amp;Time</td>
+                  <td width="15%">Duration (h:m:s)</td>
+                  <td width="60%">Address</td>
+                  <td width="10%">G-Map</td>
+                </tr>
 
+                <tr ng-repeat="stop in stopReport" ng-click="markerPoup(stop)">
+
+                <td>{{stop.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{msToTime(stop.stoppageTime)}}</td>
+                  <td>
+                    <p ng-if="stop.address!=null">{{stop.address}}</p>
+                    <p ng-if="stop.address==null && stop_address[$index]!=null">{{stop_address[$index]}}</p>
+                    <p ng-if="stop.address==null && stop_address[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+                  </td>
+                  <td><a href="https://www.google.com/maps?q=loc:{{stop.latitude}},{{stop.longitude}}" target="_blank">Link</a></td>
+               
+                </tr>
+
+                <tr ng-if="stopReport.length == 0 || stopReport == undefined">
+                  <td colspan="4" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                </tr>
+
+              </table>
+            </div>  
 
           </div>
 
@@ -654,7 +693,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+  // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");
