@@ -75,6 +75,67 @@ class VdmGroupController extends \BaseController {
 	 *
 	 * @return Response
 	 */
+	 public function groupSearch()		
+    {		
+        log::info(' reach the road speed function ');		
+        $orgLis = [];		
+            return View::make('vdm.groups.index1')->with('groupList', $orgLis);		
+    }		
+	public function groupScan() {		
+       Log::info('  reached group controller ');        		
+        if(!Auth::check()) {		
+            return Redirect::to('login');		
+        }		
+        $username = Auth::user()->username;		
+        $redis = Redis::connection();		
+        $vehicleListArr = null;		
+        $fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');		
+        $redisGrpId = 'S_Groups_' . $fcode ;		
+        $shortName =null;		
+        $shortNameList = null;		
+        $shortNameListArr =null;		
+        if(Session::get('cur')=='dealer')		
+        {		
+            $redisGrpId = 'S_Groups_Dealer_'.$username.'_'.$fcode;		
+        }		
+        else if(Session::get('cur')=='admin')		
+        {		
+            $redisGrpId = 'S_Groups_Admin_'.$fcode;		
+        }		
+        else{		
+            $redisGrpId = 'S_Groups_' . $fcode ;		
+        }		
+        $groupList = $redis->smembers($redisGrpId);		
+        $text_word = Input::get('text_word');		
+        $cou = $redis->SCARD($redisGrpId); //log::info($cou);		
+        $orgLi = $redis->sScan( $redisGrpId, 0, 'count', $cou, 'match', $text_word); //log::info($orgLi);		
+        $orgL = $orgLi[1];		
+        foreach ( $orgL as $key=>$group ) {       		
+        Log::info(' ---------inside---------------- '.$group);      		
+            $vehicleList = $redis->smembers($group);		
+               $shortNameList=null;   		
+            foreach ( $vehicleList as $vehicle ) {		
+                Log::info(' ---------vehicle---------------- '.$vehicle);       		
+                $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicle );		
+                $vehicleRefData=json_decode($vehicleRefData,true);		
+                $shortName = $vehicleRefData['shortName']; 		
+                $shortNameList [] = $shortName;		
+            }		
+            $vehicleList =implode('<br/>',$vehicleList);		
+            $vehicleListArr = array_add($vehicleListArr,$group,$vehicleList);		
+            if(isset($shortNameList)) {		
+              $shortNameList =implode('<br/>',$shortNameList);		
+            }		
+            $shortNameListArr = array_add($shortNameListArr,$group,$shortNameList);		
+        }		
+        Log::info('  reached group controller1 ');      		
+        return View::make('vdm.groups.index1', array('groupList'=> $orgL))->with('vehicleListArr',$vehicleListArr)->with('shortNameListArr',$shortNameListArr);		
+    }		
+    /**		
+     * Show the form for creating a new resource.		
+     *		
+     * @return Response		
+     */
 	public function create()
 	{
 		if(!Auth::check()) {

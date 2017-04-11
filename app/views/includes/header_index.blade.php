@@ -129,6 +129,7 @@
                 <a href="vdmVehicles/create"> <span class="nav-label">Add Vehicles</span></a>
             </li>
             -->
+			<li><a href="vdmVehiclesSearch/Scan"> <span class="nav-label">Vehicles Search</span> <span class="label label-success pull-right">v.3</span> </a></li>
 			<li><a href="vdmVehicles"> <span class="nav-label">Vehicles List</span> <span class="label label-success pull-right">v.2</span> </a></li>
 			
 			<li><a href="vdmVehiclesView"> <span class="nav-label">View Vehicles</span> <span class="label label-success pull-right">v.2</span> </a></li>
@@ -151,7 +152,9 @@
             <li>
 			<a href="Routes"> <span class="nav-label">Groups</span><span class="fa arrow"></span></a>
 			  <ul class="nav nav-second-level">
-                     
+                     <li>		                     
+                <a href="vdmGroups/Search"> <span class="nav-label">Groups Search</span> <span class="label label-success pull-right">v.3</span> </a>		
+            </li>
 					 <li>
                 <a href="vdmGroups"> <span class="nav-label">Groups List</span></a>
             </li>
@@ -167,7 +170,9 @@
 			
 			<a href="Routes"> <span class="nav-label">Users</span><span class="fa arrow"></span></a>
 			  <ul class="nav nav-second-level">
-                     
+                     <li>		                     
+                <a href="vdmUserSearch/Scan" > <span class="nav-label" >User Search</span> <span class="label label-success pull-right">v.3</span> </a>		
+            </li>
 					 <li>
                 <a href="vdmUsers" > <span class="nav-label" >User List</span></a>
             </li>
@@ -183,7 +188,9 @@
 		
 		<a href="Routes"> <span class="nav-label">Dealers</span><span class="fa arrow"></span></a>
 			  <ul class="nav nav-second-level">
-                     
+                     <li>		                     
+                <a href="vdmDealersSearch/Scan"> <span class="nav-label">Dealers Search</span> <span class="label label-success pull-right">v.3</span> </a>		
+            </li>
 					 <li>
                 <a href="vdmDealers"> <span class="nav-label">Dealers List</span></a>
             </li>
@@ -201,7 +208,7 @@
 			 <a href="Routes"> <span class="nav-label">Organisation</span><span class="fa arrow"></span></a>
 			  <ul class="nav nav-second-level">
                      <li>
-               <a href="vdmOrganization/Scan"> <span class="nav-label">Organization Search</span></a>
+               <a href="vdmOrganization/Scan"> <span class="nav-label">Organization Search</span> <span class="label label-success pull-right">v.3</span> </a>
             </li>
 					<!-- <li>
                <a href="vdmOrganization"> <span class="nav-label">Organization List</span></a>

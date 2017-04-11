@@ -48,6 +48,49 @@ class VdmUserController extends \BaseController {
 	 *
 	 * @return Response
 	 */
+	public function search()		
+    {		
+        log::info(' reach the road speed function ');		
+        $orgLis = [];		
+            return View::make('vdm.users.scan')->with('userList', $orgLis);		
+    }		
+	public function scan() {		
+       if (! Auth::check ()) {		
+            return Redirect::to ( 'login' );		
+        }		
+        $username = Auth::user ()->username;		
+        $redis = Redis::connection ();		
+        $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );		
+        Log::info('username:' . $username . '  :: fcode' . $fcode);		
+        $redisUserCacheId = 'S_Users_' . $fcode;		
+        if(Session::get('cur')=='dealer')		
+        {		
+            log::info( '------login 1---------- '.Session::get('cur'));		
+            		
+            $redisUserCacheId = 'S_Users_Dealer_'.$username.'_'.$fcode;		
+        }		
+        else if(Session::get('cur')=='admin')		
+        {		
+            $redisUserCacheId = 'S_Users_Admin_'.$fcode;		
+        }		
+        $userList = $redis->smembers ( $redisUserCacheId);		
+        $text_word = Input::get('text_word');		
+        $cou = $redis->SCARD($redisUserCacheId); // log::info($cou);		
+        $orgLi = $redis->sScan( $redisUserCacheId, 0, 'count', $cou, 'match', $text_word); // log::info($orgLi);		
+        $orgL = $orgLi[1];		
+        $userGroups = null;		
+        $userGroupsArr = null;		
+        foreach ( $orgL as $key => $value ) {                   		
+            $userGroups = $redis->smembers ( $value);           		
+            $userGroups = implode ( '<br/>', $userGroups );   		
+            $userGroupsArr = array_add ( $userGroupsArr, $value, $userGroups );		
+        }   		
+        return View::make ( 'vdm.users.scan' )->with ( 'fcode', $fcode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'userList', $orgL );		
+    }		
+    /**		
+     * Show the form for creating a new resource.		
+     * @return Response		
+     */
 	public function create() {
 		if (! Auth::check ()) {
 			return Redirect::to ( 'login' );
