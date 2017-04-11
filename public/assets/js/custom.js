@@ -786,12 +786,12 @@ var markerSearch = new google.maps.Marker({});
 		tankSize 		 = parseInt(dataVal.tankSize);
 		fuelLtr 		 = parseInt(dataVal.fuelLitre);
 		total  			 = parseInt(dataVal.speed);
-		// $('.vehdevtype').text(dataVal.odoDistance);
-		// $('#mobno #val').text(dataVal.overSpeedLimit);
-		// $('#positiontime').text(vamoservice.statusTime(dataVal).tempcaption);
-		// $('#regno #val').text(vamoservice.statusTime(dataVal).temptime);
-		// $('#driverName #val').text(dataVal.driverName);
-		// $('#lstseendate').html(new Date(dataVal.date).toString().split('GMT')[0])
+		$('.vehdevtype').text(dataVal.odoDistance);
+		$('#mobno #val').text(dataVal.overSpeedLimit);
+		$('#positiontime').text(vamoservice.statusTime(dataVal).tempcaption);
+		$('#regno #val').text(vamoservice.statusTime(dataVal).temptime);
+		$('#driverName #val').text(dataVal.driverName);
+		$('#lstseendate').html(new Date(dataVal.date).toString().split('GMT')[0])
 		
 		$scope._editValue._shortName 	= dataVal.shortName;
 		$scope._editValue._odoDista 	= dataVal.odoDistance;
