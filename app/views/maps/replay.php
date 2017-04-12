@@ -441,15 +441,17 @@
               </table>
               <table class="tables">
                  <tr>
-                  <td width="15%">Date&amp;Time</td>
+                  <td width="15%">Start Time</td>
+                  <td width="15%">End Time</td>
                   <td width="15%">Duration (h:m:s)</td>
-                  <td width="60%">Address</td>
-                  <td width="10%">G-Map</td>
+                  <td width="50%">Address</td>
+                  <td width="5%">G-Map</td>
                 </tr>
 
                 <tr ng-repeat="stop in stopReport" ng-click="markerPoup(stop)">
 
                 <td>{{stop.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                <td>{{stop.endStoppageTime | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{msToTime(stop.stoppageTime)}}</td>
                   <td>
                     <p ng-if="stop.address!=null">{{stop.address}}</p>
@@ -461,7 +463,7 @@
                 </tr>
 
                 <tr ng-if="stopReport.length == 0 || stopReport == undefined">
-                  <td colspan="4" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                  <td colspan="5" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
 
               </table>
@@ -693,7 +695,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
-  // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+   //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");
