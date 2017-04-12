@@ -444,8 +444,8 @@
                   <td width="15%">Start Time</td>
                   <td width="15%">End Time</td>
                   <td width="15%">Duration (h:m:s)</td>
-                  <td width="50%">Address</td>
-                  <td width="5%">G-Map</td>
+                  <td width="45%">Address</td>
+                  <td width="10%">G-Map</td>
                 </tr>
 
                 <tr ng-repeat="stop in stopReport" ng-click="markerPoup(stop)">
