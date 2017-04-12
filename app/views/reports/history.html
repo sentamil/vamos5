@@ -284,9 +284,27 @@ background-color: #ffffff;
 			   			 
 			   			 
 			   			 
-			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked">
-			   				 <p style="margin:0" class="page-header">Stopped/Parked Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
-			   				 <div class="box-body table-responsive" id='stoppedparkingreport'>
+			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked" >
+			   				 <p style="margin:0" class="page-header">Stopped/Parked Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span>
+                             </p>
+                          <!--    <p>
+
+                            <span style="font-size: 14px;float: right;">
+			   				<!--  <select ng-model="timeChange" ng-change="filtersTime(timeChange)" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
+                                     <option ng-repeat="time in timeDrops"  value="{{time.timeId}}">{{time.timeId}}</option>
+                                   </select>-->
+                            <!--       <select ng-model="timeChange" ng-change="filtersTime(timeChange)" style="width:127px; margin-top: 5px; font-size: 12px;">
+                                       <option value="All">All</option>
+                                       <option value="100">1hr</option>
+                                       <option value="30">30min </option>
+                                       <option value="15">15min </option>
+                                       <option value="10">10min </option>
+                                       <option value="5">5min </option>
+                    
+                                   </select>
+                              </span>
+                              </p>-->
+			   				 <div class="box-body table-responsive" id='stoppedparkingreport' style="padding-top:10px;">
 			   				 <table class="table table-bordered  table-striped table-condensed table-hover">
 			   				 	<thead>
 								   	<tr style="text-align:center; font-weight: bold;">
@@ -611,7 +629,46 @@ background-color: #ffffff;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-
+                          <tab select="alertMe('stopReport')" heading="Stoppage" active="tabStop">
+			   			 	 <p style="margin:0" class="page-header">Stoppage Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	 <div class="box-body table-responsive" id="idlereport">
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 		<thead>
+			   			 	 			<tr style="text-align:center; font-weight: bold;">
+				   			 	 			<td>Vehicle Group</td>
+										  	<td>{{trimColon(vgroup)}}</td>
+										  	<td>Vehicle Name</td>
+										  	<td colspan="2">{{hist.shortName}}</td>	
+			   			 	 			</tr>
+			   			 	 			<tr><td colspan="5"></td></tr>
+			   			 	 			<tr style="text-align:center;font-weight: bold;">
+											<th width="15%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;">Start Time</th>
+											<th width="15%" class="id" custom-sort order="'endStoppageTime'" sort="sort"  style="text-align:center;">End Time</th>
+											<th width="10%" class="id" style="text-align:center;">G-Map</th>
+											<th width="45%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Location</th>
+											<th width="15%" class="id" custom-sort order="'stoppageTime'" sort="sort"  style="text-align:center;">Duration (h:m:s)</th>
+										</tr>
+								</thead>
+			   			 	 	<tbody>
+			   			 	 		<tr ng-repeat="user in stopReport | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+			   			 	 			<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+			   			 	 			<td>{{user.endStoppageTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
+			   			 	 			<td>
+			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
+			   			 	 			<!--	<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null ">{{addressIdle[$index]}}</p>-->
+			   			 	 				<p ng-if="user.address==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+			   			 	 			</td>
+			   			 	 			<td>{{msToTime(user.stoppageTime)}}</td>
+			   			 	 		</tr>
+			   			 	 		<tr ng-if="stopReport==null || stopReport.length==0" align="center">
+										<td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
+									</tr>
+			   			 	 	</tbody>
+			   			 	 	</table>
+			   			 	</div>
+			   				 
+			   			 </tab>
 
 			   			<div class="pull-right">
 		                <!-- <a href="downloadhistory?vvid={{id}}&rid={{downloadid}}&fd={{fromdate}}&ft={{fromtime}}&td={{todate}}&tt={{totime}}&dvg={{vgroup}}&interval={{interval}}" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a> -->

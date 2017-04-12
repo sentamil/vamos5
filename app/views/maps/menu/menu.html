@@ -80,6 +80,7 @@
                     
                     <li><a id="alarm" href="">Alarm</a></li>
                     <li><a id="ac" href="">A/C</a></li>
+                    <li><a id="stoppage" href="">Stoppage</a></li>
                 </ul>
             </li>
         <li class="cl-effect-5">
@@ -238,6 +239,11 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             $('#ac').click(function(){
                 $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=acreport')
             })
+
+            $('#stoppage').click(function(){
+                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=stopReport')
+            })
+
 
             $('#rfid').click(function(){
                 $(this).attr("href", 'rfidTag?vid='+vid+'&vg='+gname+'&tn=rfid')

@@ -25,21 +25,25 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
 	$scope.tabactive 	=	true;
 	$scope.interval	  =	getParameterByName('interval')?getParameterByName('interval'):10;
 	$scope.sort = sortByDate('date');
-   
+  $scope.timings='all'; 
      
      // $scope.itemsPerPage = 5;
   	 // $scope.currentPage = 0;
      // $scope.items = [];
 
      
-   	$scope.filteredTodos = [];
+  $scope.filteredTodos = [];
 	$scope.itemsPerPage = 10;
 	$scope.currentPage = 1;
      
  	/*$scope.gap = 5;
    	$scope.itemsPerPage = 5;
   	$scope.currentPage = 0;*/
+  
+    $scope.timeChange='All';
+    $scope.timeDrops=[{'timeId' :'Above 5 mins' },{'timeId' :'Above 10 mins' },{'timeId' :'Above 15 mins' },{'timeId' :'Above 30 mins' },{'timeId' :'Above 1 hrs' }];
 
+    console.log($scope.timeChange);
 
     $scope.downloadid	=	'movementreport';
     var prodId 			= 	getParameterByName('vid');
@@ -159,6 +163,7 @@ function eventButton(eventdate)
 			$scope.tabfuel  			=	false;
 			$scope.tabignition 			=	false;
 			$scope.tabac 				= 	false;
+      $scope.tabStop      =  false;
     	switch(tabId){
     		case 'movement':
     			$scope.tabmovement 			=	true;
@@ -190,6 +195,9 @@ function eventButton(eventdate)
     		case 'acreport':
     			$scope.tabac 				= 	true;
     			break;
+        case 'stopReport':
+          $scope.tabStop        =   true;
+          break;
     		default:
     			$scope.tabmovement 			=	true; 
     			break;
@@ -210,7 +218,8 @@ function eventButton(eventdate)
 	   			if(data.vehicleLocations != null){
 
 					$scope.loading			=	false;
-					$scope.hist				=	data;			
+					$scope.hist				=	data;		
+          $scope.filterLoc  = data.vehicleLocations;	
 					$scope.topspeedtime		=	data.topSpeedTime;
 					$scope.dataArray(data.vehicleLocations);
 
@@ -320,7 +329,7 @@ function eventButton(eventdate)
    		});
    	}
 
-   	function filter(obj){
+  /* 	function filter(obj){
    		var _returnObj = [];
    		if(obj)
    			angular.forEach(obj,function(val, key){
@@ -329,7 +338,44 @@ function eventButton(eventdate)
    			})
    		return _returnObj;
    	}
+*/
 
+    function filter(obj,name){
+      var _returnObj = [];
+      if(name=='fuel'){
+        angular.forEach(obj,function(val, key){
+
+          if(val.fuelLitre >0)
+          {
+            _returnObj.push(val)
+          }
+
+
+        })
+
+      }
+      else if(name=='stoppage'){
+
+        angular.forEach(obj,function(val, key){
+
+          if(val.stoppageTime >0)
+          {
+            _returnObj.push(val)
+          }
+        })
+      }
+      else if(name=='ovrspd'){
+
+        angular.forEach(obj,function(val, key){
+
+          if(val.overSpeedTime >0)
+          {
+            _returnObj.push(val)
+          }
+        })
+      }
+    return _returnObj;
+    }
 
 
    	function _globalFilter(data)
@@ -342,20 +388,23 @@ function eventButton(eventdate)
       $scope.fuelValue        = [];
       $scope.ignitionData     = [];
       $scope.acReport         = [];
+      $scope.stopReport       = [];
 
    		try{
         
 	   		if(data || data.length > 0)
 	   		{
-  		   	$scope.parkeddata		   =	($filter('filter')(data, {'position':"P"}));
-  				$scope.overspeeddata	 =	($filter('filter')(data, {'isOverSpeed':"Y"}));
+  		    $scope.parkeddata		   =	($filter('filter')(data, {'position':"P"}));
+  				//$scope.overspeeddata=	($filter('filter')(data, {'isOverSpeed':"Y"}));
+          $scope.overspeeddata   =   filter(data,'ovrspd');
   				$scope.movementdata		 =	($filter('filter')(data, {'position':"M"}));
   				$scope.idlereport      =  ($filter('filter')(data, {'position':"S"}));
   				$scope.temperatureData = 	($filter('filter')(data, {'temperature': "0"}));
-  				$scope.fuelValue 		   = 	filter(data);
+  				$scope.fuelValue 		   = 	filter(data,'fuel');
   				ignitionValue		 	     = 	($filter('filter')(data, {'ignitionStatus': "!undefined"}))
           $scope.ignitionData    =  _pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
           $scope.acReport        =  _pairFilter(data, 'yes', 'no', 'vehicleBusy');
+          $scope.stopReport      =  filter(data,'stoppage');
   				// ignitionFilter(ignitionValue);
   				// acFilter(data)
 			}
@@ -364,11 +413,195 @@ function eventButton(eventdate)
 		}
    	}
 
+  /*  function filterTime(data){
+      var _returnObj = [];
+      if(name=='fuel'){
+        angular.forEach(obj,function(val, key){
+
+          if(val.fuelLitre >0)
+          {
+            _returnObj.push(val)
+          }
+
+
+        })
+
+      }*/
+  $scope.trimColons = function(textVal){
+    var Value;
+
+       var splitValue = textVal.split(/[:]+/);
+
+       if($scope.filterValue==100){
+
+         if(splitValue[0] !=0 && splitValue[1] !=0 && splitValue[2] !=0 ){
+
+              Value=splitValue[0];
+                 $scope.timings='hrs';
+             }
+
+         
+       }else if($scope.filterValue==30){
+
+        if( splitValue[0] == 0 && splitValue[1] != 0 ){
+
+              Value=splitValue[1];
+                 $scope.timings='mins';
+             }
+
+
+       }else if($scope.filterValue==15){
+
+        if( splitValue[0] == 0 && splitValue[1] != 0 ){
+
+              Value=splitValue[1];
+                 $scope.timings='mins';
+             }
+
+
+       }else if($scope.filterValue==10){
+
+        if( splitValue[0] == 0 && splitValue[1] != 0  ){
+
+              Value=splitValue[1];
+                 $scope.timings='mins';
+             }
+
+
+       }else if($scope.filterValue==5){
+
+        if( splitValue[0] == 0 && splitValue[1] != 0  ){
+
+              Value=splitValue[1];
+                 $scope.timings='mins';
+             }
+
+
+       }
+
+  //   console.log( splitValue[1] );
+  /*    if(splitValue[0]!=0 && splitValue[1]!=0 && splitValue[2]!=0 ){
+
+       Value=splitValue[0];
+       $scope.timings='hrs';
+      }
+      else if(splitValue[0]==0&&splitValue[1]!=0){
+
+        Value=splitValue[1];
+        $scope.timings='mins';
+      }
+      else if(splitValue[0]==0&&splitValue[1]==0&&splitValue[2]!=0){
+
+       Value=splitValue[2];
+       $scope.timings='secs';
+      }
+      else {
+      
+      console.log("all of zero....");
+
+       }
+*/
+ 
+   return Value;
+  }
+
+
+    $scope.timeFilter=function(data,fVal)
+    {   
+      var filterValues=fVal;
+      var ret_obj=[];
+     if(data){
+
+
+          angular.forEach(data,function(val, key){
+
+          if(val.parkedTime >0 )
+          {
+
+            console.log($scope.msToTime(val.parkedTime));
+
+             $scope.parksTime=$scope.trimColons( $scope.msToTime(val.parkedTime) );
+
+              if($scope.parksTime!=undefined){
+
+                console.log($scope.parksTime);
+
+                ret_obj.push(val);
+              }
+             
+
+         }
+
+
+        })
+      }
+   
+   return ret_obj;
+    }
+
+/*
+  $scope.$watch("timeChange", function (val) {
+
+            $scope.timeFilter($scope.filterLoc);
+    
+     console.log("helllloooo"); 
+      /*  var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;      
+    //console.log(histurl);   
+
+    $http.get(histurl).success(function(data){
+      $scope.hist       = data;*/
+   
+ // });
+
+
+    
+/*  $scope.statusTimeFilter = function(data, val){
+    var ret_data = [];
+      if(val=='All'){
+        ret_data= data;
+        return return_data;  
+      }else if(val=='100'){
+        
+        }
+        return ret_data;  
+      }
+     else if(val=='30'){
+       
+        return ret_data;  
+      }
+      else if(val=='10'){
+       
+        return ret_data;  
+      }
+      else if(val=='5'){
+       
+        return ret_data;  
+      }
+      
+  }*/
+
+
+  $scope.filtersTime= function( val ) {
+
+  $scope.parkeddata=[];
+  $scope.filterValue=val;
+
+
+    console.log($scope.filterValue);
+
+        $scope.parkeddata=$scope.timeFilter($scope.filterLoc, $scope.filterValue);
+
+   //  _timeFilter($scope.filterLoc);
+
+  }
+
 
    	//for initial loading
    	$scope.dataArray			=	function(data) {
    		
    		_globalFilter(data);
+
+
 		if(tabId == 'fuel')
 		{
 			$scope.fuelChart($scope.fuelValue);
@@ -899,11 +1132,15 @@ function eventButton(eventdate)
 	   			$scope.recursiveFuel($scope.fuelValue, 0);
 	   			break;
 	   		case 'ignitionreport':
-	   			$scope.downloadid 	=	'ignitionreport'
+	   			$scope.downloadid 	=	'ignitionreport';
 	   			break;
 	   		case 'acreport':
-	   			$scope.downloadid 	=	'acreport'
+	   			$scope.downloadid 	=	'acreport';
 	   			break;
+        case 'stopReport':
+          $scope.downloadid   = 'stopReport';
+          break;
+
 			default:
 				break;
 		}
@@ -1027,6 +1264,7 @@ function eventButton(eventdate)
         
         //$scope.loading      = false;
         $scope.hist       = data;
+        $scope.filterLoc  = data.vehicleLocations;
         $scope.topspeedtime   = data.topSpeedTime;
         // loadReportApi(loadUrl);
         $scope.dataArray_click(data.vehicleLocations);
@@ -1055,6 +1293,7 @@ function eventButton(eventdate)
 
 		$http.get(histurl).success(function(data){
 			$scope.hist				=	data;
+      $scope.filterLoc  = data.vehicleLocations;
 			$scope.dataArray(data.vehicleLocations);
 			switch($scope.repId) {
 			case 'movementreport':
