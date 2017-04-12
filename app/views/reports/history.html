@@ -284,26 +284,24 @@ background-color: #ffffff;
 			   			 
 			   			 
 			   			 
-			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked" >
+			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked" ng-init="timeChange='All'">
 			   				 <p style="margin:0" class="page-header">Stopped/Parked Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span>
                              </p>
-                          <!--    <p>
-
-                            <span style="font-size: 14px;float: right;">
-			   				<!--  <select ng-model="timeChange" ng-change="filtersTime(timeChange)" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
-                                     <option ng-repeat="time in timeDrops"  value="{{time.timeId}}">{{time.timeId}}</option>
-                                   </select>-->
-                            <!--       <select ng-model="timeChange" ng-change="filtersTime(timeChange)" style="width:127px; margin-top: 5px; font-size: 12px;">
-                                       <option value="All">All</option>
-                                       <option value="100">1hr</option>
-                                       <option value="30">30min </option>
-                                       <option value="15">15min </option>
-                                       <option value="10">10min </option>
-                                       <option value="5">5min </option>
-                    
+                            <div class="form-group pull-right" style="margin-right: 20px;margin-top: 7px;margin-bottom: 7px;">
+                            <span style="font-size: 14px;">
+			   			
+                                   <select ng-model="timeChange" ng-change="filtersTime(timeChange,'park')" style="padding:3px 3px 3px 3px; font-size: 12px;width:100px;">
+                                        <option value="All"> All </option>
+                                        <option value="5">  >  5 mins </option>
+                                        <option value="10"> > 10 mins </option>
+                                        <option value="15"> > 15 mins </option>
+                                        <option value="30"> > 30 mins </option>
+                                       <option value="100"> > 1 hour </option>
                                    </select>
                               </span>
-                              </p>-->
+                            </div>
+
+                          
 			   				 <div class="box-body table-responsive" id='stoppedparkingreport' style="padding-top:10px;">
 			   				 <table class="table table-bordered  table-striped table-condensed table-hover">
 			   				 	<thead>
@@ -629,9 +627,23 @@ background-color: #ffffff;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-                          <tab select="alertMe('stopReport')" heading="Stoppage" active="tabStop">
+                          <tab select="alertMe('stopReport')" heading="Stoppage" active="tabStop" ng-init="timeChanges='All'" >
 			   			 	 <p style="margin:0" class="page-header">Stoppage Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
-			   			 	 <div class="box-body table-responsive" id="idlereport">
+
+			   			 <div class="form-group pull-right" style="margin-right: 20px;margin-top: 7px;margin-bottom: 7px;">
+                            <span style="font-size: 14px;">
+			   			
+                                  <select ng-model="timeChanges" ng-change="filtersTime(timeChanges,'stop')" style="padding:3px 3px 3px 3px; font-size: 12px;width:100px;">
+                                        <option value="All"> All </option>
+                                        <option value="5">  >  5 mins </option>
+                                        <option value="10"> > 10 mins </option>
+                                        <option value="15"> > 15 mins </option>
+                                        <option value="30"> > 30 mins </option>
+                                       <option value="100"> > 1 hour </option>
+                                   </select>
+                              </span>
+                            </div>
+			   			 	 <div class="box-body table-responsive" id="stopReport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
