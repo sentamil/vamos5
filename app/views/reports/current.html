@@ -290,7 +290,7 @@ background-color: #ffffff;
 										<th width="35%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
 										<th width="5%" style="text-align:center;">GMap</th>
 									</tr>
-									<tr ng-repeat="user in data1.vehicleLocations track by $index| orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 11px">
+									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 11px">
 										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.shortName}}</a></td>
 								   <!-- <td ng-hide="true"></td> -->
 										<td>{{user.regNo}}</td>
