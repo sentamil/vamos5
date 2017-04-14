@@ -1062,7 +1062,7 @@ function polygenDrawFunction(list){
          labelInBackground: false
       });
       $scope.map.setCenter(centerMarker(polygenList)); 
-      $scope.map.setZoom(14);  
+    //  $scope.map.setZoom(14);  
     // }
 }
 
@@ -1106,7 +1106,8 @@ function locat_address(locs) {
 						})
 					}
 				});
-			if(data && data.orgIds != undefined && $scope._addPoi == true)
+			  // && $scope._addPoi == true
+			if(data && data.orgIds != undefined)
 				$scope.orgIds 	= data.orgIds;
 
 		})
@@ -1122,16 +1123,19 @@ function locat_address(locs) {
 		for (var i=0; polygenOrgs.length > i; i++) {
 			unique.add(polygenOrgs[i].orgId)
 		};
-		if(unique.size>0)
+		if(unique.size>0){
+			$scope._addPoi 	= 	false; 
 			angular.forEach(unique, function(value, key) {
 				//service call to site details
 				siteInvoke(value);
 			});
+		}
 		else {
+			// $scope._addPoi 	= 	true; 
 			siteInvoke();
 
 		}
-		$scope._addPoi 	= 	true; 
+		
 	}
 
 
