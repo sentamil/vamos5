@@ -5,7 +5,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	$scope.uiDate 				=	{};
 	$scope.uiValue	 			= 	{};
 	$scope.geoFence             =   "";
-
+    $scope.timeChanges          =  'All';
   //$scope.stopData             =   [];
 
   //$scope.sort = sortByDate('startTime');
@@ -157,6 +157,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
      
         $http.get(stopUrl).success(function(data){
             $scope.stopData=data;
+            $scope.filterLoc=data;
             stopLoading();
 		}); 
 
@@ -167,6 +168,80 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
         // stopLoading();
     }
+
+
+
+    $scope.timeFilter_stop=function(data,fVal)
+    {   
+
+      var filterValues=fVal;
+      var ret_obj=[];
+
+     if(data){
+
+      angular.forEach(data,function(value, key){
+
+          ret_obj.push({startTime:value.startTime,endTime:value.endTime,shortName:value.shortName})   
+          ret_obj[key].history = [];
+
+        angular.forEach(value.history, function(val, secondKey){
+
+          if(val.stoppageTime>0 && filterValues==100){
+           
+            if(val.stoppageTime>=3600000){
+
+            	ret_obj[key].history.push(val);
+          
+            }
+
+         }else if(val.stoppageTime >0 && filterValues==30){
+
+
+            if(val.stoppageTime>=1800000){
+
+            	ret_obj[key].history.push(val);
+            }
+
+          }else if(val.stoppageTime >0 && filterValues==15){
+
+            if(val.stoppageTime>=900000){
+            	ret_obj[key].history.push(val);
+        
+            }
+
+          }else if(val.stoppageTime >0 && filterValues==10){
+
+            if(val.stoppageTime>=600000){
+             //  ret_obj[key].history = [];
+            	ret_obj[key].history.push(val);
+
+            }
+          }else if(val.stoppageTime >0 && filterValues==5){
+
+            if(val.stoppageTime>=300000){
+            	ret_obj[key].history.push(val);
+
+            }
+
+          }else if(val.stoppageTime >0 && filterValues=='All'){
+ 
+            	ret_obj[key].history.push(val);
+
+          }
+        
+       })
+    })
+   }
+   return ret_obj;
+ }
+
+ $scope.filtersTime= function(val,name){
+
+    $scope.filterValue=val;
+    $scope.stopData=[];
+    $scope.stopData=$scope.timeFilter_stop($scope.filterLoc, $scope.filterValue);
+ }
+
 
 	//get the value from the ui
 	function getUiValue(){

@@ -198,41 +198,11 @@ background-color: #ffffff;
                      
                       </div>
 
-                       <div class="col-md-2" style="padding:unset;" >
-      
+                <div class="col-md-2" style="padding:unset;" >
+                      <input type="radio" ng-model="geoFence" value="No" />
+                            <span style="font-size: 12px;padding:0 0 0 0;font-weight: bold; ">Unscheduled</span>
+                </div> 
 
-                 <input type="radio" ng-model="geoFence" value="No" />
-                                    <span style="font-size: 12px;padding:0 0 0 0;font-weight: bold; ">Unscheduled</span>
-                             
-                 
-                    
-
-                  </div> 
-
-               <!--    <div class="col-md-3" >
-                     
-
-                  <input  type="radio" ng-model="geoFence" value="Yes" />
-                                    <span style="font-size: 12px;padding:0 0 0 0;font-weight: bold; ">Scheduled</span>
-
-
-
-                 <input type="radio" ng-model="geoFence" value="No" />
-                                    <span style="font-size: 12px;padding:0 0 0 0;font-weight: bold; ">Unscheduled</span>
-                             
-                 
-                         
-                  </div> 
-
-                  <!-- <div class="col-md-2" >
-                      
-
-                 <input type="radio" ng-model="geoFence" value="No" />
-                                    <span style="font-size: 12px;padding:0 0 0 0;font-weight: bold; ">Unscheduled</span>
-                             
-            
-                         
-                  </div> -->
 
             </div>
 
@@ -245,7 +215,18 @@ background-color: #ffffff;
             <div class="box box-primary">
         
                 <div>
-                    <div class="pull-right">
+                    <div class="pull-right" style="margin-top: 10px;margin-right: 5px;">
+                     <span style="font-size: 14px;padding-right: 20px;">
+              
+                                  <select ng-model="timeChanges" ng-change="filtersTime(timeChanges)" style="padding:3px 3px 3px 3px; font-size: 12px;width:100px;">
+                                        <option value="All"> All </option>
+                                        <option value="5">  >  5 mins </option>
+                                        <option value="10"> > 10 mins </option>
+                                        <option value="15"> > 15 mins </option>
+                                        <option value="30"> > 30 mins </option>
+                                       <option value="100"> > 1 hour </option>
+                                   </select>
+                              </span>
                         <img style="cursor: pointer;" ng-click="exportData('StoppageReport')"  src="../app/views/reports/image/xls.png" />
                         <img style="cursor: pointer;" ng-click="exportDataCSV('StoppageReport')"  src="../app/views/reports/image/csv.jpeg" />
                     </div>
@@ -280,10 +261,13 @@ background-color: #ffffff;
 
                                 <td style="font-size:14px;padding-left: 60px;"> Group Name :</td>
                                 <td style="font-size:14px;padding:0 0 0 7px;"> {{trimColon(gName)}}</td>
+
                             
                               </tr>
                        </tbody> 
                       </table>
+
+                                
 
                        <div class="row" style="padding-top: 20px;"></div>
 
