@@ -212,13 +212,27 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
           }else if(val.stoppageTime >0 && filterValues==10){
 
             if(val.stoppageTime>=600000){
-             //  ret_obj[key].history = [];
-            	ret_obj[key].history.push(val);
+                ret_obj[key].history.push(val);
 
             }
+            
           }else if(val.stoppageTime >0 && filterValues==5){
 
             if(val.stoppageTime>=300000){
+            	ret_obj[key].history.push(val);
+
+            }
+
+          }else if(val.stoppageTime >0 && filterValues==2){
+
+            if(val.stoppageTime>=120000){
+            	ret_obj[key].history.push(val);
+
+            }
+
+          }else if(val.stoppageTime >0 && filterValues==1){
+
+            if(val.stoppageTime>=60000){
             	ret_obj[key].history.push(val);
 
             }

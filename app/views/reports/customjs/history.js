@@ -205,12 +205,12 @@ function eventButton(eventdate)
     	}
     }, true);
 
-   
-  	
+
    	
    	(function initial(prodId){
    		console.log(' new  '+prodId)
    		startLoading();
+
    		$scope.id	=	prodId;
    		var histurl	=	GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+getParameterByName('vid')+"&interval="+$scope.interval;
    		$scope.loading	=	true;
@@ -222,7 +222,7 @@ function eventButton(eventdate)
 					$scope.hist				=	data;		
           $scope.filterLoc  = data.vehicleLocations;	
 					$scope.topspeedtime		=	data.topSpeedTime;
-					$scope.dataArray(data.vehicleLocations);
+//					$scope.dataArray(data.vehicleLocations);
 
 					//$scope.dataGeofence(data.gfTrip);		
 					var fromNow 			  = new Date(data.fromDateTime.replace('IST',''));
@@ -460,6 +460,21 @@ function eventButton(eventdate)
 
               ret_obj.push(val);
             }
+          }else if(val.parkedTime >0 && filterValues==2){
+
+
+            if(val.parkedTime>=120000){
+
+              ret_obj.push(val);
+            }
+          }
+          else if(val.parkedTime >0 && filterValues==1){
+
+
+            if(val.parkedTime>=60000){
+
+              ret_obj.push(val);
+            }
           }else if(val.parkedTime >0 && filterValues=='All'){
 
               ret_obj.push(val);
@@ -515,6 +530,21 @@ function eventButton(eventdate)
           }else if(val.stoppageTime >0 && filterValues==5){
 
             if(val.stoppageTime>=300000){
+
+              ret_obj.push(val);
+            }
+
+          }else if(val.stoppageTime >0 && filterValues==2){
+
+            if(val.stoppageTime>=120000){
+
+              ret_obj.push(val);
+            }
+
+          }
+          else if(val.stoppageTime >0 && filterValues==1){
+
+            if(val.stoppageTime>=60000){
 
               ret_obj.push(val);
             }
