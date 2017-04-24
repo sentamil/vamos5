@@ -54,7 +54,13 @@ app.directive('map', function($http, vamoservice) {
 					});
 				else{
 						$('#lastseentrack').text(data.address);
-						scope.addres = data.address;   
+						scope.addres = data.address;
+                        
+                        if(data.position == 'M'){
+			            	scope.histVal.unshift(data);
+                        }else{
+			            	scope.histVal[0]=data;
+		                }
 					} 
 				
 				$('#positiontime').text(vamoservice.statusTime(locs).tempcaption);
@@ -347,23 +353,28 @@ $(document).on('pageshow', '#maploc', function(e, data){
 							data.address = count;
 							scope.addres = count;  
                              
+                            if(data.position == 'M'){
+		   					    scope.histVal.unshift(data);
+                            }
+		   				    else{
+		   					    scope.histVal[0]=data;
+		   				    }
 
-                                   if(data.position == 'M'){
-		   					             scope.histVal.unshift(data);
-                                            }
-		   				                   else{
-		   					                 scope.histVal[0]=data;
-		   				                        }
-
-						                   });
+						});
 					}
 					else{
 						$('#lastseentrack').text(data.address);
-						scope.addres = data.address;   
-					}
+						scope.addres = data.address;
 
-           
-                scope.path.push(new google.maps.LatLng(data.latitude, data.longitude));
+                         if(data.position == 'M'){
+		   					scope.histVal.unshift(data);
+                         }
+		   				 else{
+		   					scope.histVal[0]=data;
+		   				}
+                    }
+
+                    scope.path.push(new google.maps.LatLng(data.latitude, data.longitude));
                       
            			
 					if(scope.path.length>1){
@@ -501,7 +512,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 		var url = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?'+res[1];
 				$scope.createGeofence(url);
 
-				$scope.vehiclFuel=graphChange($scope.locations.fuelLitre);
+				$scope.vehiclFuel=graphChange($scope.locations.fuel);
                   if($scope.vehiclFuel==true){
                      $('#graphsId').removeClass('graphsCls');
                   }else{
@@ -726,7 +737,7 @@ $(document).ready(function(e) {
 	});
 
 
-    var gaugeOptions = {
+  /*  var gaugeOptions = {
         chart: {
             type: 'solidgauge',
             // backgroundColor:'rgba(255, 255, 255, 0)',
@@ -804,16 +815,118 @@ $(document).ready(function(e) {
        var chartFuel = $('#container-fuel').highcharts(), point;
         if (chartFuel) {
             point = chartFuel.series[0].points[0];
+
+            console.log(point );
+
+            point.update(fuelLtr);
+            
+            console.log(point);
+
+            if(tankSize==0)
+            	tankSize =200;
+                chartFuel.yAxis[0].update({
+			    max: tankSize,
+			}); 
+
+        }
+    }, 1000);*/
+    
+  var gaugeOptions = {
+
+    chart: {
+        type: 'solidgauge',
+          spacingBottom: -10,
+	        spacingTop: -40,
+	        spacingLeft: 0,
+	        spacingRight: 0,
+    },
+
+    title: null,
+
+    pane: {
+        center: ['50%', '90%'],
+        size: '110%',
+        startAngle: -90,
+        endAngle: 90,
+        background: {
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+            innerRadius: '60%',
+            outerRadius: '100%',
+            shape: 'arc'
+        }
+    },
+
+    tooltip: {
+        enabled: false
+    },
+
+    // the value axis
+    yAxis: {
+        stops: [
+            [0.1, '#55BF3B'], // green
+            [0.5, '#DDDF0D'], // yellow
+            [0.9, '#DF5353'] // red
+        ],
+        lineWidth: 0,
+        minorTickInterval: null,
+        tickAmount: 2,
+        title: {
+            y: -50
+        },
+        labels: {
+            y: -100
+        }
+    },
+
+    plotOptions: {
+        solidgauge: {
+            dataLabels: {
+                y: 5,
+                borderWidth: 0,
+                useHTML: true
+            }
+        }
+    }
+};
+
+
+
+   $('#container-fuel').highcharts(Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 300,
+            title: { text: '' }
+        },
+        credits: { enabled: false },
+        series: [{
+            name: 'Speed',
+            data: [fuelLtr],
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:12px; font-weight:normal;color: #196481'+ '">Fuel - {y} Ltr</span><br/>',
+                 // y: 25
+            },
+            tooltip: { valueSuffix: ' Ltr'}
+        }]
+    }));
+    setInterval(function () {
+      var chart = $('#container-speed').highcharts(), point;
+        if (chart) {
+            point = chart.series[0].points[0];
+            point.update(total);
+        }
+       var chartFuel = $('#container-fuel').highcharts(), point;
+        if (chartFuel) {
+        	chartFuel.yAxis[0].update({max:tankSize});
+            point = chartFuel.series[0].points[0];
             point.update(fuelLtr);
 //            if(tankSize==0)
-//            	tankSize =200;
-//            chartFuel.yAxis[0].update({
+ //           	tankSize =200;
+ //           chartFuel.yAxis[0].update({
 //			    max: tankSize,
 //			}); 
 
         }
     }, 1000);
-
 
     $(document).ready(function(){
         $('#minmax1').click(function(){

@@ -233,15 +233,16 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
    // scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
-   scriptLibrary.push("https://code.highcharts.com/highcharts.js");
+/* scriptLibrary.push("https://code.highcharts.com/highcharts.js");
    scriptLibrary.push("https://code.highcharts.com/highcharts-more.js");
-   scriptLibrary.push("https://code.highcharts.com/modules/solid-gauge.js");
+   scriptLibrary.push("https://code.highcharts.com/modules/solid-gauge.js"); */
+   scriptLibrary.push("assets/js/highcharts_new.js");
+   scriptLibrary.push("assets/js/highcharts-more_new.js");
+   scriptLibrary.push("assets/js/solid-gauge_new.js");
    scriptLibrary.push(url);
    
-   
-
+  //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/markerwithlabel.js");
-
 
    // scriptLibrary.push("assets/js/infobubble.js");
    // scriptLibrary.push("assets/js/moment.js");
@@ -251,9 +252,6 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/services.js");
    scriptLibrary.push("assets/js/customtrack.js");
 
-
-
- 
    // Pass the array of scripts you want loaded in order and a callback function to invoke when its done
    loadJsFilesSequentially(scriptLibrary, 0, function(){
        // application is "ready to be executed"

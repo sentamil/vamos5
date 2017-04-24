@@ -12,20 +12,20 @@ var logo =document.location.host;
 
 function ValidateIPaddress(ipaddress)   
 {  
-	var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;  
-	if(ipaddress.match(ipformat)) {
-	  return (true)  
-	}  
-	// alert("You have entered an invalid IP address!")  
-	return (false)  
+  var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;  
+  if(ipaddress.match(ipformat)) {
+    return (true)  
+  }  
+  // alert("You have entered an invalid IP address!")  
+  return (false)  
 }  
 
 // logo = 'localhost';
 
 if(ValidateIPaddress(logo)) {
-	var parser    =   document.createElement('a');
-	parser.href   =   document.location.ancestorOrigins[0];
-	logo      	  =   parser.host;
+  var parser    =   document.createElement('a');
+  parser.href   =   document.location.ancestorOrigins[0];
+  logo          =   parser.host;
 }
 var imgName= context+'/public/uploads/'+logo+'.small.png';
 
@@ -82,7 +82,7 @@ function sortByDate(field){
 }
 
 function graphChange(vehifuel){
-  return vehifuel != 0 ? true : false;
+  return vehifuel == 'yes' ? true : false;
 }
 
 function radians(n) {
