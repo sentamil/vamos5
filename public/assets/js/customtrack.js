@@ -39,7 +39,7 @@ app.directive('map', function($http, vamoservice) {
 				fuelLtr 		 = parseInt(locs.fuelLitre);
 				total  			 = parseInt(locs.speed);
 				
-				if((data && data != '') && (data.address == null || data.address == undefined || data.address == ' '))
+				if((data && data != '') && (data.address == null || data.address == undefined || data.address == ' ')){
 					scope.getLocation(locs.latitude, locs.longitude, function(count){
 						$('#lastseentrack').text(count);
 						data.address = count;
@@ -52,6 +52,7 @@ app.directive('map', function($http, vamoservice) {
 		                }
 
 					});
+			    }		
 				else{
 						$('#lastseentrack').text(data.address);
 						scope.addres = data.address;
