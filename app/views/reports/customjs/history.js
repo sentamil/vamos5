@@ -222,7 +222,7 @@ function eventButton(eventdate)
 					$scope.hist				=	data;		
           $scope.filterLoc  = data.vehicleLocations;	
 					$scope.topspeedtime		=	data.topSpeedTime;
-//					$scope.dataArray(data.vehicleLocations);
+					$scope.dataArray(data.vehicleLocations);
 
 					//$scope.dataGeofence(data.gfTrip);		
 					var fromNow 			  = new Date(data.fromDateTime.replace('IST',''));
