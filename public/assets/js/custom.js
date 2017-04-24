@@ -259,7 +259,7 @@ var markerSearch = new google.maps.Marker({});
 				$scope.removeTask(vehicleno);
 				sessionValue(vehicleno, $scope.gName);
 
-				$scope.vehiclFuel=graphChange(individualVehicle[0].fuelLitre);
+				$scope.vehiclFuel=graphChange(individualVehicle[0].fuel);
 				if($scope.vehiclFuel==true){
                     $('#graphsId').removeClass('graphsCls');
                 }else{
@@ -739,7 +739,7 @@ var markerSearch = new google.maps.Marker({});
 			$scope.vehicleno = pos.data.vehicleId;
 			$scope.assignValue(pos.data);
 			$scope.$apply(function(){
-		       $scope.vehiclFuel=graphChange(pos.data.fuelLitre);
+		       $scope.vehiclFuel=graphChange(pos.data.fuel);
             });
 
 			if($scope.vehiclFuel==true){
@@ -1811,57 +1811,66 @@ $(document).ready(function(e) {
 	});
 
 
-    var gaugeOptions = {
-        chart: {
-            type: 'solidgauge',
-            // backgroundColor:'rgba(255, 255, 255, 0)',
-            spacingBottom: -10,
+
+   var gaugeOptions = {
+
+    chart: {
+        type: 'solidgauge',
+          spacingBottom: -10,
 	        spacingTop: -40,
 	        spacingLeft: 0,
 	        spacingRight: 0,
+    },
+
+    title: null,
+
+    pane: {
+        center: ['50%', '90%'],
+        size: '110%',
+        startAngle: -90,
+        endAngle: 90,
+        background: {
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+            innerRadius: '60%',
+            outerRadius: '100%',
+            shape: 'arc'
+        }
+    },
+
+    tooltip: {
+        enabled: false
+    },
+
+    // the value axis
+    yAxis: {
+        stops: [
+            [0.1, '#55BF3B'], // green
+            [0.5, '#DDDF0D'], // yellow
+            [0.9, '#DF5353'] // red
+        ],
+        lineWidth: 0,
+        minorTickInterval: null,
+        tickAmount: 2,
+        title: {
+            y: -50
         },
-        title: null,
-        pane: {
-            center: ['50%', '90%'],
-            size: '110%',
-            startAngle: -90,
-            endAngle: 90,
-            background: {
-                innerRadius: '60%',
-                outerRadius: '100%',
-                shape: 'arc'
-            }
-        },
-        tooltip: {
-            enabled: false
-        },
-        yAxis: {
-            stops: [
-                [0.1, '#55BF3B'], 
-                [0.5, '#DDDF0D'], 
-                [0.9, '#DF5353'] 
-            ],
-            lineWidth: 0,
-            minorTickInterval: null,
-            tickPixelInterval: 400,
-            tickWidth: 0,
-            title: {
-                y: -50
-            },
-            labels: {
-                y: -100
-            }
-        },
-        plotOptions: {
-            solidgauge: {
-                dataLabels: {
-                    y: 5,
-                    borderWidth: 0,
-                    useHTML: true
-                }
+        labels: {
+            y: -100
+        }
+    },
+
+    plotOptions: {
+        solidgauge: {
+            dataLabels: {
+                y: 5,
+                borderWidth: 0,
+                useHTML: true
             }
         }
-    };
+    }
+};
+
+
 
     $('#container-fuel').highcharts(Highcharts.merge(gaugeOptions, {
         yAxis: {
@@ -1899,6 +1908,7 @@ $(document).ready(function(e) {
 
         }
     }, 1000);
+
 });
 // app.directive('tooltipLoader', function() {
 //         return function(scope, element, attrs) {
