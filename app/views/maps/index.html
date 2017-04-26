@@ -70,10 +70,14 @@
                 </li>
                 <li class="track"><a href="javascript:void(0);" class="active"><div></div><label>Track</label></a></li>
                 <!-- <li class="history"><a href="../public/track?maps=replay"><div></div><label>History</label></a></li> -->
-                <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li>
-                <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
-                <li class="admin"><a href="../public/settings"><div></div><label>Scheduled</label></a></li>
-                <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
+               <!-- <li class="alert01"><a href="../public/reports"><div></div><label>Reports</label></a></li> -->
+                <li class="alert01"><a ng-href="{{navReports}}"><div></div><label>Reports</label></a></li>
+            <!--    <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>-->
+                <li class="stastics"><a ng-href="{{navStats}}"><div></div><label>Statistics</label></a></li>
+            <!--    <li class="admin"><a href="../public/settings"><div></div><label>Scheduled</label></a></li> -->
+                <li class="admin"><a ng-href="{{navSched}}"><div></div><label>Scheduled</label></a></li>
+            <!--    <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li> -->
+                <li class="fms"><a ng-href="{{navFms}}"><div></div><label>FMS</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
             <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
@@ -206,6 +210,16 @@
                                         </div>
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <td>
+                                        <div id="viewMap">
+                                            <span title="Tollgate Markers" id="tollYes" ng-click="mapView('tollYes')"><img style="width: 20px; height: 20px" src="assets/imgs/group.png" /></span>
+                                            <span title="Remove Tollgates" id="tollNo" ng-click="mapView('tollNo')"><img style="width: 20px; height: 20px" src="assets/imgs/single.png" /></span>
+                                        </div>
+                                    </td>
+                                </tr> 
+
                             </table>    
                             
                             
@@ -250,6 +264,8 @@
                             <span>Sorry for the inconvenience, Reports not available for one hour.</span>
                         </div>
                     </div>
+
+        <div class="details_box_zoho"  ng-show="zohod" style="padding-top: 15px;"><span class="closeZoho" ng-click="ZohoCall()" >&times;</span>{{zohoDays}}</div>
 
                  <!--  <div class="togl_buton"  ng-show="toglButtn" ng-click="toglButon()"> <img src="assets/imgs/Up-Arrows.png"/></div>-->
                    <div class="details_box_bottom">Support Details: {{support}}</div>
@@ -628,15 +644,19 @@ if(apikey_url != null || apikey_url != undefined)
    var scriptLibrary = [];
    scriptLibrary.push("assets/js/static.js");
    scriptLibrary.push("assets/js/jquery-1.11.0.js");
+  // scriptLibrary.push("assets/js/jquery-3.1.1.min.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
-   // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+  // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
-   scriptLibrary.push("//code.highcharts.com/highcharts.js");
-   scriptLibrary.push("//code.highcharts.com/highcharts-more.js");
-   scriptLibrary.push("//code.highcharts.com/modules/solid-gauge.js");
+  // scriptLibrary.push("//code.highcharts.com/highcharts.js");
+ //  scriptLibrary.push("//code.highcharts.com/highcharts-more.js");
+  // scriptLibrary.push("//code.highcharts.com/modules/solid-gauge.js");
+   scriptLibrary.push("assets/js/highcharts_new.js");
+   scriptLibrary.push("assets/js/highcharts-more_new.js");
+   scriptLibrary.push("assets/js/solid-gauge_new.js");
    scriptLibrary.push("assets/js/markerwithlabel.js");
    scriptLibrary.push("assets/js/markerclusterer.js");
    scriptLibrary.push("assets/js/infobubble.js");

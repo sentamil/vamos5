@@ -69,6 +69,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
 	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+	$scope.getZoho=GLOBAL.DOMAIN_NAME+"/getZohoInvoice?";
 	$scope.historyfor='';
 	$scope.map =  null;
 	$scope.flightpathall = []; 
@@ -82,7 +83,14 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope._editValue_con 	= false;
 	$scope._editValue 	= {};
 	$scope._editValue._vehiTypeList 	= ['Truck', 'Car', 'Bus', 'Bike'];
-	
+
+/*	$scope.navReports="../public/reports";
+	$scope.navStats="../public/statistics";
+	$scope.navSched="../public/settings";
+	$scope.navFms="../public/fms";
+*/
+	$scope.zohod=0;
+
 	var tempdistVal = 0;
 	// var mcOptions={};
 	var markerCluster;
@@ -128,13 +136,97 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		$("#testLoad").load("../public/menu");
 	}
 
-var markerSearch = new google.maps.Marker({});
+   var markerSearch = new google.maps.Marker({});
 // var markerSearch =[];
 
+  $scope.ZohoCall = function(){
+  //console.log('close button...');
+   $scope.zohod=0;
+   $scope.zohoCloseBut=1;
+  }
 
-  
-  
-  
+  function getMaxOfArray(numArray) {
+   return Math.max.apply(null, numArray);
+  }
+
+  function trimDueDays(value){
+     var splitValue=value.split(/[ ]+/);
+   return  splitValue[2];
+   }
+
+  function zohoDayValue(value){
+      
+     if(value>=7){
+     	 $scope.zohoReports=1;
+         $scope.zohod=1;
+         $scope.zohoDays='Your dues are pending! Reports will be available after your renewal completed.';
+     	 console.log('Overdue to 7 days...');
+        //$scope.zohoDays='Your dues are pending... Ovedues to 21 days...  Reports not available...';
+     	//console.log('21 (or) more than 21 days...');
+     }
+     else{
+
+         $scope.navReports="../public/reports";
+	     $scope.navStats="../public/statistics";
+	     $scope.navSched="../public/settings";
+	     $scope.navFms="../public/fms";
+
+        if(value>=5){
+          $scope.zohod=1;
+          $scope.zohoDays='Your dues are pending! Overdues to 5 days...';
+     	  console.log('Overdue to 5 days...');
+        }
+        else if(value>=4){
+          $scope.zohod=1;
+          $scope.zohoDays='Your dues are pending!';
+     	  console.log('Overdue to 4 days...');
+        }
+        else{
+          $scope.zohod=0;
+     	  console.log('less than 4 days...');
+        }
+    }
+ }
+
+   function zohoDataCall(data){
+
+     $scope.zohoData =[];
+     $scope.zohoDayss=[];
+        var zohoDatas=[];
+
+          zohoDatas.push({customerName:data.customerName});
+          zohoDatas[0].hist=[];
+
+          angular.forEach(data.hist,function(val, key){
+          	    $scope.zohoDayss.push(trimDueDays(val.dueDays));
+                zohoDatas[0].hist.push({customerName:val.customerName,balanceAmount:val.balanceAmount,dueDate:val.dueDate,dueDays:val.dueDays});
+           })
+
+          $scope.zohoData=zohoDatas;
+        //console.log( $scope.zohoData);
+        //console.log(getMaxOfArray($scope.zohoDayss));
+
+        zohoDayValue(getMaxOfArray($scope.zohoDayss))
+    }
+
+/*   function zohoUrl(){
+     //var getZoho=GLOBAL.DOMAIN_NAME+"/getZohoInvoice?refName=rama";
+       console.log(getZoho);
+      
+       $http.get(getZoho).success(function(data){
+         zohoDataCall(data); 
+       })
+    }*/
+
+   $scope.$watch("getZoho", function (val) {
+
+     vamoservice.getDataCall($scope.getZoho).then(function(data) {
+
+         zohoDataCall(data); 
+       
+         });
+   });
+
 
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
@@ -142,12 +234,13 @@ var markerSearch = new google.maps.Marker({});
 			$scope.vehicle_list=[];
 			$scope.fcode=[];
 			$scope.locations02 = data;
+          //zohoUrl();
 			try{
 				$scope.dpdown = $scope.locations02[0].isDbDown;	
 			}catch (err){
 				
-			
 			}
+			
 			listVehicleName(data);
 			// menuGroup(data);
 			if(data.length){
@@ -506,8 +599,10 @@ var markerSearch = new google.maps.Marker({});
 					for(var j=0; j<ginfowindow.length;j++){
 						ginfowindow[j].close();
 					}
-					$scope.selects=1;		
+					$scope.selects=1;
+					if($scope.zohoReports==undefined){	
 					infowindow.open(map,marker);
+				    }
 		   		});	
 			})(marker);
 		
@@ -935,8 +1030,10 @@ var markerSearch = new google.maps.Marker({});
 			 //$scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);
 		}
 		if($scope.selected!=undefined){
+			if ($scope.zohoReports==undefined) {
 			$scope.map.setCenter(gmarkers[$scope.selected].getPosition());
 			ginfowindow[$scope.selected].open($scope.map,gmarkers[$scope.selected]);
+		   }
 		}
 		
 		if($scope.groupMap==true)
@@ -1062,7 +1159,7 @@ function polygenDrawFunction(list){
          labelInBackground: false
       });
       $scope.map.setCenter(centerMarker(polygenList)); 
-    //  $scope.map.setZoom(14);  
+      $scope.map.setZoom(14);  
     // }
 }
 
@@ -1167,8 +1264,14 @@ function locat_address(locs) {
           ginfowindow[i].setMap(null);		
         }		
       }		
+
     $scope.inits=0;		
-	$scope.init = function(){		
+	$scope.init = function(){
+
+      if($scope.zohoCloseBut){
+         $scope.zohod=1;
+      }
+
       $scope.inits=$scope.inits+1;		
         if( $scope.inits>1){		
 	       clearMarkerss();		
@@ -1390,10 +1493,13 @@ function locat_address(locs) {
 	$('#graphsId').hide();
 	$("#carMarker").show();
 	$("#marker").hide();
+	$("#tollYes").show();
+	$("#tollNo").hide();
 	// $scope.idinvoke;
 	//list view
 	function listMap ()
 	{
+	 if($scope.zohoReports==undefined){
 		setId();
 		// $("#homeImg").show();
 		$("#listImg").hide();
@@ -1404,6 +1510,7 @@ function locat_address(locs) {
 		document.getElementById($scope.idinvoke).setAttribute("id", "mapList");
 		if(document.getElementById('talist')!=null)
 		document.getElementById('talist').setAttribute("id", "mapTable-mapList");
+	  }
 	}
 
 	//return home
@@ -1429,13 +1536,12 @@ function locat_address(locs) {
 		$("#single").show();
 		$scope.groupMap=true;
 		// markerCluster 	= new MarkerClusterer($scope.map, null, null)
-		
 		// mcOptions = {gridSize: 50,maxZoom: 15,styles: [ { height: 53, url: "assets/imgs/m1.png", width: 53}]}
 		markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions)	
 	}
 
-	//sigle
-	function sigleMarker()
+	//single
+	function singleMarker()
 	{
 		$("#single").hide();
 		$("#cluster").show();
@@ -1546,6 +1652,20 @@ function locat_address(locs) {
 		$('#graphsId').toggle(500);
 	}
 
+	function tollMarkers()
+    {
+        $("#tollYes").hide();
+		$("#tollNo").show();
+     
+    }
+
+    function removeToll()
+    {
+        $("#tollNo").hide();
+		$("#tollYes").show();
+    	
+    }
+
 
 	//view map
 	$scope.mapView 	=	function(value)
@@ -1561,7 +1681,7 @@ function locat_address(locs) {
 				clusterMarker();
 			 	break;
 			case 'single' :
-				sigleMarker();
+				singleMarker();
 				break;
 			case 'fscreen' :
 				fullScreen();
@@ -1577,12 +1697,18 @@ function locat_address(locs) {
 				break;
 			case 'markerChange':
 				$scope.makerType =  "markerChange";
-				changeMarker()
+				changeMarker();
 				markerChange('markerChange');
 				break;
+			case 'tollYes':
+				tollMarkers();
+				break;
+			case 'tollNo':
+				removeToll();
+				break;		
 			case 'undefined':
 				$scope.makerType =  undefined;
-				changeMarker()
+				changeMarker();
 				markerChange(undefined);
 			default:
 		   		break;
@@ -1811,8 +1937,60 @@ $(document).ready(function(e) {
 	});
 
 
+ /*   var gaugeOptions = {
+        chart: {
+            type: 'solidgauge',
+            // backgroundColor:'rgba(255, 255, 255, 0)',
+            spacingBottom: -10,
+	        spacingTop: -40,
+	        spacingLeft: 0,
+	        spacingRight: 0,
+        },
+        title: null,
+        pane: {
+            center: ['50%', '90%'],
+            size: '110%',
+            startAngle: -90,
+            endAngle: 90,
+            background: {
+                innerRadius: '60%',
+                outerRadius: '100%',
+                shape: 'arc',
+            }
+        },
+        tooltip: {
+            enabled: false
+        },
+        yAxis: {
+            stops: [
+                [0.1, '#55BF3B'], 
+                [0.5, '#DDDF0D'], 
+                [0.9, '#DF5353'] 
+            ],
+            lineWidth: 0,
+            minorTickInterval: null,
+            tickPixelInterval: 400,
+            tickWidth: 0,
+            title: {
+                y: -50
+            },
+            labels: {
+                y: -100
+            }
+        },
+        plotOptions: {
+            solidgauge: {
+                dataLabels: {
+                    y: 5,
+                    borderWidth: 0,
+                    useHTML: true
+                }
+            }
+        }
+    };
+*/
 
-   var gaugeOptions = {
+var gaugeOptions = {
 
     chart: {
         type: 'solidgauge',
@@ -1908,7 +2086,6 @@ $(document).ready(function(e) {
 
         }
     }, 1000);
-
 });
 // app.directive('tooltipLoader', function() {
 //         return function(scope, element, attrs) {
@@ -1923,13 +2100,10 @@ $(document).ready(function(e) {
 //     };
 // });
 
-
-
  function googleTranslateElementInit() 
     {
          new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
     }
-
 
     $(document).ready(function(){
         $('#minmax').click(function(){
