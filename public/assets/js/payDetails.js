@@ -126,7 +126,7 @@ function zohoDataCall(data){
 
   function zohoDayValue(value){
       
-     if(value>=7){
+     if(value<7){
 
        $scope.navReports="../public/reports";
        $scope.navStats="../public/statistics";
