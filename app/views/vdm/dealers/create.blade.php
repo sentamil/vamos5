@@ -52,6 +52,7 @@
 									{{ Form::text('password', Input::old('password'), array('class' => 'form-control','required' => 'required','placeholder'=>'Password')) }}
 								</div>
 							</div>
+							
 							  <br />
 							 <div class="row">
 								<div class="col-md-3">
@@ -94,6 +95,15 @@
 		{{ Form::text('providerPassword', Input::old('providerPassword'), array('class' => 'form-control', 'placeholder'=>'SMS Provider Password')) }}
 		</div>
 		
+	</div>
+	<br />
+	 <div class="row">
+	    <div class="col-md-3">
+		{{ Form::label('zoho', 'zoho') }}	
+		</div>
+		<div class="col-md-6">
+		{{ Form::text('zoho', Input::old('zoho'), array('class' => 'form-control','required' => 'required','placeholder'=>'zoho')) }}
+		</div>
 	</div>
 	<br>
 	<div class="row">

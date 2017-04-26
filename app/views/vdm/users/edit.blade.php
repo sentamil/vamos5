@@ -32,6 +32,12 @@
 		            		<div class="col-md-4">{{ Form::Email('email', $email, array('class' => 'form-control','placeholder'=>'Email')) }}</div>
 		            	</div>
 
+                        <br>
+		            	<div class="row">
+		            		
+		            		<div class="col-md-1">{{ Form::label('zoho', 'Zoho :') }}</div>
+		            		<div class="col-md-4">{{ Form::text('zoho', $zoho, array('class' => 'form-control','placeholder'=>'Zoho')) }}</div>
+		            	</div>
 
 
 		            	<br>

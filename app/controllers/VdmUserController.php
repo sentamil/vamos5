@@ -182,8 +182,9 @@ class VdmUserController extends \BaseController {
 			
 			$userId = Input::get ( 'userId' );
 			$email = Input::get ( 'email' );
-			$vehicleGroups = Input::get ( 'vehicleGroups' );
+			$vehicleGroups = Input::get ( 'vehicleGroups' ); log::info($vehicleGroups);
 			$mobileNo = Input::get ( 'mobileNo' );
+			$zoho = Input::get ( 'zoho' ); log::info($zoho);
             foreach ( $vehicleGroups as $grp ) {
 				$redis->sadd ( $userId, $grp );
 			}
@@ -219,14 +220,18 @@ class VdmUserController extends \BaseController {
 			if($password==null)
 			{
 				$password='awesome';
-			}
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password,$userId.':OWN',$OWN);
+			} 
+			log::info( '------login 8---------- ' );
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId.':password',$password,$userId.
+				':zoho',$zoho, $userId.':OWN',$OWN);
+			log::info( '------login 9---------- ' );
 			$user = new User;
 			
 			$user->name = $userId;
 			$user->username=$userId;
 			$user->email=$email;
 			$user->mobileNo=$mobileNo;
+			
 			$user->password=Hash::make($password);
 			$user->save();
 
@@ -296,6 +301,7 @@ class VdmUserController extends \BaseController {
 		$mobileNo = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':mobileNo' );
 		$email = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':email' );
 		
+		$zoho = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':zoho' );
 		
 		$redisGrpId = 'S_Groups_' . $fcode;
 		if(Session::get('cur')=='dealer')
@@ -349,7 +355,7 @@ class VdmUserController extends \BaseController {
 		return View::make ( 'vdm.users.edit', array (
 				'userId' => $userId 
 		) )->with ( 'vehicleGroups', $vehicleGroups )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email)->with('selectedGroups',$selectedGroups)->with('orgsList',$orgsList)->with('selectedOrgsList',$selectedOrgsList)->with('value',$value);
+		with('email',$email)->with ('zoho', $zoho )->with('selectedGroups',$selectedGroups)->with('orgsList',$orgsList)->with('selectedOrgsList',$selectedOrgsList)->with('value',$value);
 	}
 
 
@@ -453,12 +459,14 @@ public function updateNotification() {
 		$fcode 		= $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
 		$oldMob 	= $redis->hget ( 'H_UserId_Cust_Map', $userId . ':mobileNo' );
 		$oldmail	= $redis->hget ( 'H_UserId_Cust_Map', $userId . ':email' );
+		$oldzoho       = $redis->hget ( 'H_UserId_Cust_Map', $userId .  ':zoho' );
 		$oldVirtual = $redis->sismember ( 'S_Users_Virtual_'. $fcode,  $userId);
 		$oldGroup	= (array) $redis->smembers( $userId );
 
 
 		$rules = array (
 				'mobileNo' => 'required',
+				'email' => 'required',
 				'email' => 'required',
 				'vehicleGroups' => 'required' 
 		);
@@ -475,11 +483,12 @@ public function updateNotification() {
 			
 			$mobileNo = Input::get ( 'mobileNo' );
 			$email = Input::get ( 'email' );
+			$zoho = Input::get ( 'zoho' );
 			$redis->del ( $userId );
 			foreach ( $vehicleGroups as $grp ) {
 				$redis->sadd ( $userId, $grp );
 			}
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email );
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo,$userId.':email',$email ,$userId . ':zoho',$zoho);
 
 			 $virtualaccount=Input::get ( 'virtualaccount' );
 
@@ -518,6 +527,11 @@ public function updateNotification() {
         	if($oldmail != $email){
         		$oldList = array_add($oldList, 'Email ', $oldmail);
         		$newList = array_add($newList, 'Email ', $email);        			
+        	}
+            
+            if($zoho != $oldzoho){
+				$oldList = array_add($oldList, 'Zoho', $oldzoho);
+        		$newList = array_add($newList, 'Zoho ', $zoho);        		
         	}
 
         	if($redis->sismember ( 'S_Users_Virtual_'. $fcode,  $userId) != $oldVirtual){

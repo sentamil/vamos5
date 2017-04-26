@@ -43,6 +43,12 @@
 
 							</br>
 							 <div class="form-group">
+							{{ Form::label('zoho', 'zoho ') }}
+							
+							{{ Form::text('zoho', Input::old('zoho'), array('class' =>'form-control','placeholder'=>'zoho', 'required' => 'required')) }}
+							</div>
+							</br>
+							 <div class="form-group">
 							 {{Form::checkbox('virtualaccount', 'value',true, ['class' => 'check1'])}}
 							{{ Form::label('virtualaccount', 'Virtual Account') }}
 							</div>

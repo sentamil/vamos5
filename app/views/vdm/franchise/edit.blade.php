@@ -121,7 +121,14 @@
 		{{ Form::label('apiKey', 'Api Key') }}
 		{{ Form::text('apiKey', $apiKey, array('class' => 'form-control')) }}
 	</div>
-	
+	<div class="form-group">
+		{{ Form::label('zoho', 'Zoho Organisation') }}
+		{{ Form::text('zoho', $zoho, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('auth', 'Zoho Authentication') }}
+		{{ Form::text('auth', $auth, array('class' => 'form-control')) }}
+	</div>
 	
 	{{ Form::submit('Update the Franchise!', array('class' => 'btn btn-primary')) }}
 

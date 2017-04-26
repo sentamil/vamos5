@@ -131,7 +131,7 @@
           <div class="panel-body" ng-hide="switchingVar">
           <h6 style="color: red">{{error}}</h6>
           <div class="col-md-3">
-            <select ng-options="vehi for vehi in vehiStopList" ng-model="selectRouteName" class="form-control" ng-change="_addDetails()">
+            <select ng-options="vehi for vehi in vehiStopList" ng-model="selectRouteName" class='form-control  selectpicker show-menu-arrow','data-live-search' => 'true' ng-change="_addDetails()">
               <option style="display:none" value="">Select Vehicle</option>
             </select>
           </div>

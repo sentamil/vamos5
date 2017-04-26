@@ -924,7 +924,8 @@ public function users()
 			$timeZone=Input::get ('timeZone');
 			$apiKey=Input::get('apiKey');
 			$dbType=Input::get('dbType');
-			
+			$zoho=Input::get('zoho');
+			$auth=Input::get('auth');
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
 			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'deviceModel'=>$deviceModel);
 			
@@ -959,6 +960,8 @@ public function users()
 					'apiKey'=>$apiKey,	
 					'backUpDays'=>$backUpDays,
 					'dbType'=>$dbType,
+					'zoho'=>$zoho,
+					'auth'=>$auth,
 					//'eFDSchedular'=>$eFDSchedular
 			);
 			$redis->hmset('H_Franchise_Mysql_DatabaseIP',$fcode,$dbIp);
@@ -967,12 +970,13 @@ public function users()
 			$redis->hmset('H_Fcode_Timezone_Schedular',$fcode,$timeZone);
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			$password='awesome';
-			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo1,$userId.':email',$email1 ,$userId.':password',$password,$userId.':OWN','admin');
+			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo1,$userId.':email',$email1 ,$userId.':password',$password,$userId. ':zoho',$zoho, $userId. 'auth',$auth, $userId. ':OWN','admin');
 			$user = new User;
 			$user->name = $fname;
 			$user->username=$userId;
 			$user->email=$email1; 
 			$user->mobileNo=$mobileNo1;
+			//$user->zoho=$zoho;
 			$user->password=Hash::make($password);
 			$user->save();
 
@@ -1070,6 +1074,16 @@ public function users()
 			$mobileNo1=$franchiseDetails['mobileNo1'];
 		else
 			$mobileNo1='';
+		// zoho ram
+		if(isset($franchiseDetails['zoho'])==1)
+			$zoho=$franchiseDetails['zoho'];
+		else
+			$zoho='';
+		if(isset($franchiseDetails['auth'])==1)
+			$auth=$franchiseDetails['auth'];
+		else
+			$auth='';
+		//
 		if(isset($franchiseDetails['mobileNo2'])==1)
 			$mobileNo2=$franchiseDetails['mobileNo2'];
 		else
@@ -1162,6 +1176,8 @@ public function users()
 		->with('mobileNo1',$mobileNo1)
 		->with('mobileNo2',$mobileNo2)
 		->with('email1',$email1)
+		->with('zoho',$zoho)
+		->with('auth',$auth)
 		->with('email2',$email2)
 		->with('userId',$userId)
 		->with('fullAddress',$fullAddress)
@@ -1226,6 +1242,8 @@ public function users()
 			$fullAddress = Input::get ( 'fullAddress' );
 			$landline = Input::get ( 'landline' );
 			$mobileNo1 = Input::get ( 'mobileNo1' );
+			$zoho = Input::get ('zoho');
+			$auth =Input::get ('auth');
 			$mobileNo2 = Input::get ( 'mobileNo2' );
 			$email1 = Input::get ( 'email1' );
 			$email2 = Input::get ( 'email2' );
@@ -1288,7 +1306,9 @@ public function users()
 					'fname' => $fname,
 					'description' => $description,
 					'landline' => $landline,
-					'mobileNo1' => $mobileNo1,					
+					'mobileNo1' => $mobileNo1,	
+					'zoho' => $zoho,	
+					'auth' => $auth,			
 					'mobileNo2' => $mobileNo2,
 					'email1' => $email1,
 					'email2' => $email2,
@@ -1329,7 +1349,9 @@ public function users()
 					'fname' => 'Franchise Name',
 					'description' => 'Description',
 					'landline' => 'Landline Number',
-					'mobileNo1' => 'Mobile Number1',					
+					'mobileNo1' => 'Mobile Number1',
+					'zoho' => 'Zoho Organisation',	
+					'auth' => 'Zoho Authentication',				
 					'mobileNo2' => 'Mobile Number2',
 					'email1' => 'Email 1',
 					'email2' => 'Email 2',

@@ -61,7 +61,14 @@
 		            		{{Form::input('password', 'providerPassword', $providerPassword,array('class' => 'form-control','placeholder'=>'Provider provider Password'))}}
 		            		</div>
 		            	</div>
+
 		            	<br>
+		            	<div class="row">
+		            		<div class="col-md-3"></div>
+		            		<div class="col-md-2">{{ Form::label('zoho', 'zoho :') }}</div>
+		            		<div class="col-md-4">{{ Form::text('zoho', $zoho, array('class' => 'form-control', 'placeholder'=>'zoho')) }} </div>
+		            	</div>
+		            	 <br>
 		            	<div class="row">
 							<div class="col-md-4">{{Form::label('Image 52*52(png)')}} {{ Form::file('logo_smallEdit', array('class' => 'form-control')) }}</div>
 							<div class="col-md-4">{{Form::label('Image 272*144(png)')}}{{ Form::file('logo_mobEdit', array('class' => 'form-control')) }}</div>

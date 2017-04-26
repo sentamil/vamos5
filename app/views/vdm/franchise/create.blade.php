@@ -108,8 +108,14 @@
 		{{ Form::label('apiKey', 'Api Key') }}
 		{{ Form::text('apiKey', Input::old('apiKey'), array('class' => 'form-control')) }}
 	</div>
-
-	
+     <div class="form-group">
+		{{ Form::label('zoho', 'Zoho Organisation') }}
+		{{ Form::text('zoho', Input::old('zoho'), array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('auth', 'Zoho Authenticatin') }}
+		{{ Form::text('auth', Input::old('auth'), array('class' => 'form-control')) }}
+	</div>
 	{{ Form::submit('Add the Franchise!', array('class' => 'btn btn-primary')) }}
 
 	{{ Form::close() }}
