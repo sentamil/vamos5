@@ -93,7 +93,7 @@
                 </select>
                
                 </li>
-                <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ><span title="{{trimColon(location.group)}}">{{trimColon(location.group)}}</span></a>
+                <li ng-repeat="location in locations02"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ><span title="{{trimColon(location.group)}}" >{{trimColon(location.group)}}</span></a>
                     
                     <ul class="nav"  style="max-height: 400px; overflow-y: auto;">
                         <li ng-repeat="loc in location.vehicleLocations | statusfilter:vehicleStatus | filter:searchbox" ng-class="{active:selected==$index}">
@@ -644,16 +644,16 @@ if(apikey_url != null || apikey_url != undefined)
    var scriptLibrary = [];
    scriptLibrary.push("assets/js/static.js");
    scriptLibrary.push("assets/js/jquery-1.11.0.js");
-  // scriptLibrary.push("assets/js/jquery-3.1.1.min.js");
+ //scriptLibrary.push("assets/js/jquery-3.1.1.min.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
-  // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
-  // scriptLibrary.push("//code.highcharts.com/highcharts.js");
- //  scriptLibrary.push("//code.highcharts.com/highcharts-more.js");
-  // scriptLibrary.push("//code.highcharts.com/modules/solid-gauge.js");
+ //scriptLibrary.push("//code.highcharts.com/highcharts.js");
+ //scriptLibrary.push("//code.highcharts.com/highcharts-more.js");
+// scriptLibrary.push("//code.highcharts.com/modules/solid-gauge.js");
    scriptLibrary.push("assets/js/highcharts_new.js");
    scriptLibrary.push("assets/js/highcharts-more_new.js");
    scriptLibrary.push("assets/js/solid-gauge_new.js");

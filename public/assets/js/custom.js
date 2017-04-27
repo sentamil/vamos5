@@ -84,11 +84,11 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope._editValue 	= {};
 	$scope._editValue._vehiTypeList 	= ['Truck', 'Car', 'Bus', 'Bike'];
 
-/*	$scope.navReports="../public/reports";
+	$scope.navReports="../public/reports";
 	$scope.navStats="../public/statistics";
 	$scope.navSched="../public/settings";
 	$scope.navFms="../public/fms";
-*/
+
 	$scope.zohod=0;
 
 	var tempdistVal = 0;
@@ -154,12 +154,31 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
    return  splitValue[2];
    }
 
-  function zohoDayValue(value){
+  function zohoDayValue(datValue){
+
+  	if(datValue>0){
+
+  	 if(datValue==1){
+
+      $scope.zohoReports=1;
+      $scope.zohod=1;
+      $scope.zohoDays='Payment overdue for '+ datValue+' day. Please make payment at the earliest to avoid de-activation.';
+
+  	  }
+  	  else if(datValue>1){
+
+      $scope.zohoReports=1;
+      $scope.zohod=1;
+      $scope.zohoDays='Payment overdue for '+ datValue+' days. Please make payment at the earliest to avoid de-activation.';
+
+  	  }
+
+  	}
       
-     if(value>=7){
+    /* if(datValue>=7){
      	 $scope.zohoReports=1;
          $scope.zohod=1;
-         $scope.zohoDays='Your dues are pending! Reports will be available after your renewal completed.';
+         $scope.zohoDays='Payment overdue for '+ datValue+'days. Please make payment at the earliest to avoid de-activation.';
      	 console.log('Overdue to 7 days...');
         //$scope.zohoDays='Your dues are pending... Ovedues to 21 days...  Reports not available...';
      	//console.log('21 (or) more than 21 days...');
@@ -171,21 +190,21 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	     $scope.navSched="../public/settings";
 	     $scope.navFms="../public/fms";
 
-        if(value>=5){
+        if(datValue>=5){
           $scope.zohod=1;
-          $scope.zohoDays='Your dues are pending! Overdues to 5 days...';
+          $scope.zohoDays='Payment overdue for '+datValue+'days. Please make payment at the earliest to avoid de-activation.';
      	  console.log('Overdue to 5 days...');
         }
-        else if(value>=4){
+        else if(datValue>=4){
           $scope.zohod=1;
-          $scope.zohoDays='Your dues are pending!';
+          $scope.zohoDays='Payment overdue for '+datValue+'days. Please make payment at the earliest to avoid de-activation.';
      	  console.log('Overdue to 4 days...');
         }
         else{
           $scope.zohod=0;
      	  console.log('less than 4 days...');
         }
-    }
+    } */
  }
 
    function zohoDataCall(data){
@@ -336,6 +355,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 
 	$scope.genericFunction = function(vehicleno, index){
 		// angular.forEach($scope.locations, function(value, key){
+		//if($scope.zohoReports==undefined){	
 			$scope._editValue_con 	=	true;
 			$scope.selected = index;
 			var individualVehicle = $filter('filter')($scope.locations, { vehicleId:  vehicleno});
@@ -348,9 +368,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 				alert(individualVehicle[0].address);
 			}
 			else
-			{
+			{  
+				
 				$scope.removeTask(vehicleno);
-				sessionValue(vehicleno, $scope.gName);
+			    sessionValue(vehicleno, $scope.gName);
 
 				$scope.vehiclFuel=graphChange(individualVehicle[0].fuel);
 				if($scope.vehiclFuel==true){
@@ -363,7 +384,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 				// editableValue();
 			}
 		// })	
-		
+	// }	
 	}
 	//for edit details in the right side div
 	// document.getElementById("inputEdit").disabled = true;
@@ -600,9 +621,9 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 						ginfowindow[j].close();
 					}
 					$scope.selects=1;
-					if($scope.zohoReports==undefined){	
+				//	if($scope.zohoReports==undefined){	
 					infowindow.open(map,marker);
-				    }
+				//  }
 		   		});	
 			})(marker);
 		
@@ -829,7 +850,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		}
 		gmarkers.push($scope.marker);
 		// $scope.marl.push($scope.marker);
-		google.maps.event.addListener(gmarkers[gmarkers.length-1], "click", function(e){	
+	
+		google.maps.event.addListener(gmarkers[gmarkers.length-1], "click", function(e){
+	
+	//	if($scope.zohoReports==undefined){
 			$scope._editValue_con 	=	true;
 			$scope.vehicleno = pos.data.vehicleId;
 			$scope.assignValue(pos.data);
@@ -858,8 +882,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			if($scope.selected!=undefined){
 				$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
 			}
+	//	  }	
        });
-	}
+	 }
+	
 	
 	$scope.assignValue=function(dataVal){
 		$scope.vehicleid = dataVal.vehicleId;
@@ -980,9 +1006,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 
 	$scope.initial02 = function(){
 		//console.log(' marker click ')
-		
+	//	if($scope.zohoReports==undefined){
 		$scope.assignHeaderVal($scope.locations02);
-		var locs = $scope.locations;
+	//    }
+	 	var locs = $scope.locations;
 	 	var parkedCount = 0;
 		var movingCount = 0;
 		var idleCount = 0;
@@ -1030,10 +1057,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			 //$scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);
 		}
 		if($scope.selected!=undefined){
-			if ($scope.zohoReports==undefined) {
+		//	if ($scope.zohoReports==undefined) {
 			$scope.map.setCenter(gmarkers[$scope.selected].getPosition());
 			ginfowindow[$scope.selected].open($scope.map,gmarkers[$scope.selected]);
-		   }
+		//  }
 		}
 		
 		if($scope.groupMap==true)
@@ -1359,7 +1386,10 @@ function locat_address(locs) {
 			$scope.movingCount = movingCount;
 			$scope.idleCount  = idleCount;
 			$scope.overspeedCount = overspeedCount;
+
+		//	if($scope.zohoReports==undefined){
 			$scope.init();
+	    //    }
 			// var length = locs.length;
 			// gmarkers=[];
 			// ginfowindow=[];
@@ -1381,10 +1411,11 @@ function locat_address(locs) {
 		$(document).on('pageshow', '#maploc', function(e){       
         	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
    		});
-
+       
+    //   if($scope.zohoReports==undefined){
 		//marker jump
 		$scope.markerJump(location02[$scope.gIndex].vehicleLocations);
-
+    //    }
 		//for the polygen draw
 		polygenFunction(location02);
 
@@ -1499,7 +1530,7 @@ function locat_address(locs) {
 	//list view
 	function listMap ()
 	{
-	 if($scope.zohoReports==undefined){
+	// if($scope.zohoReports==undefined){
 		setId();
 		// $("#homeImg").show();
 		$("#listImg").hide();
@@ -1510,7 +1541,7 @@ function locat_address(locs) {
 		document.getElementById($scope.idinvoke).setAttribute("id", "mapList");
 		if(document.getElementById('talist')!=null)
 		document.getElementById('talist').setAttribute("id", "mapTable-mapList");
-	  }
+	//  }
 	}
 
 	//return home
@@ -1802,8 +1833,10 @@ $scope.starSplit 	=	function(val){
 				vamoservice.getDataCall(scope.url).then(function(data) {
 					if(data.length){
 						scope.selected 		= undefined;
+					//	if(scope.zohoReports==undefined){
 						scope.locations02	= data;
 						scope.locations 	= scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
+					//    }
 						scope.zoomLevel 	= scope.zoomLevel;
 						scope.loading		=	true;
 						scope.init();

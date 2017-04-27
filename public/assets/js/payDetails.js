@@ -1,8 +1,13 @@
 app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', function($scope, $http, vamoservice, $filter, GLOBAL){
   
-
   //global declaration
   $scope.getZoho=GLOBAL.DOMAIN_NAME+"/getZohoInvoice?";
+
+    $scope.navReports="../public/reports";
+    $scope.navStats="../public/statistics";
+    $scope.navSched="../public/settings";
+    $scope.navFms="../public/fms";
+
 
   //$scope.sort = sortByDate('startTime');
 
@@ -82,48 +87,17 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
       return strTime;
   }
 
-/*
-function zohoDataCall(data){
-
-     $scope.zohoData=[];
-       var zohoDatas=[];
-
-          zohoDatas.push({customerName:data.customerName});
-          zohoDatas[0].hist=[];
-
-          angular.forEach(data.hist,function(val, key){
-          
-            zohoDatas[0].hist.push({customerName:val.customerName,balanceAmount:val.balanceAmount,dueDate:val.dueDate,dueDays:val.dueDays});
-          })
-
-          $scope.zohoData=zohoDatas;
-          console.log( $scope.zohoData);
-}
-
-
-    function webCall(){
-
-      var zohoUrl = GLOBAL.DOMAIN_NAME+"/getZohoInvoice?refName=Rajeev";
-      console.log(zohoUrl);
-     
-        $http.get(zohoUrl).success(function(data){
-
-          zohoDataCall(data);
-
-        stopLoading();
-    }); 
-  }
-*/
+ function trimDueDays(value){
+     var splitValue=value.split(/[ ]+/);
+   return  splitValue[2];
+   }
 
  function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
  }
 
-  function trimDueDays(value){
-     var splitValue=value.split(/[ ]+/);
-   return  splitValue[2];
-   }
-
+ 
+/*
   function zohoDayValue(value){
       
      if(value<7){
@@ -139,7 +113,7 @@ function zohoDataCall(data){
 
      }
 
- }
+ }*/
 
    function zohoDataCall(data){
 
@@ -156,9 +130,9 @@ function zohoDataCall(data){
            })
 
           $scope.zohoData=zohoDatas;
-  //        console.log( $scope.zohoData);
-        //  console.log(getMaxOfArray($scope.zohoDayss));
-          zohoDayValue(getMaxOfArray($scope.zohoDayss))
+            //console.log( $scope.zohoData);
+            //console.log(getMaxOfArray($scope.zohoDayss));
+      //  zohoDayValue(getMaxOfArray($scope.zohoDayss))
     }
 
 /* function zohoUrl(){
@@ -190,7 +164,6 @@ function zohoDataCall(data){
       $scope.uiDate.totime    = $('#timeTo').val();
   
   }
-
 
 
   $scope.exportData = function (data) {
