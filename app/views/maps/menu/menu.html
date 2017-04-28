@@ -91,7 +91,7 @@
                 <li class="removeli"><a href="../public/statistics?ind=1">POI</a></li>
                 <li class="removeli"><a href="../public/statistics?ind=2">Consolidated</a></li>
                 <li class="removeli"><a href="../public/statistics?ind=3">Executive Fuel</a></li>
-            <!--<li class="removeli"><a href="../public/statistics?ind=4">Monthly Distance</a></li>-->
+        <!--    <li class="removeli"><a href="../public/statistics?ind=4">Monthly Distance</a></li> -->
             </ul>
         </li>
         <li class="cl-effect-5">
@@ -283,22 +283,17 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             });
            
 
-            var globalIP = document.location.host;
-            var contextMenu = '/gps';
+        //    var isVir = JSON.parse(sessionStorage.getItem('isVirtualUser'));
+        //    if(isVir == null || isVir == undefined){
+                var globalIP = document.location.host;
+                var contextMenu = '/gps';
 
-            var isVir = JSON.parse(sessionStorage.getItem('isVirtualUser'));
-            if(isVir == null || isVir == undefined){
-              /*  var globalIP = document.location.host;
-                var contextMenu = '/gps';*/
                 $.get('//'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
                 
-                   // var menuVal =response.trim();
-                    var menuVal=true;
+                    var menuVal =response.trim();
                     sessionStorage.setItem('isVirtualUser', JSON.stringify(menuVal));
 
-                    console.log();
                     if(menuVal == 'true') {
-
                         var myList = document.getElementsByClassName('removeli_2');
                         for (var i = 0; myList.length > i ; i++) {
                             myList[i].innerHTML = '';
@@ -308,10 +303,9 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
                 }).error(function(){
                     console.log('error in isVirtualUser');
                 });
-            }
-
-    /*
-        function getMaxOfArray(numArray) {
+        //    }
+    
+/*      function getMaxOfArray(numArray) {
            return Math.max.apply(null, numArray);
         }
 
@@ -358,7 +352,7 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
                
         }).error(function(){
                     console.log('Error in Zoho Url(Nav Menu Page)');
-                });  */
+                }); */
 
              
 </script>

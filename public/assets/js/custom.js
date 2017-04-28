@@ -1045,9 +1045,9 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			 // $scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);	
 			 if(temp.vehicleId==$scope.vehicleno){
 				 $scope.assignValue(temp);
-				 if($scope.selects){		
+			//	 if($scope.selects){		
 				 $scope.selected=i;
-				}
+			//	}
 				 fetchingAddress(temp);
 				 // $scope.getLocation(lat, lng, function(count){
 					//  $('#lastseen').text(count);
@@ -1059,14 +1059,17 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		if($scope.selected!=undefined){
 		//	if ($scope.zohoReports==undefined) {
 			$scope.map.setCenter(gmarkers[$scope.selected].getPosition());
-			ginfowindow[$scope.selected].open($scope.map,gmarkers[$scope.selected]);
+
+			if($scope.selects){
+			  ginfowindow[$scope.selected].open($scope.map,gmarkers[$scope.selected]);
+		     }
 		//  }
 		}
 		
 		if($scope.groupMap==true)
 		{
 			markerCluster.clearMarkers();
-			// mcOptions = {gridSize: 50, maxZoom: 15};
+		  //mcOptions = {gridSize: 50, maxZoom: 15};
 			markerCluster 	= new MarkerClusterer($scope.map, gmarkers, mcOptions) 	
 		}
 		// else if($scope.groupMap == false)
