@@ -280,6 +280,8 @@ function _assignValue (obj, status){
 
 $scope.submitValue  = function(){
 
+  console.log('submitValue ...');
+
   startLoading();
   $scope.error = '';
   $scope.rowsCount = 0;
@@ -321,6 +323,9 @@ $scope.submitValue  = function(){
    
   }
   if(statusValue){
+
+   console.log('inserted...');
+
     $.ajax({
       async: false,
       method: 'POST', 
@@ -446,6 +451,8 @@ $scope._undoEdit  = function(ind, status){
 
 $scope._deleteMobNum    = function(index){
 
+  console.log(index);
+
   $scope.error = '';
   console.log(' _deleteMobNum ');
   $.ajax({
@@ -469,11 +476,46 @@ $scope._deleteMobNum    = function(index){
 }
 
 
+function arrayObjectIndexOf(myArray, searchTerm, property) {
+    for(var i = 0, len = myArray.length; i < len; i++) {
+        if (myArray[i][property] === searchTerm) return i;
+    }
+    return -1;
+}
+//arrayObjectIndexOf(arr, "stevie", "hello"); // 1
+
+$scope._deleteFilterMobNum    = function(index,mobb){
+
+  var indexNew=arrayObjectIndexOf($scope.rowsValue, mobb, "mNum");
+
+  $scope.searchValue.studentDetails.splice(index, 1);
+
+  $scope.error = '';
+  console.log(' _deleteFilterMobNum ');
+  $.ajax({
+    async: false,
+    method: 'POST', 
+    url: _deleteUrl,
+    data: {
+      //'mobNum' : $scope.rowsValue[index].mNum,
+      'mobNum':mobb,
+      'orgId' : getOrgValue($scope.selectRouteName),
+      
+    },
+    success: function (response) {
+      // if(response)
+      console.log(response)
+     
+      
+    }
+  });
+  $scope.rowsValue.splice(indexNew, 1);
+  //$scope._addDetails();
+}
 
 /*
   * show the stop details   
 */
-
 
 function showStop() {
   
@@ -486,9 +528,11 @@ function showStop() {
       busStopValue = _getBustopValue(val.busStop);
       $scope.rowsValue.push({'sName' : trimed(val.name), 'mNum': trimed(val.mobileNumber), 'std' : trimed(val.class), 'poiIds' : busStopValue.stop, 'stopId' : val.busStop, 'id' : val.rowId});
 
-
+     console.log($scope.rowsValue);
     });
   })
+
+
 
 }
 

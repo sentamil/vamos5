@@ -85,8 +85,8 @@ background-color: #ffffff;
 
                     </div>
                 </div>
-                <div class="row">
-                                <div class="col-md-1" align="center"></div>
+                <div class="row" ng-show="showDate" style="margin-top: 20px;">
+                            <div class="col-md-2" align="center"></div>
                                 <div class="col-md-2" align="center">
                                     <div class="form-group">
                                         <div class="input-group datecomp">
@@ -95,7 +95,7 @@ background-color: #ffffff;
                                     </div>
                                 </div>
                                 
-                                <div  class="col-md-2" align="center">
+                                <div  class="col-md-2" align="center" >
                                     <div class="form-group">
                                         <div class="input-group datecomp">
                                             <input type="text" min-date="fromdate" ng-model="todate" class="form-control placholdercolor" id="dateTo" placeholder="To date">
@@ -107,7 +107,25 @@ background-color: #ffffff;
                                     <button ng-click="plotHist()">Submit</button>
                                 </div>
                                <div class="col-md-1" align="center"></div>
-                </div>
+                 </div>
+
+
+                 <div class="row" ng-show="showMonth" style="margin-top: 20px;">
+                         <div class="col-md-2" align="center"></div>
+                               
+                             <!--   <div  class="col-md-2" align="center">-->
+                            <div class="col-md-2 form-group" style="right:0px;">Choose Month:</div>
+
+                             <div class="form-group" style="left: 0px;">
+                                 <select ng-model="monsVal" ng-change="monthssVal(monsVal)" style="background-color:#f9f9f9;padding:3px 3px 3px 3px;min-width:150px;max-width:150px;height:25px;">
+                                        <option ng-repeat="val in monthsVal" value="{{val}}">{{val}}</option>
+                                      </select> 
+                                    </div>
+                                </div>
+                               
+                         <!--   <div class="col-md-1" align="center"></div> -->
+                    </div>
+
                 <hr>
                
                         
@@ -115,7 +133,11 @@ background-color: #ffffff;
                            <div id="container" style="min-width:800px; max-width:800px; height: 350px;"></div>
                               
                         </div>
-                 
+
+                        <div class="col-md-12" ng-show="donut_new">
+                           <div id="container_new" style="min-width:800px; max-width:800px; height: 350px;"></div>
+                              
+                        </div>
                
                     
                      <div id="singleDiv" class="row">     
@@ -285,6 +307,7 @@ background-color: #ffffff;
                                     <th class="id" custom-sort order="'fuelFills'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Fuel Fill</th>
                                     <th class="id" custom-sort order="'fuelConsume'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Fuel Consume</th>
                                     <th class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Dist.Covered</th>
+                                    <th class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Milage</th>
                                     </tr></thead>
                         <tr ng-repeat="data in execFuelData | orderBy:sort.sortingOrder:sort.reverse | filter:searchbox" class="active" style="text-align:center" >
                                       
@@ -292,9 +315,10 @@ background-color: #ffffff;
                                         <td>{{data.vehicleId}}</td>                                
                                         <td>{{data.startFuelLevel}}</td>
                                         <td>{{data.endFuelLevel}}</td>
-                                        <td>{{data.fuelFills}}</td>
-                                        <td>{{data.fuelConsume}}</td>
-                                        <td>{{data.distanceToday}}</td>
+                                        <td>{{parseInts(data.fuelFills)}}</td>
+                                        <td>{{parseInts(data.fuelConsume)}}</td>
+                                        <td>{{parseInts(data.distanceToday)}}</td>
+                                        <td>{{parseInts(data.milage)}}</td>
                                     </tr>
                                     
                                    <tr ng-if="execFuelData=='' || execFuelData==null || execFuelData.length==0" align="center">
@@ -304,6 +328,46 @@ background-color: #ffffff;
                           
                             </div>
                          </tab>
+
+                          <tab select="alertMe('distMonth')" heading="Monthly Dist" active="actMonth"> 
+
+                       <!-- <div class="form-group pull-right">
+                                <input type="search" class="form-control input-sm" placeholder="Enter VehicleId" align="center" ng-model="searchbox" name="search" />
+                            </div>-->
+
+                            <h4 style="margin:0" class="page-header">Monthly Vehicle Distance</h4>
+
+                            <div id='month'>
+                            <table class="table table-bordered table-striped table-condensed table-hover table-striped" ng-show="showMonTable">
+
+                            <thead>
+                            </thead>
+                            <tbody >
+                                <tr style="height:35px;text-align: center;">
+                                  <td colspan="33" style="font-size:14px;font-weight: bold;background-color:#C2D2F2;">{{monsVal+curYear}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color:#f9f9f9;font-size: 12px;">Vehicles Id</td>
+                                    <td ng-repeat="dat in monthDates" style="background-color:#ecf7fb;font-weight: bold;">{{dat}}</td>
+                                    <td style="background-color:#ecf7fb;font-weight: bold;">Total(Kms)</td>
+                                </tr>
+                                <tr ng-repeat="vehi in distMonData">
+                                   <td style="font-weight: bold;" >{{vehi.vehiId}}</td>
+                                   <td ng-repeat="val in vehi.distsTodays">{{parseInts(val.distanceToday)}}</td>
+                                   <td>{{parseInts(vehi.totDist)}}</td>
+                                </tr>
+                             <!--   <tr>
+                                  <td style="background-color:#ecf7fb;font-weight: bold;">Total(Kms)</td>
+                                  <td ng-repeat="dat in monthDates">0</td>
+                                  <td style="background-color:#f9f9f9;"></td>
+                                </tr>-->
+                            
+                            </tbody>            
+                            </table>
+                          
+                            </div>
+                         </tab>
+
                      </tabset>
                   
                     
@@ -312,14 +376,17 @@ background-color: #ffffff;
         </div>
     </div>
     <script src="assets/js/static.js"></script>   
-    <script src="assets/js/jquery-1.11.0.js"></script>
+  <script src="assets/js/jquery-1.11.0.js"></script>
+  <!--  <script src="assets/js/jquery-3.1.1.min.js"></script> -->
     <script src="assets/js/bootstrap.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
     <script data-require="angular-ui-bootstrap@0.11.0" data-semver="0.11.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     
-
     <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="assets/js/highcharts_new.js"></script>
+    <script src="assets/js/highcharts_exporting.js"></script>
+    <script src="assets/js/highcharts_statistics.js"></script>
     <script src="../app/views/reports/customjs/FileSaver.js"></script>
     <script src="../app/views/reports/customjs/moment.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
@@ -327,7 +394,7 @@ background-color: #ffffff;
     <script src="../app/views/reports/customjs/html5csv.js"></script>
     
     <script src="../app/views/reports/c3chart/d3.js"></script>
-    <script src="assets/js/highcharts_statistics.js"></script>
+    
     <script src="../app/views/reports/c3chart/c3.min.js"></script>
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>

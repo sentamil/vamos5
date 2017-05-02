@@ -1,33 +1,171 @@
 app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global', function($scope, $http, $filter, vamoservice, GLOBAL){
 
+	$scope.donut_new=1;
+	$scope.donut=0;
+	$scope.showMonTable=false;
+
 // tab view
-var getUrl  =   document.location.href;
-var tabId ;
-//var tabId 	= 	'executive';
-var index   =   getParameterByName("ind");
+  var getUrl       =  document.location.href;
+  var tabId;
+//var tabId        =  'executive';
+  //$scope.donut_new =  false;
+  var index        =  getParameterByName("ind");
+
 	if(index == 1) {
 		tabId 				= 'poi';
 		$scope.downloadid 	= 'poi';
 		$scope.actTab 		= true;
+		$scope.donut_new    = false;
+		$scope.showDate     = true;
+		$scope.showMonth    = false;
 		$scope.sort 		= sortByDate('time')
 	} else if(index == 2){
+		$scope.donut_new=false;
 		$scope.downloadid 	= 'consolidated';
 		$scope.actCons 		= true;
+		$scope.showDate     = true;
+		$scope.showMonth    = false;
 		$scope.sort 		= sortByDate('date')
 	} 
     else if(index == 3){
-        
-        console.log('index 3...');
+    	$scope.donut_new=true;
         tabId 				= 'fuel';
 		$scope.downloadid 	= 'fuel';
+		$scope.showDate     = true;
+		$scope.showMonth    = false;
 		$scope.actFuel 		= true;
 		$scope.sort 		= sortByDate('date')
 	}
-	else {
-		tabId 	= 	'executive';
-		$scope.downloadid 	= 'executive';
-		$scope.sort 		= sortByDate('date')
+	 else if(index == 4){
+    	$scope.donut_new=false;
+        console.log('index 4...');
+        tabId 				= 'month';
+		$scope.downloadid 	= 'month';
+		$scope.showDate     = false;
+	    $scope.showMonth    = true;
+		$scope.actMonth 	= true;
+		$scope.showMonTable = false;
+		$scope.sort 		= sortByDate('date');
 	}
+	else {
+		tabId 	            = 'executive';
+		$scope.downloadid 	= 'executive';
+		$scope.donut_new    = false;
+		$scope.showDate     = true;
+	    $scope.showMonth    = false;
+		$scope.sort 		= sortByDate('date');
+	}
+
+
+ $scope.trimHyphens = function(textVal){
+
+       var splitValue = textVal.split(/[-]+/);
+
+     return splitValue[2];
+	}
+
+function daysInThisMonth() {
+  var now = new Date();
+ // console.log(now);
+  return new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+}
+
+$scope.lenMon=daysInThisMonth();
+$scope.colVals=$scope.lenMon+2;
+
+function getDaysInMonth(month) {
+    var now = new Date(); 
+    return new Date(now.getFullYear(), month, 0).getDate();
+}
+
+function currentYear(){
+
+	var yy = new Date();
+
+ return yy.getFullYear();
+}
+
+function currentMonth(){
+
+   $scope.monthsVal=["January", "February","March","April","May","June","July","August","September","October","November","December"];
+   var dd = new Date();
+   var mm = dd.getMonth()+1;
+
+   if(mm<10) {
+      mm='0'+mm;
+    }
+   $scope.monthNo=mm;
+ //   console.log(mm);
+
+   var retVal = $scope.monthsVal[dd.getMonth()];
+
+return retVal;
+}
+
+$scope.monArray=currentMonth();
+
+//   console.log($scope.monArray);
+
+   $scope.curYear=" - "+currentYear()+"";
+   $scope.monsVal=$scope.monArray;
+
+
+$scope.monthssVal=function(val){
+
+	console.log(val);
+
+
+	switch(val)
+	{
+      case 'January':
+        $scope.monthNo="0"+1;
+      break;
+      case 'February':
+        $scope.monthNo="0"+2;
+      break;
+      case 'March':
+        $scope.monthNo="0"+3;
+      break;
+      case 'April':
+        $scope.monthNo="0"+4;
+      break;
+      case 'May':
+        $scope.monthNo="0"+5;
+      break;
+      case 'June':
+        $scope.monthNo="0"+6;
+      break;
+      case 'July':
+        $scope.monthNo="0"+7;
+      break;
+      case 'August':
+        $scope.monthNo="0"+8;
+      break;
+      case 'September':
+        $scope.monthNo="0"+9;
+      break;
+      case 'October':
+        $scope.monthNo=10;
+      break;
+      case 'November':
+        $scope.monthNo=11;
+      break;
+      case 'December':
+        $scope.monthNo=12;
+      break;
+      default:
+        console.log('not a month');
+      break;
+	}
+
+   $scope.lenMon=getDaysInMonth($scope.monthNo);
+   $scope.colVals=$scope.lenMon+2;
+
+   startLoading();
+	serviceCall();
+
+ console.log($scope.monthNo);
+}
 
 
 
@@ -39,12 +177,12 @@ $scope.bar 			=	true;
 $('#singleDiv').hide();
 var avoidOnload		=	false;
 
-
 var vehicleSelected =	'';
 
 
-
-
+$scope.parseInts=function(data){
+ return parseInt(data);
+}
 
 function formatAMPM(date) {
 	var date = new Date(date);
@@ -72,8 +210,9 @@ function sessionValue(vid, gname){
 //vehicle list
 $scope.$watch("url", function(val){
 	vamoservice.getDataCall(val).then(function(data) {
-		console.log(0)
+
 		$scope.vehicleList 		= 	data;
+//		console.log($scope.vehicleList );
 		$scope.fromNowTS		=	new Date();
 		$scope.toNowTS			=	new Date().getTime() - 86400000;
 		$scope.fromdate			=	$scope.getTodayDate($scope.fromNowTS.setDate($scope.fromNowTS.getDate()-7));
@@ -84,8 +223,21 @@ $scope.$watch("url", function(val){
    		$scope.groupname 		=	data[0].group;
    		sessionValue($scope.trackVehID, $scope.groupname);
 
+
 		angular.forEach(data, function(value, key){
-			//console.log(value)
+
+         if($scope.groupname == value.group){
+
+		    $scope.gIndex = value.rowId;
+		    $scope.vehicleNames=[];
+
+   		   angular.forEach(value.vehicleLocations, function(val, skey){
+
+   		    	$scope.vehicleNames.push(val.vehicleId);
+			    // console.log(val.vehicleId);
+		    })
+		 }	
+
 			if(value.totalVehicles) {
 				$scope.viewGroup = 	value;
 				serviceCall();
@@ -99,19 +251,35 @@ $scope.$watch("url", function(val){
 
 //group click
 $scope.groupSelection 	=	function(groupName, groupId) {
+	startLoading();
 	vehicleSelected 		=	'';
 	$scope.viewGroup.group 	= 	groupName;
-	startLoading();
-	var groupUrl 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupName;
+    var groupUrl 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupName;
 	vamoservice.getDataCall(groupUrl).then(function(groupResponse){
+
 		$scope.trackVehID       =   groupResponse[groupId].vehicleLocations[0].vehicleId;
    		$scope.groupname 		=	groupName;
    		sessionValue($scope.trackVehID, $scope.groupname)
    		$scope.vehicleList 	=  	groupResponse;
-		serviceCall();
-		stopLoading();
+
+        angular.forEach(groupResponse, function(value, key){
+
+         if($scope.groupname == value.group){
+            $scope.vehicleNames=[];	
+		    $scope.gIndex = value.rowId;
+					
+    		angular.forEach(value.vehicleLocations, function(val, skey){
+
+     			$scope.vehicleNames.push(val.vehicleId);
+			     console.log(val.vehicleId);
+		    })
+		 }
+       })
+
+	   serviceCall();
+	  stopLoading();
 	})
-	
+
 }
 
 //vehicleId click
@@ -208,7 +376,6 @@ function barLoad(vehicleId) {
 	
 
 //group level graph 
-
 function donutLoad(data) {
 
 	$scope.barArray	=	[];
@@ -216,6 +383,7 @@ function donutLoad(data) {
 	if(data != '')
 	angular.forEach(JSON.parse(data.distanceCoveredAnalytics), function(value, key) {
 		angular.forEach(data.execReportData, function(val, key1){
+
 			if(val.vehicleId == key)
 			{
 				vehiName = val.shortName;
@@ -274,8 +442,136 @@ function donutLoad(data) {
 };
 
 
+function chartFuel(data){
+
+    $scope.chartVehic  =	 [];
+	$scope.chartDist   =	 [];
+	$scope.chartFuels  =	 [];
+	
+	var distVal=0;
+	var fuelVal=0;
+    var preVehiVal="";
+    var curVehiVal="";
+
+	if(data != '')
+	{
+		angular.forEach(data, function(val, key){
+
+			curVehiVal=val.vehicleId.toString();
+
+			if(key==0){
+
+		         distVal=distVal+val.distanceToday;
+                 fuelVal=fuelVal+val.fuelConsume;
+
+			     preVehiVal=val.vehicleId.toString();
+			}
+
+		    if(key>0){
+
+             if(preVehiVal==curVehiVal){
+
+                 distVal=distVal+val.distanceToday;
+                 fuelVal=fuelVal+val.fuelConsume;
+                 preVehiVal=val.vehicleId.toString();
+             }else{
+
+            	$scope.chartDist.push(parseInt(distVal));
+            	$scope.chartFuels.push(parseInt(fuelVal));
+            	$scope.chartVehic.push(preVehiVal);
+
+            //  console.log(''+preVehiVal+'  '+distVal+'  '+fuelVal);
+
+                distVal=0;
+                fuelVal=0;
+            	preVehiVal=val.vehicleId.toString();
+            }
+         }
+	})	
+
+	/*	console.log($scope.chartVehic);
+        console.log($scope.chartDist);  
+		console.log($scope.chartFuels); */
+    }
+
+
+//Highcharts.chart('container', {
+$('#container_new').highcharts({	
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Efficiency Optimization'
+    },
+    xAxis: {
+        categories: $scope.chartVehic,
+    },
+    yAxis: [{
+        min: 0,
+        title: {
+            text: 'Distance (Kms)'
+        }
+    }, {
+        title: {
+            text: 'Fuel (Ltrs)'
+        },
+        opposite: true
+    }],
+    legend: {
+        shadow: false
+    },
+    tooltip: {
+        shared: true
+    },
+    plotOptions: {
+        column: {
+            grouping: false,
+            shadow: false,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Distance Covered',
+        color: 'rgba(165,170,217,1)',
+        data: $scope.chartDist,
+        pointPadding: 0.3,
+        pointPlacement: -0.2
+    }, /*{
+        name: 'Employees Optimized',
+        color: 'rgba(126,86,134,.9)',
+        data: [140, 90, 40],
+        pointPadding: 0.4,
+        pointPlacement: -0.2
+    },*/ {
+        name: 'Fuel Consumed',
+        color: 'rgba(248,161,63,1)',
+        data: $scope.chartFuels,
+        tooltip: {
+           // valuePrefix: '',
+            valueSuffix: ' Ltrs'
+        },
+        pointPadding: 0.3,
+        pointPlacement: 0.2,
+        yAxis: 1
+    } /*, {
+        name: 'Profit Optimized',
+        color: 'rgba(186,60,61,.9)',
+        data: [203.6, 198.8, 208.5],
+        tooltip: {
+            valuePrefix: '$',
+            valueSuffix: ' M'
+        },
+        pointPadding: 0.4,
+        pointPlacement: 0.2,
+        yAxis: 1
+    }*/ ]
+});
+
+
+}
+
 $scope.msToTime = function(ms) 
-    {
+{
         days = Math.floor(ms / (24 * 60 * 60 * 1000));
 	  	daysms = ms % (24 * 60 * 60 * 1000);
 		hours = Math.floor((daysms) / (60 * 60 * 1000));
@@ -288,7 +584,332 @@ $scope.msToTime = function(ms)
 		// else
 			return hours +":"+minutes+":"+seconds;
 	}
+
+
+
+function distanceMonth(data){
+
+	var ret_obj=[];
+
+    angular.forEach(data.vehicleDistanceData, function(val, key){
+
+        ret_obj.push({vehiId:val.vehicleId,totDist:val.totalDistance});
+    	ret_obj[key].distsTodays=[];
+
+         angular.forEach(val.distances, function(sval, skey){
+           ret_obj[key].distsTodays.push({distanceToday:sval});
+           //	console.log(sval);
+   	   
+    }) 
+
+})    
+ return ret_obj;
+}
+
+
+function distMonthTotal(data){
+
+var distTot=0;
+$scope.totVehiDist=[];
+
+console.log(data.length-1);
+
+   for(var i=0;i<data.length;i++){
+
+
+      for(var j=0;j<data[i].distsTodays.length;j++){
+
+
+
+      	if(i==j){
+
+
+      		
+      	}
+
+         
+    }
+}
+
+
+
+
+
+/*angular.forEach(data, function(val, key){
+
+  angular.forEach(val.distsTodays, function(sval, skey){
+
+
+ if(skey==2) 	
+
+   distTot=distTot+sval.distanceToday;
+    //console.log(key);
+    // console.log(sval.distanceToday);
+
+})
+
+
+})
+
+console.log(distTot);*/
+
+return;
+}
+
+ /*function distanceMonth(data){
+
+ 	var ret_obj  = [] ;
+ 	var preVal   = "" ;
+    var curVal   = "" ;
+    var firstVal =  0 ;
+    var distVehi =  0 ;
+    $scope.totDistY =  [] ;
+      
+    angular.forEach(data.executiveReportsForDistances, function(val, key){
+
+   	    curVal=val.vehicleId.toString();
+
+         if(key==0){
+
+         	 ret_obj.push({VehiId:val.vehicleId});
+             ret_obj[firstVal].dateDist=[];
+             ret_obj[firstVal].dateDist.push({date:val.date,distanceToday:val.distanceToday});
+             distVehi=distVehi+val.distanceToday;
+             preVal=val.vehicleId.toString();
+           
+          }
+		  
+		  if(key>0){
+             if(preVal==curVal){
+		  
+                 ret_obj[firstVal].dateDist.push({date:val.date,distanceToday:val.distanceToday});
+                 distVehi=distVehi+val.distanceToday;
+                 preVal=val.vehicleId.toString();
+
+             }else{
+
+                 firstVal++;
+                 $scope.totDistY.push({totDist:distVehi});
+                 ret_obj.push({VehiId:val.vehicleId});
+                 ret_obj[firstVal].dateDist=[];
+                 preVal=val.vehicleId.toString();
+
+              }
+           }
+
+    }) 
+
+  $scope.totDistY.push({totDist:distVehi});
+    
+return ret_obj;
+}
+
+*/
+
+
+/*function distanceValues(data){
+
+ 	
+ 	var ret_Arr  =  [];
+
+ 	var conVal   =  0;
+
+    angular.forEach(data, function(value, key){
+
+ 	  ret_Arr.push( { vehicleId : value.VehiId } );
+      ret_Arr[key].datesDist = [];
+      
+     
+      
+      angular.forEach(value.dateDist, function(val, skey){
+
+           if(skey>0){
+      	   
+      	        condiVal= skey;
+            }
+
+           var  newKey   =  skey + 1 ; 
+           var  distDate = parseInt($scope.trimHyphens( val.date));
+    
+            for (; conVal<distDate;++conVal)
+            {
+
+             //conVal =  conVal + 1;
+
+               if(conVal==distDate){
+
+                 ret_Arr[key].datesDist.push({ date :val.date, distanceToday : val.distanceToday});
+                       
+                }else{
+
+                 ret_Arr[key].datesDist.push({date : '-', distanceToday : '-' });
+                 }
+
+            }
+
+            if (newKey == data[key].dateDist.length ){
+
+            	var aaa = 31;
+                var condiVal = aaa - conVal ;
+
+                      
+                   for (var i = 0 ;i<condiVal;condiVal++){
+
+
+                            ret_Arr[key].datesDist.push( {  date : '-', distanceToday : '-' } );
+                                  
+               }
+
+                }
+
+
+
+        })
+    })
+
+ return ret_Arr;
+ }
+*/
+
+
+/*
+angular.forEach(data,function(value, key){
+
+          ret_obj.push({startTime:value.startTime,endTime:value.endTime,shortName:value.shortName})   
+          ret_obj[key].history = [];
+
+        angular.forEach(value.history, function(val, secondKey){
+
+          if(val.stoppageTime>0 && filterValues==100){
+           
+            if(val.stoppageTime>=3600000){
+
+            	ret_obj[key].history.push(val);
+          
+            }
+*/
+
+
+/* function distanceValues(data){
+
+ 	var ret_Arr=[];
+
+ 	var aaa=32;
+
+    angular.forEach(data, function(value, key){
+
+        ret_Arr.push({vehicleId:value.VehiId});	
+        ret_Arr[key].dists=[];
+      
+      angular.forEach(value.dateDist, function(val, skey){
+
+         ret_Arr[key].dists.push({});  
+         ret_Arr[key].dists[skey].datts=[];
+           
+    //console.log(parseInt($scope.trimHyphens(val.date)));
+
+        var disDat=parseInt($scope.trimHyphens(val.date));
+        
+       
+         for(var i=0;i<31;i++){
 	
+              if(i===disDat){
+
+              	ret_Arr[key].dists[skey].datts[i]=disDat;
+
+            //  ret_Arr[key].dists[skey].datts.push({date:val.date,distanceToday:val.distanceToday});
+
+                break;
+
+              }else{
+              
+                ret_Arr[key].dists[skey].datts[i]=0; 
+
+                    //if(i!==disDat){
+                    //ret_Arr[key].dists[skey].datts.push({date:i,distanceToday:"-"});
+              }
+   
+          } 
+          
+        })
+    })
+
+ return ret_Arr;
+ }*/
+
+
+
+/*
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
+function distMon(data){
+
+var firstVal =0;
+
+$scope.size = Object.size(data);
+
+console.log($scope.size-1);
+
+  var ret_obj=[];
+    //  ret_obj.push({});
+
+  angular.forEach(data, function(val, key){
+
+         
+             
+          angular.forEach(data[key].history, function(valu, skey){
+
+          	
+        
+          	//  ret_obj[key].dates.push({veh:val.vehicleId});
+          	//ret_obj[key].dates[skey].datts=[];
+
+          	 curVehiVal=val.vehicleId.toString();
+
+         if(key==0){
+             preVehiVal=val.vehicleId.toString();
+         }
+		  
+             if(preVehiVal==curVehiVal){
+             	 ret_obj.push({});
+             	ret_obj[firstVal].dates=[];  
+             	ret_obj[firstVal].dates.push({date:valu.date,distanceToday:valu.distanceToday});
+             	firstVal++;
+            //   ret_obj[key].dates[skey].datts=[];
+            //   ret_obj[key].dates.push({date:valu.date,distanceToday:valu.distanceToday}); 
+               preVehiVal=val.vehicleId.toString();
+             }else{
+                 firstVal=0;
+               console.log(preVehiVal);
+             	ret_obj.push({veh:preVehiVal});
+               preVehiVal=val.vehicleId.toString();
+              }
+
+               
+            console.log(key);
+            console.log(valu.distanceToday);
+            console.log(valu.date);
+          })
+
+           if(key==($scope.size-1)){
+
+             	console.log(preVehiVal);
+
+             }
+     
+          
+    })
+
+
+return ret_obj;
+}	
+*/	
 
 function serviceCall(){
 	// $scope.execGroupReportData 	=	[];
@@ -301,13 +922,15 @@ function serviceCall(){
 				$scope.execGroupReportData  	=	[];
 				if(tagsCheck == false)
 				if(vehicleSelected){
-					$scope.donut 	= 	true;
+					$scope.donut 	= 	false;
+					$scope.donut_new=   false;
 					$scope.bar 		=	false;
 					$('#singleDiv').show(500);
 					$scope.execGroupReportData	=	($filter('filter')(responseGroup.execReportData, {'vehicleId':vehicleSelected}));
 					barLoad(vehicleSelected);
 				} else {
 					$scope.donut 	= 	false;
+					$scope.donut_new=   false;
 					$scope.bar 		=	true;
 					$('#singleDiv').hide();
 					$scope.execGroupReportData	=	responseGroup.execReportData;
@@ -319,6 +942,7 @@ function serviceCall(){
 			})
 		}else if(tabId == 'poi' || $scope.actTab == true){
 			$scope.donut 		= 	true;
+			$scope.donut_new    =   false;
 			$scope.bar 			= 	true;
 			$('#singleDiv').hide();
 			var poiUrl 			=	GLOBAL.DOMAIN_NAME+'/getPoiHistory?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
@@ -332,36 +956,78 @@ function serviceCall(){
 		}
         else if(tabId == 'fuel' || $scope.actFuel == true){
 			$scope.donut 		= 	true;
+			$scope.donut_new    =   true;
 			$scope.bar 			= 	true;
+			$scope.donut_new    =   true;
 			$('#singleDiv').hide();
 			var fuelUrl =GLOBAL.DOMAIN_NAME+'/getExecutiveFuelReport?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
-			
-            console.log(fuelUrl);
-
-			$scope.execFuelData		=		[];
-
-
+			// console.log(fuelUrl);
+			$scope.execFuelData		=	[];
             $http.get(fuelUrl).success(function(data){
 
-					$scope.execFuelData	 = data;
+			    $scope.execFuelData	 = data;
+		        chartFuel($scope.execFuelData);
 
 				stopLoading();
 			});
-			
+
 		}
-		else{
+		else if(tabId == 'month' || $scope.actMonth == true){
+			$scope.donut 		= 	true;
+			$scope.donut_new    =   false;
+			$scope.bar 			= 	true;
+			$('#singleDiv').hide();
+
+                 
+        /*    $scope.monthDates=[];
+		       
+		       for(var i=0;i<$scope.lenMon;i++){
+                  $scope.monthDates.push(i+1);
+                }
+*/
+
+
+			var monthUrl =GLOBAL.DOMAIN_NAME+'/getExecutiveReportVehicleDistance?groupId='+$scope.viewGroup.group+'&month='+ $scope.monthNo;
+			
+			console.log(monthUrl);
+             
+			$scope.monthData	=	[];
+           
+            $http.get(monthUrl).success(function(data){
+
+			    $scope.monthData = data;
+		     //   console.log($scope.monthData);
+
+                $scope.monthDates=[];
+		       
+		       for(var i=0;i<$scope.lenMon;i++){
+                  $scope.monthDates.push(i+1);
+                }
+
+               $scope.distMonData=[];
+               $scope.distMonData=distanceMonth($scope.monthData);
+            //   console.log($scope.distMonData);
+
+            //   console.log(daysInThisMonth());
+
+                $scope.showMonTable=true;
+				stopLoading();
+			});
+
+		}
+	/*	else{
 
 			console.log(fuelUrl);
 
-		}
-
-	} else {
+		}*/
+	 }else {
 		$scope.barArray1			= [];
    		$scope.barArray2			= [];
    		$scope.execGroupReportData	= [];
 		$scope.geofencedata			= [];
    		barLoad(vehicleSelected);
 		donutLoad('');
+		chartFuel('');
 		stopLoading();
 	}
 }
@@ -383,13 +1049,19 @@ $scope.alertMe 		= 	function(tabClick)
 			tabId 				= 'executive';
 			$scope.sort 		= sortByDate('date');
 			$scope.downloadid 	= 'executive';
+			$scope.showDate     = true;
+			$scope.showMonth    = false;
 			serviceCall();
+			$scope.donut=false;
+			$scope.donut_new=false;
 			break;
 		case 'poi':
 			startLoading();
 			$scope.sort 		= sortByDate('time');
 			tabId				= 'poi';
 			$scope.downloadid 	= 'poi';
+			$scope.showDate     = true;
+			$scope.showMonth    = false;
 			serviceCall();
 			//console.log('poi');
 			break;
@@ -398,13 +1070,28 @@ $scope.alertMe 		= 	function(tabClick)
 			$scope.sort 		= sortByDate('date');
 			tabId 				= 'executive';
 			$scope.downloadid 	= 'consolidated';
+			$scope.showDate     = true;
+			$scope.showMonth    = false;
 			serviceCall();
+			$scope.donut=false;
+			$scope.donut_new=false;
 			break;
 		case 'fuel' :
 			startLoading();
 			$scope.sort 		= sortByDate('date');
 			tabId 				= 'fuel';
 			$scope.downloadid 	= 'fuel';
+			$scope.showDate     = true;
+			$scope.showMonth    = false;
+			serviceCall();
+			break;
+		case 'distMonth' :
+			startLoading();
+		//	$scope.sort 		= sortByDate('date');
+			tabId 				= 'month';
+			$scope.downloadid 	= 'month';
+			$scope.showDate     = false;
+			$scope.showMonth    = true;
 			serviceCall();
 			break;	
 		default :
