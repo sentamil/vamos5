@@ -126,11 +126,11 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
           angular.forEach(data.hist,function(val, key){
                 $scope.zohoDayss.push(trimDueDays(val.dueDays));
-                zohoDatas[0].hist.push({customerName:val.customerName,balanceAmount:val.balanceAmount,dueDate:val.dueDate,dueDays:val.dueDays});
+                zohoDatas[0].hist.push({customerName:val.customerName,balanceAmount:val.balanceAmount,dueDate:val.dueDate,dueDays:val.dueDays,invoice:val.invoiceLink});
            })
 
           $scope.zohoData=zohoDatas;
-            //console.log( $scope.zohoData);
+          // console.log( $scope.zohoData);
             //console.log(getMaxOfArray($scope.zohoDayss));
       //  zohoDayValue(getMaxOfArray($scope.zohoDayss))
     }
@@ -147,7 +147,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
      vamoservice.getDataCall($scope.getZoho).then(function(data){
 
-        // console.log(data);
+      //  console.log(data);
 
          zohoDataCall(data);
   

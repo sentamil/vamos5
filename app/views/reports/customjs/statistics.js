@@ -67,7 +67,13 @@ app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global'
 function daysInThisMonth() {
   var now = new Date();
  // console.log(now);
-  return new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  var mm = now.getMonth();
+    if(mm==0){
+        mm=12;
+     }
+  var nowNew = new Date(now.getFullYear(), mm, 0).getDate();
+
+ return nowNew;
 }
 
 $scope.lenMon=daysInThisMonth();
@@ -85,26 +91,39 @@ function currentYear(){
  return yy.getFullYear();
 }
 
-function currentMonth(){
 
+function currentMonth(){
+   
+   var retVal;
    $scope.monthsVal=["January", "February","March","April","May","June","July","August","September","October","November","December"];
    var dd = new Date();
-   var mm = dd.getMonth()+1;
+ //var mm = dd.getMonth()+1;
+   var mm = dd.getMonth();
+   var mmNew=mm;
 
-   if(mm<10) {
+    if(mm==0)
+    {
+      mm=12;
+    } 
+
+    if(mm<10) {
       mm='0'+mm;
     }
-   $scope.monthNo=mm;
- //   console.log(mm);
+    $scope.monthNo=mm;
 
-   var retVal = $scope.monthsVal[dd.getMonth()];
+   //console.log($scope.monthNo);
+
+    if(mmNew==0){
+        retVal = $scope.monthsVal[11];
+    }else{
+        retVal = $scope.monthsVal[mmNew-1];
+    }
 
 return retVal;
 }
 
-$scope.monArray=currentMonth();
-
-//   console.log($scope.monArray);
+   $scope.monArray=currentMonth();
+// console.log($scope.monArray);
 
    $scope.curYear=" - "+currentYear()+"";
    $scope.monsVal=$scope.monArray;
@@ -112,9 +131,7 @@ $scope.monArray=currentMonth();
 
 $scope.monthssVal=function(val){
 
-	console.log(val);
-
-
+//	console.log(val);
 	switch(val)
 	{
       case 'January':
@@ -163,8 +180,7 @@ $scope.monthssVal=function(val){
 
    startLoading();
 	serviceCall();
-
- console.log($scope.monthNo);
+// console.log($scope.monthNo);
 }
 
 
@@ -977,14 +993,6 @@ function serviceCall(){
 			$scope.donut_new    =   false;
 			$scope.bar 			= 	true;
 			$('#singleDiv').hide();
-
-                 
-        /*    $scope.monthDates=[];
-		       
-		       for(var i=0;i<$scope.lenMon;i++){
-                  $scope.monthDates.push(i+1);
-                }
-*/
 
 
 			var monthUrl =GLOBAL.DOMAIN_NAME+'/getExecutiveReportVehicleDistance?groupId='+$scope.viewGroup.group+'&month='+ $scope.monthNo;
