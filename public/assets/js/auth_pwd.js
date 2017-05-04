@@ -452,6 +452,7 @@ $scope._undoEdit  = function(ind, status){
 $scope._deleteMobNum    = function(index){
 
   console.log(index);
+  console.log($scope.rowsValue[index].mNum);
 
   $scope.error = '';
   console.log(' _deleteMobNum ');
@@ -484,7 +485,11 @@ function arrayObjectIndexOf(myArray, searchTerm, property) {
 }
 //arrayObjectIndexOf(arr, "stevie", "hello"); // 1
 
-$scope._deleteFilterMobNum    = function(index,mobb){
+$scope._deleteFilterMobNum = function(index,mobb,routeN){
+
+ // console.log(mobb);
+ // console.log($scope.selectRouteName);
+ // console.log(routeN);
 
   var indexNew=arrayObjectIndexOf($scope.rowsValue, mobb, "mNum");
 
@@ -492,15 +497,16 @@ $scope._deleteFilterMobNum    = function(index,mobb){
 
   $scope.error = '';
   console.log(' _deleteFilterMobNum ');
+  
   $.ajax({
     async: false,
     method: 'POST', 
     url: _deleteUrl,
     data: {
       //'mobNum' : $scope.rowsValue[index].mNum,
-      'mobNum':mobb,
-      'orgId' : getOrgValue($scope.selectRouteName),
-      
+      //'orgId'  : getOrgValue($scope.selectRouteName),
+        'mobNum' : mobb,
+        'orgId'  : getOrgValue(routeN),
     },
     success: function (response) {
       // if(response)

@@ -216,7 +216,7 @@
                   <td>{{value.class}}</td>
                   <td>{{value.BusStopName}}</td>
                   
-                  <td><!--<button class="btn btn-default btn-xs" ng-click="_editStop($index, 'one')" ng-if="row.mNum != ' '"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;&nbsp;<button class="btn btn-default btn-xs" ng-click="_undoEdit($index, 'one')" ng-if="row.mNum == ' '"><span class="glyphicon glyphicon-ok"></span></button>&nbsp;&nbsp;--><button class="btn btn-default btn-xs"  ng-click="_deleteFilterMobNum($index,value.mobileNumber)"><span class="glyphicon glyphicon-trash"></span></button></td>
+                  <td><!--<button class="btn btn-default btn-xs" ng-click="_editStop($index, 'one')" ng-if="row.mNum != ' '"><span class="glyphicon glyphicon-pencil"></span></button>&nbsp;&nbsp;<button class="btn btn-default btn-xs" ng-click="_undoEdit($index, 'one')" ng-if="row.mNum == ' '"><span class="glyphicon glyphicon-ok"></span></button>&nbsp;&nbsp;--><button class="btn btn-default btn-xs"  ng-click="_deleteFilterMobNum($index,value.mobileNumber,value.route)"><span class="glyphicon glyphicon-trash"></span></button></td>
 
                 </tr>
               </tbody>
