@@ -893,9 +893,6 @@ Route::get('vdmVehicles/dashboard', array('uses' => 'VdmVehicleController@dashbo
 Route::get('vdmVehicles/{param}/edit1', array('uses' => 'VdmVehicleController@edit1'));
 Route::post('vdmVehicles/update1', array('uses' => 'VdmVehicleController@update1'));
  
- 
- 
- 
 Route::get('vdmVehicles/removeStop/{param}/{param1}', array('uses' => 'VdmVehicleController@removeStop'));
  
 Route::get('vdmVehicles/stops1/{param}/{param1}', array('uses' => 'VdmVehicleController@stops1'));
@@ -909,10 +906,16 @@ Route::post('vdmVehicles/migrationUpdate', array('uses' => 'VdmVehicleController
  
  
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
- 
+///Advance scan for GROUPS		
+Route::get('vdmGroups/Search', array('uses' => 'VdmGroupController@groupSearch'));		
+Route::post('vdmGroupsScan/Search', array('uses' => 'VdmGroupController@groupScan'));
+
 Route::resource('vdmGroups', 'VdmGroupController');
 Route::get('vdmVehicles/create/{param1}', array('uses' => 'VdmVehicleController@create'));
 Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dealerSearch'));
+///Advance scan for VEHICLES		
+Route::get('vdmVehiclesSearch/Scan', array('uses' => 'VdmVehicleScanController@vehicleSearch'));		
+Route::post('vdmVehiclesSearch/scan', array('uses' => 'VdmVehicleScanController@vehicleScan'));
 
 Route::resource('vdmVehicles', 'VdmVehicleController');
 Route::get('vdmVehicles/edit/{param1}', array('uses' => 'VdmVehicleController@edit'));
@@ -943,21 +946,24 @@ Route::post('groupId', array('as' => 'ajax.groupIdCheck', 'uses'=>'VdmGroupContr
 Route::post('dealerId', array('as' => 'ajax.dealerCheck', 'uses'=>'VdmDealersController@dealerCheck'));
 Route::post('orgId', array('as' => 'ajax.ordIdCheck', 'uses'=>'VdmOrganizationController@ordIdCheck'));
 Route::post('userId', array('as' => 'ajax.userIdCheck', 'uses'=>'VdmUserController@userIdCheck'));
-
-
 Route::post('vdmVehicles/calibrate/count', array('uses'=>'VdmVehicleController@calibrateCount'));
 
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
 Route::resource('Licence', 'LicenceController');
+///Advance scan for USERS		
+Route::get('vdmUserSearch/Scan', array('uses' => 'VdmUserController@search'));		
+Route::post('vdmUserScan/user', array('uses' => 'VdmUserController@scan'));
 
 Route::get('vdmUsers/notification/{param}', array('uses' => 'VdmUserController@notification'));
 Route::post('vdmUsers/updateNotification', array('uses' => 'VdmUserController@updateNotification'));
-
 Route::get('Licence/ViewDevices/{param}', array('uses' => 'LicenceController@viewDevices'));
  
 Route::resource('vdmDealers', 'VdmDealersController');
- 
+///Advance scan for DEALERS		
+Route::get('vdmDealersSearch/Scan', array('uses' => 'VdmDealersScanController@dealerSearch'));		
+Route::post('vdmDealersScan/Search', array('uses' => 'VdmDealersScanController@dealerScan'));
+
 Route::get('vdmDealers/editDealer/{param}', array('uses' => 'VdmDealersController@editDealer'));
  
 Route::resource('vdmSchools', 'VdmSchoolController');
