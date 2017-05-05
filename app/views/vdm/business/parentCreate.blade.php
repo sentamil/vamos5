@@ -255,6 +255,16 @@
 														<td class="col-md-2">{{ Form::select('Licence'.$i,  array($Licence), 'Basic', array('class' => 'form-control')) }}</td>
 														<td class="col-md-2">{{ Form::select('Payment_Mode'.$i,  array($Payment_Mode), 'Yearly', array('class' => 'form-control')) }}</td>
 														<td class="col-md-2">{{ Form::text('descr'.$i, Input::old('descr'), array('class' => 'form-control','placeholder'=>'Description')) }}</td>
+														<td class="col-md-2">
+                                                          <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+                                                          <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+                                                        <script>   
+                                                            $(function() {
+                                                             $( "#calendar" ).datepicker({ dateFormat: 'yy-mm-dd' });
+                                                               }); 
+                                                        </script>
+                                                           <input type="text" name="vehicleExpiry" placeholder="vehicleExpiry" id="calendar" />
+                                                     </td>
 													</tr>
 												</table>							
 											</td>

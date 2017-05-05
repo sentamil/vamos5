@@ -676,6 +676,9 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$driverName=!empty($driverName) ? $driverName : 'nill';	
 	$email=Input::get ( 'email'.$i);	
 	$email=!empty($email) ? $email : 'nill';	
+	//
+	$vehicleExpiry=Input::get ( 'vehicleExpiry');
+    $vehicleExpiry=!empty($vehicleExpiry) ? $vehicleExpiry : 'nill';
 	$altShortName=Input::get ( 'altShortName'.$i);	
 	$altShortName=!empty($altShortName) ? $altShortName : 'nill';						
 	$sendGeoFenceSMS=Input::get ( 'sendGeoFenceSMS'.$i);
@@ -805,6 +808,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 								'overSpeedLimit' => $overSpeedLimit,					
 								'driverName' => $driverName,					
 								'email' => $email,
+								//'vehicleExpiry' => $vehicleExpiry,
 								'altShortName'=>$altShortName,
 								'sendGeoFenceSMS' => $sendGeoFenceSMS,
 								'morningTripStartTime' => $morningTripStartTime,
@@ -814,6 +818,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 								'Licence'=>$Licence,
 								'Payment_Mode'=>$Payment_Mode,
 								'descriptionStatus'=>$descriptionStatus,
+								'vehicleExpiry' => $vehicleExpiry,
 							);
 						$refDataJson = json_encode ( $refDataArr );
 						//log::info('json data --->'.$refDataJson);
@@ -914,6 +919,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 							'mobile' => '1234567890',
 							'description' => '',
 							'email' => '',
+							'vehicleExpiry' => '',
 							'address' => '',
 							'mobile' => '',
 							'startTime' => '',
@@ -1117,8 +1123,23 @@ if($type=='Sale' )
 		{
 			$error='successfully Added';
 		}
-
-
+$redis = Redis::connection ();
+$parameters = 'fcode='.$fcode . '&expiryDate='.$vehicleExpiry. '&vehicleId='.$vehicleId;
+//TODO - remove ..this is just for testing
+// $ipaddress = 'localhost';
+    $ipaddress = $redis->get('ipaddress');
+    $url = 'http://' .$ipaddress . ':9000/getVehicleExpiryDetailsUpdate?' . $parameters;
+    $url=htmlspecialchars_decode($url);
+    log::info( ' url :' . $url);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+// Include header in result? (0 = yes, 1 = no)
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
 
 return Redirect::to ( 'Business' )->withErrors($error);
 
@@ -1366,6 +1387,7 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
  						'Licence'=>isset($refDataJson1['Licence'])?$refDataJson1['Licence']:'',
            				 'Payment_Mode'=>isset($refDataJson1['Payment_Mode'])?$refDataJson1['Payment_Mode']:'',
            				 'descriptionStatus'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'',
+						'vehicleExpiry'=>isset($refDataJson1['vehicleExpiry'])?$refDataJson1['vehicleExpiry']:'',
 
 			            );
 

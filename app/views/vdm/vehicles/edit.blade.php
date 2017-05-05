@@ -230,11 +230,20 @@
 								{{ Form::label('maxtem', 'Maximum Temperature') }}
 								{{ Form::number('maxtemp', $refData['maxtemp'],array('class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'-100')) }} 
 							</div>
+<div class="form-group">
+{{ Form::label('vehicleExpiry', 'Vehicle Expire') }}
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+ <script>   
+    $(function() {
+        // $( "#calendar" ).datepicker();   
+         $( "#calendar" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    }); 
+ </script>
+<input type="text" name="vehicleExpiry" id="calendar" />
+</div>
 							<br/>
 					
-
-
-
 								<div class="col-md-5" style="top: 30px; position: relative; left: 40%">
 									
 										 {{ Form::submit('Update the Vehicle!', array('class' => 'btn btn-primary')) }}

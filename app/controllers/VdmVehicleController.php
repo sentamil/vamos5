@@ -266,6 +266,7 @@ public function store() {
         $vehicleType = Input::get ( 'vehicleType' );
         $oprName = Input::get ( 'oprName' );
         $mobileNo = Input::get ( 'mobileNo' );
+	$vehicleExpiry = Input::get ( 'vehicleExpiry' );
         $overSpeedLimit = Input::get ( 'overSpeedLimit' );
         $deviceModel = Input::get ( 'deviceModel' );
         $odoDistance = Input::get ('odoDistance');
@@ -323,6 +324,7 @@ else if(Session::get('cur')=='admin')
             'vehicleType' => $vehicleType,
             'oprName' => $oprName,
             'mobileNo' => $mobileNo,
+		'vehicleExpiry' => $vehicleExpiry,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
             'driverName' => $driverName,
@@ -582,6 +584,7 @@ public function edit($id) {
         $refData = array_add($refData, 'vehicleType', ' ');
         $refData = array_add($refData, 'oprName', ' ');
         $refData = array_add($refData, 'mobileNo', '0123456789');
+	 $refData = array_add($refData, 'vehicleExpiry', 'vehicleExpiry');
         $refData = array_add($refData, 'overSpeedLimit', '50');
         $refData = array_add($refData, 'driverName', '');
         $refData = array_add($refData, 'gpsSimNo', '0123456789');
@@ -982,6 +985,7 @@ public function update($id) {
         $vehicleType = Input::get ( 'vehicleType' );
         $oprName = Input::get ( 'oprName' );
         $mobileNo = Input::get ( 'mobileNo' );
+	$vehicleExpiry = Input::get ( 'vehicleExpiry' );
         $overSpeedLimit = Input::get ( 'overSpeedLimit' );
         $deviceModel = Input::get ( 'deviceModel' );
         $driverName = Input::get ( 'driverName' );
@@ -1060,6 +1064,7 @@ else if(Session::get('cur')=='admin')
             'vehicleType' => $vehicleType,
             'oprName' => $oprName,
             'mobileNo' => $mobileNo,
+			//'vehicleExpiry' => $vehicleExpiry,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
             'driverName' => $driverName,
@@ -1094,6 +1099,7 @@ else if(Session::get('cur')=='admin')
             'mintemp'=>$mintemp,
             'maxtemp'=>$maxtemp,
             'routeName'=>$routeName,
+		'vehicleExpiry' => $vehicleExpiry,
             );
 
 try{
@@ -1211,6 +1217,7 @@ if($refVehicle != $refDataJson)
         "vehicleType" => "Vehicle Type",
         "oprName" => "Telecom Operator Name",
         "mobileNo" => "Mobile Number for Alerts",
+	"vehicleExpiry" => "Vehicle_Expire",
         "overSpeedLimit" => "OverSpeed Limit",
         "odoDistance" => "Odometer Reading",
         "driverName" => "Driver Name",
@@ -1303,7 +1310,25 @@ if($ownership == 'OWN'){
     }
     log::info( "Message sent one  successfully...");
 }
+//ram-vehicleExpiry
+ $redis = Redis::connection ();
+$parameters = 'fcode='.$fcode . '&expiryDate='.$vehicleExpiry. '&vehicleId='.$vehicleId;
 
+//TODO - remove ..this is just for testing
+// $ipaddress = 'localhost';
+    $ipaddress = $redis->get('ipaddress');
+    $url = 'http://' .$ipaddress . ':9000/getVehicleExpiryDetailsUpdate?' . $parameters;
+    $url=htmlspecialchars_decode($url);
+    log::info( ' url :' . $url);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+//
 return Redirect::to ( 'vdmVehicles' );
 
 //            return VdmVehicleController::edit($vehicleId);
@@ -1345,6 +1370,9 @@ public function updateLive($id) {
         $odoDistance = Input::get ('odoDistance');
         $mobileNo = Input::get ( 'mobileNo' );
         log::info(' mobileNo value  '.$mobileNo.'  vehihile type   '.$vehicleType);
+		//
+		$vehicleExpiry = Input::get ( 'vehicleExpiry' );
+        log::info(' vehicleExpiry value  '.$vehicleExpiry.'  vehicle type   '.$vehicleType);
         $redis = Redis::connection ();
         $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
         $vehicleRefData=json_decode($vehicleRefData,true);
@@ -1479,6 +1507,7 @@ public function updateLive($id) {
             'vehicleType' => $vehicleType,
             'oprName' => $oprName,
             'mobileNo' => $mobileNo,
+		 'vehicleExpiry' => $vehicleExpiry,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
             'driverName' => $driverName,
@@ -1625,6 +1654,7 @@ public function update1() {
         $vehicleType = Input::get ( 'vehicleType' );
         $oprName = Input::get ( 'oprName' );
         $mobileNo = Input::get ( 'mobileNo' );
+	 $vehicleExpiry = Input::get ( 'vehicleExpiry' );
         $overSpeedLimit = Input::get ( 'overSpeedLimit' );
         $deviceModel = Input::get ( 'deviceModel' );
         $odoDistance = Input::get ('odoDistance');
@@ -1693,6 +1723,7 @@ public function update1() {
             'vehicleType' => $vehicleType,
             'oprName' => $oprName,
             'mobileNo' => $mobileNo,
+		  'vehicleExpiry' => $vehicleExpiry,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
             'driverName' => $driverName,
@@ -2010,6 +2041,7 @@ public function migrationUpdate() {
             'vehicleType' =>  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:'Bus',
             'oprName' => isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel',
             'mobileNo' =>isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789',
+		'vehicleExpiry' =>isset($refDataJson1['vehicleExpiry'])?$refDataJson1['vehicleExpiry']:'vehicleExpiry',
             'overSpeedLimit' => isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60',
             'odoDistance' => isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0',
             'driverName' => isset($refDataJson1['driverName'])?$refDataJson1['driverName']:'XXX',
