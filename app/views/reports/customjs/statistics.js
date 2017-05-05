@@ -1,14 +1,14 @@
 app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global', function($scope, $http, $filter, vamoservice, GLOBAL){
 
-    $scope.donut_new   = 1;
-	$scope.donut       = 1;
-	$scope.showMonTable= false;
+    $scope.donut_new    =  0;
+	$scope.donut        =  1;
+	$scope.showMonTable =  false;
 
-    var getUrl         =  document.location.href;
+    var getUrl          =  document.location.href;
     var tabId;
-  //var tabId        =  'executive';
-  //$scope.donut_new =  false;
-    var index        =  getParameterByName("ind");
+  //var tabId           =  'executive';
+  //$scope.donut_new    =  false;
+    var index           =  getParameterByName("ind");
 
   //tab view
 	if(index == 1) {
@@ -16,14 +16,14 @@ app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global'
 		$scope.downloadid 	= 'poi';
 		$scope.actTab 		= true;
 		$scope.donut_new    = false;
-		$scope.donut        =true;
+		$scope.donut        = true;
 		$scope.showDate     = true;
 		$scope.showMonth    = false;
 		$scope.sort 		= sortByDate('time')
 	} else if(index == 2){
 		tabId 	            = 'executive';
 		$scope.donut_new    = false;
-		$scope.donut        =false;
+		$scope.donut        = false;
 		$scope.downloadid 	= 'consolidated';
 		$scope.actCons 		= true;
 		$scope.showDate     = true;
@@ -32,7 +32,7 @@ app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global'
 	} 
     else if(index == 3){
     	$scope.donut_new    = true;
-    	$scope.donut        =true;
+    	$scope.donut        = true;
         tabId 				= 'fuel';
 		$scope.downloadid 	= 'fuel';
 		$scope.showDate     = true;
@@ -43,7 +43,7 @@ app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global'
 	 else if(index == 4){
     	$scope.donut_new=false;
     	$scope.donut    =true;
-        console.log('index 4...');
+    //  console.log('index 4...');
         tabId 				= 'month';
 		$scope.downloadid 	= 'month';
 		$scope.showDate     = false;
@@ -289,7 +289,7 @@ $scope.groupSelection 	=	function(groupName, groupId) {
     		angular.forEach(value.vehicleLocations, function(val, skey){
 
      			$scope.vehicleNames.push(val.vehicleId);
-			     console.log(val.vehicleId);
+			    // console.log(val.vehicleId);
 		    })
 		 }
        })
@@ -475,14 +475,16 @@ function chartFuel(data){
 	{
 		angular.forEach(data, function(val, key){
 
-			curVehiVal=val.vehicleId.toString();
+			//curVehiVal=val.vehicleId.toString();
+			  curVehiVal=val.vehicleId;
 
 			if(key==0){
 
 		         distVal=distVal+val.distanceToday;
                  fuelVal=fuelVal+val.fuelConsume;
 
-			     preVehiVal=val.vehicleId.toString();
+			    // preVehiVal=val.vehicleId.toString();
+			    preVehiVal=curVehiVal;
 			}
 
 		    if(key>0){
@@ -491,7 +493,8 @@ function chartFuel(data){
 
                  distVal=distVal+val.distanceToday;
                  fuelVal=fuelVal+val.fuelConsume;
-                 preVehiVal=val.vehicleId.toString();
+               //preVehiVal=val.vehicleId.toString();
+                 preVehiVal=curVehiVal;
              }else{
 
             	$scope.chartDist.push(parseInt(distVal));
@@ -499,10 +502,10 @@ function chartFuel(data){
             	$scope.chartVehic.push(preVehiVal);
 
             //  console.log(''+preVehiVal+'  '+distVal+'  '+fuelVal);
-
                 distVal=0;
                 fuelVal=0;
-            	preVehiVal=val.vehicleId.toString();
+              //preVehiVal=val.vehicleId.toString();
+            	preVehiVal=curVehiVal;
             }
          }
 	})	
@@ -609,7 +612,7 @@ function distanceMonth(data){
 
 	var ret_obj=[];
 
-    angular.forEach(data.vehicleDistanceData, function(val, key){
+    angular.forEach(data.vehicleDistanceDatas, function(val, key){
 
         ret_obj.push({vehiId:val.vehicleId,totDist:val.totalDistance});
     	ret_obj[key].distsTodays=[];
@@ -755,7 +758,7 @@ function serviceCall(){
 			$('#singleDiv').hide();
 
 			var monthUrl =GLOBAL.DOMAIN_NAME+'/getExecutiveReportVehicleDistance?groupId='+$scope.viewGroup.group+'&month='+ $scope.monthNo;
-		    console.log(monthUrl);
+		  //console.log(monthUrl);
              
 			$scope.monthData	=	[];
             $http.get(monthUrl).success(function(data){
@@ -769,6 +772,10 @@ function serviceCall(){
 
                $scope.distMonData=[];
                $scope.distMonData=distanceMonth($scope.monthData);
+
+            // if(data.length != 0 )
+               $scope.totDistVehic=[];
+               $scope.totDistVehic= data.comulativeDistance;
              //console.log($scope.distMonData);
              //console.log(daysInThisMonth());
 

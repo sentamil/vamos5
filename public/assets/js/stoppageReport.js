@@ -2,6 +2,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	
 
   //global declaration
+    $scope.showBanner           =    0;
 	$scope.uiDate 				=	{};
 	$scope.uiValue	 			= 	{};
 	$scope.geoFence             =   "";
@@ -10,8 +11,8 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
   //$scope.sort = sortByDate('startTime');
 
-    var tab = getParameterByName('tn');
-                
+  var tab = getParameterByName('tn');
+       
 	function getParameterByName(name) {
     	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -20,7 +21,6 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	}
 
 	//global declartion
-
 	$scope.locations = [];
 	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
 	$scope.gIndex =0;
@@ -148,25 +148,21 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
       if((checkXssProtection($scope.uiDate.fromdate) == true) && ((checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true))) {
 
-
-   	     var stopUrl = GLOBAL.DOMAIN_NAME+'/getStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName;
-       
-      }
+           var stopUrl = GLOBAL.DOMAIN_NAME+'/getStoppageReport?fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupName='+$scope.gName;
+        }
       
-        console.log(stopUrl);
+    //  console.log(stopUrl);
      
         $http.get(stopUrl).success(function(data){
             $scope.stopData=data;
+
+         //console.log($scope.stopData);
             $scope.filterLoc=data;
+
+            $scope.showBanner=1;
             stopLoading();
 		}); 
 
-	/*	vamoservice.getDataCall(stopUrl).then(function(data){
-           $scope.stopData=data;
-           stopLoading();  
-		});*/ 
-
-        // stopLoading();
     }
 
 
@@ -297,7 +293,9 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
-
+           
+          //startLoading();
+            $scope.selectVehiData = [];
 			$scope.vehicle_group=[];
 			$scope.vehicle_list = data;
 
@@ -312,6 +310,9 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 					if($scope.gName == val.group){
 						$scope.gIndex = val.rowId;
 						angular.forEach(data[$scope.gIndex].vehicleLocations, function(value, keys){
+
+                            $scope.selectVehiData.push({label:value.vehicleId,id:value.vehicleId});
+
 							if($scope.vehiname == value.vehicleId)
 							$scope.shortNam	= value.shortName;
 						})
@@ -319,8 +320,9 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 					}
 						
 				})
-				
-			sessionValue($scope.vehiname, $scope.gName)
+
+		  //console.log($scope.selectVehiData);
+		    sessionValue($scope.vehiname, $scope.gName)
 			}
 			var dateObj 			= 	new Date();
 			$scope.fromNowTS		=	new Date(dateObj.setDate(dateObj.getDate()-1));
@@ -330,10 +332,82 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 		  //$scope.uiDate.totime 		=	formatAMPM($scope.fromNowTS.getTime());
             $scope.uiDate.totime 		=   '11:59 PM';
 		  //webServiceCall();
+		    startLoading();
 		    webCall();
-		  	stopLoading();
+		  //stopLoading();
 		});	
 	});
+
+   
+
+    $scope.selectVehiModel = [];
+
+    $scope.example14settings = {
+        scrollableHeight: '400px',
+        scrollable: true,
+        enableSearch: true
+    };
+
+   $scope.example2settings = {
+        displayProp: 'id'
+    };
+
+
+   
+   $scope.vehiFilter = function(data,filtVal){
+
+    var ret_obj=[];
+    var firstVal=0;
+
+      // console.log(data);
+      // console.log(filtVal);
+
+     if(data){
+
+      angular.forEach(data,function(value, key){
+
+        angular.forEach(filtVal, function(sval, sKey){
+
+
+         if(value.id==sval.vehicleId){
+
+         	       ret_obj.push({startTime:sval.startTime,endTime:sval.endTime,shortName:sval.shortName})   
+                   ret_obj[firstVal].history = [];
+
+               angular.forEach(sval.history, function(tval, tKey){
+
+                 //  console.log(tval);
+               	   ret_obj[firstVal].history.push(tval);
+                   
+                }) 
+
+               firstVal++;
+            }    
+
+         })
+
+      })
+
+    //  console.log(ret_obj);
+
+     return ret_obj;
+     }
+   }
+
+   $scope.selectVehicle = function(selectVal){
+
+      if(selectVal.length != 0){
+
+      //$scope.stopData=[];
+        $scope.stopData=$scope.vehiFilter(selectVal,$scope.filterLoc);
+
+       //console.log($scope.stopData);
+
+      }else if(selectVal){
+
+   	    $scope.stopData=$scope.filterLoc;
+      }
+    }
 
 /*	$scope.groupSelection 	= function(groupName, groupId) {
 		startLoading();
@@ -369,10 +443,11 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
   	$scope.submitFunction 	=	function(){
 	  startLoading();
-		getUiValue();
-		webCall();
-		//webServiceCall();
-     // stopLoading();
+	  $scope.timeChanges          =  'All';
+	  getUiValue();
+	  webCall();
+	//webServiceCall();
+    //stopLoading();
 	}
 
 	$scope.exportData = function (data) {

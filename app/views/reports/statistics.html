@@ -28,6 +28,7 @@ z-index: 1020;
 background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
 }*/
 
+
 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
 background-color: #ffffff;
 }
@@ -39,7 +40,7 @@ background-color: #ffffff;
 <div id="preloader02" >
     <div id="status02">&nbsp;</div>
 </div>
-<body ng-app="mapApp">
+<body ng-app="mapApp" style="overflow-x:auto;">
     <div id="wrapper" ng-controller="mainCtrl" class="ng-cloak"> 
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -337,8 +338,10 @@ background-color: #ffffff;
 
                             <h4 style="margin:0" class="page-header">Vehicle Distance Coverage - Monthly Report</h4>
 
-                            <div id='month'>
-                            <table class="table table-bordered table-striped table-condensed table-hover table-striped" ng-show="showMonTable">
+                            <!-- overflow-x:auto -->
+
+                            <div id='month'  style="overflow-y:auto;">
+                            <table class="table table-bordered table-striped table-condensed table-hover table-striped" ng-show="showMonTable" >
 
                             <thead>
                             </thead>
@@ -352,15 +355,18 @@ background-color: #ffffff;
                                     <td style="background-color:#ecf7fb;font-weight: bold;">Total(Kms)</td>
                                 </tr>
                                 <tr ng-repeat="vehi in distMonData">
-                                   <td style="font-weight: bold;" >{{vehi.vehiId}}</td>
+
+                                   <td ng-if="$odd" style="background-color:#f9f9f9;font-weight: bold;" >{{vehi.vehiId}}</td>
+                                   <td ng-if="$even" style="background-color:#ecf7fb;font-weight:bold;" >{{vehi.vehiId}}</td>
+
                                    <td ng-repeat="val in vehi.distsTodays">{{parseInts(val.distanceToday)}}</td>
                                    <td>{{parseInts(vehi.totDist)}}</td>
                                 </tr>
-                             <!--   <tr>
+                               <tr>
                                   <td style="background-color:#ecf7fb;font-weight: bold;">Total(Kms)</td>
-                                  <td ng-repeat="dat in monthDates">0</td>
+                                  <td ng-repeat="val in totDistVehic">{{parseInts(val)}}</td>
                                   <td style="background-color:#f9f9f9;"></td>
-                                </tr>-->
+                                </tr>
                             
                             </tbody>            
                             </table>

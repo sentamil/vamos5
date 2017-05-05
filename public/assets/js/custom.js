@@ -156,6 +156,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 
   function zohoDayValue(datValue){
 
+  	$scope.zohoHighVal=datValue;
+
   	if(datValue>0){
 
   	 if(datValue==1){
@@ -173,6 +175,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 
   	  }
 
+    return datValue;
   	}
       
     /* if(datValue>=7){
@@ -218,14 +221,31 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 
           angular.forEach(data.hist,function(val, key){
           	    $scope.zohoDayss.push(trimDueDays(val.dueDays));
-                zohoDatas[0].hist.push({customerName:val.customerName,balanceAmount:val.balanceAmount,dueDate:val.dueDate,dueDays:val.dueDays});
+                zohoDatas[0].hist.push({customerName:val.customerName,balanceAmount:val.balanceAmount,dueDate:val.dueDate,dueDays:val.dueDays,inVoice:val.invoiceLink});
            })
 
           $scope.zohoData=zohoDatas;
         //console.log( $scope.zohoData);
         //console.log(getMaxOfArray($scope.zohoDayss));
 
-        zohoDayValue(getMaxOfArray($scope.zohoDayss))
+        zohoDayValue(getMaxOfArray($scope.zohoDayss));
+
+        angular.forEach(data.hist,function(val, key){
+
+        	var newZohoVal=trimDueDays(val.dueDays);
+
+        	//console.log(newZohoVal);
+        	//console.log($scope.zohoHighVal);
+
+            if(newZohoVal==$scope.zohoHighVal){
+
+            	console.log(val.invoiceLink);
+
+                 $scope.zohoLink=val.invoiceLink;
+
+            }      
+
+        })
     }
 
 /*   function zohoUrl(){
@@ -354,10 +374,11 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	}
 
 	$scope.genericFunction = function(vehicleno, index){
-		// angular.forEach($scope.locations, function(value, key){
+		//angular.forEach($scope.locations, function(value, key){
 		//if($scope.zohoReports==undefined){	
 			$scope._editValue_con 	=	true;
 			$scope.selected = index;
+			$scope.selects  = 1;
 			var individualVehicle = $filter('filter')($scope.locations, { vehicleId:  vehicleno});
 			if (individualVehicle[0].position === 'N' || individualVehicle[0].position === 'Z')
 			{
@@ -1686,19 +1707,19 @@ function locat_address(locs) {
 		$('#graphsId').toggle(500);
 	}
 
-	function tollMarkers()
+/*	function tollMarkers()
     {
         $("#tollYes").hide();
 		$("#tollNo").show();
      
-    }
+    }*/
 
-    function removeToll()
+/*    function removeToll()
     {
         $("#tollNo").hide();
 		$("#tollYes").show();
     	
-    }
+    }*/
 
 
 	//view map
@@ -1734,12 +1755,12 @@ function locat_address(locs) {
 				changeMarker();
 				markerChange('markerChange');
 				break;
-			case 'tollYes':
+		  /*case 'tollYes':
 				tollMarkers();
 				break;
-			case 'tollNo':
+		    case 'tollNo':
 				removeToll();
-				break;		
+				break;*/		
 			case 'undefined':
 				$scope.makerType =  undefined;
 				changeMarker();
