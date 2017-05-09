@@ -1877,7 +1877,8 @@ if($scope.markerstart){
 
 	}
 
-	var pcount=0;
+	var pcount    = 0;
+	var lenCount2 = 0;
     $scope.timeDelay=180;
     $scope.speedVal=0;
     $scope.pasVal=0;
@@ -1895,7 +1896,7 @@ if($scope.markerstart){
                                       path:vehicIcon[0],
 				                      scale:vehicIcon[1],
 						              strokeWeight: 1,
-						              fillColor:$scope.polylinearr[pcount],
+						              fillColor:$scope.polylinearr[pcount+1],
 				                      fillOpacity: 1,
 				                      anchor:vehicIcon[2],
 				                      rotation:$scope.rotationsd,
@@ -1907,21 +1908,30 @@ if($scope.markerstart){
 
                                 $scope.markerheads.setPosition(latlngs);
 
-				                 var contenttString ='<table class="infoTables">'
+
+			var contenttString = '<div style="padding:2px; padding-top:10px; width:auto; max-height:140px;">'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Dist Cov</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[pcount+1].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Speed</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[pcount+1].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Last Seen</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[pcount+1].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
+			+'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[pcount+1].address)+'</span></div>'
+			// +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
+			+'</div>';
+
+				                /* var contenttString ='<table class="infoTables">'
 				                        +'<tbody>'
 
-	                                        +'<tr>'+'<td>'+'Odo (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount].odoDistance+'</td>'+'</tr>'
+	                                        +'<tr>'+'<td>'+'Odo (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount+1].odoDistance+'</td>'+'</tr>'
 				                                             
-				                            +'<tr>'+'<td>'+'Dist (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount].distanceCovered+'</td>'+'</tr>'      
+				                            +'<tr>'+'<td>'+'Dist (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount+1].distanceCovered+'</td>'+'</tr>'      
 				                                      
-					                        +'<tr>'+'<td>'+'Speed (kmph):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount].speed+'</td>'+'</tr>'
+					                        +'<tr>'+'<td>'+'Speed (kmph):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount+1].speed+'</td>'+'</tr>'
 				                                                 
-				                            +'<tr>'+'<td>'+'Last Seen:'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount].lastSeen+'</td>'+'</tr>'
+				                            +'<tr>'+'<td>'+'Last Seen:'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount+1].lastSeen+'</td>'+'</tr>'
 				                                          
-				                            +'<tr style="max-width:150px;min-width:150px;">'+'<td colspan="2" style="max-height:60px;min-height:60px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[pcount].address)+'</td>'+'<td style="max-height:60px;min-height:60px;">'+'</td>'+'</tr>'			                                            
+				                            +'<tr style="max-width:150px;min-width:150px;">'+'<td colspan="2" style="max-height:60px;min-height:60px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[pcount+1].address)+'</td>'+'<td style="max-height:60px;min-height:60px;">'+'</td>'+'</tr>'			                                            
 				           		       
 				           		        +'</tbody>'
-				                       +'</table>';
+				                       +'</table>';  */
 
 				             $scope.infosWindow.setContent(contenttString);
 				             $scope.infosWindow.setPosition(latlngs);
@@ -1936,11 +1946,53 @@ if($scope.markerstart){
      }
      else{
 
-      $('#pauseButton').hide();
-       $('#playButton').hide();      
-        $('#stopButton').hide();   
-         $('#replayButton').show(); 
-         $scope.speedVal=1; 
+       if(lenCount2 == 0 ){
+
+       	  if($scope.hisloc.vehicleLocations.length==1){
+
+               	var latlngs = new google.maps.LatLng($scope.hisloc.vehicleLocations[0].latitude,$scope.hisloc.vehicleLocations[0].longitude);
+    	    //  if(($scope.hisloc.vehicleLocations[pcount].latitude+''+$scope.hisloc.vehicleLocations[pcount].longitude)!=($scope.hisloc.vehicleLocations[pcount+1].latitude+''+$scope.hisloc.vehicleLocations[pcount+1].latitude)){
+            //  $scope.rotationsd = getBearing($scope.hisloc.vehicleLocations[pcount].latitude,$scope.hisloc.vehicleLocations[pcount].longitude,$scope.hisloc.vehicleLocations[pcount+1].latitude,$scope.hisloc.vehicleLocations[pcount+1].longitude);                
+	                 
+                                 
+				                $scope.markerheads.setIcon({
+                                      path:vehicIcon[0],
+				                      scale:vehicIcon[1],
+						              strokeWeight: 1,
+						              fillColor:$scope.polylinearr[0],
+				                      fillOpacity: 1,
+				                      anchor:vehicIcon[2],
+				                   // rotation:$scope.rotationsd,
+				                });
+
+				                $scope.markerheads.setMap($scope.map);
+                                $scope.markerheads.setPosition(latlngs);
+                            
+
+            var contenttString = '<div style="padding:2px; padding-top:10px; width:auto; max-height:140px;">'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Dist Cov</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[0].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Speed</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[0].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Last Seen</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[0].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
+			+'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[0].address)+'</span></div>'
+			// +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
+			+'</div>';
+
+				             $scope.infosWindow.setContent(contenttString);
+				             $scope.infosWindow.setPosition(latlngs);
+
+                             $scope.infosWindow.open($scope.map,$scope.markerheads);
+
+       	  }
+
+          $('#pauseButton').hide();
+          $('#playButton').hide();      
+          $('#stopButton').hide();   
+          $('#replayButton').show(); 
+          $scope.speedVal=1; 
+
+          lenCount2++;
+        }
+
      } 
 }
 
@@ -2074,23 +2126,17 @@ if($scope.markerstart){
 						clickable: true
 				    });
 
-                 var contentsString ='<table class="infoTables">'
-				                        +'<tbody>'
+               
+            var contenttString = '<div style="padding:2px; padding-top:10px; width:auto; max-height:140px;">'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Dist Cov</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[lineCount+1].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Speed</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[lineCount+1].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Last Seen</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[lineCount+1].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
+			+'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[lineCount+1].address)+'</span></div>'
+		  //+'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
+			+'</div>';
 
-	                                        +'<tr>'+'<td>'+'Odo (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[lineCount].odoDistance+'</td>'+'</tr>'
-				                                             
-				                            +'<tr>'+'<td>'+'Dist (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[lineCount].distanceCovered+'</td>'+'</tr>'      
-				                                      
-					                        +'<tr>'+'<td>'+'Speed (kmph):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[lineCount].speed+'</td>'+'</tr>'
-				                                                 
-				                            +'<tr>'+'<td>'+'Last Seen:'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[lineCount].lastSeen+'</td>'+'</tr>'
-				                                          
-				                            +'<tr style="max-width:150px;min-width:150px;">'+'<td colspan="2" style="max-height:60px;min-height:60px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[lineCount].address)+'</td>'+'<td style="max-height:60px;min-height:60px;">'+'</td>'+'</tr>'			                                            
-				           		       
-				           		        +'</tbody>'
-				                       +'</table>';
 
-				            $scope.infosWindows.setContent(contentsString);
+				            $scope.infosWindows.setContent(contenttString);
 				            $scope.infosWindows.setPosition($scope.path[lineCount+1]);
 
                             if(lineCount == 0){
@@ -2117,10 +2163,60 @@ if($scope.markerstart){
 			  		$scope.polylineLoad.push($scope.polyline1);
 			  	lineCount++;
 			  	
-				}
-			}
+				} else if($scope.path.length == 1){
 
+					if(lenCount == 0){
+
+                         	   $scope.markerhead.setIcon({
+                                path:vehicIcon[0],
+				                scale:vehicIcon[1],
+						        strokeWeight: 1,
+				                fillColor: $scope.polylinearr[0],
+				                fillOpacity: 1,
+				                anchor:vehicIcon[2],
+				            //    rotation: rotationd,
+				                });
+
+			         $scope.markerhead.setMap($scope.map);
+                     $scope.markerhead.setPosition($scope.path[0]);
+
+			    // for(var i=0;i<$scope.path.length-1;i++){
+   					$scope.polyline1[lineCount] = new google.maps.Polyline({
+						map: $scope.map,
+						path: [$scope.path[0], $scope.path[0]],
+						strokeColor: $scope.polylinearr[0],
+						strokeOpacity: 0,
+					  //strokeOpacity: 1,
+						strokeWeight: 3,
+						icons: [{
+				            icon: doubleLine,
+				            offset: '50%',
+				            repeat: '15px'
+				        }],
+
+						clickable: true
+				    });
+
+                var contenttString = '<div style="padding:2px; padding-top:3px;width:auto;">'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Dist Cov</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[0].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Speed</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[0].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Last Seen</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[0].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
+			+'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[0].address)+'</span></div>'
+		  //+'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
+			+'</div>';
+
+
+				            $scope.infosWindows.setContent(contenttString);
+				            $scope.infosWindows.setPosition($scope.path[0]);
+                            $scope.infosWindows.open($scope.map,$scope.markerhead);
+
+                lenCount++;
+				}
+
+			 }
+           }
 			    var lineCount =	0;
+			    var lenCount  = 0;
 
 			    $scope.markerhead = new google.maps.Marker();
                 $scope.infosWindows = new google.maps.InfoWindow({maxWidth:180}); 
@@ -2190,6 +2286,7 @@ if($scope.markerstart){
 				    $scope.markerValue=1;
 
                     pcount=0;
+                    lenCount2=0;
                     timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay);
 			
 			
