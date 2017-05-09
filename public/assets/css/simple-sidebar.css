@@ -1065,6 +1065,9 @@ button:focus {
 ._info_caption{
     width:100px; display:inline-block; padding-bottom: 3px;
 }
+._info_caption2{
+    width:60px; display:inline-block; padding-bottom: 3px;
+}
 
 .closeZoho{
     float: right;
