@@ -80,8 +80,10 @@ public function index() {
         $expiredList = array_add($expiredList,$vehicle,$expiredPeriod);
 
         $statusVehicle = $redis->hget ( 'H_ProData_' . $fcode, $vehicle );
-        $statusSeperate = explode(',', $statusVehicle);
-        $statusList = array_add($statusList, $vehicle, $statusSeperate[7]);
+        $statusSeperate = explode(',', $statusVehicle); //log::info($statusVehicle);
+        $statusSeperate1=isset($statusSeperate[7])?$statusSeperate[7]:'N';
+        $statusList = array_add($statusList, $vehicle, $statusSeperate1); 
+       // $statusList = array_add($statusList, $vehicle, $statusSeperate[7]);
 
 
         }
