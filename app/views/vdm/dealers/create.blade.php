@@ -97,12 +97,39 @@
 		
 	</div>
 	<br />
-	 <div class="row">
-	    <div class="col-md-3">
-		{{ Form::label('zoho', 'zoho') }}	
+	<div class="row">
+		<div class="col-md-3">
+			{{ Form::label('zoho', 'zoho') }}	
 		</div>
 		<div class="col-md-6">
-		{{ Form::text('zoho', Input::old('zoho'), array('class' => 'form-control','required' => 'required','placeholder'=>'zoho')) }}
+	    	{{ Form::text('zoho', Input::old('zoho'), array('class' => 'form-control','required' => 'required','placeholder'=>'Zoho Name')) }}
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-md-3">
+			{{ Form::label('mapKey', 'Map Key') }}	
+		</div>
+		<div class="col-md-6">
+	    	{{ Form::text('mapKey', Input::old('mapKey'), array('class' => 'form-control','required' => 'required','placeholder'=>'Map Key')) }}
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-md-3">
+			{{ Form::label('addressKey', 'Address Key') }}	
+		</div>
+		<div class="col-md-6">
+	    	{{ Form::text('addressKey', Input::old('addressKey'), array('class' => 'form-control','required' => 'required','placeholder'=>'Address Key')) }}
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-md-3">
+			{{ Form::label('notificationKey', 'Notification Key') }}	
+		</div>
+		<div class="col-md-6">
+	    	{{ Form::text('notificationKey', Input::old('notificationKey'), array('class' => 'form-control','required' => 'required','placeholder'=>'Notification Key')) }}
 		</div>
 	</div>
 	<br>

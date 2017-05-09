@@ -122,6 +122,18 @@
 		{{ Form::text('apiKey', $apiKey, array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
+		{{ Form::label('mapKey', 'Map Key') }}
+		{{ Form::text('mapKey', $mapKey, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('addressKey', 'Address Key') }}
+		{{ Form::text('addressKey', $addressKey, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('notificationKey', 'Notification Key') }}
+		{{ Form::text('notificationKey', $notificationKey, array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
 		{{ Form::label('zoho', 'Zoho Organisation') }}
 		{{ Form::text('zoho', $zoho, array('class' => 'form-control')) }}
 	</div>

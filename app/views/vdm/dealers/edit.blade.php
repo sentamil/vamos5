@@ -66,7 +66,25 @@
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('zoho', 'zoho :') }}</div>
-		            		<div class="col-md-4">{{ Form::text('zoho', $zoho, array('class' => 'form-control', 'placeholder'=>'zoho')) }} </div>
+		            		<div class="col-md-4">{{ Form::text('zoho', $zoho, array('class' => 'form-control', 'placeholder'=>'Zoho Name')) }} </div>
+		            	</div>
+		            	<br>
+		            	<div class="row">
+		            		<div class="col-md-3"></div>
+		            		<div class="col-md-2">{{ Form::label('mapKey', 'Map Key :') }}</div>
+		            		<div class="col-md-4">{{ Form::text('mapKey', $mapKey, array('class' => 'form-control', 'placeholder'=>'Map Key')) }} </div>
+		            	</div>
+		            	<br>
+		            	<div class="row">
+		            		<div class="col-md-3"></div>
+		            		<div class="col-md-2">{{ Form::label('addressKey', 'Address Key :') }}</div>
+		            		<div class="col-md-4">{{ Form::text('addressKey', $addressKey, array('class' => 'form-control', 'placeholder'=>'Address Key')) }} </div>
+		            	</div>
+		            	<br>
+		            	<div class="row">
+		            		<div class="col-md-3"></div>
+		            		<div class="col-md-2">{{ Form::label('notificationKey', 'Notification Key :') }}</div>
+		            		<div class="col-md-4">{{ Form::text('notificationKey', $notificationKey, array('class' => 'form-control', 'placeholder'=>'Notification Key')) }} </div>
 		            	</div>
 		            	 <br>
 		            	<div class="row">

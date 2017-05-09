@@ -923,6 +923,9 @@ public function users()
 			//$eFDSchedular=Input::get ('eFDSchedular');
 			$timeZone=Input::get ('timeZone');
 			$apiKey=Input::get('apiKey');
+			$mapKey=Input::get('mapKey');
+			$addressKey=Input::get('addressKey');
+			$notificationKey=Input::get('notificationKey');
 			$dbType=Input::get('dbType');
 			$zoho=Input::get('zoho');
 			$auth=Input::get('auth');
@@ -958,6 +961,9 @@ public function users()
 					'providerPassword'=>$providerPassword,
 					'timeZone'=>$timeZone,
 					'apiKey'=>$apiKey,	
+					'mapKey'=>$mapKey,
+					'addressKey'=>$addressKey,
+					'notificationKey'=>$notificationKey,
 					'backUpDays'=>$backUpDays,
 					'dbType'=>$dbType,
 					'zoho'=>$zoho,
@@ -1151,6 +1157,18 @@ public function users()
 			$apiKey=$franchiseDetails['apiKey'];
 		else
 			$apiKey='';
+	    if(isset($franchiseDetails['mapKey'])==1)
+		    $mapKey=$franchiseDetails['mapKey'];
+			 else
+		    $mapKey='';
+        if(isset($franchiseDetails['addressKey'])==1)
+			$addressKey=$franchiseDetails['addressKey'];
+		else
+			$addressKey='';
+		if(isset($franchiseDetails['notificationKey'])==1)
+			$notificationKey=$franchiseDetails['notificationKey'];
+		else
+			$notificationKey='';
 		if(isset($franchiseDetails['backUpDays'])==1)
 			$backUpDays=$franchiseDetails['backUpDays'];
 		else
@@ -1193,6 +1211,9 @@ public function users()
 		->with('providerPassword',$providerPassword)
 		->with('timeZone',$timeZone)
 		->with('apiKey', $apiKey)
+		->with('mapKey', $mapKey)
+		->with('addressKey', $addressKey)
+		->with('notificationKey', $notificationKey)
 		->with('dbIp', $dbIp)
 		->with('dbType', $dbType)
 		->with('backUpDays', $backUpDays)
@@ -1257,6 +1278,9 @@ public function users()
 			$providerPassword=Input::get ('providerPassword');
 			$timeZone=Input::get ('timeZone');
 			$apiKey=Input::get('apiKey');
+			$mapKey=Input::get('mapKey');
+			$addressKey=Input::get('addressKey');
+			$notificationKey=Input::get('notificationKey');
 			$backUpDays=Input::get('backUpDays');
 			$dbType=Input::get('dbType');
 			$redis = Redis::connection ();
@@ -1325,6 +1349,9 @@ public function users()
 					//'eFDSchedular'=>$eFDSchedular,
 					'timeZone'=>$timeZone,
 					'apiKey'=>$apiKey,	
+					'mapKey'=>$mapKey,
+					'addressKey'=>$addressKey,
+					'notificationKey'=>$notificationKey,
 					'backUpDays'=>$backUpDays,
 					'dbType'=>$dbType,
 					
@@ -1367,7 +1394,10 @@ public function users()
 					'providerPassword'=>'SMS Provider Password',	
 					//'eFDSchedular'=>$eFDSchedular,
 					'timeZone'=>'Time Zone',
-					'apiKey'=>'Api Key',	
+					'apiKey'=>'Api Key',
+					'mapKey'=>'Map Key',
+					'addressKey'=>'Address Key',
+					'notificationKey'=>'Notification Key',	
 					'backUpDays'=>'DB BackupDays',
 					'dbType'=>'DB Type',
 					'dbIP'=>'DB IP',

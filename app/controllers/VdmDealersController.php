@@ -215,6 +215,18 @@ class VdmDealersController extends \BaseController {
 		 	$zoho=$detail['zoho'];
 		 else
 		 	$zoho='';
+		 if(isset($detail['mapKey'])==1)
+		 	$mapKey=$detail['mapKey'];
+		 else
+		 	$mapKey='';
+		 if(isset($detail['addressKey'])==1)
+		 	$addressKey=$detail['addressKey'];
+		 else
+		 	$addressKey='';
+		 if(isset($detail['notificationKey'])==1)
+		 	$notificationKey=$detail['notificationKey'];
+		 else
+		 	$notificationKey='';
 		if(isset($detail['smsProvider'])==1)
 			$smsProvider=$detail['smsProvider'];
 		else
@@ -230,7 +242,7 @@ class VdmDealersController extends \BaseController {
 		return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )-> 
-		with('email',$email)-> with('zoho',$zoho)-> with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
+		with('email',$email)-> with('zoho',$zoho)->with('mapKey',$mapKey)->with('addressKey',$addressKey)->with('notificationKey',$notificationKey)->  with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
 		 
 	 }
 	 
@@ -268,6 +280,18 @@ class VdmDealersController extends \BaseController {
 		 	$zoho=$detail['zoho'];
 		 else
 		 	$zoho='';
+		if(isset($detail['mapKey'])==1)
+		 	$mapKey=$detail['mapKey'];
+		 else
+		 	$mapKey='';
+		 if(isset($detail['addressKey'])==1)
+		 	$addressKey=$detail['addressKey'];
+		 else
+		 	$addressKey='';
+		 if(isset($detail['notificationKey'])==1)
+		 	$notificationKey=$detail['notificationKey'];
+		 else
+		 	$notificationKey='';
 		if(isset($detail['smsProvider'])==1)
 			$smsProvider=$detail['smsProvider'];
 		else
@@ -284,7 +308,7 @@ class VdmDealersController extends \BaseController {
 		return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email)->with('zoho',$zoho)-> with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
+		with('email',$email)->with('zoho',$zoho)->with('mapKey',$mapKey)->with('addressKey',$addressKey)->with('notificationKey',$notificationKey)->  with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
 	}
 	
 	/**
@@ -325,6 +349,9 @@ class VdmDealersController extends \BaseController {
 			$mobileNo = Input::get ( 'mobileNo' );
 			$email = Input::get ( 'email' );
 		$zoho  = Input::get ( 'zoho');
+		$mapKey=Input::get('mapKey');
+		$addressKey=Input::get('addressKey');
+		$notificationKey=Input::get('notificationKey');
 			$website=Input::get ( 'website' );
 			$smsSender=Input::get ( 'smsSender' );
 			$smsProvider=Input::get ( 'smsProvider' );
@@ -334,6 +361,9 @@ class VdmDealersController extends \BaseController {
 			'email'	=> $email,
 			'mobileNo' => $mobileNo,
 		'zoho'   => $zoho,
+		'mapKey' => $mapKey,
+		'addressKey' => $addressKey,
+		'notificationKey' => $notificationKey, 
 			'website' => $website,
 			'smsSender'=>$smsSender,
 			'smsProvider'=>$smsProvider,
@@ -343,7 +373,7 @@ class VdmDealersController extends \BaseController {
 			Log::info('---------------Dealers 11:--------------');
 			$detailJson=json_encode($detail);
 			$redis->hset ( 'H_DealerDetails_' . $fcode, $dealerid, $detailJson );
-			$redis->hmset ( 'H_UserId_Cust_Map', $dealerid . ':fcode', $fcode, $dealerid . ':mobileNo', $mobileNo,$dealerid.':email',$email, $dealerid.':zoho',$zoho );
+			$redis->hmset ( 'H_UserId_Cust_Map', $dealerid . ':fcode', $fcode, $dealerid . ':mobileNo', $mobileNo,$dealerid.':email',$email, $dealerid.':zoho',$zoho, $dealerid.':mapKey',$mapKey, $dealerid.':addressKey',$addressKey, $dealerid.':notificationKey',$notificationKey );
 			
 
 			$oldDealerList = json_decode($oldDealerList, true);
@@ -370,7 +400,20 @@ class VdmDealersController extends \BaseController {
         		$oldList = array_add($oldList, 'zoho ', $oldDealerList['zoho']);
         		$newList = array_add($newList, 'zoho ', $zoho);        		
         	}
-
+			
+           if($oldDealerList['mapKey'] != $mapKey){
+        		$oldList = array_add($oldList, 'Map Key ', $oldDealerList['mapKey']);
+        		$newList = array_add($newList, 'Map Key ', $mapKey);        		
+        	}
+           if($oldDealerList['addressKey'] != $addressKey){
+        		$oldList = array_add($oldList, 'Address Key ', $oldDealerList['addressKey']);
+        		$newList = array_add($newList, 'Address Key ', $addressKey);        		
+        	}
+        	if($oldDealerList['notificationKey'] != $notificationKey){
+        		$oldList = array_add($oldList, 'Notification Key ', $oldDealerList['notificationKey']);
+        		$newList = array_add($newList, 'Notification Key ', $notificationKey);        		
+        	}
+			
         	if($oldDealerList['email'] != $email){
         		$oldList = array_add($oldList, 'Email ', $oldDealerList['email']);
         		$newList = array_add($newList, 'Email ', $email);        			
@@ -465,7 +508,7 @@ class VdmDealersController extends \BaseController {
 			return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email)->with('zoho',$zoho)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
+		with('email',$email)->with('zoho',$zoho)->with('mapKey',$mapKey)->with('addressKey',$addressKey)->with('notificationKey',$notificationKey)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
 			}
 			
 			return Redirect::to ( 'vdmDealers' );
@@ -536,7 +579,10 @@ class VdmDealersController extends \BaseController {
             $smsProvider=Input::get ( 'smsProvider' );
             $providerUserName=Input::get ( 'providerUserName' );
             $providerPassword=Input::get ( 'providerPassword' );
-            $zoho=Input::get ( 'zoho' ); log::info($zoho);
+            $zoho=Input::get ( 'zoho' ); //log::info($zoho);
+			$mapKey=Input::get ( 'mapKey' );
+            $addressKey=Input::get ( 'addressKey' );
+            $notificationKey=Input::get ('notificationKey');
             // /var/www/gitsrc/vamos/public/assets/imgs/ for production path
             $upload_folder = '/var/www/'.$pathValue[1].'/public/uploads/';
 
@@ -600,6 +646,9 @@ class VdmDealersController extends \BaseController {
 			'providerUserName'=>$providerUserName,
 			'providerPassword'=>$providerPassword,
 			'zoho'=>$zoho,
+			'mapKey'=>$mapKey,
+			'addressKey'=>$addressKey,
+			'notificationKey'=>$notificationKey,
 			);
 			
 			$detailJson=json_encode($detail);

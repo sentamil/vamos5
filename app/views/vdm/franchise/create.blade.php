@@ -108,12 +108,24 @@
 		{{ Form::label('apiKey', 'Api Key') }}
 		{{ Form::text('apiKey', Input::old('apiKey'), array('class' => 'form-control')) }}
 	</div>
+	<div class="form-group">
+		{{ Form::label('mapKey', 'Map Key') }}
+		{{ Form::text('mapKey', Input::old('mapKey'), array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('addressKey', 'Address Key') }}
+		{{ Form::text('addressKey', Input::old('addressKey'), array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
+		{{ Form::label('notificationKey', 'Notification Key') }}
+		{{ Form::text('notificationKey', Input::old('notificationKey'), array('class' => 'form-control')) }}
+	</div>
      <div class="form-group">
 		{{ Form::label('zoho', 'Zoho Organisation') }}
 		{{ Form::text('zoho', Input::old('zoho'), array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
-		{{ Form::label('auth', 'Zoho Authenticatin') }}
+		{{ Form::label('auth', 'Zoho Authentication') }}
 		{{ Form::text('auth', Input::old('auth'), array('class' => 'form-control')) }}
 	</div>
 	{{ Form::submit('Add the Franchise!', array('class' => 'btn btn-primary')) }}
