@@ -1984,14 +1984,14 @@ if($scope.markerstart){
 
        	  }
 
+        lenCount2++;
+        }
+
           $('#pauseButton').hide();
           $('#playButton').hide();      
           $('#stopButton').hide();   
           $('#replayButton').show(); 
           $scope.speedVal=1; 
-
-          lenCount2++;
-        }
 
      } 
 }
