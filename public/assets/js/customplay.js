@@ -302,6 +302,10 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
 	};
 
+    $scope.parseInts=function(data){
+     return parseInt(data);
+     }
+
 	$scope.moveaddress    	=	[];
 	$scope.overaddress    	=	[];
 	$scope.parkaddress     	=	[];
@@ -818,6 +822,30 @@ var queue1 = [];
 
 	}
 
+	function addZero(i) {
+      if (i < 10) {
+        i = "0" + i;
+      }
+    return i;
+    }
+
+   function timeNow24Hrs(){
+
+     var d = new Date();
+     var h = addZero(d.getHours());
+     var m = addZero(d.getMinutes());
+     var s = addZero(d.getSeconds());
+
+    //return h + ":" + m + ":" + s;
+   return h+":00:00";
+   }
+
+   function getTodayDatess() {
+     var date = new Date();
+     return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
+   };
+
+
 	(function init(){
 		startLoading()
 		var url;
@@ -858,7 +886,18 @@ var queue1 = [];
 
 			}
 		sessionValue($scope.trackVehID, $scope.groupname)
-		$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
+	  //$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
+         
+        $scope.fromTimes = "00:00:00"; 
+        $scope.toTimes   = timeNow24Hrs();
+        $scope.fromDates = getTodayDatess();
+        $scope.toDates   = getTodayDatess();
+        
+        if((checkXssProtection($scope.fromDates) == true) && (checkXssProtection($scope.toDates) == true) && (checkXssProtection($scope.fromTimes) == true) && (checkXssProtection($scope.toTimes) == true)){
+		
+		 $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+$scope.fromDates+'&fromTime='+$scope.fromTimes+'&toDate='+$scope.toDates+'&toTime='+$scope.toTimes+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes)+'&toDateUTC='+utcFormat($scope.toDates,$scope.toTimes);
+		}
+
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
 		// stopLoading();
 		})
@@ -868,8 +907,6 @@ var queue1 = [];
 		// }
 		
 	}());
-
-
 
 
 	$scope.trimColon = function(textVal){
@@ -1969,7 +2006,7 @@ if($scope.markerstart){
                                 $scope.markerheads.setPosition(latlngs);
                             
 
-            var contenttString = '<div style="padding:2px; padding-top:3px; width:auto;">'
+            var contenttString = '<div style="padding:2px; padding-top:3px; width:auto; ">'
 			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Dist Cov</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[0].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
 			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Speed</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[0].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
 			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Last Seen</b> - <span style="font-size:10px;padding-left:9px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[0].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
