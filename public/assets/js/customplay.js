@@ -889,25 +889,23 @@ var queue1 = [];
 	  //$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
          
         $scope.fromTimes = "00:00:00"; 
-        $scope.toTimes   = timeNow24Hrs();
+      //$scope.toTimes   = timeNow24Hrs();
         $scope.fromDates = getTodayDatess();
-        $scope.toDates   = getTodayDatess();
+      //$scope.toDates   = getTodayDatess();
         
-        if((checkXssProtection($scope.fromDates) == true) && (checkXssProtection($scope.toDates) == true) && (checkXssProtection($scope.fromTimes) == true) && (checkXssProtection($scope.toTimes) == true)){
-		
-		 $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+$scope.fromDates+'&fromTime='+$scope.fromTimes+'&toDate='+$scope.toDates+'&toTime='+$scope.toTimes+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes)+'&toDateUTC='+utcFormat($scope.toDates,$scope.toTimes);
-		}
+         if((checkXssProtection($scope.fromDates) == true) && (checkXssProtection($scope.fromTimes) == true)){
+		   //$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+$scope.fromDates+'&fromTime='+$scope.fromTimes+'&toDate='+$scope.toDates+'&toTime='+$scope.toTimes+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes)+'&toDateUTC='+utcFormat($scope.toDates,$scope.toTimes);
+		     $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+$scope.fromDates+'&fromTime='+$scope.fromTimes+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes);
+		 }
 
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
 		// stopLoading();
 		})
 		// } else{
 
-
 		// }
 		
 	}());
-
 
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
