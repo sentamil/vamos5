@@ -276,15 +276,16 @@ app.directive('tooltips', function ($document, $compile) {
     scope: true,
     link: function (scope, element, attrs) {
 
+     // console.log(attrs.ia[0].vehiexp);
+
       var tip = $compile('<span ng-class="tipClass">'+
         '<table class="tabStyles">'+
-        // '<tr>'+'<th>'+'</th>'+'<th>'+'</th>'+'<th>'+'</th>'+'</tr>'+
-        '<tr>'+'<td colspan="2">'+'{{ loc.date | date:"yyyy-MM-dd HH:mm:ss" }}'+'</td>'+'<td colspan="2">'+'{{ loc.shortName }}'+'</td>'+'</tr>'+
-        
-        '<tr>'+'<td>'+'Odo(kms)'+'</td>'+'<td>'+'{{ loc.odoDistance }}'+'</td>'+'<td>'+'Covered(kms)'+'</td>'+'<td>'+'{{ loc.distanceCovered}}'+'</td>'+'</tr>'+
-        '<tr>'+'<td>'+'Ignition'+'</td>'+'<td>'+'{{ loc.ignitionStatus }}'+'</td>'+'<td>'+'MaxSpeed(kms)'+'</td>'+'<td>'+'{{ loc.overSpeedLimit }}'+'</td>'+'</tr>'+
-        '<tr>'+'<td>'+'DeviceVolt'+'</td>'+'<td>'+'{{ loc.deviceVolt }}'+'</td>'+'<td>'+'Speed(kms)'+'</td>'+'<td>'+'{{loc.speed}}'+'</td>'+'</tr>'+
-        '<tr>'+'<td colspan="4">'+'{{ loc.address }}'+'</td></tr>'+
+        '<tr ng-show="loc.expired==Yes">'+'<td colspan="4">'+'This Vehicle is expired !'+'</td></tr>'+
+        '<tr ng-hide="loc.expired==Yes">'+'<td colspan="2">'+'{{ loc.date | date:"yyyy-MM-dd HH:mm:ss" }}'+'</td>'+'<td colspan="2">'+'{{ loc.shortName }}'+'</td>'+'</tr>'+
+        '<tr ng-hide="loc.expired==Yes">'+'<td>'+'Odo(kms)'+'</td>'+'<td>'+'{{ loc.odoDistance }}'+'</td>'+'<td>'+'Covered(kms)'+'</td>'+'<td>'+'{{ loc.distanceCovered}}'+'</td>'+'</tr>'+
+        '<tr ng-hide="loc.expired==Yes">'+'<td>'+'Ignition'+'</td>'+'<td>'+'{{ loc.ignitionStatus }}'+'</td>'+'<td>'+'MaxSpeed(kms)'+'</td>'+'<td>'+'{{ loc.overSpeedLimit }}'+'</td>'+'</tr>'+
+        '<tr ng-hide="loc.expired==Yes">'+'<td>'+'DeviceVolt'+'</td>'+'<td>'+'{{ loc.deviceVolt }}'+'</td>'+'<td>'+'Speed(kms)'+'</td>'+'<td>'+'{{loc.speed}}'+'</td>'+'</tr>'+
+        '<tr ng-hide="loc.expired==Yes">'+'<td colspan="4">'+'{{ loc.address }}'+'</td></tr>'+
         '</table>'+
         '</span>')(scope),
           tipClassName = 'tooltips',

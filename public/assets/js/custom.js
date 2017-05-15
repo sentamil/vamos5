@@ -54,8 +54,9 @@ app.filter('statusfilter', function(){
  
 app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter', '_global', function($scope,$compile, $http, vamoservice, $filter, GLOBAL){
 	
-	$scope.locations = [];
-	$scope.nearbyLocs =[];
+	$scope.locations   = [];
+	$scope.locations03 = [];
+	$scope.nearbyLocs  = [];
 	$scope.mapTable =[];
 	$scope.val = 5;	
 	$scope.gIndex = 0;
@@ -239,7 +240,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 
             if(newZohoVal==$scope.zohoHighVal){
 
-            	console.log(val.invoiceLink);
+            //	console.log(val.invoiceLink);
 
                  $scope.zohoLink=val.invoiceLink;
 
@@ -266,14 +267,68 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
          });
    });
 
+    
+    $scope.vehiSidebar = function(data){
+
+   	  var ret_obj=[];
+
+       angular.forEach(data,function(val, key){
+
+       	   ret_obj.push({rowId:val.rowId,group:val.group});
+       	   ret_obj[key].vehicleLocations=[]
+
+          angular.forEach(val.vehicleLocations,function(sval,skey){
+
+          	if(sval.expired == "No"){ 
+          
+                ret_obj[key].vehicleLocations.push(sval);
+
+             }
+             else if(sval.expired == "Yes"){
+
+                ret_obj[key].vehicleLocations.push({status:sval.status,rowId:sval.rowId,shortName:sval.shortName,vehicleId:sval.vehicleId,vehicleType:sval.vehicleType});
+
+             }
+
+          })
+
+       })
+
+    return ret_obj;    
+    }
+
+
+   $scope.filterExpire = function(data){
+
+     var ret_obj=[];
+        
+     angular.forEach(data,function(val, key){
+           
+         console.log(val.expired);
+
+         if(val.expired == "No"){ 
+           ret_obj.push(val);
+         }
+     })   
+        
+    return ret_obj;
+    }
+
 
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
 			$scope.selected=undefined;
+			$scope.selected02=undefined;
 			$scope.vehicle_list=[];
 			$scope.fcode=[];
 			$scope.locations02 = data;
           //zohoUrl();
+
+            $scope.locations04=[]; 
+            $scope.locations04=$scope.vehiSidebar(data);
+
+        //    console.log($scope.locations04);
+
 			try{
 				$scope.dpdown = $scope.locations02[0].isDbDown;	
 			}catch (err){
@@ -285,15 +340,19 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			if(data.length){
 
 				$scope.mapTable = data[$scope.gIndex].vehicleLocations;
-				// console.log(document.getElementById('one').innerText)
+			 // console.log(document.getElementById('one').innerText)
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.gName 	= data[$scope.gIndex].group;
 				sessionValue($scope.vehiname, $scope.gName)
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
+                
+                $scope.locations03=$scope.filterExpire($scope.locations);
+            //  console.log($scope.locations03);
+
 				$scope.zoomLevel = 6;
 				$scope.support = data[$scope.gIndex].supportDetails;
 				$scope.initilize('maploc');
-				// if($scope.makerType == undefined)
+			 // if($scope.makerType == undefined)
 				markerChange($scope.makerType);
 			}
 		});	
@@ -302,8 +361,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 
 	$scope.$watch("vehicleStatus", function (val) {
 		if($scope.locations02!=undefined){
-			$scope.selected=undefined;
-			$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, val);
+			$scope.selected   =undefined;
+			$scope.selected02 =undefined;
+			$scope.locations  = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, val);
+			$scope.locations03=$scope.filterExpire($scope.locations);
 			$scope.initilize('maploc');
 		}
 	});
@@ -373,13 +434,11 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		else if (vale !='nill' || vale != '0.0')return vale;
 	}
 
-	$scope.genericFunction = function(vehicleno, index){
+	$scope.genericFunction = function(vehicleno, rowId){
 		//angular.forEach($scope.locations, function(value, key){
 		//if($scope.zohoReports==undefined){	
-			$scope._editValue_con 	=	true;
-			$scope.selected = index;
-			$scope.selects  = 1;
-			var individualVehicle = $filter('filter')($scope.locations, { vehicleId:  vehicleno});
+		$scope._editValue_con 	=	true;
+		var individualVehicle = $filter('filter')($scope.locations, { vehicleId:  vehicleno});
 			if (individualVehicle[0].position === 'N' || individualVehicle[0].position === 'Z')
 			{
 				
@@ -390,9 +449,15 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			}
 			else
 			{  
-				
-				$scope.removeTask(vehicleno);
-			    sessionValue(vehicleno, $scope.gName);
+			  if( individualVehicle[0].expired == "No" ){
+
+                 $scope.selects  = 1;    
+			     $scope.selected = rowId;
+
+			    // console.log($scope.selected);
+
+				 $scope.removeTask(vehicleno,rowId);
+			     sessionValue(vehicleno, $scope.gName);
 
 				$scope.vehiclFuel=graphChange(individualVehicle[0].fuel);
 				if($scope.vehiclFuel==true){
@@ -403,10 +468,16 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
                 $('#graphsId').show();
 
 				// editableValue();
+
+			   } else {
+
+			   	 console.log('Vehicle Expired...');
+			   }
 			}
 		// })	
-	// }	
+	  //}	
 	}
+
 	//for edit details in the right side div
 	// document.getElementById("inputEdit").disabled = true;
 	
@@ -575,6 +646,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
     	$('#preloader').show();
     	$scope.selects=1;
 		$scope.selected=undefined;
+		$scope.selected02=undefined;
 		$scope.dynamicvehicledetails1=false;
 		$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group=' + groupname;
 		
@@ -650,7 +722,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		
 		google.maps.event.addListener(infowindow, "closeclick", function()		
 	    {		
-	    	$scope.selected=undefined;		
+	    	$scope.selected=undefined;
+	    	$scope.selected02=undefined;		
 	        $scope.selects=0;		
 	        $('#graphsId').toggle(300);		
 	       //   $("#contentmin").toggle();		
@@ -900,8 +973,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			// 	var t = vamoservice.geocodeToserver(pos.data.latitude,pos.data.longitude,count);
 									
 			// });
-			if($scope.selected!=undefined){
-				$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
+			if($scope.selected02!=undefined){
+				$scope.map.setCenter(gmarkers[$scope.selected02].getPosition()); 	
 			}
 	//	  }	
        });
@@ -1030,7 +1103,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	//	if($scope.zohoReports==undefined){
 		$scope.assignHeaderVal($scope.locations02);
 	//    }
-	 	var locs = $scope.locations;
+	  //var locs = $scope.locations;
+	 	var locs = $scope.locations03;
 	 	var parkedCount = 0;
 		var movingCount = 0;
 		var idleCount = 0;
@@ -1055,8 +1129,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		$scope.idleCount  = idleCount;
 		$scope.overspeedCount = overspeedCount;
 		
-		for (var i = 0; i < gmarkers.length; i++) {
-			var temp = $scope.locations[i];	 
+		for (var i = 0; i < $scope.locations03.length; i++) {
+			 // var temp = $scope.locations[i];	 
 			 // var lat = temp.latitude;
 			 // var lng =  temp.longitude;
 			 // var latlng = new google.maps.LatLng(lat,lng);
@@ -1064,12 +1138,13 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			 // gmarkers[i].setPosition(latlng);
 			 // gmarkers[i].setMap($scope.map);
 			 // $scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);	
-			 if(temp.vehicleId==$scope.vehicleno){
-				 $scope.assignValue(temp);
+			 if($scope.locations03[i].vehicleId==$scope.vehicleno){
+				 $scope.assignValue($scope.locations03[i]);
 			//	 if($scope.selects){		
-				 $scope.selected=i;
+			   //$scope.selected=i;
+				 $scope.selected02=i;
 			//	}
-				 fetchingAddress(temp);
+				 fetchingAddress($scope.locations03[i]);
 				 // $scope.getLocation(lat, lng, function(count){
 					//  $('#lastseen').text(count);
 					//  var t = vamoservice.geocodeToserver(lat,lng,count);
@@ -1077,12 +1152,12 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			 }
 			 //$scope.infoBoxed($scope.map,gmarkers[i], temp.vehicleId, lat, lng, temp);
 		}
-		if($scope.selected!=undefined){
+		if($scope.selected02!=undefined){
 		//	if ($scope.zohoReports==undefined) {
-			$scope.map.setCenter(gmarkers[$scope.selected].getPosition());
+			$scope.map.setCenter(gmarkers[$scope.selected02].getPosition());
 
 			if($scope.selects){
-			  ginfowindow[$scope.selected].open($scope.map,gmarkers[$scope.selected]);
+			  ginfowindow[$scope.selected02].open($scope.map,gmarkers[$scope.selected02]);
 		     }
 		//  }
 		}
@@ -1327,7 +1402,8 @@ function locat_address(locs) {
         if( $scope.inits>1){		
 	       clearMarkerss();		
          }		
-            var locs = $scope.locations;		
+          //var locs = $scope.locations;
+            var locs = $scope.locations03;		
 			var length = locs.length;		
 			gmarkers=[];		
 			ginfowindow=[];		
@@ -1353,7 +1429,7 @@ function locat_address(locs) {
 			}else{
 				$('.nav-second-level li').eq($scope.selected).children('a').addClass('active');
 			}
-			var locs = $scope.locations;
+			var locs = $scope.locations03;
 			$scope.assignHeaderVal(location02);
 			
 			var lat = location02[$scope.gIndex].latitude;
@@ -1429,8 +1505,8 @@ function locat_address(locs) {
 			// }
 	//	});
 		$scope.loading	=	false;
-		if($scope.selected>-1 && gmarkers[$scope.selected]!=undefined){
-			$scope.map.setCenter(gmarkers[$scope.selected].getPosition()); 	
+		if($scope.selected02>-1 && gmarkers[$scope.selected02]!=undefined){
+			$scope.map.setCenter(gmarkers[$scope.selected02].getPosition()); 	
 		}
 		$(document).on('pageshow', '#maploc', function(e){       
         	google.maps.event.trigger(document.getElementById('	maploc'), "resize");
@@ -1482,9 +1558,10 @@ function locat_address(locs) {
 		});
 	}
 
-	$scope.removeTask=function(vehicleno){
+	$scope.removeTask=function(vehicleno,rowVal){
 		$scope.vehicleno = vehicleno;
-		var temp = $scope.locations;
+	  //var temp = $scope.locations;
+		var temp =$scope.locations03;
 		//$scope.endlatlong = new google.maps.LatLng();
 		//$scope.startlatlong = new google.maps.LatLng();
 		$scope.map.setZoom(16);
@@ -1492,7 +1569,7 @@ function locat_address(locs) {
 		for(var i=0; i<temp.length;i++){
 			if(temp[i].vehicleId==$scope.vehicleno){
 				
-				$scope.selected=i;
+				$scope.selected02=i;
 				
 				$scope.map.setCenter(gmarkers[i].getPosition());
 				
@@ -1521,7 +1598,7 @@ function locat_address(locs) {
 	function markerChange(value){
 		var icon , img;
 			
-		angular.forEach($scope.locations, function(valu, key){
+		angular.forEach($scope.locations03, function(valu, key){
 			
 			// img = ($scope.makerType == 'markerChange')? 'assets/imgs/'+'Car2'+'.png' : vamoservice.iconURL(valu)
 			img = ($scope.makerType == 'markerChange')? 'assets/imgs/'+valu.vehicleType+'.png' : vamoservice.iconURL(valu);
@@ -1860,6 +1937,7 @@ $scope.starSplit 	=	function(val){
 					//	if(scope.zohoReports==undefined){
 						scope.locations02	= data;
 						scope.locations 	= scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
+						scope.locations03   = scope.filterExpire(scope.locations);
 					//    }
 						scope.zoomLevel 	= scope.zoomLevel;
 						scope.loading		=	true;

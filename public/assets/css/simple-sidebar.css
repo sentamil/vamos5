@@ -765,9 +765,10 @@ table tr th{
 .tabStyles{
     table-layout: auto; border-collapse:collapse; width: 250px;
 }
-/*style="                       padding:5px 5px 5px 8px;text-align:center;font-size:12px;font-weight:bold;border-bottom: 0.5px solid #DFE2D0;border-top: 0.5px solid #DFE2D0;color:#666666;"*/
-.tabStyles tr:first-child td:nth-child(2) {border-right: 0;font-weight:bold; text-align: center;}
-.tabStyles tr:first-child td:nth-child(1) {border-right: 0.5px solid #DFE2D0;text-align: center;}
+/*style="padding:5px 5px 5px 8px;text-align:center;font-size:12px;font-weight:bold;border-bottom: 0.5px solid #DFE2D0;border-top: 0.5px solid #DFE2D0;color:#666666;"*/
+.tabStyles tr:first-child td{font-size:12px;font-weight:bold;color:red;text-align:center;}
+.tabStyles tr:nth-child(2) td:nth-child(2) {border-right: 0;font-weight:bold; text-align: center;}
+.tabStyles tr:nth-child(2) td:nth-child(1) {border-right: 0.5px solid #DFE2D0;text-align: center;}
 .tabStyles tr td {padding:4px 7px 4px 7px ;text-align:left;font-size:11px;font-weight:bold;color:#666666;border-bottom: 0.5px solid #DFE2D0;border-right: 0.5px solid #DFE2D0;}
 .tabStyles tr td:nth-child(even){font-weight:normal; }
 .tabStyles tr td:nth-child(odd) {border-right: 0}   
