@@ -32,8 +32,9 @@ class DeviceController extends \BaseController {
 				// log::info(isset($refData['OWN']));
 				// log::info($orgId);
 				// log::info('  dealer name   ');
-				
-				$deviceMap 	= array_add($deviceMap,$i,$vechicle.','.$devicesList[$i].','.$orgId);
+				$vehicleExpiry=isset($refData['vehicleExpiry'])?$refData['vehicleExpiry']:'null';
+                // log::info($vehicleExpiry);
+				$deviceMap 	= array_add($deviceMap,$i,$vechicle.','.$devicesList[$i].','.$orgId.','.$vehicleExpiry);
 			}
 			
 			$temp++;
