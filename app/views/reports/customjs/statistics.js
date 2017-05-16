@@ -614,16 +614,14 @@ function distanceMonth(data){
 
     angular.forEach(data.vehicleDistanceDatas, function(val, key){
 
-        ret_obj.push({vehiId:val.vehicleId,totDist:val.totalDistance});
-    	ret_obj[key].distsTodays=[];
+        ret_obj.push({vehiId:val.vehicleId,vehiName:val.shortName,totDist:val.totalDistance});
+    	  ret_obj[key].distsTodays=[];
 
          angular.forEach(val.distances, function(sval, skey){
            ret_obj[key].distsTodays.push({distanceToday:sval});
            //	console.log(sval);
-   	   
-    }) 
-
-})    
+   	       }) 
+    })    
  return ret_obj;
 }
 
@@ -760,26 +758,29 @@ function serviceCall(){
 			var monthUrl =GLOBAL.DOMAIN_NAME+'/getExecutiveReportVehicleDistance?groupId='+$scope.viewGroup.group+'&month='+ $scope.monthNo;
 		  //console.log(monthUrl);
              
-			$scope.monthData	=	[];
-            $http.get(monthUrl).success(function(data){
-			    $scope.monthData = data;
+			    $scope.monthData	=	[];
+          $http.get(monthUrl).success(function(data){
+			      $scope.monthData = data;
 		      //console.log($scope.monthData);
 
-                $scope.monthDates=[];
+          $scope.monthDates=[];
 		        for(var i=0;i<$scope.lenMon;i++){
                   $scope.monthDates.push(i+1);
                 }
 
-               $scope.distMonData=[];
-               $scope.distMonData=distanceMonth($scope.monthData);
+          $scope.distMonData=[];
+          $scope.distMonData=distanceMonth($scope.monthData);
 
-            // if(data.length != 0 )
-               $scope.totDistVehic=[];
-               $scope.totDistVehic= data.comulativeDistance;
+          $scope.totDistVehic=[];
+          if(data.comulativeDistance!=null){
+
+               for(var i=0;i<data.comulativeDistance.length;i++){
+                   $scope.totDistVehic.push(data.comulativeDistance[i]); 
+                }
+          }
              //console.log($scope.distMonData);
              //console.log(daysInThisMonth());
-
-                $scope.showMonTable=true;
+          $scope.showMonTable=true;
 				stopLoading();
 			});
 	} 
