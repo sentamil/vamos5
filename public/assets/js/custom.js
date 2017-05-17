@@ -1865,9 +1865,9 @@ function locat_address(locs) {
 	{
 		for (var i = 0; i <gmarkers.length; i++) 
 		{
-
 			if(gmarkers[i].labelContent == val.shortName)
 			{
+				$scope.selected02=i;
 				$scope.map.setZoom(19);
 				$scope.map.setCenter(gmarkers[i].getPosition());
 				gmarkers[i].setAnimation(google.maps.Animation.BOUNCE);
