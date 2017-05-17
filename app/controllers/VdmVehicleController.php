@@ -586,7 +586,7 @@ public function edit($id) {
         $refData = array_add($refData, 'vehicleType', ' ');
         $refData = array_add($refData, 'oprName', ' ');
         $refData = array_add($refData, 'mobileNo', '0123456789');
-	 $refData = array_add($refData, 'vehicleExpiry', 'vehicleExpiry');
+	 $refData = array_add($refData, 'vehicleExpiry', 'null');
         $refData = array_add($refData, 'overSpeedLimit', '50');
         $refData = array_add($refData, 'driverName', '');
         $refData = array_add($refData, 'gpsSimNo', '0123456789');
@@ -2043,7 +2043,7 @@ public function migrationUpdate() {
             'vehicleType' =>  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:'Bus',
             'oprName' => isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel',
             'mobileNo' =>isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789',
-		'vehicleExpiry' =>isset($refDataJson1['vehicleExpiry'])?$refDataJson1['vehicleExpiry']:'vehicleExpiry',
+		'vehicleExpiry' =>isset($refDataJson1['vehicleExpiry'])?$refDataJson1['vehicleExpiry']:'null',
             'overSpeedLimit' => isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60',
             'odoDistance' => isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0',
             'driverName' => isset($refDataJson1['driverName'])?$refDataJson1['driverName']:'XXX',
