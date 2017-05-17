@@ -304,8 +304,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
         
      angular.forEach(data,function(val, key){
            
-         console.log(val.expired);
-
+        // console.log(val.expired);
          if(val.expired == "No"){ 
            ret_obj.push(val);
          }
@@ -339,7 +338,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			// menuGroup(data);
 			if(data.length){
 
-				$scope.mapTable = data[$scope.gIndex].vehicleLocations;
+				$scope.mapTable = $scope.filterExpire(data[$scope.gIndex].vehicleLocations);
 			 // console.log(document.getElementById('one').innerText)
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.gName 	= data[$scope.gIndex].group;
@@ -347,7 +346,9 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
                 
                 $scope.locations03=$scope.filterExpire($scope.locations);
-            //  console.log($scope.locations03);
+
+              //  console.log($scope.locations03);
+               // console.log($scope.mapTable);
 
 				$scope.zoomLevel = 6;
 				$scope.support = data[$scope.gIndex].supportDetails;
@@ -652,7 +653,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		
 		$scope.gIndex = groupid;
 		
-		$scope.mapTable = $scope.locations02[groupid].vehicleLocations;
+		$scope.mapTable = $scope.filterExpire($scope.locations02[groupid].vehicleLocations);
 		// gmarkers=[];
 		for(var i=0; i<ginfowindow.length;i++){		
 			ginfowindow[i].setMap(null);
@@ -1938,7 +1939,8 @@ $scope.starSplit 	=	function(val){
 						scope.locations02	= data;
 						scope.locations 	= scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
 						scope.locations03   = scope.filterExpire(scope.locations);
-					//    }
+						scope.mapTable      = scope.filterExpire(scope.locations); 
+					//  }
 						scope.zoomLevel 	= scope.zoomLevel;
 						scope.loading		=	true;
 						scope.init();
