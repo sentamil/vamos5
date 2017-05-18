@@ -1,6 +1,6 @@
 app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global', function($scope, $http, $filter, vamoservice, GLOBAL){
 
-    $scope.donut_new    =  0;
+  $scope.donut_new    =  0;
 	$scope.donut        =  1;
 	$scope.showMonTable =  false;
 
@@ -185,6 +185,7 @@ $scope.monthssVal=function(val){
    $scope.colVals=$scope.lenMon+2;
 
    startLoading();
+   $scope.showMonTable =  false;
 	serviceCall();
 // console.log($scope.monthNo);
 }
@@ -270,12 +271,16 @@ $scope.$watch("url", function(val){
 //group click
 $scope.groupSelection 	=	function(groupName, groupId) {
 	startLoading();
-	vehicleSelected 		=	'';
-	$scope.viewGroup.group 	= 	groupName;
-    var groupUrl 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupName;
-	vamoservice.getDataCall(groupUrl).then(function(groupResponse){
 
-		$scope.trackVehID       =   groupResponse[groupId].vehicleLocations[0].vehicleId;
+   $scope.showMonTable=false;
+   vehicleSelected 		=	'';
+
+	 $scope.viewGroup.group 	= 	groupName;
+   var groupUrl 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupName;
+
+	 vamoservice.getDataCall(groupUrl).then(function(groupResponse){
+
+		  $scope.trackVehID       =   groupResponse[groupId].vehicleLocations[0].vehicleId;
    		$scope.groupname 		=	groupName;
    		sessionValue($scope.trackVehID, $scope.groupname)
    		$scope.vehicleList 	=  	groupResponse;
@@ -284,18 +289,18 @@ $scope.groupSelection 	=	function(groupName, groupId) {
 
          if($scope.groupname == value.group){
             $scope.vehicleNames=[];	
-		    $scope.gIndex = value.rowId;
+		        $scope.gIndex = value.rowId;
 					
-    		angular.forEach(value.vehicleLocations, function(val, skey){
+    		   angular.forEach(value.vehicleLocations, function(val, skey){
 
-     			$scope.vehicleNames.push(val.vehicleId);
-			    // console.log(val.vehicleId);
-		    })
-		 }
+     			     $scope.vehicleNames.push(val.vehicleId);
+			         // console.log(val.vehicleId);
+		        })
+		      }
        })
 
 	   serviceCall();
-	  stopLoading();
+	 //stopLoading();
 	})
 
 }
@@ -800,19 +805,19 @@ $scope.alertMe 		= 	function(tabClick)
 	switch (tabClick){
 		case 'executive':
 			startLoading();
-			tabId 				= 'executive';
-			$scope.sort 		= sortByDate('date');
+			tabId 				      = 'executive';
+			$scope.sort 	    	= sortByDate('date');
 			$scope.downloadid 	= 'executive';
 			$scope.showDate     = true;
 			$scope.showMonth    = false;
 			serviceCall();
-			$scope.donut=false;
-			$scope.donut_new=false;
+			$scope.donut        = false;
+			$scope.donut_new    = false;
             break;
 		case 'poi':
 			startLoading();
-			$scope.sort 		= sortByDate('time');
-			tabId				= 'poi';
+			$scope.sort 		    = sortByDate('time');
+			tabId				        = 'poi';
 			$scope.downloadid 	= 'poi';
 			$scope.showDate     = true;
 			$scope.showMonth    = false;
@@ -820,8 +825,8 @@ $scope.alertMe 		= 	function(tabClick)
 			break;
 		case 'consolidated' :
 			startLoading();
-			$scope.sort 		= sortByDate('date');
-			tabId 				= 'executive';
+			$scope.sort 		    = sortByDate('date');
+			tabId 				      = 'executive';
 			$scope.downloadid 	= 'consolidated';
 			$scope.showDate     = true;
 			$scope.showMonth    = false;
@@ -831,19 +836,19 @@ $scope.alertMe 		= 	function(tabClick)
 		    break;
 		case 'fuel' :
 			startLoading();
-			$scope.sort 		= sortByDate('date');
-			tabId 				= 'fuel';
+			$scope.sort 		    = sortByDate('date');
+			tabId 				      = 'fuel';
 			$scope.downloadid 	= 'fuel';
 			$scope.showDate     = true;
 			$scope.showMonth    = false;
 			serviceCall();
 			break;
 		case 'distMonth' :
-            startLoading();
-            $scope.sort 		= sortByDate('date');
-		    $scope.showMonTable = false;
-		    tabId               = 'month';
-		    $scope.downloadid 	= 'month';
+      startLoading();
+      $scope.sort 		    = sortByDate('date');
+		  $scope.showMonTable = false;
+		  tabId               = 'month';
+		  $scope.downloadid 	= 'month';
 			$scope.showDate     = false;
 			$scope.showMonth    = true;
 		    serviceCall();

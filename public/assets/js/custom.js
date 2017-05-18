@@ -83,7 +83,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope.vehiclFuel=true;
 	$scope._editValue_con 	= false;
 	$scope._editValue 	= {};
-	$scope._editValue._vehiTypeList 	= ['Truck', 'Car', 'Bus', 'Bike'];
+	$scope._editValue._vehiTypeList = ['Truck', 'Car', 'Bus', 'Bike'];
 
 	$scope.navReports="../public/reports";
 	$scope.navStats="../public/statistics";
@@ -442,7 +442,6 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		var individualVehicle = $filter('filter')($scope.locations, { vehicleId:  vehicleno});
 			if (individualVehicle[0].position === 'N' || individualVehicle[0].position === 'Z')
 			{
-				
 				$('#status').fadeOut(); 
 				$('#preloader').delay(350).fadeOut('slow');
 				$('body').delay(350).css({'overflow':'visible'});
@@ -452,13 +451,12 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			{  
 			  if( individualVehicle[0].expired == "No" ){
 
-                 $scope.selects  = 1;    
-			     $scope.selected = rowId;
+                $scope.selects  = 1;    
+			    $scope.selected = rowId;
+			 // console.log($scope.selected);
 
-			    // console.log($scope.selected);
-
-				 $scope.removeTask(vehicleno,rowId);
-			     sessionValue(vehicleno, $scope.gName);
+				$scope.removeTask(vehicleno,rowId);
+			    sessionValue(vehicleno, $scope.gName);
 
 				$scope.vehiclFuel=graphChange(individualVehicle[0].fuel);
 				if($scope.vehiclFuel==true){
@@ -469,9 +467,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
                 $('#graphsId').show();
 
 				// editableValue();
-
-			   } else {
-
+			   }else{
 			   	 console.log('Vehicle Expired...');
 			   }
 			}
@@ -999,8 +995,18 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		$('#mobNo span').text(dataVal.mobileNo);
 		$('#graphsId #speed').text(dataVal.speed);
 		$('#graphsId #fuel').text(dataVal.tankSize);
-		tankSize 		 = parseInt(dataVal.tankSize);
-		fuelLtr 		 = parseInt(dataVal.fuelLitre);
+         
+        if(dataVal.tankSize!=0 && dataVal.fuelLitre!=0){ 
+		  tankSize 		 = parseInt(dataVal.tankSize);
+		  fuelLtr 		 = parseInt(dataVal.fuelLitre);
+	    }else if(dataVal.tankSize!=0 && dataVal.fuelLitre==0){
+          tankSize 		 = parseInt(dataVal.tankSize);
+	      fuelLtr 		 = parseInt(dataVal.fuelLitre);
+	    }else if(dataVal.tankSize==0 && dataVal.fuelLitre==0){
+          tankSize 		 = parseInt(dataVal.tankSize);
+	      fuelLtr 		 = parseInt(dataVal.fuelLitre);
+	    }
+
 		total  			 = parseInt(dataVal.speed);
 		$('.vehdevtype').text(dataVal.odoDistance);
 		$('#mobno #val').text(dataVal.overSpeedLimit);
@@ -1097,8 +1103,6 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		});
 	}
 	
-	
-
 	$scope.initial02 = function(){
 		//console.log(' marker click ')
 	//	if($scope.zohoReports==undefined){
@@ -1173,8 +1177,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		// {
 		// 	markerCluster.clearMarkers(null);
 		// }
-		$scope.markerJump($scope.locations02[$scope.gIndex].vehicleLocations);
-
+		//$scope.markerJump($scope.locations02[$scope.gIndex].vehicleLocations);
+          $scope.markerJump($scope.locations03);
 
 		// if($scope.makerType ==  "markerChange")
 		// {
@@ -1571,8 +1575,7 @@ function locat_address(locs) {
 			if(temp[i].vehicleId==$scope.vehicleno){
 				
 				$scope.selected02=i;
-				
-				$scope.map.setCenter(gmarkers[i].getPosition());
+			    $scope.map.setCenter(gmarkers[i].getPosition());
 				
 				$scope.assignValue(temp[i]);
 				fetchingAddress(temp[i]);
@@ -1848,7 +1851,7 @@ function locat_address(locs) {
 		}
 	}
 
-	//mouse over in list view table
+	// mouse over in list view table
 	$scope.mouseJump  = function(user)
 	{
 		for(var i = 0; i <gmarkers.length; i++)
@@ -1866,14 +1869,19 @@ function locat_address(locs) {
 		for (var i = 0; i <gmarkers.length; i++) 
 		{
 			if(gmarkers[i].labelContent == val.shortName)
-			{
+			{        
+               if($scope.selects==1){
+				  $('#graphsId').toggle(300);	
+     			}
+				$scope.selects=0; 
 				$scope.selected02=i;
 				$scope.map.setZoom(19);
 				$scope.map.setCenter(gmarkers[i].getPosition());
 				gmarkers[i].setAnimation(google.maps.Animation.BOUNCE);
 	   			gmarkers[i].setAnimation(null);
+
 			}
-		};
+		}
 	}
 
 	$scope.infowindowshowFunc = function(){
