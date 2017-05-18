@@ -276,8 +276,6 @@ app.directive('tooltips', function ($document, $compile) {
     scope: true,
     link: function (scope, element, attrs) {
 
-     // console.log(attrs.ia[0].vehiexp);
-
       var tip = $compile('<span ng-class="tipClass">'+
         '<table class="tabStyles">'+
         '<tr ng-show="loc.expired==Yes">'+'<td colspan="4">'+'This Vehicle has expired !'+'</td></tr>'+
@@ -285,6 +283,7 @@ app.directive('tooltips', function ($document, $compile) {
         '<tr ng-hide="loc.expired==Yes">'+'<td>'+'Odo(kms)'+'</td>'+'<td>'+'{{ loc.odoDistance }}'+'</td>'+'<td>'+'Covered(kms)'+'</td>'+'<td>'+'{{ loc.distanceCovered}}'+'</td>'+'</tr>'+
         '<tr ng-hide="loc.expired==Yes">'+'<td>'+'Ignition'+'</td>'+'<td>'+'{{ loc.ignitionStatus }}'+'</td>'+'<td>'+'MaxSpeed(kms)'+'</td>'+'<td>'+'{{ loc.overSpeedLimit }}'+'</td>'+'</tr>'+
         '<tr ng-hide="loc.expired==Yes">'+'<td>'+'DeviceVolt'+'</td>'+'<td>'+'{{ loc.deviceVolt }}'+'</td>'+'<td>'+'Speed(kms)'+'</td>'+'<td>'+'{{loc.speed}}'+'</td>'+'</tr>'+
+        '<tr ng-hide="loc.expired==Yes">'+'<td>'+'Sat Count'+'</td>'+'<td>'+'{{ loc.gsmLevel }}'+'</td>'+'<td>'+'Direction'+'</td>'+'<td>'+'{{loc.direction}}'+'</td>'+'</tr>'+
         '<tr ng-hide="loc.expired==Yes">'+'<td colspan="4">'+'{{ loc.address }}'+'</td></tr>'+
         '</table>'+
         '</span>')(scope),
@@ -350,13 +349,9 @@ app.directive('tooltips', function ($document, $compile) {
 });
 
 
-
-
 var directiveModule = angular.module('angularjs-dropdown-multiselect', []);
 
 directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$compile', '$parse',
-
-//app.directive('ngDropdownMultiselect', ['$filter', '$document', '$compile', '$parse',
 
 function ($filter, $document, $compile, $parse) {
 
@@ -651,11 +646,6 @@ function ($filter, $document, $compile, $parse) {
         }
     };
 }]);
-
-
-
-
-
 
 
 app.constant("_global", {
