@@ -634,6 +634,14 @@ Route::get('/getZohoInvoice', function() {
     return View::make('vls.getZohoInvoice');
 });
 
+Route::get('/getRouteList', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getRouteList');
+    return View::make('vls.getRouteList');
+});
+
  Route::get('/getStoppageReport', function() {
      if (!Auth::check()) {
          return Redirect::to('login');
@@ -1033,6 +1041,7 @@ Route::get('notificationFrontend', array('uses' => 'VdmUserController@notificati
 Route::post('notificationFrontendUpdate', array('uses' => 'VdmUserController@notificationFrontendUpdate'));
  // for scheduled reports
 Route::post('ScheduledController/reportScheduling', array('uses' => 'ScheduledController@reportScheduling'));
+Route::get('ScheduledController/getRepName', array('uses' => 'ScheduledController@getRepName'));
 Route::get('ScheduledController/getValue', array('uses' => 'ScheduledController@getValue'));
 Route::get('ScheduledController/reportDelete', array('uses'=>'ScheduledController@reportDelete'));
 
