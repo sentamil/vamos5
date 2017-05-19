@@ -295,8 +295,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
     }
 
    $scope.$watch("getRoutes", function (val) {
-        $http.get($scope.getRoutes).success(function(data){
-        //console.log(data);
+   	   console.log("getRoutes");
+       // $http.get($scope.getRoutes).success(function(data){
+        	vamoservice.getDataCall($scope.getRoutes).then(function(data) {
+        console.log("getRoutes");
           $scope.routeDataNames(data);
        })
    });

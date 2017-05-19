@@ -1,5 +1,5 @@
 <?php
-Log::info("Get RouteList...");
+Log::info("Get Route List...");
 
 $input = Input::all();
 
@@ -7,9 +7,6 @@ $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
 
 
-if (! Auth::check ()) {
-	return Redirect::to ( 'login' );
-}
 
 $username = Auth::user ()->username;
 
@@ -32,11 +29,11 @@ foreach ($input as $key => $value) {
  $web="web";
  $val="y";
  $parameters="{$parameters}&{$web}={$val}";
- log::info( ' parameters :' . $parameters.' ip :' . $ipaddress);
+ log::info( ' parameters :' . $parameters);
 
-		$url = 'http://'.$ipaddress.':9000/getRouteList' . $parameters;
-		$url=htmlspecialchars_decode($url);
-		 log::info( 'Routing to backed  :' . $url );
+     $url = 'http://'.$ipaddress.':9000/getRouteList'.$parameters;
+    $url=htmlspecialchars_decode($url);
+     log::info( 'Routing to backed  :' . $url );
 
 
     $ch = curl_init();
@@ -46,11 +43,10 @@ foreach ($input as $key => $value) {
   curl_setopt($ch, CURLOPT_TIMEOUT, 3);
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
   $response = curl_exec($ch);
-	 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+   $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
   curl_close($ch);
 log::info( 'curl status  :' .$httpCode  );
 
 echo $response;
 ?>
-
 
