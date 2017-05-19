@@ -71,9 +71,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
+	$scope.getRoutes = GLOBAL.DOMAIN_NAME+'/getRouteList';
 	$scope.url     = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	$scope.getZoho = GLOBAL.DOMAIN_NAME+'/getZohoInvoice';
-	$scope.getRoutes = GLOBAL.DOMAIN_NAME+'/getRouteList';
+	
   //$scope.getOrgId  = GLOBAL.DOMAIN_NAME+'/viewSite';
 	$scope.historyfor ='';
 	$scope.map =  null;
