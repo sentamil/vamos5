@@ -58,6 +58,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope.locations03 = [];
 	$scope.nearbyLocs  = [];
 	$scope.mapTable =[];
+
+	$scope.tabletds=undefined;
 	$scope.val = 5;	
 	$scope.gIndex = 0;
 	$scope.alertstrack = 0;
@@ -69,9 +71,11 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
-	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
-	$scope.getZoho=GLOBAL.DOMAIN_NAME+"/getZohoInvoice?";
-	$scope.historyfor='';
+	$scope.url     = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+	$scope.getZoho = GLOBAL.DOMAIN_NAME+'/getZohoInvoice';
+	$scope.getRoutes = GLOBAL.DOMAIN_NAME+'/getRouteList';
+  //$scope.getOrgId  = GLOBAL.DOMAIN_NAME+'/viewSite';
+	$scope.historyfor ='';
 	$scope.map =  null;
 	$scope.flightpathall = []; 
 	$scope.clickflag = false;
@@ -234,18 +238,13 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
         angular.forEach(data.hist,function(val, key){
 
         	var newZohoVal=trimDueDays(val.dueDays);
-
         	//console.log(newZohoVal);
         	//console.log($scope.zohoHighVal);
-
             if(newZohoVal==$scope.zohoHighVal){
 
-            //	console.log(val.invoiceLink);
-
-                 $scope.zohoLink=val.invoiceLink;
-
+              //console.log(val.invoiceLink);
+                $scope.zohoLink=val.invoiceLink;
             }      
-
         })
     }
 
@@ -258,21 +257,62 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
        })
     }*/
 
-   $scope.$watch("getZoho", function (val) {
+   
+	/* getting Org ids */
+   
+  /*  $scope.$watch("getOrgId", function (val) {
+	  $http.get($scope.getOrgId ).success(function(response){
 
+        $scope.organIds     = [];
+		 $scope.organIds 	= response.orgIds;
+
+		  console.log($scope.organIds);
+	
+	 })
+  });*/
+
+  $scope.routeDataNames=function(data){
+
+    var vehiRouteList = [];
+    $scope._editValue._vehiRoutesList = [];
+
+      	angular.forEach(data.routeParents,function(val, key){
+      		
+      		if(val.route != null){
+             //console.log(val.orgId);
+             //console.log(val.route);
+               vehiRouteList.push(val.route);     
+      		}
+      	})
+
+        angular.forEach(vehiRouteList,function(val, key){
+            angular.forEach(val,function(sval, skey){
+
+               $scope._editValue._vehiRoutesList.push(sval);
+            })
+        })
+           // console.log($scope._editValue._vehiRoutesList);
+    }
+
+   $scope.$watch("getRoutes", function (val) {
+        $http.get($scope.getRoutes).success(function(data){
+        //console.log(data);
+          $scope.routeDataNames(data);
+       })
+   });
+
+   $scope.$watch("getZoho", function (val) {
      vamoservice.getDataCall($scope.getZoho).then(function(data) {
 
          zohoDataCall(data); 
-       
-         });
+        });
    });
 
     
     $scope.vehiSidebar = function(data){
 
    	  var ret_obj=[];
-
-       angular.forEach(data,function(val, key){
+      angular.forEach(data,function(val, key){
 
        	   ret_obj.push({rowId:val.rowId,group:val.group});
        	   ret_obj[key].vehicleLocations=[]
@@ -287,13 +327,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
              else if(sval.expired == "Yes"){
 
                 ret_obj[key].vehicleLocations.push({status:sval.status,rowId:sval.rowId,shortName:sval.shortName,vehicleId:sval.vehicleId,vehicleType:sval.vehicleType});
-
              }
 
           })
-
        })
-
     return ret_obj;    
     }
 
@@ -301,15 +338,12 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
    $scope.filterExpire = function(data){
 
      var ret_obj=[];
-        
      angular.forEach(data,function(val, key){
-           
-        // console.log(val.expired);
+      //console.log(val.expired);
          if(val.expired == "No"){ 
            ret_obj.push(val);
          }
      })   
-        
     return ret_obj;
     }
 
@@ -506,10 +540,11 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	        'mobileNo' :$scope._editValue._mobileNo,
 	        'regNo': $scope._editValue._regNo,
 			'vehicleType':$scope._editValue.vehType,
+			'routeName':$scope._editValue.routeName,
 			})
 		    .done(function(data) {
 	    	// updateCall();
-	        console.log("Sucess");
+	        console.log("Success");
 		    })
 		    .fail(function() {
 	 		// updateCall();
@@ -592,13 +627,12 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
     ]
   };
 		// var mcOptions = {gridSize: 50,maxZoom: 15, imagePath: 'https://raw.githubusercontent.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png'}
-		
 		// var markerCluster 	= new MarkerClusterer($scope.map, gmarkers, { 
-  //   		imagePath: 'assets/imgs/m1.png' 
+           //  imagePath: 'assets/imgs/m1.png' 
 		// });	
 		 var markerCluster 	= new MarkerClusterer($scope.map, gmarkers,{
-    imagePath: 'https://rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png' 
-});
+            imagePath: 'https://rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m1.png' 
+         });
 	}
 
 	$scope.getLocation = function(lat,lon, callback){
@@ -612,6 +646,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			}
 		});
     };
+
 	function utcdateConvert(milliseconds){
 		//var milliseconds=1440700484003;
 		var offset='+10';
@@ -621,6 +656,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		var result=nd.toLocaleString();
 		return result;
 	}
+
 	$scope.distance = function(){
 		$scope.nearbyflag=false;
 		$('.nearbyTable').hide();
@@ -636,8 +672,6 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		}
 	}
 	
-
-
 	$scope.groupSelection = function(groupname, groupid){
 		$('#status').show();
     	$('#preloader').show();
@@ -892,9 +926,6 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	}
 	
 
-	
-
-	
 	$scope.addMarker= function(pos){
 	    
 	    var myLatlng = new google.maps.LatLng(pos.lat,pos.lng);
@@ -1022,6 +1053,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		$scope._editValue._mobileNo 	= dataVal.mobileNo;
 		$scope._editValue._regNo 		= dataVal.regNo;
 		$scope._editValue.vehType 		= dataVal.vehicleType;
+		$scope._editValue.routeName     = dataVal.routeName;
 
 	}
 	
@@ -1147,7 +1179,9 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 				 $scope.assignValue($scope.locations03[i]);
 			//	 if($scope.selects){		
 			   //$scope.selected=i;
+			   if($scope.tabletds==undefined){
 				 $scope.selected02=i;
+			   }
 			//	}
 				 fetchingAddress($scope.locations03[i]);
 				 // $scope.getLocation(lat, lng, function(count){
@@ -1185,8 +1219,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			markerChange($scope.makerType);
 		// }
 
-		
 	}
+
 
 function centerMarker(listMarker){
     var bounds = new google.maps.LatLngBounds();
@@ -1529,8 +1563,6 @@ function locat_address(locs) {
 		// $('body').delay(350).css({'overflow':'visible'});
 	stopLoading();
 
-
-
 	var input_value   =  document.getElementById('pac-input');
   	var sbox     =  new google.maps.places.SearchBox(input_value);
 	// search box function
@@ -1547,7 +1579,6 @@ function locat_address(locs) {
 	    $scope.map.setCenter(new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()));
 	    $scope.map.setZoom(13);
 	  });
-
 
    	}
 	
@@ -1875,6 +1906,9 @@ function locat_address(locs) {
      			}
 				$scope.selects=0; 
 				$scope.selected02=i;
+
+				$scope.tabletds=1;
+
 				$scope.map.setZoom(19);
 				$scope.map.setCenter(gmarkers[i].getPosition());
 				gmarkers[i].setAnimation(google.maps.Animation.BOUNCE);
@@ -1914,7 +1948,6 @@ function locat_address(locs) {
 // });
 
 $scope.starSplit 	=	function(val){
-
 	return val.split('<br>');
 }
 
@@ -1960,12 +1993,12 @@ $scope.starSplit 	=	function(val){
 	    }
 	};
 });
+
 // $(window).load(function() {
 // 		$('#status').fadeOut(); 
 // 		$('#preloader').delay(350).fadeOut('slow');
 // 		$('body').delay(350).css({'overflow':'visible'});
 // });
-
 
 $(document).ready(function(e) {
     $('.contentClose').click(function(){
@@ -1978,7 +2011,6 @@ $(document).ready(function(e) {
 	});
 	$('.contentbClose').click(function(){ $('.bottomContent').fadeOut(100); });
 	
-
 
 	$('#container-speed').highcharts({
 	
@@ -2192,8 +2224,6 @@ var gaugeOptions = {
         }
     }
 };
-
-
 
     $('#container-fuel').highcharts(Highcharts.merge(gaugeOptions, {
         yAxis: {

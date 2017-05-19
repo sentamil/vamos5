@@ -222,10 +222,6 @@
 
                             </table>    
                             
-                            
-                            
-
-                            
                         </div>
                         <!-- <div id="minmaxMarker" style="position: absolute;top: 10px;left: 120px; z-index:999999" title="Maps Marker Details">
                             <img src="assets/imgs/add.png" /> <a href="../public/liveTrack" id="fullscreen" target="_blank"><img id="minmaxMarker"  src="assets/imgs/full.png" /></a>
@@ -340,28 +336,25 @@
                                     </div>
                                   </div>
 
-
-
                                   <!-- The Modal -->
-<div id="poi" class="poi_Modal">
-    <!-- <div class="modal-header">
-        <span>Modal Header</span>  
-        <span class="close">&times;</span>
-    </div> -->
-  <!-- Modal content -->
-  <div class="poi-content">
-    <!-- <span class="close1">&times;</span> -->
-    <!-- <h5>Add Site</h5> -->
-    <div class="row">
-        <div class="col-md-6"><input type="text" class="form-control" placeholder="Site Name" ng-model="poiName"></div>
-        <div class="col-md-3"><button type="button" class="btn btn-default" ng-click="submitPoi(poiName)">Save Site</button></div>
-        <div class="col-md-3"><button type="button" class="btn btn-default poi_close" >Close</button></div>
-    </div>
+                                  <div id="poi" class="poi_Modal">
+                                 <!--<div class="modal-header">
+                                       <span>Modal Header</span>  
+                                       <span class="close">&times;</span>
+                                     </div> -->
+                              
+                              <!-- Modal content -->
+                                  <div class="poi-content">
+                                <!-- <span class="close1">&times;</span> -->
+                                <!-- <h5>Add Site</h5> -->
+                                   <div class="row">
+                                     <div class="col-md-6"><input type="text" class="form-control" placeholder="Site Name" ng-model="poiName"></div>
+                                     <div class="col-md-3"><button type="button" class="btn btn-default" ng-click="submitPoi(poiName)">Save Site</button></div>
+                                     <div class="col-md-3"><button type="button" class="btn btn-default poi_close" >Close</button></div>
+                                   </div>
     
-    
-  </div>
-
-</div>
+                                  </div>
+                                </div>
 
                                </div>
                                <div class="nearbyTable">
@@ -388,8 +381,6 @@
                             </div>
                                <div class="dynamicvehicledetails">
                                 <div id="viewable" ng-show="_editValue_con">
-                                    
-                                    
                                     
                                         <table cellpadding="0" cellspacing="0" class="_alignLeft">
                                             <tbody>
@@ -419,14 +410,11 @@
                                                     <!-- <td id="driverName"><span id="val"></span></td> -->
                                                     <td ng-show="_editShow"><input type="text" class="_input" ng-model="_editValue._driverName" name="_editValue._driverName" ></td>
                                                     <td ng-hide="_editShow"> {{_editValue._driverName}}</td>
-
-                                                    
                                                 </tr>
                                                
                                                 <tr>
                                                     <td id="positiontime"><span></span> Time</td>
                                                     <td id="regno"><span id="val"></span></td>
-                                                    
                                                 </tr>
                                                 <tr>
                                                     <td>Vehicle</td>
@@ -439,6 +427,19 @@
                                                     </td>
                                                     <td ng-hide="_editShow"> {{_editValue.vehType}}</td>
                                                 </tr>
+
+                                            <tr>
+                                                <td>Route</td>
+                                                    <!--<td id="vehitype"><span></span></td>-->
+                                                <td ng-show="_editShow">
+                                            <select ng-options="vehi for vehi in _editValue._vehiRoutesList" ng-model="_editValue.routeName" class="_button_select_small">
+                                                <option style="display:none" value="">Select Route</option>
+                                            </select>
+                                                    <!--<input type="text" class="_input" ng-model="_editValue." name="_editValue.">-->
+                                                </td>
+                                                <td ng-hide="_editShow"> {{_editValue.routeName}}</td>
+                                            </tr>
+
                                                 <tr>
                                                     <td>Mobile</td>
                                                     <!-- <td id="mobNo"><span></span></td> -->
