@@ -71,10 +71,9 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope.cityCircle=[];
 	$scope.cityCirclecheck=false;
 	$scope.markerClicked=false;
-	$scope.getRoutes = GLOBAL.DOMAIN_NAME+'/getRouteList';
 	$scope.url     = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	$scope.getZoho = GLOBAL.DOMAIN_NAME+'/getZohoInvoice';
-	
+  //$scope.getRoutes = GLOBAL.DOMAIN_NAME+'/getRouteList';
   //$scope.getOrgId  = GLOBAL.DOMAIN_NAME+'/viewSite';
 	$scope.historyfor ='';
 	$scope.map =  null;
@@ -272,7 +271,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	 })
   });*/
 
-  $scope.routeDataNames=function(data){
+/*  $scope.routeDataNames=function(data){
 
     var vehiRouteList = [];
     $scope._editValue._vehiRoutesList = [];
@@ -293,16 +292,16 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
             })
         })
            // console.log($scope._editValue._vehiRoutesList);
-    }
+    }*/
 
-   $scope.$watch("getRoutes", function (val) {
-   	   console.log("getRoutes");
+/*   $scope.$watch("getRoutes", function (val) {
+   	   // console.log("getRoutes");
        // $http.get($scope.getRoutes).success(function(data){
-        	vamoservice.getDataCall($scope.getRoutes).then(function(data) {
-        console.log("getRoutes");
+        vamoservice.getDataCall($scope.getRoutes).then(function(data) {
+       // console.log("getRoutes");
           $scope.routeDataNames(data);
        })
-   });
+   });   */
 
    $scope.$watch("getZoho", function (val) {
      vamoservice.getDataCall($scope.getZoho).then(function(data) {
