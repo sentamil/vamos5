@@ -638,7 +638,7 @@ Route::get('/getRouteList', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
-    Log::info('getRouteList');
+    Log::info('getRouteList..');
     return View::make('vls.getRouteList');
 });
 

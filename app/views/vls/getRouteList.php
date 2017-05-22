@@ -6,8 +6,6 @@ $input = Input::all();
 $redis = Redis::connection ();
 $ipaddress = $redis->get('ipaddress');
 
-
-
 $username = Auth::user ()->username;
 
 //TODO - this hardcoding should be removed
@@ -31,21 +29,21 @@ foreach ($input as $key => $value) {
  $parameters="{$parameters}&{$web}={$val}";
  log::info( ' parameters :' . $parameters);
 
-     $url = 'http://'.$ipaddress.':9000/getRouteList'.$parameters;
+    $url = 'http://'.$ipaddress.':9000/getRouteList'.$parameters;
     $url=htmlspecialchars_decode($url);
-     log::info( 'Routing to backed  :' . $url );
+    log::info( 'Routing to backend  :' . $url );
 
 
-    $ch = curl_init();
+  $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
-    // Include header in result? (0 = yes, 1 = no)
+  //Include header in result? (0 = yes, 1 = no)
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 5);
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
   $response = curl_exec($ch);
-   $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+  $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
   curl_close($ch);
-log::info( 'curl status  :' .$httpCode  );
+  log::info( 'curl status  :' .$httpCode  );
 
 echo $response;
 ?>

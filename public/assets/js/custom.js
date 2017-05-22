@@ -57,7 +57,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope.locations   = [];
 	$scope.locations03 = [];
 	$scope.nearbyLocs  = [];
-	$scope.mapTable =[];
+	$scope.mapTable    = [];
 
 	$scope.tabletds=undefined;
 	$scope.val = 5;	
@@ -73,7 +73,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope.markerClicked=false;
 	$scope.url     = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	$scope.getZoho = GLOBAL.DOMAIN_NAME+'/getZohoInvoice';
-  //$scope.getRoutes = GLOBAL.DOMAIN_NAME+'/getRouteList';
+    $scope.getRoutes = GLOBAL.DOMAIN_NAME+'/getRouteList';
   //$scope.getOrgId  = GLOBAL.DOMAIN_NAME+'/viewSite';
 	$scope.historyfor ='';
 	$scope.map =  null;
@@ -271,7 +271,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	 })
   });*/
 
-/*  $scope.routeDataNames=function(data){
+   $scope.routeDataNames=function(data){
 
     var vehiRouteList = [];
     $scope._editValue._vehiRoutesList = [];
@@ -291,17 +291,16 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
                $scope._editValue._vehiRoutesList.push(sval);
             })
         })
-           // console.log($scope._editValue._vehiRoutesList);
-    }*/
+     //console.log($scope._editValue._vehiRoutesList);
+    }
 
-/*   $scope.$watch("getRoutes", function (val) {
-   	   // console.log("getRoutes");
-       // $http.get($scope.getRoutes).success(function(data){
-        vamoservice.getDataCall($scope.getRoutes).then(function(data) {
-       // console.log("getRoutes");
+    $scope.$watch("getRoutes", function (val) {
+
+        $http.get($scope.getRoutes).success(function(data){
+       // vamoservice.getDataCall($scope.getRoutes).then(function(data) {
           $scope.routeDataNames(data);
-       })
-   });   */
+       });
+   });   
 
    $scope.$watch("getZoho", function (val) {
      vamoservice.getDataCall($scope.getZoho).then(function(data) {
@@ -352,6 +351,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
+
 			$scope.selected=undefined;
 			$scope.selected02=undefined;
 			$scope.vehicle_list=[];
@@ -362,7 +362,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
             $scope.locations04=[]; 
             $scope.locations04=$scope.vehiSidebar(data);
 
-        //    console.log($scope.locations04);
+          //console.log($scope.locations04);
 
 			try{
 				$scope.dpdown = $scope.locations02[0].isDbDown;	
@@ -378,7 +378,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			 // console.log(document.getElementById('one').innerText)
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.gName 	= data[$scope.gIndex].group;
-				sessionValue($scope.vehiname, $scope.gName)
+				sessionValue($scope.vehiname, $scope.gName);
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
                 
                 $scope.locations03=$scope.filterExpire($scope.locations);
@@ -485,12 +485,20 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			}
 			else
 			{  
-			  if( individualVehicle[0].expired == "No" ){
+                // console.log(individualVehicle[0]);
+                   $scope.assignValue(individualVehicle[0]);
+                   fetchingAddress(individualVehicle[0]);
+
+			    if( individualVehicle[0].expired == "No" ){
+
+			  	 if($scope.tabletds==1){
+			  		$scope.tabletds=undefined;
+			  	 }
 
                 $scope.selects  = 1;    
 			    $scope.selected = rowId;
 			 // console.log($scope.selected);
-
+                
 				$scope.removeTask(vehicleno,rowId);
 			    sessionValue(vehicleno, $scope.gName);
 
@@ -501,11 +509,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 					$('#graphsId').addClass('graphsCls');
 			    }
                 $('#graphsId').show();
-
 				// editableValue();
-			   }else{
+			    }else{
 			   	 console.log('Vehicle Expired...');
-			   }
+			   } 
 			}
 		// })	
 	  //}	
@@ -524,11 +531,11 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	{
 		if((checkXssProtection($scope._editValue._odoDista) == true) && (checkXssProtection($scope._editValue._shortName) == true) && (checkXssProtection($scope._editValue._overSpeed) == true) && (checkXssProtection($scope._editValue._driverName) == true) && (checkXssProtection($scope._editValue._mobileNo) == true) && (checkXssProtection($scope._editValue._regNo) == true))
 		{	
-		// 	$scope._editValue._shortName 	= dataVal.shortName;
-		// $scope._editValue._odoDista 	= dataVal.odoDistance;
+		// $scope._editValue._shortName 	= dataVal.shortName;
+		// $scope._editValue._odoDista 	    = dataVal.odoDistance;
 		// $scope._editValue._overSpeed 	= dataVal.overSpeedLimit;
 		// $scope._editValue._driverName 	= dataVal.driverName;
-		// $scope._editValue._mobileNo 	= dataVal.mobileNo;
+		// $scope._editValue._mobileNo 	    = dataVal.mobileNo;
 		// $scope._editValue._regNo 		= dataVal.regNo;
 		// $scope._editValue.vehType 		= dataVal.vehicleType;
 
@@ -1181,9 +1188,12 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 				 $scope.assignValue($scope.locations03[i]);
 			//	 if($scope.selects){		
 			   //$scope.selected=i;
+                 $scope.selected = $scope.locations03[i].rowId;
+
 			   if($scope.tabletds==undefined){
+
 				 $scope.selected02=i;
-			   }
+			    }
 			//	}
 				 fetchingAddress($scope.locations03[i]);
 				 // $scope.getLocation(lat, lng, function(count){
@@ -1598,20 +1608,20 @@ function locat_address(locs) {
 
 	$scope.removeTask=function(vehicleno,rowVal){
 		$scope.vehicleno = vehicleno;
-	  //var temp = $scope.locations;
-		var temp =$scope.locations03;
+		var temp  = $scope.locations03;
 		//$scope.endlatlong = new google.maps.LatLng();
 		//$scope.startlatlong = new google.maps.LatLng();
 		$scope.map.setZoom(16);
 		$scope.dynamicvehicledetails1=true;
+
 		for(var i=0; i<temp.length;i++){
 			if(temp[i].vehicleId==$scope.vehicleno){
 				
 				$scope.selected02=i;
 			    $scope.map.setCenter(gmarkers[i].getPosition());
 				
-				$scope.assignValue(temp[i]);
-				fetchingAddress(temp[i]);
+				//$scope.assignValue(temp[i]);
+				//fetchingAddress(temp[i]);
 				// if(temp[i].address == null || temp[i].address == undefined || temp[i].address == ' ')
 				// 	$scope.getLocation(temp[i].latitude, temp[i].longitude, function(count){ 
 				// 		$('#lastseen').text(count); 
@@ -1626,7 +1636,6 @@ function locat_address(locs) {
 				ginfowindow[i].open($scope.map,gmarkers[i]);
 				var url = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?vehicleId='+$scope.vehicleno;
 				$scope.createGeofence(url);
-				
 			}
 		}
 	};
@@ -1765,9 +1774,6 @@ function locat_address(locs) {
 		$("#contentmin").show(1000);
 		$("#sidebar-wrapper").show(500);
 		document.getElementById($scope.idinvoke).setAttribute("id", "wrapper");
-
-		
-
 	}
 
 	function setId()
@@ -1834,7 +1840,6 @@ function locat_address(locs) {
 		$("#tollYes").show();
     	
     }*/
-
 
 	//view map
 	$scope.mapView 	=	function(value)
@@ -1903,13 +1908,17 @@ function locat_address(locs) {
 		{
 			if(gmarkers[i].labelContent == val.shortName)
 			{        
+              
                if($scope.selects==1){
 				  $('#graphsId').toggle(300);	
      			}
 				$scope.selects=0; 
 				$scope.selected02=i;
-
 				$scope.tabletds=1;
+
+				var individualVehicle02 = $filter('filter')($scope.locations, { shortName:  gmarkers[i].labelContent});
+		      //console.log(individualVehicle02[0]);
+				$scope.selected = individualVehicle02[0].rowId;
 
 				$scope.map.setZoom(19);
 				$scope.map.setCenter(gmarkers[i].getPosition());
@@ -1980,6 +1989,7 @@ $scope.starSplit 	=	function(val){
 						scope.selected 		= undefined;
 					//	if(scope.zohoReports==undefined){
 						scope.locations02	= data;
+                        scope.locations04   = scope.vehiSidebar(data);
 						scope.locations 	= scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
 						scope.locations03   = scope.filterExpire(scope.locations);
 						scope.mapTable      = scope.filterExpire(scope.locations); 

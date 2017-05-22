@@ -428,17 +428,15 @@
                                                     <td ng-hide="_editShow"> {{_editValue.vehType}}</td>
                                                 </tr>
 
-                                        <!-- <tr>
+                                            <tr>
                                                 <td>Route</td>
-                                                    <!--<td id="vehitype"><span></span></td>-->
-                                         <!--       <td ng-show="_editShow">
+                                                <td ng-show="_editShow">
                                             <select ng-options="vehi for vehi in _editValue._vehiRoutesList" ng-model="_editValue.routeName" class="_button_select_small">
                                                 <option style="display:none" value="">Select Route</option>
                                             </select>
-                                                    <!--<input type="text" class="_input" ng-model="_editValue." name="_editValue.">-->
-                                            <!--    </td>
-                                                <td ng-hide="_editShow"> {{_editValue.routeName}}</td>
-                                            </tr> -->
+                                                </td>
+                                                <td ng-hide="_editShow">{{_editValue.routeName}}</td>
+                                            </tr> 
 
                                                 <tr>
                                                     <td>Mobile</td>
@@ -650,7 +648,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
-// scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("//code.highcharts.com/highcharts.js");
  //scriptLibrary.push("//code.highcharts.com/highcharts-more.js");
