@@ -13,8 +13,13 @@ $scope.g_Url 	=	GLOBAL.DOMAIN_NAME;
   	$scope.siteEntry 			=	0;
 	$scope.siteExit 			=	0;
 	
+    $scope._site1               =  {}; 
+    $scope._site2               =  {};
+	$scope._site1.siteName      =  '';
+    $scope._site2.siteName      =  '';
 
-	$scope.msToTime		=	function(ms) {
+
+    $scope.msToTime		=	function(ms) {
 		if (ms == undefined || ms == null || ms == '')
 			return' ';
 		else{
@@ -478,8 +483,16 @@ function plottinGraphs(valueGraph, timeData){
 		  	$scope.uiDate.fromtime		=	'12:00 AM';
 		  	$scope.uiDate.todate		=	getTodayDate($scope.fromNowTS);
 		  	$scope.uiDate.totime 		=	formatAMPM($scope.fromNowTS.getTime());
-		  	if(tab == 'tripSite' || tab == 'dailyFuel'){
+		  	if(tab == 'tripSite' ){
 		  		$scope.fromNowTS1			=	new Date().getTime() - 86400000;
+		  		$scope.uiDate.fromdate 		=	getTodayDate($scope.fromNowTS1);
+			  //$scope.uiDate.fromdate 	    =	getTodayDate($scope.fromNowTS.setDate($scope.fromNowTS.getDate()-7));
+			  	$scope.uiDate.fromtime		=	'12:00 AM';
+			  	$scope.uiDate.todate		=	getTodayDate($scope.fromNowTS1);
+			  	$scope.uiDate.totime 		=	'11:59 PM';
+		  	}else if(tab == 'dailyFuel'){
+		  		$scope.fromNowTS1			=	new Date().getTime() - 86400000;
+		  	  //$scope.uiDate.fromdate 	    =	getTodayDate($scope.fromNowTS);
 				$scope.uiDate.fromdate 		=	getTodayDate($scope.fromNowTS.setDate($scope.fromNowTS.getDate()-7));
 			  	$scope.uiDate.fromtime		=	'12:00 AM';
 			  	$scope.uiDate.todate		=	getTodayDate($scope.fromNowTS1);
@@ -487,7 +500,6 @@ function plottinGraphs(valueGraph, timeData){
 		  		// $ new Date().getTime() - 86400000
 		  		// console.log(' dailyFuel condition ');
 		  		// console.log(' dailyFuel condition '+ $scope.uiDate.fromdate);
-
 		  	}
 		  	webServiceCall();
 		  	stopLoading();
