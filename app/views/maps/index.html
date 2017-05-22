@@ -96,7 +96,7 @@
                 <li ng-repeat="location in locations04 | orderBy:'group'"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ><span title="{{trimColon(location.group)}}" >{{trimColon(location.group)}}</span></a>
                     
             <ul class="nav"  style="max-height: 400px; overflow-y: auto;">
-            <li ng-repeat="loc in location.vehicleLocations | orderBy:'shortName' | statusfilter:vehicleStatus | filter:searchbox" ng-class="{active:selected==loc.rowId}">
+                <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | statusfilter:vehicleStatus | filter:searchbox" ng-class="{active:selected==loc.rowId}">
                         <a href="javascript:void(0);"  ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, loc.rowId)">
                           <img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>
                         
@@ -650,9 +650,11 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push(url);
  //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
+   scriptLibrary.push("assets/js/naturalSortVersionDatesCaching.js");
+ //scriptLibrary.push("assets/js/naturalSortVersionDates.js");
  //scriptLibrary.push("//code.highcharts.com/highcharts.js");
  //scriptLibrary.push("//code.highcharts.com/highcharts-more.js");
-// scriptLibrary.push("//code.highcharts.com/modules/solid-gauge.js");
+ //scriptLibrary.push("//code.highcharts.com/modules/solid-gauge.js");
    scriptLibrary.push("assets/js/highcharts_new.js");
    scriptLibrary.push("assets/js/highcharts-more_new.js");
    scriptLibrary.push("assets/js/solid-gauge_new.js");
