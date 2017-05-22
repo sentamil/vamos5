@@ -7,6 +7,7 @@ var chart = null;
 // $("#testLoad").load("../public/menu");
 
 //logo loading
+
 var logo =document.location.host;
 
 function ValidateIPaddress(ipaddress)   
@@ -49,7 +50,7 @@ var geoinfo=[];
 /*
   initilaze the app in angularjs
 */
-var app = angular.module('mapApp',['ui.bootstrap','angularjs-dropdown-multiselect','naturalSort']);
+var app = angular.module('mapApp',['ui.bootstrap','angularjs-dropdown-multiselect']);
 
 //check the diff of the two dates 
   function daydiff(first, second) {

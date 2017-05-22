@@ -2000,7 +2000,7 @@ $scope.starSplit 	=	function(val){
 						scope.initial02();
 					}
 				}); 
-			},30000);
+			},60000);
 	  	}); 
 	    }
 	};
