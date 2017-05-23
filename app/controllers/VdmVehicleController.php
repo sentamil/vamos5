@@ -1541,7 +1541,7 @@ public function updateLive($id) {
             'rfidType'=>$rfidType,
             'mintemp'=>$mintemp,
             'maxtemp'=>$maxtemp,
-			'routeName'=>$routeName'
+			'routeName'=>$routeName,
             );
 
         $refDataJson = json_encode ( $refDataArr );
