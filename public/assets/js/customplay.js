@@ -1944,9 +1944,9 @@ if($scope.markerstart){
 
 
 			var contenttString = '<div style="padding:2px; padding-top:3px; width:165px;">'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Dist cov</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[pcount+1].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Speed</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[pcount+1].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Loc time</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[pcount+1].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Dist cov</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[pcount+1].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Speed</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[pcount+1].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Loc time</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[pcount+1].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
 			+'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[pcount+1].address)+'</span></div>'
 			// +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
 			+'</div>';
@@ -2004,9 +2004,9 @@ if($scope.markerstart){
                             
 
             var contenttString = '<div style="padding:2px; padding-top:3px; width:165px; ">'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Dist cov</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[0].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Speed</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[0].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Loc time</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[0].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Dist cov</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[0].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Speed</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[0].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Loc time</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[0].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
 			+'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[0].address)+'</span></div>'
 			// +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
 			+'</div>';
@@ -2162,9 +2162,9 @@ if($scope.markerstart){
 
                
             var contenttString = '<div style="padding:2px; padding-top:3px; width:165px;">'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Dist cov</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[lineCount+1].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Speed</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[lineCount+1].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Loc time</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[lineCount+1].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Dist cov</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[lineCount+1].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Speed</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[lineCount+1].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Loc time</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[lineCount+1].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
 			+'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[lineCount+1].address)+'</span></div>'
 		  //+'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
 			+'</div>';
@@ -2232,9 +2232,9 @@ if($scope.markerstart){
 				    });
 
                 var contenttString = '<div style="padding:2px; padding-top:3px;width:165px;">'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Dist cov</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[0].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Speed</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[0].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
-			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;">Loc time</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[0].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Dist cov</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[0].distanceCovered+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kms</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Speed</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[0].speed+'</span><span style="font-size:10px;padding-left:7.5px;font-weight:bold;">kmph</span></div>'
+			+'<div style="font-size=11px;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;">Loc time</b> - <span style="font-size:10px;padding-left:0px;color:green;font-weight:bold;">'+$filter('date')($scope.hisloc.vehicleLocations[0].lastSeen, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
 			+'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[0].address)+'</span></div>'
 		  //+'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
 			+'</div>';
