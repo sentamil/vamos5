@@ -1371,6 +1371,7 @@ public function updateLive($id) {
         $driverName = Input::get ( 'driverName' );
         $odoDistance = Input::get ('odoDistance');
         $mobileNo = Input::get ( 'mobileNo' );
+		$routeName = Input::get ( 'routeName' );
         log::info(' mobileNo value  '.$mobileNo.'  vehihile type   '.$vehicleType);
 		//
 		$vehicleExpiry = Input::get ( 'vehicleExpiry' );
@@ -1540,6 +1541,7 @@ public function updateLive($id) {
             'rfidType'=>$rfidType,
             'mintemp'=>$mintemp,
             'maxtemp'=>$maxtemp,
+			'routeName'=>$routeName'
             );
 
         $refDataJson = json_encode ( $refDataArr );
