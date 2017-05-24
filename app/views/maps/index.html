@@ -276,11 +276,13 @@
                                 <div id="container-fuel"></div>
                             </div> 
                         </div>
-                        
-                        <div id="contentmin" class="rightsection">
-                        <div id="minmax">
+
+                        <div id="minmax" ng-show="minmaxs" class="rightsection">
                             <img src="assets/imgs/add.png" />
                         </div>
+                        
+                        <div id="contentmin" class="rightsection">
+                       
                                <input type="button" id="traffic" ng-click="check()" value="Traffic" />
                                <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>
                                <input type="text" id="distanceVal" value="0" disabled/> <span style="font-size:12px;">Kms</span>
@@ -648,7 +650,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+  // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("//code.highcharts.com/highcharts.js");
  //scriptLibrary.push("//code.highcharts.com/highcharts-more.js");

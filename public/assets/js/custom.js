@@ -93,7 +93,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope.navStats="../public/statistics";
 	$scope.navSched="../public/settings";
 	$scope.navFms="../public/fms";
-
+    $scope.minmaxs=1;
 	$scope.zohod=0;
 
 	var tempdistVal = 0;
@@ -728,14 +728,13 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			}
 				var contentString = '<div style="padding:2px; padding-top:10px; width:auto; max-height:140px;">'
 			+'<div><b class="_info_caption" >Vehicle Name</b> - <span style="font-weight:bold;">'+data.shortName+'</span></div>'
-			
-			// +'<div><b >ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
+		 // +'<div><b >ODO Distance</b> - '+data.odoDistance+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 			+'<div><b class="_info_caption">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 			+'<div><b class="_info_caption">'+vamoservice.statusTime(data).tempcaption+'</span></b> - '+vamoservice.statusTime(data).temptime+'</div>'
 			+'<div><b class="_info_caption">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 			+'<div><b class="_info_caption">Last Seen</b> - <span>'+$filter('date')(data.date, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
 			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp; <a href="#" ng-click="addPoi('+lat+','+lng+')">Save Site</a>'
-			// +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
+		 // +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
 			+'</div>';
 			 var compiled = $compile(contentString)($scope);
 			// var	drop1 = document.getElementById("ddlViewBy");
@@ -2296,7 +2295,7 @@ var gaugeOptions = {
         $('#minmax').click(function(){
             $('#contentmin').animate({
                 height: 'toggle'
-            },500);
+            },300);
         });
     });
 
