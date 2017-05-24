@@ -130,7 +130,7 @@
                 
                 <tr style="border-top: 1px solid #d9d9d9">
                   <td width="15%">Date&amp;Time</td>
-                  <td width="10%">Max (kmph)</td>
+                  <td width="10%">Max(kmph)</td>
                   <td width="37%">Address</td>
                   <td width="10%">G-Map</td>
                   <!-- <td width="7%">Dist</td> -->
@@ -694,8 +694,8 @@ if(apikey_url != null || apikey_url != undefined)
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   scriptLibrary.push(url);
-   //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+  scriptLibrary.push(url);
+  // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");
@@ -708,7 +708,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/infobubble.js");
    scriptLibrary.push("assets/js/infobox.js");
    scriptLibrary.push("assets/js/vamoApp.js");
- //scriptLibrary.push("assets/js/services.js");
+   scriptLibrary.push("assets/js/services.js");
    scriptLibrary.push("assets/js/customplay.js");
 
  //Pass the array of scripts you want loaded in order and a callback function to invoke when its done
