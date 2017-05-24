@@ -130,7 +130,8 @@
                 
                 <tr style="border-top: 1px solid #d9d9d9">
                   <td width="15%">Date&amp;Time</td>
-                  <td width="10%">Max(kmph)</td>
+                  <td width="10%">Max (kmph)</td>
+                  <td width="7%">Sat</td>
                   <td width="37%">Address</td>
                   <td width="10%">G-Map</td>
                   <!-- <td width="7%">Dist</td> -->
@@ -140,6 +141,7 @@
                 <tr ng-repeat="move in movementdata" ng-click="markerPoup(move)">
                   <td>{{move.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{move.speed}}</td>
+                  <td>{{move.gsmLevel}}</td>
                   <td>
                     <p ng-if="move.address!=null">{{move.address}}</p>
                     <p ng-if="move.address==null && moveaddress[$index]!=null">{{moveaddress[$index]}}</p>
@@ -181,12 +183,14 @@
                 <tr style="border-top: 1px solid #d9d9d9">
                   <td width="20%">Date&amp;Time</td>
                   <td width="20%">Max (kmph)</td>
+                  <td width="7%">Sat</td>
                   <td width="50%">Address</td>
                   <td width="10%">G-Map</td>
                 </tr>
                 <tr ng-repeat="move in movementdata" ng-click="markerPoup(move)">
                   <td>{{move.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{move.speed}}</td>
+                  <td>{{move.gsmLevel}}</td>
                   <td>
                     <p ng-if="move.address!=null">{{move.address}}</p>
                     <p ng-if="move.address==null && moveaddress[$index]!=null">{{moveaddress[$index]}}</p>
@@ -225,6 +229,7 @@
                 <tr>
                   <td width="15%">Date&amp;Time</td>
                   <td width="15%">Speed (kmph)</td>
+                  <td width="7%">Sat</td>
                   <td width="25%">Address</td>
                   <td width="10%">G-Map</td>
                   <td width="15%">Duration (h:m:s)</td>
@@ -235,6 +240,7 @@
                 <tr ng-repeat="over in overspeeddata" ng-click="markerPoup(over)">
                   <td>{{over.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{over.speed}}</td>
+                  <td>{{over.gsmLevel}}</td>
                   <td>
                     <p ng-if="over.address!=null">{{over.address}}</p>
                     <p ng-if="over.address==null && overaddress[$index]!=null">{{overaddress[$index]}}</p>
@@ -267,6 +273,7 @@
                 <tr>
                   <td width="15%">Date&amp;Time</td>
                   <td width="15%">Duration (h:m:s)</td>
+                  <td width="7%">Sat</td>
                   <td width="60%">Address</td>
                   <td width="10%">G-Map</td>
                 </tr>
@@ -274,6 +281,7 @@
                 <tr ng-repeat="park in parkeddata" ng-click="markerPoup(park)">
                   <td>{{park.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{msToTime(park.parkedTime)}}</td>
+                  <td>{{park.gsmLevel}}</td>
                   <td>
                     <p ng-if="park.address!=null">{{park.address}}</p>
                     <p ng-if="park.address==null && parkaddress[$index]!=null">{{parkaddress[$index]}}</p>
@@ -303,6 +311,7 @@
                   <tr>
                     <td width="15%">Date&amp;Time</td>
                     <td width="15%">Duration (h:m:s)</td>
+                    <td width="7%">Sat</td>
                     <td width="60%">Address</td>
                     <td width="10%">G-Map</td>
                   </tr>
@@ -310,6 +319,7 @@
                   <tr ng-repeat="idle in idlereport" ng-click="markerPoup(idle)">
                     <td>{{idle.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                     <td>{{msToTime(idle.idleTime)}}</td>
+                    <td>{{idle.gsmLevel}}</td>
                     <td>
                       <p ng-if="idle.address!=null">{{idle.address}}</p>
                       <p ng-if="idle.address==null && idleaddress[$index]!=null">{{idleaddress[$index]}}</p>
@@ -330,12 +340,14 @@
                 <tr>
                   <td width="15%">Date &amp; Time</td>
                   <td width="15%">Fuel (ltr)</td>
+                  <td width="7%">Sat</td>
                   <td width="60%">Nearest Location</td>
                   <td width="10%">G-Map</td>
                 </tr>   
                 <tr ng-repeat="fuelR in fuelValue" ng-click="markerPoup(fuelR)">
                   <td>{{fuelR.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{fuelR.fuelLitre}}</td>
+                  <td>{{fuelR.gsmLevel}}</td>
                   <td>
                       <p ng-if="fuelR.address!=null">{{fuelR.address}}</p>
                       <p ng-if="fuelR.address==null && fueladdress[$index]!=null">{{fueladdress[$index]}}</p>
@@ -366,6 +378,7 @@
                     <td width="15%">Date &amp; Time</td>
                     <td width="10%">Status</td>
                     <td width="15%">Duration (h:m:s)</td>
+                    <td width="7%">Sat</td>
                     <td width="50%">Nearest Location</td>
                     <td width="10%">G-Map</td>
                 </tr>
@@ -373,7 +386,7 @@
                   <td>{{ignition.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                   <td>{{ignition.ignitionStatus}}</td>
                   <td rowspan="2" ng-if="ignition.ignitionStatus == 'ON'">{{msToTime(ignitValue[$index+1].date-ignition.date)}}</td>
-                  
+                  <td>{{ignition.gsmLevel}}</td>
                   <td>
                     <p ng-if="ignition.address!=null">{{ignition.address}}</p>
                     <p ng-if="ignition.address==null && igniaddress[$index]!=null">{{igniaddress[$index]}}</p>
@@ -404,6 +417,7 @@
                   <td width="15%">Date &amp; Time</td>
                   <td width="10%">Status</td>
                   <td width="15%">Duration (h:m:s)</td>
+                  <td width="7%">Sat</td>
                   <td width="50%">Nearest Location</td>
                   <td width="10%">G-Map</td>
                 </tr>
@@ -414,7 +428,7 @@
                     <span ng-if="acc.vehicleBusy == 'no'">OFF</span>
                   </td>
                   <td rowspan="2" ng-if="acc.vehicleBusy == 'yes'">{{msToTime(acReport[$index+1].date-acc.date)}}</td>
-                  
+                  <td>{{acc.gsmLevel}}></td>
                   <td>
                     <p ng-if="acc.address!=null">{{acc.address}}</p>
                     <p ng-if="acc.address==null && acc_address[$index]!=null">{{acc_address[$index]}}</p>
@@ -444,6 +458,7 @@
                   <td width="15%">Start Time</td>
                   <td width="15%">End Time</td>
                   <td width="15%">Duration (h:m:s)</td>
+                  <td width="7%">Sat</td>
                   <td width="45%">Address</td>
                   <td width="10%">G-Map</td>
                 </tr>
@@ -453,6 +468,7 @@
                 <td>{{stop.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                 <td>{{stop.endStoppageTime | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{msToTime(stop.stoppageTime)}}</td>
+                  <td>{{stop.gsmLevel}}</td>
                   <td>
                     <p ng-if="stop.address!=null">{{stop.address}}</p>
                     <p ng-if="stop.address==null && stop_address[$index]!=null">{{stop_address[$index]}}</p>
@@ -694,7 +710,7 @@ if(apikey_url != null || apikey_url != undefined)
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-  scriptLibrary.push(url);
+   scriptLibrary.push(url);
   // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
