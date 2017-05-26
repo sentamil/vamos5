@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <meta charset="utf-8">
+<meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>GPS</title>
-
-
+<title>GPS</title>
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="assets/css/jVanilla.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/css/bootstrap-select.css">
- 
 </head>
 <div id="status">&nbsp;</div>
 <body ng-app = "mapApp">
@@ -54,7 +51,7 @@
                 </div>
                 <div class="col-md-3" align="center">
                   <div class="form-group">
-                    <input type="text" class="form-control" ng-model="mailId" placeholder="E-Mail" data-toggle="tooltip" data-placement="left"  title="please don't use space"><span style="font-size: 10px">(Use Comma ',' for more MailId)</span>
+                    <input class="form-control" ng-model="mailId" placeholder="E-Mail" type="email" data-toggle="tooltip" data-placement="left" id="email" name="email"  title="please don't use space"><span style="font-size: 10px">(Use Comma ',' for more MailId)</span>
                   </div>
                 </div>
                 <div class="col-md-2" align="center">
@@ -101,8 +98,8 @@
                     <input type="checkbox" ng-model="checkingValue.over[$index]">O</input>&nbsp;
                     <input type="checkbox" ng-model="checkingValue.site[$index]">S</input>&nbsp;
                     <input type="checkbox" ng-model="checkingValue.poi[$index]">PI</input>&nbsp;
-                    <!-- <input type="checkbox" ng-model="checkingValue.fuel[$index]">F</input>&nbsp;
-                    <input type="checkbox" ng-model="checkingValue.temp[$index]">T</input> -->
+                    <input type="checkbox" ng-model="checkingValue.fuel[$index]">F</input>&nbsp;
+                    <!--<input type="checkbox" ng-model="checkingValue.temp[$index]">T</input> -->
                     
                     </td>
                     <td style="cursor: pointer;" title="Delete Individual Vehicle">
@@ -131,12 +128,10 @@
         </div>
     </div>
   
-
-   <script src="assets/js/static.js"></script>
+  <script src="assets/js/static.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
   <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
-
   <script src="assets/js/bootstrap.min.js"></script>
   <script src="assets/js/bootstrap-select.js"></script>
 
@@ -144,15 +139,13 @@
   <script src="assets/js/services.js"></script>
   <script src="../app/views/reports/customjs/settings.js"></script>
 
-
-
-
-    <script type="text/javascript">
+  <script type="text/javascript">
         
-$(document).ready(function() {  
-  $(".selectpicker").selectpicker();
-});
-    </script>
+    $(document).ready(function() {  
+      $(".selectpicker").selectpicker();
+    });
+
+  </script>
 
 </body>
 </html>

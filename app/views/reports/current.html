@@ -1,4 +1,3 @@
-<!-- vdmVehicles/{{vehiname}}/edit -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,8 +17,6 @@
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <!-- <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css"> -->
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
-
-
 <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -125,9 +122,9 @@ background-color: #ffffff;
 		        <div class="box-body">
 		        	<table class="table">
 					   	<thead style="font-weight: bold;">
-						  	<td>Vehicle Group : {{trimColon(data1.group)}}</td>
-						  	<td>Report Date : {{today| date:'yyyy-MM-dd'}}</td>									  
-						  	<td><div id="google_translate_element"></div></td>
+						  	<th>Vehicle Group : {{trimColon(data1.group)}}</th>
+						  	<th>Report Date : {{today| date:'yyyy-MM-dd'}}</th>									  
+						  	<th><div id="google_translate_element"></div></th>
 						  	<td>
 						  		<div class="pull-right">
 						  			<img style="cursor: pointer;" ng-click="exportData('statusreport')"  src="../app/views/reports/image/xls.png" />
@@ -283,14 +280,15 @@ background-color: #ffffff;
 										<th width="5%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed</th>
 										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;">Position</th>
 										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;">Duration H:M:S</th>
-										<th width="5%" class="id" custom-sort order="'status'" sort="sort" style="text-align:center;">GPS</th>
+								   <!-- <th width="5%" class="id" custom-sort order="'status'" sort="sort" style="text-align:center;">GPS</th> -->
+								        <th width="5%" class="id" custom-sort order="'gsmLevel'" sort="sort" style="text-align:center;">Sat</th>
 										<th width="5%" class="id" custom-sort order="'loadTruck'" sort="sort" style="text-align:center;">Load</th>
 										<th width="5%" class="id" custom-sort order="'vehicleBusy'" sort="sort" style="text-align:center;">A/C</th>
 										<th width="5%" class="id" custom-sort order="'temperature'" sort="sort" style="text-align:center;">&#8451;</th>
 										<th width="35%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
 										<th width="5%" style="text-align:center;">GMap</th>
 									</tr>
-									<tr ng-repeat="user in data1.vehicleLocations | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center; font-size: 11px">
+									<tr ng-repeat="user in data1.vehicleLocations | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center; font-size: 11px">
 										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.shortName}}</a></td>
 								   <!-- <td ng-hide="true"></td> -->
 										<td>{{user.regNo}}</td>
@@ -314,11 +312,12 @@ background-color: #ffffff;
 			                                <span ng-switch-when="P">{{msToTime(user.parkedTime)}}</span>
 			                                <span ng-switch-when="U">{{msToTime(user.noDataTime)}}</span>
 			                            </td>
-			                            <td ng-switch on="user.status">
+			                            <td>{{user.gsmLevel}}</td>
+			                      <!--  <td ng-switch on="user.status">
 			                                <span ng-switch-when="OFF"><img title="GPS OFF" src="assets/imgs/gof.png"/></span>
 			                                <span ng-switch-when="ON"><img title="GPS ON" src="assets/imgs/gon.png"/></span>
 			                            </td>
-			                            <!-- <td ng-switch on="user.ignitionStatus">
+			                           <td ng-switch on="user.ignitionStatus">
 			                                <span ng-switch-when="OFF"><img src="assets/imgs/no.png"/></span>
 			                                <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
 			                                          
@@ -608,7 +607,7 @@ background-color: #ffffff;
 										<th style="text-align:center;">Fuel To</th>
 										<th style="text-align:center;">Duration</th> -->
 									</tr>
-									<tr ng-repeat="tripVal in tripData.mulitple | orderBy:sort.sortingOrder:sort.reverse" >
+									<tr ng-repeat="tripVal in tripData.mulitple | orderBy:natural(sort.sortingOrder):sort.reverse" >
 										<td style="text-align:center;">{{tripVal.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td style="text-align:center;">{{tripVal.vehicleName}}</td>
 										<td style="text-align:center;">{{tripVal.state}}</td>
@@ -747,27 +746,24 @@ background-color: #ffffff;
 
     <script src="assets/js/static.js"></script>
 	<script src="assets/js/jquery-1.11.0.js"></script>
-   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-        <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
 
-     <script src="assets/js/bootstrap.min.js"></script>
-  	<!-- <script src="assets/js/bootstrap.min.js"></script> -->
+    <script src="assets/js/bootstrap.min.js"></script>
+<!--<script src="assets/js/bootstrap.min.js"></script> -->
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script src="../app/views/reports/customjs/html5csv.js"></script>
    	<script src="../app/views/reports/customjs/moment.js"></script>
     <script src="../app/views/reports/customjs/FileSaver.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
+    <script src="assets/js/naturalSortVersionDatesCaching.js"></script>
+<!--<script src="assets/js/naturalSortVersionDates.js"></script> -->
     <script src="assets/js/vamoApp.js"></script>
     <script src="../app/views/reports/customjs/reports.js"></script>
 	
-						
-						
-						
-    <!-- script src="assets/js/custom.js"></script -->   
+	<!-- script src="assets/js/custom.js"></script -->   
     <script>
 
     function googleTranslateElementInit() 
@@ -811,7 +807,6 @@ background-color: #ffffff;
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
-
 
   </script>
     

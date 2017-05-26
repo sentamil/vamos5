@@ -9,23 +9,44 @@ $scope.vehiId           = [];
 
 $scope.hoursFrom        = ['0:00','1:00','2:00','3:00','4:00','5:00','6:00','7:00','8:00','9:00','10:00', '11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00']
 $scope.hoursTo          = ['0:59','1:59','2:59','3:59','4:59','5:59','6:59','7:59','8:59','9:59','10:59','11:59','12:59','13:59','14:59','15:59','16:59','17:59','18:59','19:59','20:59','21:59','22:59','23:59'];
-$scope.reports          = ['Movement (M)','OverSpeed (O)','Site (S)', 'POI (PI)']; //,'Fuel (F)','Temperature (T)'
+//$scope.reports        = ['Movement (M)','OverSpeed (O)','Site (S)', 'POI (PI)','Fuel (F)','Temperature (T)'];
+
+$scope.getReportNames   = function(){
+ 
+     $.ajax({
+      async: false,
+      method: 'GET', 
+      url: "ScheduledController/getRepName",
+    //data: value,
+      success: function (response) {
+
+        console.log(response);
+        $scope.repNames = [];
+        $scope.repNames = response;
+      //location.reload();
+      }
+    });
+
+return $scope.repNames;  
+}
+
+$scope.reports          = $scope.getReportNames();
+
 var url                 = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 var menuValue           = JSON.parse(sessionStorage.getItem('userIdName'));
 var sp                  = menuValue.split(",");
 
+//$scope.checkingValue.move[] = [];
+//$scope.checkingValue.over[] = [];
 
-// $scope.checkingValue.move[] = [];
-// $scope.checkingValue.over[] = [];
+  $scope.checkingValue.move = [];
+  $scope.checkingValue.over = [];
+  $scope.checkingValue.site = [];
+  $scope.checkingValue.poi  = [];
+  $scope.checkingValue.fuel = [];
+//$scope.checkingValue.temp = [];
 
-$scope.checkingValue.move = [];
-$scope.checkingValue.over = [];
-$scope.checkingValue.site = [];
-$scope.checkingValue.poi = [];
-$scope.checkingValue.temp = [];
-
-
-// onload function for value already present
+//onload function for value already present
 function fetchController(group){
 $.ajax({
           async: false,
@@ -43,7 +64,8 @@ $.ajax({
                   $scope.checkingValue.move[key]   = false;
                   $scope.checkingValue.over[key]   = false;
                   $scope.checkingValue.site[key]   = false;
-                  $scope.checkingValue.poi[key]   = false;
+                  $scope.checkingValue.poi[key]    = false;
+                  $scope.checkingValue.fuel[key]   = false;
                   // $scope.checkingValue.temp[key]   = false;
                   angular.forEach(response, function(innerValue, innerKey){
                     if(value.vehicleId == innerValue.vehicleId){
@@ -67,6 +89,9 @@ $.ajax({
                             case 'poi':
                               $scope.checkingValue.poi[key]    = true;
                               break;
+                            case 'fuel':
+                              $scope.checkingValue.fuel[key]   = true;
+                              break;
                           }
 
                         });
@@ -85,7 +110,6 @@ $.ajax({
             
           }
         });
-
 }
 
 //add vehicle in single list
@@ -95,8 +119,6 @@ function addVehi(vehi){
   {$scope.vehicles.push(vehi[i])}
   
 }
-
-
 
 
 //init function
@@ -124,7 +146,6 @@ function addVehi(vehi){
       //     })
       //     if(i!=0)
             
-
       //     if()
       //   }
       //    throw "is empty";
@@ -136,8 +157,6 @@ function addVehi(vehi){
       // fetchController();
     }
     
-    
-  
   });
 
   stopLoading();
@@ -213,14 +232,11 @@ $scope.storeValue   = function(){
           try{ reports += $scope.checkingValue.over[id] == true ?  'overspeed,' : ''; }catch (e){}
           try{ reports += $scope.checkingValue.site[id] == true ?  'site,' : ''; }catch (e){}
           try{ reports += $scope.checkingValue.poi[id] == true ?  'poi,' : ''; }catch (e){}
+          try{ reports += $scope.checkingValue.fuel[id] == true ?  'fuel,' : ''; }catch (e){}
           // try{ reports += $scope.checkingValue.temp[id] == true ?  'temperature,' : ''; } 
           // catch (e){}
           reportsList.push([sp[1],reports, $scope.vehicles[id].vehicleId, $scope.from, $scope.to, $scope.mailId, $scope.groupSelected]);
           
-
-
-          
-
         }
        
       })
@@ -238,7 +254,7 @@ $scope.storeValue   = function(){
   }
     else{
       stopLoading();
-      $scope.error = "* Please fill all field"
+      $scope.error = "* Please fill all field & Enter valid email id"
       var countUp = function() {
         $scope.error = '';
           
@@ -257,7 +273,8 @@ function forNull(){
   $scope.checkingValue.move = [];
   $scope.checkingValue.over = [];
   $scope.checkingValue.site = [];
-  $scope.checkingValue.poi = [];
+  $scope.checkingValue.poi  = [];
+  $scope.checkingValue.fuel = [];
 }
 
 
@@ -269,22 +286,24 @@ $scope.changeValue =  function(reportName){
     angular.forEach(reportName, function(name, id){
       angular.forEach($scope.vehicles, function(key, value){
         switch (name){
-          case 'Movement (M)':
+          case 'Movement(M)':
             $scope.checkingValue.move[value]  = true;
             break;
-          case 'OverSpeed (O)':
+          case 'Overspeed(O)':
             $scope.checkingValue.over[value]  = true;
             break;
-          case 'Site (S)':
+          case 'Site(S)':
             $scope.checkingValue.site[value]  = true;
             break;
-          case 'POI (PI)':
+          case 'POI(P)':
             $scope.checkingValue.poi[value]  = true;
             break;
-          case 'Temperature (T)':
+          case 'Fuel(F)':
+            $scope.checkingValue.fuel[value]  = true;
+            break;  
+       /* case 'Temperature(T)':
             $scope.checkingValue.temp[value]  = true;
-            break;
-
+            break;*/
         }
       })
     })
@@ -307,8 +326,6 @@ $scope.groupChange  = function(){
     stopLoading();
   });
 }
-
-
 
 /*
   FOR DELETING THE SCHEDULE REPORT 

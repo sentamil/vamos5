@@ -258,18 +258,17 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
     }*/
 
    
-	/* getting Org ids */
+/* getting Org ids */
    
   /*  $scope.$watch("getOrgId", function (val) {
 	  $http.get($scope.getOrgId ).success(function(response){
 
         $scope.organIds     = [];
-		 $scope.organIds 	= response.orgIds;
+		$scope.organIds 	= response.orgIds;
 
-		  console.log($scope.organIds);
-	
-	 })
-  });*/
+		console.log($scope.organIds);
+    })
+  });  */
 
    $scope.routeDataNames=function(data){
 
@@ -285,10 +284,17 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
       		}
       	})
 
+        var firstVal=0;  	
+
         angular.forEach(vehiRouteList,function(val, key){
             angular.forEach(val,function(sval, skey){
 
-               $scope._editValue._vehiRoutesList.push(sval);
+               if(firstVal==0){
+               	  $scope._editValue._vehiRoutesList.push("nill");
+               	  firstVal++;
+                }else{
+                  $scope._editValue._vehiRoutesList.push(sval);
+               }
             })
         })
      //console.log($scope._editValue._vehiRoutesList);

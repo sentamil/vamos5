@@ -204,6 +204,13 @@ Route::get('/stopReport', function() {
     return View::make('reports.stopReport');
 });
 
+Route::get('/tollReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.tollReport');
+});
+
 View::addExtension('html', 'php');
 Route::get('/menu', function() {
     // if (!Auth::check()) {
@@ -624,6 +631,22 @@ Route::get('/getPictures', function() {
     }
     Log::info('getPictures');
     return View::make('vls.getPictures');
+});
+
+Route::get('/getOverallVehicleImages', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getOverallVehicleImages');
+    return View::make('vls.getOverallVehicleImages');
+});
+
+Route::get('/getTollgateReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getTollgateReport');
+    return View::make('vls.getTollgateReport');
 });
 
 Route::get('/getZohoInvoice', function() {

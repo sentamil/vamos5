@@ -107,7 +107,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
         });
          
       //  console.log( $scope.expVehiName ); 
-        console.log( $scope.totVehiLen );
+      //  console.log( $scope.totVehiLen );
     }
    
 
@@ -177,9 +177,8 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 
 	$scope._globalInit 	= function() {
 
-		console.log('global...');
-	 	
-	 	startLoading();
+	  //console.log('global...');
+	    startLoading();
 	 	$http.get($scope.url).success(function(data){
 	 		if(data.length >0 && data != ''){
 	 			$scope.locations 	=   [];
@@ -195,7 +194,6 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 					  	//	$scope.data1		=	data[key];
 					  		$scope.vehiLen(data[key]);
                         //  console.log(data[key]);
-                        //  $scope.filtData=[];
                         //  console.log( $scope.filterExpire(data) );
                             $scope.data1 = $scope.filterExpire(data);
 					  }
@@ -215,16 +213,13 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 
 	};
 	
-
 	var promise;
-
 	$scope.startTime 	= function(dat, val){
 
 		$scope.sort 	= sortByDate(dat);
 		if(val == 'reload' || val == undefined)
 			$scope.siteTab 	= false, $scope.actTab 	= false;
-		promise 		= $interval( function(){ $scope._globalInit();}, 60000);
-		
+		promise 		= $interval( function(){ $scope._globalInit();}, 30000);
 	}
 
 	$scope.startTime('date', index);
@@ -342,14 +337,13 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	{
 		$http.get(conUrl).success(function(data)
 		{
-
-			console.log(data);
+		  //console.log(data);
 			$scope.filtConData(data);
-		   // console.log($scope.filtConExpire($scope.filtData02));
+		  //console.log($scope.filtConExpire($scope.filtData02));
             
-         // $scope.consoldateData = data;
+          //$scope.consoldateData = data;
             $scope.consoldateData=$scope.filtConExpire($scope.filtData02);
-           // console.log();
+          //console.log();
 
 			$('#preloader').fadeOut(); 
 			$('#preloader02').delay(350).fadeOut('slow');
@@ -432,25 +426,21 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 
     	var ret_obj=[];
 
-    	console.log('filterTripData');
-    	console.log($scope.expVehiName);
-    	console.log(data[0].vehicleName);
+    	//console.log('filterTripData');
+    	//console.log($scope.expVehiName);
+    	//console.log(data[0].vehicleName);
 
     	for(var i=0;i<$scope.expVehiName.length;i++){
 
     	 for(var j=0;j<data.length;j++){	
      
-         //   angular.forEach(data.mulitple,function(val, key){
-
-            	if($scope.expVehiName[i]==data[j].vehicleName)
-                {
-                        console.log(data[j].vehicleName);
+            if($scope.expVehiName[i]==data[j].vehicleName)
+            {
+                        //console.log(data[j].vehicleName);
                         ret_obj.push(data[j]);
 
                  }
              }
-           // })*/
-
        }
 
        var new_ret_obj=[];
@@ -459,14 +449,11 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
        new_ret_obj[0].mulitple=[];
 
        angular.forEach(ret_obj,function(val, key){
-
-        new_ret_obj[0].mulitple.push(val);  
-
+           new_ret_obj[0].mulitple.push(val);  
        });
 
-
      //  console.log(ret_obj);
-       console.log(new_ret_obj[0]);
+     //  console.log(new_ret_obj[0]);
 
      return new_ret_obj[0];
     }
@@ -475,11 +462,9 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	function serviceCallTrip (url){
 		$http.get(url).success(function(response){
 
-			console.log(response);
+		//	console.log(response);
         //  $scope.tripData = response;
-
 			$scope.tripData = $scope.filterTripData(response.mulitple);
-
 			stopLoading()
 			// $('#preloader').fadeOut(); 
 			// $('#preloader02').delay(350).fadeOut('slow');
@@ -534,29 +519,22 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	$scope.filterSpeedData=function(data){
 
     	var ret_obj=[];
-
-    	console.log('filterTripData');
-    	console.log($scope.expVehiName);
-    	console.log(data);
+    //	console.log('filterTripData');
+    //	console.log($scope.expVehiName);
+    //	console.log(data);
 
     	for(var i=0;i<$scope.expVehiName.length;i++){
 
     	 for(var j=0;j<data.length;j++){	
-     
-         //   angular.forEach(data.mulitple,function(val, key){
 
           	if($scope.expVehiName[i]==data[j].shortName)
                 {
                        //console.log(data[j].shortName);
                          ret_obj.push(data[j]);
-
                  }
              }
-           // })*/
-
         }
-     console.log( ret_obj );
-
+    // console.log( ret_obj );
      return ret_obj;   
     }
 
@@ -566,17 +544,15 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		startLoading();
 
 		$scope.ovrData 	=	[];
-		//$scope.stop();
-	//	$scope.sort = sortByDate('startTime');
+		// $scope.stop();
+	    // $scope.sort = sortByDate('startTime');
 		// $('#preloader').show(); 
 		// $('#preloader02').show();
 		// $scope.tripValu = valu;
 		// console.log(' trip '+valu+'---->'+$scope.checkBox.site+$scope.checkBox.loc);
 		if(valu === 'ovrButon')
 		{
-
-			console.log('ovrButon');
-
+	  //console.log('ovrButon');
 		$scope.fromdate2 	=	$('#ovrFrom').val();
 	  	$scope.fromTime2	=	$('#ovrTimeFrom').val();
 	  	$scope.todate2 		=	$('#ovrTo').val();
@@ -599,20 +575,15 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
           var ovrUrl = GLOBAL.DOMAIN_NAME+'/getOverSpeedReport?fromDateUTC='+utcFormat($scope.fromdate2,convert_to_24h($scope.fromTime2))+'&toDateUTC='+utcFormat($scope.todate2,convert_to_24h($scope.toTime2))+'&groupName='+$scope.vehigroup;
       }
       
-        console.log(ovrUrl);
-     
+    //  console.log(ovrUrl);
         $http.get(ovrUrl).success(function(data){
-        	startLoading();
+           startLoading();
         // console.log(data);
         // $scope.ovrData=data;  
-
            $scope.ovrData=$scope.filterSpeedData(data);
            stopLoading();
 		}); 
-
-		
 	}
-
 
 
 	$scope.dialogBox 	=	function()
@@ -623,11 +594,9 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		$scope.fromTime    =  document.getElementById("timeFrom").value;
 		$scope.todate1     =  document.getElementById("dateTo").value;
 		$scope.totime      =  document.getElementById("timeTo").value;
-		
-	}
+    }
 
 	
-
 	$scope.exportData = function (data) {
 		var blob = new Blob([document.getElementById(data).innerHTML], {
            	type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"

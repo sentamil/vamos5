@@ -1,5 +1,3 @@
-<!--<a href="../public/settings">-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -148,22 +146,22 @@ background-color: #ffffff;
 			   				 <table class="table table-bordered table-striped table-condensed table-hover">
 			   				 	<thead>
 								   	<tr style="text-align:center; font-weight: bold;">
-									  	<td colspan="2">Vehicle Group</td>
-									  	<td>{{trimColon(vgroup)}}</td>
-									  	<td colspan="1">Vehicle Name</td>
-									  	<td colspan="3">{{hist.shortName}}</td>					
+									  	<th colspan="2" style="background-color:#ecf7fb;">Vehicle Group</th>
+									  	<th colspan="2" style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+									  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
+									  	<th colspan="3" style="background-color:#f9f9f9;">{{hist.shortName}}</th>					
 								  	</tr>
 								  	<tr style="text-align:center;font-weight: bold;">
-									  	<td colspan="2">Regn No</td>
-								       	<td>{{hist.regNo}}</td>
-								      	<td colspan="1">Speed Limit</td>
-								      	<td colspan="3">{{hist.overSpeedLimit}} Kmph</td>
+									  	<th colspan="2" style="background-color:#f9f9f9;">Regn No</th>
+								       	<th colspan="2" style="background-color:#ecf7fb;">{{hist.regNo}}</th>
+								      	<th style="background-color:#f9f9f9;">Speed Limit</th>
+								      	<th colspan="3" style="background-color:#ecf7fb;">{{hist.overSpeedLimit}} Kmph</th>
 								    </tr>
 								    <tr style="text-align:center;font-weight: bold;">
-									  	<td colspan="2">Opening OdoReading</td>
-								       	<td>{{hist.openingOdoReading}}</td>
-								      	<td colspan="1">Closing OdoReading</td>
-								      	<td colspan="3">{{hist.closingOdoReading}}</td>
+									  	<th colspan="2" style="background-color:#ecf7fb;">Opening OdoReading</th>
+								       	<th colspan="2" style="background-color:#f9f9f9;">{{hist.openingOdoReading}}</th>
+								      	<th style="background-color:#ecf7fb;">Closing OdoReading</th>
+								      	<th colspan="3" style="background-color:#f9f9f9;">{{hist.closingOdoReading}}</th>
 								    </tr>
 								    <tr ng-hide="true" style="text-align:center; font-weight: bold;" >
 									  	<td colspan="2"><b>From Date</b></td>
@@ -177,24 +175,29 @@ background-color: #ffffff;
 								      	<td colspan="1"><b>To Time</b></td>
 								      	<td colspan="3">{{totime}}</td>
 								    </tr>
-								    <tr><td colspan="7"></td></tr>
+								   </thead>
+								   </table>
+								   <div class="col-md-12" style="height: 15px;"></div>
+								<!--    <tr><td colspan="8"></td></tr> -->
+								    <table class="table table-bordered table-striped table-condensed table-hover"> 
+								    <thead>
 									<tr style="text-align:center" >
-										<th width="14%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;">Date&amp;Time</th>
-										<th width="8%" class="id" custom-sort order="'speed'" sort="sort"  style="text-align:center;">Speed</th>
-										<th width="7%" class="id" style="text-align:center;">G-Map</th>
-										<th width="38%" class="id" custom-sort order="'address'" sort="sort"  style="text-align:center;">Nearest Location</th>
-										<th width="9%" class="id" custom-sort order="'tmpDistance'" sort="sort"  style="text-align:center;">Dist</th>
-										<th width="15%" class="id" custom-sort order="'distanceCovered'" sort="sort"  style="text-align:center;">C-Dist (KM)</th>
-										<th width="13%" class="id" custom-sort order="'odoDistance'" sort="sort"  style="text-align:center;">Odo (KM)</th>
-
-									</tr></thead>
-									 
-													                
-					                <tbody>
-									<tr ng-repeat="move in movementdata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+										<th width="14%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Date&amp;Time</th>
+										<th width="8%" class="id" custom-sort order="'speed'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Speed</th>
+										<th width="7%" class="id" style="text-align:center;background-color:#C2D2F2;">G-Map</th>
+										<th width="8%" class="id" custom-sort order="'gsmLevel'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Sat</th>
+										<th width="32%" class="id" custom-sort order="'address'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Nearest Location</th>
+										<th width="9%" class="id" custom-sort order="'tmpDistance'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Dist</th>
+										<th width="15%" class="id" custom-sort order="'distanceCovered'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">C-Dist (KM)</th>
+										<th width="20%" class="id" custom-sort order="'odoDistance'" sort="sort"  style="text-align:center;height:3px;background-color:#C2D2F2;">Odo (KM)</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr ng-repeat="move in movementdata | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
 										<td>{{move.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{move.speed}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{move.latitude}},{{move.longitude}}" target="_blank">Link</a></td>
+										<td>{{move.gsmLevel}}</td>
 										<td>
 											<p ng-if="move.address!=null">{{move.address}}</p>
 											<p ng-if="move.address==null && maddress1[$index]!=null">{{maddress1[$index]}}</p>
@@ -207,7 +210,7 @@ background-color: #ffffff;
 										<td>{{move.odoDistance}}</td>
 									</tr>	
 									<tr ng-if="movementdata==null || movementdata.length==0" align="center">
-										<td colspan="7" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td colspan="8" class="err"><h5>No Data Found! Choose some other date</h5></td>
 									</tr>
 							</table>
 							<!-- <pagination boundary-links="true" max-size="3" items-per-page="itemsPerPage" total-items="movementdata.length" ng-model="currentPage" ng-change="pageChanged()"></pagination>	
@@ -219,50 +222,55 @@ background-color: #ffffff;
 			   				 <table class="table table-bordered table-striped table-condensed table-hover">
 			   				 	<thead>
 								   	<tr style="text-align:center; font-weight: bold;" >
-									  	<td colspan="2"><b>Vehicle Group</b></td>
-									  	<td colspan="2">{{trimColon(vgroup)}}</td>
-									  	<td colspan="2"><b>Vehicle Name</b></td>
-									  	<td>{{hist.shortName}}</td>	
+									  	<th colspan="2" style="background-color:#ecf7fb;"><b>Vehicle Group</b></th>
+									  	<th colspan="2" style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+									  	<th colspan="2" style="background-color:#ecf7fb;"><b>Vehicle Name</b></th>
+									  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
 								  	</tr>
 								  	<tr style="text-align:center; font-weight: bold;">
-									  	<td colspan="2"><b>Regn No</b></td>
-								       	<td colspan="2">{{hist.regNo}}</td>
-								      	<td colspan="2"><b>Speed Limit</b></td>
-								      	<td>{{hist.overSpeedLimit}} Kmph</td>
+									  	<th colspan="2" style="background-color:#f9f9f9;"><b>Regn No</b></th>
+								       	<th colspan="2" style="background-color:#ecf7fb;">{{hist.regNo}}</th>
+								      	<th colspan="2" style="background-color:#f9f9f9;"><b>Speed Limit</b></th>
+								      	<th style="background-color:#ecf7fb;">{{hist.overSpeedLimit}} Kmph</th>
 								    </tr>
 								    
 								    <tr ng-hide="true" style="text-align:center; font-weight: bold;" >
-									  	<td colspan="3"><b>From Date</b></td>
-									  	<td>{{fromdate}}</td>
-									  	<td colspan="2"><b>From Time</b></td>
-									  	<td>{{fromtime}}</td>	
+									  	<th colspan="3"><b>From Date</b></th>
+									  	<th>{{fromdate}}</th>
+									  	<th colspan="2"><b>From Time</b></th>
+									  	<th>{{fromtime}}</th>	
 								  	</tr>
 								  	<tr ng-hide="true" style="text-align:center; font-weight: bold;">
-									  	<td colspan="3"><b>To Date</b></td>
-								       	<td>{{todate}}</td>
-								      	<td colspan="2"><b>To Time</b></td>
-								      	<td>{{totime}}</td>
+									  	<th colspan="3"><b>To Date</b></th>
+								       	<th>{{todate}}</th>
+								      	<th colspan="2"><b>To Time</b></th>
+								      	<th>{{totime}}</th>
 								    </tr>
-								    
-								    <tr><td colspan="8"></td></tr>
+								</thead>
+								</table> 
+								<div class="col-md-12" style="height: 15px;"></div>   
+								 <!--   <tr><td colspan="8"></td></tr> -->
+								 <table class="table table-bordered table-striped table-condensed table-hover">
+								 <thead>
 									<tr> 
-										<th width="12%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date&amp;Time</th>
-										<th width="10%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed (Km)</th>
-										<th width="11%" class="id" custom-sort order="'movingTime'" sort="sort" style="text-align:center;">Duration (h:m:s)</th>
-										<th width="7%" class="id" style="text-align:center;">G-Map</th>
-										
-										<th width="30%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
+										<th width="12%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Date&amp;Time</th>
+										<th width="10%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Speed (Km)</th>
+										<th width="11%" class="id" custom-sort order="'movingTime'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Duration (h:m:s)</th>
+										<th width="7%" class="id" style="text-align:center;background-color:#C2D2F2;">G-Map</th>
+										<th width="10%" class="id" custom-sort order="'gsmLevel'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Sat</th>
+										<th width="30%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Nearest Location</th>
 										<!-- <th ng-hide="true" class="id" sort="sort" style="text-align:center;">Over Speed</th> -->
-										<th width="12%" class="id" custom-sort order="'odoDistance'" sort="sort" style="text-align:center;">Odo (Km)</th>
-										<th width="13%" class="id" custom-sort order="'tripDistance'" sort="sort" style="text-align:center;">Trip (Km)</th>
+										<th width="12%" class="id" custom-sort order="'odoDistance'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Odo (Km)</th>
+										<th width="13%" class="id" custom-sort order="'tripDistance'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Trip (Km)</th>
 										<!-- <th ng-hide="true" width="10%" colspan="2" class="id" order="''" style="text-align:center;">G-Map</th> -->
 									</tr></thead>
 									
-									<tr ng-repeat="user in overspeeddata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+									<tr ng-repeat="user in overspeeddata | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
 										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{user.speed}}</td>
 										<td>{{msToTime(user.movingTime)}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
+										<td>{{user.gsmLevel}}</td>
 										<td>
 											<p ng-if="user.address!=null">{{user.address}}</p>
 											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && oaddress[$index]!=null">{{oaddress[$index]}}</p>
@@ -284,13 +292,13 @@ background-color: #ffffff;
 			   			 
 			   			 
 			   			 
-			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked" ng-init="timeChange='All'">
+			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked" >
 			   				 <p style="margin:0" class="page-header">Stopped/Parked Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span>
                              </p>
                             <div class="form-group pull-right" style="margin-right: 20px;margin-top: 7px;margin-bottom: 7px;">
                             <span style="font-size: 14px;">
 			   			
-                                   <select ng-model="timeChange" ng-change="filtersTime(timeChange,'park')" style="padding:3px 3px 3px 3px; font-size: 12px;width:100px;">
+                                   <select ng-model="time_park" ng-change="filtersTime(time_park,'park')" style="padding:3px 3px 3px 3px; font-size: 12px;width:100px;">
                                         <option value="All"> All </option>
                                         <option value="1">  >  1 min </option>
                                         <option value="2">  >  2 mins </option>
@@ -308,28 +316,35 @@ background-color: #ffffff;
 			   				 <table class="table table-bordered  table-striped table-condensed table-hover">
 			   				 	<thead>
 								   	<tr style="text-align:center; font-weight: bold;">
-									  	<td colspan="1"><b>Vehicle Group</b></td>
-									  	<td>{{trimColon(vgroup)}}</td>
-									  	<td colspan="1"><b>Vehicle Name</b></td>
-									  	<td colspan="2">{{hist.shortName}}</td>
+									  	<th colspan="1" style="background-color:#ecf7fb;"><b>Vehicle Group</b></th>
+									  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+									  	<th colspan="1" style="background-color:#ecf7fb;"><b>Vehicle Name</b></th>
+									  	<th colspan="2" style="background-color:#f9f9f9;">{{hist.shortName}}</th>
 									  	<!-- <td ng-hide="true" colspan="2"><b>Register No</b></td>
 								       	<td ng-hide="true">{{hist.regNo}}</td>	 -->			
 								  	</tr>
-								  	<tr><td colspan="5"></td></tr>
+								  	</thead>
+								  	</table>
+								  	<div class="col-md-12" style="height: 15px;"></div>
+								  	<!--<tr><td colspan="5"></td></tr>-->
+								  	<table class="table table-bordered  table-striped table-condensed table-hover">
+								  	<thead>
 									<tr style="text-align:center;font-weight: bold;">
 										
-										<th style="text-align:center;" custom-sort order="'date'" sort="sort" >Start</th>
-										<th style="text-align:center;" custom-sort order="'date'" sort="sort" >End</th>
-										<th width="40%" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
-										<th width="20%" custom-sort order="'parkedTime'" sort="sort"  style="text-align:center;">Duration (h:m:s)</th>
-										<th width="10%" style="text-align:center;">G-Map</th>
+										<th style="text-align:center;background-color:#C2D2F2;" custom-sort order="'date'" sort="sort" >Start</th>
+										<th style="text-align:center;background-color:#C2D2F2;" custom-sort order="'date'" sort="sort" >End</th>
+										<th width="5%" custom-sort order="'gsmLevel'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Sat</th>
+										<th width="40%" custom-sort order="'address'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Nearest Location</th>
+										<th width="20%" custom-sort order="'parkedTime'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Duration (h:m:s)</th>
+										<th width="10%" style="text-align:center;background-color:#C2D2F2;">G-Map</th>
 										<!-- <th width="20%" colspan="2" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Total Parked Time</th> -->
 									</tr></thead>
 									<tbody>
-									<tr ng-repeat="user in parkeddata | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+									<tr ng-repeat="user in parkeddata | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
 										
 										<td>{{user.startParkedTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{user.endParkedTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+										<td>{{user.gsmLevel}}</td>
 										<td> 
 											<p ng-if="user.address!=null">{{user.address}}</p>
 											<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && saddressStop[$index]!=null">{{saddressStop[$index]}}</p>
@@ -339,7 +354,7 @@ background-color: #ffffff;
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
 									</tr>
 									<tr ng-if="parkeddata==null || parkeddata.length==0" align="center">
-										<td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td colspan="6" class="err"><h5>No Data Found! Choose some other date</h5></td>
 									</tr>
 									</tbody>								
 							</table>
@@ -351,23 +366,30 @@ background-color: #ffffff;
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{trimColon(vgroup)}}</td>
-										  	<td>Vehicle Name</td>
-										  	<td>{{hist.shortName}}</td>	
+				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
+										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
+										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="4"></td></tr>
+			   			 	 			</thead>
+			   			 	 		</table>
+			   			 	 		<div class="col-md-12" style="height: 15px;"></div>	
+			   			 	 		<!-- <tr><td colspan="4"></td></tr> -->
+			   			 	 		<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 		 <thead>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th width="13%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;">Idle Time</th>
-											<th width="10%" class="id" style="text-align:center;">G-Map</th>
-											<th width="40%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
-											<th width="15%" class="id" custom-sort order="'idleTime'" sort="sort"  style="text-align:center;">Duration (h:m:s)</th>
+											<th width="13%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Idle Time</th>
+											<th width="10%" class="id" style="text-align:center;background-color:#C2D2F2;">G-Map</th>
+											<th width="13%" class="id" custom-sort order="'gsmLevel'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Sat</th>
+											<th width="40%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Nearest Location</th>
+											<th width="15%" class="id" custom-sort order="'idleTime'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Duration (h:m:s)</th>
 										</tr>
-								</thead>
-			   			 	 	<tbody>
-			   			 	 		<tr ng-repeat="user in idlereport | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+								     </thead>
+			   			 	 	      <tbody>
+			   			 	 		  <tr ng-repeat="user in idlereport | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
 			   			 	 			<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
+										<td>{{user.gsmLevel}}</td>
 			   			 	 			<td>
 			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
 			   			 	 				<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && addressIdle[$index]!=null">{{addressIdle[$index]}}</p>
@@ -376,9 +398,9 @@ background-color: #ffffff;
 			   			 	 			<td>{{getParkedCorrectHours(user.idleTime)}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="idlereport==null || idlereport.length==0" align="center">
-										<td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
 									</tr>
-			   			 	 	</tbody>
+			   			 	 	 </tbody>
 			   			 	 	</table>
 			   			 	</div>
 			   				 
@@ -407,28 +429,36 @@ background-color: #ffffff;
 			   			 	 	</table>
 			   			 	 	<hr>
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
-			   			 	 	<thead>
+			   			 	 	 <thead>
 			   			 	 		<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{trimColon(vgroup)}}</td>
-										  	<td colspan="2">Vehicle Name</td>
-										  	<td>{{hist.shortName}}</td>	
+				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
+										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th colspan="2" style="background-color:#ecf7fb;"style="background-color:#ecf7fb;">Vehicle Name</th>
+										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="5"></td></tr>
+			   			 	 	  </thead>
+			   			 	 	</table>
+			   			 	 	<div class="col-md-12" style="height: 15px;"></div>
+			   			 	 		<!--	<tr><td colspan="5"></td></tr>-->
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 	<thead>		
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th width="20%" class="id" custom-sort order="'startTime'" sort="sort"  style="text-align:center;">Start Time</th>
-											<th width="20%" class="id" custom-sort order="'duration'" sort="sort"  style="text-align:center;">Duration</th>
-											<th colspan="2" width="40%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
-											<th width="20%" class="id" custom-sort order="'state'" sort="sort"  style="text-align:center;">State</th>
+											<th width="20%" class="id" custom-sort order="'startTime'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Start Time</th>
+											<th width="20%" class="id" custom-sort order="'duration'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Duration</th>
+											<th width="5%" class="id" custom-sort order="'duration'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Sat</th>
+											<th colspan="2" width="40%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Nearest Location</th>
+											<th width="20%" class="id" custom-sort order="'state'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">State</th>
 										</tr>
 								</thead>
+
 			   			 	 	<tbody>
-			   			 	 		<tr ng-repeat="user in eventReportData | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+			   			 	 		<tr ng-repeat="user in eventReportData | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
 			   			 	 			<td>{{user.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>
 											<p ng-if="user.duration!=null">{{msToTime(user.duration)}}</p>
 											<p ng-if="user.duration==null">--</p>
 										</td>
+										<td>{{user.gsmLevel}}</td>
 			   			 	 			<td colspan="2">
 			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
 			   			 	 				<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && addressEvent[$index]!=null">{{addressEvent[$index]}}</p>
@@ -449,17 +479,22 @@ background-color: #ffffff;
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{trimColon(vgroup)}}</td>
-										  	<td>Vehicle Name</td>
-										  	<td>{{hist.shortName}}</td>	
+				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
+										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
+										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="4"></td></tr>
+			   			 	 		</thead>
+			   			 	 	</table>
+			   			 	 	<div class="col-md-12" style="height: 15px;"></div>		
+			   			 	 		<!--<tr><td colspan="4"></td></tr> -->
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 	<thead>	
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th width="20%" class="id" style="text-align:center;">Start Time</th>
+											<th width="20%" class="id" style="text-align:center;background-color:#C2D2F2;">Start Time</th>
 											<!-- <th width="10%" class="id" style="text-align:center;">G-Map</th> -->
-											<th colspan="2" class="id" style="text-align:center;">Nearest Location</th>
-											<th width="20%" class="id" style="text-align:center;">State</th>
+											<th colspan="2" class="id" style="text-align:center;background-color:#C2D2F2;">Nearest Location</th>
+											<th width="20%" class="id" style="text-align:center;background-color:#C2D2F2;">State</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
@@ -482,25 +517,30 @@ background-color: #ffffff;
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{trimColon(vgroup)}}</td>
-										  	<td>Vehicle Name</td>
-										  	<td>{{hist.shortName}}</td>	
+				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
+										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
+										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="4"></td></tr>
+			   			 	 		</thead>
+			   			 	 	</table>
+			   			 	 	<div class="col-md-12" style="height: 15px;"></div>	
+			   			 	 	<!--	<tr><td colspan="4"></td></tr> -->
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 	  <thead>	
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th class="id"  custom-sort order="'date'" sort="sort"  style="text-align:center;" width="30%">Date &amp; Time</th>
-											
-											<th class="id"  custom-sort order="'load'" sort="sort"  style="text-align:center;" width="20%">Load Truck</th>
-											
-											<th class="id" custom-sort order="'address'" sort="sort" style="text-align: center;" width="35%">Nearest Location</th>
-											<th width="15%" class="id" style="text-align:center;">G-Map</th>
+											<th class="id"  custom-sort order="'date'" sort="sort"  style="text-align:center;background-color:#C2D2F2;" width="30%">Date &amp; Time</th>
+											<th class="id"  custom-sort order="'load'" sort="sort"  style="text-align:center;background-color:#C2D2F2;" width="20%">Load Truck</th>
+											<th class="id"  custom-sort order="'gsmLevel'" sort="sort"  style="text-align:center;background-color:#C2D2F2;" width="5%">Sat</th>
+											<th class="id" custom-sort order="'address'" sort="sort" style="text-align: center;background-color:#C2D2F2;" width="35%">Nearest Location</th>
+											<th width="15%" class="id" style="text-align:center;background-color:#C2D2F2;">G-Map</th>
 										</tr>
-								</thead>
-			   			 	 	<tbody>
-			   			 	 		<tr class="active" style="text-align:center" ng-repeat="load in loadreport.load | orderBy:sort.sortingOrder:sort.reverse">
+								 </thead>
+			   			 	 	 <tbody>
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="load in loadreport.load | orderBy:natural(sort.sortingOrder):sort.reverse">
 			   			 	 			<td>{{load.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{load.load}}</td>
+			   			 	 			<td>{{load.gsmLevel}}</td>
 			   			 	 			<td>{{load.address}}</td>
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{load.lat}},{{load.lng}}" target="_blank">Link</a></td>
 									</tr>
@@ -518,23 +558,31 @@ background-color: #ffffff;
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<th>Vehicle Group</th>
-										  	<th>{{trimColon(vgroup)}}</th>
-										  	<th>Vehicle Name</th>
-										  	<th>{{hist.shortName}}</th>	
+				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
+										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
+										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="3"></td></tr>
+			   			 	 		<!--	<tr><td colspan="3"></td></tr> -->
+			   			 	 		</thead>
+			   			 	 	</table>
+                                
+                                <div class="col-md-12" style="height: 15px;"></div>
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 	    <thead>
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th class="id"  custom-sort order="'date'" sort="sort"  style="text-align:center;" width="25%">Date &amp; Time</th>
-											<th class="id"  custom-sort order="'fuelLitre'" sort="sort"  style="text-align:center;" width="20%">Fuel (ltr)</th>
-											<th class="id" custom-sort order="'address'" sort="sort" style="text-align: center;" width="35%">Nearest Location</th>
-											<th class="id" style="text-align: center;" width="15%">G-Map</th>
+											<th class="id"  custom-sort order="'date'" sort="sort"  style="text-align:center;background-color:#C2D2F2;" width="25%">Date &amp; Time</th>
+											<th class="id"  custom-sort order="'fuelLitre'" sort="sort"  style="text-align:center;background-color:#C2D2F2;" width="20%">Fuel (ltr)</th>
+											<th class="id"  custom-sort order="'gsmLevel'" sort="sort"  style="text-align:center;background-color:#C2D2F2;" width="5%">Sat</th>
+											<th class="id" custom-sort order="'address'" sort="sort" style="text-align: center;background-color:#C2D2F2;" width="35%">Nearest Location</th>
+											<th class="id" style="text-align: center;background-color:#C2D2F2;" width="15%">G-Map</th>
 										</tr>
-								</thead>
-			   			 	 	<tbody>
-			   			 	 		<tr class="active" style="text-align:center" ng-repeat="fuel in fuelValue | orderBy:sort.sortingOrder:sort.reverse">
+								    </thead>
+			   			 	 	    <tbody>
+			   			 	 		<tr class="active" style="text-align:center" ng-repeat="fuel in fuelValue | orderBy:natural(sort.sortingOrder):sort.reverse">
 			   			 	 			<td>{{fuel.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{fuel.fuelLitre}}</td>
+			   			 	 			<td>{{fuel.gsmLevel}}</td>
 			   			 	 			<td> 
 			   			 	 				<p ng-if="fuel.address!=null">{{fuel.address}}</p>
 											<p ng-if="fuel.address==null && addressFuel[$index]!=null">{{addressFuel[$index]}}</p>
@@ -543,7 +591,7 @@ background-color: #ffffff;
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{fuel.latitude}},{{fuel.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="fuelValue==null || fuelValue.length ==0" align="center">
-										<td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
@@ -555,30 +603,39 @@ background-color: #ffffff;
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<th>Vehicle Group</th>
-										  	<th style="text-align:center;" colspan="1">{{trimColon(vgroup)}}</th>
-										  	<th>Vehicle Name</th>
-										  	<th style="text-align:center;" colspan="2">{{hist.shortName}}</th>	
+				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
+										  	<th style="text-align:center;background-color:#f9f9f9;" colspan="1">{{trimColon(vgroup)}}</th>
+										  	<th colspan="2" style="background-color:#ecf7fb;">Vehicle Name</th>
+										  	<th colspan="2" style="text-align:center;background-color:#f9f9f9;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="5"></td></tr>
+			   			 	 			</thead>
+			   			 	 		</table>
+			   			 	 		
+                                   <div class="col-md-12" style="height: 15px;"></div>     
+			   			 	 		<table class="table table-bordered table-striped table-condensed table-hover">
+
+			   			 	 		<thead>
+			   			 	 			<!--<tr><td colspan="6"></td></tr> -->
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th style="text-align:center;" width="20%">Date &amp; Time</th>
-											<th style="text-align:center;" width="20%">Status</th>
-											<th style="text-align:center" width="15%">Duration (h:m:s)</th>
-											<th style="text-align: center;" width="35%">Nearest Location</th>
-											<th style="text-align: center;" width="10%">G-Map</th>
+											<th style="text-align:center;background-color:#C2D2F2;" width="20%">Date &amp; Time</th>
+											<th style="text-align:center;background-color:#C2D2F2;" width="20%">Status</th>
+											<th style="text-align:center;background-color:#C2D2F2;" width="15%">Duration (h:m:s)</th>
+											<th style="text-align:center;background-color:#C2D2F2;" width="5%">Sat</th>
+											<th style="text-align: center;background-color:#C2D2F2;" width="30%">Nearest Location</th>
+											<th style="text-align: center;background-color:#C2D2F2;" width="15%">G-Map</th>
 										</tr>
-								</thead>
+								  </thead>
 			   			 	 	<tbody>
 			   			 	 		<tr class="active" style="text-align:center" ng-repeat="ignition in ignitionData">
 			   			 	 			<td>{{ignition.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{ignition.ignitionStatus}}</td>
 			   			 	 			<td rowspan="2" ng-if="ignition.ignitionStatus == 'ON'">{{msToTime(ignitionData[$index+1].date-ignition.date)}}</td>
+			   			 	 			<td>{{ignition.gsmLevel}}</td> 
 			   			 	 			<td>{{ignition.address}}</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="ignitionData==null || ignitionData.length==0" align="center">  
-										<td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td colspan="6" class="err"><h5>No Data Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
@@ -592,19 +649,24 @@ background-color: #ffffff;
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{trimColon(vgroup)}}</td>
-										  	<td>Vehicle Name</td>
-										  	<td colspan="2">{{hist.shortName}}</td>	
+				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
+										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
+										  	<th colspan="2" style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="5	"></td></tr>
+			   			 	 		</thead>
+			   			 	 	</table>
+			   			 	 	<div class="col-md-12" style="height: 15px;"></div>
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 	<thead>
+			   			 	 		<!-- <tr><td colspan="5	"></td></tr> -->
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th style="text-align:center;" width="20%">Date &amp; Time</th>
-											<th style="text-align:center;" width="15%">Status</th>
-											<th style="text-align:center;" width="15%">Duration (h:m:s)</th>
-											<th style="text-align: center;" width="35%">Nearest Location</th>
+											<th style="text-align:center;background-color:#C2D2F2;" width="20%">Date &amp; Time</th>
+											<th style="text-align:center;background-color:#C2D2F2;" width="15%">Status</th>
+											<th style="text-align:center;background-color:#C2D2F2;" width="15%">Duration (h:m:s)</th>
+											<th style="text-align: center;background-color:#C2D2F2;" width="35%">Nearest Location</th>
 											
-											<th class="id" style="text-align: center;" width="15%">G-Map</th>
+											<th class="id" style="text-align: center;background-color:#C2D2F2;" width="15%">G-Map</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
@@ -623,19 +685,19 @@ background-color: #ffffff;
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ac.latitude}},{{ac.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="acReport==null || acReport.length == 0" align="center">
-										<td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td colspan="6" class="err"><h5>No Data Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-                          <tab select="alertMe('stopReport')" heading="Stoppage" active="tabStop" ng-init="timeChanges='All'" >
+                          <tab select="alertMe('stopReport')" heading="Stoppage" active="tabStop" >
 			   			 	 <p style="margin:0" class="page-header">Stoppage Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
 
 			   			 <div class="form-group pull-right" style="margin-right: 20px;margin-top: 7px;margin-bottom: 7px;">
                             <span style="font-size: 14px;">
 			   			
-                                  <select ng-model="timeChanges" ng-change="filtersTime(timeChanges,'stop')" style="padding:3px 3px 3px 3px; font-size: 12px;width:100px;">
+                                  <select ng-model="time_stop" ng-change="filtersTime(time_stop,'stop')" style="padding:3px 3px 3px 3px; font-size: 12px;width:100px;">
                                         <option value="All"> All </option>
                                         <option value="1">  >  1 min </option>
                                         <option value="2">  >  2 mins </option>
@@ -651,25 +713,32 @@ background-color: #ffffff;
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
 			   			 	 			<tr style="text-align:center; font-weight: bold;">
-				   			 	 			<td>Vehicle Group</td>
-										  	<td>{{trimColon(vgroup)}}</td>
-										  	<td>Vehicle Name</td>
-										  	<td colspan="2">{{hist.shortName}}</td>	
+				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
+										  	<th colspan="3" style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#ecf7fb;" colspan="2">Vehicle Name</th>
+										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
-			   			 	 			<tr><td colspan="5"></td></tr>
+			   			 	 		</thead>
+			   			 	 	</table>
+			   			 	 	<div class="col-md-12" style="height: 15px;"></div>
+			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
+			   			 	 	<thead>
+			   			 	 			<!--<tr><td colspan="7"></td></tr>-->
 			   			 	 			<tr style="text-align:center;font-weight: bold;">
-											<th width="15%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;">Start Time</th>
-											<th width="15%" class="id" custom-sort order="'endStoppageTime'" sort="sort"  style="text-align:center;">End Time</th>
-											<th width="10%" class="id" style="text-align:center;">G-Map</th>
-											<th width="45%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Location</th>
-											<th width="15%" class="id" custom-sort order="'stoppageTime'" sort="sort"  style="text-align:center;">Duration (h:m:s)</th>
+											<th width="15%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Start Time</th>
+											<th width="15%" class="id" custom-sort order="'endStoppageTime'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">End Time</th>
+											<th width="10%" class="id" style="text-align:center;background-color:#C2D2F2;">G-Map</th>
+											<th width="7%" class="id" custom-sort order="'gsmLevel'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Sat</th>
+											<th width="36%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Location</th>
+											<th colspan="2" width="22%" class="id" custom-sort order="'stoppageTime'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Duration (h:m:s)</th>
 										</tr>
 								</thead>
 			   			 	 	<tbody>
-			   			 	 		<tr ng-repeat="user in stopReport | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center">
+			   			 	 		<tr ng-repeat="user in stopReport | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
 			   			 	 			<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 			   			 	 			<td>{{user.endStoppageTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
+										<td>{{user.gsmLevel}}</td>
 			   			 	 			<td>
 			   			 	 				<p ng-if="user.address!=null">{{user.address}}</p>
 			   			 	 			<!--	<p get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null ">{{addressIdle[$index]}}</p>-->
@@ -678,7 +747,7 @@ background-color: #ffffff;
 			   			 	 			<td>{{msToTime(user.stoppageTime)}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="stopReport==null || stopReport.length==0" align="center">
-										<td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td colspan="7" class="err"><h5>No Data Found! Choose some other date</h5></td>
 									</tr>
 			   			 	 	</tbody>
 			   			 	 	</table>
@@ -808,8 +877,9 @@ background-color: #ffffff;
     <script src="../app/views/reports/customjs/html5csv.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
+    <script src="assets/js/naturalSortVersionDatesCaching.js"></script>
+<!--<script src="assets/js/naturalSortVersionDates.js"></script> -->
     <script src="assets/js/vamoApp.js"></script>
-    
     <script src="../app/views/reports/customjs/history.js"></script>
 	
 	

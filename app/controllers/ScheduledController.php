@@ -5,8 +5,6 @@
  class ScheduledController extends \BaseController
  {
  	
-
-
 /*
 	Insert or update function in scheduling mail
 */	
@@ -16,12 +14,14 @@ public function reportScheduling(){
 	*/
 	$redis = Redis::connection ();
 	
-	$grpName = Input::get( 'groupName' );
-	$username = Input::get ( 'userName' );
-	// $vehicle = Input::get ( 'vehicle' );
+	$grpName    = Input::get ( 'groupName' );
+	$username   = Input::get ( 'userName' );
+  //$vehicle    = Input::get ( 'vehicle' );
 	$reportList = Input::get ( 'reportList' );
-	log::info($grpName);
-	log::info($username);
+
+       log::info($reportList);
+    // log::info($grpName);
+    // log::info($username);
 	// $fromt = Input::get ( 'fromt' );
 	// $mail = Input::get ( 'mail' );
 	// $tot = Input::get ( 'tot' );
@@ -50,8 +50,6 @@ public function reportScheduling(){
 
    		log::info(' created connection ');
    	
-   		
-   		
    		/*
 			Create table
    		*/
@@ -87,12 +85,7 @@ public function reportScheduling(){
 		// 	    log::info($e->getMessage());
 		// }
 	
-   		
-
-	   	
-
-	   	
-	   	// ($result->num_rows > 0) ? $conn->query($update) : $conn->query($insert);
+  	   	// ($result->num_rows > 0) ? $conn->query($update) : $conn->query($insert);
 
 	   	log::info(' Sucessfully inserted/updated !!! ');
 		
@@ -101,6 +94,17 @@ public function reportScheduling(){
  	}
  }
 
+
+/*  Get Report Name for Scheduled Reports  */
+public function getRepName(){
+
+  $redis 	   =  Redis::connection ();
+  $reportNames =  $redis->smembers('ScheduledReports');
+
+    // log::info($reportNames);
+
+return $reportNames;
+}
 
 
 /*
@@ -135,6 +139,8 @@ public function getValue(){
 	   		log::info(' Connection Sucessfully ');
 	   		$results = $con->query("SELECT * FROM ScheduledReport WHERE userName='$username' AND groupName='$grpName'");
 	   		if($results->num_rows > 0) {
+
+                log::info(mysqli_fetch_all($results,MYSQLI_ASSOC));
 	   			return(mysqli_fetch_all($results,MYSQLI_ASSOC));
 	   		} else {
 	   			return [];

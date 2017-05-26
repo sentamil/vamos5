@@ -512,7 +512,8 @@
                             <th style="text-align:center;" class="id" custom-sort order="'shortName'" sort="sort"><div style="width: 100px;">Vehicle Name</div></th>
                             <th style="text-align:center;" class="id" custom-sort order="'address'" sort="sort"><div style="width: 300px;">Nearest Location</div></th>
                             <th style="text-align:center;" class="id" custom-sort order="'position'" sort="sort"><div style="width: 70px;">Position</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'status'" sort="sort"><div style="width: 70px;">GPS</div></th>
+                           <!-- <th style="text-align:center;" class="id" custom-sort order="'status'" sort="sort"><div style="width: 70px;">GPS</div></th>-->
+                            <th style="text-align:center;" class="id" custom-sort order="'gsmLevel'" sort="sort"><div style="width: 70px;">Sat Count</div></th>
                             <th style="text-align:center;" class="id" custom-sort order="'ignitionStatus'" sort="sort"><div style="width: 70px;">Ignition</div></th>
                             <th style="text-align:center;" class="id" custom-sort order="'powerStatus'" sort="sort"><div style="width: 100px;">VehBattery</div></th>
                             <th style="text-align:center;" class="id" custom-sort order="'deviceStatus'" sort="sort"><div style="width: 100px;">DevBattery</div></th>
@@ -531,7 +532,7 @@
                             <th style="text-align:center;"><div style="width: 70px;">G-Link</div></th>
                             <th></th>
                         </tr>
-                        <tr ng-repeat="user in mapTable | orderBy:sort.sortingOrder:sort.reverse" style="text-align:center; cursor: pointer" ng-mouseover="mouseJump(user)" ng-click="tabletd(user)">
+                        <tr ng-repeat="user in mapTable | orderBy:natural(sort.sortingOrder):sort.reverse" style="text-align:center; cursor: pointer" ng-mouseover="mouseJump(user)" ng-click="tabletd(user)">
                             <td>{{user.shortName}}</td>
                             <td>
                                 <div>{{starSplit(user.address)[0]}}</div>
@@ -543,10 +544,11 @@
                                 <span ng-switch-when="P"><img title="Vehicle Parked" src="assets/imgs/flag.png"/></span>
                                 <span ng-switch-when="U"><img title="Vehicle NoData" src="assets/imgs/gray.png"/></span>
                             </td>
-                            <td ng-switch on="user.status">
+                    <!--    <td ng-switch on="user.status">
                                 <span ng-switch-when="OFF"><img title="GPS OFF" src="assets/imgs/gof.png"/></span>
                                 <span ng-switch-when="ON"><img title="GPS ON" src="assets/imgs/gon.png"/></span>
-                            </td>
+                            </td>-->
+                            <td>{{user.gsmLevel}}</td>
                             <td ng-switch on="user.ignitionStatus">
                                 <span ng-switch-when="OFF"><img src="assets/imgs/no.png"/></span>
                                 <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
@@ -650,11 +652,11 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
-  // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+// scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("//code.highcharts.com/highcharts.js");
  //scriptLibrary.push("//code.highcharts.com/highcharts-more.js");
-// scriptLibrary.push("//code.highcharts.com/modules/solid-gauge.js");
+ //scriptLibrary.push("//code.highcharts.com/modules/solid-gauge.js");
    scriptLibrary.push("assets/js/highcharts_new.js");
    scriptLibrary.push("assets/js/highcharts-more_new.js");
    scriptLibrary.push("assets/js/solid-gauge_new.js");
@@ -663,7 +665,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/infobubble.js");
    scriptLibrary.push("assets/js/infobox.js");
    scriptLibrary.push("assets/js/naturalSortVersionDatesCaching.js");
-   //scriptLibrary.push("assets/js/naturalSortVersionDates.js");
+ //scriptLibrary.push("assets/js/naturalSortVersionDates.js");
    scriptLibrary.push("assets/js/vamoApp.js");
    scriptLibrary.push("assets/js/services.js");
    scriptLibrary.push("assets/js/custom.js");
