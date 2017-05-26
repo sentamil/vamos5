@@ -240,7 +240,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/highcharts-more_new.js");
    scriptLibrary.push("assets/js/solid-gauge_new.js");
    scriptLibrary.push(url);
-   scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+// scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/markerwithlabel.js");
 
    // scriptLibrary.push("assets/js/infobubble.js");
