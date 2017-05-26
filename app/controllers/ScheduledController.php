@@ -99,7 +99,7 @@ public function reportScheduling(){
 public function getRepName(){
 
   $redis 	   =  Redis::connection ();
-  $reportNames =  $redis->smembers('ScheduledReports');
+  $reportNames =  $redis->smembers('S_ScheduledReports');
 
     // log::info($reportNames);
 
