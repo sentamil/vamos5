@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-md-3" align="center">
                   <div class="form-group">
-                    <input class="form-control" ng-model="mailId" placeholder="E-Mail" type="email" data-toggle="tooltip" data-placement="left" id="email" name="email"  title="please don't use space"><span style="font-size: 10px">(Use Comma ',' for more MailId)</span>
+                    <input type="text" class="form-control" ng-model="mailId" placeholder="E-Mail" data-toggle="tooltip" data-placement="left"  title="please don't use space"><span style="font-size: 10px">(Use Comma ',' for more MailId)</span>
                   </div>
                 </div>
                 <div class="col-md-2" align="center">

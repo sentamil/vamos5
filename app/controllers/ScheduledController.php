@@ -139,15 +139,11 @@ public function getValue(){
 	   		log::info(' Connection Sucessfully ');
 	   		$results = $con->query("SELECT * FROM ScheduledReport WHERE userName='$username' AND groupName='$grpName'");
 	   		if($results->num_rows > 0) {
-
-                log::info(mysqli_fetch_all($results,MYSQLI_ASSOC));
 	   			return(mysqli_fetch_all($results,MYSQLI_ASSOC));
 	   		} else {
 	   			return [];
 	   		}
-	   		
-
-	   	}
+	     }
 	   	$con->close();
 	}
 	catch(Exception $e) {
