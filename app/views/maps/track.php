@@ -83,7 +83,9 @@
                                     <td width="15%">Date&amp;Time</td>
                                     <td width="10%">Odo km</td>
                                     <td width="20%" colspan="2">Position</td>
-                                    <td width="10%">Max km</td>
+                              <!--  <td width="10%">Max km</td>  -->
+                                    <td width="7%">Max</td>
+                                    <td width="7%">Sat</td>
                                     <td width="35%">Address</td>
                                     <!-- <td width="10%">DeviceVolt</td> -->
                                     <td width="10%">G-Map</td>
@@ -105,6 +107,7 @@
                                         <span ng-switch-when="U">{{timems(liveVal.noDataTime)}}</span>
                                     </td>
                                     <td>{{liveVal.speed}}</td>
+                                    <td>{{liveVal.gsmLevel}}</td>
                                     <td>{{liveVal.address }}</td>
                                     <!-- <td width="10%">{{liveVal.deviceVolt }}</td> -->
                                     <td><a href="https://www.google.com/maps?q=loc:{{liveVal.latitude}},{{liveVal.longitude}}" target="_blank">Link</a></td>
@@ -240,7 +243,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("assets/js/highcharts-more_new.js");
    scriptLibrary.push("assets/js/solid-gauge_new.js");
    scriptLibrary.push(url);
-// scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/markerwithlabel.js");
 
    // scriptLibrary.push("assets/js/infobubble.js");
