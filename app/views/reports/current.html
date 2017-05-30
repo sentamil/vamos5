@@ -122,7 +122,7 @@ background-color: #ffffff;
 		        <div class="box-body">
 		        	<table class="table">
 					   	<thead style="font-weight: bold;">
-						  	<th>Vehicle Group : {{trimColon(data1.group)}}</th>
+						  	<th>Vehicle Group : {{trimColon(data2.group)}}</th>
 						  	<th>Report Date : {{today| date:'yyyy-MM-dd'}}</th>									  
 						  	<th><div id="google_translate_element"></div></th>
 						  	<td>
@@ -144,7 +144,7 @@ background-color: #ffffff;
 			        	<div class="small-box bg-aqua">
 	                        <div class="inner">
 	                            <!-- <h3></h3> -->
-	                            <p><b>Total Kms {{data1.distance|number:0}} </b> <i class="fa fa-tachometer pull-right"></i></p>       
+	                            <p><b>Total Kms {{data2.distance|number:0}} </b> <i class="fa fa-tachometer pull-right"></i></p>       
 	                        <!--     <span class='badge badge-success small'>
 								  <i class='icon-user icon-white'></i>
 								  <i class='icon-user icon-white'></i>
@@ -163,7 +163,7 @@ background-color: #ffffff;
 			        	<div class="small-box bg-green">
 	                        <div class="inner">
 	                            <!-- <h6></h6> -->
-	                            <p><b>Vehicles Online {{data1.online}}</b><i class="fa fa-taxi pull-right"></i></p>                                   
+	                            <p><b>Vehicles Online {{data2.online}}</b><i class="fa fa-taxi pull-right"></i></p>                                   
 	                        </div>
 	                       <!--  <div class="icon">
 	                            <i class="fa fa-taxi"></i>
@@ -175,7 +175,7 @@ background-color: #ffffff;
 			        	<div class="small-box bg-yellow">
 	                        <div class="inner">
 	                            <!-- <h3></h3> -->
-	                            <p><b>Alarms/Atentions {{data1.alerts}}</b><i class="fa fa-bell pull-right"></i></p>                                   
+	                            <p><b>Alarms/Atentions {{data2.alerts}}</b><i class="fa fa-bell pull-right"></i></p>                                   
 	                        </div>
 	                       <!--  <div class="icon">
 	                            <i class="fa fa-bell"></i>
@@ -187,7 +187,7 @@ background-color: #ffffff;
 			        	<div class="small-box bg-red">
 	                        <div class="inner">
 	                            <!-- <h3></h3> -->
-	                            <p><b>Total Vehicle {{data1.totalVehicles}}</b><i class="fa fa-taxi pull-right"></i></p>                                   
+	                            <p><b>Total Vehicle {{data2.totalVehicles}}</b><i class="fa fa-taxi pull-right"></i></p>                                   
 	                        </div>
 	                       <!--  <div class="icon">
 	                            <i class="fa fa-taxi"></i>
@@ -200,7 +200,7 @@ background-color: #ffffff;
 			        	<div class="small-box bg-blue">
 	                        <div class="inner">
 	                            <!-- <h3></h3> -->
-	                            <p><b>Moving Vehicles {{data1.totalMovingVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #7feb1c"></i></p>                                   
+	                            <p><b>Moving Vehicles {{data2.totalMovingVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #7feb1c"></i></p>                                   
 	                        </div>
 	                       <!--  <div class="icon">
 	                            <i class="fa fa-taxi"></i>
@@ -212,7 +212,7 @@ background-color: #ffffff;
 			        	<div class="small-box bg-purple">
 	                        <div class="inner">
 	                            <!-- <h3></h3> -->
-	                            <p><b>Idle Vehicles {{data1.totalIdleVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #eb881c"></i></p>                                   
+	                            <p><b>Idle Vehicles {{data2.totalIdleVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #eb881c"></i></p>                                   
 	                        </div>
 	                        <!-- <div class="icon">
 	                            <i class="fa fa-taxi"></i>
@@ -224,7 +224,7 @@ background-color: #ffffff;
 			        	<div class="small-box bg-teal">
 	                        <div class="inner">
 	                            <!-- <h3></h3> -->
-	                            <p><b>Parked Vehicles {{data1.totalParkedVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #7b7b7b"></i></p>                                   
+	                            <p><b>Parked Vehicles {{data2.totalParkedVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #7b7b7b"></i></p>                                   
 	                        </div>
 	                        <!-- <div class="icon">
 	                            <i class="fa fa-taxi"></i>
@@ -236,7 +236,7 @@ background-color: #ffffff;
 			        	<div class="small-box bg-maroon">
 	                        <div class="inner">
 	                            <!-- <h3></h3> -->
-	                            <p><b>NoData Vehicles {{data1.totalNoDataVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #ff62b0"></i></p>                                   
+	                            <p><b>NoData Vehicles {{data2.totalNoDataVehicles}}</b><i class="fa fa-taxi pull-right" style="color: #ff62b0"></i></p>                                   
 	                        </div>
 	                        <!-- <div class="icon">
 	                            <i class="fa fa-taxi"></i>

@@ -191,7 +191,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 				sessionStorage.setItem('user', JSON.stringify($scope.vehiname+','+$scope.vehigroup));
 				angular.forEach(data, function(value, key) {
 					   if(value.totalVehicles) {
-					  	//	$scope.data1		=	data[key];
+					  	    $scope.data2		=	data[key];
 					  		$scope.vehiLen(data[key]);
                         //  console.log(data[key]);
                         //  console.log( $scope.filterExpire(data) );
