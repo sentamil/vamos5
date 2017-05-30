@@ -1865,13 +1865,14 @@ if($scope.markerstart){
 
     $scope.trimComma = function(textVal){
 
-    	var strValues;
-    	var splitValue = textVal.split(/[,]+/);
+      var strValues;
+    //console.log(textVal);
 
+      if(textVal!=undefined){
+    	var splitValue = textVal.split(/[,]+/);
         var strLen=splitValue.length;
 
         switch(strLen){
-             
               case 0:
                strValues='No Data';
                break;
@@ -1885,7 +1886,11 @@ if($scope.markerstart){
                strValues=splitValue[0]+','+splitValue[1];
                break;
         }
-     return  strValues;
+    }else{
+      strValues='No Address';
+    }
+
+    return  strValues;
 	}
 
     var markerhead, intervalPoly;
