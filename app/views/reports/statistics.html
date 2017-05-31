@@ -60,9 +60,9 @@ background-color: #ffffff;
                     <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
                     </div>
                 </li>
-                <li ng-repeat="location in vehicleList" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+                <li ng-repeat="location in vehicleList | orderBy:natural('group')" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
+                    <li ng-repeat="loc in location.vehicleLocations| orderBy:natural('shortName') | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
                     </ul>
                 </li>
             </ul>
@@ -316,9 +316,9 @@ background-color: #ffffff;
                                         <td>{{data.vehicleId}}</td>                                
                                         <td>{{data.startFuelLevel}}</td>
                                         <td>{{data.endFuelLevel}}</td>
-                                        <td>{{parseInts(data.fuelFills)}}</td>
-                                        <td>{{parseInts(data.fuelConsume)}}</td>
-                                        <td>{{parseInts(data.distanceToday)}}</td>
+                                        <td>{{data.fuelFills}}</td>
+                                        <td>{{data.fuelConsume}}</td>
+                                        <td>{{data.distanceToday}}</td>
                                         <td>{{data.milage}}</td>
                                     </tr>
                                     
@@ -402,6 +402,8 @@ background-color: #ffffff;
     <script src="../app/views/reports/c3chart/d3.js"></script>
     
     <script src="../app/views/reports/c3chart/c3.min.js"></script>
+    <script src="assets/js/naturalSortVersionDatesCaching.js"></script>
+<!-- <script src="assets/js/naturalSortVersionDates.js"></script> -->
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
     <script src="../app/views/reports/customjs/statistics.js"></script>
