@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <title>GPS</title>
-
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -49,7 +48,7 @@ background-color: #ffffff;
                 <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
-            <ul class="sidebar-subnav ">
+            <ul class="sidebar-subnav" style="overflow-y:scroll;">
                 <li style="padding-left:25px;">
                     <div class="right-inner-addon" align="center"> 
                     <i class="fa fa-search"></i>
@@ -58,12 +57,12 @@ background-color: #ffffff;
                 </li>
 
 
-         <li ng-repeat="location in vehicle_list" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+         <li ng-repeat="location in vehicle_list | orderBy:natural('group')" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
 
 
                 <ul class="nav" style="max-height:400px;overflow-x:hidden;overflow-y:scroll;">
 
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox1" data-trigger="hover" ng-class="{active:vehiname ==loc.vehicleId}">
+                    <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox1" data-trigger="hover" ng-class="{active:vehiname ==loc.vehicleId}">
 
                       <a href="javascript:void(0);"  ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak>
 
@@ -230,7 +229,7 @@ background-color: #ffffff;
                         <input type="search" class="form-control input-sm" placeholder="Search" align="center" ng-model="searchbox2" name="search" />
                     </div>
                     
-                  <div class="form-group pull-right" style="z-index:2;padding-right:15%;margin-top:8px;width:20px;height:6px;" ng-dropdown-multiselect="" options="selectVehiData" selected-model="selectVehiModel" ng-click="selectVehicle(selectVehiModel)" checkboxes="true" extra-settings="example14settings"></div>  
+                  <div class="form-group pull-right" style="z-index:2;padding-right:15%;margin-top:8px;width:20px;height:6px;cursor:pointer;" ng-dropdown-multiselect="" options="selectVehiData" selected-model="selectVehiModel" ng-click="selectVehicle(selectVehiModel)"  extra-settings="example14settings"></div>  
 
                 <div class="box-body" id="StoppageReport">
                 <div class="empty" align="center"></div>
@@ -304,6 +303,8 @@ background-color: #ffffff;
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
     <script src="assets/js/underscore.js"></script>
+    <script src="assets/js/naturalSortVersionDatesCaching.js"></script>
+<!--<script src="assets/js/naturalSortVersionDates.js"></script> -->
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
     <script src="assets/js/stoppageReport.js"></script>

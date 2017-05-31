@@ -251,11 +251,11 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             })
             
             $('#stopReport').click(function(){
-                $(this).attr("href", 'stopReport?&vg='+gname+'&tn=stopReport')
+                $(this).attr("href", 'stopReport?vid='+vid+'&vg='+gname+'&tn=stopReport')
             })
 
             $('#tollReport').click(function(){
-                $(this).attr("href", 'tollReport?&vg='+gname+'&tn=tollReport')
+                $(this).attr("href", 'tollReport?vid='+vid+'&vg='+gname+'&tn=tollReport')
             })
      
             $('#multiTrack').click(function(){
