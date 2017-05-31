@@ -6,6 +6,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	$scope.uiValue	 			= 	{};
 	$scope.geoFence             =   "";
     $scope.timeChanges          =  'All';
+    $scope.selected             = undefined;
   //$scope.stopData             =   [];
   //$scope.sort = sortByDate('startTime');
 

@@ -60,9 +60,9 @@ background-color: #ffffff;
          <li ng-repeat="location in vehicle_list | orderBy:natural('group')" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
 
 
-                <ul class="nav" style="max-height:400px;overflow-x:hidden;overflow-y:scroll;">
+                <ul class="nav" style="max-height:400px;overflow-y:scroll;">
 
-                    <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox1" data-trigger="hover" ng-class="{active:vehiname ==loc.vehicleId}">
+                    <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox1" data-trigger="hover" ng-class="{active:selected==loc.rowId}">
 
                       <a href="javascript:void(0);"  ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak>
 
