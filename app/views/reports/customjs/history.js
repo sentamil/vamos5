@@ -218,10 +218,10 @@ function eventButton(eventdate)
       $scope.fromTimes = "00:00:00";
       $scope.fromDates = getTodayDatess();
         
-       var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+prodId+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes);
-    
-    // var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes);
-    // var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+getParameterByName('vid')+"&interval="+$scope.interval;
+         var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes);
+      // var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+prodId+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes);
+      // var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes);
+      // var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+getParameterByName('vid')+"&interval="+$scope.interval;
     
       $scope.loading  = true;
       try{
@@ -1295,9 +1295,9 @@ function eventButton(eventdate)
     if((checkXssProtection($scope.fromdate) == true) && (checkXssProtection($scope.todate) == true) && (checkXssProtection($scope.fromtime) == true) && (checkXssProtection($scope.totime) == true))
     {
       startLoading();
-      var valueas     = $('#txtv').val();
-      var histurl     = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+prodId+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
-     // var histurl   = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
+        var valueas   = $('#txtv').val();
+        var histurl   = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+prodId+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
+     // var histurl   = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+prodId+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
      // var histurl   = "http://"+getIP+context+"/public//getVehicleHistory?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
      // var loadUrl   = "http://"+getIP+context+"/public//getLoadReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime);
     try{
@@ -1329,9 +1329,9 @@ function eventButton(eventdate)
    
   //pdf method
   $scope.pdfHist     =   function() {  
-
-       var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt);      
-    // var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;      
+       
+       var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt)+"&interval="+$scope.interval;      
+    // var histurl = GLOBAL.DOMAIN_NAME+"/getVehicleHistory?vehicleId="+$scope.vvid+"&fromDate="+$scope.fd+"&fromTime="+convert_to_24h($scope.ft)+"&toDate="+$scope.td+"&toTime="+convert_to_24h($scope.tt);      
     // console.log(histurl);   
 
     $http.get(histurl).success(function(data){
