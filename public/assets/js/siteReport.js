@@ -516,7 +516,7 @@ function plottinGraphs(valueGraph, timeData){
 		$scope.gIndex	=	groupId;
 		var url  		= 	$scope.g_Url+"/getVehicleLocations?group="+groupName;
 		vamoservice.getDataCall(url).then(function(response){
-			stopLoading();
+			//stopLoading();
 			$scope.vehicle_list = response;
 			$scope.shortNam		= response[$scope.gIndex].vehicleLocations[0].shortName;
 			$scope.vehiname		= response[$scope.gIndex].vehicleLocations[0].vehicleId;
@@ -544,6 +544,7 @@ function plottinGraphs(valueGraph, timeData){
 
 	$scope.submitFunction 	=	function(){
 		startLoading();
+		$scope.mSiteError   =   0;
 		getUiValue();
 		webServiceCall();
 	}

@@ -309,7 +309,7 @@ background-color: #ffffff;
                                             <th colspan="2" style="background-color:#f9f9f9;">{{siteData.startTime | date:'yyyy-MM-dd HH:mm:ss' }}</th>
                                             <th style="background-color:#ecf7fb;">Trip End</th>
                                             <th colspan="2" style="background-color:#f9f9f9;">{{siteData.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</th>
-                                            <th style="background-color:#ecf7fb;">Total Trip (Kms)</th>
+                                            <th style="background-color:#ecf7fb;">Total Trip </th>
                                             <th colspan="2" style="background-color:#f9f9f9;">{{siteData.tripCount}}</th>
                                         </tr>
                                         </thead>
@@ -318,10 +318,10 @@ background-color: #ffffff;
                                     <table class="table table-bordered table-striped table-condensed table-hover">
                                       <thead>
                                         <tr style="text-align:center;font-weight: bold;">
-                                            <th width="10%" style="text-align:center;background-color:#C2D2F2;">Start Time</th>                                              
                                             <th width="15%" style="text-align:center;background-color:#C2D2F2;">Start Location</th>
-                                            <th width="10%" style="text-align:center;background-color:#C2D2F2;">End Time</th>
+                                            <th width="10%" style="text-align:center;background-color:#C2D2F2;">Start Time</th>                                              
                                             <th width="15%" style="text-align:center;background-color:#C2D2F2;">End Location</th>
+                                            <th width="10%" style="text-align:center;background-color:#C2D2F2;">End Time</th>
                                             <th width="10%" style="text-align:center;background-color:#C2D2F2;">Duration (h:m:s)</th>
                                             <th width="10%" style="text-align:center;background-color:#C2D2F2;">Dist Cov</th>
                                             <th width="10%" style="text-align:center;background-color:#C2D2F2;">Moving (h:m:s)</th>
@@ -332,10 +332,10 @@ background-color: #ffffff;
                                      </thead>
                                   <tbody ng-repeat="multipleSite in siteData.history  track by $index | orderBy:sort.sortingOrder:sort.reverse">
                                     <tr class="active" style="text-align:center" ng-repeat="multiple in multipleSite" ng-if="$even">
-                                        <td>{{multiple.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td> 
                                         <td ng-if-start="multiple.state != 'TST'">{{multiple.state | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                        <td>{{multipleSite[$index+1].endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                        <td>{{multiple.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td> 
                                         <td>{{multipleSite[$index+1].state}}</td>
+                                        <td>{{multipleSite[$index+1].endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                         <td>
                                             <div ng-if="multipleSite[$index+1].detentionTime == 0">{{multipleSite[$index+1].detentionTime}}</div>
                                             {{msToTime(multipleSite[$index+1].detentionTime)}}
@@ -351,7 +351,7 @@ background-color: #ffffff;
                                         </td>
                                         <td> {{multipleSite[$index+1].avgSpeed}} </td>
                                         <td ng-if-end> {{multipleSite[$index+1].speedViolation}} </td>
-                                        <td ng-if-start="multiple.state == 'TST'" class="bg table-success">Summary</td>
+                                        <td colspan="2" ng-if-start="multiple.state == 'TST'" class="bg table-success">Summary</td>
                                         <td colspan="2" class="bg table-success">Total Count</td>
                                         <td colspan="2" class="bg table-success">{{multiple.tripCount}}</td>
                                         <td colspan="2" class="bg table-success">Total Distance</td>
