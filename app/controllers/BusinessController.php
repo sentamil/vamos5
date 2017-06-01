@@ -636,7 +636,11 @@ if($type=='Sale' && $type1!=='new')
 {
 	$orgId=Input::get ( 'orgId');
 }
-
+//ram vehicleExpiry default date
+$current = Carbon::now();
+$rajeev=$current->addYears(1)->format('Y-m-d');
+log::info($rajeev);
+//
 $dbarray=array();
 $dbtemp=0;
 for($i =1;$i<=$numberofdevice;$i++)
@@ -678,7 +682,14 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$email=!empty($email) ? $email : 'nill';	
 	//
 	$vehicleExpiry=Input::get ( 'vehicleExpiry');
-    $vehicleExpiry=!empty($vehicleExpiry) ? $vehicleExpiry : 'nill';
+	if($fcode == 'TRKPT') {
+	$vehicleExpiry=!empty($vehicleExpiry) ? $vehicleExpiry : $rajeev;
+    }
+    else
+	{
+    $vehicleExpiry=!empty($vehicleExpiry) ? $vehicleExpiry : 'null';	
+    }
+    //$vehicleExpiry=!empty($vehicleExpiry) ? $vehicleExpiry : 'nill';
 	$altShortName=Input::get ( 'altShortName'.$i);	
 	$altShortName=!empty($altShortName) ? $altShortName : 'nill';						
 	$sendGeoFenceSMS=Input::get ( 'sendGeoFenceSMS'.$i);
