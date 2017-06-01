@@ -214,15 +214,15 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	};
 	
 	var promise;
-	$scope.startTime 	= function(dat, val){
+	$scope.startTime 	= function(sName, val){
 
-		$scope.sort 	= sortByDate(dat);
+		$scope.sort 	= sortByDate(sName);
 		if(val == 'reload' || val == undefined)
 			$scope.siteTab 	= false, $scope.actTab 	= false;
 		promise 		= $interval( function(){ $scope._globalInit();}, 30000);
 	}
 
-	$scope.startTime('date', index);
+	$scope.startTime('shortName', index);
 
     $scope.$watch("url", function (val) {
   		
