@@ -1,12 +1,14 @@
 app.controller('mainCtrl',['$scope','vamoservice','$filter','_global', function($scope, vamoservice, $filter, GLOBAL){
 
-$scope.g_Url 	=	GLOBAL.DOMAIN_NAME;
+ // trip summary , 	site report, trip report , rfid Report, multiple sites
 
 
+   	//global declaration
+    $scope.g_Url 	=	GLOBAL.DOMAIN_NAME;
 
-// trip summary , 	site report, trip report , rfid Report, multiple sites
+	$scope.locations = [];
+	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
 
-	//global declaration
 	$scope.addressFuel 			= 	[];
 	$scope.uiDate 				=	{};
 	
@@ -17,7 +19,7 @@ $scope.g_Url 	=	GLOBAL.DOMAIN_NAME;
     $scope._site2               =  {};
 	$scope._site1.siteName      =  '';
     $scope._site2.siteName      =  '';
-
+    $scope.mSiteError           =   0;
 
     $scope.msToTime		=	function(ms) {
 		if (ms == undefined || ms == null || ms == '')
@@ -136,10 +138,7 @@ function plottinGraphs(valueGraph, timeData){
 		$scope.caption 	= 'Daily Fuel Burn';
     	$scope.sort 	= 	sortByDate('time');
 	}
-	//global declartion
-
-	$scope.locations = [];
-	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
+	
 
 	//$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
@@ -245,6 +244,7 @@ function plottinGraphs(valueGraph, timeData){
 				break;
 			case 'multiSite' :
 				try{
+					//startLoading();
 					urlWebservice   =  $scope.g_Url+"/getSiteSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&stopTime="+$scope.interval+"&language=en"+"&site1="+$scope._site1.siteName+"&site2="+$scope._site2.siteName;
 				}
 				catch (e){
@@ -347,9 +347,9 @@ function plottinGraphs(valueGraph, timeData){
 						} catch (er){
 							console.log(' address Solving '+er);
 						}
-						
-					$scope.siteData = responseVal;
-
+				    $scope.siteData = responseVal;
+				    $scope.mSiteError=1;
+				    stopLoading();
 
 					/*
 						FOR TEMPORARY LOAD
@@ -433,6 +433,7 @@ function plottinGraphs(valueGraph, timeData){
 	// initial method
 
 	$scope.$watch("url", function (val) {
+	  startLoading();
 		vamoservice.getDataCall($scope.url).then(function(data) {
 			$scope.vehicle_list = data;
 			var siteNames 	= 	[];
@@ -502,13 +503,14 @@ function plottinGraphs(valueGraph, timeData){
 		  		// console.log(' dailyFuel condition '+ $scope.uiDate.fromdate);
 		  	}
 		  	webServiceCall();
-		  	stopLoading();
+		  	//stopLoading();
 		});	
 	});
 
 
 	$scope.groupSelection 	= function(groupName, groupId) {
 		startLoading();
+		$scope.mSiteError  =   0;
 		$scope.gName 	= 	groupName;
 		$scope.uiGroup 	= 	$scope.trimColon(groupName);
 		$scope.gIndex	=	groupId;
@@ -527,6 +529,7 @@ function plottinGraphs(valueGraph, timeData){
 
 	$scope.genericFunction 	= function (vehid, index){
 		startLoading();
+		$scope.mSiteError   =   0;
 		$scope.vehiname		= vehid;
 		sessionValue($scope.vehiname, $scope.gName)
 		angular.forEach($scope.vehicle_list[$scope.gIndex].vehicleLocations, function(val, key){
