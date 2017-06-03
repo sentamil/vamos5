@@ -1,5 +1,5 @@
 app.controller('mainCtrl',['$scope', '$location', 'vamoservice','_global', '$http', function($scope, $location, vamoservice, GLOBAL, $http){
-	
+  
 var url             = $location.absUrl();
 $scope._tabValue    = url.includes("groupEdit");
 var _gUrl           = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
@@ -15,6 +15,8 @@ $scope.sort         = {sortingOrder : 'vehicles', reverse : true };
 $scope.notifyUpdate = [];
 $scope.rowsValue    = [];
 // $scope.selectEdit   = (getParameterByName('userlevel') == 'reset') ? true : (getParameterByName('userlevel') == 'notify') : false;
+// $scope.apiDateTime="";
+   $scope.apiValDays=undefined;
 
 $scope.checkValue = function(value){
   if(value == 'true'){
@@ -24,14 +26,48 @@ $scope.checkValue = function(value){
     return false;
 }
 
+function getTodayDateTimes() {
+  var date = new Date();
 
+ // console.log(date);
+
+  return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2)+' '+("0" + (date.getHours())).slice(-2)+':'+("0" + (date.getMinutes())).slice(-2)+':'+("0" + (date.getSeconds())).slice(-2);
+};
+
+function utcFormats(val){return new Date(val).getTime()/1000;}
+
+//console.log( getTodayDateTimes() );
+
+$scope.getApiKey = function(){
+
+  $scope.validDayShow  = false;
+
+    // console.log($scope.apiValDays);
+    // console.log( utcFormats( getTodayDateTimes() ) );
+
+       var apiKeyUrl = GLOBAL.DOMAIN_NAME+'/getApiKey?validDays='+$scope.apiValDays+'&time='+utcFormats( getTodayDateTimes() );
+
+         $scope.apiKeyData=[];
+         $http.get(apiKeyUrl).success(function(data){
+           
+             $scope.apiKeyVal=data.apiKey;
+                //console.log(data.apiKey);
+         });
+   }
+
+ 
   $scope.selectStopEdit = false;
   // $scope.selectEdit     = false;
-if(getParameterByName('userlevel') == 'reset')
-  $scope.selectEdit = true;
-else if(getParameterByName('userlevel') == 'notify'){
+if(getParameterByName('userlevel') == 'reset'){
+  $scope.selectEdit1 = true;
+}else if(getParameterByName('userlevel') == 'apiKeys'){
+
+  $scope.selectEdit3 = true;
+  $scope.validDayShow  = true;
+
+}else if(getParameterByName('userlevel') == 'notify'){
   startLoading();
-  $scope.selectEdit = false;
+  $scope.selectEdit2 = true;
   $scope.notify   = [{'check': true, 'value' : 'lowbat', 'caption':'LOW BATTERY'}];
   
   $.ajax({

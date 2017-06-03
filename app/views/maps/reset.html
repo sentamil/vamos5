@@ -12,6 +12,8 @@
 <link href="assets/css/jVanilla.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
+<link href="../app/views/reports/datepicker/bootstrap-datetimepicker_new.css" rel="stylesheet" type="text/css">
+<link href="../app/views/reports/datepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
@@ -34,7 +36,7 @@
   <!-- part one -->
   <div class="modal-dialog" ng-hide="selectStopEdit">
   <!-- reset -->
-  <div class="modal-content" ng-show="selectEdit">
+  <div class="modal-content" ng-show="selectEdit1">
       <div class="modal-header" style="padding:5px; padding-left: 10px; padding-right: 10px">
             <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
             <h5> Reset Password </h5> 
@@ -84,8 +86,9 @@
         
       </div>
   </div>
+
   <!-- notification -->
-  <div class="modal-content" ng-hide="selectEdit">
+  <div class="modal-content" ng-show="selectEdit2">
     <div class="modal-header dialog_header">
             <h5> Edit Notification </h5> 
         </div>
@@ -107,6 +110,59 @@
   
   </div>
 
+  <!-- api Key -->
+  <div class="modal-content" ng-show="selectEdit3" style="width: 500px;top:50px;">
+    <div class="modal-header dialog_header">
+            <h5> Get Api Key </h5> 
+        </div>
+   
+
+       <div class="container">
+             <div class="row" ng-show="validDayShow">
+                
+               <!-- <div class='col-md-2' style="padding-top: 50px;padding-bottom: 50px;margin-left: 25px;"> 
+                      <input ng-model="apiDateTime" type='text' class="form-control" id='datetimepicker4' placeholder="Choose date & time"/>
+                    </div> -->
+
+                    <div class='col-md-2' style="padding-top: 50px;padding-bottom: 50px;margin-left: 25px;"> 
+                        <h5><b>Enter Valid Days :</b></h5>
+                    </div> 
+
+                    <div class='col-md-2'  style="padding-top: 50px;padding-bottom: 50px;">
+                      <input ng-model="apiValDays" type='text' class="form-control"  placeholder="Num of days"/>
+                    </div>
+             </div>
+
+                 <div class="row" ng-hide="validDayShow">
+                
+                    <div  style="padding-top: 50px;padding-bottom: 50px;padding-left:70px;"> 
+                        <span>  <h5><b>Api Key :</b> &nbsp; <b style="color:green;">{{apiKeyVal}}</b></h5></span>
+                    </div> 
+       
+                 </div>
+    
+   <!--   <li class="list-group-item" ng-repeat="(key, val) in notificationValue">
+        <label ><input type="checkbox" ng-model="notifyUpdate[$index]" ng-checked="checkValue(val)"/> {{key}}</label>
+      </li> -->
+      
+      </div>
+
+      <div class="modal-footer dialog_header">
+     
+      <div class="col-md-2"></div>
+
+         <div class="col-md-4" ng-hide="validDayShow"></div>
+         <div class="col-md-4">
+           <a class="btn btn-sm btn-default btn-block" href="../public/track">Back</a>
+          </div>
+
+          <div class="col-md-4" ng-show="validDayShow">
+           <button type="button" class="btn btn-primary btn-block" ng-click="getApiKey()">Submit</button>
+          </div>
+
+      </div>
+  
+   </div>
   
   </div>
   <!-- part two -->
@@ -235,11 +291,19 @@
 <script src="assets/js/jquery-1.11.0.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
-<!-- <script src="assets/js/bootstrap.min.js"></script> -->
-
+<script src="assets/js/bootstrap.min.js"></script> 
+<script src="../app/views/reports/datepicker/bootstrap-datetimepicker_new.js"></script>
+<script src="../app/views/reports/datepicker/bootstrap-datetimepicker.min.js"></script>
 <script src="assets/js/vamoApp.js"></script>
 <script src="assets/js/services.js"></script>
 <script src="assets/js/auth_pwd.js"></script>
+
+
+ <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker4').datetimepicker();
+            });
+        </script>
 
 </body>
 

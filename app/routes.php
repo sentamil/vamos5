@@ -649,6 +649,14 @@ Route::get('/getTollgateReport', function() {
     return View::make('vls.getTollgateReport');
 });
 
+Route::get('/getApiKey', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getApiKey');
+    return View::make('vls.getApiKey');
+});
+
 Route::get('/getZohoInvoice', function() {
     if (!Auth::check()) {
         return Redirect::to('login');

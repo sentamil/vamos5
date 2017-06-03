@@ -93,7 +93,7 @@
                 </select>
                
                 </li>
-                <li ng-repeat="location in locations04 | orderBy:'group'"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ><span title="{{trimColon(location.group)}}" >{{trimColon(location.group)}}</span></a>
+            <li ng-repeat="location in locations04 | orderBy:natural('group')"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ><span title="{{trimColon(location.group)}}" >{{trimColon(location.group)}}</span></a>
                     
             <ul class="nav"  style="max-height: 400px; overflow-y: auto;">
             <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | statusfilter:vehicleStatus | filter:searchbox" ng-class="{active:selected==loc.rowId}">
@@ -381,6 +381,14 @@
                                     </table>
                                 </div>
                             </div>
+
+                            <div id="rightAddress" style="padding-top:2px;">
+                                     <div class="_caption_rightSide">Api Key</div>
+                                     <div align="center" style="word-wrap:break-word; font-size:11px;color:#949494;padding:5px 0 2px 0;">{{apiKeys}}</div> 
+                                <!-- <div align="center" id="lastseen" style="word-wrap:break-word; font-size:11px;"></div> -->
+                                </div>
+
+
                                <div class="dynamicvehicledetails">
                                 <div id="viewable" ng-show="_editValue_con">
                                     
@@ -452,16 +460,16 @@
                                                     <td ng-show="_editShow"><input type="text" class="_input" ng-model="_editValue._regNo" name="_editValue._regNo" ></td>
                                                     <td ng-hide="_editShow"> {{_editValue._regNo}}</td>
                                                 </tr>
-                                                
-                                        </table>
-                                   <div id="rightAddress">
-                                    <div class="_caption_rightSide">Address</div>
-                                    <div align="center" id="lastseen" style="word-wrap: break-word; font-size: 11px; "></div>
-                                </div>
+                                            </table>
+
+                                  <div id="rightAddress">
+                                     <div class="_caption_rightSide">Address</div>
+                                     <div align="center" id="lastseen" style="word-wrap:break-word; font-size:11px;"></div> 
+                                   </div> 
+
                                 </div>
                                 
-                                    
-                                </div>
+                            </div>
                         </div>
                         <a href="javascript:void(0);" class="contentexpand"><img src="assets/imgs/add.png"/></a>
                         <!-- <div> -->
@@ -500,38 +508,30 @@
         headID.appendChild(newScript);
         console.log(' value '+newScript)
 
-
-
-
-
-
 </script> -->
-            <div id="scrollTable">
-                   <table class="table table-striped table-bordered table-condensed table-hover">
-                        <tr style="text-align:center">
-                            <th style="text-align:center;" class="id" custom-sort order="'shortName'" sort="sort"><div style="width: 100px;">Vehicle Name</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'address'" sort="sort"><div style="width: 300px;">Nearest Location</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'position'" sort="sort"><div style="width: 70px;">Position</div></th>
-                           <!-- <th style="text-align:center;" class="id" custom-sort order="'status'" sort="sort"><div style="width: 70px;">GPS</div></th>-->
-                            <th style="text-align:center;" class="id" custom-sort order="'gsmLevel'" sort="sort"><div style="width: 70px;">Sat Count</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'ignitionStatus'" sort="sort"><div style="width: 70px;">Ignition</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'powerStatus'" sort="sort"><div style="width: 100px;">VehBattery</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'deviceStatus'" sort="sort"><div style="width: 100px;">DevBattery</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'regNo'" sort="sort"><div style="width: 100px;">Regn No</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'driverName'" sort="sort"><div style="width: 100px;">Driver Name</div></th>
-                            
-                            
-                            <th style="text-align:center;" class="id" custom-sort order="'totalTruck'" sort="sort"><div style="width: 100px;">Load</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'fuelLitre'" sort="sort"><div style="width: 100px;">Fuel Litre</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'temperature'" sort="sort"><div style="width: 100px;">Temperature</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'vehicleBusy'" sort="sort"><div style="width: 100px;">Ac/Hire</div></th>
-                            
-                            <th style="text-align:center;" class="id" custom-sort order="'lastSeen'" sort="sort"><div style="width: 100px;">Last Seen</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'distanceCovered'" sort="sort"><div style="width: 50px;">KM</div></th>
-                            <th style="text-align:center;" class="id" custom-sort order="'speed'" sort="sort"><div style="width: 70px;">Speed</div></th>
-                            <th style="text-align:center;"><div style="width: 70px;">G-Link</div></th>
-                            <th></th>
-                        </tr>
+            <div id="scrollTable" ng-show="tabView">
+                   <table class="table table-striped table-bordered table-condensed table-hover" >
+                     <tr style="text-align:center">
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'shortName'" sort="sort"><div style="width: 100px;">Vehicle Name</div></th>
+                        <th width="10%" style="text-align:center;" class="id" custom-sort order="'address'" sort="sort"><div style="width: 300px;">Nearest Location</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'position'" sort="sort"><div style="width: 70px;">Position</div></th>
+                   <!-- <th style="text-align:center;" class="id" custom-sort order="'status'" sort="sort"><div style="width: 70px;">GPS</div></th>-->
+                        <th width="5%" style="text-align:center;" class="id" custom-sort order="'gsmLevel'" sort="sort"><div style="width: 70px;">Sat</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'ignitionStatus'" sort="sort"><div style="width: 70px;">Ignition</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'lastSeen'" sort="sort"><div style="width: 100px;">Last Seen</div></th>
+                        <th width="5%" style="text-align:center;" class="id" custom-sort order="'distanceCovered'" sort="sort"><div style="width: 50px;">KM</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'speed'" sort="sort"><div style="width: 70px;">Speed</div></th>
+                        <th width="6%" style="text-align:center;"><div style="width: 70px;">G-Link</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'powerStatus'" sort="sort"><div style="width: 100px;">VehBattery</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'deviceStatus'" sort="sort"><div style="width: 100px;">DevBattery</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'regNo'" sort="sort"><div style="width: 100px;">Regn No</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'driverName'" sort="sort"><div style="width: 100px;">Driver Name</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'totalTruck'" sort="sort"><div style="width: 100px;">Load</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'fuelLitre'" sort="sort"><div style="width: 100px;">Fuel Litre</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'temperature'" sort="sort"><div style="width: 100px;">Temperature</div></th>
+                        <th width="6%" style="text-align:center;" class="id" custom-sort order="'vehicleBusy'" sort="sort"><div style="width: 100px;">Ac/Hire</div></th>
+                      
+                       </tr>
                         <tr ng-repeat="user in mapTable | orderBy:natural(sort.sortingOrder):sort.reverse" style="text-align:center; cursor: pointer" ng-mouseover="mouseJump(user)" ng-click="tabletd(user)">
                             <td>{{user.shortName}}</td>
                             <td>
@@ -554,6 +554,10 @@
                                 <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
                                           
                             </td>
+                            <td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td>{{user.distanceCovered}}</td>
+                            <td>{{user.speed}}</td>
+                            <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
                              <td>{{user.powerStatus}}
                                 <!-- <span ng-switch-when="OFF"><img src="assets/imgs/wr.png"/></span>
                                 <span ng-switch-when="ON"><img src="assets/imgs/rt.png"/></span> -->
@@ -561,8 +565,6 @@
                             <td>{{user.deviceStatus}}</td>
                             <td>{{user.regNo}}</td>
                             <td>{{user.driverName}}</td>
-                            
-                            
                             <td>{{valueCheck(user.totalTruck)}}</td>
                             <td>{{valueCheck(user.fuelLitre)}}</td>
                             
@@ -572,12 +574,6 @@
                                 <span ng-switch-when="no" style="color: #00ce2f">Available</span>
                             </td>
                            
-                            <td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                            <td>{{user.distanceCovered}}</td>
-                            <td>{{user.speed}}</td>
-                            
-                            
-                            <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
                             <!-- <td style="cursor: pointer;" get-location lat={{user.latitude}} lon={{user.longitude}} index={{$index}} ng-if="user.address==null && mainlist[$index]==null">Click Me</td>
                             <td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
                             <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td> -->                                                      
@@ -652,7 +648,7 @@ if(apikey_url != null || apikey_url != undefined)
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
-// scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("//code.highcharts.com/highcharts.js");
  //scriptLibrary.push("//code.highcharts.com/highcharts-more.js");

@@ -101,6 +101,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	var markerCluster;
 	var vehicleids=[];
 	var polygenList=[];
+
+	$scope.tabView=1;
 	
 	$scope.orgIds 	= [];
 
@@ -132,7 +134,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	}
 
 	$scope.sort = {       
-                sortingOrder : 'lastSeen',
+                sortingOrder : 'shortName',
                 reverse : false
             };
 
@@ -385,8 +387,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.gName 	= data[$scope.gIndex].group;
 				sessionValue($scope.vehiname, $scope.gName);
+				$scope.apiKeys=$scope.locations02[$scope.gIndex].apiKey;
 				$scope.locations = $scope.statusFilter($scope.locations02[$scope.gIndex].vehicleLocations, $scope.vehicleStatus);
-                
                 $scope.locations03=$scope.filterExpire($scope.locations);
 
               //  console.log($scope.locations03);
@@ -738,7 +740,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			+'<div><b class="_info_caption">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 			+'<div><b class="_info_caption">'+vamoservice.statusTime(data).tempcaption+'</span></b> - '+vamoservice.statusTime(data).temptime+'</div>'
 			+'<div><b class="_info_caption">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
-			+'<div><b class="_info_caption">Last Seen</b> - <span>'+$filter('date')(data.date, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
+			+'<div><b class="_info_caption">Loc Time</b> - <span>'+$filter('date')(data.date, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
 			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp; <a href="#" ng-click="addPoi('+lat+','+lng+')">Save Site</a>'
 		 // +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
 			+'</div>';
@@ -1685,6 +1687,7 @@ function locat_address(locs) {
 	// if($scope.zohoReports==undefined){
 		setId();
 		// $("#homeImg").show();
+		$scope.tabView=1;
 		$("#listImg").hide();
 		$("#homeImg").show();
 		$("#fullscreen").show();
@@ -1700,6 +1703,9 @@ function locat_address(locs) {
 	function homeMap ()
 	{
 		setId();
+          
+        $scope.tabView=0;
+
 		// $("#listImg").show();
 		$("#homeImg").hide();
 		$("#listImg").show();
@@ -1964,7 +1970,16 @@ function locat_address(locs) {
 // });
 
 $scope.starSplit 	=	function(val){
-	return val.split('<br>');
+
+ var splitVal; 	
+
+	if(val!=undefined){
+	splitVal=val.split('<br>');
+    }else{
+    splitVal='No Address';
+    }
+
+ return splitVal;  
 }
 
 }])
@@ -1994,6 +2009,7 @@ $scope.starSplit 	=	function(val){
 						scope.selected 		= undefined;
 					//	if(scope.zohoReports==undefined){
 						scope.locations02	= data;
+						scope.apiKeys       = scope.locations02[scope.gIndex].apiKey;
                         scope.locations04   = scope.vehiSidebar(data);
 						scope.locations 	= scope.statusFilter(scope.locations02[scope.gIndex].vehicleLocations, scope.vehicleStatus);
 						scope.locations03   = scope.filterExpire(scope.locations);
