@@ -23,7 +23,7 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
   $scope.ltrs       =   [];
   $scope.fuelDate   =   [];
   $scope.tabactive  = true;
-  $scope.interval   = getParameterByName('interval')?getParameterByName('interval'):10;
+  $scope.interval   = getParameterByName('interval')?getParameterByName('interval'):1;
   $scope.sort = sortByDate('date');
      
      // $scope.itemsPerPage = 5;
