@@ -23,7 +23,7 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
   $scope.ltrs       =   [];
   $scope.fuelDate   =   [];
   $scope.tabactive  = true;
-  $scope.interval   = getParameterByName('interval')?getParameterByName('interval'):1;
+  $scope.interval   = getParameterByName('interval')?getParameterByName('interval'):"";
   $scope.sort = sortByDate('date');
      
      // $scope.itemsPerPage = 5;
@@ -64,9 +64,21 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
       var date = new Date(date);
       return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };
-    $scope.trimColon = function(textVal){
-    return textVal.split(":")[0].trim();
-  }
+
+  $scope.trimColon = function(textVal){
+
+    var splitVal =[];
+    
+    if(textVal!=undefined){
+    
+       splitVal = textVal.split(/[:]+/);
+  
+      }else{
+       splitVal[0]='No Value';
+    }
+    return splitVal[0];
+   }
+
     function formatAMPM(date) {
         var date = new Date(date);
       var hours = date.getHours();
