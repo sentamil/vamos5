@@ -4,7 +4,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	// console.log('  inside the js file  ')
 
 	$scope.url 				= 	'http://'+globalIP+context+'/public//getVehicleLocations';
-	$scope.gIndex 			=	0;
+	$scope.gIndex 			=	 0;
 	$scope.alertData 		=	'time';
 	// $scope.hrs    = 1;
 	// $scope.kms 	  = 10;
@@ -17,7 +17,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	//     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	// }
 
-	var tabValue			=	getParameterByName('tab');
+	var tabValue  =	 getParameterByName('tab');
 
 
 	// console.log(' value in tabValue '+$scope.tabValue);
@@ -342,7 +342,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 			$("#eventReport").hide(1000);
     		$("#fill").show(1000);
 		} else{
-			distanceTimeUrl = 'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
+			distanceTimeUrl     =   'http://'+globalIP+context+'/public/getDistanceTimeFuelReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+$scope.fromdate+'&fromTime='+convert_to_24h($scope.fromtime)+'&toDate='+$scope.todate+'&toTime='+convert_to_24h($scope.totime)+'&distanceEnable='+stoppage+'&timeEnable='+idleEvent+'&intervalTime='+hrs+'&distance='+kms+'&fromDateUTC='+utcFormat($scope.fromdate,convert_to_24h($scope.fromtime))+'&toDateUTC='+utcFormat($scope.todate,convert_to_24h($scope.totime));
 			serviceCall(distanceTimeUrl);
 		}
 	}
@@ -432,6 +432,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
     	var tod 			=   document.getElementById ("dateTo").value;
     	var tot 			=   document.getElementById ("timeTo").value;
     	$scope.report 		=	document.getElementById	("fuelValue").value
+
     	var kms 			=   document.getElementsByClassName("kms")[0].value;
     	var hrs 			=   document.getElementsByClassName("hrs")[0].value;
     	if((checkXssProtection(fromd) == true) && (checkXssProtection(fromt) == true) && (checkXssProtection(tod) == true) && (checkXssProtection(tot) == true)){
@@ -443,9 +444,20 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	    		$("#eventReport").show(1000);
 	    		
 	    	}
-	    	else if($scope.report == "fill")
+	    	else if($scope.report == "fill" || $scope.report == "drops")
 	    	{
-	    		var distanceUrl 	= 	'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&fuelDrop='+drop+'&fuelFill='+fill+'&fromDateUTC='+utcFormat(fromd,convert_to_24h(fromt))+'&toDateUTC='+utcFormat(tod,convert_to_24h(tot));
+               var repFill,repDrop;
+
+                if($scope.report=="fill"){
+                    repFill=true;
+                    repDrop=false;  
+                }
+                else if($scope.report=="drops"){
+                    repFill=false;
+                    repDrop=true; 
+                }
+
+	    		var distanceUrl = 'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&fuelDrop='+repDrop+'&fuelFill='+repFill+'&fromDateUTC='+utcFormat(fromd,convert_to_24h(fromt))+'&toDateUTC='+utcFormat(tod,convert_to_24h(tot));
 	    		serviceCall(distanceUrl);
 	    		$("#eventReport").hide(1000);
 	    		$("#fill").show(1000);
