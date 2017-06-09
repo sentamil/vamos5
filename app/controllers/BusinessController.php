@@ -646,9 +646,10 @@ $dbtemp=0;
 for($i =1;$i<=$numberofdevice;$i++)
 {
 	$deviceid = Input::get ( 'deviceid'.$i);
-	$vehicleId=Input::get ( 'vehicleId'.$i);
+	$vehicleId1 = Input::get ( 'vehicleId'.$i);
+	$vehicleId=str_replace('.', '-', $vehicleId1);
 	
-	$vehicleId=!empty($vehicleId) ? $vehicleId : 'gpsvts_'.substr($deviceid, -5);
+	$vehicleId=!empty($vehicleId) ? $vehicleId : 'GPSVTS_'.substr($deviceid, -5);
 	//isset($vehicleRefData['shortName'])?$vehicleRefData['shortName']:'nill';
 	log::info( Input::get('deviceidtype50').'--------number of  name::----------'.$i);
 	$deviceid=str_replace(' ', '', $deviceid);

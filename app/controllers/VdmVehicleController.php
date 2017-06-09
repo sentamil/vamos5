@@ -1837,7 +1837,8 @@ public function migrationUpdate() {
     if (! Auth::check ()) {
         return Redirect::to ( 'login' );
     }
-    $vehicleId = Input::get ( 'vehicleId' );
+    $vehicleId1 = Input::get ( 'vehicleId' );
+	$vehicleId=str_replace('.', '-', $vehicleId1);
     $deviceId = Input::get ( 'deviceId' );
     $vehicleId =preg_replace('/\s+/', '', $vehicleId);
     $deviceId =preg_replace('/\s+/', '', $deviceId);
