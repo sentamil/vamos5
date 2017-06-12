@@ -618,7 +618,7 @@ $scope._addDetails  = function(){
       angular.forEach(data.studentDetails, function(value, key){
 
         if((value && value != '') && (parseInt(value['BusStopId']) >= 0))
-          $scope.stopList.push({'stop' :value['BusStopName'], 'poiId' :value['BusStopId']})
+          $scope.stopList.push({'stop' :value['BusStopId']+', '+value['BusStopName'], 'poiId' :value['BusStopId']});
 
       });
 
