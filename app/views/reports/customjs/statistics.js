@@ -467,16 +467,18 @@ function donutLoad(data) {
 
 function chartFuel(data){
 
-    $scope.chartVehic  =	 [];
+  $scope.chartVehic  =	 [];
 	$scope.chartDist   =	 [];
 	$scope.chartFuels  =	 [];
 	
 	var distVal=0;
 	var fuelVal=0;
-    var preVehiVal="";
-    var curVehiVal="";
+  var preVehiVal="";
+  var curVehiVal="";
+  var elseVal=0;
 
-	if(data != '')
+
+	if(data)
 	{
 		angular.forEach(data, function(val, key){
 
@@ -501,7 +503,7 @@ function chartFuel(data){
                //preVehiVal=val.vehicleId.toString();
                  preVehiVal=curVehiVal;
              }else{
-
+               
             	$scope.chartDist.push(parseInt(distVal));
             	$scope.chartFuels.push(parseInt(fuelVal));
             	$scope.chartVehic.push(preVehiVal);
@@ -511,13 +513,21 @@ function chartFuel(data){
                 fuelVal=0;
               //preVehiVal=val.vehicleId.toString();
             	preVehiVal=curVehiVal;
+              elseVal=1;
             }
          }
-	})	
+      });
+
+       if(elseVal==0){
+
+          $scope.chartDist.push(parseInt(distVal));
+          $scope.chartFuels.push(parseInt(fuelVal));
+          $scope.chartVehic.push(preVehiVal);
+       }
 
 	/*	console.log($scope.chartVehic);
         console.log($scope.chartDist);  
-		console.log($scope.chartFuels); */
+		      console.log($scope.chartFuels); */
     }
 
 
