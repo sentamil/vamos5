@@ -1,43 +1,41 @@
-//alert(globalIP);
+// alert(globalIP);
 var getIP = globalIP;
-//var app = angular.module('hist',['ui.bootstrap']);
+// var app = angular.module('hist',['ui.bootstrap']);
 
 app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($scope, $http, $filter, GLOBAL){
-  //$scope.getLocation1(13.0401945,80.2153889);
-
-
+  
+  // $scope.getLocation1(13.0401945,80.2153889);
   // $location.path('http://localhost/vamo/public/track?maps=replay&vehicleId=MSS-TN52-W-9969&gid=MSS-BUS:SMP').replace().reload(false)
 
-  $scope.overallEnable  = true;
-  $scope.oaddress       = [];
-  $scope.maddress       = [];
-  $scope.maddress1      = [];
-  $scope.saddress       = [];
-  $scope.addressIdle    = [];
-  $scope.addressEvent   = [];
+  $scope.overallEnable    =   true;
+  $scope.oaddress         =   [];
+  $scope.maddress         =   [];
+  $scope.maddress1        =   [];
+  $scope.saddress         =   [];
+  $scope.addressIdle      =   [];
+  $scope.addressEvent     =   [];
   $scope.saddressStop     =   [];
   $scope.eventReportData  =   [];
   $scope.addressLoad      =   [];
   $scope.addressFuel      =   [];
-  //$scope.location       = [];
-  $scope.ltrs       =   [];
-  $scope.fuelDate   =   [];
-  $scope.tabactive  = true;
-  $scope.interval   = getParameterByName('interval')?getParameterByName('interval'):"";
-  $scope.sort = sortByDate('date');
+//$scope.location         =   [];
+  $scope.ltrs             =   [];
+  $scope.fuelDate         =   [];
+  $scope.tabactive        =   true;
+  $scope.interval         =   getParameterByName('interval')?getParameterByName('interval'):"";
+  $scope.sort             =   sortByDate('date');
      
-     // $scope.itemsPerPage = 5;
-     // $scope.currentPage = 0;
-     // $scope.items = [];
+// $scope.itemsPerPage =  5;
+// $scope.currentPage  =  0;
+// $scope.items        = [];
 
-     
   $scope.filteredTodos = [];
-  $scope.itemsPerPage = 10;
-  $scope.currentPage = 1;
+  $scope.itemsPerPage  = 10;
+  $scope.currentPage   =  1;
      
-  /*$scope.gap = 5;
+ /* $scope.gap = 5;
     $scope.itemsPerPage = 5;
-    $scope.currentPage = 0;*/
+    $scope.currentPage  = 0; */
   
   $scope.time_stop='All';
   $scope.time_park='All';
@@ -45,20 +43,64 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
 
    // console.log($scope.timeChange);
 
-    $scope.downloadid = 'movementreport';
-    var prodId      =   getParameterByName('vid');
-    var tabId       =   getParameterByName('tn');
-    $scope.tab_val    = getParameterByName('tn');
-    $scope.vgroup     =   getParameterByName('vg');
-    $scope.dvgroup    =   getParameterByName('dvg');
-    $scope.vvid     = getParameterByName('vvid');
-    $scope.repId    =   getParameterByName('rid');
-    $scope.fd     = getParameterByName('fd');
-    $scope.ft       =   getParameterByName('ft');
-    $scope.td     = getParameterByName('td');
-    $scope.tt     =   getParameterByName('tt');
+
+   function sessionValue(vid, gname){
+    sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
+    $("#testLoad").load("../public/menu");
+  }
+
+  $("#testLoad").load("../public/menu");
+  // $scope.url = 'http://'+getIP+context+'/public//getVehicleLocations';
+  $scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
+
+  $scope.$watch("url", function (val) {
+    $http.get($scope.url).success(function(data){
+      $scope.locations  =   data;
+      $scope.vehiname = getParameterByName('vid');
+        // $scope.uiGroup   = $scope.trimColon(getParameterByName('vg'));
+        $scope.gName  = getParameterByName('vg');
+        angular.forEach(data, function(val, key){
+          if($scope.gName == val.group){
+            $scope.gIndex = val.rowId;
+            angular.forEach(data[$scope.gIndex].vehicleLocations, function(value, keys){
+              if($scope.vehiname == value.vehicleId)
+              $scope.shortNam = value.shortName;
+            })
+            
+          }
+            
+        })
+        
+        sessionValue($scope.vehiname, $scope.gName);
+
+      // if(data.length){
+      //  $scope.vehiname   = data[0].vehicleLocations[0].vehicleId;
+      //  $scope.gName    =   data[0].group; 
+      //  // sessionValue($scope.vehiname, $scope.gName);
+      //  angular.forEach(data, function(value, key) {
+      //      if(value.totalVehicles) {
+      //        $scope.data1    = data[key];
+      //      }
+      //  });   
+      // }
+    }).error(function(){ /*alert('error'); */ });
+  });
+
+
+    $scope.downloadid   =  'movementreport';
+    var prodId          =   getParameterByName('vid');
+    var tabId           =   getParameterByName('tn');
+    $scope.tab_val      =   getParameterByName('tn');
+    $scope.vgroup       =   getParameterByName('vg');
+    $scope.dvgroup      =   getParameterByName('dvg');
+    $scope.vvid         =   getParameterByName('vvid');
+    $scope.repId        =   getParameterByName('rid');
+    $scope.fd           =   getParameterByName('fd');
+    $scope.ft           =   getParameterByName('ft');
+    $scope.td           =   getParameterByName('td');
+    $scope.tt           =   getParameterByName('tt');
     var ignitionValue   =   [];
-    $scope.todayhistory = [];
+    $scope.todayhistory =   [];
     
     $scope.getTodayDate  =  function(date) {
       var date = new Date(date);
@@ -427,6 +469,9 @@ function eventButton(eventdate)
           ignitionValue          =  ($filter('filter')(data, {'ignitionStatus': "!undefined"}))
           $scope.ignitionData    =  _pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
           $scope.acReport        =  _pairFilter(data, 'yes', 'no', 'vehicleBusy');
+
+          console.log($scope.acReport);
+
           $scope.stopReport      =  filter(data,'stoppage');
           // ignitionFilter(ignitionValue);
           // acFilter(data)
@@ -1055,49 +1100,7 @@ function eventButton(eventdate)
     };
   
 
-    function sessionValue(vid, gname){
-    sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
-    $("#testLoad").load("../public/menu");
-  }
-
-  $("#testLoad").load("../public/menu");
-  // $scope.url = 'http://'+getIP+context+'/public//getVehicleLocations';
-  $scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
-
-  $scope.$watch("url", function (val) {
-    $http.get($scope.url).success(function(data){
-      $scope.locations  =   data;
-      $scope.vehiname = getParameterByName('vid');
-        // $scope.uiGroup   = $scope.trimColon(getParameterByName('vg'));
-        $scope.gName  = getParameterByName('vg');
-        angular.forEach(data, function(val, key){
-          if($scope.gName == val.group){
-            $scope.gIndex = val.rowId;
-            angular.forEach(data[$scope.gIndex].vehicleLocations, function(value, keys){
-              if($scope.vehiname == value.vehicleId)
-              $scope.shortNam = value.shortName;
-            })
-            
-          }
-            
-        })
-        
-        sessionValue($scope.vehiname, $scope.gName)
-
-
-      
-      // if(data.length){
-      //  $scope.vehiname   = data[0].vehicleLocations[0].vehicleId;
-      //  $scope.gName    =   data[0].group; 
-      //  // sessionValue($scope.vehiname, $scope.gName);
-      //  angular.forEach(data, function(value, key) {
-      //      if(value.totalVehicles) {
-      //        $scope.data1    = data[key];
-      //      }
-      //  });   
-      // }
-    }).error(function(){ /*alert('error'); */ });
-  });
+ 
   
   $scope.genericFunction = function(vehid, index){
     sessionValue(vehid, $scope.gName);
