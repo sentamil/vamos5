@@ -10,6 +10,7 @@
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/jVanilla.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker_new.css" rel="stylesheet" type="text/css">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
@@ -185,11 +186,20 @@
           </div>
           <div class="panel-body" ng-hide="switchingVar">
           <h6 style="color: red">{{error}}</h6>
-          <div class="col-md-3">
+         
+        <!--  <div class="col-md-3">
             <select ng-options="vehi for vehi in vehiStopList" ng-model="selectRouteName" class="form-control" ng-change="_addDetails()">
               <option style="display:none" value="">Select Vehicle</option>
             </select>
+          </div> -->
+          
+           <div>
+               <select id="routeDataList" ng-model="selectRouteName" ng-change="_addDetails()" style="width:300px;">
+                  <option style="display:none" value="" disabled>Change Route</option>
+               </select>
+              <span style="padding-left:20%;">Route:  {{selectRouteName}}</span>
           </div>
+
           <!-- <div class="col-md-3">
              <input type="text" class="form-control" placeholder="Phone Number Search..." >
              <div style="font-size: 9px; text-align: center;">mob num1, mob num2,...,mob num n</div>
@@ -288,6 +298,10 @@
 
 <script src="assets/js/static.js"></script>
 <script src="assets/js/jquery-1.11.0.js"></script>
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script> 

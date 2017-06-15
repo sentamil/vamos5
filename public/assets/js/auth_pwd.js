@@ -653,15 +653,19 @@ function getRouteName (){
             angular.forEach(value, function(val, key){
                 stopList.push(val);
               })
-            
-
-          });
+           });
           $scope.vehiStopList   = stopList;
+          
+          var countryList = $scope.vehiStopList;
+                
+              $("#routeDataList").select2({
+                  data: countryList,
+              });
+
           if($scope.vehiStopList.length >0){
             $scope.selectRouteName = $scope.vehiStopList[0];
             $scope._addDetails();
-            // showStop();
-
+            //showStop();
           }
         }
       });
