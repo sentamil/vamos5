@@ -981,7 +981,8 @@ public function update($id) {
         return Redirect::to ( 'vdmVehicles/edit' )->withErrors ( $validator );
     } else {
 // store
-        $shortName = Input::get ( 'shortName' );
+        $shortName1 = Input::get ( 'shortName' );
+		$shortName = strtoupper($shortName1);
         $regNo = Input::get ( 'regNo' );
         $vehicleMake = Input::get ( 'vehicleMake' );
         $vehicleType = Input::get ( 'vehicleType' );
@@ -1838,8 +1839,9 @@ public function migrationUpdate() {
         return Redirect::to ( 'login' );
     }
     $vehicleId1 = Input::get ( 'vehicleId' );
-	$vehicleId=str_replace('.', '-', $vehicleId1);
-    $deviceId = Input::get ( 'deviceId' );
+	$vehicleId2 = str_replace('.', '-', $vehicleId1);
+    $vehicleId = strtoupper($vehicleId2);
+	$deviceId = Input::get ( 'deviceId' );
     $vehicleId =preg_replace('/\s+/', '', $vehicleId);
     $deviceId =preg_replace('/\s+/', '', $deviceId);
 

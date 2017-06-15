@@ -483,7 +483,8 @@ public function adddevice() {
 			$redis = Redis::connection ();
 			$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 			$ownerShip      = Input::get('dealerId');
-			$userId      = Input::get('userId');
+			$userId1      = Input::get('userId');
+			$userId = strtoupper($userId1);
 			$mobileNoUser      = Input::get('mobileNoUser');
 			$emailUser      = Input::get('emailUser');
 			$password      = Input::get('password');
@@ -647,7 +648,8 @@ for($i =1;$i<=$numberofdevice;$i++)
 {
 	$deviceid = Input::get ( 'deviceid'.$i);
 	$vehicleId1 = Input::get ( 'vehicleId'.$i);
-	$vehicleId=str_replace('.', '-', $vehicleId1);
+	$vehicleId2 = str_replace('.', '-', $vehicleId1);
+	$vehicleId = strtoupper($vehicleId2);
 	
 	$vehicleId=!empty($vehicleId) ? $vehicleId : 'GPSVTS_'.substr($deviceid, -5);
 	//isset($vehicleRefData['shortName'])?$vehicleRefData['shortName']:'nill';
@@ -657,7 +659,8 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$deviceidtype=Input::get('deviceidtype'.$i);
 	
 	$deviceModel=$deviceidtype;
-	$shortName=Input::get ( 'shortName'.$i);
+	$shortName1=Input::get ( 'shortName'.$i);
+	$shortName = strtoupper($shortName1);
 	$shortName=!empty($shortName) ? $shortName : $vehicleId;				
 	$regNo=Input::get ( 'regNo'.$i);	
 	$regNo=!empty($regNo) ? $regNo : 'XXXX';
