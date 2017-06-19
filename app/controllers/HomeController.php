@@ -301,6 +301,10 @@ class HomeController extends BaseController {
 
              if(isset($detailsDealer['mapKey'])==1){
 			   $apiKey=$detailsDealer['mapKey'];
+
+                 $assetValue[] = $apiKey;
+		         $assetValue[] = $username;
+
 		      }
 		     else{
 
@@ -320,10 +324,6 @@ class HomeController extends BaseController {
 		         $assetValue[] = $apiKey;
 		         $assetValue[] = $username;
 		    }
-
-		    $assetValue[] = $apiKey;
-		    $assetValue[] = $username;
-
         }else{
 
          log::info('-------------- inside franchise ------------------');
