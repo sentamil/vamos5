@@ -2155,10 +2155,10 @@ if($scope.markerstart){
                   }
                     $scope.markerhead.setPosition($scope.path[lineCount+1]);
 
-                    console.log('-----------------------------------')
-                       console.log($scope.path[lineCount]); 
-                       console.log($scope.path[lineCount+1]);
-                    console.log('-----------------------------------');
+                    console.log('==================================================================')
+                       console.log('-----------1------------'+$scope.path[lineCount].lat()+'........'+$scope.path[lineCount].lng()); 
+                       console.log('-----------2------------'+$scope.path[lineCount+1].lat()+'........'+$scope.path[lineCount+1].lng());
+                    console.log('==================================================================');
 
 			    // for(var i=0;i<$scope.path.length-1;i++){
    					$scope.polyline1[lineCount] = new google.maps.Polyline({
