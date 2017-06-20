@@ -2111,7 +2111,7 @@ if($scope.markerstart){
 	function myTimer() {
 
 		if($scope.path.length == lineCount+1){
-			  		myStopFunction()
+			  		myStopFunction();
 				}
 				
 		if($scope.path.length != lineCount+1){
@@ -2154,6 +2154,11 @@ if($scope.markerstart){
 			         $scope.markerhead.setMap($scope.map);
                   }
                     $scope.markerhead.setPosition($scope.path[lineCount+1]);
+
+                    console.log('-----------------------------------')
+                       console.log($scope.path[lineCount]); 
+                       console.log($scope.path[lineCount+1]);
+                    console.log('-----------------------------------');
 
 			    // for(var i=0;i<$scope.path.length-1;i++){
    					$scope.polyline1[lineCount] = new google.maps.Polyline({
