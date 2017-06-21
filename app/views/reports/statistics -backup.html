@@ -42,7 +42,7 @@ background-color: #ffffff;
 </div>
 <body ng-app="mapApp" style="overflow-x:auto;">
     <div id="wrapper" ng-controller="mainCtrl" class="ng-cloak"> 
-        <div id="sidebar-wrapper" style="width: 180px;">
+        <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
                 <li class="track"><a href="../public/track"><div></div><label>Track</label></a></li>
@@ -53,7 +53,7 @@ background-color: #ffffff;
                 <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
-            <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;margin-left:0;padding-left:0;" ng-init="vehicleStatus='ALL'">
+            <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;" ng-init="vehicleStatus='ALL'">
                 <li style="padding-left:25px;">
                     <div class="right-inner-addon" align="center"> 
                     <i class="fa fa-search"></i>
@@ -183,9 +183,6 @@ background-color: #ffffff;
                                         <td width="7%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo End</td>
                                        
                                         <td width="7%" class="id" custom-sort order="'totalRunningTime'" sort="sort" style="text-align:center;">Moving (h:m:s)</td>
-
-                                        <td width="7%" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Parked (h:m:s)</td>
-                                        
                                         <td width="7%" class="id" custom-sort order="'totalIdleTime'" sort="sort" style="text-align:center;">Idle (h:m:s)</td>
                                        
                                     </tr>
@@ -198,11 +195,10 @@ background-color: #ffffff;
                                         <td>{{user.odoOpeningReading}}</td>
                                         <td>{{user.odoClosingReading}}</td>
                                         <td>{{msToTime(user.totalRunningTime)}}</td>
-                                        <td>{{msToTime(user.totalParkedTime)}}</td>
                                         <td>{{msToTime(user.totalIdleTime)}}</td>
                                        </tr>
                                      <tr ng-if="execGroupReportData=='' || execGroupReportData==null || execGroupReportData.length==0" align="center">
-                                        <td colspan="10" class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                        <td colspan="9" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                      </tr>
                                 </table>
                             </div>
