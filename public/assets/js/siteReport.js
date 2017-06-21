@@ -203,7 +203,10 @@ function plottinGraphs(valueGraph, timeData){
 	
 	function getSite(){
 		var data;
-		var urlSite = GLOBAL.DOMAIN_NAME+'/viewSite';
+		var urlSite = GLOBAL.DOMAIN_NAME+'/viewSite';  
+
+        console.log('urlSite called....');
+
 		$.ajax({
 	    	url:urlSite, 
 	    	async: false,   
@@ -211,7 +214,10 @@ function plottinGraphs(valueGraph, timeData){
 	      		data = response;
 	      	}
 		})
-		return data;
+
+		console.log(data);
+
+	 return data;
 	}
 	
 	function urlReport(){
@@ -224,7 +230,9 @@ function plottinGraphs(valueGraph, timeData){
 				urlWebservice 	= 	$scope.g_Url+"/getTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval;
 				break;
 			case 'tripkms' :
-				urlWebservice 	= 	$scope.g_Url+"/getTripSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				urlWebservice 	    = $scope.g_Url+"/getTripSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				$scope.tripFromDate = $scope.uiDate.fromdate+' '+convert_to_24h($scope.uiDate.fromtime);
+                $scope.tripToDate   = $scope.uiDate.todate+' '+convert_to_24h($scope.uiDate.totime);
 				break;
 			case 'load' :           
 				urlWebservice 	=	$scope.g_Url+"/getLoadReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
@@ -531,6 +539,9 @@ function plottinGraphs(valueGraph, timeData){
 		startLoading();
 		$scope.mSiteError   =   0;
 		$scope.vehiname		= vehid;
+           
+        $scope.vehTripName = vehid;
+
 		sessionValue($scope.vehiname, $scope.gName)
 		angular.forEach($scope.vehicle_list[$scope.gIndex].vehicleLocations, function(val, key){
 			if(vehid == val.vehicleId)
