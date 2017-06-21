@@ -417,16 +417,18 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
                     //Session::put('email',$mailId);
         	log::info('  before sending mail ');
         	log::info(array_values($mailId));
+		try {
         	if(sizeof($mailId) > 0)
 	        	Mail::queue('emails.group', array('username'=>$username, 'groupName'=>$id, 'oldVehi'=>$oldVehi, 'newVehi'=>$updateVehi), function($message) use ($mailId, $id)
 	        	{
 	                //Log::info("Inside email :" . Session::get ( 'email' ));
 	        		$message->to($mailId)->subject('Group Updated -' . $id);
 	        	});
-
+        } catch (Exception $e) {
 
         	Session::flash('message', 'Successfully updated ' . $id . '!');
         	return Redirect::to('vdmGroups');
+		}
         }else {
 
         	log::info(' vehicles are not available  !!!!');

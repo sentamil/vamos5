@@ -240,7 +240,7 @@
          $( "#calendar" ).datepicker({ dateFormat: 'yy-mm-dd' });
     }); 
  </script>
-{{ Form::text('vehicleExpiry', $refData['vehicleExpiry'], array( 'id' => 'calendar', 'class' => 'form-control')) }}
+{{ Form::text('vehicleExpiry', $refData['vehicleExpiry'], array( 'id' => 'calendar', 'class' => 'form-control', 'readonly' => 'true')) }}
 <!--<input type="text" name="vehicleExpiry" id="calendar" />-->
 </div>
 							<br/>
