@@ -535,12 +535,12 @@ function plottinGraphs(valueGraph, timeData){
 	}
 
 
-	$scope.genericFunction 	= function (vehid, index){
+	$scope.genericFunction 	= function (vehid,vName,index){
 		startLoading();
 		$scope.mSiteError   =   0;
 		$scope.vehiname		= vehid;
            
-        $scope.vehTripName = vehid;
+        $scope.vehTripName = vName;
 
 		sessionValue($scope.vehiname, $scope.gName)
 		angular.forEach($scope.vehicle_list[$scope.gIndex].vehicleLocations, function(val, key){

@@ -55,7 +55,7 @@ background-color: #ffffff;
                 </li>
                 <li ng-repeat="location in vehicle_list" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox" ng-class="{active:vehiname ==loc.vehicleId}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
+                    <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox" ng-class="{active:vehiname ==loc.vehicleId}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId,loc.shortName,$index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
                     </ul>
                 </li>
             </ul>
@@ -142,11 +142,12 @@ background-color: #ffffff;
                                     <thead style="font-weight: bold;">
                                         
                                         <tr class="active">
+                                
                                             <td colspan="2"><div class="col-md-12">Start Time</div></td>
-                <td colspan="2" ><div class="col-md-12">{{siteData.fromTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div><div class="col-md-12" ng-if="siteData.historyConsilated==null || siteData.historyConsilated.length== 0">{{tripFromDate}}</div></td>
+            <td colspan="2"><div class="col-md-12" ng-show="siteData.historyConsilated.length != 0">{{siteData.fromTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div><div class="col-md-12" ng-show=" siteData.historyConsilated.length== 0">{{tripFromDate}}</div><div class="col-md-12" ng-show=" siteData.historyConsilated == null ">{{tripFromDate}}</div></td>
                                        
                                             <td colspan="2"><div class="col-md-12">End Time</div></td>
-            <td colspan="2"><div class="col-md-12">{{siteData.toTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div><div class="col-md-12" ng-if="siteData.historyConsilated==null || siteData.historyConsilated.length== 0">{{tripToDate}}</div></td>
+            <td colspan="2"><div class="col-md-12" ng-show="siteData.historyConsilated.length != 0">{{siteData.toTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div><div class="col-md-12" ng-show=" siteData.historyConsilated.length== 0">{{tripToDate}}</div><div class="col-md-12" ng-show=" siteData.historyConsilated == null ">{{tripToDate}}</div></td>
                                            
                                             <!-- <td colspan="1" rowspan="3"><div class="col-md-12">Last Sighted Location</div></td> -->
                                             <td colspan="4" rowspan="3">
@@ -157,7 +158,7 @@ background-color: #ffffff;
                                         </tr>
                                         <tr class="success">
                                             <td colspan="2"><div class="col-md-12">Vehicle Name</div></td>
-                    <td colspan="2"><div class="col-md-12">{{siteData.vehicleName}}</div><div class="col-md-12" ng-if="siteData.historyConsilated==null || siteData.historyConsilated.length== 0">{{vehTripName}}</div></td>
+                    <td colspan="2"><div class="col-md-12" ng-show="siteData.historyConsilated.length != 0 ">{{siteData.vehicleName}}</div><div class="col-md-12" ng-show="siteData.historyConsilated.length == 0">{{vehTripName}}</div><div class="col-md-12" ng-show="siteData.historyConsilated == null">{{vehTripName}}</div></td>
                                             <td colspan="2"><div class="col-md-12">Group Name</div></td>
                                             <td colspan="2"><div class="col-md-12">{{uiGroup}}</div></td>
                                         </tr>
