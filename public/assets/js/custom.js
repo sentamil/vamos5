@@ -1654,7 +1654,10 @@ function locat_address(locs) {
 		angular.forEach($scope.locations03, function(valu, key){
 			
 			// img = ($scope.makerType == 'markerChange')? 'assets/imgs/'+'Car2'+'.png' : vamoservice.iconURL(valu)
-			img = ($scope.makerType == 'markerChange')? 'assets/imgs/'+valu.vehicleType+'.png' : vamoservice.iconURL(valu);
+			// img = ($scope.makerType == 'markerChange')? 'assets/imgs/'+valu.vehicleType+'.png' : vamoservice.iconURL(valu);
+
+			img = ($scope.makerType == 'markerChange')? vamoservice.markerImage(valu) : vamoservice.iconURL(valu);
+
 			if($scope.makerType == 'markerChange')
 				icon = {scaledSize: new google.maps.Size(30, 30),url: img} //scaledSize: new google.maps.Size(25, 25)
 				// icon = {scaledSize: new google.maps.Size(30, 30),url: img} //scaledSize: new google.maps.Size(25, 25) valu.vehicleType
@@ -2351,5 +2354,3 @@ var gaugeOptions = {
             document.body.style.zoom="90%";
         }
     });
-
-
