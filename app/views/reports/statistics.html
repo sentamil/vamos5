@@ -23,11 +23,15 @@
 
 </head>
 <style>
-   /* .box > .loading-img {
-z-index: 1020;
-background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
-}*/
 
+   /* .box > .loading-img {
+      z-index: 1020;
+      background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
+    }*/
+
+ text.highcharts-credits {
+    display: none;
+ }
 
 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
 background-color: #ffffff;
@@ -181,15 +185,13 @@ background-color: #ffffff;
                                         <td width="7%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">OverSpeed Count</td>
                                         <td width="7%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Start</td>
                                         <td width="7%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo End</td>
-                                       
                                         <td width="7%" class="id" custom-sort order="'totalRunningTime'" sort="sort" style="text-align:center;">Moving (h:m:s)</td>
-
                                         <td width="7%" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Parked (h:m:s)</td>
-                                        
+                                        <td width="7%" class="id" custom-sort order="'totalNoDataTime'" sort="sort" style="text-align:center;">No Data (h:m:s)</td>
                                         <td width="7%" class="id" custom-sort order="'totalIdleTime'" sort="sort" style="text-align:center;">Idle (h:m:s)</td>
-                                       
                                     </tr>
-                                    <tr ng-repeat="user in execGroupReportData | orderBy:sort.sortingOrder:sort.reverse | filter:searchboxExe" class="active" style="text-align:center; font-size: 12px">
+
+                                    <tr ng-repeat="user in execGroupReportData | orderBy:natural(sort.sortingOrder):sort.reverse | filter:searchboxExe" class="active" style="text-align:center; font-size: 12px">
                                         <td>{{user.shortName}}</td>
                                         <td>{{user.date}}</td>
                                         <td>{{user.distanceToday}}</td>
@@ -199,6 +201,7 @@ background-color: #ffffff;
                                         <td>{{user.odoClosingReading}}</td>
                                         <td>{{msToTime(user.totalRunningTime)}}</td>
                                         <td>{{msToTime(user.totalParkedTime)}}</td>
+                                        <td>{{msToTime(user.totalNoDataTime)}}</td>
                                         <td>{{msToTime(user.totalIdleTime)}}</td>
                                        </tr>
                                      <tr ng-if="execGroupReportData=='' || execGroupReportData==null || execGroupReportData.length==0" align="center">
@@ -313,8 +316,10 @@ background-color: #ffffff;
                                     <th class="id" custom-sort order="'fuelConsume'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Fuel Consume</th>
                                     <th class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Dist.Covered</th>
                                     <th class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Milage</th>
-                                    </tr></thead>
-                        <tr ng-repeat="data in execFuelData | orderBy:sort.sortingOrder:sort.reverse | filter:searchbox" class="active" style="text-align:center" >
+                                    </tr>
+                                </thead>
+                        
+                        <tr ng-repeat="data in execFuelData | orderBy:natural(sort.sortingOrder):sort.reverse | filter:searchbox" class="active" style="text-align:center" >
                                       
                                         <td>{{data.date | date:'yyyy-MM-dd'}}</td>
                                         <td>{{data.vehicleId}}</td>                                
@@ -442,4 +447,3 @@ background-color: #ffffff;
    
 </body>
 </html>
-
