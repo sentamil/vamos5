@@ -471,9 +471,13 @@ function chartFuel(data){
   $scope.chartDist   =   [];
   $scope.chartFuels  =   [];
   
-  var distVal,fuelVal,elseVal=0;
-  var preVehiVal,curVehiVal="";
-  
+  var distVal=0;
+  var fuelVal=0;
+  var preVehiVal="";
+  var curVehiVal="";
+  var elseVal=0;
+
+
   if(data)
   {
     angular.forEach(data, function(val, key){
@@ -506,6 +510,7 @@ function chartFuel(data){
                 distVal=0;
                 fuelVal=0;
          
+
                 distVal=distVal+val.distanceToday;
                 fuelVal=fuelVal+val.fuelConsume;
 
@@ -518,7 +523,10 @@ function chartFuel(data){
               $scope.chartDist.push(parseInt(distVal));
               $scope.chartFuels.push(parseInt(fuelVal));
               $scope.chartVehic.push(preVehiVal);
+
          }
+
+
       });
 
        if(elseVal==0){
