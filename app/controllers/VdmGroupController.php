@@ -425,10 +425,9 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 	        		$message->to($mailId)->subject('Group Updated -' . $id);
 	        	});
         } catch (Exception $e) {
-
+		}
         	Session::flash('message', 'Successfully updated ' . $id . '!');
         	return Redirect::to('vdmGroups');
-		}
         }else {
 
         	log::info(' vehicles are not available  !!!!');
