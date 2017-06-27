@@ -54,7 +54,7 @@
 								</div>
 
 
-								<!-- <div class="form-group">
+								 <div class="form-group">
 									{{ Form::label('morningTripStartTime', 'Morning Trip Start Time') }}
 									{{ Form::text('morningTripStartTime', $refData['morningTripStartTime'], array('class' => 'form-control')) }}
 								</div>
@@ -62,7 +62,7 @@
 								<div class="form-group">
 									{{ Form::label('eveningTripStartTime', 'Evening Trip Start Time') }}
 									{{ Form::text('eveningTripStartTime',$refData['eveningTripStartTime'], array('class' => 'form-control'))}}            
-								</div> -->
+								</div> 
 								<div class="form-group">
 									{{ Form::label('route', 'Route Name') }}
 									{{ Form::select('routeName',$routeName, $refData['routeName'], array('class' => 'form-control')) }}
@@ -186,6 +186,19 @@
 
 								</div> -->
 								<div class="form-group">
+{{ Form::label('vehicleExpiry', 'Vehicle Expire') }}
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+ <script>   
+    $(function() {
+        // $( "#calendar" ).datepicker();   
+         $( "#calendar" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    }); 
+ </script>
+{{ Form::text('vehicleExpiry', $refData['vehicleExpiry'], array( 'id' => 'calendar', 'class' => 'form-control', 'readonly' => 'true')) }}
+<!--<input type="text" name="vehicleExpiry" id="calendar" />-->
+</div>
+								<div class="form-group">
 									{{ Form::label('altShort', 'Alternate Vehicle Name') }}
 									{{ Form::text('altShortName',$refData['altShortName'], array('class' => 'form-control')) }}          
 
@@ -230,19 +243,7 @@
 								{{ Form::label('maxtem', 'Maximum Temperature') }}
 								{{ Form::number('maxtemp', $refData['maxtemp'],array('class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'-100')) }} 
 							</div>
-<div class="form-group">
-{{ Form::label('vehicleExpiry', 'Vehicle Expire') }}
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
- <script>   
-    $(function() {
-        // $( "#calendar" ).datepicker();   
-         $( "#calendar" ).datepicker({ dateFormat: 'yy-mm-dd' });
-    }); 
- </script>
-{{ Form::text('vehicleExpiry', $refData['vehicleExpiry'], array( 'id' => 'calendar', 'class' => 'form-control', 'readonly' => 'true')) }}
-<!--<input type="text" name="vehicleExpiry" id="calendar" />-->
-</div>
+
 							<br/>
 					
 								<div class="col-md-5" style="top: 30px; position: relative; left: 40%">
