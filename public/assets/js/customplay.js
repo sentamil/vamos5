@@ -1622,39 +1622,7 @@ if($scope.markerstart){
 		if(minutes<10) sMinutes = "0" + sMinutes;
 		return sHours+":"+sMinutes+":00";
 	}
-	
-    var newSelectFromTime = "";
-	var oldSelectFromTime = "";
-	var newSelectToTime   = "";
-	var oldSelectToTime   = "";
-
-/*	var newSelectDateFrom="";
-	var oldSelectDateFrom="";
-	var newSelectDateTo="";
-	var oldSelectDateTo="";  */
-
-	var initValss=0;
-
-
 	$scope.plotting = function(){
-
-	  if(initValss>0){
-        oldSelectFromTime  =  newSelectFromTime;
-        oldSelectToTime    =  newSelectToTime;
-        //oldSelectDateFrom  =  newSelectDateFrom;
-        //oldSelectDateTo    =  newSelectDateTo;
-       }
-
-        newSelectFromTime  =  document.getElementById('timeFrom').value;
-        newSelectToTime    =  document.getElementById('timeTo').value;
-        //newSelectFromTime  =  document.getElementById('dateFrom').value;
-        //newSelectFromTime  =  document.getElementById('dateTo').value;
-
-        initValss++;
-
-        if( (oldSelectFromTime != newSelectFromTime) && (oldSelectToTime != newSelectToTime) ){
-
-        console.log("............ in plotting .............");
 		var fromdate = document.getElementById('dateFrom').value;
 		var todate = document.getElementById('dateTo').value;
 		if((checkXssProtection(fromdate) == true) && (checkXssProtection(todate) == true) && (checkXssProtection(document.getElementById('timeTo').value) == true) && (checkXssProtection(document.getElementById('timeFrom').value) == true)){
@@ -1740,9 +1708,7 @@ if($scope.markerstart){
 		}
 
 		// stopLoading();
-	  }
 	}
-
 	$scope.addMarker= function(pos){
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
 		var labelAnchorpos = new google.maps.Point(12, 37);
@@ -2547,3 +2513,4 @@ if($scope.markerstart){
 
 
 }]);
+
