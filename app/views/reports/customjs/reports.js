@@ -732,9 +732,21 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		$("#testLoad").load("../public/menu");
 	}
 	
-	
+	var newGroupSelectionName="";
+	var oldGroupSelectionName="";
+	var initValss=0;
 	
 	$scope.groupSelection = function(groupname, groupid){
+
+       if(initValss>0){
+        oldGroupSelectionName=newGroupSelectionName;
+       }
+
+        newGroupSelectionName=groupname;
+        initValss++;
+
+      if(oldGroupSelectionName != newGroupSelectionName){
+
 		$scope.groupId 	= 	groupid;
 		$scope.vehigroup = groupname;
 		$scope.url     	= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+$scope.vehigroup;
@@ -744,6 +756,8 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 			$scope.consoldate1();
 		else if($('#tripTab').attr('id')=='tripTab')
 			$scope.consoldateTrip('tripButon');
+
+	   }
 	}
 	
 	
