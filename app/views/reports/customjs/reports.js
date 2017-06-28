@@ -219,7 +219,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		$scope.sort 	= sortByDate(sName);
 		if(val == 'reload' || val == undefined)
 			$scope.siteTab 	= false, $scope.actTab 	= false;
-		promise 		= $interval( function(){ $scope._globalInit();}, 30000);
+		promise  = $interval( function(){ $scope._globalInit();}, 60000);
 	}
 
 	$scope.startTime('shortName', index);
@@ -779,5 +779,3 @@ app.directive("getLocation", function () {
     }
   };
 });
-
-
