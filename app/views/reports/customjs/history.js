@@ -1,4 +1,3 @@
-// alert(globalIP);
 var getIP = globalIP;
 // var app = angular.module('hist',['ui.bootstrap']);
 
@@ -298,6 +297,15 @@ function eventButton(eventdate)
           $scope.fromdate     = $scope.getTodayDate($scope.fromNowTS);
           $scope.todate       = $scope.getTodayDate($scope.toNowTS);
           
+          } else {
+          
+          var curDates        = new Date();   
+          $scope.fromtime     = '12:00 AM';
+       // $scope.totime       = formatAMPM($scope.toNowTS);
+          $scope.totime       = formatAMPM(curDates);
+          $scope.fromdate     = getTodayDatess();
+          $scope.todate       = getTodayDatess();
+
           }
         // $scope.eventCall();
         // $scope.siteCall();
@@ -1430,5 +1438,3 @@ app.directive("getLocation", function () {
     }
   };
 });
-
-
