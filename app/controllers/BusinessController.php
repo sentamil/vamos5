@@ -254,11 +254,12 @@ public function checkvehicle()
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 
 		$vehicleId = Input::get ( 'id');
-
+        $vehicleU = strtoupper($vehicleId);
 	log::info( $fcode.'-------- laravel test ::----------'.$vehicleId);
 		$vehicleIdCheck = $redis->sismember('S_Vehicles_' . $fcode, $vehicleId);
+		$vehicleIdCheck2 = $redis->sismember('S_KeyVehicles', $vehicleU);
 		$error=' ';
-		if($vehicleIdCheck==1) 
+		if($vehicleIdCheck==1 && $vehicleIdCheck2==1) 
 		{
 			$error='Vehicle Id already present '.$vehicleId;
 		}
@@ -269,7 +270,8 @@ public function checkvehicle()
 			);
 		$refDataJson = json_encode ( $refDataArr );
 
-		log::info('changes value '.$vehicleIdCheck);            
+		log::info('changes value '.$vehicleIdCheck);
+        log::info('changes value keyVehi '.$vehicleIdCheck2);		
 		return Response::json($refDataArr);
 	}
 	
@@ -633,6 +635,7 @@ $numberofdevice = Input::get ( 'numberofdevice1' );
 log::info( '--------number of  device::----------'.$numberofdevice);
 $vehicleIdarray=array();
 $deviceidarray=array();
+$KeyVehicles=array();
 if($type=='Sale' && $type1!=='new')
 {
 	$orgId=Input::get ( 'orgId');
@@ -729,9 +732,15 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 		$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
 		$back=$redis->hget($vehicleDeviceMapId, $deviceid);
 		$back = $redis->sismember('S_Vehicles_' . $fcode, $vehicleId);
+		$back1 = $redis->sismember('S_KeyVehicles', $vehicleId);
+		log::info('------keyvehicle---------- '.$back1);
 		if($back==1)
 		{	
 			$vehicleIdarray=array_add($vehicleIdarray,$vehicleId,$vehicleId);
+		}
+		if($back1==1)
+		{	
+			$KeyVehicles=array_add($KeyVehicles,$vehicleId,$vehicleId);
 		}
 		if(Session::get('cur')=='dealer')
 		{					
@@ -741,7 +750,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 		{
 			$tempdev=$redis->hget('H_Pre_Onboard_Admin_'.$fcode,$deviceid);
 		}
-		if($dev==null && $tempdev==null && $back==0)
+		if($dev==null && $tempdev==null && $back==0 && $back1==0)
 		{
 			log::info('------temp---------- ');
 			$count++;
@@ -1118,10 +1127,11 @@ if($type=='Sale' )
 
 		}
 		$error='';
-		if(count($vehicleIdarray)!==0 || count($deviceidarray)!==0)
+		if(count($vehicleIdarray)!==0 || count($deviceidarray)!==0 || count($KeyVehicles)!==0 )
 		{
 			$error2=' ';
 			$error=' ';
+			$error3=' ';
 			if($deviceidarray!==null)
 			{
 				$error=implode(",",$deviceidarray);
@@ -1130,9 +1140,12 @@ if($type=='Sale' )
 			{
 				$error2=implode(",", $vehicleIdarray);
 			}
-			
+			if($KeyVehicles!==null)
+            {
+        	    $error3=implode(",", $KeyVehicles);
+            }
 		
-			$error='These names are already exist  '.$error.' '.$error2;
+			$error='These names are already exist  '.$error.' '.$error2.' '.$error3;
 		}
 		else
 		{
