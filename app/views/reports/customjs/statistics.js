@@ -274,6 +274,7 @@ $scope.groupSelection   = function(groupName, groupId) {
 
    $scope.showMonTable=false;
    vehicleSelected    = '';
+   $scope.donut       = 0;
 
    $scope.viewGroup.group   =   groupName;
    var groupUrl       =   GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupName;
@@ -717,6 +718,7 @@ function serviceCall(){
         if(vehicleSelected){
           //$scope.donut  =   false;
           //$scope.donut_new=   false;
+          $scope.donut  = 1;
           $scope.bar    = false;
           $('#singleDiv').show(500);
           $scope.execGroupReportData  = ($filter('filter')(responseGroup.execReportData, {'vehicleId':vehicleSelected}));
