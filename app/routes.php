@@ -923,6 +923,7 @@ Route::post('vdmVehicles/moveDealer', array('uses' => 'VdmVehicleController@move
 Route::get('vdmVehicles/index1', array('uses' => 'VdmVehicleController@index1'));
  
 Route::get('vdmVehicles/migration/{param1}', array('uses' => 'VdmVehicleController@migration'));
+Route::get('vdmVehicles/rename/{param}', array('uses' => 'VdmVehicleController@rename'));
 Route::post('vdmVehicles/findDealerList', array('uses' => 'VdmVehicleController@findDealerList'));
  
 Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleController@stops'));
@@ -942,6 +943,7 @@ Route::get('vdmVehicles/removeStop1/{param}/{param1}', array('uses' => 'VdmVehic
 Route::post('vdmVehicles/generate', array('uses' => 'VdmVehicleController@generate'));
  
 Route::post('vdmVehicles/migrationUpdate', array('uses' => 'VdmVehicleController@migrationUpdate'));
+Route::post('vdmVehicles/renameUpdate', array('uses' => 'VdmVehicleController@renameUpdate'));
  
  
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));

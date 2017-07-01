@@ -1824,6 +1824,298 @@ return Redirect::to('Business');
 }
 
 
+public function renameUpdate() {
+    log::info('-----------inside renameUpdate---------');
+    if (! Auth::check ()) {
+        return Redirect::to ( 'login' );
+    }
+$current = Carbon::now();
+        $rajeev=$current->format('Y-m-d');
+  log::info($rajeev);
+  $tomorrow = Carbon::now()->addDay();
+  log::info($tomorrow);
+
+    $vehicleId1 = Input::get ( 'vehicleId' );
+    $vehicleId2=str_replace('.', '-', $vehicleId1);
+    $vehicleId = strtoupper($vehicleId2);
+    $deviceId = Input::get ( 'deviceId' );
+    $vehicleId =preg_replace('/\s+/', '', $vehicleId);
+    $deviceId =preg_replace('/\s+/', '', $deviceId);
+
+    $vehicleIdOld= Input::get ( 'vehicleIdOld' );
+    $deviceIdOld = Input::get ( 'deviceIdOld' );
+     $expiredPeriodOld = Input::get ( 'expiredPeriodOld' );
+    
+    $username = Auth::user ()->username; log::info('ram...............'.$username);
+    $redis = Redis::connection ();
+    $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+///get orgId
+  $detailsR = $redis->hget ( 'H_RefData_' . $fcode, $vehicleIdOld );
+  $refDataFromDBR = json_decode ( $detailsR, true );
+  $orgId =isset($refDataFromDBR['orgId'])?$refDataFromDBR['orgId']:'default';
+  Log::info(' orgIdOK = ' . $orgId);
+//
+///ram vehicleIdCheck
+    $vehicleIdcheck=$redis->sismember( 'S_Vehicles_' . $fcode, $vehicleId); log::info('reamaa.....'.$vehicleIdcheck);
+     if($vehicleIdcheck==1)
+     {
+    Session::flash ( 'message', 'Vehicle Id Already Present ' .'!' );
+    log::info('reamaa.....1'.$vehicleIdcheck);
+    $deviceId= $deviceIdOld;
+    $vehicleId= $vehicleIdOld;
+    return View::make ( 'vdm.vehicles.rename', array ('vehicleId' => $vehicleId ) )->with('deviceId',$deviceIdOld)->with('expiredPeriod',$expiredPeriodOld);
+     } else 
+     {
+       log::info('krish.....0'.$vehicleIdcheck);
+        $rget=$redis->hget ( 'H_RefData_' . $fcode, $vehicleIdOld );
+        $redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
+        $redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $rget );
+     }
+    $vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
+    $franchiesJson  =   $redis->hget('H_Franchise_Mysql_DatabaseIP', $fcode);
+//log::info($franchiesJson);
+
+    $servername = $franchiesJson;
+    //$servername = "128.199.159.130";
+    //if (!$servername){
+    if (strlen($servername) > 0 && strlen(trim($servername) == 0)){
+        // $servername = "188.166.237.200";
+        return 'Ipaddress Failed !!!';
+    }
+    //$servername1 = "128.199.159.130";
+    $usernamedb = "root";
+    $password = "#vamo123";
+    $dbname = $fcode;
+    log::info('franci..----'.$fcode);
+    log::info('ip----'.$servername);
+    $conn = mysqli_connect($servername, $usernamedb, $password, $dbname);
+   
+    if( !$conn ) {
+        die('Could not connect: ' . mysqli_connect_error());
+        return 'Please Update One more time Connection failed';
+    } else { 
+
+        log::info(' created connection ');
+    
+        
+        $update = "UPDATE yearly_vehicle_history SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'"; 
+         $conn->multi_query($update); 
+         $update1 = "UPDATE vehicle_history SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update1);
+         $update2 = "UPDATE Executive_Details SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update2);
+         $update3 = "UPDATE sensor_history SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update3);
+         $update4 = "UPDATE rfid_history SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update4);
+         $update5 = "UPDATE TollgateDetails SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update5);
+         $update6 = "UPDATE Sms_Audit SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update6);
+         $update7 = "UPDATE ScheduledReport SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update7);
+          $update8 = "UPDATE Poi_History SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update8);
+         $update9 = "UPDATE PERFORMANCE SET vehicle_Id = '$vehicleId' WHERE vehicle_Id ='$vehicleIdOld'";
+         $conn->multi_query($update9);
+         $update10 = "UPDATE DailyPerformance SET vehicle_Id = '$vehicleId' WHERE vehicle_Id ='$vehicleIdOld'";
+         $conn->multi_query($update10);
+         $update11 = "UPDATE FuelReports SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update11);
+
+        log::info(' Sucessfully inserted/updated !!! ');
+        
+    $conn->close();
+    //return 'correct';
+    }
+    //
+      $raguldeviceId=$redis->hget ( $vehicleDeviceMapId, $vehicleIdOld );
+        $redis->hdel ( $vehicleDeviceMapId, $vehicleIdOld );                               
+        $redis->hdel ( $vehicleDeviceMapId, $deviceIdOld );                                
+        $redis->hset ( $vehicleDeviceMapId, $vehicleId, $raguldeviceId );                     
+        $redis->hset ( $vehicleDeviceMapId, $raguldeviceId ,$vehicleId);
+
+    //
+////new keys
+      $UNvalue=$redis->hget('H_UserId_Notification_map_'. $fcode, $vehicleIdOld);
+      $redis->hdel('H_UserId_Notification_map_'. $fcode, $vehicleIdOld);
+      $redis->hset('H_UserId_Notification_map_'. $fcode, $vehicleId, $UNvalue);
+
+      $DDvalue=$redis->hget('H_Delta_Distance_'. $fcode, $vehicleIdOld);
+      $redis->hdel('H_Delta_Distance_'. $fcode, $vehicleIdOld);
+      $redis->hset('H_Delta_Distance_'. $fcode, $vehicleId, $DDvalue);
+ 
+     $LHistfor='L_HistforOutOfOrderData_'. $vehicleId .'_'. $fcode .'_'. $rajeev;
+     $LHistforOld='L_HistforOutOfOrderData_'. $vehicleIdOld .'_'. $fcode .'_'. $rajeev;
+     $LHset='L_HistforOutOfOrderData_*'. $fcode .'_'. $rajeev;
+     $LHok=$redis->keys($LHset);
+     foreach ($LHok as $LHf => $valueLHf) {
+            if($valueLHf==$LHistforOld)
+            {
+           $redis->rename($LHistforOld, $LHistfor);
+            }
+        } 
+    
+     $LAhist='L_Alarm_Hist_'. $vehicleId .'_'. $fcode;
+     $LAhistOld='L_Alarm_Hist_'. $vehicleIdOld .'_'. $fcode;
+     $LAset='L_Alarm_Hist_*'. $fcode;
+     $LAok=$redis->keys($LAset);
+     foreach ($LAok as $LAf => $valueLAf) {
+            if($valueLAf==$LAhistOld)
+            {
+           $redis->rename($LAhistOld, $LAhist);
+            }
+        } 
+
+     $LRfitd='L_Rfid_Hist_'. $vehicleId .'_'. $fcode .'_'. $rajeev;
+     $LRfitdOld='L_Rfid_Hist_'. $vehicleIdOld .'_'. $fcode .'_'. $rajeev;
+     $LRfitdSet='L_Rfid_Hist_*'. $fcode .'_'. $rajeev;
+     $LRfitdOk=$redis->keys($LRfitdSet);
+     foreach ($LRfitdOk as $LRok => $valueLRok) {
+           if($valueLRok==$LRfitdOld)
+           {
+            $redis->rename($LRfitdOld, $LRfitd);
+           }
+       }  
+
+     $RouteDeviation='RouteDeviation:'. $vehicleId .':'. $fcode;
+     $RouteDeviationOld='RouteDeviation:'. $vehicleIdOld .':'. $fcode;
+     $RouteDeviationSet='RouteDeviation:*'. $fcode;
+     $RouteDeviationOk=$redis->keys($RouteDeviationSet);
+     foreach ($RouteDeviationOk as $RDok => $valueRDok) {
+           if($valueRDok==$RouteDeviationOld)
+           {
+            $redis->rename($RouteDeviationOld, $RouteDeviation);
+           }
+       } 
+
+
+////       
+        $redis->srem ( 'S_Vehicles_' . $fcode, $vehicleIdOld );
+
+        $redis->sadd ( 'S_Vehicles_' . $fcode, $vehicleId );
+
+        $redis->srem ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleIdOld);
+        $redis->sadd ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleId);
+      
+    ///ram prodata 
+       $vo=$redis->hget ( 'H_ProData_'. $fcode, $vehicleIdOld);
+        $redis->hset ( 'H_ProData_'. $fcode, $vehicleId, $vo);
+        $redis->hdel ( 'H_ProData_'. $fcode, $vehicleIdOld);
+    ///
+    ///ram L_Hist
+        $LHist='L_Hist_'. $vehicleId .'_'. $fcode .'_'. $rajeev;
+        $LHistOld='L_Hist_'. $vehicleIdOld .'_'. $fcode .'_'. $rajeev;
+        log::info($LHist);  
+        log::info($LHistOld); 
+        $ram='L_Hist_*'. $fcode .'_'. $rajeev;
+        $ok=$redis->keys($ram);
+        foreach ($ok as $first => $value) {
+            if($value==$LHistOld)
+            {
+           $redis->rename($LHistOld, $LHist);
+            }
+        }  
+    ///
+    ///ram L_Sensor_Hist*    
+        $Lsensor='L_Sensor_Hist_'. $vehicleId .'_'. $fcode .'_'. $rajeev;
+        $LsensorOld='L_Sensor_Hist_'. $vehicleIdOld .'_'. $fcode .'_'. $rajeev;
+        $setkey='L_Sensor_Hist_*'. $fcode .'_'. $rajeev;
+        $sensorV=$redis->keys($setkey);
+        foreach ($sensorV as $raj => $valueS) {
+            if($valueS==$LsensorOld)
+            {
+                $redis->rename($LsensorOld, $Lsensor);
+            }
+        }
+    ///
+    ///ram Z_sensor*
+       $Zsensor='Z_Sensor_'. $vehicleId .'_'. $fcode;
+       $ZsensorOld='Z_Sensor_'. $vehicleIdOld .'_'. $fcode;  
+       $setZsensor='Z_Sensor_*'. $fcode;
+       $ZsensorKey=$redis->keys($setZsensor);
+       foreach ($ZsensorKey as $Zskey => $valueZs) {
+           if($valueZs==$ZsensorOld)
+           {
+             $redis->rename($ZsensorOld, $Zsensor);
+           }
+       }
+    ///
+    ///ram nodata
+        $nodata='NoData24:'. $fcode .':'. $vehicleId;
+        $nodataOld='NoData24:'. $fcode .':'. $vehicleIdOld;   
+        $setnodata='NoData24:'. $fcode .':*';
+        $nodataKey=$redis->keys($setnodata);
+        foreach ($nodataKey as $ndkey => $valuend) {
+            if($valuend==$nodataOld)
+            {
+                $redis->rename($nodataOld, $nodata);
+            }
+        }
+    ///
+        $groupList = $redis->smembers('S_Groups_' . $fcode);
+
+        foreach ( $groupList as $group ) {
+            if($redis->sismember($group,$vehicleIdOld)==1)
+            {
+                $result = $redis->srem($group,$vehicleIdOld);
+                $redis->sadd($group,$vehicleId);
+            }
+
+//            Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
+        }
+      
+        $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
+        log::info(' expire---->'.$expiredPeriodOld);
+        if(!$expiredPeriod==null)
+        {
+            log::info('inside expire---->'.$expiredPeriod);
+            $expiredPeriod=str_replace($vehicleIdOld, $vehicleId, $expiredPeriod);
+            $redis->hset('H_Expire_'.$fcode,$expiredPeriodOld,$expiredPeriod);
+        }
+
+        if(Session::get('cur')=='dealer')
+        {
+            log::info('-----------inside dealer-----------');
+            $redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleIdOld);
+            $redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
+            $groupList1 = $redis->smembers('S_Groups_Dealer_'.$username.'_' . $fcode);
+        }
+        else if(Session::get('cur')=='admin')
+        {
+            log::info('-----------inside admin-----------');
+            $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
+            $redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
+            $groupList1 = $redis->smembers('S_Groups_Admin_'.$fcode);
+        }
+        foreach ( $groupList1 as $group ) {
+            if($redis->sismember($group,$vehicleIdOld)==1)
+            {
+                $result = $redis->srem($group,$vehicleIdOld);
+                $redis->sadd($group,$vehicleId);
+            }
+
+//            Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
+        }
+
+
+  //  }
+
+    // log::info('device id--->'.$deviceId);
+    // log::info('vechicle id-->'.$vehicleId);
+    Session::flash ( 'message', 'Successfully updated ' . '!' );
+    return Redirect::to ( 'vdmVehicles' );
+
+//            return View::make ( 'vdm.vehicles.migration', array ('vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
+
+}
+
+/**
+* Remove the specified resource from storage.
+*
+* @param int $id            
+* @return Response
+*/
 
 
 
@@ -2528,6 +2820,77 @@ public function migration($id)
     $deviceId=$refData['deviceId'];
 //  var_dump($refData);
     return View::make ( 'vdm.vehicles.migration', array (
+        'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriod);
+
+
+}
+
+public function rename($id)
+{
+
+    Log::info('.........rename........');
+    if (! Auth::check ()) {
+        return Redirect::to ( 'login' );
+    }
+    $username = Auth::user ()->username;
+    $redis = Redis::connection ();
+    $vehicleId = $id;
+    $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+    $vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
+    $deviceId = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
+
+    $details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
+
+    $refData=null;
+    $refData = array_add($refData, 'overSpeedLimit', '50');
+    $refData = array_add($refData, 'driverName', '');
+    $refData = array_add($refData, 'gpsSimNo', '');
+    $refData = array_add($refData, 'email', ' ');
+    $refData = array_add($refData, 'odoDistance', '0');
+    $refData = array_add($refData, 'sendGeoFenceSMS', 'no');
+    $refData = array_add($refData, 'morningTripStartTime', ' ');
+    $refData = array_add($refData, 'eveningTripStartTime', ' ');
+    $refData= array_add($refData, 'altShortName',' ');
+    $refData= array_add($refData, 'date',' ');
+    $refData= array_add($refData, 'paymentType',' ');
+    $refData= array_add($refData, 'expiredPeriod',' ');
+
+    $refDataFromDB = json_decode ( $details, true );
+
+    $refDatatmp = array_merge($refData,$refDataFromDB);
+
+    $refData=$refDatatmp;
+//S_Schl_Rt_CVSM_ALH
+
+    $orgId =isset($refDataFromDB['orgId'])?$refDataFromDB['orgId']:'NotAvailabe';
+    Log::info(' orgId = ' . $orgId);
+    $expiredPeriod =isset($refDataFromDB['expiredPeriod'])?$refDataFromDB['expiredPeriod']:'NotAvailabe';
+    $expiredPeriod=str_replace(' ', '', $expiredPeriod);
+    log::info( '------expiredPeriod ---------- '.$expiredPeriod);
+
+    $refData = array_add($refData, 'orgId', $orgId);
+    $parkingAlert = isset($refDataFromDB->parkingAlert)?$refDataFromDB->parkingAlert:0;
+    $refData= array_add($refData,'parkingAlert',$parkingAlert);
+    $tmpOrgList = $redis->smembers('S_Organisations_' . $fcode);
+    log::info( '------rename 1---------- '.Session::get('cur'));
+    if(Session::get('cur')=='dealer')
+    {
+        log::info( '------rename 2---------- '.Session::get('cur'));
+        $tmpOrgList = $redis->smembers('S_Organisations_Dealer_'.$username.'_'.$fcode);
+    }
+    else if(Session::get('cur')=='admin')
+    {
+        $tmpOrgList = $redis->smembers('S_Organisations_Admin_'.$fcode);
+    }
+
+    $orgList=null;
+    $orgList=array_add($orgList,'Default','Default');
+    foreach ( $tmpOrgList as $org ) {
+        $orgList = array_add($orgList,$org,$org);               
+    }
+    $deviceId=$refData['deviceId'];
+//  var_dump($refData);
+    return View::make ( 'vdm.vehicles.rename', array (
         'vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId )->with('expiredPeriod',$expiredPeriod);
 
 
