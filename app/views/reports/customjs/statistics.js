@@ -626,7 +626,7 @@ $scope.msToTime = function(ms)
     minutesms = ms % (60 * 1000);
     seconds = Math.floor((minutesms) / 1000);
     
-   if(days>=1){
+   if(days>1){
      return days+"days "+hours+":"+minutes+":"+seconds;
    } 
    else if(days==1){

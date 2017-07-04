@@ -703,7 +703,7 @@ $scope.geoVehLocations = function(){
 		else if(days==1){
 	     return days+'day '+hours +":"+minutes+":"+seconds;
 		}
-	    else if(days>=1){
+	    else if(days>1){
 	     return days+'days '+hours +":"+minutes+":"+seconds;
 	    }
 	}
