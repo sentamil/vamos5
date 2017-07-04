@@ -314,12 +314,14 @@ $scope.geoVehLocations = function(){
 
          	var userMasterId  = window.localStorage.getItem("userMasterName");
          	var groupMasterId = window.localStorage.getItem("groupname");
+         	if (userMasterId != null)
+         	{
          	var splitValue    = userMasterId.split(',');
          	var userName      = splitValue[1];
-
+         }
         // 	var requestUrl    = 'http://128.199.159.130:9000/getSitewiseVehicleCount?userId='+userName+'&groupId='+groupMasterId+'';
             var requestUrl    =  GLOBAL.DOMAIN_NAME+'/getSitewiseVehicleCount?userId='+userName+'&groupId='+groupMasterId+'';
-            
+
         $http.get(requestUrl).success(function(data)
 			{	
 
