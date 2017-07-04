@@ -696,10 +696,16 @@ $scope.geoVehLocations = function(){
 		minutes = Math.floor((hoursms) / (60 * 1000));
 		minutesms = ms % (60 * 1000);
 		seconds = Math.floor((minutesms) / 1000);
-		// if(days==0)
-		// 	return hours +" h "+minutes+" m "+seconds+" s ";
-		// else
-			return hours +":"+minutes+":"+seconds;
+
+		if(days==0){
+		 return hours+":"+minutes+":"+seconds;
+	    }
+		else if(days==1){
+	     return days+'day '+hours +":"+minutes+":"+seconds;
+		}
+	    else if(days==0){
+	     return days+'days '+hours +":"+minutes+":"+seconds;
+	    }
 	}
 	
 	$scope.recursive   = function(location,index){
