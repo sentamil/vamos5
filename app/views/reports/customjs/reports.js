@@ -218,6 +218,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
                 $scope.locations 	= $scope.vehiSidebar(data);
 
 				$scope.vehigroup    =   data[$scope.groupId].group;
+				window.localStorage.setItem("groupname",$scope.vehigroup);
 				$scope.vehiname		=	data[$scope.groupId].vehicleLocations[0].vehicleId;
 				sessionStorage.setItem('user', JSON.stringify($scope.vehiname+','+$scope.vehigroup));
 				angular.forEach(data, function(value, key) {
