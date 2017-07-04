@@ -103,11 +103,21 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
     	return hrs+':'+min+':'+sec;
     }
 
-    $scope.trimColon = function(textVal){
-		return textVal.split(":")[0].trim();
+    $scope.trimColon = function(data){
+
+        var splitValue;
+    	if(data){
+
+          var splitValue = data.split(/[:]+/);
+
+        return splitValue[0];  
+		}else{
+
+        return splitValue="";
+		}
 	}
    
-     function formatAMPM(date) {
+    function formatAMPM(date) {
     	  var date = new Date(date);
 		  var hours = date.getHours();
 		  var minutes = date.getMinutes();
@@ -327,7 +337,11 @@ $scope.geoVehLocations = function(){
 			{	
 
                $scope.getGeoFence    = data.siteDetails;
+
+
+               if(data){
                $scope.verifyGeoCount = $scope.getGeoFence.length;
+               }
 
 			});
 	}
