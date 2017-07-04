@@ -29,7 +29,6 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	}
 
 	
-	
 	$scope.tab 			=	true;
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
@@ -327,7 +326,8 @@ $scope.geoVehLocations = function(){
         $http.get(requestUrl).success(function(data)
 			{	
 
-               $scope.getGeoFence=data.siteDetails;
+               $scope.getGeoFence    = data.siteDetails;
+               $scope.verifyGeoCount = $scope.getGeoFence.length;
 
 			});
 	}
@@ -814,8 +814,6 @@ $scope.geoVehLocations = function(){
 
 	   }
 	}
-	
-	
 	
 	
 	$scope.exportData = function (data) {
