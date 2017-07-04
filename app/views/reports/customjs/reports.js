@@ -322,6 +322,7 @@ $scope.geoVehLocations = function(){
          }
         // 	var requestUrl    = 'http://128.199.159.130:9000/getSitewiseVehicleCount?userId='+userName+'&groupId='+groupMasterId+'';
             var requestUrl    =  GLOBAL.DOMAIN_NAME+'/getSitewiseVehicleCount?groupId='+groupMasterId;
+            console.log(requestUrl);
 
         $http.get(requestUrl).success(function(data)
 			{	
