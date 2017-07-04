@@ -524,9 +524,7 @@ function chartFuel(data){
               $scope.chartDist.push(parseInt(distVal));
               $scope.chartFuels.push(parseInt(fuelVal));
               $scope.chartVehic.push(preVehiVal);
-
          }
-
 
       });
 
@@ -615,22 +613,28 @@ $('#container_new').highcharts({
     }*/ ]
 });
 
-
 }
+
 
 $scope.msToTime = function(ms) 
 {
-        days = Math.floor(ms / (24 * 60 * 60 * 1000));
-      daysms = ms % (24 * 60 * 60 * 1000);
+    days = Math.floor(ms / (24 * 60 * 60 * 1000));
+    daysms = ms % (24 * 60 * 60 * 1000);
     hours = Math.floor((daysms) / (60 * 60 * 1000));
     hoursms = ms % (60 * 60 * 1000);
     minutes = Math.floor((hoursms) / (60 * 1000));
     minutesms = ms % (60 * 1000);
     seconds = Math.floor((minutesms) / 1000);
-    // if(days==0)
-    //  return hours +" h "+minutes+" m "+seconds+" s ";
-    // else
+    
+   if(days>=1){
+     return days+"days "+hours+":"+minutes+":"+seconds;
+   } 
+   else if(days==1){
+     return days+"day "+hours+":"+minutes+":"+seconds;
+   }
+   else if(days==0){
       return hours +":"+minutes+":"+seconds;
+   }
   }
 
 
@@ -896,3 +900,6 @@ $scope.exportData = function (data) {
 
 
 }]);
+
+
+
