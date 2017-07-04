@@ -633,6 +633,14 @@ Route::get('/getPictures', function() {
     return View::make('vls.getPictures');
 });
 
+Route::get('/getSitewiseVehicleCount', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getSitewiseVehicleCount');
+    return View::make('vls.getSitewiseVehicleCount');
+});
+
 Route::get('/getOverallVehicleImages', function() {
     if (!Auth::check()) {
         return Redirect::to('login');

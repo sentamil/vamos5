@@ -41,6 +41,37 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
      	var date = new Date(date);
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };	
+
+    $scope.siteSplitStat  =	function(data) {
+
+       var splitRetValue;
+
+    	if(data)
+         {
+          var splitValue = data.split(/[:]+/);
+          splitRetValue = splitValue[1];
+        }else{
+          splitRetValue ="";        
+          }
+
+     return splitRetValue;
+    }
+
+    $scope.siteSplitName  =	function(data) {
+
+       var splitRetValue;
+
+    	if(data)
+         {
+         var splitValue = data.split(/[:]+/);
+             splitRetValue = splitValue[0];
+        }else{
+             splitRetValue ="";        
+          }
+
+     return splitRetValue;
+    }
+    
     
     function convert_to_24h(time_str) {
 		//console.log(time_str);
@@ -277,6 +308,29 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	}());
 
 
+$scope.geoVehLocations = function(){
+
+           $scope.sitesDataGroup=[];
+
+         	var userMasterId  = window.localStorage.getItem("userMasterName");
+         	var groupMasterId = window.localStorage.getItem("groupname");
+         	var splitValue    = userMasterId.split(',');
+         	var userName      = splitValue[1];
+
+        // 	var requestUrl    = 'http://128.199.159.130:9000/getSitewiseVehicleCount?userId='+userName+'&groupId='+groupMasterId+'';
+            var requestUrl    =  GLOBAL.DOMAIN_NAME+'/getSitewiseVehicleCount?userId='+userName+'&groupId='+groupMasterId+'';
+            
+        $http.get(requestUrl).success(function(data)
+			{	
+
+               $scope.getGeoFence=data.siteDetails;
+
+			});
+	}
+
+
+
+
 	$scope.filtConData=function(data){
 
 		$scope.filtData02 = [];
@@ -288,12 +342,9 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
                $scope.filtData02[key].vehiData=[];   
 
                $scope.filtData02[key].vehiData.push(val);
-        /*	console.log(val.vehicleName);
-
+        /* console.log(val.vehicleName);
            angular.forEach(val.historyConsilated,function(sval,skey){
-
-              
-           })*/
+           }) */
        })
 
        // console.log($scope.filtData02);
