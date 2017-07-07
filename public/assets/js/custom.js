@@ -2021,6 +2021,9 @@ $scope.starSplit 	=	function(val){
         template: '<div></div>',
         link: function(scope, element, attrs){
         	scope.$watch("url", function (val) {
+
+        	 var refreshInterval = window.localStorage.getItem("refreshTime");
+        	 
 			setintrvl = setInterval(function(){
 				scope.inits=1;
 				vamoservice.getDataCall(scope.url).then(function(data) {
@@ -2040,7 +2043,7 @@ $scope.starSplit 	=	function(val){
 						scope.initial02();
 					}
 				}); 
-			},60000);
+			},refreshInterval);
 	  	}); 
 	    }
 	};
@@ -2370,4 +2373,3 @@ var gaugeOptions = {
             document.body.style.zoom="90%";
         }
     });
-
