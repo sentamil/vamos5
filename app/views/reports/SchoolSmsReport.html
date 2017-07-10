@@ -190,7 +190,7 @@ background-color: #ffffff;
                                           
                                 <tbody ng-repeat="data in schoolSmsData" style="overflow-y:auto;">
                                       <tr style="text-align:center;height:30px;">
-                                        <td colspan="3" style="font-size:13px;background-color:#C2D2F2;"><b>Route Name : {{data.routeName}}</b></td>
+                                        <td colspan="3" style="font-size:13px;background-color:#C2D2F2;"><b>{{data.routeName}}</b></td>
                                     <!--    <td style="font-size:13px;background-color:#C2D2F2;"><b>Start Time : {{data.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</b></td>
                                         <td style="font-size:13px;background-color:#C2D2F2;"><b>End Time : {{data.toTime | date:'yyyy-MM-dd HH:mm:ss'}}</b></td>
                                       </tr> -->
@@ -209,8 +209,11 @@ background-color: #ffffff;
                                          <td style="max-width:60px;">{{subdata.stopName}}</td>
                                      <!--    <td><a href="https://www.google.com/maps?q=loc:{{subdata.lat}},{{subdata.lng}}" target="_blank">Link</a></td>-->
                                          <!-- <td width="10%" ng-show="geoFence==subdata.isInsideGeofence || geoFence=='Y'">{{subdata.isInsideGeofence}}</td>-->
+                                          <tr ng-if="data.getData==null" style="text-align: center">
+                                        <td colspan="3" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                       </tr>
-                                      <tr ng-if="schoolSmsData==null" style="text-align: center">
+                                      </tr>
+                                      <tr ng-if=" data == null || data == '' || data.length == 0 " style="text-align: center">
                                         <td colspan="3" class="err"><h5>No Data Found! Choose some other date</h5></td>
                                       </tr>
                                       <tr><td colspan="3" bgcolor="grey"></td><tr>
