@@ -28,6 +28,7 @@
                 <li class="removeli"><a href="../public/reports?ind=3"> Consolidated Overspeed</a></li>
                 <li class="removeli"><a id="stopReport" href="">Consolidated Stoppage</a></li>
                 <li class="removeli"><a id="tollReport" href="">Tollgate Report</a></li>
+                <li class="removeli"><a id="SchoolSmsReport" href="">SchoolSms Report</a></li>
                 <!-- <li> <a href="#"> Advanced &nbsp; </a>
                      <div style="padding-left: 10px">
                         <table style="width: 300px; height: 100px;">
@@ -258,6 +259,10 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
 
             $('#tollReport').click(function(){
                 $(this).attr("href", 'tollReport?vid='+vid+'&vg='+gname+'&tn=tollReport')
+            })
+
+            $('#SchoolSmsReport').click(function(){
+                $(this).attr("href", 'SchoolSmsReport?vid='+vid+'&vg='+gname+'&tn=SchoolSmsReport')
             })
      
             $('#multiTrack').click(function(){

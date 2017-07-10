@@ -123,15 +123,13 @@
             sessionStorage.setItem('userIdName', JSON.stringify('username'+","+userId));
 
             var usersID = JSON.stringify(userId)
-            var sp1 = userID.split(",");
 
-             if(usersId == "BSMOTORS")
+             if(usersID == "BSMOTORS")
               {
                  window.localStorage.setItem('refreshTime',120000);
               }
               else{
-               // console.log("user "+sp1);
-                  window.localStorage.setItem('refreshTime',60000);
+                   window.localStorage.setItem('refreshTime',60000);
               }
         });
 

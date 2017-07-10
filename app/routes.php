@@ -211,6 +211,13 @@ Route::get('/tollReport', function() {
     return View::make('reports.tollReport');
 });
 
+Route::get('/SchoolSmsReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.SchoolSmsReport');
+});
+
 View::addExtension('html', 'php');
 Route::get('/menu', function() {
     // if (!Auth::check()) {
@@ -657,6 +664,14 @@ Route::get('/getTollgateReport', function() {
     return View::make('vls.getTollgateReport');
 });
 
+Route::get('/getSchoolSmsDailyReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getSchoolSmsDailyReport');
+    return View::make('vls.getSchoolSmsDailyReport');
+});
+
 Route::get('/getApiKey', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -955,15 +970,15 @@ Route::post('vdmVehicles/renameUpdate', array('uses' => 'VdmVehicleController@re
  
  
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
-///Advance scan for GROUPS		
-Route::get('vdmGroups/Search', array('uses' => 'VdmGroupController@groupSearch'));		
+///Advance scan for GROUPS      
+Route::get('vdmGroups/Search', array('uses' => 'VdmGroupController@groupSearch'));      
 Route::post('vdmGroupsScan/Search', array('uses' => 'VdmGroupController@groupScan'));
 
 Route::resource('vdmGroups', 'VdmGroupController');
 Route::get('vdmVehicles/create/{param1}', array('uses' => 'VdmVehicleController@create'));
 Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dealerSearch'));
-///Advance scan for VEHICLES		
-Route::get('vdmVehiclesSearch/Scan', array('uses' => 'VdmVehicleScanController@vehicleSearch'));		
+///Advance scan for VEHICLES        
+Route::get('vdmVehiclesSearch/Scan', array('uses' => 'VdmVehicleScanController@vehicleSearch'));        
 Route::post('vdmVehiclesSearch/scan', array('uses' => 'VdmVehicleScanController@vehicleScan'));
 
 Route::resource('vdmVehicles', 'VdmVehicleController');
@@ -1000,8 +1015,8 @@ Route::post('vdmVehicles/calibrate/count', array('uses'=>'VdmVehicleController@c
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
 Route::resource('Licence', 'LicenceController');
-///Advance scan for USERS		
-Route::get('vdmUserSearch/Scan', array('uses' => 'VdmUserController@search'));		
+///Advance scan for USERS       
+Route::get('vdmUserSearch/Scan', array('uses' => 'VdmUserController@search'));      
 Route::post('vdmUserScan/user', array('uses' => 'VdmUserController@scan'));
 
 Route::get('vdmUsers/notification/{param}', array('uses' => 'VdmUserController@notification'));
@@ -1009,8 +1024,8 @@ Route::post('vdmUsers/updateNotification', array('uses' => 'VdmUserController@up
 Route::get('Licence/ViewDevices/{param}', array('uses' => 'LicenceController@viewDevices'));
  
 Route::resource('vdmDealers', 'VdmDealersController');
-///Advance scan for DEALERS		
-Route::get('vdmDealersSearch/Scan', array('uses' => 'VdmDealersScanController@dealerSearch'));		
+///Advance scan for DEALERS     
+Route::get('vdmDealersSearch/Scan', array('uses' => 'VdmDealersScanController@dealerSearch'));      
 Route::post('vdmDealersScan/Search', array('uses' => 'VdmDealersScanController@dealerScan'));
 
 Route::get('vdmDealers/editDealer/{param}', array('uses' => 'VdmDealersController@editDealer'));
@@ -1129,6 +1144,5 @@ Route::get('/Test',array('uses'=>'TestController@postAuth'));
 Route::get('/Example',array('uses'=>'ExampleController@testExample'));
 Route::get('/Hello',array('uses'=>'HelloController@testHello'));
 Route::post('/meenatest',array('uses'=>'HelloController@meenatest'));
-
 
 
