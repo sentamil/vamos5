@@ -136,58 +136,37 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
 
 
-/* getting Org ids */
+    /* getting Org ids */
    
     $scope.$watch("getOrgId", function (val) {
 	  $http.get($scope.getOrgId).success(function(response){
 
-		$scope.organId	= response.siteParent[0].orgId;
+		$scope.organId	 = response.siteParent[0].orgId;
 
-		console.log($scope.organId);
+		$scope.organsIds = response.orgIds;
+		$scope.orgIds    = $scope.organsIds[0];
+
+		//console.log($scope.organId);
     })
   });  
 
-/*$scope.$watch("getOrgId", function (val) {
-	  $http.get('http://188.166.244.126:9000/viewSite?userId=alhadeed').success(function(response){
-
-		$scope.organId	= response.siteParent[0].orgId;
-
-		console.log($scope.organId);
-    })
-  });*/
 
     function webCall(){
 
         if((checkXssProtection($scope.uiDate.fromdate) == true) && ((checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true))) {
 
-        //http://188.166.244.126:9000/getSchoolSmsDailyReport?orgId=CVSM&userId=alhadeed&fromTimeUtc=1499558451000&toTimeUtc=1499644551000
-          var schoolSmsUrl = GLOBAL.DOMAIN_NAME+'/getSchoolSmsDailyReport?orgId='+$scope.organId+'&fromTimeUtc='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toTimeUtc='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
+          var schoolSmsUrl = GLOBAL.DOMAIN_NAME+'/getSchoolSmsDailyReport?orgId='+$scope.orgIds+'&fromTimeUtc='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toTimeUtc='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
         }
-
-        console.log(schoolSmsUrl);
-
-        $scope.schoolSmsData=[];
-
-       /* $http.get('http://188.166.244.126:9000/getSchoolSmsDailyReport?orgId=CVSM&userId=alhadeed&fromTimeUtc=1499558451000&toTimeUtc=1499644551000').success(function(data){
-            
-            $scope.schoolSmsData=data.smsList;
-
-            console.log($scope.schoolSmsData);
-          
-          stopLoading();
-		}); */
+        //console.log(schoolSmsUrl);
+          $scope.schoolSmsData=[];
 
         $http.get(schoolSmsUrl).success(function(data){
             
             $scope.schoolSmsData=data.smsList;
-
-            console.log($scope.schoolSmsData);
-          
-             stopLoading();
+          //console.log($scope.schoolSmsData);
+          stopLoading();
 		  }); 
     }
-
-
 
 
 	//get the value from the ui
@@ -196,8 +175,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	  	$scope.uiDate.fromtime		=	$('#timeFrom').val();
 	  	$scope.uiDate.todate		=	$('#dateTo').val();
 	  	$scope.uiDate.totime 		=	$('#timeTo').val();
- 	
-	}
+ 	}
 
 
 // service call for the event report
