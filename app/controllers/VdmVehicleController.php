@@ -173,7 +173,7 @@ public function create($id) {
 //Session::flash ( 'message', 'DeviceId' . $deviceidCheck . 'already exist. Please choose another one' );
         log::info( '------vehicleIdCheck1---------- ::'.$deviceidCheck);
         $value =$redis->hget('H_Vehicle_Device_Map_'.$fcode,$deviceId);
-        $vehicleId='gpsvts_'.substr($deviceId, -5);
+        $vehicleId='GPSVTS_'.substr($deviceId, -6);
 
         return Redirect::to ('vdmVehicles/' . $value . '/edit1');
     }
