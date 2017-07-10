@@ -57,12 +57,12 @@ background-color: #ffffff;
                 </li>
 
 
-         <li ng-repeat="location in vehicle_list" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+         <li ng-repeat="location in vehicle_list | orderBy:natural('group')" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
 
 
                 <ul class="nav" style="max-height:400px;overflow-x:hidden;overflow-y:scroll;">
 
-                    <li ng-repeat="loc in location.vehicleLocations | filter:searchbox" data-trigger="hover" ng-class="{active:vehiname ==loc.vehicleId}">
+                    <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox" data-trigger="hover" ng-class="{active:vehiname ==loc.vehicleId}">
 
                       <a href="javascript:void(0);"  ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak>
 
@@ -93,7 +93,7 @@ background-color: #ffffff;
        <div class="box box-primary" style="padding-top: 5px;margin-top: 10px;">
         <!-- <div class="row"> -->
                 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip" >
-                    <h3 class="box-title">Tollgate Report</h3>
+                    <h3 class="box-title">School SMS Daily</h3>
                 </div>
                <div class="row">
                     <div class="col-md-1" align="center"></div>
@@ -174,13 +174,13 @@ background-color: #ffffff;
 
                     <div class="pull-right" style="margin-top: 10px;margin-right: 5px;">
                      
-                        <img style="cursor: pointer;" ng-click="exportData('tollReport')"  src="../app/views/reports/image/xls.png" />
-                        <img style="cursor: pointer;" ng-click="exportDataCSV('tollReport')"  src="../app/views/reports/image/csv.jpeg" />
+                        <img style="cursor: pointer;" ng-click="exportData('SchoolSmsReport')"  src="../app/views/reports/image/xls.png" />
+                        <img style="cursor: pointer;" ng-click="exportDataCSV('SchoolSmsReport')"  src="../app/views/reports/image/csv.jpeg" />
                     </div>
 
                     
               
-                <div class="box-body" id="tollReport">
+                <div class="box-body" id="SchoolSmsReport">
                 <div class="empty" align="center"></div>
            
 
@@ -237,6 +237,8 @@ background-color: #ffffff;
     <script src="../app/views/reports/customjs/FileSaver.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
+    <script src="assets/js/naturalSortVersionDatesCaching.js"></script>
+   <!-- <script src="assets/js/naturalSortVersionDates.js"></script> -->
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
     <script src="assets/js/SchoolSmsReport.js"></script>
