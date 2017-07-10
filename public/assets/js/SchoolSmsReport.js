@@ -251,7 +251,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
     
    
   	$scope.groupSelection 	= function(groupName, groupId) {
-		startLoading();
+		//startLoading();
 		$scope.gName 	= 	groupName;
 		$scope.uiGroup 	= 	$scope.trimColon(groupName);
 		$scope.gIndex	=	groupId;
@@ -278,8 +278,8 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 				    }
 				})
 
-			getUiValue();
-			webCall();
+		//	getUiValue();
+		//	webCall();
 		  //webServiceCall();
 	      //stopLoading();
 		});
