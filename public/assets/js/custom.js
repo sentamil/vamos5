@@ -688,8 +688,23 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			$scope.clickflag=true;	
 		}
 	}
+
+
+	var newGroupSelectionName="";
+	var oldGroupSelectionName="";
+	var initValss=0;
 	
 	$scope.groupSelection = function(groupname, groupid){
+
+	  if(initValss>0){
+        oldGroupSelectionName=newGroupSelectionName;
+       }
+
+        newGroupSelectionName=groupname;
+        initValss++;
+
+      if(oldGroupSelectionName != newGroupSelectionName){
+
 		$('#status').show();
     	$('#preloader').show();
     	$scope.selects=1;
@@ -713,6 +728,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		// $('#status').fadeOut(); 
 		// $('#preloader').delay(350).fadeOut('slow');
 		// $('body').delay(350).css({'overflow':'visible'});
+    	}
 	}
 	var modal = document.getElementById('poi');
 	var span = document.getElementsByClassName("poi_close")[0];
@@ -2005,6 +2021,7 @@ $scope.starSplit 	=	function(val){
         template: '<div></div>',
         link: function(scope, element, attrs){
         	scope.$watch("url", function (val) {
+
 			setintrvl = setInterval(function(){
 				scope.inits=1;
 				vamoservice.getDataCall(scope.url).then(function(data) {
@@ -2354,5 +2371,3 @@ var gaugeOptions = {
             document.body.style.zoom="90%";
         }
     });
-
-
