@@ -287,6 +287,7 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 	$scope.geoMarkerDetails={};
 	$scope.popupmarker;
 	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+	$scope.url_site    = GLOBAL.DOMAIN_NAME+'/viewSite';
     $scope.vehicle_list=[];
 	$scope.markerValue=0;
 	var VehiType;
@@ -994,17 +995,17 @@ var queue1 = [];
 		}
 	}
 
-	/*
-		// getting Org ids
 	
-	var url_site    = GLOBAL.DOMAIN_NAME+'/viewSite';
+   // getting Org ids
 
-	$http.get(url_site).success(function(response){
-		$scope.orgIds 	= response.orgIds;
-		showRoutes(getParameterByName('rt'))
-	})
+	$scope.$watch("url_site", function (val) {
 
-	*/
+	    $http.get($scope.url_site).success(function(response){
+		    $scope.orgIds 	= response.orgIds;
+		    showRoutes(getParameterByName('rt'))
+	    });
+	});
+	
 
 	function getRouteNames(){
 
@@ -2513,4 +2514,3 @@ if($scope.markerstart){
 
 
 }]);
-
