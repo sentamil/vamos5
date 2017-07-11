@@ -16,8 +16,6 @@
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
-
-
 <!-- <link rel="stylesheet" type="text/css" href="http://www.highcharts.com/joomla/media/com_demo/highslide.css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
 <!--  <link rel="stylesheet" href="/resources/demos/style.css">  -->
@@ -157,12 +155,12 @@
 							</div>
                       	</div>
                     </div>
-                    <div class="col-md-2" align="center">
+                <!--  <div class="col-md-2" align="center">
                     	<div class="input-group datecomp">
                             <input type="text" class="form-control placholdercolor" id="timeFrom" ng-model="fromTime"  placeholder="From time">
                             <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
-                    	</div>
-                    </div>
+                    <!--	</div> 
+                    </div> -->
                     <div class="col-md-2" align="center">
                     	<div class="form-group">
 							<div class="input-group datecomp">
@@ -171,12 +169,12 @@
 							</div>
                       	</div>
                     </div>
-                    <div class="col-md-2" align="center">
+             <!--      <div class="col-md-2" align="center">
                     	<div class="input-group datecomp">
                             <input type="text" class="form-control placholdercolor" id="timeTo" ng-model="totime" placeholder="From time">
                             <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
-                    	</div>
-                    </div>
+                    <!-- </div> 
+                    </div> -->
                     <div class="col-md-1" align="center"></div>
                      <div class="col-md-2" align="center">
                         <button style="margin-left: -100%; padding : 5px" ng-click="submitButton()">Submit</button>
@@ -430,13 +428,13 @@
 				useCurrent:true,
 				pickTime: false
 			});
-			$('#timeFrom').datetimepicker({
+		/*	$('#timeFrom').datetimepicker({
 				pickDate: false
 			});
 			$('#timeTo').datetimepicker({
 				useCurrent:true,
 				pickDate: false
-			});
+			}); */
 	    });      
  	</script>
 	
