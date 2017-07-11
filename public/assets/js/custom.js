@@ -128,9 +128,12 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
   };
 	
 	//var menuVid;
-	
-	$scope.trimColon = function(textVal){
-		return textVal.split(":")[0].trim();
+    $scope.trimColon = function(textVal){
+
+	   if (textVal != null || textVal != undefined )
+	   {
+         return textVal.split(":")[0].trim();
+		 }
 	}
 
 	$scope.sort = {       
@@ -2020,7 +2023,9 @@ $scope.starSplit 	=	function(val){
         replace: true,
         template: '<div></div>',
         link: function(scope, element, attrs){
-        	scope.$watch("url", function (val) {
+          scope.$watch("url", function (val) {
+
+          var interValRef=window.localStorage.getItem('refreshTime');
 
 			setintrvl = setInterval(function(){
 				scope.inits=1;
@@ -2041,7 +2046,7 @@ $scope.starSplit 	=	function(val){
 						scope.initial02();
 					}
 				}); 
-			},60000);
+			},interValRef);
 	  	}); 
 	    }
 	};
