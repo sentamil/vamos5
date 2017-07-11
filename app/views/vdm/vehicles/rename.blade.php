@@ -8,7 +8,7 @@
     		<div class="col-lg-12">
        			 <div class="hpanel">
                		<div class="panel-heading" align="center">
-                   		<h4><font>Vehicle Migration</font></h4>
+                   		<h4><font>Vehicle Rename</font></h4>
                 	</div>
                 	<hr>
                 	{{ HTML::ul($errors->all()) }}
