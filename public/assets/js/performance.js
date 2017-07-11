@@ -5,13 +5,17 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', '_global', function(
 	$scope.url 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	$scope.gIndex		=	0;
 	$scope.fromTime 	=   '12:00 AM';
+	$scope.totime 	    =   '11:59 PM';
 	var arrangeMonthList=[];
 	var monthNames 		= ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	// $scope.daily 		= false;
 	var status 			= 	'';
 	
 	$scope.trimColon = function(textVal){
+
+		if(textVal != null || textVal != undefined){
 		return textVal.split(":")[0].trim();
+    	}
 	}
 
 	$scope.sort = {       
