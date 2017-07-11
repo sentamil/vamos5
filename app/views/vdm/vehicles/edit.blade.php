@@ -61,7 +61,7 @@
 
 								<div class="form-group">
 									{{ Form::label('eveningTripStartTime', 'TIMEZONE') }}
-									{{ Form::select('eveningTripStartTime', array( 'INDIA' => 'INDIA', 'CHINA' => 'CHINA','GMT'=>'GMT'), $refData['eveningTripStartTime'], array('class' => 'form-control'))}}            
+									{{ Form::select('eveningTripStartTime', array( 'TIMEZONE' => 'TIMEZONE', INDIA' => 'INDIA', 'CHINA' => 'CHINA','GMT'=>'GMT'), $refData['eveningTripStartTime'], array('class' => 'form-control'))}}            
 								</div> 
 								<div class="form-group">
 									{{ Form::label('route', 'Route Name') }}
