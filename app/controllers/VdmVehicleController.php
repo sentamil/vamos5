@@ -268,7 +268,8 @@ public function store() {
         $vehicleType = Input::get ( 'vehicleType' );
         $oprName = Input::get ( 'oprName' );
         $mobileNo = Input::get ( 'mobileNo' );
-	$vehicleExpiry = Input::get ( 'vehicleExpiry' );
+	    $vehicleExpiry = Input::get ( 'vehicleExpiry' );
+	    $onboardDate = Input::get ( 'onboardDate' );
         $overSpeedLimit = Input::get ( 'overSpeedLimit' );
         $deviceModel = Input::get ( 'deviceModel' );
         $odoDistance = Input::get ('odoDistance');
@@ -326,7 +327,8 @@ else if(Session::get('cur')=='admin')
             'vehicleType' => $vehicleType,
             'oprName' => $oprName,
             'mobileNo' => $mobileNo,
-		'vehicleExpiry' => $vehicleExpiry,
+		    'vehicleExpiry' => $vehicleExpiry,
+		    'onboardDate' => $onboardDate,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
             'driverName' => $driverName,
@@ -587,6 +589,7 @@ public function edit($id) {
         $refData = array_add($refData, 'oprName', ' ');
         $refData = array_add($refData, 'mobileNo', '0123456789');
 	 $refData = array_add($refData, 'vehicleExpiry', 'null');
+	 $refData = array_add($refData, 'onboardDate', ' ');
         $refData = array_add($refData, 'overSpeedLimit', '50');
         $refData = array_add($refData, 'driverName', '');
         $refData = array_add($refData, 'gpsSimNo', '0123456789');
@@ -988,7 +991,8 @@ public function update($id) {
         $vehicleType = Input::get ( 'vehicleType' );
         $oprName = Input::get ( 'oprName' );
         $mobileNo = Input::get ( 'mobileNo' );
-	$vehicleExpiry = Input::get ( 'vehicleExpiry' );
+	  $vehicleExpiry = Input::get ( 'vehicleExpiry' );
+	  $onboardDate = Input::get ( 'onboardDate' );
         $overSpeedLimit = Input::get ( 'overSpeedLimit' );
         $deviceModel = Input::get ( 'deviceModel' );
         $driverName = Input::get ( 'driverName' );
@@ -1103,6 +1107,7 @@ else if(Session::get('cur')=='admin')
             'maxtemp'=>$maxtemp,
             'routeName'=>$routeName,
 		'vehicleExpiry' => $vehicleExpiry,
+		'onboardDate' => $onboardDate,
             );
 
 try{
@@ -1221,6 +1226,7 @@ if($refVehicle != $refDataJson)
         "oprName" => "Telecom Operator Name",
         "mobileNo" => "Mobile Number for Alerts",
 	"vehicleExpiry" => "Vehicle_Expire",
+	"onboardDate" => "Onboard-Date",
         "overSpeedLimit" => "OverSpeed Limit",
         "odoDistance" => "Odometer Reading",
         "driverName" => "Driver Name",
@@ -2341,6 +2347,7 @@ public function migrationUpdate() {
             'oprName' => isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel',
             'mobileNo' =>isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789',
 		'vehicleExpiry' =>isset($refDataJson1['vehicleExpiry'])?$refDataJson1['vehicleExpiry']:'null',
+		'onboardDate' =>isset($refDataJson1['onboardDate'])?$refDataJson1['onboardDate']:' ',
             'overSpeedLimit' => isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60',
             'odoDistance' => isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0',
             'driverName' => isset($refDataJson1['driverName'])?$refDataJson1['driverName']:'XXX',

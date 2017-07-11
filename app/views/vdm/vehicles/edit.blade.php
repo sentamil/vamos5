@@ -71,6 +71,10 @@
 									{{ Form::label('date', 'Date') }}
 									{{ Form::text('date', $refData['date'], array('class' => 'form-control','disabled' => 'disabled')) }}
 								</div>
+								<div class="form-group">
+									{{ Form::label('onboardDate', 'Onboard-Date') }}
+									{{ Form::text('onboardDate', $refData['onboardDate'], array('class' => 'form-control','disabled' => 'disabled')) }}
+								</div>
 								<!-- <div class="form-group">
 									{{ Form::label('expiredPeriod', 'Expired Period') }}
 									{{ Form::text('expiredPeriod', $refData['expiredPeriod'], array('class' => 'form-control','disabled' => 'disabled')) }}

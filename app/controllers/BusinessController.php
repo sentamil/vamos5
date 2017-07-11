@@ -642,8 +642,9 @@ if($type=='Sale' && $type1!=='new')
 }
 //ram vehicleExpiry default date
 $current = Carbon::now();
-$rajeev=$current->addYears(1)->format('Y-m-d');
-log::info($rajeev);
+$onboardDate=$current->format('d-m-Y');
+$trkpt=$current->addYears(1)->format('Y-m-d');
+log::info($trkpt);
 //
 $dbarray=array();
 $dbtemp=0;
@@ -690,7 +691,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 	//
 	$vehicleExpiry=Input::get ( 'vehicleExpiry');
 	if($fcode == 'TRKPT') {
-	$vehicleExpiry=!empty($vehicleExpiry) ? $vehicleExpiry : $rajeev;
+	$vehicleExpiry=!empty($vehicleExpiry) ? $vehicleExpiry : $trkpt;
     }
     else
 	{
@@ -843,6 +844,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 								'Payment_Mode'=>$Payment_Mode,
 								'descriptionStatus'=>$descriptionStatus,
 								'vehicleExpiry' => $vehicleExpiry,
+								'onboardDate' => $onboardDate,
 							);
 						$refDataJson = json_encode ( $refDataArr );
 						//log::info('json data --->'.$refDataJson);
@@ -944,6 +946,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 							'description' => '',
 							'email' => '',
 							'vehicleExpiry' => '',
+							'onboardDate' => '',
 							'address' => '',
 							'mobile' => '',
 							'startTime' => '',
@@ -1416,7 +1419,7 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
            				 'Payment_Mode'=>isset($refDataJson1['Payment_Mode'])?$refDataJson1['Payment_Mode']:'',
            				 'descriptionStatus'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'',
 						'vehicleExpiry'=>isset($refDataJson1['vehicleExpiry'])?$refDataJson1['vehicleExpiry']:'',
-                       
+                        'onboardDate'=>isset($refDataJson1['onboardDate'])?$refDataJson1['onboardDate']:$onboardDate,
 			            );
 
 			        $refDataJson = json_encode ( $refDataArr );
