@@ -654,7 +654,7 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$vehicleId2 = str_replace('.', '-', $vehicleId1);
 	$vehicleId = strtoupper($vehicleId2);
 	
-	$vehicleId=!empty($vehicleId) ? $vehicleId : 'GPSVTS_'.substr($deviceid, -5);
+	$vehicleId=!empty($vehicleId) ? $vehicleId : 'GPSVTS_'.substr($deviceid, -6);
 	//isset($vehicleRefData['shortName'])?$vehicleRefData['shortName']:'nill';
 	log::info( Input::get('deviceidtype50').'--------number of  name::----------'.$i);
 	$deviceid=str_replace(' ', '', $deviceid);
@@ -1320,7 +1320,7 @@ return Redirect::to ( 'Business' )->withErrors($error);
 					foreach($deviceList as $device) {
 					log::info( '------ownership---------- '.$ownerShip);
 					$myArray = explode(',', $device);
-					$vehicleId='gpsvts_'.substr($myArray[0], -5);
+					$vehicleId='GPSVTS_'.substr($myArray[0], -6);
 					$deviceId=$myArray[0];
 					$deviceDataArr = array (
 							'deviceid' => $deviceId,
