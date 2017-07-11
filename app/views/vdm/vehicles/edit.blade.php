@@ -72,7 +72,7 @@
 									{{ Form::text('date', $refData['date'], array('class' => 'form-control','disabled' => 'disabled')) }}
 								</div>
 								<div class="form-group">
-									{{ Form::label('onboardDate', 'Onboard-Date') }}
+									{{ Form::label('onboardDate', 'OnboardDate') }}
 									{{ Form::text('onboardDate', $refData['onboardDate'], array('class' => 'form-control','disabled' => 'disabled')) }}
 								</div>
 								<!-- <div class="form-group">
