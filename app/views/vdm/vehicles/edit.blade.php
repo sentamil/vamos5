@@ -55,13 +55,13 @@
 
 
 								 <div class="form-group">
-									{{ Form::label('morningTripStartTime', 'Morning Trip Start Time') }}
+									{{ Form::label('morningTripStartTime', 'DCODE') }}
 									{{ Form::text('morningTripStartTime', $refData['morningTripStartTime'], array('class' => 'form-control')) }}
 								</div>
 
 								<div class="form-group">
-									{{ Form::label('eveningTripStartTime', 'Evening Trip Start Time') }}
-									{{ Form::text('eveningTripStartTime',$refData['eveningTripStartTime'], array('class' => 'form-control'))}}            
+									{{ Form::label('eveningTripStartTime', 'TIMEZONE') }}
+									{{ Form::select('eveningTripStartTime', array( 'INDIA' => 'INDIA', 'CHINA' => 'CHINA','GMT'=>'GMT'), $refData['eveningTripStartTime'], array('class' => 'form-control'))}}            
 								</div> 
 								<div class="form-group">
 									{{ Form::label('route', 'Route Name') }}
