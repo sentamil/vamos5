@@ -38,14 +38,10 @@
             logo      =   parser.host;
           }
 
-
-         
           // (function test(){
           //    console.log("arun")
           // }());
           
-
-
           var path = document.location.pathname;
           var splitpath  = path.split("/");
           //console.log(' path '+"----"+splitpath[1]);
@@ -121,6 +117,16 @@
        $('#clickme').click(function(){
             var userId  = $('#userIds').val();
             sessionStorage.setItem('userIdName', JSON.stringify('username'+","+userId));
+
+            var usersID = JSON.stringify(userId);
+
+              if(usersID == '\"BSMOTORS\"')
+              {
+                 window.localStorage.setItem('refreshTime',120000);
+              }else{
+
+                 window.localStorage.setItem('refreshTime',60000);
+              }
         });
 
   $('#userIds').on('change', function() {
