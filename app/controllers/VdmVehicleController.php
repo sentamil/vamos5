@@ -2660,7 +2660,7 @@ public function findDealerList() {
 
 
 
-
+/*
 
 //ram
 
@@ -2745,7 +2745,114 @@ public function stops($id,$demo) {
     return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$id);       
 
 }
+*/
 
+//show stops
+public function stops($id,$demo) {
+    Log::info(' --------------inside 1-----------------'.$id);
+    Log::info(' --------------inside url-----------------'.Request::url() );
+
+    $redis = Redis::connection();
+    $ipaddress = $redis->get('ipaddress');
+    Log::info(' stops Ip....'.$ipaddress);
+    if (! Auth::check ()) {
+        return Redirect::to ( 'login' );
+    }
+    $username = Auth::user ()->username;
+    Log::info('id------------>'.$username);
+    $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+    Log::info('id------------>'.$fcode);
+    $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $id );           
+    $vehicleRefData=json_decode($vehicleRefData,true);
+
+    $orgId=$vehicleRefData['orgId'];
+    Log::info('id------------>'.$orgId);
+    $type=0;
+    $url = 'http://' .$ipaddress . ':9000/getSuggestedStopsForVechiles?vehicleId=' . $id . '&fcode=' . $fcode . '&orgcode=' .$orgId . '&type=' .$type.'&demo='.$demo;
+    $url=htmlspecialchars_decode($url);
+
+    log::info( ' url :' . $url);
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+// Include header in result? (0 = yes, 1 = no)
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+    $response = curl_exec($ch);
+    log::info( ' response :' . $response);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    log::info( 'finished');
+
+    $sugStop = json_decode($response,true);
+    log::info( ' user :');
+    if(!$sugStop['error']==null)
+    {
+        log::info( ' ---------inside null--------- :');
+
+//return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$id)->with('demo',$demo);
+
+    }               
+// var_dump($sugStop);
+    $value = $sugStop['suggestedStop'];
+    log::info( ' 1 :');
+//  var_dump($value);
+
+    $address = array();
+    log::info( ' 2 :');
+    // log::info('thiru '.$value[0]);
+    try
+    {
+        foreach($value as $org => $geoAddress) {                                   
+            $rowId1 = json_decode($geoAddress,true);
+            $t =0;
+            /*foreach($rowId1 as $org1 => $rowId2) {
+                log::info(' thiiii '.$rowId2)
+                if ($t==1)
+                {
+                    if(isset( $rowId1['time'] ) )
+                    {
+                        if($rowId1['time'] != null &&  $rowId1['time'] != '')
+                        {
+                            $address = array_add($address, $org,$rowId2.' '.$rowId1['time']);
+                            log::info( $org.' 3 :' . $t .$rowId2.$rowId1['time']);
+                        }
+                    }else
+                    {
+                        $address = array_add($address, $org,$rowId2);
+                        log::info( $org.' 3 :' . $t .$rowId2);   
+                    }     
+
+                }
+
+                $t++;
+            }*/
+            if(isset( $rowId1['time'] ) )
+            {
+                if($rowId1['time'] != null &&  $rowId1['time'] != '')
+                {
+                    $address = array_add($address,$org,$rowId1['geoAddress'].' '.$rowId1['time']);
+                    
+                }
+            }else
+            {
+                $address = array_add($address,$org, $rowId1['geoAddress']);
+                log::info(' org '. $org);
+            }  
+
+            log::info( ' final :'.$t);    
+        }     
+    }catch(\Exception $e)
+    {
+        log::info($e);
+        return View::make ( 'vdm.vehicles.stopgenerate' )->with('vehicleId',$id)->with('demo',$demo); 
+    }                          
+    $sugStop = $address;              
+    log::info( ' success :');
+    return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$id);       
+
+}
 
 
 public function migration($id)
@@ -2896,7 +3003,7 @@ public function rename($id)
 
 }
 
-
+/*
 public function removeStop($id,$demo) {
     Log::info(' --------------inside remove-----------------'.$id);
 
@@ -2976,8 +3083,130 @@ public function removeStop($id,$demo) {
 //H_Stopseq_$orgId_$fcode $routeNo:evening
 // return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$id);       
 
-}
+}*/
 
+public function removeStop($id,$demo) {
+
+    Log::info(' --------------inside remove-----------------'.$id);
+    Log::info(' --------------inside remove-----------------'.$demo);
+
+    $redis = Redis::connection();
+    $ipaddress = $redis->get('ipaddress');
+    Log::info(' stops Ip....'.$ipaddress);
+    if (! Auth::check ()) {
+        return Redirect::to ( 'login' );
+    }
+    $username = Auth::user ()->username;
+    Log::info('id------------>'.$username);
+    $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+    Log::info('id------------>'.$fcode);
+    $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $id );           
+    $vehicleRefData=json_decode($vehicleRefData,true);
+
+    $orgId=$vehicleRefData['orgId'];
+    $routeNo=$vehicleRefData['shortName'];
+    Log::info('org------------>'.$orgId);
+    Log::info('route------------>'.$routeNo);
+
+    $dbIpaddress = $redis->hget('H_Franchise_Mysql_DatabaseIP',$fcode);
+   // $servername = $dbIpaddress;
+
+    if (strlen($dbIpaddress) > 0 && strlen(trim($dbIpaddress) == 0)){
+        return 'Ipaddress Failed !!!';
+    }
+
+    $usernamedb = "root";
+    $password = "#vamo123";
+    $dbname = $fcode;
+    $servername= $ipaddress;
+    $suggeststop=$redis->LRANGE ('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode , 0, -1);
+    $suggeststop1=$redis->LRANGE ('L_Suggest_Alt'.$routeNo.'_'.$orgId.'_'.$fcode , 0, -1);
+    if(!$suggeststop==null)
+    {
+        if($demo=='normal')
+        {
+            $arraystop= $redis->lrange('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode ,0 ,-1);
+            foreach($arraystop as $org => $geoAddress){
+                Log::info('inside value present------------>'.$org);
+                $redis->hdel('H_Bus_Stops_'.$orgId.'_'.$fcode , $routeNo.':stop'.$org);
+            }
+            $redis->del('L_Suggest_'.$routeNo.'_'.$orgId.'_'.$fcode);
+            $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , $routeNo.':morning');
+            $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , $routeNo.':evening');
+            $redis->srem('S_Organisation_Route_'.$orgId.'_'.$fcode,$routeNo);
+            $conn = mysqli_connect($servername, $usernamedb, $password, $dbname);
+
+            if( !$conn )
+            {
+                log::info(' connection not created');
+                die('Could not connect: ' . mysqli_connect_error());
+            }else {
+                log::info('connection created');
+                $query = "SELECT * FROM StudentSmsDetails where route='".$routeNo."'";
+                log::info($query);
+                $results = mysqli_query($conn,$query);
+                while ($row = mysqli_fetch_array($results)) {
+                     log::info('clearr');
+                     log::info($row['mobileNumber']);
+                     $mobileNumber = $row['mobileNumber'];
+                     $redis->hdel('H_Mblno_'.$orgId.'_'.$fcode, $mobileNumber);
+                    }
+                $DeleteQuery = "DELETE FROM StudentSmsDetails where route='".$routeNo."'"; 
+                $conn->query($DeleteQuery);  
+            }
+         $conn->close();
+//HDEL myhash
+             return Redirect::to ( 'vdmVehicles' ); 
+        }
+    }
+    if(!$suggeststop1==null)
+    {
+        Log::info('1');
+        if($demo=='alternate')
+        {
+            Log::info('2');
+            $arraystop= $redis->lrange('L_Suggest_Alt'.$routeNo.'_'.$orgId.'_'.$fcode ,0 ,-1);
+            foreach($arraystop as $org => $geoAddress){
+                Log::info('inside value present------------>'.$org);
+                $redis->hdel('H_Bus_Stops_'.$orgId.'_'.$fcode , 'Alt'.$routeNo.':stop'.$org);
+            }
+            $redis->del('L_Suggest_Alt'.$routeNo.'_'.$orgId.'_'.$fcode);
+            $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , 'Alt'.$routeNo.':morning');
+            $redis->hdel('H_Stopseq_'.$orgId.'_'.$fcode , 'Alt'.$routeNo.':evening');
+//HDEL myhash
+            $conn = mysqli_connect($servername, $usernamedb, $password, $dbname);
+
+            if( !$conn )
+            {
+                log::info(' connection not created');
+                die('Could not connect: ' . mysqli_connect_error());
+            }else {
+                log::info('connection created');
+                $query = "SELECT * FROM StudentSmsDetails where route='".$routeNo."'";
+                log::info($query);
+                $results = mysqli_query($conn,$query);
+                while ($row = mysqli_fetch_array($results)) {
+                     log::info($row['mobileNumber']);
+                     $mobileNumber = $row['mobileNumber'];
+                     $redis->hdel('H_Mblno_'.$orgId.'_'.$fcode, $mobileNumber);
+                    }
+                $DeleteQuery = "DELETE FROM StudentSmsDetails where route='".$routeNo."'"; 
+                $conn->query($DeleteQuery);     
+            }
+            $conn->close();
+            return Redirect::to ( 'vdmVehicles' ); 
+        }
+    }
+    else{
+        Log::info('inside no value present------------>');
+        return Redirect::to ( 'vdmVehicles' );
+    }
+// L_Suggest_$routeNo_$orgId_$fcode
+//H_Stopseq_$orgId_$fcode $routeNo:morning
+//H_Stopseq_$orgId_$fcode $routeNo:evening
+// return View::make ( 'vdm.vehicles.showStops' )->with('sugStop',$sugStop)->with('vehicleId',$id);       
+
+}
 
 
 public function stops1($id,$demo) {
@@ -3307,10 +3536,8 @@ public function storeMulti() {
     curl_close($ch);
 
     return Redirect::to ( 'vdmVehicles' );  
-
-
-
-}
-
+  }
 
 }
+
+
