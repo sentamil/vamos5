@@ -1,6 +1,5 @@
 app.controller('mainCtrl',['$scope', '$http','vamoservice', '_global', function($scope, $http, vamoservice, GLOBAL){
-	console.log(' inside the controller ')
-
+	//console.log(' inside the controller ')
 	//Global Variable
 	$scope.url 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	$scope.gIndex		=	0;
@@ -253,7 +252,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', '_global', function(
 
 
 	$scope.nullValue = function(value_Data){
-		console.log(' 1 ');
+		//console.log(' 1 ');
 		if(value_Data.month==undefined)
 		return true;
 	}
@@ -268,9 +267,10 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', '_global', function(
 	function dailyFunction(){
 		var dateObj 			= 	new Date();
 		$scope.fromNowTS		=	new Date(dateObj.setDate(dateObj.getDate()-1));
-		$scope.totime 			= 	formatAMPM($scope.fromNowTS.getTime());
+	//	$scope.totime 			= 	formatAMPM($scope.fromNowTS.getTime());
 		$scope.fromdateDaily	=	getTodayDate($scope.fromNowTS);
-		$scope.todateDaily		=	getTodayDate($scope.fromNowTS);
+	//  $scope.todateDaily	    =	getTodayDate($scope.fromNowTS);
+		$scope.todateDaily		=   $scope.fromdateDaily;
 		var webServiceUrl   	=   GLOBAL.DOMAIN_NAME+'/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromUtcTime='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toUtcTime='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
 		OverallDriverPerformance(webServiceUrl);
 	}
@@ -354,6 +354,7 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', '_global', function(
 			
 			startLoading();
 			var webServiceUrl   = 	'';
+			$scope.todateDaily  = $scope.fromdateDaily;
 			if(status == 'daily')
 				webServiceUrl   	=   GLOBAL.DOMAIN_NAME+'/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromUtcTime='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toUtcTime='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
 				// webServiceUrl   	=   'http://'+globalIP+context+'/public/getDailyDriverPerformance?groupId='+$scope.groupName+'&fromDate='+$scope.fromdateDaily+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.todateDaily+'&toTime='+convert_to_24h($scope.totime)+'&fromDateUTC='+utcFormat($scope.fromdateDaily,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todateDaily,convert_to_24h($scope.totime));
