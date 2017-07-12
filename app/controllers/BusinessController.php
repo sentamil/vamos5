@@ -1419,7 +1419,7 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
            				 'Payment_Mode'=>isset($refDataJson1['Payment_Mode'])?$refDataJson1['Payment_Mode']:'',
            				 'descriptionStatus'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'',
 						'vehicleExpiry'=>isset($refDataJson1['vehicleExpiry'])?$refDataJson1['vehicleExpiry']:'',
-                        'onboardDate'=>isset($refDataJson1['onboardDate'])?$refDataJson1['onboardDate']:$onboardDate,
+                        'onboardDate'=>isset($refDataJson1['onboardDate'])?$refDataJson1['onboardDate']:'',
 			            );
 
 			        $refDataJson = json_encode ( $refDataArr );
