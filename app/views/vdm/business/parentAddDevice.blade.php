@@ -8,7 +8,7 @@
                    		 <h4><b><font>ADD DEVICE</font></b></h4>
                 	 </div>
                 	<div class="panel-body">
-					<h4><font color="#196481">Available licences :  {{$availableLincence}}
+					<h4><font color="#196481">Available Licences :  {{$availableLincence}}
 					</font></h4>
 					</br>
 					<br>
@@ -23,7 +23,7 @@
 												<div class="row">
 
 													<div class="col-md-6">
-														{{ Form::label('numberofdevice', 'Number Of Devices to be added :') }}
+														{{ Form::label('numberofdevice', 'Number Of Devices to be added:') }}
 
 													</div>
 													
