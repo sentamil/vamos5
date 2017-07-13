@@ -8,7 +8,7 @@
 
 </head>
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
-<body class="cont">
+<body class="cont"   onload="callMe()">
 
   {{ Form::open(array('url' => 'login')) }}
     <div class="demo">
@@ -17,7 +17,7 @@
         <img id="imagesrc" style="border-radius: 8px;max-width: 100%;height: auto;"/>
         <script>
           
-                  
+                 
           sessionStorage.clear();
           var logo =document.location.host;
           function ValidateIPaddress(ipaddress)   
@@ -113,6 +113,20 @@
      {{ Form::close() }}
 </body>
     <script type="text/javascript">
+
+
+ function callMe ()
+  {
+      var isChrome = !!window.chrome && !!window.chrome.webstore;
+
+          if (isChrome == false)
+            {
+              for(;;)
+                {
+                  alert("Please Open Site on Google Chrome");
+                }
+            }
+    }
 
        $('#clickme').click(function(){
             var userId  = $('#userIds').val();
