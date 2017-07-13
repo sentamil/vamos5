@@ -50,11 +50,11 @@
         <div class="small-logo">
             <span class="text-primary">HOMER APP</span>
         </div>
-        <form role="search" class="navbar-form-custom" method="post" action="#">
+        <!--<form role="search" class="navbar-form-custom" method="post" action="#">
             <div class="form-group">
-                <input type="text" class="form-control" name="search">
+                <input type="text" placeholder="Search something special" class="form-control" name="search">
             </div>
-        </form>
+        </form>-->
         <div class="navbar-right">
             <ul class="nav navbar-nav no-borders">
                 <li class="dropdown">
