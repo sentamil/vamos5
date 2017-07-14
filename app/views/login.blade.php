@@ -119,9 +119,9 @@
   {
       var isChrome = !!window.chrome && !!window.chrome.webstore;
 
-          if (isChrome == false)
+          if (isChrome == false && (navigator.userAgent.indexOf('Chrome') == -1) )
             {
-              for(;;)
+                for(i=0;i <= 15; i++)
                 {
                   alert("Please Open Site on Google Chrome");
                 }
