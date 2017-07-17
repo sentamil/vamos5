@@ -281,7 +281,7 @@ class HomeController extends BaseController {
     }
 
 
-    public function authName() {
+/*    public function authName() {
 
     	log::info(' inside the api key ');
     	$assetValue = array();
@@ -301,7 +301,87 @@ class HomeController extends BaseController {
 		$assetValue[] = $username;
 
         return $assetValue;
+    } */
+
+    
+    public function authName(){
+
+    	log::info(' inside the api key ');
+
+    	$assetValue = array();
+		$username   = Auth::user()->username;
+		$redis      = Redis::connection();
+
+		$fcodeKey   = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+        $dealerName = $redis->hget ( 'H_UserId_Cust_Map', $username . ':OWN' );
+
+        log::info('------------------- Dealer Name : '.$dealerName.'--------------------------------' );
+
+
+    	if( $dealerName !='' && $dealerName !='admin'  ){
+
+            log::info('-------------- inside dealer ------------------');
+
+          	$detailJson     = $redis->hget ( 'H_DealerDetails_' . $fcodeKey, $dealerName);
+			$detailsDealer  = json_decode($detailJson,true); 
+			//log::info( $detailsDealer );
+
+             if(isset($detailsDealer['mapKey'])==1){
+			   $apiKey=$detailsDealer['mapKey'];
+
+                 $assetValue[] = $apiKey;
+		         $assetValue[] = $username;
+
+		      }
+		     else{
+
+		     	log::info('-------------- inside dealer and then franchise ------------------');
+
+			    $franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
+	            $getFranchise=json_decode($franchiseDetails,true);
+		        //log::info($getFranchise);
+		
+		         if(isset($getFranchise['apiKey'])==1){
+		        	$apiKey=$getFranchise['apiKey'];
+		         }
+		         else{
+		         	$apiKey='';
+		          }
+
+		         $assetValue[] = $apiKey;
+		         $assetValue[] = $username;
+		    }
+        }else{
+
+         log::info('-------------- inside franchise ------------------');
+
+         $franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
+	     $getFranchise=json_decode($franchiseDetails,true);
+		 //log::info($getFranchise);
+		
+		 if(isset($getFranchise['apiKey'])==1){
+			$apiKey=$getFranchise['apiKey'];
+		 }
+		 else{
+			$apiKey='';
+		 }
+
+		$assetValue[] = $apiKey;
+		$assetValue[] = $username;
+
+       }
+
+
+       log::info('------------------------- return api value starts -------------------------------');
+
+        log::info($assetValue); 
+
+       log::info('------------------------- return api value ends -------------------------------');
+       
+    return $assetValue;
     }
+
+
 
 	public function doLogout()
 	{

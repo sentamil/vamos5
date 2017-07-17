@@ -161,6 +161,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
         $http.get(schoolSmsUrl).success(function(data){
             
             $scope.schoolSmsData=data.smsList;
+            $scope.totSmsDeliv=data.overallSmsDelivered;
           //console.log($scope.schoolSmsData);
           stopLoading();
 		  }); 
