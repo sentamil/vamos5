@@ -1204,7 +1204,7 @@ $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.
 	   }
     else if($own=='OWN')
     {
-		$redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$mobileNoOld.':OWN');	
+	 $redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$mobileNoOld.':OWN');	
 	 $redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo.':OWN', $vehicleId );
 	}		
 //
@@ -1888,6 +1888,10 @@ $current = Carbon::now();
   $refDataFromDBR = json_decode ( $detailsR, true );
   $orgId =isset($refDataFromDBR['orgId'])?$refDataFromDBR['orgId']:'default';
   Log::info(' orgIdOK = ' . $orgId);
+  $mobileNo1 =isset($refDataFromDBR['mobileNo'])?$refDataFromDBR['mobileNo']:'';
+  $mobileNo=strtoupper($mobileNo1);
+  $shortName1 =isset($refDataFromDBR['shortName'])?$refDataFromDBR['shortName']:'';
+  $shortName =strtoupper($shortName1);
 //
 ///ram vehicleIdCheck
     $vehicleIdcheck=$redis->sismember( 'S_Vehicles_' . $fcode, $vehicleId); log::info('reamaa.....'.$vehicleIdcheck);
@@ -2098,7 +2102,11 @@ $current = Carbon::now();
 
 //            Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
         }
-      
+      $deviceId =isset($refDataFromDBR['deviceId'])?$refDataFromDBR['deviceId']:'';
+	  $shortNameOld =isset($refDataFromDBR['shortName'])?$refDataFromDBR['shortName']:'';
+	  $orgId1=strtoupper($orgId);
+	  $redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortNameOld.':'.$orgId1.':'.$mobileNo);
+	  $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo, $vehicleId);
         $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
         log::info(' expire---->'.$expiredPeriodOld);
         if(!$expiredPeriod==null)
@@ -2113,6 +2121,8 @@ $current = Carbon::now();
             log::info('-----------inside dealer-----------');
             $redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
+		$redis->hdel ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_' .$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortNameOld.':'.$orgId1.':'.$mobileNo);
+		$redis->hset ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo, $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Dealer_'.$username.'_' . $fcode);
         }
         else if(Session::get('cur')=='admin')
@@ -2120,6 +2130,8 @@ $current = Carbon::now();
             log::info('-----------inside admin-----------');
             $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
+			$redis->hdel ('H_VehicleName_Mobile_Admin_OWN_Org_' .$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortNameOld.':'.$orgId1.':'.$mobileNo.':OWN');
+			$redis->hset ('H_VehicleName_Mobile_Admin_OWN_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo.':OWN', $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Admin_'.$fcode);
         }
         foreach ( $groupList1 as $group ) {
