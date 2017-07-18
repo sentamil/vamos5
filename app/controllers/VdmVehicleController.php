@@ -2105,7 +2105,7 @@ $current = Carbon::now();
       $deviceId =isset($refDataFromDBR['deviceId'])?$refDataFromDBR['deviceId']:'';
 	  $shortNameOld =isset($refDataFromDBR['shortName'])?$refDataFromDBR['shortName']:'';
 	  $orgId1=strtoupper($orgId);
-	  $redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortNameOld.':'.$orgId1.':'.$mobileNo);
+	  $redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$mobileNo);
 	  $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo, $vehicleId);
         $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
         log::info(' expire---->'.$expiredPeriodOld);
@@ -2121,7 +2121,7 @@ $current = Carbon::now();
             log::info('-----------inside dealer-----------');
             $redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
-		$redis->hdel ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_' .$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortNameOld.':'.$orgId1.':'.$mobileNo);
+		$redis->hdel ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$mobileNo);
 		$redis->hset ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo, $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Dealer_'.$username.'_' . $fcode);
         }
@@ -2130,7 +2130,7 @@ $current = Carbon::now();
             log::info('-----------inside admin-----------');
             $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
-			$redis->hdel ('H_VehicleName_Mobile_Admin_OWN_Org_' .$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortNameOld.':'.$orgId1.':'.$mobileNo.':OWN');
+			$redis->hdel ('H_VehicleName_Mobile_Admin_OWN_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$mobileNo.':OWN');
 			$redis->hset ('H_VehicleName_Mobile_Admin_OWN_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo.':OWN', $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Admin_'.$fcode);
         }
