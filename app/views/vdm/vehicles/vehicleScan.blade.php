@@ -51,9 +51,9 @@ tr:nth-of-type(odd) {
 	  
   td:nth-of-type(6):before {content: "Actions "}
   @endif
-  td:nth-of-type(6):before {content: "Status ";}  
+  <!--td:nth-of-type(6):before {content: "Status ";}  
   td:nth-of-type(7):before {content: "Device Model ";}
-  td:nth-of-type(8):before {content: "Mobile No ";}
+  td:nth-of-type(8):before {content: "Mobile No ";}-->
  } 
  </style>
 <div id="wrapper">
@@ -62,7 +62,7 @@ tr:nth-of-type(odd) {
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
-                    <h4><b>Vehicles List</b></h4>                
+                    <h4><b>Vehicles Search</b></h4>                
                 </div>
                 <div class="panel-body">
                 {{ Form::open(array('url' => 'vdmVehiclesSearch/scan','method' => 'post')) }}
@@ -75,7 +75,7 @@ tr:nth-of-type(odd) {
                         </div>
                       </div>
                       <div class="col-md-6">
-                        {{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}{{ Form::close() }}
+                        {{ Form::submit('Search', array('class' => 'btn btn-primary')) }}{{ Form::close() }}
                       </div>
                       <hr>
                   </div>
@@ -96,16 +96,7 @@ tr:nth-of-type(odd) {
 							<th style="text-align: center;">Vehicle Name</th>
 							<th style="text-align: center;">Org Name</th>
 							<th style="text-align: center;">Device ID</th>
-							
-								@if(Session::get('vCol')=='2')
-									<th style="text-align: center;">Status</th>
-									<th style="text-align: center;">Device Model</th>
-								<!-- <th style="text-align: center;">Expire Date</th> -->
-								<th style="text-align: center;">Mobile No</th>
-									@endif 
-							@if(Session::get('vCol')=='1')
-							<th style="text-align: center;">Actions</th>
-							@endif 
+							<th style="text-align: center;">Actions</th> 
 						</tr>
 					</thead>
 					<tbody>

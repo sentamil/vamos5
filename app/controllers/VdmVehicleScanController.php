@@ -29,18 +29,23 @@ public function vehicleScan() {
     if(Session::get('cur')=='dealer')
     {
         $vehicleListId='S_Vehicles_Dealer_'.$username.'_'.$fcode;
+		$vehicleNameMob='H_VehicleName_Mobile_Dealer_'.$username.'_Org_'.$fcode;
     }
     else if(Session::get('cur')=='admin')
     {
         $vehicleListId='S_Vehicles_Admin_'.$fcode;
+		$vehicleNameMob='H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode;
     }
     else{
         $vehicleListId = 'S_Vehicles_' . $fcode;
+		$vehicleNameMob='H_VehicleName_Mobile_Org_'.$fcode;
     }
-        $text_word = Input::get('text_word');
+        $text_word1 = Input::get('text_word');
+		$text_word = strtoupper($text_word1);
         $vehicleList = $redis->smembers ( $vehicleListId); //log::info($vehicleList);
         $cou = $redis->SCARD($vehicleListId); //log::info($cou);
-        $orgLi = $redis->sScan( $vehicleListId, 0,  'count', $cou, 'match', $text_word); //log::info($orgLi);
+		$orgLi = $redis->HScan( $vehicleNameMob, 0,  'count', $cou, 'match', '*'.$text_word.'*');
+       // $orgLi = $redis->sScan( $vehicleListId, 0,  'count', $cou, 'match', $text_word); //log::info($orgLi);
         $orgL = $orgLi[1];
     $deviceList = null;
     $deviceId = null;
@@ -65,8 +70,8 @@ public function vehicleScan() {
             continue;
         }
         $vehicleRefData=json_decode($vehicleRefData,true);
-
-        $deviceId = $vehicleRefData['deviceId'];
+        $deviceId =isset($vehicleRefData['deviceId'])?$vehicleRefData['deviceId']:'';
+        //$deviceId = $vehicleRefData['deviceId'];
         if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.$username.'_'.$fcode, $deviceId)==0) || Session::get('cur')=='admin')
         {
             Log::info(Session::get('cur').'in side ' .$redis->sismember('S_Pre_Onboard_Dealer_'.$username.'_'.$fcode, $deviceId));

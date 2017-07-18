@@ -966,7 +966,20 @@ public function update($id) {
     $redis = Redis::connection ();
     $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
     $vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
-
+//ram-new-key---
+$refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);
+$refDataJson1=json_decode($refDataJson1,true);
+//log::info($refDataJson1);
+$shortName1=$refDataJson1['shortName'];
+$shortNameOld=strtoupper($shortName1);
+$mobileNoOld=isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'';
+$orgIdOld1=$refDataJson1['orgId'];
+$orgIdOld=strtoupper($orgIdOld1);
+ $orgId=$refDataJson1['orgId'];	
+ $orgId1=strtoupper($orgId);	
+ $own=$refDataJson1['OWN'];	
+//log::info('areeeerrrrr'.$own);	
+//---    
 
     $rules = array (
         'shortName' => 'required',
@@ -1179,7 +1192,22 @@ foreach ( $details as $gr ) {
 
 
 $redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $temp );
-
+//ram-new-key--
+$orgId1=strtoupper($orgId);
+$redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$mobileNoOld);
+$redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo, $vehicleId);
+//---
+   if($own!=='OWN')	
+	   {
+		$redis->hdel('H_VehicleName_Mobile_Dealer_'.$own.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$mobileNoOld);	
+		$redis->hset('H_VehicleName_Mobile_Dealer_'.$own.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo, $vehicleId );
+	   }
+    else if($own=='OWN')
+    {
+		$redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$mobileNoOld.':OWN');	
+	 $redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo.':OWN', $vehicleId );
+	}		
+//
 
 
 
@@ -2281,8 +2309,16 @@ public function migrationUpdate() {
 
         $refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleIdOld);
         $refDataJson1=json_decode($refDataJson1,true);
-
+     //ram-new-key---
+    $shortName1=$refDataJson1['shortName'];
+    $shortName=strtoupper($shortName1);
+    //log::info($refDataJson1);
+    $mobileNoOld=isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'';
+    $mobileNo1=isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789';
+    $mobileNo=strtoupper($mobileNo1);
+    //----
         $orgId=isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default';
+    $orgId1=strtoupper($orgId); 
         $time =microtime(true);
         $time = round($time * 1000);
         $franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
@@ -2407,7 +2443,10 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
         $redis->srem ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleIdOld);
         $redis->sadd ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleId);
 
-
+//ram-new-key---
+$redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId1.':'.$mobileNoOld);
+$redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo, $vehicleId);
+///----
 
 
 
@@ -2437,6 +2476,8 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
             log::info('-----------inside dealer-----------');
             $redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
+		$redis->hdel ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId1.':'.$mobileNoOld);
+        $redis->hset ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNoOld, $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Dealer_'.$username.'_' . $fcode);
         }
         else if(Session::get('cur')=='admin')
@@ -2444,6 +2485,8 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
             log::info('-----------inside admin-----------');
             $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
+		$redis->hdel ('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId1.':'.$mobileNo.':OWN');
+		$redis->hset ('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo.':OWN', $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Admin_'.$fcode);
         }
         foreach ( $groupList1 as $group ) {
