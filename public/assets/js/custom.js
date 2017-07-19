@@ -493,7 +493,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 				$('#status').fadeOut(); 
 				$('#preloader').delay(350).fadeOut('slow');
 				$('body').delay(350).css({'overflow':'visible'});
-				//alert(individualVehicle[0].address);
+				alert(individualVehicle[0].address);
 			}
 			else
 			{  

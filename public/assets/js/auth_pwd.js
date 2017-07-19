@@ -560,6 +560,8 @@ $scope._deleteFilterMobNum = function(index,mobb,routeN){
 */
 
 function showStop() {
+
+  console.log('show stops...');
   
   var _showStopUrl  = _showUrl+'?routeNo='+$scope.selectRouteName;
   console.log(_showStopUrl);
@@ -628,12 +630,12 @@ $scope._addDetails  = function(){
 
     }
 
-    showStop();
-    stopLoading()
   }catch (err){stopLoading()}
 
   });
 
+  showStop();
+stopLoading();
 }
 
 
