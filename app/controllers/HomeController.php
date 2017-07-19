@@ -104,8 +104,7 @@ class HomeController extends BaseController {
 	}
 	
 	public function reverseGeoLocation()
-	{
-		
+	{		
 		Log::info("Into reverse Geo Location");
 		$lat = Input::get('lat');
 		$lng=Input::get('lng');
@@ -281,7 +280,7 @@ class HomeController extends BaseController {
     }
 
 
-/*    public function authName() {
+    public function authName() {
 
     	log::info(' inside the api key ');
     	$assetValue = array();
@@ -301,10 +300,9 @@ class HomeController extends BaseController {
 		$assetValue[] = $username;
 
         return $assetValue;
-    } */
+     } 
 
-    
-    public function authName(){
+    /*   public function authName(){
 
     	log::info(' inside the api key ');
 
@@ -324,14 +322,39 @@ class HomeController extends BaseController {
 
           	$detailJson     = $redis->hget ( 'H_DealerDetails_' . $fcodeKey, $dealerName);
 			$detailsDealer  = json_decode($detailJson,true); 
-			//log::info( $detailsDealer );
+			  // log::info( $detailsDealer );
 
              if(isset($detailsDealer['mapKey'])==1){
-			   $apiKey=$detailsDealer['mapKey'];
 
-                 $assetValue[] = $apiKey;
+                	log::info('-------------- inside dealer if...------------------');  
+                   
+			         $apiKey = $detailsDealer['mapKey'];
+
+			         //log::info( $detailsDealer );
+                  
+                  if( $apiKey !='') {
+                      $assetValue[] = $apiKey;
+		              $assetValue[] = $username;
+		          }
+		          else{
+
+                       	log::info('-------------- inside dealer and then franchise if if if ...... ------------------');
+
+			        $franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
+	                $getFranchise=json_decode($franchiseDetails,true);
+		            //log::info($getFranchise);
+		
+		         if(isset($getFranchise['apiKey'])==1){
+		        	$apiKey=$getFranchise['apiKey'];
+		         }
+		         else{
+		         	$apiKey='';
+		          }
+
+		         $assetValue[] = $apiKey;
 		         $assetValue[] = $username;
 
+		          }
 		      }
 		     else{
 
@@ -371,17 +394,13 @@ class HomeController extends BaseController {
 
        }
 
-
        log::info('------------------------- return api value starts -------------------------------');
-
-        log::info($assetValue); 
-
+       log::info($assetValue); 
        log::info('------------------------- return api value ends -------------------------------');
        
     return $assetValue;
     }
-
-
+*/
 
 	public function doLogout()
 	{
