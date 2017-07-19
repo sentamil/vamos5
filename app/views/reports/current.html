@@ -38,7 +38,6 @@
     background: rgba(51, 51, 51, 0);
     cursor: pointer;
     border: 1px solid black;
-
 }
 	
 .table-striped > tbody > tr:nth-child(even) > td, 
@@ -46,7 +45,6 @@
 background-color: #ffffff;
 }
 	  
-
 </style>
 </head>
 <div id="preloader" >
@@ -146,8 +144,8 @@ background-color: #ffffff;
 
 
                                
-                                        <a data-toggle="collapse"   href="#collapse{{$index}}"  data-parent="#accordion0">
-                                          {{itemss.geoFence}}</a>
+                                        <a data-toggle="collapse"   href="#collapse{{$index}}"  data-parent="#accordion0" >
+                                         <u > {{itemss.geoFence}}</u></a>
 
 
 		                                    <div class="span6 pull-right"   ng-hide="getGeoFence[$index].getVehicles.length == 1"><b> 
@@ -166,13 +164,28 @@ background-color: #ffffff;
                                          <th style="text-align: left;">Count</th>
                                          <th style="text-align: left;">Vehicle Number</th>
                                           <th style="text-align: left;">Status</th>
+                                          <th style="text-align: left;">Position</th>
+                                          <th style="text-align: left;">Duration (h:m:s)</th>
                                       </tr>
                                    </thead>
                                 <tbody>
                                 <tr ng-repeat="item in itemss.getVehicles">
                                   <th scope="row" style="text-align: left;">{{$index+1}}</th>
-                                  <td style="text-align: left;">{{siteSplitName(item)}}</td>
-                                  <td style="text-align: left;">{{siteSplitStat(item)}}</td>
+                                  <td style="text-align: left;">{{siteSplitName(item,1)}}</td>
+                                  <td style="text-align: left;">{{siteSplitName(item,2)}}</td>
+                             <!-- <td style="text-align: left;">{{siteSplitName(item,3)}}</td> -->
+
+                                  <td style="text-align: left;" ng-switch on="siteSplitName(item,3)">
+			                            <span ng-switch-when="S" style="padding-left:10px;"><img title="Vehicle Standing" src="assets/imgs/orange.png"/></span>
+			                            <span ng-switch-when="M" style="padding-left:5px;">
+			                                <span ng-if="siteSplitName(item,5) == 'R'" style="padding-left:5px;"><img src="assets/imgs/red.png"></span>
+			                                <span ng-if="siteSplitName(item,5) == 'G'" style="padding-left:5px;"><img src="assets/imgs/green.png"></span>
+			                            </span>
+			                            <span ng-switch-when="P" style="padding-left:10px;"><img title="Vehicle Parked" src="assets/imgs/flag.png"/></span>
+			                            <span ng-switch-when="U" style="padding-left:10px;"><img title="Vehicle NoData" src="assets/imgs/gray.png"/></span>
+			                        </td>
+
+                                  <td style="text-align: left;">{{msToTime(siteSplitName(item,4))}}</td>
                                 </tr>
 	 
                           </tbody>

@@ -3,7 +3,7 @@ var getIP	=	globalIP;
 app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global', function($scope, $http, $timeout, $interval, GLOBAL){
 	
 	//$("#testLoad").load("../public/menu");
-	var getUrl  =   document.location.href;
+	  var getUrl  =   document.location.href;
 	//var index   =   getUrl.split("=")[1];
 
 	var index=getParameterByName('ind');
@@ -41,34 +41,38 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };	
 
-    $scope.siteSplitStat  =	function(data) {
 
+    $scope.siteSplitName  =	function(data,num) {
+
+     //console.log(num);
        var splitRetValue;
 
-    	if(data)
+      if(data)
          {
-          var splitValue = data.split(/[:]+/);
-          splitRetValue = splitValue[1];
-        }else{
-          splitRetValue ="";        
+         splitRetValue = data.split(/[:]+/);
+            // splitRetValue = splitValue[0];
+       
+         switch(num){ 
+        	case 1:
+     	      return splitRetValue[0];
+     	    break;
+     	    case 2:
+     	      return splitRetValue[1];
+     	    break;
+     	    case 3:
+     	      return splitRetValue[2];
+     	    break;
+     	    case 4:
+     	     return splitRetValue[3];
+     	    break; 
+     	    case 5:
+     	     return splitRetValue[4];
+     	    break;      
           }
 
-     return splitRetValue;
-    }
-
-    $scope.siteSplitName  =	function(data) {
-
-       var splitRetValue;
-
-    	if(data)
-         {
-         var splitValue = data.split(/[:]+/);
-             splitRetValue = splitValue[0];
-        }else{
-             splitRetValue ="";        
+       }else{
+            return splitRetValue ="";        
           }
-
-     return splitRetValue;
     }
     
     
@@ -260,7 +264,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		$scope.sort 	= sortByDate(sName);
 		if(val == 'reload' || val == undefined)
 			$scope.siteTab 	= false, $scope.actTab 	= false;
-		promise  = $interval( function(){ $scope._globalInit();}, 60000);
+		promise  = $interval( function(){ $scope._globalInit(); /*$scope.geoVehLocations();*/}, 60000);
 	}
 
 	$scope.startTime('shortName', index);
@@ -329,18 +333,16 @@ $scope.geoVehLocations = function(){
          	var splitValue    = userMasterId.split(',');
          	var userName      = splitValue[1];
          }
-        // 	var requestUrl    = 'http://128.199.159.130:9000/getSitewiseVehicleCount?userId='+userName+'&groupId='+groupMasterId+'';
+      
             var requestUrl    =  GLOBAL.DOMAIN_NAME+'/getSitewiseVehicleCount?groupId='+groupMasterId;
-            console.log(requestUrl);
+         // console.log(requestUrl);
 
         $http.get(requestUrl).success(function(data)
 			{	
-
                $scope.getGeoFence    = data.siteDetails;
 
-
-               if(data){
-               $scope.verifyGeoCount = $scope.getGeoFence.length;
+              if(data){
+                $scope.verifyGeoCount = $scope.getGeoFence.length;
                }
 
 			});
@@ -689,6 +691,7 @@ $scope.geoVehLocations = function(){
     // millesec to day, hours, min, sec
     $scope.msToTime = function(ms) 
     {
+    	if(ms != null){
         days = Math.floor(ms / (24 * 60 * 60 * 1000));
 	  	daysms = ms % (24 * 60 * 60 * 1000);
 		hours = Math.floor((ms) / (60 * 60 * 1000));
@@ -696,16 +699,11 @@ $scope.geoVehLocations = function(){
 		minutes = Math.floor((hoursms) / (60 * 1000));
 		minutesms = ms % (60 * 1000);
 		seconds = Math.floor((minutesms) / 1000);
-
-		if(days==0){
-		 return hours+":"+minutes+":"+seconds;
-	    }
-		else if(days==1){
-	     return days+'day '+hours +":"+minutes+":"+seconds;
-		}
-	    else if(days>1){
-	     return days+'days '+hours +":"+minutes+":"+seconds;
-	    }
+		// if(days==0)
+		// 	return hours +" h "+minutes+" m "+seconds+" s ";
+		// else
+		return hours +":"+minutes+":"+seconds;
+	   }
 	}
 	
 	$scope.recursive   = function(location,index){

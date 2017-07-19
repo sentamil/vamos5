@@ -65,7 +65,6 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
               if($scope.vehiname == value.vehicleId)
               $scope.shortNam = value.shortName;
             })
-            
           }
             
         })
@@ -279,6 +278,10 @@ function eventButton(eventdate)
       $scope.loading  = true;
       try{
         $http.get(histurl).success(function(data){
+
+          // console.log(data.error);
+             $scope.errMsg=data.error;
+
           if(data.vehicleLocations != null){
 
           $scope.loading      = false;
@@ -318,7 +321,7 @@ function eventButton(eventdate)
       stopLoading()
     }  
     }(prodId));
-    
+
     $scope.alertMe_click    = function(value){
       switch(value){
         case 'movementreport':
@@ -562,10 +565,7 @@ function eventButton(eventdate)
    return ret_obj;
     }
 
-
-
-
-    $scope.timeFilter_stop=function(data,fVal)
+  $scope.timeFilter_stop=function(data,fVal)
     {   
       var filterValues=fVal;
       var ret_obj=[];
@@ -671,7 +671,6 @@ function eventButton(eventdate)
      $scope.stopReport=[];
      $scope.stopReport=$scope.timeFilter_stop($scope.filterLoc, $scope.filterValStop);
    }
-
 }
 
     //for initial loading
@@ -747,10 +746,7 @@ function eventButton(eventdate)
               }(indexs));
         }
       })
-
   }
-
-  
 
   function google_api_call_Over(tempurlOv, indexs, latOv, lonOv){
     $http.get(tempurlOv).success(function(data){
@@ -1107,9 +1103,6 @@ function eventButton(eventdate)
       return marktimestr;
     };
   
-
- 
-  
   $scope.genericFunction = function(vehid, index){
     sessionValue(vehid, $scope.gName);
   }
@@ -1124,7 +1117,6 @@ function eventButton(eventdate)
       sessionValue($scope.vehiname, $scope.gName);
       stopLoading()
     });
-    
   };
   
   $scope.getLocation  = function(lat,lon,ind) { 
@@ -1325,8 +1317,9 @@ function eventButton(eventdate)
      // var loadUrl   = "http://"+getIP+context+"/public//getLoadReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime);
     try{
       $http.get(histurl).success(function(data){
-        
-        //$scope.loading      = false;
+
+        $scope.errMsg=data.error;
+     // $scope.loading      = false;
         $scope.hist       = data;
         $scope.filterLoc  = data.vehicleLocations;
         $scope.topspeedtime   = data.topSpeedTime;
@@ -1342,14 +1335,10 @@ function eventButton(eventdate)
       // $('#status').fadeOut(); 
       //  $('#preloader').delay(350).fadeOut('slow');
       stopLoading();  
+     }
     }
-    }
-    
-
-
   }
      
-   
   //pdf method
   $scope.pdfHist     =   function() {  
        
@@ -1358,6 +1347,8 @@ function eventButton(eventdate)
     // console.log(histurl);   
 
     $http.get(histurl).success(function(data){
+
+      $scope.errMsg     = data.error;
       $scope.hist       = data;
       $scope.filterLoc  = data.vehicleLocations;
       $scope.dataArray(data.vehicleLocations);
@@ -1378,8 +1369,6 @@ function eventButton(eventdate)
     
   }
  
-  
-  
   function dateStringFormat(d) {
     var s     =     d.split(' ');
     var t     =     s[0].split('-');
@@ -1387,7 +1376,6 @@ function eventButton(eventdate)
     return new Date(ds).getTime();
   }
   
-
    $scope.figureOutTodosToDisplay = function() {
       var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
       var end = begin + $scope.itemsPerPage;
@@ -1421,7 +1409,6 @@ function eventButton(eventdate)
 //         }
 //     }
 // });
-
 
 app.directive("getLocation", function () {
   return {
