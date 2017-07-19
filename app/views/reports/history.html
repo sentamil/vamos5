@@ -482,7 +482,7 @@ background-color: #ffffff;
 			   			 	 			<td>{{user.state}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="errMsg == null " align="center">
-										<td ng-if="&& eventReportData==null colspan="5" class="err"><h5>{{errMsg}}</h5></td>
+										<td ng-if="eventReportData==null colspan="5" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null " align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -614,7 +614,7 @@ background-color: #ffffff;
 										</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{fuel.latitude}},{{fuel.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if=" errMsg == null " align="center">
+			   			 	 		<tr ng-if="errMsg == null" align="center">
 										<td ng-if="fuelValue==null || fuelValue.length ==0" colspan="5" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null " align="center">
@@ -661,7 +661,7 @@ background-color: #ffffff;
 			   			 	 			<td>{{ignition.address}}</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if=" errMsg == null " align="center">  
+			   			 	 		<tr ng-if="errMsg == null" align="center">  
 										<td ng-if="ignitionData==null || ignitionData.length==0" colspan="6" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null " align="center">
@@ -717,7 +717,7 @@ background-color: #ffffff;
 			   			 	 		<tr ng-if="errMsg == null" align="center">
 										<td  ng-if="acReport==null || acReport.length == 0" colspan="6" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null " align="center">
+									<tr ng-if="errMsg != null" align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 			   			 	 	</tbody>
@@ -782,7 +782,7 @@ background-color: #ffffff;
 			   			 	 		<tr ng-if=" errMsg == null " align="center">
 										<td ng-if="stopReport==null || stopReport.length==0" colspan="7" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null " align="center">
+									<tr ng-if="errMsg != null" align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 			   			 	 	</tbody>
