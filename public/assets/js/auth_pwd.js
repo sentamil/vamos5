@@ -562,7 +562,11 @@ $scope._deleteFilterMobNum = function(index,mobb,routeN){
 function showStop() {
   
   var _showStopUrl  = _showUrl+'?routeNo='+$scope.selectRouteName;
+  console.log(_showStopUrl);
+
   vamoservice.getDataCall(_showStopUrl).then(function(value){
+
+    console.log(value);
 
     $scope.rowsValue =[];
     var busStopValue;
