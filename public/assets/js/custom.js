@@ -363,6 +363,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
 
+			window.localStorage.setItem("totalV",data[0].totalVehicles);
+
 			$scope.selected=undefined;
 			$scope.selected02=undefined;
 			$scope.vehicle_list=[];
@@ -405,7 +407,6 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			}
 		});	
 	});
-    
 
 	$scope.$watch("vehicleStatus", function (val) {
 		if($scope.locations02!=undefined){
@@ -492,7 +493,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 				$('#status').fadeOut(); 
 				$('#preloader').delay(350).fadeOut('slow');
 				$('body').delay(350).css({'overflow':'visible'});
-				alert(individualVehicle[0].address);
+				//alert(individualVehicle[0].address);
 			}
 			else
 			{  
@@ -702,12 +703,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	  if(initValss>0){
         oldGroupSelectionName=newGroupSelectionName;
        }
-
         newGroupSelectionName=groupname;
         initValss++;
 
       if(oldGroupSelectionName != newGroupSelectionName){
-
 		$('#status').show();
     	$('#preloader').show();
     	$scope.selects=1;
@@ -717,13 +716,18 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group=' + groupname;
 		
 		$scope.gIndex = groupid;
-		
-		$scope.mapTable = $scope.filterExpire($scope.locations02[groupid].vehicleLocations);
-		// gmarkers=[];
-		for(var i=0; i<ginfowindow.length;i++){		
-			ginfowindow[i].setMap(null);
-		}
-		// ginfowindow=[];
+	    $scope.mapTable = $scope.filterExpire($scope.locations02[groupid].vehicleLocations);
+    
+    	setTimeout(function() {
+          if ($scope.locations02[groupid].totalVehicles > 50){
+          {
+           $scope.displayErrorMsg = false;
+           clusterMarker();
+           } 
+          }
+         },3500);
+
+        ginfowindow[0].setMap(null);
 		clearInterval(setintrvl);
 		markerChange($scope.makerType);
 		$('#graphsId').hide();
@@ -732,7 +736,39 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		// $('#preloader').delay(350).fadeOut('slow');
 		// $('body').delay(350).css({'overflow':'visible'});
     	}
-	}
+	} 
+
+   /*  $scope.groupSelection = function(groupname, groupid){
+       
+        $('#status').show();
+        $('#preloader').show();
+        $scope.selects=1;
+        $scope.selected=undefined;
+        $scope.selected02=undefined;
+        $scope.dynamicvehicledetails1=false;
+        $scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group=' + groupname;
+
+        $scope.gIndex = groupid;
+        $scope.mapTable = $scope.filterExpire($scope.locations02[groupid].vehicleLocations);
+
+        setTimeout(function() {
+          if ($scope.locations02[groupid].totalVehicles > 50){
+          {
+           $scope.displayErrorMsg = false;
+           clusterMarker();
+           } 
+          }
+         },3500);
+
+        ginfowindow[0].setMap(null);
+
+        clearInterval(setintrvl);
+        markerChange($scope.makerType);
+        $('#graphsId').hide();
+      }
+ */
+
+
 	var modal = document.getElementById('poi');
 	var span = document.getElementsByClassName("poi_close")[0];
 	
@@ -1873,6 +1909,75 @@ function locat_address(locs) {
 		$("#tollYes").show();
     	
     }*/
+
+    //alert($scope.totalVehicles);
+
+    setTimeout(function() {
+     	var count = window.localStorage.getItem("totalV");
+	    var number = parseInt(count);
+	
+             //console.log(number);
+	    if (number > 50)
+	    {
+		 $scope.displayErrorMsg = false;
+	     clusterMarker();
+	    // console.log("asa");
+        } 
+    },3000);
+
+
+	//view map on load
+	$scope.mapViewOnload 	=	function(value)
+	{
+		if (window.localStorage.getItem("totalV") >= 50)
+		{
+		// var value ='cluster';
+		console.log(value);
+		switch(value){
+			case 'listMap' :
+				listMap();
+				break;
+			case 'home' :
+				homeMap();
+				break;
+			case 'cluster' :
+				clusterMarker();
+			 	break;
+			case 'single' :
+				singleMarker();
+				break;
+			case 'fscreen' :
+				fullScreen();
+				break;
+			case 'escreen':
+				exitScreen();
+				break;
+			case 'tablefull' :
+				fulltable();
+				break;
+			case 'graphs': 
+				graphView();
+				break;
+			case 'markerChange':
+				$scope.makerType =  "markerChange";
+				changeMarker();
+				markerChange('markerChange');
+				break;
+		 /* case 'tollYes':
+				tollMarkers();
+				break;
+		    case 'tollNo':
+				removeToll();
+				break;*/		
+			case 'undefined':
+				$scope.makerType =  undefined;
+				changeMarker();
+				markerChange(undefined);
+			default:
+		   		break;
+		 }
+	  }
+	}
 
 	//view map
 	$scope.mapView 	=	function(value)
