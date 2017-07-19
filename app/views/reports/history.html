@@ -213,7 +213,7 @@ background-color: #ffffff;
 										<td>{{move.odoDistance}}</td>
 									</tr>	
 									<tr ng-if=" errMsg == null " align="center">
-										<td ng-if="movementdata == null || movementdata.length==0" colspan="8" class="err"><h5>{{errMsg}}</h5></td>
+										<td ng-if="movementdata == null || movementdata.length==0" colspan="8" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null " align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -290,7 +290,7 @@ background-color: #ffffff;
 										<!-- <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>	 -->					
 									</tr>
 									<tr ng-if="errMsg == null" align="center">
-										<td ng-if="overspeeddata==null || overspeeddata.length == 0" colspan="8" class="err"><h5>{{errMsg}}</h5></td>
+										<td ng-if="overspeeddata==null || overspeeddata.length == 0" colspan="8" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null " align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -363,7 +363,7 @@ background-color: #ffffff;
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
 									</tr>
 									<tr ng-if=" errMsg == null " align="center">
-										<td ng-if="parkeddata==null || parkeddata.length==0" colspan="6" class="err"><h5>{{errMsg}}</h5></td>
+										<td ng-if="parkeddata==null || parkeddata.length==0" colspan="6" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null " align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -410,7 +410,7 @@ background-color: #ffffff;
 			   			 	 			<td>{{getParkedCorrectHours(user.idleTime)}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="errMsg == null" align="center">
-										<td ng-if="idlereport==null || idlereport.length==0" colspan="5" class="err"><h5>{{errMsg}}</h5></td>
+										<td ng-if="idlereport==null || idlereport.length==0" colspan="5" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null" align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -482,7 +482,7 @@ background-color: #ffffff;
 			   			 	 			<td>{{user.state}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="errMsg == null" align="center">
-										<td ng-if="eventReportData==null" colspan="5" class="err"><h5>{{errMsg}}</h5></td>
+										<td ng-if="eventReportData==null" colspan="5" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null" align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -522,7 +522,7 @@ background-color: #ffffff;
 										<td>{{user.state}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="errMsg == null" align="center">
-										<td ng-if="siteReport==null" colspan="4" class="err"><h5>{{errMsg}}</h5></td>
+										<td ng-if="siteReport==null" colspan="4" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null " align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -566,7 +566,7 @@ background-color: #ffffff;
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{load.lat}},{{load.lng}}" target="_blank">Link</a></td>
 									</tr>
 			   			 	 		<tr ng-if="errMsg == null" align="center">
-										<td  ng-if="loadreport.load ==null || loadreport.load.length==0" colspan="4" class="err"><h5>{{errMsg}}</h5></td>
+										<td  ng-if="loadreport.load ==null || loadreport.load.length==0" colspan="4" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null " align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -615,7 +615,7 @@ background-color: #ffffff;
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{fuel.latitude}},{{fuel.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="errMsg == null" align="center">
-										<td ng-if="fuelValue==null || fuelValue.length ==0" colspan="5" class="err"><h5>{{errMsg}}</h5></td>
+										<td ng-if="fuelValue==null || fuelValue.length ==0" colspan="5" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null " align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -662,7 +662,7 @@ background-color: #ffffff;
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="errMsg == null" align="center">  
-										<td ng-if="ignitionData==null || ignitionData.length==0" colspan="6" class="err"><h5>{{errMsg}}</h5></td>
+										<td ng-if="ignitionData==null || ignitionData.length==0" colspan="6" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null " align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -715,7 +715,7 @@ background-color: #ffffff;
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ac.latitude}},{{ac.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="errMsg == null" align="center">
-										<td  ng-if="acReport==null || acReport.length == 0" colspan="6" class="err"><h5>{{errMsg}}</h5></td>
+										<td  ng-if="acReport==null || acReport.length == 0" colspan="6" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null" align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
@@ -780,7 +780,7 @@ background-color: #ffffff;
 			   			 	 			<td>{{msToTime(user.stoppageTime)}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if=" errMsg == null " align="center">
-										<td ng-if="stopReport==null || stopReport.length==0" colspan="7" class="err"><h5>{{errMsg}}</h5></td>
+										<td ng-if="stopReport==null || stopReport.length==0" colspan="7" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
 									<tr ng-if="errMsg != null" align="center">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
