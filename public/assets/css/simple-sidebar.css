@@ -16,6 +16,7 @@
 }
 
 
+
 #sidebar-wrapper-site {
     z-index: 1000;
     position: fixed;
@@ -353,12 +354,12 @@ li a label{ width:100%; display:block;}
 .maps {font-size: 14px; font-weight:bold;}
 .multi { width: 200px; color: #0d0d0d; font-size: 10px; font-weight:bold; text-align: left; word-wrap: break-word;background: #f4f4f4; border: 1px solid #0d0d0d; padding: 2px; border-radius: 0 10px 10px 10px}
 .singpop { width: 250px; color: #0d0d0d; font-size: 10px; text-align: left;background: #fefefe;  padding: 2px; border-radius: 5px 0 5px 5px}
-.tabpop{width:250px;word-wrap:break-word;table-layout:fixed}
+/* .tabpop{width:250px;word-wrap:break-word;table-layout:fixed}
 .tabpop td{padding: 5px}
 .tabpop tr{border-bottom: 1px solid #cecece;}
 .tabpop tr td{border-right: 1px solid #cecece;}
 .tabpop tr:last-child{border-bottom: 0}
-.tabpop tr td:last-child{border-right: 0}
+.tabpop tr td:last-child{border-right: 0 }*/
 /*labels1 { color: #fff; font-size: 9px; font-weight:normal; text-align: center; white-space: nowrap;  width: 24px;}*/
 /*.labels:before {
     content: '';
@@ -657,7 +658,11 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .radioBut{
-    position: fixed;top: 10px;left:320px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
+    position: fixed;top: 10px;left:350px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
+}
+
+.radioButts{
+    position: fixed;top: 10px;left:470px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
 
 }
 
@@ -1066,6 +1071,10 @@ button:focus {
 }
 ._info_caption2{
     width:60px; display:inline-block; padding-bottom: 3px;
+}
+}
+._info_caption3{
+    width:70px; display:inline-block; padding-bottom: 3px;
 }
 
 .closeZoho{
