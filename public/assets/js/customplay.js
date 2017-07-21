@@ -182,6 +182,11 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 
 						   	scope.polylineCtrl();
 					   		console.log(scope.path.length);
+
+					   		if(scope.getValue != undefined){
+
+					   	    	scope.getValueCheck(scope.getValue);
+					      	}
 							
 		  	  // 			var latLngBounds = new google.maps.LatLngBounds();
 			  				var j=0;
@@ -275,15 +280,16 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 		   		}).error(function(){ stopLoading();});
 		 	});
 
-
 			 scope.SiteCheckbox = {
        			 value1 : true,
       			 value2 : 'YES'
      			}
 
-     		scope.getValueCheck = function(getStatus){
+     	scope.getValueCheck = function(getStatus){
 
-     		    if(getStatus == 'YES')
+     		scope.getValue = getStatus;
+
+     		    if(scope.getValue == 'YES')
      			{
               	scope.hideMe = false;
 
@@ -291,9 +297,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 
                  	var siteLength;
 
-                //	if(initSiteVal==0){
-
-                 	$http.get(geoUrl).success(function(response){
+                  	$http.get(geoUrl).success(function(response){
 									polygenList =[];
 									var latLanlist, seclat, seclan, sp; 
 
@@ -363,7 +367,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 								});
                     }())
      		}
-         else if (getStatus == 'NO')
+         else if (scope.getValue == 'NO')
          {
            scope.hideMe = true;
 
@@ -372,6 +376,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
       }
     };
 }]);
+
 app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function($scope, $http, $q, $filter, GLOBAL){
 	$scope.locations = [];
 	$scope.path = [];
@@ -1610,9 +1615,7 @@ function smoothZoom (map, max, cnt) {
 	$scope.pointinfowindow=function(map, marker, data){
 		
 			if(gsmarker.length>0){
-			
-			
-		}
+	   }
 	}
 
 	$scope.locationname="";
@@ -1666,7 +1669,6 @@ function smoothZoom (map, max, cnt) {
 		return tempTim;
 	}
 
-
 	// function parseDate(str) {
 	//     var mdy = str.split('/');
 	//     return new Date(mdy[2], mdy[0]-1, mdy[1]);
@@ -1708,6 +1710,7 @@ function smoothZoom (map, max, cnt) {
 	}
 
 	$scope.plotting = function(){
+
 		var fromdate = document.getElementById('dateFrom').value;
 		var todate = document.getElementById('dateTo').value;
 		if((checkXssProtection(fromdate) == true) && (checkXssProtection(todate) == true) && (checkXssProtection(document.getElementById('timeTo').value) == true) && (checkXssProtection(document.getElementById('timeFrom').value) == true)){
@@ -1791,8 +1794,7 @@ function smoothZoom (map, max, cnt) {
 				}
 			}
 		}
-
-		// stopLoading();
+	//stopLoading();
 	}
 	
 	$scope.addMarker= function(pos){
