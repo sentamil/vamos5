@@ -16,6 +16,10 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
         template: '<div></div>',
         link: function(scope, element, attrs) {
         	scope.path=[];
+        	var geoUrl = GLOBAL.DOMAIN_NAME+'/viewSite';
+            var initSiteVal = 0;
+            var polygenColors,labelAnchorpos,markers;
+
         	function utcdateConvert(milliseconds){
 				//var milliseconds=1440700484003;
 				
@@ -29,6 +33,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 		 	scope.$watch("hisurl", function (val) {
 		 		// startLoading();
 		 		scope.path = [];
+
 		 		if(scope.hisurl != undefined)
 		   		$http.get(scope.hisurl).success(function(data){
 		   			var locs = data;
@@ -79,25 +84,22 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 								center: new google.maps.LatLng(data.vehicleLocations[0].latitude, data.vehicleLocations[0].longitude),
 								mapTypeId: google.maps.MapTypeId.ROADMAP
 								//styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
-								
-							
-							};
+						    };
+
 	            			scope.map = new google.maps.Map(document.getElementById(attrs.id), myOptions);
 
-							
-							//draw the geo code
+						    //draw the geo code
 							// (function geosite(){
-								var geoUrl = GLOBAL.DOMAIN_NAME+'/viewSite';
+							//	var geoUrl = GLOBAL.DOMAIN_NAME+'/viewSite';
 								// var myOptions = {
 								// 	zoom: Number(6),zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
 								// 	center: new google.maps.LatLng(0,0),
 								// 	mapTypeId: google.maps.MapTypeId.ROADMAP
 			
-			
-		
+				
 								// };
 								// $scope.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
-								$http.get(geoUrl).success(function(response){
+						/*		$http.get(geoUrl).success(function(response){
 									polygenList =[];
 									var latLanlist, seclat, seclan, sp; 
 
@@ -153,8 +155,8 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 								  		// }
 								  		}
 									};
-								})
-							// }());
+								});
+							// }());*/
 
 
 
@@ -179,6 +181,8 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 						   	  //   	scope.pointinfowindow(scope.map, gsmarker[i], locs.vehicleLocations[i]);
 						   	  //  }
 					   		}
+
+
 						   	scope.polylineCtrl();
 
 					   		console.log(scope.path.length);
@@ -274,7 +278,105 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 				stopLoading();
 		   		}).error(function(){ stopLoading();});
 		 	});
+
+
+			 scope.SiteCheckbox = {
+       			 value1 : true,
+      			 value2 : 'YES'
+     			};
+
+     		scope.getValueCheck = function(getStatus){
+
+     		    if(getStatus == 'YES')
+     			{
+              	scope.hideMe = false;
+
+     			(function(){
+
+                 	var siteLength;
+
+                	if(initSiteVal==0){
+
+                 	$http.get(geoUrl).success(function(response){
+									polygenList =[];
+									var latLanlist, seclat, seclan, sp; 
+
+									function centerMarker(listMarker){
+									    var bounds = new google.maps.LatLngBounds();
+									    for (i = 0; i < listMarker.length; i++) {
+									          bounds.extend(listMarker[i]);
+									      }
+									    return bounds.getCenter()
+									}
+                                 
+                                 if(response.siteParent!=null){
+                                    siteLength = response.siteParent.length;
+                                    polygenList.push(new google.maps.LatLng(11, 11));
+                                  }
+
+                           			  for (var listSite = 0; listSite < siteLength; listSite++) {
+										
+										var len = response.siteParent[listSite].site.length;
+										for (var k = 0; k < len; k++) {
+										// if(response.siteParent[i].site.length)
+										// {
+											var orgName = response.siteParent[listSite].site[k].siteName;
+											var splitLatLan = response.siteParent[listSite].site[k].latLng.split(",");
+											
+											polygenList = [];
+											for(var j = 0; splitLatLan.length>j; j++)
+								      		{
+								      			sp 	= splitLatLan[j].split(":");
+								      			polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
+								      			// console.log(sp[0]+' ---- '+ sp[1])
+								      			// latlanList.push(sp[0]+":"+sp[1]);
+								      			// seclat        = sp[0];
+								      			// seclan        = sp[1];
+								      		}
+											
+								      		 polygenColors = new google.maps.Polygon({
+								      			path: polygenList,
+								      			strokeColor: "#282828",
+								      			strokeWeight: 1,
+								      			fillColor: '#808080',
+								      			fillOpacity: 0.50,
+								      			//map: scope.map
+								      		});
+								      		 polygenColors.setMap(scope.map);
+								      	
+									      	 labelAnchorpos = new google.maps.Point(19, 0);  ///12, 37
+
+									          markers = new MarkerWithLabel({
+
+										      	position: centerMarker(polygenList), 
+										     // map: scope.map,
+										      	icon: 'assets/imgs/area_img.png',
+										      	labelContent: orgName,
+										      	labelAnchor: labelAnchorpos,
+										      	labelClass: "labels", 
+										      	labelInBackground: false
+									      	});
+
+									          markers.setMap(scope.map);
+									      // scope.map.setCenter(centerMarker(polygenList)); 
+									      // scope.map.setZoom(14); 
+								  		// }
+								  		}
+									}
+								
+								});
+                 initSiteVal=1;
+
+                 } 
+              }())
+     		}
+
+         if (getStatus == 'NO')
+         {
+           scope.hideMe = true;
+         }
         }
+      }
     };
 }]);
 app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function($scope, $http, $q, $filter, GLOBAL){
@@ -307,14 +409,14 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
     $scope.parseInts=function(data){
      return parseInt(data);
      }
-
+    $scope.alladdress    	=	[];
 	$scope.moveaddress    	=	[];
-	$scope.overaddress    	=	[];
+	//$scope.overaddress    =	[];
 	$scope.parkaddress     	=	[];
 	$scope.idleaddress    	=	[];
-	$scope.fueladdress  	=   [];
+//	$scope.fueladdress  	=   [];
 	$scope.igniaddress  	=   [];
-	$scope.acc_address   	=   [];
+	//$scope.acc_address   	=   [];
     $scope.stop_address   	=   [];
 	// //loading start function
 	// $scope.startLoading		= function () {
@@ -381,19 +483,17 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 
    	function filter(obj,name){
    		var _returnObj = [];
-   		if(name=='fuel'){
+   	/*	if(name=='fuel'){
    			angular.forEach(obj,function(val, key){
 
    				if(val.fuelLitre >0)
    				{
    					_returnObj.push(val)
    				}
-
-
    			})
-
-   		}
-   		else if(name=='stoppage'){
+   		}*/
+   		
+   		if(name=='stoppage'){
 
    			angular.forEach(obj,function(val, key){
 
@@ -403,7 +503,7 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
    				}
    			})
    		}
-   		else if(name=='ovrspd'){
+   	/*	else if(name=='ovrspd'){
 
    			angular.forEach(obj,function(val, key){
 
@@ -412,12 +512,12 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
    					_returnObj.push(val)
    				}
    			})
-   		}
+   		}*/
    	return _returnObj;
    	}
 
 
-   	$scope.fuelChart 	= 	function(data){
+/*  	$scope.fuelChart 	= 	function(data){
 		var ltrs 		=	[];
 		var fuelDate 	=	[];
 		try{
@@ -580,26 +680,28 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 
 	});
 }
-
+*/
 
 	$scope._tableValue = function(_value){
 		// if(_value && _value.vehicleLocations != null){
 		$scope.moveaddress    	=	[];
-		$scope.overaddress    	=	[];
+		$scope.alladdress    	=	[];
+	//	$scope.overaddress    	=	[];
 		$scope.parkaddress     	=	[];
 		$scope.idleaddress    	=	[];
-		$scope.fueladdress  	=   [];
+	//	$scope.fueladdress  	=   [];
 		$scope.igniaddress  	=   [];
-		$scope.acc_address   	=   [];
+	//	$scope.acc_address   	=   [];
 		$scope.stop_address     =   [];
 		$scope.parkeddata		=	[];
-		$scope.overspeeddata	=	[];
+	//	$scope.overspeeddata	=	[];
+	    $scope.allData          =	[];
 		$scope.movementdata		=	[];
 		$scope.idlereport       =   [];
 		$scope.ignitValue 		= 	[];
-		$scope.acReport 		=	[];
+	//	$scope.acReport 		=	[];
 		$scope.stopReport 		=	[];
-		$scope.fuelValue 		= 	[];
+	//	$scope.fuelValue 		= 	[];
 
 		if(_value && _value.vehicleLocations != null) {
 
@@ -607,19 +709,20 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 
 			$scope.parkeddata		=	($filter('filter')(_value.vehicleLocations, {'position':"P"}));
 		//	$scope.overspeeddata	=	($filter('filter')(_value.vehicleLocations, {'isOverSpeed':"Y"}));
-			$scope.overspeeddata	=	filter(_value.vehicleLocations,'ovrspd');
+		//	$scope.overspeeddata	=	filter(_value.vehicleLocations,'ovrspd');
+		    $scope.allData          =   ($filter('filter')(_value.vehicleLocations, {}));
 			$scope.movementdata		=	($filter('filter')(_value.vehicleLocations, {'position':"M"}));
 			$scope.idlereport       =   ($filter('filter')(_value.vehicleLocations, {'position':"S"}));
 			$scope.ignitValue 		= 	_pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
-			$scope.acReport 		=	_pairFilter(_value.vehicleLocations, 'yes', 'no', 'vehicleBusy');
+		//	$scope.acReport 		=	_pairFilter(_value.vehicleLocations, 'yes', 'no', 'vehicleBusy');
 		//	$scope.fuelValue 		= 	filter(_value.vehicleLocations);
-		    $scope.fuelValue 		= 	filter(_value.vehicleLocations,'fuel');
+		//  $scope.fuelValue 		= 	filter(_value.vehicleLocations,'fuel');
 			$scope.stopReport 		=   filter(_value.vehicleLocations,'stoppage');
 			
 			// console.log($scope.ignitValue);
 		}
-		$scope.speedKms($scope.movementdata);
-		$scope.fuelChart($scope.fuelValue);
+	//	$scope.speedKms($scope.movementdata);
+	//	$scope.fuelChart($scope.fuelValue);
 	
 	}
 
@@ -641,20 +744,18 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
    //          method: 'GET', 
    //          url: tempurlMo,
    //          success: function (data) {
-
-                console.log(data)
+               // console.log(data)
                 // aUthName = response;
                 // sessionStorage.setItem('apiKey', JSON.stringify(aUthName[0]));
                 // sessionStorage.setItem('userIdName', JSON.stringify('username'+","+aUthName[1]));
                 switch (_stat){
+				case 'all':
+					console.log(_stat);
+					$scope.alladdress[index1] = data.results[0].formatted_address;
+				break;
 				case 'movement':
 					console.log(_stat);
 					$scope.moveaddress[index1] = data.results[0].formatted_address;
-				break;
-				case 'overspeed':
-					console.log(_stat);
-					// $scope.overaddress[index1] = data.results[0].formatted_address;
-					$scope.overaddress[index1] = data.results[0].formatted_address;
 				break;
 				case 'parked':
 					console.log(_stat);
@@ -664,20 +765,11 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 					console.log(_stat);
 					$scope.idleaddress[index1] = data.results[0].formatted_address;
 				break;
-				case 'fuel':
-					console.log(_stat);
-					$scope.fueladdress[index1] = data.results[0].formatted_address;
-				break;
 				case 'ignition':
 					console.log(_stat);
 					$scope.igniaddress[index1] = data.results[0].formatted_address;
 				break;
-				case 'acc':
-					console.log(_stat);
-					$scope.acc_address[index1] = data.results[0].formatted_address;
-				break;
-                
-                case 'stoppage':
+			    case 'stoppage':
 					console.log(_stat);
 					$scope.stop_address[index1] = data.results[0].formatted_address;
 				break;
@@ -743,12 +835,12 @@ var queue1 = [];
 		
 		queue1 = [];
 		switch (tabVal){
-			case 'movement':
-				$scope.recursive($scope.movementdata, tabVal, $scope.moveaddress);
+			case 'all':
+				$scope.recursive($scope.allData, tabVal, $scope.alladdress);
 			break;
 
-			case 'overspeed':
-				$scope.recursive($scope.overspeeddata, tabVal, $scope.overaddress);
+            case 'movement':
+				$scope.recursive($scope.movementdata, tabVal, $scope.moveaddress);
 			break;
 
 			case 'parked': 
@@ -759,16 +851,8 @@ var queue1 = [];
 				$scope.recursive($scope.idlereport, tabVal, $scope.idleaddress);
 			break;
 
-			case 'fuel':
-				$scope.recursive($scope.fuelValue, tabVal, $scope.fueladdress);
-			break;
-
 			case 'ignition':
 				$scope.recursive($scope.ignitValue, tabVal, $scope.igniaddress);
-			break;
-
-			case 'acc':
-				$scope.recursive($scope.acReport, tabVal, $scope.acc_address);
 			break;
 
 			case 'stoppage':
@@ -966,9 +1050,9 @@ var queue1 = [];
 						pane: "mapPane",
 						enableEventPropagation: true
 					};
-					var labelinfo = new InfoBox(myOptions);
+					/*var labelinfo = new InfoBox(myOptions);
 					labelinfo.open($scope.map);
-					labelinfo.setPosition($scope.cityCircle[i].getCenter());
+					labelinfo.setPosition($scope.cityCircle[i].getCenter());*/
 					
 				}
 				}
@@ -1710,6 +1794,7 @@ if($scope.markerstart){
 
 		// stopLoading();
 	}
+	
 	$scope.addMarker= function(pos){
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
 		var labelAnchorpos = new google.maps.Point(12, 37);
@@ -1735,6 +1820,7 @@ if($scope.markerstart){
 		});
 		gmarkers.push($scope.marker);	
 	} 
+
 	$scope.geocoder = function(lat, lng, callback){
 		geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(lat, lng);
@@ -2045,6 +2131,11 @@ if($scope.markerstart){
 }
 
 	$scope.polylineCtrl 	= function(){
+
+		//console.log($scope.hisloc);
+
+       if($scope.hisloc.vehicleLocations!=null){
+
 		startLoading();
 		myStopFunction();
      // $scope.polylinearr = [];
@@ -2200,8 +2291,8 @@ if($scope.markerstart){
 					    if($scope.hisloc.vehicleLocations[lineCount].position!=undefined){
 							if($scope.hisloc.vehicleLocations[lineCount].position=='P' || $scope.hisloc.vehicleLocations[lineCount].position=='S' || $scope.hisloc.vehicleLocations[lineCount].insideGeoFence=='Y' ){
 								
-								$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[lineCount].latitude, lng: $scope.hisloc.vehicleLocations[lineCount].longitude , data: $scope.hisloc.vehicleLocations[lineCount], path:$scope.path[lineCount]});
-								$scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[lineCount]);
+								//$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[lineCount].latitude, lng: $scope.hisloc.vehicleLocations[lineCount].longitude , data: $scope.hisloc.vehicleLocations[lineCount], path:$scope.path[lineCount]});
+							//	$scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[lineCount]);
 			  					// $scope.markerPark.push($scope.marker)
 								j++;
 							}
@@ -2345,8 +2436,8 @@ if($scope.markerstart){
 									if($scope.hisloc.vehicleLocations[i].position!=undefined){
 										if($scope.hisloc.vehicleLocations[i].position=='P' || $scope.hisloc.vehicleLocations[i].position=='S' || $scope.hisloc.vehicleLocations[i].insideGeoFence=='Y' ){
 											
-											$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[i].latitude, lng: $scope.hisloc.vehicleLocations[i].longitude , data: $scope.hisloc.vehicleLocations[i], path:$scope.path[i]});
-											$scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[i]);
+											//$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[i].latitude, lng: $scope.hisloc.vehicleLocations[i].longitude , data: $scope.hisloc.vehicleLocations[i], path:$scope.path[i]});
+										//	$scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[i]);
 											// $scope.markerPark.push($scope.marker)
 											j++;
 										}
@@ -2358,6 +2449,8 @@ if($scope.markerstart){
 		// console.log($scope.path)
 		// console.log($scope.polylineCheck)
 		stopLoading();
+
+	  }
 	}
 
 	$scope.replays= function(){

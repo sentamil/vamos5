@@ -97,37 +97,57 @@
            <div>
                     
             <ul class='tabs'>
-              <li ng-click="addressResolve('movement')"><a href='#movement'>Movement</a></li>
-              <li ng-click="addressResolve('movement')"><a href='#speed'>Speed</a></li>
-              <li ng-click="addressResolve('overspeed')"><a href='#overspeed'>OverSpeed</a></li>
-              <li ng-click="addressResolve('parked')"><a href='#parked'>Parked</a></li>
-              <li ng-click="addressResolve('idle')"><a href='#idle'>Idle</a></li>
-              <li ng-click="addressResolve('fuel')"><a href='#fuel'>Fuel</a></li>
-              <li ng-click="addressResolve('ignition')"><a href='#ignition'>Ignition</a></li>
-              <li ng-click="addressResolve('acc')"><a href='#acc'>A/C</a></li>
-              <li ng-click="addressResolve('stoppage')"><a href='#stoppage'>Stoppage</a></li>
+              <li ng-click="addressResolve('all')" ><a href='#all'>All</a></li>
+              <li ng-click="addressResolve('movement')" ><a href='#movement'>Movement</a></li>
+         <!-- <li ng-click="addressResolve('movement')"><a href='#speed'>Speed</a></li>
+              <li ng-click="addressResolve('overspeed')"><a href='#overspeed'>OverSpeed</a></li> -->
+              <li ng-click="addressResolve('parked')" ><a href='#parked'>Parked</a></li>
+              <li ng-click="addressResolve('idle')" ><a href='#idle'>Idle</a></li>
+         <!-- <li ng-click="addressResolve('fuel')"><a href='#fuel'>Fuel</a></li> -->
+              <li ng-click="addressResolve('ignition')" ><a href='#ignition'>Ignition</a></li>
+         <!-- <li ng-click="addressResolve('acc')"><a href='#acc'>A/C</a></li> -->
+              <li ng-click="addressResolve('stoppage')" ><a href='#stoppage'>Stoppage</a></li>
             </ul>
 
             <!-- movement -->
-            <div id='movement' class="pane">
-            <!--  <table class="tables">
-                <tr>
-                  <td colspan="2">Vehicle Group</td>
-                  <td>{{trimColon(groupname)}}</td>
-                  <td colspan="2">Vehicle Name</td>
-                  <td colspan="2">{{hisloc.shortName}}</td>         
-                </tr>
-                <tr class="gap">
-                  <td colspan="2">Regn No</td>
-                  <td> {{hisloc.regNo}}</td>
-                  <td colspan="2">TripDist(KM)</td>
-                  <td colspan="2"> {{hisloc.tripDistance}}</td>
-                </tr>-->
-                
-              </table>
-              
+            <div id='all' class="pane">
+      
               <table class="tables">
                 
+                <tr style="border-top: 1px solid #d9d9d9">
+                  <td width="15%">Date&amp;Time</td>
+                  <td width="10%">Max (kmph)</td>
+                  <td width="7%">Sat</td>
+                  <td width="37%">Address</td>
+                  <td width="10%">G-Map</td>
+                  <!-- <td width="7%">Dist</td> -->
+                  <td width="10%">C-Dist (kms)</td>
+                  <td width="18%">Odo (kms)</td>
+                </tr>
+                <tr ng-repeat="all in allData" ng-click="markerPoup(all)">
+                  <td>{{all.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{all.speed}}</td>
+                  <td>{{all.gsmLevel}}</td>
+                  <td>
+                    <p ng-if="all.address!=null">{{all.address}}</p>
+                    <p ng-if="all.address==null && alladdress[$index]!=null">{{alladdress[$index]}}</p>
+                    <p ng-if="all.address==null && alladdress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
+                  </td>
+                  <td><a href="https://www.google.com/maps?q=loc:{{all.latitude}},{{all.longitude}}" target="_blank">Link</a></td>
+                  <!-- <td>{{move.tmpDistance}}</td> -->
+                  <td>{{all.distanceCovered}}</td>
+                  <td>{{all.odoDistance}}</td>
+                </tr>
+                <tr ng-if="allData.length == 0 || allData == undefined">
+                  <td colspan="6" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                </tr>
+              </table>
+            </div>
+
+               <!-- movement -->
+            <div id='movement' class="pane">
+         
+              <table class="tables">
                 <tr style="border-top: 1px solid #d9d9d9">
                   <td width="15%">Date&amp;Time</td>
                   <td width="10%">Max (kmph)</td>
@@ -160,7 +180,7 @@
 
             <!-- speed report -->
 
-            <div id='speed' class="pane">
+        <!--    <div id='speed' class="pane">
             <div id="speedGraph"></div>
               <table class="tables">
                 <tr>
@@ -176,7 +196,7 @@
                   <td colspan="2"> {{hisloc.overSpeedLimit}}</td>
                 </tr> -->
                 
-              </table>
+         <!--     </table>
               
               <table class="tables">
                 
@@ -200,15 +220,15 @@
                  <!--  <td>{{move.tmpDistance}}</td>
                   <td>{{move.distanceCovered}}</td>
                   <td>{{move.odoDistance}}</td> -->
-                </tr>
+          <!--      </tr>
                 <tr ng-if="movementdata.length == 0 || movementdata == undefined">
                   <td colspan="4" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
               </table>
-            </div>
+            </div> -->
 
             <!-- overspeed -->
-            <div id='overspeed' class="pane">
+      <!--      <div id='overspeed' class="pane">
               <table class="tables">
                 <tr>
                   <td colspan="2">Vehicle Group</td>
@@ -255,7 +275,7 @@
                   <td colspan="7" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
               </table>
-            </div>
+            </div> -->
 
             <!-- parked -->
             <div id='parked' class="pane">
@@ -334,7 +354,7 @@
             </div>
 
             <!-- fuel report -->
-            <div id='fuel' class="pane">
+        <!--    <div id='fuel' class="pane">
               <div id="container"></div>
               <table class="tables">
                 <tr>
@@ -359,7 +379,7 @@
                   <td colspan="4" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
               </table>
-            </div>
+            </div> -->
 
             <!-- ignition -->
             <div id='ignition' class="pane">
@@ -402,7 +422,7 @@
             </div>
 
             <!-- ac report -->
-            <div id='acc' class="pane">
+     <!--       <div id='acc' class="pane">
               <table class="tables">
                 <tr>
                   <td>Vehicle Group</td>
@@ -440,7 +460,7 @@
                   <td colspan="5" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
               </table>
-            </div>
+            </div> -->
             
             <!-- stoppage report -->
             <div id='stoppage' class="pane">
@@ -548,17 +568,21 @@
                         <td ng-click="deleteRouteName(route)"><a class="btn btn-xs btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
                       </tr>
                     </table>
+                   </div>
                   </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </div>  
 
-
-        </div>  
+                 <style type="text/css" ng-if ="hideMe">
+                     .labels{
+                       visibility: hidden !important;
+                      }
+                 </style>
                             <!-- <div class="row"> -->
                             <!-- class="col-lg-7" style=" width: 70%; float: left; margin-left: 10px; margin-right: 10px" -->
                               <!-- <div> -->
-                                <map id="map_canvas"></map>
+                                <map on-load-callback="callMapFun()" id="map_canvas"></map>
                               <!-- </div> -->
 
 
@@ -586,6 +610,12 @@
                         <input type="radio" name="track" >
                         stepbystep  
                       </label> -->
+                      </div>
+
+                      <div class="radioButts"><label><input type="checkbox" name="track" ng-change="getValueCheck(checkboxModel.value1)" ng-model="checkboxModel.value1"  ng-true-value="'YES'" ng-false-value="'NO'" >
+                        Site
+                      </label>
+              
                       </div>
 
                         <div style="position: fixed;top: 50px;left: 180px; z-index:99; background-color: #fff; padding: 5px; border-radius: 2px; cursor: pointer;  width: 250px" class="legendlist">
@@ -710,8 +740,8 @@ if(apikey_url != null || apikey_url != undefined)
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   scriptLibrary.push(url);
-  // scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+ //scriptLibrary.push(url);
+   scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");

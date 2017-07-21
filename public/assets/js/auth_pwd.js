@@ -635,7 +635,7 @@ $scope._addDetails  = function(){
   });
 
   showStop();
-stopLoading();
+ stopLoading();
 }
 
 
