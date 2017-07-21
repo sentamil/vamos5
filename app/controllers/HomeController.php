@@ -280,7 +280,7 @@ class HomeController extends BaseController {
     }
 
 
-    public function authName() {
+/*    public function authName() {
 
     	log::info(' inside the api key ');
     	$assetValue = array();
@@ -302,7 +302,9 @@ class HomeController extends BaseController {
         return $assetValue;
      } 
 
-    /*   public function authName(){
+    */
+
+    public function authName(){
 
     	log::info(' inside the api key ');
 
@@ -400,7 +402,7 @@ class HomeController extends BaseController {
        
     return $assetValue;
     }
-*/
+
 
 	public function doLogout()
 	{
