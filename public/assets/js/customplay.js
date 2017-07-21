@@ -3,12 +3,12 @@ var gmarkers=[];
 var ginfowindow=[];
 var gsmarker=[];
 var gsinfoWindow=[];
-
 var geoinfowindow=[];
 var contentString = [];
 var contentString01=[];
 var id;
 var geomarker=[], geoinfo=[];
+
 app.directive('map', ['$http', '_global', function($http, GLOBAL) {
     return {
         restrict: 'E',
@@ -17,12 +17,10 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
         link: function(scope, element, attrs) {
         	scope.path=[];
         	var geoUrl = GLOBAL.DOMAIN_NAME+'/viewSite';
-            var initSiteVal = 0;
             var polygenColors,labelAnchorpos,markers;
 
         	function utcdateConvert(milliseconds){
-				//var milliseconds=1440700484003;
-				
+			  //var milliseconds=1440700484003;
 				var offset='+10';
 				var d = new Date(milliseconds);
 				utc = d.getTime() + (d.getTimezoneOffset() * 60000);
@@ -30,6 +28,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 				var result=nd.toLocaleString();
 				return result;
 			}
+		 	
 		 	scope.$watch("hisurl", function (val) {
 		 		// startLoading();
 		 		scope.path = [];
@@ -158,12 +157,11 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 								});
 							// }());*/
 
-
-
 							google.maps.event.addListener(scope.map, 'click', function(event) {
 								scope.clickedLatlng = event.latLng.lat() +','+ event.latLng.lng();
 								$('#latinput').val(scope.clickedLatlng);
 							});
+						    
 						    for(var i=0;i<locs.vehicleLocations.length;i++){
 
 						   		scope.path.push(new google.maps.LatLng(locs.vehicleLocations[i].latitude, locs.vehicleLocations[i].longitude));
@@ -182,12 +180,10 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 						   	  //  }
 					   		}
 
-
 						   	scope.polylineCtrl();
-
 					   		console.log(scope.path.length);
 							
-		  	  // 				var latLngBounds = new google.maps.LatLngBounds();
+		  	  // 			var latLngBounds = new google.maps.LatLngBounds();
 			  				var j=0;
 			  		// 		 var tempFlag=false;
 			  		// 		 for(var k=0;k<locs.vehicleLocations.length;k++){
@@ -283,7 +279,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 			 scope.SiteCheckbox = {
        			 value1 : true,
       			 value2 : 'YES'
-     			};
+     			}
 
      		scope.getValueCheck = function(getStatus){
 
@@ -295,7 +291,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 
                  	var siteLength;
 
-                	if(initSiteVal==0){
+                //	if(initSiteVal==0){
 
                  	$http.get(geoUrl).success(function(response){
 									polygenList =[];
@@ -365,16 +361,13 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 									}
 								
 								});
-                 initSiteVal=1;
-
-                 } 
-              }())
+                    }())
      		}
-
-         if (getStatus == 'NO')
+         else if (getStatus == 'NO')
          {
            scope.hideMe = true;
-         }
+
+           }
         }
       }
     };
@@ -515,7 +508,6 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
    		}*/
    	return _returnObj;
    	}
-
 
 /*  	$scope.fuelChart 	= 	function(data){
 		var ltrs 		=	[];
@@ -681,7 +673,6 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 	});
 }
 */
-
 	$scope._tableValue = function(_value){
 		// if(_value && _value.vehicleLocations != null){
 		$scope.moveaddress    	=	[];
@@ -807,7 +798,6 @@ var queue1 = [];
 
 	}());
 
-
 	$scope.recursive   = function(location_over, _stat, _address){
    		// console.log(va)
    		var indexs = 0;
@@ -829,7 +819,6 @@ var queue1 = [];
     	})
 
 	}
-
 
 	$scope.addressResolve 	= function(tabVal){
 		
@@ -887,7 +876,6 @@ var queue1 = [];
 
 	// }).error(function(){ /*alert('error'); */});
 
-
 	$scope.getOrd 	= function()
 	{
 		$scope.error = "";
@@ -898,14 +886,12 @@ var queue1 = [];
 
 	}
 
-
 	function showRoutes(setRoute){
 
 		if(setRoute != '' && setRoute == 'routes'){
 			$("#myModal1").modal();
 			$scope.getOrd();
 		}
-
 	}
 
 	function addZero(i) {
@@ -997,6 +983,7 @@ var queue1 = [];
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
 	}
+
 	$scope.createGeofence=function(url){
 		//console.log('--->'+url)
 		if($scope.cityCirclecheck==false){
@@ -1060,6 +1047,7 @@ var queue1 = [];
 		}
 		});
 	}
+
 	$scope.goeValueChange = function()
 	{
 		//$scope.geoStops;
@@ -1163,7 +1151,6 @@ function getMapArray(values){
 
 	dvMap.setCenter(new google.maps.LatLng(pathCoords[0].lat,pathCoords[0].lng)); 
 	autoRefresh(dvMap);
-
 }
 
 function myMap(){
@@ -1430,7 +1417,7 @@ function animateMapZoomTo(map, targetZoom) {
 }
 
 
-	function smoothZoom (map, max, cnt) {
+function smoothZoom (map, max, cnt) {
     if (cnt >= max) {
             return;
         }
@@ -1442,6 +1429,7 @@ function animateMapZoomTo(map, targetZoom) {
         setTimeout(function(){map.setZoom(cnt)}, 80);
     }
 }  
+
 	$scope.infowin = function(data){
 		
 		var centerPosition = new google.maps.LatLng(data.latitude, data.longitude);
@@ -1505,6 +1493,7 @@ function animateMapZoomTo(map, targetZoom) {
 	}
 	
 	$scope.groupSelection = function(groupname, groupid){
+	
 		startLoading();
 		 $scope.selected=0;
 		 $scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group=' + groupname;
@@ -1516,45 +1505,52 @@ function animateMapZoomTo(map, targetZoom) {
 		 for(var i=0; i<gmarkers.length; i++){
 				gmarkers[i].setMap(null);
 			}
+			
 			if($scope.polyline){
-			for(var i=0; i<$scope.polyline1.length; i++){
+			  
+			  for(var i=0; i<$scope.polyline1.length; i++){
 				$scope.polyline1[i].setMap(null);
-			}
+			  }
 			
-			
-			$scope.polyline.setMap(null);
-}
-if($scope.markerstart){
-			$scope.markerstart.setMap(null);
-			$scope.markerend.setMap(null);
-			$scope.path = [];
-			$scope.polylinearr = [];
-			gmarkers=[];
-			ginfowindow=[];
-			contentString = [];
-			gsmarker=[];
-			gsinfoWindow=[];
-			window.clearInterval(id);
-			$('#replaybutton').attr('disabled','disabled');
-			$('#lastseen').html('<strong>From Date & time :</strong> -');
-			$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
-}
-		 $http.get($scope.url).success(function(data){
-			$scope.locations = data;
-			if(data.length)
+				$scope.polyline.setMap(null);
+            }
+
+            if($scope.markerstart){
+			  
+			  $scope.markerstart.setMap(null);
+			  $scope.markerend.setMap(null);
+			  $scope.path = [];
+			  $scope.polylinearr = [];
+			  gmarkers=[];
+			  ginfowindow=[];
+		      contentString = [];
+			  gsmarker=[];
+			  gsinfoWindow=[];
+			  window.clearInterval(id);
+			  $('#replaybutton').attr('disabled','disabled');
+			  $('#lastseen').html('<strong>From Date & time :</strong> -');
+			  $('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
+            }
+
+		    $http.get($scope.url).success(function(data){
+			   
+			   $scope.locations = data;
+			   
+			   if(data.length)
 				$scope.vehiname	= data[$scope.gIndex].vehicleLocations[0].vehicleId;
-			$scope.groupname 	= data[$scope.gIndex].group;
-			$scope.trackVehID 	= $scope.locations[$scope.gIndex].vehicleLocations[$scope.selected].vehicleId;
-			sessionValue($scope.trackVehID, $scope.groupname);
-			$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
-			$('.nav-second-level li').eq(0).children('a').addClass('active');
-			$scope.loading	=	false;
-			
-			// stopLoading();
-		}).error(function(){ stopLoading();});
-		
+			    $scope.groupname 	= data[$scope.gIndex].group;
+			    $scope.trackVehID 	= $scope.locations[$scope.gIndex].vehicleLocations[$scope.selected].vehicleId;
+			    sessionValue($scope.trackVehID, $scope.groupname);
+			    $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
+			    $('.nav-second-level li').eq(0).children('a').addClass('active');
+			    $scope.loading	=	false;
+						
+                //stopLoading();
+		    }).error(function(){ stopLoading();});
 	}
+
 	$scope.pointMarker=function(data){
+	
 		var line0Symbol = {
 	        path: google.maps.SymbolPath.CIRCLE,
 	        scale:3,
@@ -1562,13 +1558,14 @@ if($scope.markerstart){
 	        strokeWeight: 5
 	    };
 	    
-	    
 	    var marker = new google.maps.Marker({
             map: $scope.map,
             position: new google.maps.LatLng(data.latitude, data.longitude),
             icon:line0Symbol
 	    });
+	
 	    gsmarker.push(marker);
+	
 	    var contentString01 = '<div class="nearbyTable02"><div><table cellpadding="0" cellspacing="0"><tbody></tbody></table></div>';
 			var infoWindow = new google.maps.InfoWindow({content: contentString01});
 			gsinfoWindow.push(infoWindow);	
@@ -1585,8 +1582,8 @@ if($scope.markerstart){
 				$scope.infowindowshowFunc();
 			   });	
 			  })(marker);
-			  
 	}
+
 	$scope.infowindowshowFunc = function(){
 		for(var j=0; j<gsinfoWindow.length;j++){
 			gsinfoWindow[j].close();
@@ -1609,6 +1606,7 @@ if($scope.markerstart){
 					}
 		});
 	}
+
 	$scope.pointinfowindow=function(map, marker, data){
 		
 			if(gsmarker.length>0){
@@ -1616,6 +1614,7 @@ if($scope.markerstart){
 			
 		}
 	}
+
 	$scope.locationname="";
 	$scope.getLocation = function(lat,lon, callback){
 		var tempurl01 =  "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon;
@@ -1684,7 +1683,6 @@ if($scope.markerstart){
 	    return hours+":"+minutes+":"+sec;
     }
 
-
 	function utcdateConvert(milliseconds){
 		//var milliseconds=1440700484003;
 		var offset='+10';
@@ -1694,6 +1692,7 @@ if($scope.markerstart){
 		var result=nd.toLocaleString();
 		return result;
 	}
+
 	$scope.timeconversion= function(time){
 		var time = time;
 		var hours = Number(time.match(/^(\d+)/)[1]);
@@ -1707,6 +1706,7 @@ if($scope.markerstart){
 		if(minutes<10) sMinutes = "0" + sMinutes;
 		return sHours+":"+sMinutes+":00";
 	}
+
 	$scope.plotting = function(){
 		var fromdate = document.getElementById('dateFrom').value;
 		var todate = document.getElementById('dateTo').value;
@@ -1796,19 +1796,23 @@ if($scope.markerstart){
 	}
 	
 	$scope.addMarker= function(pos){
+	
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
 		var labelAnchorpos = new google.maps.Point(12, 37);
+	
 		if(pos.data.insideGeoFence =='Y'){
-			pinImage = 'assets/imgs/F_'+pos.data.direction+'.png';
+			//pinImage = 'assets/imgs/F_'+pos.data.direction+'.png';
+			  pinImage = 'assets/imgs/trans.png';
 		}else{	
 			if(pos.data.position =='P'){
-				//pinImage = 'assets/imgs/'+pos.data.position+'.png';
+			  //pinImage = 'assets/imgs/'+pos.data.position+'.png';
 				pinImage = 'assets/imgs/flag.png';
 			}else{
-				//pinImage = 'assets/imgs/A_'+pos.data.direction+'.png';
+			  //pinImage = 'assets/imgs/A_'+pos.data.direction+'.png';
 				pinImage = 'assets/imgs/orange.png';
 			}
 		}
+		
 		$scope.marker = new MarkerWithLabel({
 			   position: pos.path, 
 			   map: $scope.map,
@@ -1818,6 +1822,7 @@ if($scope.markerstart){
 			   // labelClass: "labels", 
 			   labelInBackground: true
 		});
+		
 		gmarkers.push($scope.marker);	
 	} 
 
@@ -1841,6 +1846,7 @@ if($scope.markerstart){
 			}
 		});
 	}
+
 	$scope.addMarkerstart= function(pos){
 		
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
@@ -1866,7 +1872,8 @@ if($scope.markerstart){
 		  });	
 		})($scope.markerstart, pos.data);
 	}
-	$scope.addMarkerend= function(pos){
+
+	 $scope.addMarkerend= function(pos){
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
 		pinImage = 'assets/imgs/endflag.png';
 		$scope.markerend = new MarkerWithLabel({
@@ -1904,7 +1911,6 @@ if($scope.markerstart){
 
 	function dateFormat(date) { return $filter('date')(date, "yyyy-MM-dd HH:mm:ss");}
 
-
 	$scope.printadd=function(a, b, c, d, marker, map, data){
 		var posval='';
 		
@@ -1940,9 +1946,11 @@ if($scope.markerstart){
 		//   });	
 		// })(marker, data);
 	}
+
 	$scope.imgsrc = function(img){
 		return img;
 	}
+
 	$scope.infoBox = function(map, marker, data){
 		 
 		var t = $scope.getLocation(data.latitude, data.longitude, function(count){
@@ -1955,8 +1963,6 @@ if($scope.markerstart){
 			$scope.printadd(dateFormat(data.date), b, data.tripDistance, count, marker, map, data); 
 		});
 	};
-
-
 
     $scope.trimComma = function(textVal){
 
@@ -2132,8 +2138,7 @@ if($scope.markerstart){
 
 	$scope.polylineCtrl 	= function(){
 
-		//console.log($scope.hisloc);
-
+	   //console.log($scope.hisloc);
        if($scope.hisloc.vehicleLocations!=null){
 
 		startLoading();
@@ -2201,6 +2206,7 @@ if($scope.markerstart){
 	    				
 			$scope.polylineLoad 	=[];
 			//vehicIcon=vehiclesChange(VehiType); 
+
 	function myTimer() {
 
 		if($scope.path.length == lineCount+1){
@@ -2291,11 +2297,11 @@ if($scope.markerstart){
 					    if($scope.hisloc.vehicleLocations[lineCount].position!=undefined){
 							if($scope.hisloc.vehicleLocations[lineCount].position=='P' || $scope.hisloc.vehicleLocations[lineCount].position=='S' || $scope.hisloc.vehicleLocations[lineCount].insideGeoFence=='Y' ){
 								
-								//$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[lineCount].latitude, lng: $scope.hisloc.vehicleLocations[lineCount].longitude , data: $scope.hisloc.vehicleLocations[lineCount], path:$scope.path[lineCount]});
-							//	$scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[lineCount]);
-			  					// $scope.markerPark.push($scope.marker)
-								j++;
-							}
+							$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[lineCount].latitude, lng: $scope.hisloc.vehicleLocations[lineCount].longitude , data: $scope.hisloc.vehicleLocations[lineCount], path:$scope.path[lineCount]});
+							$scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[lineCount]);
+			  			  //$scope.markerPark.push($scope.marker)
+							j++;
+						  }
 						}
 			  		// }
 
@@ -2344,7 +2350,6 @@ if($scope.markerstart){
 		  //+'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
 			+'</div>';
 
-
 				            $scope.infosWindows.setContent(contenttString);
 				            $scope.infosWindows.setPosition($scope.path[0]);
                             $scope.infosWindows.open($scope.map,$scope.markerhead);
@@ -2363,7 +2368,8 @@ if($scope.markerstart){
 			    $scope.mhValue=1;
 
      		    $scope.markerhead.addListener('click', function() {
-					$scope.infosWindows.open($scope.map,$scope.markerhead);
+				$scope.infosWindows.open($scope.map,$scope.markerhead);
+			    
 			    });
 
 	   	intervalPoly = setInterval(function(){ myTimer() }, 600);
@@ -2419,13 +2425,14 @@ if($scope.markerstart){
 				    $scope.infosWindow = new google.maps.InfoWindow({maxWidth:180});
 
                     $scope.markerheads.addListener('click', function() {
-					    $scope.infosWindow.open($scope.map,$scope.markerheads);
+					$scope.infosWindow.open($scope.map,$scope.markerheads);
+
 					});
 
 				    $scope.markerValue=1;
 
-                    pcount=0;
-                    lenCount2=0;
+                    pcount    = 0;
+                    lenCount2 = 0;
                     timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay);
 			
 			
@@ -2436,20 +2443,18 @@ if($scope.markerstart){
 									if($scope.hisloc.vehicleLocations[i].position!=undefined){
 										if($scope.hisloc.vehicleLocations[i].position=='P' || $scope.hisloc.vehicleLocations[i].position=='S' || $scope.hisloc.vehicleLocations[i].insideGeoFence=='Y' ){
 											
-											//$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[i].latitude, lng: $scope.hisloc.vehicleLocations[i].longitude , data: $scope.hisloc.vehicleLocations[i], path:$scope.path[i]});
-										//	$scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[i]);
-											// $scope.markerPark.push($scope.marker)
+										$scope.addMarker({ lat: $scope.hisloc.vehicleLocations[i].latitude, lng: $scope.hisloc.vehicleLocations[i].longitude , data: $scope.hisloc.vehicleLocations[i], path:$scope.path[i]});
+										$scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[i]);
+									  //$scope.markerPark.push($scope.marker);
 											j++;
 										}
 										
 									}
 						  		}
-
-		}
-		// console.log($scope.path)
-		// console.log($scope.polylineCheck)
+		    }
+		   // console.log($scope.path);
+		   // console.log($scope.polylineCheck);
 		stopLoading();
-
 	  }
 	}
 
@@ -2569,7 +2574,7 @@ if($scope.markerstart){
 	});
 
 
-	$('ul.tabs').each(function(){
+  $('ul.tabs').each(function(){
   // For each set of tabs, we want to keep track of
   // which tab is active and its associated content
   var $active, $content, $links = $(this).find('a');
