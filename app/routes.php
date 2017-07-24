@@ -1047,9 +1047,11 @@ Route::resource('vdmBusStops', 'VdmBusStopsController');
 Route::resource('vdmGeoFence', 'VdmGeoFenceController');
 Route::get('vdmOrganization/{param}/pView', array('uses' => 'VdmOrganizationController@pView'));
 Route::get('vdmOrganization/{param}/editAlerts', array('uses' => 'VdmOrganizationController@editAlerts'));
+Route::get('vdmOrganization/{param}/siteNotification', array('uses' => 'VdmOrganizationController@siteNotification'));
 Route::get('vdmOrganization/placeOfInterest', array('uses' => 'VdmOrganizationController@placeOfInterest'));
 Route::post('vdmOrganization/addpoi', array('uses' => 'VdmOrganizationController@addpoi'));
 Route::post('vdmOrganization/updateNotification', array('uses' => 'VdmOrganizationController@updateNotification'));
+Route::post('vdmOrganization/siteUpdate', array('uses' => 'VdmOrganizationController@siteUpdate'));
 
 ///Advance scan for ORGANIZATION
 Route::get('vdmOrganization/Scan', array('uses' => 'VdmOrganizationController@Search'));

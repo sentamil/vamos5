@@ -225,6 +225,61 @@ public function addpoi()
 		Session::flash('message', 'Successfully created !');
 		return Redirect::to('vdmOrganization');
 	 }
+	
+public function siteUpdate()
+	{	
+		if(!Auth::check()) {
+			return Redirect::to('login');
+		}
+		$username = Auth::user()->username;
+		$redis = Redis::connection();
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		$orgId =Input::get('orgId');
+		$emailList =Input::get('emailList');
+		$smsList =Input::get('smsList');
+		$timeList =Input::get('time');
+		$enableList =Input::get('enable');
+		$alertList =Input::get('key');
+		$siteName =Input::get('value');
+		$alertList=$redis->hgetall('H_Site_'.$orgId.'_'.$fcode);
+            foreach($alertList as $keyS => $value)
+        { 
+         if($keyS%2 != 0)
+         continue; //The key is odd, skip
+         //do your stuff
+        $siteList[] = $keyS;
+        }
+      $rr=count($siteList);
+		for ($i=0;$i<$rr;$i++)
+		{
+			$siteName=$siteList[$i];
+			$timeS=$timeList[$i];
+			$enableS=$enableList[$i];
+    log::info($siteName);
+	log::info('////////////////'.$timeS);
+	log::info($enableS);
+			$refDataJson1=$redis->hget ('H_Site_'.$orgId.'_'.$fcode, $siteName);
+		 log::info($refDataJson1);
+        $refDataJson1=json_decode($refDataJson1,true);
+
+        $refDataArr = array (
+            'siteName' => isset($refDataJson1['siteName'])?$refDataJson1['siteName']:$siteName,
+            'siteType' => isset($refDataJson1['siteType'])?$refDataJson1['siteType']:' ',
+            'userId' => isset($refDataJson1['userId'])?$refDataJson1['userId']:'XXXXX',
+            'latLng' => isset($refDataJson1['latLng'])?$refDataJson1['latLng']:' ',
+            'OrgId' =>  isset($refDataJson1['OrgId'])?$refDataJson1['OrgId']:'',
+            'time' => $timeS,
+            'enable' => $enableS,
+            );
+
+         $refDataJson = json_encode ( $refDataArr );
+    $redis->hdel ( 'H_Site_'.$orgId.'_'.$fcode, $siteName );
+    $redis->hset ( 'H_Site_'.$orgId.'_'.$fcode, $siteName, $refDataJson );
+		}
+		Log::info('orgid is -->'.$orgId);
+		Session::flash('message', 'Successfully created !');
+		return Redirect::to('vdmOrganization');
+	 }
 		
 		
 	public function poiEdit($id)
@@ -440,6 +495,33 @@ public function addpoi()
 	   
 	   
        return View::make('vdm.organization.editAlerts')->with('orgId',$id)->with('alertList',$alertList)->with('tmp',0)->with('smsArray',$smsArray)->with('emailArray',$emailArray); 
+	 		}
+
+	public function siteNotification($id)
+	{
+		if(!Auth::check()) {
+			return Redirect::to('login');
+		}
+		$username = Auth::user()->username;
+		$redis = Redis::connection();
+		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		$time = array('' => '', '10' => '10', '20' => '20', '30' => '30', '40' => '40', '50' => '50', '60' => '60', '70' => '70', '80' => '80', '90' => '90', '100' => '100'); 
+		$enable = array('N' => 'N', 'Y' => 'Y');
+		log::info($time);
+		$alertList=array();
+		$smsArray=array();
+		$emailArray=array();
+		$alertList=$redis->hgetall('H_Site_'.$id.'_'.$fcode);
+          foreach($alertList as $key => $value)
+          { 
+          if($key%2 != 0)
+            continue; //The key is odd, skip
+             //do your stuff
+           $siteList[] = $key;
+           log::info($siteList);
+         } 
+       $siteList =isset($siteList) ? $siteList :[];		
+       return View::make('vdm.organization.siteNotification')->with('orgId',$id)->with('alertList',$siteList)->with('tmp',0)->with('smsArray',$smsArray)->with('emailArray',$emailArray)->with('time',$time)->with('enable',$enable); 
 	 		}
 
     public function store()
