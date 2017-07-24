@@ -229,9 +229,9 @@
                      <li>
              <a href="../vdmOrganization/Scan"> <span class="nav-label">Organisation Search</span> <span class="label label-success pull-right">v.3</span> </a>
             </li>
-					 <!--<li>
+					 <li>
              <a href="../vdmOrganization"> <span class="nav-label">Organisation List</span></a>
-            </li>-->
+            </li>
 			
 			<li>  <a href="../vdmOrganization/create"> <span class="nav-label">Add Organisation</span></a></li>
 			 
