@@ -1042,11 +1042,11 @@ var queue1 = [];
 						pane: "mapPane",
 						enableEventPropagation: true
 					};
-					/*var labelinfo = new InfoBox(myOptions);
-					labelinfo.open($scope.map);
-					labelinfo.setPosition($scope.cityCircle[i].getCenter());*/
-					
-				}
+
+					  var labelinfo = new InfoBox(myOptions);
+					  labelinfo.open($scope.map);
+					  labelinfo.setPosition($scope.cityCircle[i].getCenter());
+				     }
 				}
 			}
 		}
