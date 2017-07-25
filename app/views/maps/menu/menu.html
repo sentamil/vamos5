@@ -90,7 +90,8 @@
                 <li class="removeli"><a href="../public/statistics?ind=1">POI</a></li>
                 <li class="removeli"><a href="../public/statistics?ind=2">Consolidated</a></li>
                 <li class="removeli"><a href="../public/statistics?ind=3">Executive Fuel</a></li>
-                <li class="removeli"><a href="../public/statistics?ind=4">Monthly Distance</a></li> 
+                <li class="removeli"><a href="../public/statistics?ind=4">Monthly Dist</a></li> 
+                <li class="removeli"><a href="../public/statistics?ind=5">Monthly Dist and Fuel</a></li> 
             </ul>
         </li>
         <li class="cl-effect-5">
@@ -277,7 +278,6 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             $('#history').click(function () {
                 $(this).attr("href", "track?maps=replay&vehicleId="+vid+'&gid='+gname);
             })
-
 
             $('#addsites').click(function(){
                 if(sessionStorage.getItem('auth') == 'sitesVal')

@@ -3,12 +3,14 @@ app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global'
   $scope.donut_new    =  0;
   $scope.donut        =  1;
   $scope.showMonTable =  false;
+  $scope.showMonFuelTable = false;
 
     var getUrl          =  document.location.href;
     var tabId;
   //var tabId           =  'executive';
   //$scope.donut_new    =  false;
     var index           =  getParameterByName("ind");
+  //$scope.fromMonthFuel='06/2017';
 
   //tab view
   if(index == 1) {
@@ -19,6 +21,7 @@ app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global'
     $scope.donut        = true;
     $scope.showDate     = true;
     $scope.showMonth    = false;
+    $scope.showMonthFuel = false;
     $scope.sort     = sortByDate('time')
   } else if(index == 2){
     tabId               = 'executive';
@@ -28,28 +31,44 @@ app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global'
     $scope.actCons    = true;
     $scope.showDate     = true;
     $scope.showMonth    = false;
+    $scope.showMonthFuel = false;
     $scope.sort     = sortByDate('date')
   } 
     else if(index == 3){
       $scope.donut_new    = true;
       $scope.donut        = true;
-        tabId         = 'fuel';
+      tabId         = 'fuel';
     $scope.downloadid   = 'fuel';
     $scope.showDate     = true;
     $scope.showMonth    = false;
+    $scope.showMonthFuel = false;
     $scope.actFuel    = true;
     $scope.sort     = sortByDate('date')
   }
    else if(index == 4){
       $scope.donut_new=false;
       $scope.donut    =true;
-    //  console.log('index 4...');
-        tabId         = 'month';
+    //console.log('index 4...');
+      tabId         = 'month';
     $scope.downloadid   = 'month';
     $scope.showDate     = false;
-      $scope.showMonth    = true;
+    $scope.showMonth    = true;
+    $scope.showMonthFuel = false;
     $scope.actMonth   = true;
     $scope.showMonTable = false;
+    $scope.sort     = sortByDate('date');
+  }
+   else if(index == 5){
+      $scope.donut_new=false;
+      $scope.donut    =true;
+      //console.log('index 5...');
+      tabId         = 'monthFuel';
+    $scope.downloadid   = 'monthFuel';
+    $scope.showDate     = false;
+    $scope.showMonth    = false;
+    $scope.showMonthFuel = true;
+    $scope.actMonthFuel    = true;
+    $scope.showMonFuelTable = false;
     $scope.sort     = sortByDate('date');
   }
   else {
@@ -58,16 +77,15 @@ app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global'
     $scope.donut_new    = false;
     $scope.donut        =false;
     $scope.showDate     = true;
-      $scope.showMonth    = false;
+    $scope.showMonth    = false;
+    $scope.showMonthFuel = false;
     $scope.sort     = sortByDate('date');
   }
 
 
  $scope.trimHyphens = function(textVal){
-
        var splitValue = textVal.split(/[-]+/);
-
-     return splitValue[2];
+  return splitValue[2];
   }
 
 function daysInThisMonth() {
@@ -82,8 +100,62 @@ function daysInThisMonth() {
  return nowNew;
 }
 
+$scope.submitMonFuel=function(){
+
+  //console.log($scope.fromMonthFuel);
+  var newmonVal=$scope.fromMonthFuel.split('/');
+  $scope.monFuelVal=parseInt(newmonVal[0]);
+  $scope.yearFuelVal=newmonVal[1];
+
+   $scope.lenMonss=getDaysInMonth(newmonVal[0]);
+   $scope.colValss=$scope.lenMonss+2;
+
+   $scope.monValFront  = $scope.monthsValss[newmonVal[0]-1];
+   $scope.curYearFront = " - "+newmonVal[1];
+
+     //console.log(parseInt(newmonVal[0]));
+       //console.log($scope.yearFuelVal);
+  startLoading();
+   $scope.showMonFuelTable = false;
+  serviceCall();
+}
+
+function getNewMonthFuel() {
+  $scope.monthsValss=["January", "February","March","April","May","June","July","August","September","October","November","December"]; 
+
+    var dates = new Date();
+    var monsValss = dates.getMonth();
+    var yearValss = dates.getFullYear(); 
+
+            if(monsValss == 0){
+                monsValss=12;
+                yearValss=dates.getFullYear()-1; 
+
+                $scope.monFuelVal   = monsValss;
+                $scope.yearFuelVal  = yearValss;
+                $scope.monValFront  = $scope.monthsValss[monsValss-1];
+                $scope.curYearFront = " - "+yearValss;
+            }else{
+
+                $scope.monFuelVal   = monsValss;
+                $scope.yearFuelVal  = yearValss;
+                $scope.monValFront  = $scope.monthsValss[monsValss-1];
+                $scope.curYearFront = " - "+yearValss;
+
+                if(monsValss<10){
+                   monsValss = "0"+monsValss; 
+                }
+            }
+   
+return monsValss+'/'+yearValss;
+}
+//console.log(getNewMonthFuel());
+$scope.fromMonthFuel = getNewMonthFuel();
 $scope.lenMon=daysInThisMonth();
 $scope.colVals=$scope.lenMon+2;
+
+$scope.lenMonss=$scope.lenMon;
+$scope.colValss=$scope.lenMonss+2;
 
 function getDaysInMonth(month) {
     var now = new Date(); 
@@ -91,9 +163,7 @@ function getDaysInMonth(month) {
 }
 
 function currentYear(){
-
   var yy = new Date();
-
  return yy.getFullYear();
 }
 
@@ -130,7 +200,6 @@ return retVal;
 
    $scope.monArray=currentMonth();
 // console.log($scope.monArray);
-
    $scope.curYear=" - "+currentYear()+"";
    $scope.monsVal=$scope.monArray;
 
@@ -233,16 +302,16 @@ function sessionValue(vid, gname){
 $scope.$watch("url", function(val){
   vamoservice.getDataCall(val).then(function(data) {
 
-    $scope.vehicleList    =   data;
-//    console.log($scope.vehicleList );
+    $scope.vehicleList  = data;
+//  console.log($scope.vehicleList);
     $scope.fromNowTS    = new Date();
     $scope.toNowTS      = new Date().getTime() - 86400000;
     $scope.fromdate     = $scope.getTodayDate($scope.fromNowTS.setDate($scope.fromNowTS.getDate()-7));
-    $scope.todate     = $scope.getTodayDate($scope.toNowTS);
+    $scope.todate       = $scope.getTodayDate($scope.toNowTS);
     $scope.fromtime     = formatAMPM($scope.fromNowTS);
       $scope.totime     = formatAMPM($scope.toNowTS);
-      $scope.trackVehID       =   data[0].vehicleLocations[0].vehicleId;
-      $scope.groupname    = data[0].group;
+      $scope.trackVehID = data[0].vehicleLocations[0].vehicleId;
+      $scope.groupname  = data[0].group;
       sessionValue($scope.trackVehID, $scope.groupname);
 
     angular.forEach(data, function(value, key){
@@ -656,6 +725,30 @@ function distanceMonth(data){
  return ret_obj;
 }
 
+function distanceFuelMonth(data){
+
+  var ret_obj=[];
+
+    angular.forEach(data.monthlyDistAndFuelDetails, function(val, key){
+
+        ret_obj.push({vehiId:val.vehicleId,vehiName:val.shortName,totDist:val.totalDistance,totFuel:val.totalFuelConsume,odoStart:val.startOdoMeterReading,odoEnd:val.endOdoMeterReading});
+        ret_obj[key].distsTodays=[];
+        ret_obj[key].fuelTodays=[];
+
+         angular.forEach(val.getVehicleDistanceData, function(sval, skey){
+           ret_obj[key].distsTodays.push({distanceToday:sval});
+           // console.log(sval);
+           }); 
+
+          angular.forEach(val.getVehicleFuelData, function(tval, tkey){
+             ret_obj[key].fuelTodays.push({fuelsToday:tval});
+           // console.log(tval);
+           }); 
+    });   
+
+ return ret_obj;
+}
+
 
  /*function distanceMonth(data){
 
@@ -787,7 +880,7 @@ function serviceCall(){
       $scope.bar      =   true;
       $('#singleDiv').hide();
 
-      var monthUrl =GLOBAL.DOMAIN_NAME+'/getExecutiveReportVehicleDistance?groupId='+$scope.viewGroup.group+'&month='+ $scope.monthNo;
+      var monthUrl =GLOBAL.DOMAIN_NAME+'/getExecutiveReportVehicleDistance?groupId='+$scope.viewGroup.group+'&month='+$scope.monthNo;
       //console.log(monthUrl);
              
           $scope.monthData  = [];
@@ -816,6 +909,49 @@ function serviceCall(){
         stopLoading();
       });
   } 
+  else if(tabId == 'monthFuel' || $scope.actMonthFuel == true){
+      $scope.donut      =   true;
+      $scope.donut_new  =   false;
+      $scope.bar        =   true;
+      $('#singleDiv').hide();
+
+      var monthFuelUrl = GLOBAL.DOMAIN_NAME+'/getMonthlyExecutiveDistanceAndFuel?groupId='+$scope.viewGroup.group+'&month='+$scope.monFuelVal+'&year='+$scope.yearFuelVal;
+         //console.log(monthFuelUrl);
+          $scope.monthFuelData  = [];
+          $http.get(monthFuelUrl).success(function(data){
+           
+              $scope.monthFuelData = data;
+           // console.log($scope.monthFuelData);
+
+           $scope.monthFuelDates=[];
+             for(var i=0;i<$scope.lenMonss;i++){
+                  $scope.monthFuelDates.push(i+1);
+                }
+
+           $scope.distMonFuelData=[];
+           $scope.distMonFuelData=distanceFuelMonth($scope.monthFuelData);
+
+           $scope.totMonDistVehic=[];
+           if(data.cumulativeVehicleDistanceData!=null){
+
+               for(var i=0;i<data.cumulativeVehicleDistanceData.length;i++){
+                   $scope.totMonDistVehic.push(data.cumulativeVehicleDistanceData[i]); 
+                }
+           }
+
+           $scope.totMonFuelVehic=[];
+           if(data.cumulativeVehicleFuelData!=null){
+
+               for(var i=0;i<data.cumulativeVehicleFuelData.length;i++){
+                   $scope.totMonFuelVehic.push(data.cumulativeVehicleFuelData[i]); 
+                }
+           }
+             //console.log($scope.distMonFuelData);
+             //console.log(daysInThisMonth());
+          $scope.showMonFuelTable=true;
+        stopLoading();
+      });
+  } 
 }
 
 $scope.plotHist   = function()
@@ -837,10 +973,11 @@ $scope.alertMe    =   function(tabClick)
       $scope.downloadid   = 'executive';
       $scope.showDate     = true;
       $scope.showMonth    = false;
+      $scope.showMonthFuel = false;
       serviceCall();
       $scope.donut        = false;
       $scope.donut_new    = false;
-            break;
+      break;
     case 'poi':
       startLoading();
       $scope.sort         = sortByDate('time');
@@ -848,6 +985,7 @@ $scope.alertMe    =   function(tabClick)
       $scope.downloadid   = 'poi';
       $scope.showDate     = true;
       $scope.showMonth    = false;
+      $scope.showMonthFuel = false;
       serviceCall();
       break;
     case 'consolidated' :
@@ -857,6 +995,7 @@ $scope.alertMe    =   function(tabClick)
       $scope.downloadid   = 'consolidated';
       $scope.showDate     = true;
       $scope.showMonth    = false;
+      $scope.showMonthFuel = false;
       serviceCall();
       $scope.donut        = false;
       $scope.donut_new    = false;
@@ -868,6 +1007,7 @@ $scope.alertMe    =   function(tabClick)
       $scope.downloadid   = 'fuel';
       $scope.showDate     = true;
       $scope.showMonth    = false;
+      $scope.showMonthFuel = false;
       serviceCall();
       break;
     case 'distMonth' :
@@ -878,8 +1018,20 @@ $scope.alertMe    =   function(tabClick)
       $scope.downloadid   = 'month';
       $scope.showDate     = false;
       $scope.showMonth    = true;
-        serviceCall();
-      break;  
+      $scope.showMonthFuel = false;
+      serviceCall();
+      break;
+    case 'distMonthFuel' :
+      startLoading();
+      $scope.sort         = sortByDate('date');
+      $scope.showMonFuelTable = true;
+      tabId               = 'month';
+      $scope.downloadid   = 'month';
+      $scope.showDate     = false;
+      $scope.showMonth    = false;
+      $scope.showMonthFuel = true;
+      serviceCall();
+      break;    
     default :
       break;
   }
@@ -900,6 +1052,5 @@ $scope.exportData = function (data) {
 
 
 }]);
-
 
 

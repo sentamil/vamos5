@@ -728,6 +728,14 @@ Route::get('/getRouteList', function() {
     return View::make('vls.getExecutiveReportVehicleDistance');
  });
 
+ Route::get('/getMonthlyExecutiveDistanceAndFuel', function() {
+     if (!Auth::check()) {
+         return Redirect::to('login');
+     }
+    Log::info('getMonthlyExecutiveDistanceAndFuel !...');
+    return View::make('vls.getMonthlyExecutiveDistanceAndFuel');
+ });
+
 Route::get('/getIndividualDriverPerformance', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
