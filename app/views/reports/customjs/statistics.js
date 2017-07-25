@@ -107,7 +107,7 @@ $scope.submitMonFuel=function(){
   $scope.monFuelVal=parseInt(newmonVal[0]);
   $scope.yearFuelVal=newmonVal[1];
 
-   $scope.lenMonss=getDaysInMonth(newmonVal[0]);
+   $scope.lenMonss=getDaysInMonthFuel($scope.monFuelVal,$scope.yearFuelVal);
    $scope.colValss=$scope.lenMonss+2;
 
    $scope.monValFront  = $scope.monthsValss[newmonVal[0]-1];
@@ -156,6 +156,10 @@ $scope.colVals=$scope.lenMon+2;
 
 $scope.lenMonss=$scope.lenMon;
 $scope.colValss=$scope.lenMonss+2;
+
+function getDaysInMonthFuel(month,year) {
+  return new Date(year, month, 0).getDate();
+}
 
 function getDaysInMonth(month) {
     var now = new Date(); 
