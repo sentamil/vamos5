@@ -62,7 +62,7 @@ app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global'
       $scope.donut_new=false;
       $scope.donut    =true;
       //console.log('index 5...');
-      tabId         = 'monthFuel';
+    tabId         = 'monthFuel';
     $scope.downloadid   = 'monthFuel';
     $scope.showDate     = false;
     $scope.showMonth    = false;
@@ -1024,9 +1024,9 @@ $scope.alertMe    =   function(tabClick)
     case 'distMonthFuel' :
       startLoading();
       $scope.sort         = sortByDate('date');
-      $scope.showMonFuelTable = true;
-      tabId               = 'month';
-      $scope.downloadid   = 'month';
+      $scope.showMonFuelTable = false;
+      tabId               = 'monthFuel';
+      $scope.downloadid   = 'monthFuel';
       $scope.showDate     = false;
       $scope.showMonth    = false;
       $scope.showMonthFuel = true;
