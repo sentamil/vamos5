@@ -378,17 +378,18 @@ background-color: #ffffff;
                             </div>
                          </tab>
 
-                         <tab select="alertMe('distMonthFuel')" heading="Dist and Fuel" active="actMonthFuel"> 
+                         <tab  select="alertMe('distMonthFuel')" heading="Dist and Fuel" active="actMonthFuel"> 
 
-                       <!-- <div class="form-group pull-right">
+                         <!-- <div class="form-group pull-right">
                                 <input type="search" class="form-control input-sm" placeholder="Enter VehicleId" align="center" ng-model="searchbox" name="search" />
-                            </div>-->
+                              </div>-->
 
-                            <h4 style="margin:0" class="page-header">Vehicle Distance and Fuel - Monthly Report</h4>
+                         <!-- overflow-x:auto -->
 
-                            <!-- overflow-x:auto -->
+                            <div id='monthFuel' style="overflow-y:auto;">
 
-                            <div id='monthFuel'  style="overflow-y:auto;">
+                             <h4  style="margin:0" class="page-header">Vehicle Distance and Fuel - Monthly Report</h4>
+
                             <table class="table table-bordered table-striped table-condensed table-hover table-striped" ng-show="showMonFuelTable" >
 
                             <thead>
@@ -397,12 +398,12 @@ background-color: #ffffff;
                                      </tr>
 
                                      <tr>
-                                         <td rowspan="2"> Vehicle Name </td>
-                                         <td>Day</td>
+                                         <td> Vehicle Name </td>
+                                         <td> Day </td>
                                          <td ng-repeat="dat in monthFuelDates" style="background-color:#ecf7fb;font-weight: bold;">{{dat}}</td>
-                                         <td> Total (Kms/Ltrs)</td>
-                                         <td rowspan=2> Odo Start </td>
-                                         <td rowspan=2> Odo End </td>
+                                         <td> Total (Kms/Ltrs) </td>
+                                         <td> Odo Start </td>
+                                         <td> Odo End </td>
                                      </tr>
                             </thead>
 
@@ -437,7 +438,10 @@ background-color: #ffffff;
                                     <td>Fuel</td>
                                     <td ng-repeat="val in totMonFuelVehic track by $index" style="color:#e18e32;font-weight: bold;">{{val}}</td>
                                 </tr>
-                            
+                                <tr ng-if="monthFuelData.error != '' " align="center">
+                                    <td colspan="36" class="err"><h5>Please choose current month (or) before</h5></td>
+                                </tr> 
+                                 
                             </table>
                          </div>
                        </tab>
