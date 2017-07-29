@@ -14,7 +14,7 @@ class AddSiteController extends \BaseController {
 		$ipaddress = $redis->get('ipaddress');		
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );  
 		$url = 'http://' .$ipaddress . ':9000/viewSite?userId=' .$username . '&fcode=' . $fcode;	 
-		 $ch = curl_init();
+		$ch = curl_init();
 		$url=htmlspecialchars_decode($url);
 		log::info( ' url :' . $url);		 
 		  curl_setopt($ch, CURLOPT_URL, $url);
@@ -22,22 +22,18 @@ class AddSiteController extends \BaseController {
 		  curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 		  $response = curl_exec($ch);
-			 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+		  $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
 		  curl_close($ch);
 		  $sitesJson = json_decode($response,true);
 	    log::info( ' ------------check----------- :');
 		if(!$sitesJson['error']==null)
 		{
-			 log::info( ' ---------inside null--------- :');
+			log::info( ' ---------inside null--------- :');
 			return Redirect::to ( 'sites');
 		}
 		$Sites=array();
 
-
-
-
-
-	$siteArray=$sitesJson['siteParent'];
+    	$siteArray=$sitesJson['siteParent'];
 		log::info(' ---------inside --------- :'.count($siteArray));
 		foreach($siteArray as $org => $rowId)
 		{
@@ -51,32 +47,19 @@ class AddSiteController extends \BaseController {
 						$Sites=array_add($Sites, $orT1,json_encode ( $ro1 ));
 					}
 					log::info($or. ' ---------inside3 --------- :'.json_encode ($ro));
-					
 				}
-				 
 			}
-			
 		}
 		$orgArray=$sitesJson['orgIds'];
 		$orgArr=array();
 		foreach($orgArray as $temp => $rowIdTemp)
 		{
-			
-				
-					log::info($temp. ' ---------inside --------- :'.$rowIdTemp);
-					$orgArr=array_add($orgArr, $temp,$rowIdTemp);
-				
-			
+				log::info($temp. ' ---------inside --------- :'.$rowIdTemp);
+				$orgArr=array_add($orgArr, $temp,$rowIdTemp);
+		}*/
 
-	}*/
-		return View::make ( 'vdm.saveSite.siteDetails'
-				
-		) ;
+	 return View::make ( 'vdm.saveSite.siteDetails' );
 	}
-	
-	
-	
-	
 	
 	/**
 	 * Show the form for creating a new resource.
@@ -89,7 +72,7 @@ class AddSiteController extends \BaseController {
 		$ipaddress = $redis->get('ipaddress');		
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' ); 
 		$url = 'http://' .$ipaddress . ':9000/deleteSite?userId=' .$username . '&fcode=' . $fcode. '&orgId=' . $orgId. '&siteName=' . $id;	 
-		 $ch = curl_init();
+		$ch = curl_init();
 		$url=htmlspecialchars_decode($url);
 		log::info( ' url :' . $url);		 
 		  curl_setopt($ch, CURLOPT_URL, $url);
@@ -97,15 +80,12 @@ class AddSiteController extends \BaseController {
 		  curl_setopt($ch, CURLOPT_TIMEOUT, 3);
 		  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 		  $response = curl_exec($ch);
-			 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+		  $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
 		  curl_close($ch);
 		  log::info('response '.$response);
-		  
 	}
 	
 	
-	
-	 
 	public function store() {
 		
 		$username = Auth::user ()->username;
@@ -116,19 +96,18 @@ class AddSiteController extends \BaseController {
         $siteName = Input::get ( 'siteName' );
 		$siteType = Input::get ( 'siteType' );
 		$latLng = Input::get ( 'latLng' );
-		 log::info($username. '------site name---------- ::'.$siteName);
+		log::info($username. '------site name---------- ::'.$siteName);
 		$rules = array (
 				'siteName' => 'required|alpha_dash',
 				'siteType' => 'required|alpha_dash',				
 		);
 		
-		
-        log::info($latLng[0]. '------site name---------- ::'.$siteName);
+		log::info($latLng[0]. '------site name---------- ::'.$siteName);
 		log::info(count($latLng). '------site type---------- ::'.$siteType);
 		$orgId=Input::get ( 'org' );
 		$ch = curl_init();
 		$siteType= curl_escape($ch,$siteType);
-		$url = 'http://' .$ipaddress . ':9000/saveSite?latLng=' . implode(",",$latLng) . '&fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .rawurlencode($siteName).'&siteType='.$siteType.'&userId='.$username;
+		$url = 'http://'.$ipaddress.':9000/saveSite?latLng=' . implode(",",$latLng) . '&fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .rawurlencode($siteName).'&siteType='.$siteType.'&userId='.$username;
 		 
 		
 		$url=htmlspecialchars_decode($url);
@@ -137,15 +116,27 @@ class AddSiteController extends \BaseController {
     
 		 
 		  curl_setopt($ch, CURLOPT_URL, $url);
-			// Include header in result? (0 = yes, 1 = no)
+
+	   // Include header in result? (0 = yes, 1 = no)
 		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		  curl_setopt($ch, CURLOPT_TIMEOUT, 3);
 		  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 		  $response = curl_exec($ch);
-			 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+		  $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+
+		  $url1 = 'http://' .$ipaddress . ':9000/updateGeoFences?siteName=' . $siteName . '&orgId=' .$orgId . '&fcode=' . $fcode;
+		  $url1=htmlspecialchars_decode($url1);
+		  log::info( ' url1 :' . $url1);
+		  curl_setopt($ch, CURLOPT_URL, $url1);
+		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		  curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+		  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');                
+		  $response = curl_exec($ch);
+		  $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+		  
 		  curl_close($ch);
-		log::info( ' response :' . $response);
-         log::info( 'finished');
+		  log::info( ' response :' . $response);
+          log::info( 'finished');
 	}
 	
 	
@@ -160,38 +151,38 @@ class AddSiteController extends \BaseController {
 		$siteType = Input::get ( 'siteType' );
 		$siteNameOld=Input::get ( 'siteNameOld' );
 		$latLng = Input::get ( 'latLng' );
-		 log::info($username. '------site name---------- ::'.$siteName);
+		log::info($username. '------site name---------- ::'.$siteName);
 		$rules = array (
-				'siteName' => 'required|alpha_dash',
-				'siteType' => 'required|alpha_dash',
-				'siteNameOld' => 'required|alpha_dash',				
+			'siteName' => 'required|alpha_dash',
+			'siteType' => 'required|alpha_dash',
+			'siteNameOld' => 'required|alpha_dash',				
 		);
 		
 		
-        log::info($latLng[0]. '------site name---------- ::'.$siteName);
+         log::info($latLng[0]. '------site name---------- ::'.$siteName);
 		 log::info(count($latLng). '------site type---------- ::'.$siteType);
 		 $orgId=Input::get ( 'org' );
 		 $ch = curl_init();
 		 $siteType= curl_escape($ch,$siteType);
 		 $url = 'http://' .$ipaddress . ':9000/saveSite?latLng=' . implode(",",$latLng) . '&fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .rawurlencode($siteName).'&siteType='.$siteType.'&userId='.$username.'&type='.'update'.'&siteNameOld='.rawurlencode($siteNameOld);
 		 
-		
-		$url=htmlspecialchars_decode($url);
-		//urlencode($url);
-		log::info( ' url :' . $url);
+		 $url=htmlspecialchars_decode($url);
+		 //urlencode($url);
+		 log::info( ' url :' . $url);
     
-		 
-		  curl_setopt($ch, CURLOPT_URL, $url);
-			// Include header in result? (0 = yes, 1 = no)
+		 curl_setopt($ch, CURLOPT_URL, $url);
+
+	   // Include header in result? (0 = yes, 1 = no)
 		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		  curl_setopt($ch, CURLOPT_TIMEOUT, 3);
 		  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 		  $response = curl_exec($ch);
-			 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+		  $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
 		  curl_close($ch);
-		log::info( ' response :' . $response);
-         log::info( 'finished');
+		  log::info( ' response :' . $response);
+          log::info( 'finished');
 	}
+
 	public function delete() {
 		
 		$username = Auth::user ()->username;
@@ -202,26 +193,27 @@ class AddSiteController extends \BaseController {
         $siteName = Input::get ( 'siteName' );
 		$orgId = Input::get ( 'org' );
 		
-		 log::info($username. '------site name---------- ::'.$siteName);
+		log::info($username. '------site name---------- ::'.$siteName);
 		$rules = array (
 				'siteName' => 'required|alpha_dash',					
-		);       
+		);
+
 		 $ch = curl_init();
 		 //$siteType= curl_escape($ch,$siteType);
 		 $url = 'http://' .$ipaddress . ':9000/deleteSite?fcode=' . $fcode . '&orgId=' .$orgId . '&siteName=' .rawurlencode($siteName).'&userId='.$username;		
-		$url=htmlspecialchars_decode($url);
+		 $url=htmlspecialchars_decode($url);
 		//urlencode($url);
-		log::info( ' url :' . $url);		 
-		  curl_setopt($ch, CURLOPT_URL, $url);
+		 log::info( ' url :' . $url);		 
+		 curl_setopt($ch, CURLOPT_URL, $url);
 			// Include header in result? (0 = yes, 1 = no)
 		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		  curl_setopt($ch, CURLOPT_TIMEOUT, 3);
 		  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 		  $response = curl_exec($ch);
-			 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+		  $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
 		  curl_close($ch);
-		log::info( ' response :' . $response);
-         log::info( 'finished');
+		  log::info( ' response :' . $response);
+          log::info( 'finished');
 	}
 	
 	/**
@@ -237,7 +229,6 @@ class AddSiteController extends \BaseController {
 		}
 		$username = Auth::user ()->username;
 	
-		
 		$redis = Redis::connection ();
 		$deviceId = $id;
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
@@ -273,8 +264,6 @@ class AddSiteController extends \BaseController {
 	 */
 	
 	
-	
-	
 	public function checkPwd(){
 		
 		$username 	= Auth::user ()->username;
@@ -286,10 +275,8 @@ class AddSiteController extends \BaseController {
 		} else {
 			return 'incorrect';
 		}
-		
 	}
 	
-	
-	   
-    
 }
+
+
