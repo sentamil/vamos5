@@ -29,6 +29,7 @@
                 <li class="removeli"><a id="stopReport" href="">Consolidated Stoppage</a></li>
                 <li class="removeli"><a id="tollReport" href="">Tollgate Report</a></li>
                 <li class="removeli"><a id="SchoolSmsReport" href="">SchoolSms Report</a></li>
+                <li class="removeli"><a id="siteAlertReport" href="">SiteStopppage Alert </a></li>
                 <!-- <li> <a href="#"> Advanced &nbsp; </a>
                      <div style="padding-left: 10px">
                         <table style="width: 300px; height: 100px;">
@@ -265,7 +266,11 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             $('#SchoolSmsReport').click(function(){
                 $(this).attr("href", 'SchoolSmsReport?vid='+vid+'&vg='+gname+'&tn=SchoolSmsReport')
             })
-     
+            
+            $('#siteAlertReport').click(function(){
+                $(this).attr("href", 'siteAlertReport?vid='+vid+'&vg='+gname+'&tn=siteAlertReport')
+            })
+
             $('#multiTrack').click(function(){
                 $(this).attr("href", 'track?vehicleId='+vid+'&track=multiTrack&maps=mulitple');
                 $(this).attr("target", '_blank');
