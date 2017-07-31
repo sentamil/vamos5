@@ -218,6 +218,13 @@ Route::get('/SchoolSmsReport', function() {
     return View::make('reports.SchoolSmsReport');
 });
 
+Route::get('/siteAlertReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.siteAlertReport');
+});
+
 View::addExtension('html', 'php');
 Route::get('/menu', function() {
     // if (!Auth::check()) {
@@ -670,6 +677,14 @@ Route::get('/getSchoolSmsDailyReport', function() {
     }
     Log::info('getSchoolSmsDailyReport');
     return View::make('vls.getSchoolSmsDailyReport');
+});
+
+Route::get('/getSiteStoppageAlertReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getSiteStoppageAlertReport');
+    return View::make('vls.getSiteStoppageAlertReport');
 });
 
 Route::get('/getApiKey', function() {
