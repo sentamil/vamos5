@@ -1897,7 +1897,7 @@ $current = Carbon::now();
     $vehicleIdcheck=$redis->sismember( 'S_Vehicles_' . $fcode, $vehicleId); log::info('reamaa.....'.$vehicleIdcheck);
      if($vehicleIdcheck==1)
      {
-    Session::flash ( 'message', 'Vehicle Id Already Present ' .'!' );
+    Session::flash ( 'message', 'Asset Id/Vehicle Id already exists ' .'!' );
     log::info('reamaa.....1'.$vehicleIdcheck);
     $deviceId= $deviceIdOld;
     $vehicleId= $vehicleIdOld;
@@ -2244,7 +2244,7 @@ public function migrationUpdate() {
             $vehicleIdTemp = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
             if($vehicleIdTemp!==null)
             {
-                Session::flash ( 'message', 'Vehicle Id Already Present ' .'!' );
+                Session::flash ( 'message', 'Asset Id/Vehicle Id already exists ' .'!' );
                 $deviceId= $deviceIdOld;
                 $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
@@ -2257,7 +2257,7 @@ public function migrationUpdate() {
             $vehicleIdTemp = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
             if($vehicleIdTemp!==null)
             {
-                Session::flash ( 'message', 'Vehicle Id Already Present ' .'!' );
+                Session::flash ( 'message', 'Asset Id/Vehicle Id already exists ' .'!' );
                 $deviceId= $deviceIdOld;
                 $vehicleId= $vehicleIdOld;
                 return View::make ( 'vdm.vehicles.migration', array (
