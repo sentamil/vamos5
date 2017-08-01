@@ -129,10 +129,10 @@
                 <a href="vdmVehicles/create"> <span class="nav-label">Add Vehicles</span></a>
             </li>
             -->
-			<li><a href="vdmVehiclesSearch/Scan"> <span class="nav-label">Vehicles Search</span> <span class="label label-success pull-right">v.3</span> </a></li>
-			<li><a href="vdmVehicles"> <span class="nav-label">Vehicles List</span> <span class="label label-success pull-right">v.2</span> </a></li>
+			<li><a href="vdmVehiclesSearch/Scan"> <span class="nav-label">Vehicles Search</span> </a></li>
+			<li><a href="vdmVehicles"> <span class="nav-label">Vehicles List</span> </a></li>
 			
-			<li><a href="vdmVehiclesView"> <span class="nav-label">View Vehicles</span> <span class="label label-success pull-right">v.2</span> </a></li>
+			<li><a href="vdmVehiclesView"> <span class="nav-label">View Vehicles</span> </a></li>
 
             <li><a href="rfid/create"> <span class="nav-label">Add Tags</span> <span class="label label-success pull-right"></span> </a></li>
             <li><a href="rfid"> <span class="nav-label">View Tags</span> <span class="label label-success pull-right"></span> </a></li>
