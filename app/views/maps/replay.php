@@ -26,10 +26,32 @@
   min-width: 480px; height: 200px; margin: 0 auto
 }
 
+.box > .loading-img, .loading-img,#status, #status02{
+
+   width: 1px !important;height: 1px !important;z-index: 9999;position: absolute;left: 50%;top: 50%;background-image: url(../imgs/loading.gif);background-repeat: no-repeat;background-position: center;margin: -100px 0 0 -100px; border-radius: 3px;
+   
+}
+
 </style>
 </head>
 <!-- <div id="preloader" > -->
-    <div id="status">&nbsp;</div>
+     <div id="status" >
+
+          <div class="showLoading">
+          <h2>Please Wait.... it will take 1 to 2 Min  to fetch the data </h2><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+  <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+    <animateTransform attributeType="xml"
+      attributeName="transform"
+      type="rotate"
+      from="0 25 25"
+      to="360 25 25"
+      dur="0.6s"
+      repeatCount="indefinite"/>
+    </path>
+  </svg>
+          </div>
+    </div>
 <!-- </div> -->
 <!-- <div id="preloader02" >
     <div id="status02">&nbsp;</div>
@@ -61,23 +83,43 @@
           </div>
           <div class="form-group form-inline" style="margin-bottom: 5px">
             <div class="input-group datecomp">
-              <input type="text" class="sizeInput" style="" ng-model="fromdate" id="dateFrom" placeholder="From date">
+              <input type="text" class="sizeInput" style="" ng-model="fromdate" ng-change="showPlot(totime,todate,fromtime,fromdate)" id="dateFrom" placeholder="From date">
                  <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
             </div>
             <div class="input-group datecomp">
-              <input type="text" class="sizeInput" ng-model="fromtime" id="timeFrom" placeholder="From time">
+              <input type="text" class="sizeInput" ng-model="fromtime" ng-change="showPlot(totime,todate,fromtime,fromdate)" id="timeFrom" placeholder="From time">
             </div>
             <div class="input-group datecomp">
-              <input type="text" class="sizeInput"  ng-model="todate" id="dateTo" placeholder="To date">
+              <input type="text" class="sizeInput"  ng-model="todate" ng-change="showPlot(totime,todate,fromtime,fromdate)" id="dateTo" placeholder="To date">
               <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
             </div>
             <div class="input-group datecomp">
-              <input type="text" class="sizeInput" ng-model="totime" id="timeTo" placeholder="To time" >
+              <input type="text" class="sizeInput" ng-model="totime"  ng-change="showPlot(totime,todate,fromtime,fromdate)" id="timeTo" placeholder="To time" >
               <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
             </div>
             <div class="input-group ">
-              <button ng-click="plotting()" class="sizeInput" style="font-weight:bold;">Plot</button>
+              <button ng-click="plotting()" ng-disabled="hideButton" class="sizeInput btn btn-success" ng-class="{'diabled-class': !PayoutEnabled}" style="font-weight:bold;">Plot</button>
             </div>
+          </div>
+
+          <div class="form-group form-inline" style="margin-bottom: 5px" >
+
+            <div class="input-group " style="padding: 2% !important;"> 
+              <button class="sizeInput btn btn-success" ng-click="plotting(1,'5hr')"  showPlot ng-class="{'diabled-class': !PayoutEnabled}">5 Hr History</button>
+            </div>
+
+            <div class="input-group " style="padding: 2% !important;">
+              <button class="sizeInput btn btn-muted"  ng-click="plotting(2,'12hr')" ng-class="{'diabled-class': !PayoutEnabled}">12 Hr History</button>
+            </div>
+
+            <div class="input-group" style="padding: 2% !important;">
+              <button class="sizeInput btn btn-warning"  ng-click="plotting(3,'24hr')" ng-class="{'diabled-class': !PayoutEnabled}">24 Hr History</button>
+            </div>
+
+            <div class="input-group" style="padding: 2% !important;">
+              <button class="sizeInput btn btn-danger"  ng-click="plotting(4,'yes')" ng-class="{'diabled-class': !PayoutEnabled}">2 Days History</button>
+            </div>
+
           </div>
                           
     <!--      <div class="form-group form-inline" style="margin-bottom: 5px">
@@ -578,6 +620,16 @@
                      .labels{
                        visibility: hidden !important;
                       }
+
+                 </style>
+
+
+                 <style type="text/css" ng-if="hideMarkerVal">
+                   img[src="assets/imgs/flag.png"],img[src="assets/imgs/orange.png"]{
+
+                    visibility: hidden !important; 
+
+                   }
                  </style>
                             <!-- <div class="row"> -->
                             <!-- class="col-lg-7" style=" width: 70%; float: left; margin-left: 10px; margin-right: 10px" -->
@@ -603,20 +655,30 @@
                             <label><input type="text" value="0.0" id="latinput" style="width:120px; height: 20px; "  readonly /></label>
                             
                         </div>
-                        <div class="radioBut"><label><input type="checkbox" name="track" ng-model="polylineCheck" ng-click=polylineCtrl() >
-                        LoadAll
-                      </label>
+                        
+                        <div class="radioBut">
+                           <label> <input type="checkbox" name="track" ng-model="polylineCheck" ng-click="polylineCtrl()">
+                             LoadAll
+                           </label>
                       <!-- <label>
                         <input type="radio" name="track" >
                         stepbystep  
                       </label> -->
                       </div>
 
-                      <div class="radioButts"><label><input type="checkbox" name="track" ng-change="getValueCheck(checkboxModel.value1)" ng-model="checkboxModel.value1"  ng-true-value="'YES'" ng-false-value="'NO'" >
+                  <div class="radioButts">
+
+                     <label><input type="checkbox" name="track" ng-change="getValueCheck(SiteCheckbox.value1)" ng-model="SiteCheckbox.value1"  ng-true-value="'YES'" ng-false-value="'NO'" >
                         Site
-                      </label>
-              
-                      </div>
+                     </label>
+                  </div>
+
+                  <div class="radioButts2">
+                       <label> 
+                          <input type="checkbox" name="track" ng-change="addRemoveMarkers(hideMarker.value1)"  ng-model="hideMarker.value1"  ng-true-value="'YES'" ng-false-value="'NO'" >
+                            Markers
+                        </label>
+                  </div>
 
                         <div style="position: fixed;top: 50px;left: 180px; z-index:99; background-color: #fff; padding: 5px; border-radius: 2px; cursor: pointer;  width: 250px" class="legendlist">
                           <div>
