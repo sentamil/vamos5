@@ -286,13 +286,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
      			}
 
 
-
-
-
-
-     			
-
-     	scope.getValueCheck = function(getStatus){
+    scope.getValueCheck = function(getStatus){
 
      		scope.getValue = getStatus;
 
@@ -726,8 +720,7 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 		}
 	//	$scope.speedKms($scope.movementdata);
 	//	$scope.fuelChart($scope.fuelValue);
-	
-	}
+}
 
 
 	function google_api_call(tempurlMo, index1, _stat) {
@@ -829,7 +822,6 @@ var queue1 = [];
 					    }(indexs));
 				}
     	})
-
 	}
 
 	$scope.addressResolve 	= function(tabVal){
@@ -880,12 +872,7 @@ var queue1 = [];
 	// 				$scope.selected=i;
 	// 			}
 	// 		}
-			
 	// 	}
-		
-		
-	// 	// 
-
 	// }).error(function(){ /*alert('error'); */});
 
 	$scope.getOrd 	= function()

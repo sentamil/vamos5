@@ -732,8 +732,6 @@
       </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 
-
-
    <div class="modal fade" id="myModal2" role="dialog"  style="top:30px;">
     <div class="modal-dialog modal-md" style="width:700px;height:500px"  >
       <div class="modal-content">
@@ -767,11 +765,10 @@
     <script src="assets/js/unique.js"></script>
     <script src="assets/js/customplay.js"></script> -->
 
-    <script>
+<script>
 
- 
-var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
-var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry";
+ var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
+ var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry";
 
 if(apikey_url != null || apikey_url != undefined)
         url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places,geometry";
