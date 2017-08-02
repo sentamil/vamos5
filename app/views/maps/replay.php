@@ -32,6 +32,8 @@
    
 }
 
+
+
 </style>
 </head>
 <!-- <div id="preloader" > -->
@@ -71,7 +73,7 @@
                   <td style="font-weight:bold;">Vehicle Name</td>
                   <!--<td id="vehiid" style="font-weight:bold !important;"><h3></h3></td>-->
                     <td style="float:left;padding-left:10px;"> 
-                      <select ng-model="trackVehID" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
+                      <select ng-model="trackVehID"  ng-change="showPlot(totime,todate,fromtime,fromdate)" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
                               <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
                               </select>
                       </td>
@@ -105,19 +107,19 @@
           <div class="form-group form-inline" style="margin-bottom: 5px" >
 
             <div class="input-group " style="padding: 2% !important;"> 
-              <button class="sizeInput btn btn-success" ng-click="plotting(1,'5hr')"  showPlot ng-class="{'diabled-class': !PayoutEnabled}">5 Hr History</button>
+              <button class="sizeInput btn btn-success" ng-click="plotting(1,'5hr')"  showPlot ng-class="{'diabled-class': !PayoutEnabled}">5 Hours </button>
             </div>
 
             <div class="input-group " style="padding: 2% !important;">
-              <button class="sizeInput btn btn-muted"  ng-click="plotting(2,'12hr')" ng-class="{'diabled-class': !PayoutEnabled}">12 Hr History</button>
+              <button class="sizeInput btn btn-info"  ng-click="plotting(2,'12hr')" ng-class="{'diabled-class': !PayoutEnabled}">12 Hours </button>
             </div>
 
             <div class="input-group" style="padding: 2% !important;">
-              <button class="sizeInput btn btn-warning"  ng-click="plotting(3,'24hr')" ng-class="{'diabled-class': !PayoutEnabled}">24 Hr History</button>
+              <button class="sizeInput btn btn-warning"  ng-click="plotting(3,'24hr')" ng-class="{'diabled-class': !PayoutEnabled}">1 Day </button>
             </div>
 
             <div class="input-group" style="padding: 2% !important;">
-              <button class="sizeInput btn btn-danger"  ng-click="plotting(4,'yes')" ng-class="{'diabled-class': !PayoutEnabled}">2 Days History</button>
+              <button class="sizeInput btn btn-danger"  ng-click="plotting(4,'yes')" ng-class="{'diabled-class': !PayoutEnabled}">2 Days </button>
             </div>
 
           </div>
@@ -630,6 +632,9 @@
                     visibility: hidden !important; 
 
                    }
+                   .h2,h2{
+                    font-size: 18px !important;
+                   }
                  </style>
                             <!-- <div class="row"> -->
                             <!-- class="col-lg-7" style=" width: 70%; float: left; margin-left: 10px; margin-right: 10px" -->
@@ -644,7 +649,7 @@
                             <!-- </div> -->
                             <!--input id="pac-input" class="controls" type="text" placeholder="Location Search"/-->
                             <div class="error" style="position:absolute; height:100%; background:#fff; top:0; left:0;  width:100%;" align="center">
-                              <p style="padding:10px; background:#fff; margin-top:200px; display:inline-block;">No Data Found. Please select another date range</p>
+                              <span style="padding:10px; background:#fff; margin-top:200px; display:inline-block; font-size: 12px !important;" >No Data Found. Please select another date range</span>
                             </div>
                             
 
@@ -658,7 +663,7 @@
                         
                         <div class="radioBut">
                            <label> <input type="checkbox" name="track" ng-model="polylineCheck" ng-click="polylineCtrl()">
-                             LoadAll
+                             <b>Load All</b>
                            </label>
                       <!-- <label>
                         <input type="radio" name="track" >
@@ -669,14 +674,14 @@
                   <div class="radioButts">
 
                      <label><input type="checkbox" name="track" ng-change="getValueCheck(SiteCheckbox.value1)" ng-model="SiteCheckbox.value1"  ng-true-value="'YES'" ng-false-value="'NO'" >
-                        Site
+                       <b> Site</b>
                      </label>
                   </div>
 
                   <div class="radioButts2">
                        <label> 
                           <input type="checkbox" name="track" ng-change="addRemoveMarkers(hideMarker.value1)"  ng-model="hideMarker.value1"  ng-true-value="'YES'" ng-false-value="'NO'" >
-                            Markers
+                           <b> Markers</b>
                         </label>
                   </div>
 
@@ -799,8 +804,8 @@ if(apikey_url != null || apikey_url != undefined)
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   scriptLibrary.push(url);
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+ //scriptLibrary.push(url);
+   scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");

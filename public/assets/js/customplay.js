@@ -188,78 +188,21 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 					   	    	scope.getValueCheck(scope.getValue);
 					      	}
 							
-		  	  // 			var latLngBounds = new google.maps.LatLngBounds();
-			  				var j=0;
-			  		// 		 var tempFlag=false;
-			  		// 		 for(var k=0;k<locs.vehicleLocations.length;k++){
-				  	// 			 if(locs.vehicleLocations[k].position =='M' && tempFlag==false){
-				  	// 			 	var firstval = k;
-				  				 	
-				  	// 				 tempFlag=true;
-							//   	 }
-						 //  	 }
-					  // 			if(firstval==undefined){
-					  // 				firstval=0;
-					  // 			}
-					  		// 	var latLngBounds = new google.maps.LatLngBounds();
-						  	// 	for(var i = 0; i < scope.path.length; i++) {
-									// latLngBounds.extend(scope.path[i]);
-									// if(locs.vehicleLocations[i].position!=undefined){
-									// 	if(locs.vehicleLocations[i].position=='P' || locs.vehicleLocations[i].position=='S' || locs.vehicleLocations[i].insideGeoFence=='Y' ){
-											
-									// 		scope.addMarker({ lat: locs.vehicleLocations[i].latitude, lng: locs.vehicleLocations[i].longitude , data: locs.vehicleLocations[i], path:scope.path[i]});
-									// 		scope.infoBox(scope.map, gmarkers[j], locs.vehicleLocations[i]);
-									// 		j++;
-									// 	}
-										
-									// }
-						  	// 	}
-					  		
-			  		// 		var lastval = locs.vehicleLocations.length-1;
-			  		// 		scope.addMarkerstart({ lat: locs.vehicleLocations[firstval].latitude, lng: locs.vehicleLocations[firstval].longitude , data: locs.vehicleLocations[firstval], path:scope.path[firstval]});
-							  	
-							// scope.addMarkerend({ lat: locs.vehicleLocations[lastval].latitude, lng: locs.vehicleLocations[lastval].longitude, data: locs.vehicleLocations[lastval], path:scope.path[lastval] });
-							
-							// var lineSymbol = {
-						 //        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-						 //        scale: 3,
-						 //        strokeColor: '#ff0000'
-						 //    };
-						 //  	scope.polyline = new google.maps.Polyline({
-							// 	map: scope.map,
-							// 	path: scope.path,
-							// 	strokeColor: '#068b03',
-							// 	strokeOpacity: 0.7,
-							// 	strokeWeight: 3,
-							// 	icons: [{
-						 //            icon: lineSymbol,
-						 //            offset: '100%'
-						 //        }],
-							// 	clickable: true
-						 //  	});
-						  	
-						 //  	if(scope.path.length>1){
-					  //  			for(var i=0;i<scope.path.length-1;i++){
-					  //  				scope.polyline1[i] = new google.maps.Polyline({
-							// 			map: scope.map,
-							// 			path: [scope.path[i], scope.path[i+1]],
-							// 			strokeColor: scope.polylinearr[i],
-							// 			strokeOpacity: 0.7,
-							// 			strokeWeight: 2,
-										
-							// 	  	});
-					  //  			}
-					  //  		}
-						  	
-						  	scope.pointDistances=[];
+		  	  			  	scope.pointDistances=[];
 						  	var sphericalLib = google.maps.geometry.spherical;
 						  	var pointZero = scope.path[0];
 						  
-    						var wholeDist = sphericalLib.computeDistanceBetween(pointZero, scope.path[scope.path.length - 1]);
-						  	for (var i = 0; i < scope.path.length; i++) {
-						        scope.pointDistances[i] = 100 * sphericalLib.computeDistanceBetween(scope.path[i], pointZero) / wholeDist;
-						    }
-						    
+							var wholeDist = sphericalLib.computeDistanceBetween(pointZero, scope.path[scope.path.length - 1]);
+							
+							// commented by Mayank START
+							//alert(scope.path.length);
+
+						  	// for (var i = 0; i < scope.path.length; i++) {
+						    //     scope.pointDistances[i] = 100 * sphericalLib.computeDistanceBetween(scope.path[i], pointZero) / wholeDist;
+						    // }
+							// commented by Mayank END
+								
+							
 						    // window.setTimeout(function () {
 						    // 	scope.animated();
 						    // },1000);
@@ -1406,7 +1349,7 @@ $('.dynData').on("click", "#editAction", function(event){
 	// $(document).ready(function() {
  //                $('.dynData table tbody tr td input').change(function() {
  //                    var rowEdit = $(this).parents('tr');
- //                    alert(rowEdit)
+ //                    alert(rowEdit);
  //                    console.log($(rowEdit));
  //                    $(rowEdit).children('.sub').html('Success');
  //                })
