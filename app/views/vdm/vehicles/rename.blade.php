@@ -7,8 +7,8 @@
 		<div class="row">
     		<div class="col-lg-12">
        			 <div class="hpanel">
-               		<div class="panel-heading" align="center">
-                   		<h4><font>Vehicle Rename</font></h4>
+               		<div style="background-color: #20B2AA" class="panel-heading" align="center">
+                   		<h4><font size="5px" color="white" >Vehicle Rename</font></h4>
                 	</div>
                 	<hr>
                 	{{ HTML::ul($errors->all()) }}

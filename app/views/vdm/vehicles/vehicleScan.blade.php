@@ -39,7 +39,7 @@ tr:nth-of-type(odd) {
   }
 /*.vCol'=='1')
 {
-	td:nth-of-type(6):before {content: "Actions ";}
+	td:nth-of-type(6):before {content: "Action ";}
 }*/
   td:nth-of-type(1):before {content: "ID ";}
   td:nth-of-type(2):before {content: "AssetID ";}

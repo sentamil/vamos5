@@ -6,8 +6,8 @@
 		<div class="row">
     		<div class="col-lg-12">
        			 <div class="hpanel">
-               		<div class="panel-heading" align="center">
-                   		<h4><font>Edit Vehicle</font></h4>
+               		<div style="background-color: #B3B9B9" class="panel-heading" align="center">
+                   		<h4><font size="5px" color="white" >Calibrate Vehicle</font></h4>
                 	</div>
                 	<div class="panel-body">
                 		{{ HTML::ul($errors->all()) }}
@@ -15,13 +15,13 @@
                 		<hr>
                 		<div class="row">
                 			<div class="col-md-3"></div>
-                			<div class="col-md-3">{{ Form::label('vehicleId', 'AssetID')  }}</div>
+                			<div class="col-md-3">{{ Form::label('vehicleId', 'Asset ID :')  }}</div>
                 			<div class="col-md-3">{{ Form::hidden('vehicleId', $vehicleId, array('class' => 'form-control')) }}{{ Form::text('vehicleId1', $vehicleId, array('class' => 'form-control','disabled' => 'disabled')) }}</div>
                 		</div>
                 		<br>
                 		<div class="row">
                 			<div class="col-md-3"></div>
-                			<div class="col-md-3">{{ Form::label('deviceId', 'Device Id / IMEI No') }}</div>
+                			<div class="col-md-3">{{ Form::label('deviceId', 'Device Id / IMEI No :') }}</div>
                 			<div class="col-md-3">{{ Form::text('deviceId', $deviceId, array('class' => 'form-control','disabled' => 'disabled')) }}</div>
                             <!-- {{Form::text('countAdd',Input::old('countAdd'), array('id'=>'countValue'))}} -->
                 		</div>
@@ -69,7 +69,7 @@
                 		{{ Form::open(array('url' => 'vdmVehicles/calibrate/analog/')) }}
                 		<div class="row">
                 			<div class="col-md-3"></div>
-                			<div class="col-md-2">{{ Form::label('tanksize', 'Tank Size') }}</div>
+                			<div class="col-md-2">{{ Form::label('tanksize', 'Tank Size :') }}</div>
                 			<div class="col-md-3">{{ Form::text('tanksize', $tanksize, array('class' => 'form-control')) }}</div>
                 			<div class="col-md-2"> {{ Form::hidden('vehicleId', $vehicleId, array('class' => 'form-control')) }}{{ Form::submit('Calibrate Analog!', array('class' => 'btn btn-sm btn-success')) }}</div>
                 		</div>
