@@ -1747,7 +1747,7 @@ function smoothZoom (map, max, cnt) {
 				}
 			}else{
 				if(document.getElementById('dateTo').value==''){
-					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
+					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&interval=1&fromDate='+fromdate+'&fromTime='+fromtime;
 				}else{
 					var days =daydiff(new Date(fromdate), new Date(todate));
 					if(days<3)
@@ -2347,7 +2347,7 @@ function smoothZoom (map, max, cnt) {
 
 					if(lenCount == 0){
 							//console.log(vehicIcon[0]);
-                         	   $scope.markerhead.setIcon({
+							          $scope.markerhead.setIcon({
                                 path:vehicIcon[0],
 				                scale:vehicIcon[1],
 						        strokeWeight: 1,
