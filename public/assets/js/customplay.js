@@ -28,9 +28,9 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 				var result=nd.toLocaleString();
 				return result;
 			}
-		 	
-		 	scope.$watch("hisurl", function (val) {
-		 		// startLoading();
+		 		
+		 		scope.$watch("hisurl", function (val) {
+		 		//startLoading();
 		 		scope.path = [];
 
 		 		if(scope.hisurl != undefined)
@@ -373,7 +373,6 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 	// 	$('body').delay(350).css({'overflow':'visible'});
 	// };
 
-
 	function sessionValue(vid, gname){
 		sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
 		$("#testLoad").load("../public/menu");
@@ -665,7 +664,6 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 	//	$scope.fuelChart($scope.fuelValue);
 }
 
-
 	function google_api_call(tempurlMo, index1, _stat) {
 			// console.log(' temperature ')
 			// 	$scope.av = "adasdas"
@@ -712,7 +710,6 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 					console.log(_stat);
 					$scope.stop_address[index1] = data.results[0].formatted_address;
 				break;
-
 			}
         //     }
         // })
@@ -795,7 +792,6 @@ var queue1 = [];
 				$scope.recursive($scope.stopReport, tabVal, $scope.stop_address);
 			break;
 		}
-
 	}
 
 	// $http.get($scope.url).success(function(data){
@@ -825,7 +821,6 @@ var queue1 = [];
 		$scope.selectedOrdId = "";
 
 		getRouteNames();
-
 	}
 
 	function showRoutes(setRoute){
@@ -859,8 +854,8 @@ var queue1 = [];
      return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
    };
 
-
-	(function init(){
+    
+    (function init(){
 		startLoading()
 		var url;
 		$scope.groupname = getParameterByName('gid');
@@ -995,8 +990,8 @@ var queue1 = [];
 				}
 			}
 		}
-		});
-	}
+	});
+}
 
 	$scope.goeValueChange = function()
 	{
@@ -1017,9 +1012,7 @@ var queue1 = [];
 		}
 	}
 
-	
-   // getting Org ids
-
+ // getting Org ids
 	$scope.$watch("url_site", function (val) {
 
 	    $http.get($scope.url_site).success(function(response){
@@ -1028,7 +1021,6 @@ var queue1 = [];
 	    });
 	});
 	
-
 	function getRouteNames(){
 
 		if($scope.orgIds)
@@ -1112,7 +1104,6 @@ function myMap(){
 	    mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	dvMap=new google.maps.Map(mapCanvas,mapOptions);
-
 }
 myMap();
 
@@ -1120,12 +1111,9 @@ $('#myModal2').on('shown.bs.modal', function () {
 	google.maps.event.trigger(dvMap, "resize");
 });
 
-
-
 function moveMarker(marker, latlng) {
 	
 	marker.setPosition(latlng);
-
 }
 
 function autoRefresh(map) {
@@ -1155,11 +1143,8 @@ function autoRefresh(map) {
             
             }, 0* i, pathCoords[i]);
 		}
-
 }
-
-
-/*
+    /*
 		show table in view
 	*/
 $( "#historyDetails" ).hide();
@@ -1169,8 +1154,6 @@ $( "#historyDetails" ).hide();
 		$( "#historyDetails" ).fadeToggle("slow");
 	}
  
-
-
 	/*
 		Store the routes in redis
 	*/
@@ -1208,9 +1191,7 @@ $( "#historyDetails" ).hide();
 				console.log(' error --> '+err)
 				$scope.error  = "* Date Required/Please fill all the field";
 			}
-
 	}
-
 
 	$scope.popUpMarkerNull =function()
 	{
@@ -1224,9 +1205,7 @@ $( "#historyDetails" ).hide();
 	
 	$scope.markerPoup 	= 	function(val)
 	{
-		
 		$scope.popUpMarkerNull();
-
         $scope.popupmarker = new google.maps.Marker({
 	        icon: 'assets/imgs/popup.png',
 	  	});
@@ -1263,8 +1242,8 @@ $( "#historyDetails" ).hide();
 	}
 
 	$scope.deleteRouteName 	= function(deleteValue){
-		// $scope.routeName = deleteValue;
-		console.log(deleteValue)
+	 // $scope.routeName = deleteValue;
+		console.log(deleteValue);
 		try{
 
 			if(!deleteValue =='' && $scope.orgIds.length>0 && !$scope.orgIds=='')
@@ -1346,7 +1325,7 @@ $('.dynData').on("click", "#editAction", function(event){
 
 	})
 
-	// $(document).ready(function() {
+ // $(document).ready(function() {
  //                $('.dynData table tbody tr td input').change(function() {
  //                    var rowEdit = $(this).parents('tr');
  //                    alert(rowEdit);
@@ -1354,7 +1333,6 @@ $('.dynData').on("click", "#editAction", function(event){
  //                    $(rowEdit).children('.sub').html('Success');
  //                })
  //            })
-
 
 function animateMapZoomTo(map, targetZoom) {
     var currentZoom = arguments[2] || map.getZoom();
@@ -1365,7 +1343,6 @@ function animateMapZoomTo(map, targetZoom) {
         setTimeout(function(){ map.setZoom(currentZoom) }, 80);
     }
 }
-
 
 function smoothZoom (map, max, cnt) {
     if (cnt >= max) {
@@ -1424,7 +1401,6 @@ function smoothZoom (map, max, cnt) {
 							
 			   			});	
 			  		})(beachMarker);
-					
 	}
 	
 	
@@ -1693,9 +1669,10 @@ function smoothZoom (map, max, cnt) {
     			var fromdate = fromDateRaw;
     			var todate = fromDateRaw;
 
-			} else if (val == 2) {		
-					var todayTime  = new Date();
-					var newYesDate = new Date();
+			} else if (val == 2) {	
+
+				var todayTime  = new Date();
+				var newYesDate = new Date();
 
 				var currentTimeRaw = new Date();
 				var currentTime = $filter('date')(currentTimeRaw,'HH:mm:ss');
@@ -1734,8 +1711,8 @@ function smoothZoom (map, max, cnt) {
 
 			else if (val == 4)	{
 
-					var todayTime  = new Date();
-					var newYesDate = new Date();
+				var todayTime  = new Date();
+				var newYesDate = new Date();
 
 				var currentTimeRaw = new Date();
 				var currentTime = $filter('date')(currentTimeRaw,'HH:mm:ss');
@@ -1840,30 +1817,34 @@ function smoothZoom (map, max, cnt) {
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
 		var labelAnchorpos = new google.maps.Point(12, 37);
 	
-		if(pos.data.insideGeoFence =='Y'){
+		//if(pos.data.insideGeoFence =='Y'){
 			//pinImage = 'assets/imgs/F_'+pos.data.direction+'.png';
-			  pinImage = 'assets/imgs/trans.png';
-		}else{	
-			if(pos.data.position =='P'){
+			  //pinImage = 'assets/imgs/trans.png';
+		//}else{	
+
+			if(pos.data.position =='P') {
+			  
 			  //pinImage = 'assets/imgs/'+pos.data.position+'.png';
 				pinImage = 'assets/imgs/flag.png';
-			}else{
+
+			} else if(pos.data.position =='S') {
+			  
 			  //pinImage = 'assets/imgs/A_'+pos.data.direction+'.png';
 				pinImage = 'assets/imgs/orange.png';
 			}
-		}
+		//}
 		
 		$scope.marker = new MarkerWithLabel({
 			   position: pos.path, 
 			   map: $scope.map,
 			   icon: pinImage,
 			   labelContent: ''/*pos.data.position*/,
-			   // labelAnchor: labelAnchorpos,
-			   // labelClass: "labels", 
+			// labelAnchor: labelAnchorpos,
+			// labelClass: "labels", 
 			   labelInBackground: true
 		});
-		
-		gmarkers.push($scope.marker);	
+
+	 gmarkers.push($scope.marker);	
 	} 
 
 	$scope.geocoder = function(lat, lng, callback){
@@ -1878,11 +1859,10 @@ function smoothZoom (map, max, cnt) {
 					if(typeof callback === "function") callback(results[1].formatted_address);
 				}
 			  } else {
-				console.log('No results found');
+				 console.log('No results found');
 			  }
 			} else {
-				
-			  console.log('Geocoder failed due to: ' + status);
+				 console.log('Geocoder failed due to: ' + status);
 			}
 		});
 	}
@@ -1913,7 +1893,7 @@ function smoothZoom (map, max, cnt) {
 		})($scope.markerstart, pos.data);
 	}
 
-	 $scope.addMarkerend= function(pos){
+	$scope.addMarkerend= function(pos){
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
 		pinImage = 'assets/imgs/endflag.png';
 		$scope.markerend = new MarkerWithLabel({
@@ -1945,7 +1925,6 @@ function smoothZoom (map, max, cnt) {
 			  });	
 			})($scope.markerend, pos.data);
 		});
-		
 	}
 	$scope.tempadd="";
 
@@ -1988,7 +1967,7 @@ function smoothZoom (map, max, cnt) {
 	}
 
 	$scope.imgsrc = function(img){
-		return img;
+	   return img;
 	}
 
 	$scope.infoBox = function(map, marker, data){
@@ -2034,28 +2013,23 @@ function smoothZoom (map, max, cnt) {
     return  strValues;
 	}
 
-	
-$scope.hideMarkerVal = true;
-
+	$scope.hideMarkerVal = true;
 	$scope.hideMarker = {
-       			 value1 : true,
-      			 value2 : 'YES'
-     				}
+       	value1 : true,
+      	value2 : 'YES'
+    }
      			
 	$scope.addRemoveMarkers=function(val){
 
-		if (val == 'YES')
-			{
-		
-					$scope.hideMarkerVal = false;
-					
-					  
-			}
-			else
-				$scope.hideMarkerVal = true;
-			
+	   if (val == 'YES')
+		{
+		     $scope.hideMarkerVal = false;
+		}
+		else
+		{
+			 $scope.hideMarkerVal = true;
+		}
 	}
-
 
     var markerhead, intervalPoly;
     var timeInterval;
@@ -2567,8 +2541,8 @@ $scope.hideMarkerVal = true;
 
 	    	$('#playButton').hide();
 			$('#replayButton').show();
-		      $('#stopButton').show();	
-			  $('#pauseButton').show();
+		    $('#stopButton').show();	
+			$('#pauseButton').show();
 
 	    window.clearInterval(timeInterval);		  
         timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay );
@@ -2581,9 +2555,8 @@ $scope.hideMarkerVal = true;
          	      $('#replayButton').show();
          	         $('#playButton').show();
 
-        window.clearInterval(timeInterval);
+    window.clearInterval(timeInterval);
 	}
-
 
 	$(document).ready(function(){
         $('#minmax1').click(function(){
@@ -2628,10 +2601,7 @@ $scope.hideMarkerVal = true;
     			height: 'toggle'
     		})
     	})
-    	
-
-	});
-
+    });
 
   $('ul.tabs').each(function(){
   // For each set of tabs, we want to keep track of
@@ -2669,5 +2639,5 @@ $scope.hideMarkerVal = true;
   });
 });
 
-
 }]);
+
