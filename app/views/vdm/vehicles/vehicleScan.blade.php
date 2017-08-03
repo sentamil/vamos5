@@ -52,7 +52,7 @@ tr:nth-of-type(odd) {
   
   @if(Session::get('vCol')=='1')
 	  
-  td:nth-of-type(9):before {content: "Actions "}
+  td:nth-of-type(9):before {content: "Action "}
   @endif
   <!--td:nth-of-type(6):before {content: "Status ";}  
   td:nth-of-type(7):before {content: "Device Model ";}
@@ -102,7 +102,7 @@ tr:nth-of-type(odd) {
 							<th style="text-align: center;">Mobile No</th>
 							<th style="text-align: center;">status</th>
 							<th style="text-align: center;">Device Model</th>
-							<th style="text-align: center;">Actions</th> 
+							<th style="text-align: center;">Action</th> 
 						</tr>
 					</thead>
 					<tbody>
