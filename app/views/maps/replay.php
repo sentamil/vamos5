@@ -29,13 +29,10 @@
 .box > .loading-img, .loading-img,#status, #status02{
 
    width: 1px !important;height: 1px !important;z-index: 9999;position: absolute;left: 50%;top: 50%;background-image: url(../imgs/loading.gif);background-repeat: no-repeat;background-position: center;margin: -100px 0 0 -100px; border-radius: 3px;
-   
 }
-
-
-
 </style>
 </head>
+
 <!-- <div id="preloader" > -->
      <div id="status" >
 
@@ -163,10 +160,11 @@
                   <td width="10%">Max (kmph)</td>
                   <td width="7%">Sat</td>
                   <td width="37%">Address</td>
+                  <td width="8%">Direction</td>
                   <td width="10%">G-Map</td>
                   <!-- <td width="7%">Dist</td> -->
                   <td width="10%">C-Dist (kms)</td>
-                  <td width="18%">Odo (kms)</td>
+                  <td width="12%">Odo (kms)</td>
                 </tr>
                 <tr ng-repeat="all in allData" ng-click="markerPoup(all)">
                   <td>{{all.date | date:'yy-MM-dd HH:mm:ss'}}</td>
@@ -177,6 +175,7 @@
                     <p ng-if="all.address==null && alladdress[$index]!=null">{{alladdress[$index]}}</p>
                     <p ng-if="all.address==null && alladdress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
                   </td>
+                  <td>{{all.direction}}</td>
                   <td><a href="https://www.google.com/maps?q=loc:{{all.latitude}},{{all.longitude}}" target="_blank">Link</a></td>
                   <!-- <td>{{move.tmpDistance}}</td> -->
                   <td>{{all.distanceCovered}}</td>
@@ -197,6 +196,7 @@
                   <td width="10%">Max (kmph)</td>
                   <td width="7%">Sat</td>
                   <td width="37%">Address</td>
+                  <td width="8%">Direction</td>
                   <td width="10%">G-Map</td>
                   <!-- <td width="7%">Dist</td> -->
                   <td width="10%">C-Dist (kms)</td>
@@ -211,6 +211,7 @@
                     <p ng-if="move.address==null && moveaddress[$index]!=null">{{moveaddress[$index]}}</p>
                     <p ng-if="move.address==null && moveaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
                   </td>
+                  <td>{{move.direction}}</td>
                   <td><a href="https://www.google.com/maps?q=loc:{{move.latitude}},{{move.longitude}}" target="_blank">Link</a></td>
                   <!-- <td>{{move.tmpDistance}}</td> -->
                   <td>{{move.distanceCovered}}</td>
@@ -339,6 +340,7 @@
                   <td width="15%">Duration (h:m:s)</td>
                   <td width="7%">Sat</td>
                   <td width="60%">Address</td>
+                  <td width="8%">Direction</td>
                   <td width="10%">G-Map</td>
                 </tr>
                 
@@ -351,6 +353,7 @@
                     <p ng-if="park.address==null && parkaddress[$index]!=null">{{parkaddress[$index]}}</p>
                     <p ng-if="park.address==null && parkaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
                   </td>
+                  <td>{{park.direction}}</td>
                   <td><a href="https://www.google.com/maps?q=loc:{{park.latitude}},{{park.longitude}}" target="_blank">Link</a></td>
                 </tr>
                 <tr ng-if="parkeddata.length == 0 || parkeddata == undefined">
@@ -377,6 +380,7 @@
                     <td width="15%">Duration (h:m:s)</td>
                     <td width="7%">Sat</td>
                     <td width="60%">Address</td>
+                    <td width="8%">Direction</td>
                     <td width="10%">G-Map</td>
                   </tr>
                   
@@ -389,6 +393,7 @@
                       <p ng-if="idle.address==null && idleaddress[$index]!=null">{{idleaddress[$index]}}</p>
                       <p ng-if="idle.address==null && idleaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
                     </td>
+                    <td>{{idle.direction}}</td>
                     <td><a href="https://www.google.com/maps?q=loc:{{idle.latitude}},{{idle.longitude}}" target="_blank">Link</a></td>
                   </tr>
                   <tr ng-if="idlereport.length == 0 || idlereport == undefined">
@@ -444,6 +449,7 @@
                     <td width="15%">Duration (h:m:s)</td>
                     <td width="7%">Sat</td>
                     <td width="50%">Nearest Location</td>
+                    <td width="8%">Direction</td>
                     <td width="10%">G-Map</td>
                 </tr>
                 <tr ng-repeat="ignition in ignitValue" ng-click="markerPoup(ignition)">
@@ -456,6 +462,7 @@
                     <p ng-if="ignition.address==null && igniaddress[$index]!=null">{{igniaddress[$index]}}</p>
                     <p ng-if="ignition.address==null && igniaddress[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
                   </td>
+                  <td>{{ignition.direction}}</td>
                   <td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td>
                 </tr>
                 <tr ng-if="ignitValue.length == 0 || ignitValue == undefined">
@@ -524,13 +531,14 @@
                   <td width="15%">Duration (h:m:s)</td>
                   <td width="7%">Sat</td>
                   <td width="45%">Address</td>
+                  <td width="8%">Direction</td>
                   <td width="10%">G-Map</td>
                 </tr>
 
                 <tr ng-repeat="stop in stopReport" ng-click="markerPoup(stop)">
 
-                <td>{{stop.date | date:'yy-MM-dd HH:mm:ss'}}</td>
-                <td>{{stop.endStoppageTime | date:'yy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{stop.date | date:'yy-MM-dd HH:mm:ss'}}</td>
+                  <td>{{stop.endStoppageTime | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{msToTime(stop.stoppageTime)}}</td>
                   <td>{{stop.gsmLevel}}</td>
                   <td>
@@ -538,14 +546,13 @@
                     <p ng-if="stop.address==null && stop_address[$index]!=null">{{stop_address[$index]}}</p>
                     <p ng-if="stop.address==null && stop_address[$index]==null"><img src="assets/imgs/loader.gif" align="middle"></p>
                   </td>
+                  <td>{{stop.direction}}</td>
                   <td><a href="https://www.google.com/maps?q=loc:{{stop.latitude}},{{stop.longitude}}" target="_blank">Link</a></td>
-               
                 </tr>
 
                 <tr ng-if="stopReport.length == 0 || stopReport == undefined">
                   <td colspan="5" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
-
               </table>
             </div>  
 
@@ -775,9 +782,9 @@
  var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
  var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry";
 
-if(apikey_url != null || apikey_url != undefined)
-        url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places,geometry";
-          
+  if(apikey_url != null || apikey_url != undefined){
+    url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places,geometry";
+  }        
 
    function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
      if (scriptsCollection[startIndex]) {
@@ -804,8 +811,8 @@ if(apikey_url != null || apikey_url != undefined)
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
- //scriptLibrary.push(url);
-   scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+   scriptLibrary.push(url);
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");
