@@ -913,7 +913,7 @@ var queue1 = [];
         
          if((checkXssProtection($scope.fromDates) == true) && (checkXssProtection($scope.fromTimes) == true)){
 		   //$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+$scope.fromDates+'&fromTime='+$scope.fromTimes+'&toDate='+$scope.toDates+'&toTime='+$scope.toTimes+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes)+'&toDateUTC='+utcFormat($scope.toDates,$scope.toTimes);
-		     $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+$scope.fromDates+'&fromTime='+$scope.fromTimes+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes);
+		     $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+$scope.fromDates+'&interval=1&fromTime='+$scope.fromTimes+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes);
 		 }
 
 		$('.nav-second-level li').eq(0).children('a').addClass('active');
@@ -1747,11 +1747,11 @@ function smoothZoom (map, max, cnt) {
 				}
 			}else{
 				if(document.getElementById('dateTo').value==''){
-					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
+					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&interval=1&fromDate='+fromdate+'&fromTime='+fromtime;
 				}else{
 					var days =daydiff(new Date(fromdate), new Date(todate));
 					if(days<3)
-						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&interval=1&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
 					else if(days < 7)  
 						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
 					else{
@@ -2346,8 +2346,8 @@ function smoothZoom (map, max, cnt) {
 				} else if($scope.path.length == 1){
 
 					if(lenCount == 0){
-
-                         	   $scope.markerhead.setIcon({
+							//console.log(vehicIcon[0]);
+							          $scope.markerhead.setIcon({
                                 path:vehicIcon[0],
 				                scale:vehicIcon[1],
 						        strokeWeight: 1,
