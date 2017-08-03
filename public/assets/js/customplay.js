@@ -2346,7 +2346,7 @@ function smoothZoom (map, max, cnt) {
 				} else if($scope.path.length == 1){
 
 					if(lenCount == 0){
-							console.log(vehicIcon[0]);
+							//console.log(vehicIcon[0]);
                          	   $scope.markerhead.setIcon({
                                 path:vehicIcon[0],
 				                scale:vehicIcon[1],
