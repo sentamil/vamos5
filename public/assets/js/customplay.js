@@ -1817,10 +1817,10 @@ function smoothZoom (map, max, cnt) {
 		var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
 		var labelAnchorpos = new google.maps.Point(12, 37);
 	
-		//if(pos.data.insideGeoFence =='Y'){
+		if(pos.data.insideGeoFence =='Y'){
 			//pinImage = 'assets/imgs/F_'+pos.data.direction+'.png';
-			  //pinImage = 'assets/imgs/trans.png';
-		//}else{	
+			  pinImage = 'assets/imgs/trans.png';
+		}else{	
 
 			if(pos.data.position =='P') {
 			  
@@ -1832,7 +1832,7 @@ function smoothZoom (map, max, cnt) {
 			  //pinImage = 'assets/imgs/A_'+pos.data.direction+'.png';
 				pinImage = 'assets/imgs/orange.png';
 			}
-		//}
+		}
 		
 		$scope.marker = new MarkerWithLabel({
 			   position: pos.path, 
