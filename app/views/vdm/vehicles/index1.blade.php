@@ -34,23 +34,24 @@
 					        <td>{{ array_get($mobileNoList, $value)}}</td>    
 							<td>
 								
-								<a  class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value,'normal') }}" >Show Stops</a>
+								<a  class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/stops/' . $value,'normal') }}" >Show Stops</a>
 								
-								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/removeStop/' . $value,'normal') }}">Remove Stops</a>
+								<a class="btn btn-sm btn-danger" href="{{ URL::to('vdmVehicles/removeStop/' . $value,'normal') }}">Remove Stops</a>
 								
-								<a  class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value,'alternate') }}" >Show ALTS</a>
+								<!--<a  class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/stops/' . $value,'alternate') }}" >Show ALTS</a>
 								
-								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/removeStop/' . $value,'alternate') }}">Remove ALTS</a>
+								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/removeStop/' . $value,'alternate') }}">Remove ALTS</a>-->
 								
 								
 								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/' . $value) }}">Show Vehicle</a>
 								
 								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/migration/' . $value) }}">Migration</a>
 					
-								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Edit</a>
+								<a class="btn btn-sm btn-primary" href="{{ URL::to('vdmVehicles/' . $value . '/edit') }}">Edit</a>
 								
-								<a class="btn btn-sm btn-success" href="{{ URL::to('vdmVehicles/calibrateOil/' . $value) }}">Calibrate</a>
-				
+								<a class="btn btn-sm btn-warning" href="{{ URL::to('vdmVehicles/calibrateOil/' . $value) }}">Calibrate</a>
+				                
+								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/rename/' . $value) }}">Rename</a>
 			
 				
 							</td>
