@@ -46,10 +46,13 @@ tr:nth-of-type(odd) {
   td:nth-of-type(3):before {content: "Vehicles Name ";}
   td:nth-of-type(4):before {content: "Org Name ";}
   td:nth-of-type(5):before {content: "Device ID ";}
+  td:nth-of-type(6):before {content: "Mobile No ";}
+  td:nth-of-type(7):before {content: "Status ";}  
+  td:nth-of-type(8):before {content: "Device Model ";}
   
   @if(Session::get('vCol')=='1')
 	  
-  td:nth-of-type(6):before {content: "Actions "}
+  td:nth-of-type(9):before {content: "Actions "}
   @endif
   <!--td:nth-of-type(6):before {content: "Status ";}  
   td:nth-of-type(7):before {content: "Device Model ";}
@@ -96,6 +99,9 @@ tr:nth-of-type(odd) {
 							<th style="text-align: center;">Vehicle Name</th>
 							<th style="text-align: center;">Org Name</th>
 							<th style="text-align: center;">Device ID</th>
+							<th style="text-align: center;">Mobile No</th>
+							<th style="text-align: center;">status</th>
+							<th style="text-align: center;">Device Model</th>
 							<th style="text-align: center;">Actions</th> 
 						</tr>
 					</thead>
@@ -110,8 +116,9 @@ tr:nth-of-type(odd) {
 							<td>{{ array_get($shortNameList, $value)}}</td>
 							<td>{{ array_get($orgIdList, $value)}}</td>
 							<td>{{ array_get($deviceList, $value)}}</td>
-					        
-							@if(Session::get('vCol')=='2')
+					        <td>{{ array_get($mobileNoList, $value)}}</td>
+							 
+							
 
 								<td>
 									@if(array_get($statusList, $value) == 'P')
@@ -134,8 +141,8 @@ tr:nth-of-type(odd) {
 
 							<td>{{ array_get($deviceModelList, $value)}}</td>
 						<!--  <td>{{ array_get($expiredList, $value)}}</td> -->
-					        <td>{{ array_get($mobileNoList, $value)}}</td> 	
-							@endif 							
+					       <!-- <td>{{ array_get($mobileNoList, $value)}}</td> 	-->
+											
 							@if(Session::get('vCol')=='1')
 							<td>
 								
