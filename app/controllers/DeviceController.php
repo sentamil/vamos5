@@ -29,12 +29,13 @@ class DeviceController extends \BaseController {
 				$refData 	= $redis->hget ( 'H_RefData_' . $fcode, $vechicle );
 				$refData	= json_decode($refData,true);
 				$orgId 		= isset($refData['OWN'])?$refData['OWN']:' ';
+				$onboardDate=isset($refData['onboardDate'])?$refData['onboardDate']:'null';
+				$vehicleExpiry=isset($refData['vehicleExpiry'])?$refData['vehicleExpiry']:'null';
 				// log::info(isset($refData['OWN']));
 				// log::info($orgId);
 				// log::info('  dealer name   ');
-				$vehicleExpiry=isset($refData['vehicleExpiry'])?$refData['vehicleExpiry']:'null';
                 // log::info($vehicleExpiry);
-				$deviceMap 	= array_add($deviceMap,$i,$vechicle.','.$devicesList[$i].','.$orgId.','.$vehicleExpiry);
+				$deviceMap 	= array_add($deviceMap,$i,$vechicle.','.$devicesList[$i].','.$orgId.','.$onboardDate.','.$vehicleExpiry);
 			}
 			
 			$temp++;

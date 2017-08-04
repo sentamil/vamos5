@@ -20,6 +20,7 @@
 								<th style="text-align: center;">Device ID</th>
 								<th style="text-align: center;">Vehicle Id</th>
 								<th style="text-align: center;">Dealer Name</th>
+								<th style="text-align: center;">Onboard Date</th>
 								<th style="text-align: center;">Vehicle Expiry</th>
 							
 							</tr>
@@ -33,6 +34,7 @@
 								<td>{{ explode (',' ,$value )[0]  }}</td>
 								<td>{{ explode (',' ,$value )[2]  }}</td>
 								<td>{{ explode (',' ,$value )[3]  }}</td>
+								<td>{{ explode (',' ,$value )[4]  }}</td>
 							</tr>
 							@endforeach
 						 @endif
