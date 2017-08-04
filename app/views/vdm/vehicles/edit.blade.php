@@ -8,8 +8,8 @@
 		<div class="row">
     		<div class="col-lg-12">
        			 <div class="hpanel">
-               		<div class="panel-heading" align="center">
-                   		<h4><font>Edit Vehicle</font></h4>
+               		<div style="background-color: #7A7F99" class="panel-heading" align="center">
+                   		<h4 style="background-color:  #b3b3cc" ><font size="6px" color="white" >Edit Vehicle</font></h4>
                 	</div>
                 	{{ HTML::ul($errors->all()) }}
 					{{ Form::model($vehicleId, array('route' => array('vdmVehicles.update', $vehicleId), 'method' => 'PUT')) }}
@@ -72,7 +72,7 @@
 									{{ Form::text('date', $refData['date'], array('class' => 'form-control','disabled' => 'disabled')) }}
 								</div>
 								<div class="form-group">
-									{{ Form::label('onboardDate', 'OnboardDate') }}
+									{{ Form::label('onboardDate', 'Onboard Date') }}
 									{{ Form::text('onboardDate', $refData['onboardDate'], array('class' => 'form-control','disabled' => 'disabled')) }}
 								</div>
 								<!-- <div class="form-group">
@@ -105,7 +105,7 @@
 								</div> -->
 								
 								<div class="form-group">
-									{{ Form::label('isRF', 'IsRFID') }}<br>
+									{{ Form::label('isRF', 'Is RFID') }}<br>
 
 									{{ Form::select('isRfid', array('yes' => 'Yes','no' => 'No'), isset($refData['isRfid'])?$refData['isRfid']:'no', array('class' => 'form-control')) }} 
 								</div>
@@ -190,7 +190,7 @@
 
 								</div> -->
 								<div class="form-group">
-{{ Form::label('vehicleExpiry', 'Vehicle Expire') }}
+{{ Form::label('vehicleExpiry', 'Vehicle Expiration Date') }}
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
  <script>   
@@ -252,7 +252,7 @@
 					
 								<div class="col-md-5" style="top: 30px; position: relative; left: 40%">
 									
-										 {{ Form::submit('Update the Vehicle!', array('class' => 'btn btn-primary')) }}
+										 {{ Form::submit('Update Vehicle', array('class' => 'btn btn-primary')) }}
 								</div>
 								
 							</div>
