@@ -18,7 +18,7 @@
         	<br />
         	<div class="row">
         		<div class="col-md-2"></div>
-        		<div class="col-md-3" >{{ Form::label('vechicle', 'Vechicle Id') }}</div>
+        		<div class="col-md-3" >{{ Form::label('vehicle', 'Vehicle Id') }}</div>
 				<div class="col-md-4">{{ Form::label('vehicleId', $vehicleId,array('class' => 'form-control', 'disabled' => 'disabled')) }}{{ Form::hidden('vehicleId', $vehicleId) }}</div>
 			</div>
         	<br />
