@@ -1,7 +1,9 @@
 @extends('includes.vdmheader')
 @section('mainContent')
 
-<h4 align="center"><font>Generate Stops</font></h4>
+<div style="background-color: #b3d9ff" class="panel-heading" align="center">
+<h4 align="center"><font size="5px" >Generate Stops</font></h4>
+</div>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
@@ -11,13 +13,13 @@
  
 <div class="row" >   
 	<div class="col-lg-12">
-        <div class="hpanel-body">
+        <div style="background-color: #cce6ff" class="hpanel-body">
         <hr>  
         	<br />
         	<div class="row">
         		<div class="col-md-2"></div>
         		<div class="col-md-3" >{{ Form::label('vechicle', 'Vechicle Id') }}</div>
-				<div class="col-md-4">{{ Form::label('vehicleId', $vehicleId,array('class' => 'form-control')) }}{{ Form::hidden('vehicleId', $vehicleId) }}</div>
+				<div class="col-md-4">{{ Form::label('vehicleId', $vehicleId,array('class' => 'form-control', 'disabled' => 'disabled')) }}{{ Form::hidden('vehicleId', $vehicleId) }}</div>
 			</div>
         	<br />
         	<div class="row">
@@ -60,7 +62,7 @@
         	<div class="row">
         		<div class="col-md-2"></div>
         		<div class="col-md-3">{{ Form::label('demo', 'Type') }}</div>
-        		<div class="col-md-4">{{ Form::text('demo', $demo, array('class'=>'form-control') ) }}</div>
+        		<div class="col-md-4">{{ Form::text('demo', $demo, array('class'=>'form-control', 'disabled' => 'disabled') ) }}</div>
         	</div>
         	<br/>
             <div class="row">
