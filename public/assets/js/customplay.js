@@ -1,4 +1,4 @@
-//var app = angular.module('mapApp', []);
+// var app = angular.module('mapApp', ['ui.select']);
 var gmarkers=[];
 var ginfowindow=[];
 var gsmarker=[];
@@ -28,6 +28,24 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 				var result=nd.toLocaleString();
 				return result;
 			}
+
+			function currentTimes() {
+				var date = new Date();
+				var hours = date.getHours();
+				var minutes = date.getMinutes();
+				var ampm = hours >= 12 ? 'PM' : 'AM';
+					hours = hours % 12;
+					hours = hours ? hours : 12; // the hour '0' should be '12'
+					minutes = minutes < 10 ? '0'+minutes : minutes;
+				var strTimes = hours + ':' + minutes + ' ' + ampm;
+								  
+			return strTimes;
+			}
+
+		    function getTodayDatesss() {
+                       var date = new Date();
+                       return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
+                    };
 		 		
 		 		scope.$watch("hisurl", function (val) {
 		 		//startLoading();
@@ -35,9 +53,15 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 
 		 		if(scope.hisurl != undefined)
 		   		$http.get(scope.hisurl).success(function(data){
+
 		   			var locs = data;
 		 			scope.hisloc = locs;
+
+		 			console.log(scope.hisloc.tripDistance);
+
 					scope._tableValue(locs);
+
+
 					if(data.fromDateTime=='' || data.fromDateTime==undefined || data.fromDateTime=='NaN-aN-aN'){ 
 						if(data.error==null){}else{
 							$('.alert-danger').show();
@@ -45,6 +69,12 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 						}
 						$('#lastseen').html('<strong>From Date & time :</strong> -');
 						$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
+
+                        scope.fromdate			=	getTodayDatesss();
+					    scope.todate			=	scope.fromdate;
+					    scope.fromtime			=	'12:00 AM';
+   						scope.totime			=	currentTimes();
+
 					}else{
 						$('.alert-danger').hide();
 						if(data.error==null){
@@ -78,8 +108,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 							$('#lastseen').html('<strong>From Date & time :</strong> '+ new Date(data.fromDateTimeUTC).toString().split('GMT')[0]);
 							$('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> '+ new Date(data.toDateTimeUTC).toString().split('GMT')[0]);
 
-						
-								if (data.vehicleLocations != null || data.vehicleLocations.length > 0 ){
+								if (data.vehicleLocations.length != 0 ){
 
 										var myOptions = {
 								
@@ -87,8 +116,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 												center: new google.maps.LatLng(data.vehicleLocations[0].latitude, data.vehicleLocations[0].longitude),
 												mapTypeId: google.maps.MapTypeId.ROADMAP
 											    //styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
-											
-											};
+										};
 
                                      scope.map = new google.maps.Map(document.getElementById(attrs.id), myOptions);
 
@@ -97,9 +125,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 									console.log('vehicleLocations not found!...'+data);
 								}
 
-	            			
-
-						    //draw the geo code
+	            			//draw the geo code
 							// (function geosite(){
 							//	var geoUrl = GLOBAL.DOMAIN_NAME+'/viewSite';
 								// var myOptions = {
@@ -332,6 +358,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
       }
     };
 }]);
+
 
 app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function($scope, $http, $q, $filter, GLOBAL){
 	$scope.locations = [];
@@ -1253,6 +1280,17 @@ $( "#historyDetails" ).hide();
 
 	}
 
+	$scope.callValue = function(val){
+		//console.log(val);
+		$scope.trackVehID = val.vehiID;
+		$scope.hideButton = false;
+		$scope.btn5Hrs = false;
+		$scope.btn12Hrs = false;
+		$scope.btn1Day = false;
+		$scope.btn2Day = false;
+		
+	}
+
 	$scope.deleteRouteName 	= function(deleteValue){
 	 // $scope.routeName = deleteValue;
 		console.log(deleteValue);
@@ -1642,7 +1680,6 @@ function smoothZoom (map, max, cnt) {
 		return sHours+":"+sMinutes+":00";
 	}
 
-
     $scope.showPlot = function(totime,todate,fromtime,fromdate)
 	{
 		$scope.hideButton = false;
@@ -1650,6 +1687,7 @@ function smoothZoom (map, max, cnt) {
 
 	$scope.plotting = function(val,parameter){
 
+		var allDataOk = 0;
 		$scope.hideButton = true;
 
 		(function(){
@@ -1663,10 +1701,17 @@ function smoothZoom (map, max, cnt) {
 
 		if((checkXssProtection(fromdate) == true) && (checkXssProtection(todate) == true) && (checkXssProtection(document.getElementById('timeTo').value) == true) && (checkXssProtection(document.getElementById('timeFrom').value) == true)){
 			startLoading();
-		//	$scope.popUpMarkerNull();
+			$scope.hideOverlay = true;
+
+		  //$scope.popUpMarkerNull();
 			$scope.hisurlold = $scope.hisurl;
 
             if (val ==1){
+
+			    $scope.btn5Hrs = true;
+				$scope.btn12Hrs= false;
+				$scope.btn1Day = false;
+				$scope.btn2Day = false;
 
 				var todayTime = new Date();
 				var currentTimeRaw = new Date();
@@ -1681,7 +1726,12 @@ function smoothZoom (map, max, cnt) {
     			var fromdate = fromDateRaw;
     			var todate = fromDateRaw;
 
-			} else if (val == 2) {	
+			} else if (val == 2) {
+
+			    $scope.btn5Hrs = false;
+			    $scope.btn12Hrs= true;
+			    $scope.btn1Day = false;
+			    $scope.btn2Day = false;
 
 				var todayTime  = new Date();
 				var newYesDate = new Date();
@@ -1698,10 +1748,14 @@ function smoothZoom (map, max, cnt) {
     			var fromtime = $scope.HHmmss;
     			var totime = currentTime ;
     			var fromdate = $filter('date')(previousDate,'yyyy-MM-dd');
-    			var todate = fromDateRaw;
-
+				var todate = fromDateRaw;
+				
 			} else if (val == 3)	{
-
+				
+				$scope.btn5Hrs = false;
+				$scope.btn12Hrs= false;
+				$scope.btn1Day = true;
+				$scope.btn2Day = false;
 				var todayTime  = new Date();
 				var newYesDate = new Date();
 
@@ -1717,11 +1771,14 @@ function smoothZoom (map, max, cnt) {
     			var fromtime = $scope.HHmmss;
     			var totime = currentTime ;
     			var fromdate = $filter('date')(previousDate,'yyyy-MM-dd');
-    			var todate = fromDateRaw;
+				var todate = fromDateRaw;
+			
+			} else if (val == 4)	{
 
-			}
-
-			else if (val == 4)	{
+			    $scope.btn5Hrs = false;
+				$scope.btn12Hrs= false;
+				$scope.btn1Day = false;
+				$scope.btn2Day = true;
 
 				var todayTime  = new Date();
 				var newYesDate = new Date();
@@ -1737,11 +1794,11 @@ function smoothZoom (map, max, cnt) {
     			var fromtime ="00:00:00";
     			var totime = "23:59:59";
     			var fromdate = $filter('date')(previousDate,'yyyy-MM-dd');
-    			var todate = $filter('date')(fromDateRaw,'yyyy-MM-dd');
-
+				var todate = $filter('date')(fromDateRaw,'yyyy-MM-dd');
+				
 			} else	{
 
-    			if(document.getElementById('timeFrom').value==''){
+				if(document.getElementById('timeFrom').value==''){
 				   var fromtime = "00:00:00";
 			    }else{
 				   var fromtime = $scope.timeconversion(document.getElementById('timeFrom').value);
@@ -1753,22 +1810,49 @@ function smoothZoom (map, max, cnt) {
 			    }
             }
             
-            if(document.getElementById('dateFrom').value==''){
+            if(document.getElementById('dateFrom').value=='' ){
+
 				if(document.getElementById('dateTo').value==''){
 					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
 				}
 			}else{
+				
 				if(document.getElementById('dateTo').value==''){
 					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&interval=1&fromDate='+fromdate+'&fromTime='+fromtime;
-				}else{
-					var days =daydiff(new Date(fromdate), new Date(todate));
-					if(days<3)
-						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&interval=1&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-					else if(days < 7)  
-						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-					else{
-						alert('Please select less than 7 days !...');
+				}else {
+
+
+					if (fromdate == todate)
+					{
+						if (fromtime ==  totime)
+						{
+							//alert("Please Check for the Time cann't be same");
+							 stopLoading();
+						}
+						else {
+							$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&interval=1&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+							//stopLoading();
+							}
+					}
+
+					else if (fromdate > todate)
+					{
+						//alert("Please Correct FROM DATE");
 						stopLoading();
+						
+  					//console.log($scope.newdate);
+         			// alert($scope.newdate);
+					}
+
+					else if (fromdate > (todate+6))
+					{
+						//alert("Days should be between 1 to 7");
+						stopLoading();
+					}
+					else 
+					{
+						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+						//stopLoading();
 					}
 				}
 			}
@@ -1821,6 +1905,7 @@ function smoothZoom (map, max, cnt) {
 				}
 			}
 		}
+		
 	//stopLoading();
 	}
 	
@@ -2125,9 +2210,10 @@ function smoothZoom (map, max, cnt) {
 				             $scope.infosWindow.setContent(contenttString);
 				             $scope.infosWindow.setPosition(latlngs);
 
-				          /* if(pcount==0){
+				           if(pcount==0){
                                 $scope.infosWindow.open($scope.map,$scope.markerheads);
-                             }   */
+                                $scope.infosWindow.close();
+                             }   
        
                             $scope.map.panTo(latlngs);
     // }
@@ -2143,8 +2229,7 @@ function smoothZoom (map, max, cnt) {
     	    //  if(($scope.hisloc.vehicleLocations[pcount].latitude+''+$scope.hisloc.vehicleLocations[pcount].longitude)!=($scope.hisloc.vehicleLocations[pcount+1].latitude+''+$scope.hisloc.vehicleLocations[pcount+1].latitude)){
             //  $scope.rotationsd = getBearing($scope.hisloc.vehicleLocations[pcount].latitude,$scope.hisloc.vehicleLocations[pcount].longitude,$scope.hisloc.vehicleLocations[pcount+1].latitude,$scope.hisloc.vehicleLocations[pcount+1].longitude);                
 	                 
-                                 
-				                $scope.markerheads.setIcon({
+                                $scope.markerheads.setIcon({
                                       path:vehicIcon[0],
 				                      scale:vehicIcon[1],
 						              strokeWeight: 1,
@@ -2168,7 +2253,8 @@ function smoothZoom (map, max, cnt) {
 
 				             $scope.infosWindow.setContent(contenttString);
 				             $scope.infosWindow.setPosition(latlngs);
-                          // $scope.infosWindow.open($scope.map,$scope.markerheads);
+                             $scope.infosWindow.open($scope.map,$scope.markerheads);
+                             $scope.infosWindow.close();
        	  }
 
         lenCount2++;
@@ -2331,9 +2417,10 @@ function smoothZoom (map, max, cnt) {
 				            $scope.infosWindows.setContent(contenttString);
 				            $scope.infosWindows.setPosition($scope.path[lineCount+1]);
 
-                         /* if(lineCount == 0){
+                          if(lineCount == 0){
                               $scope.infosWindows.open($scope.map,$scope.markerhead);
-                            } */
+                              $scope.infosWindows.close();
+                            } 
 
             				$scope.map.panTo($scope.path[lineCount]);
 
@@ -2399,7 +2486,8 @@ function smoothZoom (map, max, cnt) {
 
 				            $scope.infosWindows.setContent(contenttString);
 				            $scope.infosWindows.setPosition($scope.path[0]);
-                          //$scope.infosWindows.open($scope.map,$scope.markerhead);
+                            $scope.infosWindows.open($scope.map,$scope.markerhead);
+                            $scope.infosWindows.close();
 
                 lenCount++;
 				}
@@ -2524,7 +2612,7 @@ function smoothZoom (map, max, cnt) {
 	   $('#replayButton').hide();
 	   $('#playButton').show();
 		   
-        window.clearInterval(timeInterval);
+    window.clearInterval(timeInterval);
     }
 
 	$scope.speedchange=function(){
