@@ -14,10 +14,8 @@
 <link href="assets/css/jVanilla.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
-<!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
+<link href="assets/ui-drop/select.min.css" rel="stylesheet">
+
 <style type="text/css">
 
 #container, #speedGraph{
@@ -25,19 +23,18 @@
   max-height: 200px !important;
   min-width: 480px; height: 200px; margin: 0 auto
 }
-
 .box > .loading-img, .loading-img,#status, #status02{
-
    width: 1px !important;height: 1px !important;z-index: 9999;position: absolute;left: 50%;top: 50%;background-image: url(../imgs/loading.gif);background-repeat: no-repeat;background-position: center;margin: -100px 0 0 -100px; border-radius: 3px;
 }
 </style>
+
 </head>
 
 <!-- <div id="preloader" > -->
      <div id="status" >
 
           <div class="showLoading">
-          <h2>Please Wait.... it will take 1 to 2 Min  to fetch the data </h2><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          <h2>Please Wait.. it will take few seconds..</h2><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
      width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
   <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
     <animateTransform attributeType="xml"
@@ -51,10 +48,12 @@
   </svg>
           </div>
     </div>
+
 <!-- </div> -->
 <!-- <div id="preloader02" >
-    <div id="status02">&nbsp;</div>
-</div> -->
+       <div id="status02">&nbsp;</div>
+     </div> -->
+
 <body ng-controller="mainCtrl" class="ng-cloak">
   <div id="page-content-wrapper">
     <div class="container-fluid">
@@ -67,16 +66,25 @@
             <table cellpadding="0" cellspacing="0" class="dynData">
               <tbody>
                 <tr>
-                  <td style="font-weight:bold;">Vehicle Name</td>
-                  <!--<td id="vehiid" style="font-weight:bold !important;"><h3></h3></td>-->
+                  <td style="font-weight:bold;padding-left:10px;">Vehicle Name</td>
+                  
+               <!-- <td id="vehiid" style="font-weight:bold !important;"><h3></h3></td> -->
                     <td style="float:left;padding-left:10px;"> 
-                      <select ng-model="trackVehID"  ng-change="showPlot(totime,todate,fromtime,fromdate)" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
+                       <!-- <select ng-model="trackVehID"  ng-change="showPlot(totime,todate,fromtime,fromdate)" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
                               <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
-                              </select>
-                      </td>
-                  <td style="font-weight:bold;">TripDist (kms)</td>
-                  <td style="float:left;">{{hisloc.tripDistance}}</td>
+                            </select>  -->
+
+                            <ui-select ng-model="vName.selected" ng-change="callValue(vName.selected)" theme="bootstrap" ng-disabled="disabled" style="width:200px;">
+                                <ui-select-match placeholder="{{shortVehiId}}">{{$select.selected.vName}}</ui-select-match>
+                                <ui-select-choices  repeat="vehi in vehicle_list | filter: $select.search" style="overflow-x:auto;font-size:12px;">
+                                  <span ng-bind="vehi.vName | highlight: $select.vName"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                    </td>
+
+                  <td style="float:right;padding-top:12px;padding-right:40px;"><b>Total Dist</b><span style="float:right;padding-left:8px;" ng-if="hisloc.tripDistance > 1 && hisloc.tripDistance != null">{{hisloc.tripDistance}} <span style="padding-left:5px;"><b>kms</b></span></span><span style="float:right;padding-left:10px;" ng-if="hisloc.tripDistance < 1 && hisloc.tripDistance != null">{{hisloc.tripDistance}} <span style="padding-left:5px;"><b>km</b></span></span><span style="float:right;padding-left:10px;" ng-if="hisloc.tripDistance == null">0<span style="padding-left:5px;"><b>km</b></span></span></td>
                 </tr>
+
               </tbody>
             </table>
           </div>
@@ -104,24 +112,24 @@
           <div class="form-group form-inline" style="margin-bottom: 5px" >
 
             <div class="input-group " style="padding: 2% !important;"> 
-              <button class="sizeInput btn btn-success" ng-click="plotting(1,'5hr')"  showPlot ng-class="{'diabled-class': !PayoutEnabled}">5 Hours </button>
+              <button class="sizeInput btn btn-success" ng-click="plotting(1,'5hr')"  ng-disabled="btn5Hrs"  showPlot ng-class="{'diabled-class': !PayoutEnabled}">5 Hours </button>
             </div>
 
             <div class="input-group " style="padding: 2% !important;">
-              <button class="sizeInput btn btn-info"  ng-click="plotting(2,'12hr')" ng-class="{'diabled-class': !PayoutEnabled}">12 Hours </button>
+              <button class="sizeInput btn btn-info"  ng-click="plotting(2,'12hr')" ng-disabled="btn12Hrs" ng-disabled="btn12Hrs" ng-class="{'diabled-class': !PayoutEnabled}">12 Hours </button>
             </div>
 
             <div class="input-group" style="padding: 2% !important;">
-              <button class="sizeInput btn btn-warning"  ng-click="plotting(3,'24hr')" ng-class="{'diabled-class': !PayoutEnabled}">1 Day </button>
+              <button class="sizeInput btn btn-warning"  ng-click="plotting(3,'24hr')" ng-disabled="btn1Day" ng-class="{'diabled-class': !PayoutEnabled}">1 Day </button>
             </div>
 
             <div class="input-group" style="padding: 2% !important;">
-              <button class="sizeInput btn btn-danger"  ng-click="plotting(4,'yes')" ng-class="{'diabled-class': !PayoutEnabled}">2 Days </button>
+              <button class="sizeInput btn btn-danger"  ng-click="plotting(4,'yes')" ng-disabled="btn2Day" ng-class="{'diabled-class': !PayoutEnabled}">2 Days </button>
             </div>
 
           </div>
                           
-    <!--      <div class="form-group form-inline" style="margin-bottom: 5px">
+    <!--    <div class="form-group form-inline" style="margin-bottom: 5px">
              <div class="input-group ">
               <label>Stops&nbsp;</label>
               <select id="traffic" title="Suggested Stops" style="width: 80px;height: 25px;" ng-model="geoStops" ng-change="goeValueChange()" ng-options="geo.stopName as geo.stopName for geo in geoStop.geoFence"></select>
@@ -131,7 +139,7 @@
             <div class="input-group">
               <button data-target="#myModal1" data-toggle="modal" ng-click="getOrd()" class="sizeInput">Routes</button> -->
               <!-- <button ng-click="hideShowTable()" id="btnValue">ShowDetails</button> -->
-        <!--    </div>
+       <!-- </div>
 
           </div> -->
 
@@ -182,7 +190,7 @@
                   <td>{{all.odoDistance}}</td>
                 </tr>
                 <tr ng-if="allData.length == 0 || allData == undefined">
-                  <td colspan="6" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                  <td colspan="8" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
               </table>
             </div>
@@ -225,8 +233,8 @@
 
             <!-- speed report -->
 
-        <!--    <div id='speed' class="pane">
-            <div id="speedGraph"></div>
+      <!-- <div id='speed' class="pane">
+             <div id="speedGraph"></div>
               <table class="tables">
                 <tr>
                   <td colspan="2">Vehicle Name</td>
@@ -582,11 +590,9 @@
               <!-- <button ng-click="hideShowTable()" id="btnValue">ShowDetails</button> -->
          </div>
 
-
         </div>
 
-
-          <div class="modal fade" id="myModal1" role="dialog" data-backdrop="false" style=" top: 70px;">
+        <div class="modal fade" id="myModal1" role="dialog" data-backdrop="false" style=" top: 70px;">
             <div class="modal-dialog modal-md">
               <div class="modal-content">
                 <div class="modal-header" style="height:45px;padding-top:7px;">
@@ -625,24 +631,24 @@
               </div>
             </div>  
 
-                 <style type="text/css" ng-if ="hideMe">
-                     .labels{
+            <style type="text/css" ng-if ="hideMe">
+                  
+                  .labels{
                        visibility: hidden !important;
-                      }
+                  }
+            </style>
 
-                 </style>
+            <style type="text/css" ng-if="hideMarkerVal">
+                   
+                img[src="assets/imgs/flag.png"],img[src="assets/imgs/orange.png"]{
 
-
-                 <style type="text/css" ng-if="hideMarkerVal">
-                   img[src="assets/imgs/flag.png"],img[src="assets/imgs/orange.png"]{
-
-                    visibility: hidden !important; 
-
-                   }
-                   .h2,h2{
+                  visibility: hidden !important; 
+                }
+                
+                .h2,h2{
                     font-size: 18px !important;
                    }
-                 </style>
+            </style>
                             <!-- <div class="row"> -->
                             <!-- class="col-lg-7" style=" width: 70%; float: left; margin-left: 10px; margin-right: 10px" -->
                               <!-- <div> -->
@@ -659,12 +665,11 @@
                               <span style="padding:10px; background:#fff; margin-top:200px; display:inline-block; font-size: 12px !important;" >No Data Found. Please select another date range</span>
                             </div>
                             
-
-                                  <div style="position: fixed;top: 10px;left: 150px; z-index:99; background-color: #fff; padding:2px; border-radius: 2px; cursor: pointer;" class="viewList">
+                            <div style="position: fixed;top: 10px;left: 150px; z-index:99; background-color: #fff; padding:2px; border-radius: 2px; cursor: pointer;" class="viewList">
 
                             <img src="assets/imgs/add.png" />
                             
-                            <label><input type="text" value="0.0" id="latinput" style="width:120px; height: 20px; "  readonly /></label>
+                            <label><input type="text" value="0.0" id="latinput" style="width:120px; height: 20px;"  readonly /></label>
                             
                         </div>
                         
@@ -745,12 +750,11 @@
   </div><!-- /.modal -->
 
    <div class="modal fade" id="myModal2" role="dialog"  style="top:30px;">
-    <div class="modal-dialog modal-md" style="width:700px;height:500px"  >
+    <div class="modal-dialog modal-md" style="width:700px;height:500px;"  >
       <div class="modal-content">
         <div class="modal-header" style="height:45px; padding-top: 7px;">
          <!-- <div> --><button  type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true" style="color:white;">&times;</span></button>
-        
-             <h4>{{windowRouteName}}</h4>
+            <h4>{{windowRouteName}}</h4>
             <!-- </div> -->
         </div>
     <div class="modal-body" style="padding:5px 5px 5px 5px;">
@@ -824,6 +828,7 @@
    scriptLibrary.push("assets/js/bootstrap-datetimepicker.js");
    scriptLibrary.push("assets/js/infobubble.js");
    scriptLibrary.push("assets/js/infobox.js");
+   scriptLibrary.push("assets/ui-drop/select.min.js");
    scriptLibrary.push("assets/js/vamoApp.js");
    scriptLibrary.push("assets/js/services.js");
    scriptLibrary.push("assets/js/customplay.js");
@@ -860,6 +865,7 @@
     //       pickDate: false
     //     });
     //     });
-        </script>
+</script>
+
 </body>
 </html>
