@@ -662,6 +662,10 @@ input[type=range]:focus::-ms-fill-upper {
     position: fixed;top: 10px;left:470px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
 }
 
+.PlaceCheckbox{
+    position: fixed;top: 30px;left:470px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
+}
+
 .radioButts2{
     position: fixed;top: 10px;left:540px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
 }
@@ -1095,49 +1099,38 @@ button:focus {
     color: yellow;
 }
 
-
-
 button[disabled], html input[disabled] {
     cursor: default;
     color: white !important;
     background-color: grey;
 }
 
-
-
-
 #loading {
     
- 
-        z-index: 2000;
-        
-        width: 10000px;
-        height: 1000px;
-   
-opacity: 0.5;
-
-
-
+    z-index: 2000;
+    width: 10000px;
+    height: 1000px;
+    opacity: 0.5;
 }
+
 .showLoading{
 
       position: fixed; 
-        width: 30%; /* Set your desired with */
-       
-        top: 50%;
-        left: 20%;
-        margin-top: -10%; /* Changes with height. */
-        margin-left: -10%; /* Your width divided by 2. */
-        /* You will not need the below, its only
+      width: 30%; /* Set your desired with */
+      top: 50%;
+      left: 35%;
+      margin-top: -10%; /* Changes with height. */
+      margin-left: -10%; /* Your width divided by 2. */
+   /* You will not need the below, its only
            for styling   purposes.*/
-        padding: 10px;
-        border: 2px solid #555555;
-        background-color: #ccc;
-        border-radius: 5px;
-        text-align: center;
+      padding: 10px;
+      border: 1px solid #555555;
+      background-color: #ccc;
+      border-radius: 5px;
+      text-align: center;
 }
 
-/*laderbar */
+
 
 
 
