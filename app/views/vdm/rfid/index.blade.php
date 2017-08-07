@@ -48,8 +48,8 @@
 											<td>{{ array_get($mobileList, $key)}}</td>
 											<td>{{ $orgIdUi}}</td>
 	                            			<td>
-         <a class="btn btn-warning" href="{{ URL::to('rfid/'.$key.';'.$orgIdUi.'/destroy') }}">Delete</a>
-<a class="btn btn-warning" href="{{ URL::to('rfid/'.$key.';'.$orgIdUi.'/edit') }}">Edit</a>
+<a class="btn btn-success" href="{{ URL::to('rfid/'.$key.';'.$orgIdUi.'/edit') }}">Edit</a>
+<a class="btn btn-danger" href="{{ URL::to('rfid/'.$key.';'.$orgIdUi.'/destroy') }}">Delete</a>
                                                     </td>
 	                            		</tr>
 	                            		@endforeach

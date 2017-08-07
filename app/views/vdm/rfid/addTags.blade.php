@@ -8,7 +8,7 @@
     		<div class="col-lg-12">
         		<div class="hpanel">
                		 <div class="panel-heading" align="center">
-                  		<h4><b><font> Tags Create </font></b></h4>
+                  		<h4><b><font> Create Tags </font></b></h4>
                 	</div>
                		 <div class="panel-body">
                		 	<hr>

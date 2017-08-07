@@ -21,12 +21,27 @@
         		<div class="col-md-3" >{{ Form::label('vehicle', 'Vehicle Id') }}</div>
 				<div class="col-md-4">{{ Form::label('vehicleId', $vehicleId,array('class' => 'form-control', 'disabled' => 'disabled')) }}{{ Form::hidden('vehicleId', $vehicleId) }}</div>
 			</div>
-        	<br />
+			<br />
+			<div class="row">
+            <div class="col-md-2"></div>
+            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+            <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+             <script>   
+             $(function() {
+               // $( "#calendar" ).datepicker();   
+               $( "#calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+              //var date = $('#datepicker').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+             }); 
+             </script>
+            <div class="col-md-3">{{ Form::label('Date', 'Date') }}</div>
+            <div class="col-md-4">{{ Form::text('date', Input::old('date'),array('id' => 'calendar', 'placeholder' => 'dd-mm-yyyy','class' => 'form-control','required'=>'required')) }}</div>
+            </div>
+        	<!--<br />
         	<div class="row">
         		<div class="col-md-2"></div>
         		<div class="col-md-3">{{ Form::label('Date', 'Date') }}</div>
 				<div class="col-md-4">{{ Form::text('date', Input::old('date'),array('placeholder' => 'dd-mm-yyyy','class' => 'form-control','required'=>'required')) }}</div>
-			</div>
+			</div>-->
 			<br />
 			<div class="row">
 				<div class="col-md-2"></div>
