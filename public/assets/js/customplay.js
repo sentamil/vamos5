@@ -1671,7 +1671,7 @@ function smoothZoom (map, max, cnt) {
 		var sMinutes = minutes.toString();
 		if(hours<10) sHours = "0" + sHours;
 		if(minutes<10) sMinutes = "0" + sMinutes;
-		return sHours+":"+sMinutes+":00";
+		return sHours+":"+sMinutes+":59";
 	}
 
     $scope.showPlot = function(totime,todate,fromtime,fromdate)
