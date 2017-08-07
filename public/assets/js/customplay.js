@@ -56,11 +56,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
 
 		   			var locs = data;
 		 			scope.hisloc = locs;
-
-		 			console.log(scope.hisloc.tripDistance);
-
 					scope._tableValue(locs);
-
 
 					if(data.fromDateTime=='' || data.fromDateTime==undefined || data.fromDateTime=='NaN-aN-aN'){ 
 						if(data.error==null){}else{
@@ -1281,13 +1277,13 @@ $( "#historyDetails" ).hide();
 	$scope.callValue = function(val){
 		//console.log(val);
 		$scope.trackVehID = val.vehiID;
+		$scope.shortVehiId = val.vName;
 		$scope.hideButton = false;
 		$scope.btn5Hrs = false;
 		$scope.btn12Hrs = false;
 		$scope.btn1Day = false;
 		$scope.btn2Day = false;
-		
-	}
+    }
 
 	$scope.deleteRouteName 	= function(deleteValue){
 	 // $scope.routeName = deleteValue;
@@ -1808,54 +1804,7 @@ function smoothZoom (map, max, cnt) {
 			    }
             }
             
-        /*  if(document.getElementById('dateFrom').value=='' ){
-
-				if(document.getElementById('dateTo').value==''){
-					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
-				}
-			}else{
-				
-				if(document.getElementById('dateTo').value==''){
-					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
-				}else {
-
-
-					if (fromdate == todate)
-					{
-						if (fromtime ==  totime)
-						{
-							
-							 stopLoading();
-						}
-						else {
-							$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-							//stopLoading();
-							}
-					}
-
-					else if (fromdate > todate)
-					{
-					
-						stopLoading();
-						
-  					//console.log($scope.newdate);
-         			// alert($scope.newdate);
-					}
-
-					else if (fromdate > (todate+6))
-					{
-						alert("Please select less than 7 days..");
-						stopLoading();
-					}
-					else 
-					{
-						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-						//stopLoading();
-					}
-				}
-			} */
-
-			if(document.getElementById('dateFrom').value==''){
+      		if(document.getElementById('dateFrom').value==''){
 				if(document.getElementById('dateTo').value==''){
 					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
 				}
@@ -1864,13 +1813,31 @@ function smoothZoom (map, max, cnt) {
 					$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
 				}else{
 					var days =daydiff(new Date(fromdate), new Date(todate));
-					if(days<3)
-						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-					else if(days < 7)  
-						$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
-					else{
-						alert('Please select less than 7 days !...');
+
+
+					if (fromdate == todate)
+					{
+						if (fromtime ==  totime)
+						{
+							stopLoading();
+						} else {
+					      
+						    $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+					    }
+				    } else if (fromdate > todate){
+					
 						stopLoading();
+					}
+					else
+					{
+                        if(days<3){
+						      $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+					    } else if(days < 7) {
+						      $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+					    } else {
+						      alert('Please select less than 7 days !...');
+						      stopLoading();
+					        }
 					}
 				}
 			}

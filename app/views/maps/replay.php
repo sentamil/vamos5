@@ -82,7 +82,7 @@
                             </ui-select>
                     </td>
 
-                  <td style="float:right;padding-top:12px;padding-right:40px;"><b>Total Dist</b><span style="float:right;padding-left:8px;" ng-if="hisloc.tripDistance > 1 && hisloc.tripDistance != null">{{hisloc.tripDistance}} <span style="padding-left:5px;"><b>kms</b></span></span><span style="float:right;padding-left:10px;" ng-if="hisloc.tripDistance < 1 && hisloc.tripDistance != null">{{hisloc.tripDistance}} <span style="padding-left:5px;"><b>km</b></span></span><span style="float:right;padding-left:10px;" ng-if="hisloc.tripDistance == null">0<span style="padding-left:5px;"><b>km</b></span></span></td>
+                  <td style="float:right;padding-top:12px;padding-right:23px;"><b>Total Dist</b><span style="float:right;padding-left:8px;" ng-if="hisloc.tripDistance > 1 && hisloc.tripDistance != null">{{hisloc.tripDistance}} <span style="padding-left:5px;"><b>kms</b></span></span><span style="float:right;padding-left:10px;" ng-if="hisloc.tripDistance < 1 && hisloc.tripDistance != null">{{hisloc.tripDistance}} <span style="padding-left:5px;"><b>km</b></span></span><span style="float:right;padding-left:10px;" ng-if="hisloc.tripDistance == null">0<span style="padding-left:5px;"><b>km</b></span></span></td>
                 </tr>
 
               </tbody>

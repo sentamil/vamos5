@@ -583,11 +583,17 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	{
 		var url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 		$http.get(url).success(function(response){
-			for (var i = 0; i < response[$scope.gIndex].vehicleLocations.length; i++) 
+
+          if(response[$scope.gIndex].vehicleLocations != null){
+
+            var respLen=response[$scope.gIndex].vehicleLocations.length;
+
+			for (var i = 0; i < respLen; i++) 
 			{
 				if($scope.vehicleid == response[$scope.gIndex].vehicleLocations[i].vehicleId)
 				$scope.assignValue(response[$scope.gIndex].vehicleLocations[i])
 			};
+		   }
 		})
 	}
 
@@ -795,7 +801,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			+'<div><b class="_info_caption">Today Distance</b> - '+data.distanceCovered+' <span style="font-size:10px;font-weight:bold;">kms</span></div>'
 			+'<div><b class="_info_caption">'+vamoservice.statusTime(data).tempcaption+'</span></b> - '+vamoservice.statusTime(data).temptime+'</div>'
 			+'<div><b class="_info_caption">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
-			+'<div><b class="_info_caption">Loc Time</b> - <span>'+$filter('date')(data.date, "dd/MM/yyyy hh:mm:ss")+'</span> </div>'
+			+'<div><b class="_info_caption">Loc Time</b> - <span>'+$filter('date')(data.date, "dd/MM/yyyy HH:mm:ss")+'</span> </div>'
 			+'<div><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp; <a href="#" ng-click="addPoi('+lat+','+lng+')">Save Site</a>'
 		 // +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
 			+'</div>';
@@ -842,14 +848,19 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 	// $http.get('http://'+globalIP+'/vamo/public//getVehicleLocations').success(function(data)
 	function listVehicleName(data)
 	{
-		for (var i = 0; i < data[$scope.gIndex].vehicleLocations.length; i++) 
-		{
-			$scope.vehicle_list.push({'vehiID' : data[$scope.gIndex].vehicleLocations[i].vehicleId, 'vName' : data[$scope.gIndex].vehicleLocations[i].shortName})
-		};
-		$scope.fcode.push(data[$scope.gIndex]);
 
+		if(data[$scope.gIndex].vehicleLocations!=null){
+
+			var vehiLength = data[$scope.gIndex].vehicleLocations.length;
+		   
+		   for (var i = 0; i < vehiLength; i++) 
+		   {
+			  $scope.vehicle_list.push({'vehiID' : data[$scope.gIndex].vehicleLocations[i].vehicleId, 'vName' : data[$scope.gIndex].vehicleLocations[i].shortName})
+		   };
+	   }
+
+	   $scope.fcode.push(data[$scope.gIndex]);
 	}
-
 
 	function calcLatLongForDrawShapes(longitude, lat, distance, bearing) {
 	 var EARTH_RADIUS_EQUATOR = 6378140.0;
@@ -1217,8 +1228,13 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		var movingCount = 0;
 		var idleCount = 0;
 		var overspeedCount = 0;
+
+
+		if($scope.locations02[$scope.gIndex].vehicleLocations != null){
+
+		 var locLength=$scope.locations02[$scope.gIndex].vehicleLocations.length;
 		
-		for (var i = 0; i < $scope.locations02[$scope.gIndex].vehicleLocations.length; i++) {
+		 for (var i = 0; i < locLength; i++) {
 			if($scope.locations02[$scope.gIndex].vehicleLocations[i].position=="P"){
 				parkedCount=parkedCount+1;
 			}else  if($scope.locations02[$scope.gIndex].vehicleLocations[i].position=="M"){
@@ -1229,6 +1245,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			if($scope.locations02[$scope.gIndex].vehicleLocations[i].isOverSpeed=='Y'){
 				overspeedCount=overspeedCount+1;
 			}
+ 		 }
 
 		}
 		
@@ -1581,8 +1598,13 @@ function locat_address(locs) {
 			var movingCount = 0;
 			var idleCount = 0;
 			var overspeedCount =0;
+
+			if(location02[$scope.gIndex].vehicleLocations != null){
+
+				var locsLength=location02[$scope.gIndex].vehicleLocations.length;
 			
-			for (var i = 0; i < location02[$scope.gIndex].vehicleLocations.length; i++) {
+			for (var i = 0; i < locsLength; i++) {
+
 				if(location02[$scope.gIndex].vehicleLocations[i].position=="P"){
 					parkedCount=parkedCount+1;
 				}else  if(location02[$scope.gIndex].vehicleLocations[i].position=="M"){
@@ -1593,6 +1615,8 @@ function locat_address(locs) {
 				if($scope.locations02[$scope.gIndex].vehicleLocations[i].isOverSpeed=='Y'){
 					overspeedCount=overspeedCount+1;
 				}
+			}
+
 			}
 			
 			$scope.parkedCount = parkedCount;
