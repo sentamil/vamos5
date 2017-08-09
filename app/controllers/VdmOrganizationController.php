@@ -249,7 +249,9 @@ public function siteUpdate()
          //do your stuff
         $siteList[] = $keyS;
         }
-      $rr=count($siteList);
+	  $dd=[];
+      $siteList1=isset($siteList)?$siteList:$dd;
+      $rr=count($siteList1);
 		for ($i=0;$i<$rr;$i++)
 		{
 			$siteName=$siteList[$i];
