@@ -1366,7 +1366,9 @@ $parameters = 'fcode='.$fcode . '&expiryDate='.$vehicleExpiry. '&vehicleId='.$ve
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 //
-return Redirect::to ( 'vdmVehicles' );
+//return Redirect::to ( 'vdmVehicles' );
+ $orgLis = [];
+ return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
 
 //            return VdmVehicleController::edit($vehicleId);
 }
@@ -2150,8 +2152,9 @@ $current = Carbon::now();
     // log::info('device id--->'.$deviceId);
     // log::info('vechicle id-->'.$vehicleId);
     Session::flash ( 'message', 'Successfully updated ' . '!' );
-    return Redirect::to ( 'vdmVehicles' );
-
+   // return Redirect::to ( 'vdmVehicles' );
+    $orgLis = [];
+    return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
 //            return View::make ( 'vdm.vehicles.migration', array ('vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 
 }
@@ -2518,7 +2521,9 @@ $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.
     // log::info('device id--->'.$deviceId);
     // log::info('vechicle id-->'.$vehicleId);
     Session::flash ( 'message', 'Successfully updated ' . '!' );
-    return Redirect::to ( 'vdmVehicles' );
+    //return Redirect::to ( 'vdmVehicles' );
+	$orgLis = [];
+    return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
 
 //            return View::make ( 'vdm.vehicles.migration', array ('vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 
