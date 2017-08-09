@@ -606,6 +606,13 @@ Route::get('/getOverallSiteLocationReport', function() {
     return View::make('vls.getOverallSiteLocationReport');
 });
 
+Route::get('/getOverallSiteLocation', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getOverallSiteLocation');
+    return View::make('vls.getOverallSiteLocation');
+});
 
 Route::get('/getSiteSummary', function() {
     if (!Auth::check()) {
@@ -1169,5 +1176,4 @@ Route::get('/Test',array('uses'=>'TestController@postAuth'));
 Route::get('/Example',array('uses'=>'ExampleController@testExample'));
 Route::get('/Hello',array('uses'=>'HelloController@testHello'));
 Route::post('/meenatest',array('uses'=>'HelloController@meenatest'));
-
 
