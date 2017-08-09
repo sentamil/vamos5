@@ -1771,11 +1771,11 @@ function smoothZoom (map, max, cnt) {
 				var fromDateRaw = $filter('date')(currentTimeRaw,'yyyy-MM-dd');
 				todayTime.setHours(todayTime.getHours()-23);
     			todayTime.setMinutes(todayTime.getMinutes()-59);
-    			var previousDate = newYesDate.setDate(newYesDate.getDate()-1);
+    			var previousDate = newYesDate.setDate(newYesDate.getDate());
     			$scope.HHmmss = $filter('date')(todayTime, 'HH:mm:ss');
     			// alert($scope.HHmmss);
 
-    			var fromtime = $scope.HHmmss;
+    			var fromtime = '00:00:00';//$scope.HHmmss;
     			var totime = currentTime ;
     			var fromdate = $filter('date')(previousDate,'yyyy-MM-dd');
 				var todate = fromDateRaw;
@@ -1795,13 +1795,13 @@ function smoothZoom (map, max, cnt) {
 				var fromDateRaw = $filter('date')(currentTimeRaw,'yyyy-MM-dd');
 				todayTime.setHours(todayTime.getHours()-1);
     			todayTime.setMinutes(todayTime.getMinutes()-59);
-    			var previousDate = newYesDate.setDate(newYesDate.getDate()-2);
+    			var previousDate = newYesDate.setDate(newYesDate.getDate()-1);
     			var fromYesDate = newYesDate.setDate(newYesDate.getDate()-1);
     			$scope.HHmmss = $filter('date')(todayTime, 'HH:mm:ss');
     			var fromtime ="00:00:00";
     			var totime = "23:59:59";
     			var fromdate = $filter('date')(previousDate,'yyyy-MM-dd');
-				var todate = $filter('date')(fromDateRaw,'yyyy-MM-dd');
+				var todate = $filter('date')(previousDate,'yyyy-MM-dd');
 				
 			} else	{
 
@@ -1843,14 +1843,20 @@ function smoothZoom (map, max, cnt) {
 					}
 					else
 					{
+ 
                         if(days<3){
+
+							
 						      $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
 					    } else if(days < 7) {
+
+							
 						      $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
 					    } else {
 						      alert('Please select less than 7 days !...');
 						      stopLoading();
-					        }
+							}
+							
 					}
 				}
 			}
@@ -2268,11 +2274,12 @@ function smoothZoom (map, max, cnt) {
 }
 
 	$scope.polylineCtrl 	= function(){
-
+		startLoading();
+		console.log("Page Load");
 	   //console.log($scope.hisloc);
        if($scope.hisloc.vehicleLocations!=null){
 
-		startLoading();
+		// startLoading();
 		myStopFunction();
      // $scope.polylinearr = [];
 		markerClear();

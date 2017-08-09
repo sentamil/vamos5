@@ -31,10 +31,9 @@
 </head>
 
 <!-- <div id="preloader" > -->
-     <div id="status" >
-
-          <div class="showLoading">
-          <h2>Please Wait.. it will take few seconds..</h2><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+  <div id="status" >
+    <div class="showLoading">
+    <h2>Please Wait.. it will take few seconds..</h2><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
      width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
   <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
     <animateTransform attributeType="xml"
@@ -73,10 +72,32 @@
                        <!-- <select ng-model="trackVehID"  ng-change="showPlot(totime,todate,fromtime,fromdate)" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
                               <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
                             </select>  -->
+                          <style>
+                          
+                                  span.ng-binding.ng-scope {
+                                      font-size: 11px;
+                                  }
 
-                            <ui-select ng-model="vName.selected" ng-change="callValue(vName.selected)" theme="bootstrap" ng-disabled="disabled" style="width:200px;">
-                                <ui-select-match placeholder="{{shortVehiId}}">{{$select.selected.vName}}</ui-select-match>
-                                <ui-select-choices  repeat="vehi in vehicle_list | filter: $select.search" style="overflow-x:auto;font-size:12px;">
+                                  input[type=search] {
+                                           -webkit-appearance: none;
+                                                font-size: 11px;
+                                          }
+
+                                          .ui-select-bootstrap>.ui-select-choices, .ui-select-bootstrap>.ui-select-no-choice {
+                                                  width: auto;
+                                                  height: auto;
+                                                  max-height: 233px;
+                                                  overflow-x: hidden;
+                                                  margin-top: -1px;
+                                              }
+                                              .ui-select-bootstrap .ui-select-toggle {
+                                                  position: relative;
+                                                  padding-right: 19px;
+                                              }
+                            </style>
+                            <ui-select ng-model="vName.selected" style="font-size:11px !important;" ng-change="callValue(vName.selected)" theme="bootstrap" ng-disabled="disabled" style="width:200px;">
+                                <ui-select-match style="font-size:11px !important;" placeholder="{{shortVehiId}}">{{$select.selected.vName}}</ui-select-match>
+                                <ui-select-choices style="font-size:11px !important;"  repeat="vehi in vehicle_list | filter: $select.search" style="overflow-x:auto;font-size:12px;">
                                   <span ng-bind="vehi.vName | highlight: $select.vName"></span>
                                 </ui-select-choices>
                             </ui-select>
@@ -112,7 +133,7 @@
           <div class="form-group form-inline" style="margin-bottom: 5px" >
 
             <div class="input-group " style="padding: 2% !important;"> 
-              <button class="sizeInput btn btn-success" ng-click="plotting(1,'5hr')"  ng-disabled="btn5Hrs"  showPlot ng-class="{'diabled-class': !PayoutEnabled}">5 Hours </button>
+              <button class="sizeInput btn btn-success" ng-click="plotting(1,'5hr')"  ng-disabled="btn5Hrs"  showPlot ng-class="{'diabled-class': !PayoutEnabled}">6 Hours </button>
             </div>
 
             <div class="input-group " style="padding: 2% !important;">
@@ -120,11 +141,11 @@
             </div>
 
             <div class="input-group" style="padding: 2% !important;">
-              <button class="sizeInput btn btn-warning"  ng-click="plotting(3,'24hr')" ng-disabled="btn1Day" ng-class="{'diabled-class': !PayoutEnabled}">1 Day </button>
+              <button class="sizeInput btn btn-warning"  ng-click="plotting(3,'24hr')" ng-disabled="btn1Day" ng-class="{'diabled-class': !PayoutEnabled}">Today</button>
             </div>
 
             <div class="input-group" style="padding: 2% !important;">
-              <button class="sizeInput btn btn-danger"  ng-click="plotting(4,'yes')" ng-disabled="btn2Day" ng-class="{'diabled-class': !PayoutEnabled}">2 Days </button>
+              <button class="sizeInput btn btn-danger"  ng-click="plotting(4,'yes')" ng-disabled="btn2Day" ng-class="{'diabled-class': !PayoutEnabled}">Yesterday</button>
             </div>
 
           </div>
@@ -815,8 +836,8 @@
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   scriptLibrary.push(url);
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+ //scriptLibrary.push(url);
+   scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");
