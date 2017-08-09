@@ -5,7 +5,7 @@
 			<div class="col-lg-12">
 				<div class="hpanel">
 					<div class="panel-heading">
-						<h4> <b>Tags List</b></h4>
+						<h4> <b>View Tags</b></h4>
 					</div>
 					<div class="panel-body">
 						{{ HTML::ul($errors->all()) }}
