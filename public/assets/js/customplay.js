@@ -1692,11 +1692,16 @@ function smoothZoom (map, max, cnt) {
 		$scope.hideButton = false;
 	}
 
+	$scope.startLoading = function(){
+
+		startLoading();
+	}
 	$scope.plotting = function(val,parameter){
 
+		
 		console.log("Plotting button pressed");
-		startLoading();
-
+		
+			startLoading();
 		var allDataOk = 0;
 		$scope.hideButton = true;
 
@@ -1705,6 +1710,7 @@ function smoothZoom (map, max, cnt) {
 		},5000);
 
 		if (val != 1){
+
 			var fromdate = document.getElementById('dateFrom').value;
 			var todate = document.getElementById('dateTo').value;
 		}
@@ -1717,7 +1723,7 @@ function smoothZoom (map, max, cnt) {
 			$scope.hisurlold = $scope.hisurl;
 
             if (val ==1){
-
+				startLoading();
 			    $scope.btn5Hrs = true;
 				$scope.btn12Hrs= false;
 				$scope.btn1Day = false;
@@ -2286,6 +2292,8 @@ $scope.hideAllDetail = function(val)
 	if (val == 'NO')
 		{
 			$scope.hideAllDetailVal = true;
+			    $scope.hideMe = true;
+				$scope.hideMarkerVal = true;
 			$('.hideClass').hide();
 			$('#pauseButton').hide();
             $('#playButton').hide();      
@@ -2295,9 +2303,12 @@ $scope.hideAllDetail = function(val)
 		else if(val == 'YES')
 			{
 				$scope.hideAllDetailVal = false;
-				$('.hideClass').show();
+				$scope.hideMe = false;
+				$scope.hideMarkerVal = false;
+
+			$('.hideClass').show();
 			$('#pauseButton').show();
-            $('#playButton').show();      
+         // $('#playButton').show();      
             $('#stopButton').show();   
             $('#replayButton').show();
 			}

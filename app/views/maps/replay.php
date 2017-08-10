@@ -54,7 +54,7 @@
        <div id="status02">&nbsp;</div>
      </div> -->
 
-<body ng-controller="mainCtrl" class="ng-cloak">
+<body ng-controller="mainCtrl" class="ng-cloak" >
   <div id="page-content-wrapper">
     <div class="container-fluid">
       <div class="row">
@@ -591,7 +591,7 @@
 
         <div class="form-group form-inline" style="margin-bottom: 5px;padding-left: 10px;">
             <div class="input-group">
-              <button ng-click="playhis()" id="playButton" style="display:none"><i class="glyphicon glyphicon-play"></i></button>
+              <button ng-click="playhis()" id="playButton" class="hidePlay" style="display:none"><i class="glyphicon glyphicon-play"></i></button>
               <button ng-click="pausehis()" id="pauseButton"><i class="glyphicon glyphicon-pause"></i></button>
               <button ng-click="replays()" id="replayButton"><i class="glyphicon glyphicon-repeat"></i></button>
               <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
@@ -666,6 +666,7 @@
 
                 visibility:hidden !important;
               }
+              
             </style>
 
             <style type="text/css" ng-if="hideMarkerVal">
@@ -846,7 +847,7 @@
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+   scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");
