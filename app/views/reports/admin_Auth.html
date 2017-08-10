@@ -55,7 +55,7 @@
         </div>
         <div id="page-content-wrapper" style="background-color: #e7e7e7; width: 100%; height: 100vh;" ng-hide="_tabValue">
            
-            <label align="center" style="top: 25%; left: 0; bottom: 0; right: 0; margin: auto; position: absolute; font-weight: bold;"class="panel-title">Reconfirm Password</label>
+            <label align="center" style="top: 25%; left: 0; bottom: 0; right: 0; margin: auto; position: absolute; font-weight: bold;" class="panel-title">Reconfirm Password</label>
             <div style=" width: 100%; height: 100vh; padding: 10px;">
                 <div style="width: 400px; height: 200px; background-color: #f4f4f4; top: 0; left: 0; bottom: 0; right: 0; margin: auto; position: absolute; border-radius: 4px; float:left; box-shadow: 5px 5px 2px 2px #888888;">
                     <input type="password" name="password" style="width: 250px; height:30px; top: 0; left: 0; bottom: 0; right: 0; margin: auto; position: absolute; border-radius: 4px" placeholder="Password" ng-model="pwd">
@@ -88,11 +88,11 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="groups in groupList" >
-                                <td>{{$index+1}}</td>
-                                <td>{{trimColon(groups.groupName)}} <input type="text" name="grpN" ng-if="groups.groupName == ''" ng-model="groups.newGp" ng-change="changevalue(groups.newGp, $index)"></td>
-                                <td><button class="btn btn-primary btn-xs"  ng-click="editGroup(groups.groupName)"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                <td><button class="btn btn-primary btn-xs"  ng-click="updateGroup(groups.groupName)"><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
-                                <td><button class="btn btn-danger btn-xs"  ng-click="removeGroup(groups.groupName)"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                    <td>{{$index+1}}</td>
+                                <td>{{trimColon(groups.groupName)}}  <input type="text" name="grpN" ng-if="groups.groupName == ''" ng-model="groups.newGp" ng-change="changevalue(groups.newGp, $index)"></td>
+                                <td><button class="btn btn-primary btn-xs" ng-if="trimColon(groups.groupName) != finalUserName"  ng-click="editGroup(groups.groupName)"><span class="glyphicon glyphicon-pencil"> </span></button></td>
+                                <td><button class="btn btn-primary btn-xs" ng-if="trimColon(groups.groupName) != finalUserName"  ng-click="updateGroup(groups.groupName)"><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
+                                <td><button class="btn btn-danger btn-xs" ng-if="trimColon(groups.groupName) != finalUserName"  ng-click="removeGroup(groups.groupName)"><span class="glyphicon glyphicon-trash"></span></button></td>
                             </tr>
                         </tbody>
                     </table>

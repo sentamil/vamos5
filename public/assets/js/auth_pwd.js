@@ -26,11 +26,15 @@ $scope.checkValue = function(value){
     return false;
 }
 
+ var groupName = window.localStorage.getItem('userMasterName');
+ $scope.GroupName = groupName.split(',');
+ $scope.finalUserName = $scope.GroupName[1];
+ //console.log($scope.finalUserName);
+
 function getTodayDateTimes() {
   var date = new Date();
 
  // console.log(date);
-
   return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2)+' '+("0" + (date.getHours())).slice(-2)+':'+("0" + (date.getMinutes())).slice(-2)+':'+("0" + (date.getSeconds())).slice(-2);
 };
 
@@ -248,7 +252,7 @@ if(getParameterByName('userlevel') == 'reset'){
       });
     } else {
         console.log('no vehicle')
-        $scope.error ="* Must need one vehicle in a group, otherwise delete the group"
+        $scope.error ="* Must need one vehicle in a group, otherwise delete the group";
     }
     stopLoading();
     
@@ -411,12 +415,10 @@ $scope.switching  = function(){
 
 }
 
-
-
 /*
     searching mobile number function
-  
 */
+
 $scope.searchingMobile  = function(mobile){
   $scope.error      = '';
   var _addMobileNo  = '', statusValue = true, _serviceUrl = '', checkNull = '';
@@ -533,6 +535,8 @@ $scope._deleteFilterMobNum = function(index,mobb,routeN){
 
   $scope.error = '';
   console.log(' _deleteFilterMobNum ');
+
+  console.log(getOrgValue(routeN));
   
   $.ajax({
     async: false,
@@ -560,15 +564,11 @@ $scope._deleteFilterMobNum = function(index,mobb,routeN){
 */
 
 function showStop() {
-
-  console.log('show stops...');
   
   var _showStopUrl  = _showUrl+'?routeNo='+$scope.selectRouteName;
-  console.log(_showStopUrl);
 
+  console.log((_showStopUrl));
   vamoservice.getDataCall(_showStopUrl).then(function(value){
-
-    console.log(value);
 
     $scope.rowsValue =[];
     var busStopValue;
@@ -579,15 +579,13 @@ function showStop() {
      console.log($scope.rowsValue);
     });
   })
-
-
-
 }
 
 
 /*
   check all vehicle 
 */
+
 $scope.checkAll   = function(){
   $scope.error ="";
   angular.forEach($scope.vehiList, function(val, key){
@@ -635,7 +633,7 @@ $scope._addDetails  = function(){
   });
 
   showStop();
- stopLoading();
+  stopLoading();
 }
 
 
@@ -679,8 +677,6 @@ function getRouteName (){
 
 }
 
-
-
 function _addStops() {
   getRouteName();
 }
@@ -699,7 +695,7 @@ function _addStops() {
       angular.forEach(data, function(value, key){
         $scope.groupList.push({'groupName': value.group});
       })
-      $scope.selectStopEdit == true ? _addStops() : console.log(' Fuck off !! ');
+      $scope.selectStopEdit == true ? _addStops() : console.log(' Edit Group');
       stopLoading();
     });
   }  
@@ -713,7 +709,7 @@ function _addStops() {
   }
 
 
-  // checking auth in the addsite and rfid 
+// checking auth in the addsite and rfid 
 
   $scope.passwordConfirm  = function(){
 
@@ -730,12 +726,11 @@ function _addStops() {
           if(data == 'incorrect')
             $scope.statusUi   = "Invalid Password"; 
           else if (data == 'correct'){
-            var path = context+'/public/track?maps=sites'
+            var path = context+'/public/track?maps=sites';
             location.href = path;
             sessionStorage.setItem('auth', 'sitesVal');
           }
             
-                 
       }).fail(function(){
         stopLoading();
           console.log('fail');
@@ -772,26 +767,25 @@ $scope.error        = '';
               success: function (response) {
                 if(response =='sucess'){
                   console.log(response);
-                  $scope.error = "Updated Sucessfully ."
+                  $scope.error = "Updated Sucessfully .";
                    setTimeout(function () {
                       document.location.href = 'login';
                       
                     }, 1000); 
                   
                 } else if(response == 'oldPwd'){
-                  $scope.error = "Old password is wrong ."                
+                  $scope.error = "Old password is wrong .";               
                 }
               },
               fail:function() {
                 
-                $scope.error        = '* Connection Fails .'
+                $scope.error        = '* Connection Fails .';
               }
             });  
 
           } else {
 
             $scope.error        = "* Dnt match old password and new password / password length more then five characters .";
-              
           }
 
         }
@@ -799,8 +793,6 @@ $scope.error        = '';
       stopLoading();
      
     }
-
-
 
   $scope.updateNotify   = function(){
     var count = 0;
