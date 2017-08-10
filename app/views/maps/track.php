@@ -61,16 +61,18 @@
                         </div>
                         <div class="pane">
                             <table class="tables">
+                            <thead>
+                            </thead>
                                 <tr>
-                                  <td>VehicleName</td>
+                                  <td><b>VehicleName</b></td>
                                   <td>{{histVal[0].shortName}}</td>         
-                                  <td>SpeedLimit</td>
+                                  <td><b>SpeedLimit</b></td>
                                   <td>{{histVal[0].overSpeedLimit}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Reg No</td>
+                                    <td><b>Reg No</b></td>
                                     <td>{{histVal[0].regNo}}</td>
-                                    <td>Analog Volt</td>
+                                    <td><b>Analog Volt</b></td>
                                     <td>{{histVal[0].deviceVolt}}%</td>
                                 </tr>
                             </table>
