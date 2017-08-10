@@ -514,16 +514,27 @@ public function siteUpdate()
 		$smsArray=array();
 		$emailArray=array();
 		$alertList=$redis->hgetall('H_Site_'.$id.'_'.$fcode);
-          foreach($alertList as $key => $value)
+         foreach($alertList as $key => $value)
           { 
           if($key%2 != 0)
             continue; //The key is odd, skip
              //do your stuff
            $siteList[] = $key;
-           log::info($siteList);
-         } 
-       $siteList =isset($siteList) ? $siteList :[];		
-       return View::make('vdm.organization.siteNotification')->with('orgId',$id)->with('alertList',$siteList)->with('tmp',0)->with('smsArray',$smsArray)->with('emailArray',$emailArray)->with('time',$time)->with('enable',$enable); 
+         foreach($siteList as $keys => $values)
+          $site=$redis->hget('H_Site_'.$id.'_'.$fcode, $values);
+          $refDataJson1=json_decode($site,true);
+          $time1=isset($refDataJson1['time'])?$refDataJson1['time']:'';
+          $enable1=isset($refDataJson1['enable'])?$refDataJson1['enable']:'';
+          $times[]=$time1;
+          $enables[]=$enable1;
+         }
+         $ee=[]; 
+         $siteList =isset($siteList) ? $siteList :$ee;
+         $counts=count($siteList);	
+         $times =isset($times) ? $times :$ee;
+		 $enables =isset($enables) ? $enables :$ee;
+       
+   return View::make('vdm.organization.siteNotification')->with('orgId',$id)->with('times', $times)->with('enables', $enables)->with('counts',$counts)->with('alertList',$siteList)->with('tmp',0)->with('smsArray',$smsArray)->with('emailArray',$emailArray)->with('time',$time)->with('enable',$enable); 
 	 		}
 
     public function store()

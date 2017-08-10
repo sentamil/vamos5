@@ -57,7 +57,15 @@
 						</tr>
 					</thead>
 					<tbody>
-					@foreach($alertList as $key => $value)
+					@for ($i=0;$i<$counts;$i++)
+						<tr style="text-align: center;">
+							<td>{{ ++$tmp }}</td>
+							<td>{{ $alertList[$i] }}</td>
+				<td>{{ Form::select('time[]', $time, $times[$i], array('class' => 'form-control')) }}</td>
+				<td>{{ Form::select('enable[]', $enable, $enables[$i], array('class' => 'form-control')) }}</td>
+						</tr>
+					@endfor
+					<!--@foreach($alertList as $key => $value)
 						<tr style="text-align: center;">
 							<td>{{ ++$tmp }}</td>
 							<td>{{ $value }}</td>
@@ -65,7 +73,7 @@
 				<td>{{ Form::select('enable[]', $enable,  in_array($value,$time), array('class' => 'form-control')) }}</td>
 						</tr>
 						@endforeach
-						
+						-->
 						
 <div class="col-md-3">{{ Form::submit('Update Alerts', array('class' => 'btn btn-primary')) }}</div>
 							<script>
