@@ -1694,6 +1694,9 @@ function smoothZoom (map, max, cnt) {
 
 	$scope.plotting = function(val,parameter){
 
+		console.log("Plotting button pressed");
+		startLoading();
+
 		var allDataOk = 0;
 		$scope.hideButton = true;
 
@@ -2135,7 +2138,7 @@ function smoothZoom (map, max, cnt) {
     var markerhead, intervalPoly;
     var timeInterval;
 
-	$scope.polylineCheck 	= false;
+	$scope.polylineCheck 	= true;
 	$scope.markerPark 		= [];
 
 	function myStopFunction() {
@@ -2273,8 +2276,36 @@ function smoothZoom (map, max, cnt) {
      } 
 }
 
+$scope.polylineCheck = {
+
+	value1: 'YES',
+	value2 : 'NO'
+}
+$scope.hideAllDetail = function(val)
+{
+	if (val == 'NO')
+		{
+			$scope.hideAllDetailVal = true;
+			$('.hideClass').hide();
+			$('#pauseButton').hide();
+            $('#playButton').hide();      
+            $('#stopButton').hide();   
+            $('#replayButton').hide();
+		} 
+		else if(val == 'YES')
+			{
+				$scope.hideAllDetailVal = false;
+				$('.hideClass').show();
+			$('#pauseButton').show();
+            $('#playButton').show();      
+            $('#stopButton').show();   
+            $('#replayButton').show();
+			}
+}
+
 	$scope.polylineCtrl 	= function(){
 		startLoading();
+		
 		console.log("Page Load");
 	   //console.log($scope.hisloc);
        if($scope.hisloc.vehicleLocations!=null){
@@ -2296,9 +2327,21 @@ function smoothZoom (map, max, cnt) {
 			loadall in map polyline
 		*/
   
-       vehicIcon=vehiclesChange(VehiType);
+	   vehicIcon=vehiclesChange(VehiType);
+	   
+	   if ($scope.polylineCheck == false)
+			{
+				$scope.hideAllDetail = true;
+				$('.hideClass').hide();
+			   $('#pauseButton').hide();
+                 $('#playButton').hide();      
+                   $('#stopButton').hide();   
+                     $('#replayButton').hide();
+			}
 
-		if($scope.polylineCheck == false){
+		if($scope.polylineCheck == 'false'){
+
+			$scope.hideAllDetail  = true;
 
 			$('.hideClass').hide();
 			   $('#pauseButton').hide();
@@ -2306,14 +2349,7 @@ function smoothZoom (map, max, cnt) {
                    $('#stopButton').hide();   
                      $('#replayButton').hide(); 
 
-//			var lineCount 	=	 0;
-			// markerClear();
-			// var lineSymbol = {
-		 //        path: 'M 0.5,-1 0.5,1 M -0.5,-1 -0.5,1',
-		 //        strokeOpacity: 1,
-		 //        strokeWeight: 1,
-		 //        scale: 3
-		 //    };
+
 			  var doubleLine = {
 		       	path: 'M 0,-1 0,1',
 		        strokeOpacity: 1,

@@ -658,6 +658,14 @@
                   .labels{
                        visibility: hidden !important;
                   }
+        </style>
+
+            <style type="text/css" ng-if="hideAllDetailVal">
+
+              img[src="assets/imgs/endflag.png"], img[src="assets/imgs/startflag.png"]{
+
+                visibility:hidden !important;
+              }
             </style>
 
             <style type="text/css" ng-if="hideMarkerVal">
@@ -696,7 +704,7 @@
                         </div>
                         
                         <div class="radioBut">
-                           <label> <input type="checkbox" name="track" ng-model="polylineCheck" ng-click="polylineCtrl()">
+                           <label> <input type="checkbox" name="track" ng-model="polylineCheck.value1" ng-change="hideAllDetail(polylineCheck.value1)" ng-true-value="'YES'" ng-false-value="'NO'">
                              <b>Load All</b>
                            </label>
                       <!-- <label>
@@ -837,8 +845,8 @@
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
- //scriptLibrary.push(url);
-   scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+   scriptLibrary.push(url);
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");
