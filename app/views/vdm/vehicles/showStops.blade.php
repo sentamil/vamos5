@@ -31,7 +31,8 @@
 	
 	</table>
 </td></tr></table>
-    {{ Form::submit('back', array('class' => 'btn btn-primary')) }}
+<a class="btn btn-sm btn-primary" href="{{ URL::previous() }}">Go Back</a>
+   <!-- {{ Form::submit('back', array('class' => 'btn btn-primary')) }}-->
     {{ Form::close() }}
 	
    </div>
