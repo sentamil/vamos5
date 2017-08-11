@@ -67,10 +67,10 @@
 									{{ Form::label('route', 'Route Name') }}
 									{{ Form::select('routeName',$routeName, $refData['routeName'], array('class' => 'form-control')) }}
 								</div>
-								<div class="form-group">
+								<!-- <div class="form-group">
 									{{ Form::label('date', 'Date') }}
 									{{ Form::text('date', $refData['date'], array('class' => 'form-control','disabled' => 'disabled')) }}
-								</div>
+								</div> -->
 								<div class="form-group">
 									{{ Form::label('onboardDate', 'Onboard Date') }}
 									{{ Form::text('onboardDate', $refData['onboardDate'], array('class' => 'form-control','disabled' => 'disabled')) }}
