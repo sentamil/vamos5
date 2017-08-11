@@ -20,7 +20,7 @@
 										{{ Form::label('orgId1', $orgId, array('class' => 'form-control')) }}  
 										{{ Form::hidden('orgId', $orgId, array('class' => 'form-control')) }} 
 	  	              				</div>
-									
+									<a class="btn btn-sm btn-primary" style="position: relative; right: 50%" href="{{ URL::previous() }}">Go Back</a>
 	                				
 								</div>
 									
@@ -75,7 +75,6 @@
 						@endforeach
 						-->
 						
-<div class="col-md-3">{{ Form::submit('Update Alerts', array('class' => 'btn btn-primary')) }}</div>
 							<script>
 
 
@@ -93,8 +92,8 @@
 </script>
 					</tbody>
                 </table>
+<div class="col-md-4" style="position: relative; left: 80%" >{{ Form::submit('Update Site', array('class' => 'btn btn-primary')) }}</div>
 
-<a class="btn btn-sm btn-primary" href="{{ URL::previous() }}">Go Back</a>
 
 
 
