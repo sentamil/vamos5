@@ -50,7 +50,7 @@
 							<!--  @if(Session::get('cur')=='admin')
 							<th style="text-align: center;">Select</th>
 							 @endif  -->
-							<th style="text-align: center;">Alerts </th>
+							<th style="text-align: center;">Site Name</th>
 							<th style="text-align: center;">Time</th>
 							<th style="text-align: center;">Enable</th>
 							
