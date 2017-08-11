@@ -16,7 +16,7 @@
 	  	              			<div class="row">
 	  	              				<div class="col-md-3"></div>
 	  	              				<div class="col-md-3">
-	  	              					{{ Form::label('orgId1', 'Organisation') }}
+	  	              					{{ Form::label('orgId1', 'Organisation Name') }}
 										{{ Form::label('orgId1', $orgId, array('class' => 'form-control')) }}  
 										{{ Form::hidden('orgId', $orgId, array('class' => 'form-control')) }} 
 	  	              				</div>
