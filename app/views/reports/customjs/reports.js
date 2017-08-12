@@ -2,11 +2,10 @@
 var getIP	=	globalIP;
 app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global', function($scope, $http, $timeout, $interval, GLOBAL){
 	
-	//$("#testLoad").load("../public/menu");
-	  var getUrl  =   document.location.href;
-	//var index   =   getUrl.split("=")[1];
-
-	var index=getParameterByName('ind');
+  // $("#testLoad").load("../public/menu");
+	 var getUrl  =   document.location.href;
+  // var index   =   getUrl.split("=")[1];
+	 var index=getParameterByName('ind');
 	
 	if( index == 1){
 		$scope.actTab 	=	true;
@@ -45,9 +44,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };	
 
-
     $scope.siteSplitName  =	function(data,num) {
-
      //console.log(num);
        var splitRetValue;
 
@@ -176,12 +173,9 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
                ret_obj[key].vehicleLocations.push(sval);
             // console.log(sval.vehicleId);
             }
-
           })
-
        })   
-        
-     return ret_obj[$scope.groupId];
+    return ret_obj[$scope.groupId];
     }
 
      $scope.vehiSidebar = function(data){
@@ -197,13 +191,11 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 
           	if(sval.expired == "No"){ 
           
-                ret_obj[key].vehicleLocations.push(sval);
-
+             ret_obj[key].vehicleLocations.push(sval);
              }
              else if(sval.expired == "Yes"){
 
-                ret_obj[key].vehicleLocations.push({status:sval.status,rowId:sval.rowId,shortName:sval.shortName,vehicleId:sval.vehicleId,vehicleType:sval.vehicleType});
-
+             ret_obj[key].vehicleLocations.push({status:sval.status,rowId:sval.rowId,shortName:sval.shortName,vehicleId:sval.vehicleId,vehicleType:sval.vehicleType});
              }
           })
        })
@@ -220,7 +212,6 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	 
 
 	$scope._globalInit 	= function() {
-
 	  //console.log('global...');
 	    startLoading();
 	 	$http.get($scope.url).success(function(data){
@@ -258,8 +249,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 					$scope.siteLocFunc(' ');
 				}
 
-				
-				$scope.recursive($scope.data1.vehicleLocations,0);
+			$scope.recursive($scope.data1.vehicleLocations,0);
 			}
 			stopLoading();
 		}).error(function(){stopLoading();});
@@ -467,7 +457,7 @@ $scope.geoVehLocations = function(){
 				// $('#preloader').fadeOut(); 
 				// $('#preloader02').delay(350).fadeOut('slow');
 				stopLoading()
-				$scope.connSlow = "Sorry for the inconvenience, Its a three days report";
+				$scope.connSlow = "The date range should be less than or equal to 3 days.";
 				$('#connSlow').modal('show');
 			}
 		}
@@ -557,26 +547,38 @@ $scope.geoVehLocations = function(){
 		// console.log(' trip '+valu+'---->'+$scope.checkBox.site+$scope.checkBox.loc);
 		if(valu == 'tripButon')
 		{
+
 			$scope.fromdate1   =  document.getElementById("tripfrom").value;
 			$scope.fromTime    =  '12:00 AM';
 			// $scope.todate1     =  document.getElementById("tripto").value;
 			$scope.totime      =  '11:59 PM';
-		}
-			
-		else
-			$scope.dateFunction(); 
-		var conUrl              =   GLOBAL.DOMAIN_NAME+'/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.fromdate1+'&toTime='+convert_to_24h($scope.totime)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
 		
-		$scope.tripData 	=	[];
-		if(checkXssProtection($scope.fromdate1) == true){
+		} else{
+			$scope.dateFunction(); 
+		}
+
+
+		if( ($scope.checkBox.loc == true && $scope.checkBox.site == true ) || ($scope.checkBox.loc == true && $scope.checkBox.site == false ) || ($scope.checkBox.loc == false && $scope.checkBox.site == true )){
+
+		  var conUrl  =   GLOBAL.DOMAIN_NAME+'/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.fromdate1+'&toTime='+convert_to_24h($scope.totime)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
+		
+		 $scope.tripData 	=	[];
+		 if(checkXssProtection($scope.fromdate1) == true){
 			serviceCallTrip(conUrl);
 		
-		} else
+		 } else{
 			stopLoading()
+		 }
 		// console.log('  consoldate trip '+$scope.fromdate1 +$scope.fromTime+$scope.todate1 +$scope.totime);
-		
-	}
 
+	   }else{
+
+	   	   $scope.tripData  = [];
+           alert('Please select.. either Site (or) Location (or) both..');
+
+        stopLoading();
+	   }
+    }
 
 	// $scope.consoldateTripButton = function(){
 	// 	console.log('  consoldate trip '+$scope.fromdate1 +$scope.fromTime+$scope.todate1 +$scope.totime);
@@ -592,7 +594,6 @@ $scope.geoVehLocations = function(){
 	$scope.filterSpeedData=function(data){
 
     	var ret_obj=[];
-
     	if(data != null && $scope.expVehiName != null){
     	
     	   var dataLen=data.length;
@@ -816,7 +817,8 @@ $scope.geoVehLocations = function(){
 			// var t = vamo_sysservice.geocodeToserver(lat, lan, data.results[0].formatted_address);
     	})
 	};
-	$scope.getLocation	=	function(lat,lon,ind) {
+
+ 	$scope.getLocation	=	function(lat,lon,ind) {
 		console.log(' calling function ')
 		var tempurl	 =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon+"&sensor=true";
 		$scope.loading	=	true;
@@ -853,9 +855,7 @@ $scope.geoVehLocations = function(){
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
 	
-
-	
-	$scope.genericFunction = function(vehicleno, index){
+    $scope.genericFunction = function(vehicleno, index){
 		sessionStorage.setItem('user', JSON.stringify(vehicleno+','+$scope.vehigroup));
 		$("#testLoad").load("../public/menu");
 	}
@@ -887,7 +887,6 @@ $scope.geoVehLocations = function(){
 
 	   }
 	}
-	
 	
 	$scope.exportData = function (data) {
     	//console.log(data);
