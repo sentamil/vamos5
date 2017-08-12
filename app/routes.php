@@ -914,6 +914,7 @@ Route::get('login1', array('uses' => 'HomeController@doLogin'));
 Route::get('aUthName', array('uses' => 'HomeController@authName'));
 //});
 Route::get('logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmVehicles/logout', array('uses' => 'HomeController@doLogout'));
  
 Route::get('yammaha8689', array('uses' => 'HomeController@admin'));
 Route::get('adhocMail', array('uses' => 'HomeController@adhocMail'));
