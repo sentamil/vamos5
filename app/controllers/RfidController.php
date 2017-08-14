@@ -197,10 +197,12 @@ class RfidController extends \BaseController {
             $error=implode(" ",$tagArray);
             $error='Enter correct details for  '.$error;
         }
-        else {
+        elseif($tagid!=null) {
         $error='Tags are created successfully '.$error;
         }
-
+		else {
+        $error='Enter the values in fields '.$error;
+		}
 
         return Redirect::to ( 'rfid' )->withErrors ( $error );
 
