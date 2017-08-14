@@ -199,7 +199,7 @@ class RfidController extends \BaseController {
         }
 
 
-
+        $error='Tags are created successfully '.$error;
         return Redirect::to ( 'rfid' )->withErrors ( $error );
 
 
