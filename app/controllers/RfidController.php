@@ -333,8 +333,8 @@ class RfidController extends \BaseController {
         $redis->srem('S_Rfid_Org_'.$orgname.'_' . $fcode,$tagid);
         $redis->hdel($keyt,$tagid); 
 
-
-        return Redirect::to('rfid');
+        $error='Tags are Deleted successfully ';
+        return Redirect::to('rfid')->withErrors ( $error );
     }
 
     public function edit($id)
