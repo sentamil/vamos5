@@ -7,6 +7,9 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
   // $location.path('http://localhost/vamo/public/track?maps=replay&vehicleId=MSS-TN52-W-9969&gid=MSS-BUS:SMP').replace().reload(false)
 
   $scope.overallEnable    =   true;
+  $scope.tabactive        =   true;
+  $scope.cardData         =   false;
+  $scope.showErrMsg       =   false;
   $scope.oaddress         =   [];
   $scope.maddress         =   [];
   $scope.maddress1        =   [];
@@ -20,7 +23,7 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
 //$scope.location         =   [];
   $scope.ltrs             =   [];
   $scope.fuelDate         =   [];
-  $scope.tabactive        =   true;
+
   $scope.interval         =   getParameterByName('interval')?getParameterByName('interval'):"";
   $scope.sort             =   sortByDate('date');
      
@@ -131,7 +134,35 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
       return strTime;
   }
 
+  $scope.convert_to_24hrs = function(time_str) {
 
+   if(time_str != undefined){
+      
+      var str   = time_str.split(' ');
+      var stradd  = str[0].concat(":00");
+      var strAMPM = stradd.concat(' '+str[1]);
+      var time = strAMPM.match(/(\d+):(\d+):(\d+) (\w)/);
+      var hours = Number(time[1]);
+      var minutes = Number(time[2]);
+      var seconds = Number(time[2]);
+      var meridian = time[4].toLowerCase();
+  
+      if (meridian == 'p' && hours < 12) {
+        hours = hours + 12;
+      }
+      else if (meridian == 'a' && hours == 12) {
+        hours = hours - 12;
+      } 
+
+      hours   = hours < 10 ? '0'+hours : hours;
+      minutes = minutes < 10 ? '0'+minutes : minutes;  
+      seconds = seconds < 10 ? '0'+seconds : seconds; 
+
+      var marktimestr = ''+hours+':'+minutes+':'+seconds;   
+    }
+
+  return marktimestr;
+  };
 
 function eventButton(eventdate)
   {
@@ -285,7 +316,9 @@ function eventButton(eventdate)
           if(data.vehicleLocations != null){
 
           $scope.loading      = false;
-          $scope.hist       = data;   
+          $scope.hist       = data; 
+          $scope.showErrMsg = true;
+          $scope.cardData   = true;
           $scope.filterLoc  = data.vehicleLocations;  
           $scope.topspeedtime   = data.topSpeedTime;
           $scope.dataArray(data.vehicleLocations);
@@ -480,9 +513,6 @@ function eventButton(eventdate)
           ignitionValue          =  ($filter('filter')(data, {'ignitionStatus': "!undefined"}))
           $scope.ignitionData    =  _pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
           $scope.acReport        =  _pairFilter(data, 'yes', 'no', 'vehicleBusy');
-
-          console.log($scope.acReport);
-
           $scope.stopReport      =  filter(data,'stoppage');
           // ignitionFilter(ignitionValue);
           // acFilter(data)
@@ -1321,6 +1351,8 @@ function eventButton(eventdate)
         $scope.errMsg=data.error;
      // $scope.loading      = false;
         $scope.hist       = data;
+        $scope.showErrMsg = true;
+        $scope.cardData   = true;
         $scope.filterLoc  = data.vehicleLocations;
         $scope.topspeedtime   = data.topSpeedTime;
         // loadReportApi(loadUrl);
@@ -1350,6 +1382,8 @@ function eventButton(eventdate)
 
       $scope.errMsg     = data.error;
       $scope.hist       = data;
+      $scope.showErrMsg = true;
+      $scope.cardData   = true;
       $scope.filterLoc  = data.vehicleLocations;
       $scope.dataArray(data.vehicleLocations);
       switch($scope.repId) {

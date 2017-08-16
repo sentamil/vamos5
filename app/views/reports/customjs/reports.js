@@ -76,7 +76,6 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
           }
     }
     
-    
     function convert_to_24h(time_str) {
 		//console.log(time_str);
  		var str		=	time_str.split(' ');
@@ -93,9 +92,36 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	    }
 	    else if (meridian == 'a' && hours == 12) {
 	      hours = hours - 12;
-	    }	    
+	    }	
+
 	    var marktimestr	=	''+hours+':'+minutes+':'+seconds;	    
-	    return marktimestr;
+	 return marktimestr;
+    };
+
+    $scope.convert_to_24hrs=function(time_str) {
+		//console.log(time_str);
+ 		var str		=	time_str.split(' ');
+ 		var stradd	=	str[0].concat(":00");
+ 		var strAMPM	=	stradd.concat(' '+str[1]);
+ 		var time = strAMPM.match(/(\d+):(\d+):(\d+) (\w)/);
+	    var hours = Number(time[1]);
+	    var minutes = Number(time[2]);
+	    var seconds = Number(time[2]);
+	    var meridian = time[4].toLowerCase();
+	
+	    if (meridian == 'p' && hours < 12) {
+	      hours = hours + 12;
+	    }
+	    else if (meridian == 'a' && hours == 12) {
+	      hours = hours - 12;
+	    }	
+
+        hours   = hours < 10 ? '0'+hours : hours;
+	    minutes = minutes < 10 ? '0'+minutes : minutes;  
+	    seconds = seconds < 10 ? '0'+seconds : seconds; 
+
+	    var marktimestr	=	''+hours+':'+minutes+':'+seconds;	    
+	return marktimestr;
     };
 
     function format24hrs(date)
@@ -653,23 +679,19 @@ $scope.geoVehLocations = function(){
         }
 
         console.log(newSiteUrl);
-
         $http.get(newSiteUrl).success(function(data){
            startLoading();
              $scope.tripSiteLocData = [];
              $scope.tripSiteLocData = data;
 
              console.log($scope.tripSiteLocData);
-
            stopLoading();
 		}); 
 	}
 
-
 	$scope.consOverspeed = function(valu)
 	{	
-		startLoading();
-
+	 startLoading();
 		$scope.ovrData 	=	[];
 		// $scope.stop();
 	    // $scope.sort = sortByDate('startTime');

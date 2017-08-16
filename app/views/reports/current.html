@@ -31,10 +31,10 @@
     margin-left: auto;
     text-align: left;
     padding: 10px 10px;
-    *font-size: 22px;
+    font-size: 22px;
     height: 25px;
     max-height: 25px;
-    *width: 400px;
+    width: 400px;
     background: rgba(51, 51, 51, 0);
     cursor: pointer;
     border: 1px solid black;
@@ -545,16 +545,16 @@ background-color: #ffffff;
 			           						</tr>
 			           						<tbody ng-repeat="user in consoldateData track by $index">
 					           				  	<tr style="text-align:center">
-													<td colspan="2"><b>Vehicle Name : {{user.vehicleName}}</b></td>
-													<td colspan="4"><b>From : {{fromdate1}}:{{fromTime}}, &nbsp;&nbsp; To : {{todate1}}:{{totime}}</b></td>
-													<td colspan="3"><b>Trip : {{user.totalTripLength}} Km</b></td>
+													<td colspan="2" style="font-size:13px;background-color:#C2D2F2;"><b>Vehicle Name : &nbsp;{{user.vehicleName}}</b></td>
+													<td colspan="4" style="font-size:13px;background-color:#C2D2F2;"><b>From : &nbsp;{{fromdate1}} &nbsp; {{convert_to_24hrs(fromTime)}} &nbsp;&nbsp;- &nbsp;&nbsp; To : &nbsp;{{todate1}}  &nbsp;{{convert_to_24hrs(totime)}}</b></td>
+													<td colspan="3" style="font-size:13px;background-color:#C2D2F2;"><b>Trip Distance : &nbsp;{{user.totalTripLength}} Km</b></td>
 												</tr>
 												<tr style="text-align:center">
-													<td colspan="2"><b>Moving : {{msToTime(user.totalMovingTime)}}</b></td>
-													<td colspan="2"><b>Parked : {{msToTime(user.totalParkedTime)}}</b></td>
-													<td><b>Idle : {{msToTime(user.totalIdleTime)}}</b></td>
-													<td colspan="1"><b>Speed hike : {{user.topSpeed}} Km</b></td>
-													<td colspan="1"><b>Avg speed : {{user.averageSpeed}} Km</b></td>
+													<td colspan="2" style="font-size:12px;background-color:#ecf7fb;"><b>Moving :&nbsp; {{msToTime(user.totalMovingTime)}}</b></td>
+													<td colspan="2" style="font-size:12px;background-color:#ecf7fb;"><b>Parked :&nbsp; {{msToTime(user.totalParkedTime)}}</b></td>
+													<td style="font-size:12px;background-color:#ecf7fb;"><b>Idle :&nbsp; {{msToTime(user.totalIdleTime)}}</b></td>
+													<td colspan="1" style="font-size:12px;background-color:#ecf7fb;"><b>Speed hike : &nbsp;{{user.topSpeed}} Km</b></td>
+													<td colspan="1" style="font-size:12px;background-color:#ecf7fb;"><b>Avg speed : &nbsp;{{user.averageSpeed}} Km</b></td>
 												</tr>
 												<tr><td colspan="7" bgcolor="black"></td><tr>
 												<tr class="active" style="text-align:center">
@@ -724,14 +724,14 @@ background-color: #ffffff;
 		        </div>
 		    </tab>
 
-		<!--     <tab heading="Site Location" active="newSiteTab" ng-click="siteLocFunc('newSiteTab')">
+		     <tab heading="Site Location" active="newSiteTab" ng-click="siteLocFunc('newSiteTab')">
 			    <div class="box box-primary">
 	    			
 	    			<div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
 			        	<h5 class="box-title">Site Location</h5>
 			            <div class="box-tools pull-right">
 			           <!-- <a href="" target="_blank"><img src="../app/views/reports/image/Adobe.png" /></a> -->
-		<!--	                <img style="cursor: pointer;" ng-click="exportData('newSite')"  src="../app/views/reports/image/xls.png" />
+			                <img style="cursor: pointer;" ng-click="exportData('newSite')"  src="../app/views/reports/image/xls.png" />
 			            	<img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV('newSite')"  src="../app/views/reports/image/csv.jpeg" />
 			            </div>
 			        </div> 
@@ -745,7 +745,7 @@ background-color: #ffffff;
 	                        	<div class="input-group datecomp">
 	                                <input type="text" ng-model="fromDateSite" class="form-control placholdercolor" id="tripDateFrom" placeholder="From date">
 	                           <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div></input>/ -->
-	    <!--                    	</div>
+	                        	</div>
 	                      	</div>
 	                    </div>
 
@@ -754,7 +754,7 @@ background-color: #ffffff;
 		                        	<div class="input-group datecomp" >
                                           <input type="text" ng-model="fromTimeSite" class="form-control placholdercolor"  id="tripTimeFrom" placeholder="From time">
                                      <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
-        <!--                            	</div>
+                                   	</div>
 		                      	</div>
 		                      	
 		                  </div>
@@ -764,7 +764,7 @@ background-color: #ffffff;
 		                        	<div class="input-group datecomp">
 		                              	<input type="text" ng-model="toDateSite" class="form-control placholdercolor" id="tripDateTo" placeholder="To date">
 		                           <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
-		<!--                        	</div>
+		                       	</div>
 		                      	</div>
 		                   </div>
 
@@ -773,7 +773,7 @@ background-color: #ffffff;
 		                        	<div class="input-group datecomp">
 		                              	<input type="text" ng-model="toTimeSite" class="form-control placholdercolor" id="tripTimeTo" placeholder="To time">
 		                           <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
-		<!--                        	</div>
+		                        	</div>
 		                      	</div>
 		                    </div>
 	                   
@@ -789,7 +789,7 @@ background-color: #ffffff;
 	                    	</div>
 	                    </div>  -->
 
-	    <!--                <div class="col-md-1" align="center">
+	                   <div class="col-md-1" align="center">
 	                    	<div class="form-group">
 	                    		<div class="input-group datecomp">
 	                       			<button style="margin-left: -100%;" ng-click="siteLocFunc('newSiteTab')">Submit</button>
@@ -808,7 +808,7 @@ background-color: #ffffff;
                                         <td colspan="3" style="font-size:13px;background-color:#C2D2F2;" ><b>Vehicle Name :{{data.vehicleName}}</b></td>
                                       </tr>
                                  <!-- <tr><td colspan="4" bgcolor="grey"></td><tr> -->
-        <!--                              <tr>
+                                      <tr>
                                         <td width="20%" style="font-size:12px;background-color:#ecf7fb;"><b>Date&Time</b></td>
                                         <td width="40%" style="font-size:12px;background-color:#ecf7fb;"><b>Site Name</b></td>
                                         <td width="20%" style="font-size:12px;background-color:#ecf7fb;"><b>Duration(h:m:s)</b></td>
@@ -831,10 +831,8 @@ background-color: #ffffff;
 		                	</div>
 		                </div>
 		            </div>
-
-
 		        </div>
-		    </tab> -->
+		    </tab> 
 
 		    <tab heading="Consolidated OverSpeed" active="overTab" ng-click="consOverspeed('ovr')">
 			    <div class="box box-primary1">

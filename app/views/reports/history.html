@@ -24,13 +24,12 @@
     <div id="status02">&nbsp;</div>
 </div>
 <style>
-	/*.box > .loading-img {
-z-index: 1020;
-background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
-}*/
-
+/*  .box > .loading-img {
+           z-index: 1020;
+           background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
+    }  */
 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
-background-color: #ffffff;
+  background-color: #ffffff;
 }
 </style>
 <body ng-app="mapApp">
@@ -70,8 +69,7 @@ background-color: #ffffff;
     	</div>
  
     <!-- AdminLTE css box-->
-   
-       <div class="col-md-12">
+          <div class="col-md-12">
 	       	<div class="box box-primary">
 		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
 		            <h3 class="box-title">History Reports </h3>
@@ -83,7 +81,7 @@ background-color: #ffffff;
 		                <img style="cursor: pointer;" ng-click="exportData(downloadid)"  src="../app/views/reports/image/xls.png" />
 		            </div>
 		        </div>
-		        <div class="row">
+		                <div class="row">
 		        				<div class="col-md-1" align="center"></div>
                     			<div class="col-md-2" align="center">
                                 	<div class="form-group">
@@ -133,46 +131,45 @@ background-color: #ffffff;
 						                </div>
                                   	</div>
                                 </div> 
-                             <!--   <div class="col-md-1" align="center"><div class="form-group"></div></div> -->
-                                
+                           <!-- <div class="col-md-1" align="center"><div class="form-group"></div></div> -->
                                 <div class="col-md-1" align="center">
                                     <button ng-click="plotHist()" style="margin-left: -100%;">Submit</button>
                                 </div>
-                               
-                            </div>
+                        </div>
+
 		        <div class="box-body" ng-class="overallEnable?'col-md-9':'col-md-12'" id="statusreport">
 		        	 <!-- Tabset -->
 					 <tabset class="nav-tabs-custom">
 					 	<tab select="alertMe('Movement')" heading="Movement" active="tabmovement">
-			   				 <p style="margin:0" class="page-header">Movement Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   				 <p style="margin:0" class="page-header">Movement Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   				 <div id='movementreport' class="box-body table-responsive">
 			   				 <table class="table table-bordered table-striped table-condensed table-hover">
 			   				 	<thead>
-								   	<tr style="text-align:center; font-weight: bold;">
+								   	<tr style="text-align:center;">
 									  	<th colspan="2" style="background-color:#ecf7fb;">Vehicle Group</th>
-									  	<th colspan="2" style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+									  	<th colspan="2" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(vgroup)}}</th>
 									  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
-									  	<th colspan="3" style="background-color:#f9f9f9;">{{hist.shortName}}</th>					
+									  	<th colspan="3" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>					
 								  	</tr>
-								  	<tr style="text-align:center;font-weight: bold;">
+								  	<tr style="text-align:center;">
 									  	<th colspan="2" style="background-color:#f9f9f9;">Regn No</th>
-								       	<th colspan="2" style="background-color:#ecf7fb;">{{hist.regNo}}</th>
+								       	<th colspan="2" style="background-color:#ecf7fb;font-weight: unset;font-size:12px;">{{hist.regNo}}</th>
 								      	<th style="background-color:#f9f9f9;">Speed Limit</th>
-								      	<th colspan="3" style="background-color:#ecf7fb;">{{hist.overSpeedLimit}} Kmph</th>
+								      	<th colspan="3" style="background-color:#ecf7fb;font-weight: unset;font-size:12px;">{{hist.overSpeedLimit}} Kmph</th>
 								    </tr>
-								    <tr style="text-align:center;font-weight: bold;">
+								    <tr style="text-align:center;">
 									  	<th colspan="2" style="background-color:#ecf7fb;">Opening OdoReading</th>
-								       	<th colspan="2" style="background-color:#f9f9f9;">{{hist.openingOdoReading}}</th>
+								       	<th colspan="2" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.openingOdoReading}}</th>
 								      	<th style="background-color:#ecf7fb;">Closing OdoReading</th>
-								      	<th colspan="3" style="background-color:#f9f9f9;">{{hist.closingOdoReading}}</th>
+								      	<th colspan="3" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.closingOdoReading}}</th>
 								    </tr>
-								    <tr ng-hide="true" style="text-align:center; font-weight: bold;" >
+								    <tr ng-hide="true" style="text-align:center;" >
 									  	<td colspan="2"><b>From Date</b></td>
 									  	<td>{{fromdate}}</td>
 									  	<td colspan="1"><b>From Time</b></td>
 									  	<td colspan="3">{{fromtime}}</td>	
 								  	</tr>
-								  	<tr ng-hide="true" style="text-align:center; font-weight: bold;">
+								  	<tr ng-hide="true" style="text-align:center;">
 									  	<td colspan="2"><b>To Date</b></td>
 								       	<td>{{todate}}</td>
 								      	<td colspan="1"><b>To Time</b></td>
@@ -191,8 +188,8 @@ background-color: #ffffff;
 										<th width="8%" class="id" custom-sort order="'gsmLevel'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Sat</th>
 										<th width="32%" class="id" custom-sort order="'address'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Nearest Location</th>
 										<th width="9%" class="id" custom-sort order="'tmpDistance'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Dist</th>
-										<th width="12%" class="id" custom-sort order="'distanceCovered'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">C-Dist (KM)</th>
-										<th width="18%" class="id" custom-sort order="'odoDistance'" sort="sort"  style="text-align:center;height:3px;background-color:#C2D2F2;">Odo (KM)</th>
+										<th width="12%" class="id" custom-sort order="'distanceCovered'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">C-Dist (Kms)</th>
+										<th width="18%" class="id" custom-sort order="'odoDistance'" sort="sort"  style="text-align:center;height:3px;background-color:#C2D2F2;">Odo (Kms)</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -212,10 +209,10 @@ background-color: #ffffff;
 										<td>{{move.distanceCovered}}</td>
 										<td>{{move.odoDistance}}</td>
 									</tr>	
-									<tr ng-if=" errMsg == null " align="center">
+									<tr ng-if=" errMsg == null " align="center" ng-show="showErrMsg">
 										<td ng-if="movementdata == null || movementdata.length==0" colspan="8" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null " align="center">
+									<tr ng-if="errMsg != null " align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 							</table>
@@ -223,21 +220,21 @@ background-color: #ffffff;
 							 --></div>
 			   			 </tab>
 			   			 <tab select="alertMe('Overspeed')" heading="Overspeed" active="taboverspeed">
-			   				 <p style="margin:0" class="page-header">Overspeed Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   				 <p style="margin:0" class="page-header">Overspeed Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   				 <div class="box-body table-responsive" id='overspeedreport'>
 			   				 <table class="table table-bordered table-striped table-condensed table-hover">
 			   				 	<thead>
-								   	<tr style="text-align:center; font-weight: bold;" >
+								   	<tr style="text-align:center;" >
 									  	<th colspan="2" style="background-color:#ecf7fb;"><b>Vehicle Group</b></th>
-									  	<th colspan="2" style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+									  	<th colspan="2" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(vgroup)}}</th>
 									  	<th colspan="2" style="background-color:#ecf7fb;"><b>Vehicle Name</b></th>
-									  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
+									  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>	
 								  	</tr>
-								  	<tr style="text-align:center; font-weight: bold;">
+								  	<tr style="text-align:center;">
 									  	<th colspan="2" style="background-color:#f9f9f9;"><b>Regn No</b></th>
-								       	<th colspan="2" style="background-color:#ecf7fb;">{{hist.regNo}}</th>
+								       	<th colspan="2" style="background-color:#ecf7fb;font-weight: unset;font-size:12px;">{{hist.regNo}}</th>
 								      	<th colspan="2" style="background-color:#f9f9f9;"><b>Speed Limit</b></th>
-								      	<th style="background-color:#ecf7fb;">{{hist.overSpeedLimit}} Kmph</th>
+								      	<th style="background-color:#ecf7fb;font-weight: unset;font-size:12px;">{{hist.overSpeedLimit}} Kmph</th>
 								    </tr>
 								    
 								    <tr ng-hide="true" style="text-align:center; font-weight: bold;" >
@@ -255,7 +252,7 @@ background-color: #ffffff;
 								</thead>
 								</table> 
 								<div class="col-md-12" style="height: 15px;"></div>   
-								 <!--   <tr><td colspan="8"></td></tr> -->
+								<!-- <tr><td colspan="8"></td></tr> -->
 								 <table class="table table-bordered table-striped table-condensed table-hover">
 								 <thead>
 									<tr> 
@@ -269,9 +266,9 @@ background-color: #ffffff;
 										<th width="12%" class="id" custom-sort order="'odoDistance'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Odo (Km)</th>
 										<th width="13%" class="id" custom-sort order="'tripDistance'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Trip (Km)</th>
 										<!-- <th ng-hide="true" width="10%" colspan="2" class="id" order="''" style="text-align:center;">G-Map</th> -->
-									</tr></thead>
-									
-									<tr ng-repeat="user in overspeeddata | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
+									</tr>
+								   </thead>
+										<tr ng-repeat="user in overspeeddata | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
 										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{user.speed}}</td>
 										<td>{{msToTime(user.movingTime)}}</td>
@@ -287,27 +284,23 @@ background-color: #ffffff;
 										<!-- <td ng-hide="true">{{user.isOverSpeed}}</td> -->
 										<td>{{user.odoDistance}}</td>
 										<td>{{user.tripDistance}}</td>
-										<!-- <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>	 -->					
-									</tr>
-									<tr ng-if="errMsg == null" align="center">
+										<!-- <td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>	 -->			</tr>
+									<tr ng-if="errMsg == null" align="center" ng-show="showErrMsg">
 										<td ng-if="overspeeddata==null || overspeeddata.length == 0" colspan="8" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null " align="center">
+									<tr ng-if="errMsg != null " align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 								</table>
 							</div>
 			   			 </tab>
 			   			 
-			   			 
-			   			 
-			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked" >
-			   				 <p style="margin:0" class="page-header">Stopped/Parked Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span>
+			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked">
+			   				 <p style="margin:0" class="page-header">Parked Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span>
                              </p>
-                            <div class="form-group pull-right" style="margin-right: 20px;margin-top: 7px;margin-bottom: 7px;">
+                            <div class="form-group pull-right" style="float: right;padding-right: 20px;margin-top: 7px;margin-bottom: 7px;">
                             <span style="font-size: 14px;">
-			   			
-                                   <select ng-model="time_park" ng-change="filtersTime(time_park,'park')" style="padding:3px 3px 3px 3px; font-size: 12px;width:100px;">
+			   			            <select ng-model="time_park" ng-change="filtersTime(time_park,'park')" style="padding:3px 3px 3px 3px; font-size: 12px;width:100px;">
                                         <option value="All"> All </option>
                                         <option value="1">  >  1 min </option>
                                         <option value="2">  >  2 mins </option>
@@ -315,39 +308,38 @@ background-color: #ffffff;
                                         <option value="10"> > 10 mins </option>
                                         <option value="15"> > 15 mins </option>
                                         <option value="30"> > 30 mins </option>
-                                       <option value="100"> > 1 hour </option>
-                                   </select>
+                                        <option value="100"> > 1 hour </option>
+                                    </select>
                               </span>
                             </div>
 
-                          
-			   				 <div class="box-body table-responsive" id='stoppedparkingreport' style="padding-top:10px;">
+			   				<div class="box-body table-responsive" id='stoppedparkingreport' style="padding-top:10px;">
 			   				 <table class="table table-bordered  table-striped table-condensed table-hover">
 			   				 	<thead>
-								   	<tr style="text-align:center; font-weight: bold;">
+								   	<tr style="text-align:center;">
 									  	<th colspan="1" style="background-color:#ecf7fb;"><b>Vehicle Group</b></th>
-									  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+									  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(vgroup)}}</th>
 									  	<th colspan="1" style="background-color:#ecf7fb;"><b>Vehicle Name</b></th>
-									  	<th colspan="2" style="background-color:#f9f9f9;">{{hist.shortName}}</th>
-									  	<!-- <td ng-hide="true" colspan="2"><b>Register No</b></td>
+									  	<th colspan="2" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>
+								   <!-- <td ng-hide="true" colspan="2"><b>Register No</b></td>
 								       	<td ng-hide="true">{{hist.regNo}}</td>	 -->			
 								  	</tr>
 								  	</thead>
 								  	</table>
 								  	<div class="col-md-12" style="height: 15px;"></div>
-								  	<!--<tr><td colspan="5"></td></tr>-->
+								 <!-- <tr><td colspan="5"></td></tr>-->
 								  	<table class="table table-bordered  table-striped table-condensed table-hover">
 								  	<thead>
-									<tr style="text-align:center;font-weight: bold;">
-										
+									  <tr style="text-align:center;font-weight: bold;">
 										<th style="text-align:center;background-color:#C2D2F2;" custom-sort order="'date'" sort="sort" >Start</th>
 										<th style="text-align:center;background-color:#C2D2F2;" custom-sort order="'date'" sort="sort" >End</th>
 										<th width="5%" custom-sort order="'gsmLevel'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Sat</th>
 										<th width="40%" custom-sort order="'address'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Nearest Location</th>
 										<th width="20%" custom-sort order="'parkedTime'" sort="sort"  style="text-align:center;background-color:#C2D2F2;">Duration (h:m:s)</th>
 										<th width="10%" style="text-align:center;background-color:#C2D2F2;">G-Map</th>
-										<!-- <th width="20%" colspan="2" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Total Parked Time</th> -->
-									</tr></thead>
+								   <!-- <th width="20%" colspan="2" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Total Parked Time</th> -->
+									  </tr>
+									 </thead>
 									<tbody>
 									<tr ng-repeat="user in parkeddata | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
 										
@@ -363,9 +355,9 @@ background-color: #ffffff;
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>
 									</tr>
 									<tr ng-if=" errMsg == null " align="center">
-										<td ng-if="parkeddata==null || parkeddata.length==0" colspan="6" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
+										<td ng-if="parkeddata==null || parkeddata.length==0" colspan="6" class="err" ng-show="showErrMsg"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null " align="center">
+									<tr ng-if="errMsg != null " align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 									</tbody>								
@@ -373,15 +365,15 @@ background-color: #ffffff;
 							</div>
 			   			 </tab>
 			   			 <tab select="alertMe('idlereport')" heading="Idle" active="tabidle">
-			   			 	 <p style="margin:0" class="page-header">Idle Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	 <p style="margin:0" class="page-header">Idle Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="idlereport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
-			   			 	 			<tr style="text-align:center; font-weight: bold;">
+			   			 	 			<tr style="text-align:center;">
 				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
-										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(vgroup)}}</th>
 										  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
-										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
 			   			 	 			</thead>
 			   			 	 		</table>
@@ -409,10 +401,10 @@ background-color: #ffffff;
 			   			 	 			</td>
 			   			 	 			<td>{{getParkedCorrectHours(user.idleTime)}}</td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if="errMsg == null" align="center">
+			   			 	 		<tr ng-if="errMsg == null" align="center" ng-show="showErrMsg">
 										<td ng-if="idlereport==null || idlereport.length==0" colspan="5" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null" align="center">
+									<tr ng-if="errMsg != null" align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 			   			 	 	 </tbody>
@@ -421,7 +413,7 @@ background-color: #ffffff;
 			   				 
 			   			 </tab>
 			   			 <tab ng-hide="true" select="alertMe('eventReport')" heading="Event" active="tabevent">
-			   			 	<p style="margin:0" class="page-header">Event Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	<p style="margin:0" class="page-header">Event Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="eventReport">
 			   			 	 	<table style="background-color: #cecece; color: #000" class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
@@ -445,11 +437,11 @@ background-color: #ffffff;
 			   			 	 	<hr>
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 	 <thead>
-			   			 	 		<tr style="text-align:center; font-weight: bold;">
+			   			 	 		<tr style="text-align:center;">
 				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
-										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(vgroup)}}</th>
 										  	<th colspan="2" style="background-color:#ecf7fb;"style="background-color:#ecf7fb;">Vehicle Name</th>
-										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
 			   			 	 	  </thead>
 			   			 	 	</table>
@@ -482,9 +474,9 @@ background-color: #ffffff;
 			   			 	 			<td>{{user.state}}</td>
 			   			 	 		</tr>
 			   			 	 		<tr ng-if="errMsg == null" align="center">
-										<td ng-if="eventReportData==null" colspan="5" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
+										<td ng-if="eventReportData==null" colspan="5" class="err" ng-show="showErrMsg"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null" align="center">
+									<tr ng-if="errMsg != null" align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 			   			 	 	</tbody>
@@ -492,15 +484,15 @@ background-color: #ffffff;
 			   			 	</div>
 			   			 </tab>
 			   			 <tab ng-hide="true" select="alertMe('sitereport')" heading="Site" active="tabsite">
-			   			 	 <p style="margin:0" class="page-header">Site Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	 <p style="margin:0" class="page-header">Site Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="sitereport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
-			   			 	 			<tr style="text-align:center; font-weight: bold;">
+			   			 	 			<tr style="text-align:center;">
 				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
-										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(vgroup)}}</th>
 										  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
-										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
 			   			 	 		</thead>
 			   			 	 	</table>
@@ -521,10 +513,10 @@ background-color: #ffffff;
 			   			 	 			<td colspan="2">{{user.address}}</td>
 										<td>{{user.state}}</td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if="errMsg == null" align="center">
+			   			 	 		<tr ng-if="errMsg == null" align="center" ng-show="showErrMsg">
 										<td ng-if="siteReport==null" colspan="4" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null " align="center">
+									<tr ng-if="errMsg != null " align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 			   			 	 	</tbody>
@@ -533,15 +525,15 @@ background-color: #ffffff;
 			   				 
 			   			 </tab>
 			   			 <tab select="alertMe('loadreport')" heading="Load" active="tabload" ng-hide="true">
-			   			 	<p style="margin:0" class="page-header">Load Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	<p style="margin:0" class="page-header">Load Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="loadreport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
-			   			 	 			<tr style="text-align:center; font-weight: bold;">
+			   			 	 			<tr style="text-align:center;">
 				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
-										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(vgroup)}}</th>
 										  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
-										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
 			   			 	 		</thead>
 			   			 	 	</table>
@@ -565,10 +557,10 @@ background-color: #ffffff;
 			   			 	 			<td>{{load.address}}</td>
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{load.lat}},{{load.lng}}" target="_blank">Link</a></td>
 									</tr>
-			   			 	 		<tr ng-if="errMsg == null" align="center">
+			   			 	 		<tr ng-if="errMsg == null" align="center" ng-show="showErrMsg">
 										<td  ng-if="loadreport.load ==null || loadreport.load.length==0" colspan="4" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null " align="center">
+									<tr ng-if="errMsg != null " align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 			   			 	 	</tbody>
@@ -576,16 +568,16 @@ background-color: #ffffff;
 			   			 	</div>
 			   			 </tab>
 			   			 <tab heading="Fuel" select="alertMe('fuelreport')" active="tabfuel">
-			   			 	<p style="margin:0" class="page-header">Fuel Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	<p style="margin:0" class="page-header">Fuel Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	<div style="min-width:700px; max-width:700px; width: 700px; height: 300px" id="container"></div> 
 			   			 	<div class="box-body table-responsive" id="fuelreport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
-			   			 	 			<tr style="text-align:center; font-weight: bold;">
+			   			 	 			<tr style="text-align:center;">
 				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
-										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(vgroup)}}</th>
 										  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
-										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
 			   			 	 		<!--	<tr><td colspan="3"></td></tr> -->
 			   			 	 		</thead>
@@ -614,10 +606,10 @@ background-color: #ffffff;
 										</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{fuel.latitude}},{{fuel.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if="errMsg == null" align="center">
+			   			 	 		<tr ng-if="errMsg == null" align="center" ng-show="showErrMsg">
 										<td ng-if="fuelValue==null || fuelValue.length ==0" colspan="5" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null " align="center">
+									<tr ng-if="errMsg != null " align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 			   			 	 	</tbody>
@@ -625,15 +617,15 @@ background-color: #ffffff;
 			   			 	</div>
 			   			 </tab>
 			   			 <tab heading="Ignition" select="alertMe('ignitionreport')" active="tabignition">
-			   			 	<p style="margin:0" class="page-header">Ignition Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	<p style="margin:0" class="page-header">Ignition Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	<div class="box-body table-responsive" id="ignitionreport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
-			   			 	 			<tr style="text-align:center; font-weight: bold;">
+			   			 	 			<tr style="text-align:center;">
 				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
-										  	<th style="text-align:center;background-color:#f9f9f9;" colspan="1">{{trimColon(vgroup)}}</th>
+										  	<th style="text-align:center;background-color:#f9f9f9;font-weight: unset;font-size:12px;" colspan="1">{{trimColon(vgroup)}}</th>
 										  	<th colspan="2" style="background-color:#ecf7fb;">Vehicle Name</th>
-										  	<th colspan="2" style="text-align:center;background-color:#f9f9f9;">{{hist.shortName}}</th>	
+										  	<th colspan="2" style="text-align:center;background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
 			   			 	 			</thead>
 			   			 	 		</table>
@@ -661,10 +653,10 @@ background-color: #ffffff;
 			   			 	 			<td>{{ignition.address}}</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ignition.latitude}},{{ignition.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if="errMsg == null" align="center">  
+			   			 	 		<tr ng-if="errMsg == null" align="center" ng-show="showErrMsg">  
 										<td ng-if="ignitionData==null || ignitionData.length==0" colspan="6" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null " align="center">
+									<tr ng-if="errMsg != null " align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 			   			 	 	</tbody>
@@ -672,17 +664,17 @@ background-color: #ffffff;
 			   			 	</div>
 			   			 </tab>
 			   			 <tab heading="A/C" select="alertMe('acreport')" active="tabac">
-			   			 	<p style="margin:0" class="page-header">A/C Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	<p style="margin:0" class="page-header">A/C Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	<br>
 			   			 	
 			   			 	<div class="box-body table-responsive" id="acreport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
-			   			 	 			<tr style="text-align:center; font-weight: bold;">
+			   			 	 			<tr style="text-align:center;">
 				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
-										  	<th style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(vgroup)}}</th>
 										  	<th style="background-color:#ecf7fb;">Vehicle Name</th>
-										  	<th colspan="2" style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
+										  	<th colspan="2" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
 			   			 	 		</thead>
 			   			 	 	</table>
@@ -714,10 +706,10 @@ background-color: #ffffff;
 										</td> 
 			   			 	 			<td><a href="https://www.google.com/maps?q=loc:{{ac.latitude}},{{ac.longitude}}" target="_blank">Link</a></td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if="errMsg == null" align="center">
+			   			 	 		<tr ng-if="errMsg == null" align="center" ng-show="showErrMsg">
 										<td  ng-if="acReport==null || acReport.length == 0" colspan="6" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null" align="center">
+									<tr ng-if="errMsg != null" align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 			   			 	 	</tbody>
@@ -725,9 +717,9 @@ background-color: #ffffff;
 			   			 	</div>
 			   			 </tab>
                           <tab select="alertMe('stopReport')" heading="Stoppage" active="tabStop" >
-			   			 	 <p style="margin:0" class="page-header">Stoppage Report <span style="float: right;">From : {{fromdate}} {{fromtime}} - To : {{todate}} {{totime}}</span></p>
+			   			 	 <p style="margin:0" class="page-header">Stoppage Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 
-			   			 <div class="form-group pull-right" style="margin-right: 20px;margin-top: 7px;margin-bottom: 7px;">
+			   			 <div class="form-group pull-right" style="float: right;padding-right: 20px;margin-top: 7px;margin-bottom: 7px;">
                             <span style="font-size: 14px;">
 			   			
                                   <select ng-model="time_stop" ng-change="filtersTime(time_stop,'stop')" style="padding:3px 3px 3px 3px; font-size: 12px;width:100px;">
@@ -745,11 +737,11 @@ background-color: #ffffff;
 			   			 	 <div class="box-body table-responsive" id="stopReport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
 			   			 	 		<thead>
-			   			 	 			<tr style="text-align:center; font-weight: bold;">
+			   			 	 			<tr style="text-align:center;">
 				   			 	 			<th style="background-color:#ecf7fb;">Vehicle Group</th>
-										  	<th colspan="3" style="background-color:#f9f9f9;">{{trimColon(vgroup)}}</th>
+										  	<th colspan="3" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(vgroup)}}</th>
 										  	<th style="background-color:#ecf7fb;" colspan="2">Vehicle Name</th>
-										  	<th style="background-color:#f9f9f9;">{{hist.shortName}}</th>	
+										  	<th style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{hist.shortName}}</th>	
 			   			 	 			</tr>
 			   			 	 		</thead>
 			   			 	 	</table>
@@ -779,10 +771,10 @@ background-color: #ffffff;
 			   			 	 			</td>
 			   			 	 			<td>{{msToTime(user.stoppageTime)}}</td>
 			   			 	 		</tr>
-			   			 	 		<tr ng-if=" errMsg == null " align="center">
+			   			 	 		<tr ng-if=" errMsg == null " align="center" ng-show="showErrMsg">
 										<td ng-if="stopReport==null || stopReport.length==0" colspan="7" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null" align="center">
+									<tr ng-if="errMsg != null" align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 			   			 	 	</tbody>
@@ -819,13 +811,13 @@ background-color: #ffffff;
                             
                     <div class="small-box bg-green">
                         <div class="inner">
-                            <h4 ng-if ="hist.topSpeed != 0 && hist.topSpeedTimeUTC != 0">
+                            <h4 ng-if ="hist.topSpeed != 0 && hist.topSpeedTimeUTC != 0" ng-show="cardData">
                                 {{hist.topSpeed}} &nbsp; {{hist.topSpeedTimeUTC | date:'yyyy-MM-dd HH:mm:ss'}}
                             </h4>
                             <h4 ng-if ="hist.topSpeed == 0 && hist.topSpeedTimeUTC == 0">
                                 0
                             </h4>
-                            <p><b><a style="color: white;" href="https://www.google.com/maps?q=loc:{{hist.topSpeedGeoLocation}}" target="_blank"><u>Topspeed</u></a></b>
+                            <p><b><a style="color: white;" href="https://www.google.com/maps?q=loc:{{hist.topSpeedGeoLocation}}" target="_blank">Topspeed</a></b>
                                 
                             </p>
                             
@@ -837,7 +829,7 @@ background-color: #ffffff;
                             
                      <div class="small-box bg-yellow">
                         <div class="inner">
-                            <h4 ng-bind="msToTime(hist.totalRunningTime)">
+                            <h4 ng-bind="msToTime(hist.totalRunningTime)" ng-show="cardData">
                               
                             </h4>
                             <p><b>Total Running Time</b>
@@ -852,7 +844,7 @@ background-color: #ffffff;
                             
                      <div class="small-box bg-red">
                         <div class="inner">
-                            <h4 ng-bind="msToTime(hist.totalParkedTime)">
+                            <h4 ng-bind="msToTime(hist.totalParkedTime)" ng-show="cardData">
                                 
                             </h4>
                             <p><b>Total Parked Time</b>
@@ -867,7 +859,7 @@ background-color: #ffffff;
 
                     <div class="small-box bg-dark-gray">
                      	<div class="inner">
-                     		<h4 ng-bind="msToTime(hist.totalIdleTime)"></h4>
+                     		<h4 ng-bind="msToTime(hist.totalIdleTime)" ng-show="cardData"></h4>
                      		<p><b>Total idle time</b></p>
                      	</div>
                     	<div class="icon">
@@ -876,7 +868,7 @@ background-color: #ffffff;
                     </div>   
                      <div class="small-box bg-blue">
                         <div class="inner">
-                            <h4 ng-bind="hist.parkingCount">
+                            <h4 ng-bind="hist.parkingCount" ng-show="cardData">
                                 
                             </h4>
                             <p><b>No. of Parkings</b>
@@ -890,7 +882,7 @@ background-color: #ffffff;
                     </div>
                     <div class="small-box bg-aqua">
                     	<div class="inner">
-                    		<h4 ng-bind="msToTime(hist.totalNoDataTime)"></h4>
+                    		<h4 ng-bind="msToTime(hist.totalNoDataTime)" ng-show="cardData"></h4>
                      		<p><b>No data time</b></p>
                     	</div>
                     	<div class="icon">

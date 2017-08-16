@@ -93,7 +93,7 @@ background-color: #ffffff;
        <div class="box box-primary" style="padding-top: 5px;margin-top: 10px;">
         <!-- <div class="row"> -->
                 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip" >
-                    <h3 class="box-title">School SMS Daily</h3>
+                    <h3 class="box-title">School SMS Daily Report</h3>
                 </div>
                <div class="row">
                     <div class="col-md-1" align="center"></div>
@@ -169,10 +169,7 @@ background-color: #ffffff;
 
         <div class="col-md-12">
             <div class="box box-primary" style="min-height:570px;">
-        
                 <div>
-
-
                     <!--  <select ng-model="gName" ng-change="groupSelection(gName)" style="background-color:#f9f9f9;padding:3px 3px 3px 3px;min-width:150px;max-width:150px;height:25px;">
                               <option ng-repeat="vehi in vehicle_group" value="{{vehi.vgName}}">{{trimColon(vehi.vgName)}}</option>
                       </select> -->
@@ -193,9 +190,9 @@ background-color: #ffffff;
                         <select ng-model="orgIds" class="pull-right" style="margin-top: 10px;margin-right: 80px;">
                             <option ng-repeat="route in organsIds" value="{{route}}">{{route}}</option>
                         </select>
-                        <span class="pull-right" style="margin-top: 10px;margin-right: 30px;">Org Id : </span>
+                        <span class="pull-right" style="margin-top: 10px;margin-right: 30px;">Organisation Name : </span>
 
-                        <span class="pull-right" style="margin-top: 10px;margin-right: 100px;"> OverAll SMS :&nbsp;&nbsp;<b style="color:green;">{{totSmsDeliv}}</b></span>
+                        <span class="pull-right" style="margin-top: 10px;margin-right: 100px;"> Overall SMS Count :&nbsp;&nbsp;<b style="color:green;">{{totSmsDeliv}}</b></span>
                       
                     </div>
                      
@@ -210,9 +207,9 @@ background-color: #ffffff;
                                           
                                 <tbody ng-repeat="data in schoolSmsData | filter:searchbox2" style="overflow-y:auto;">
                                       <tr style="text-align:center;height:30px;">
-                                        <td  style="font-size:13px;background-color:#C2D2F2;max-width:40px;">Route name :&nbsp;&nbsp;<b>{{data.routeName}}</b></td>
-                                         <td style="font-size:13px;background-color:#C2D2F2;max-width:160px;">Total MobileNums :&nbsp;&nbsp;<b>{{data.totalRouteMblNumber}}</b></td>
-                                         <td style="font-size:13px;background-color:#C2D2F2;max-width:60px;">Total SMS :&nbsp;&nbsp;<b>{{data.totalRouteSmsDelivery}}</b></td>
+                                        <td  style="font-size:13px;background-color:#C2D2F2;max-width:40px;">Route name:&nbsp;&nbsp;<b>{{data.routeName}}</b></td>
+                                         <td style="font-size:13px;background-color:#C2D2F2;max-width:160px;">Total Mobile Numbers:&nbsp;&nbsp;<b>{{data.totalRouteMblNumber}}</b></td>
+                                         <td style="font-size:13px;background-color:#C2D2F2;max-width:60px;">Total SMS:&nbsp;&nbsp;<b>{{data.totalRouteSmsDelivery}}</b></td>
                                         </tr>
                                    
                                       <tr>

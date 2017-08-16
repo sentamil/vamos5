@@ -141,10 +141,11 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
     $scope.$watch("getOrgId", function (val) {
 	  $http.get($scope.getOrgId).success(function(response){
 
+	  if(response){
 		$scope.organsIds = response.orgIds;
-		$scope.orgIds    = $scope.organsIds[0];
-
-		//console.log($scope.organId);
+		$scope.orgIds = $scope.organsIds[0];
+	  }
+	  //console.log($scope.organId);
     })
   });  
 
