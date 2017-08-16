@@ -1221,7 +1221,7 @@ $( "#historyDetails" ).hide();
     var totime    = document.getElementById('timeTo').value;
     if((checkXssProtection(fromdate) == true) && (checkXssProtection(todate) == true) && (checkXssProtection(fromtime) == true) && (checkXssProtection(totime) == true) && (checkXssProtection($scope.routeName) == true))
       try{
-        $scope.error = (!fromdate || !todate || !fromtime || !totime)? "Date Required/Please fill all the field":  "";
+        $scope.error = (!fromdate || !todate || !fromtime || !totime)? "Please enter the Route Name":  "";
         if($scope.error == "")
           {
             var utcFrom   = utcFormat(fromdate, $scope.timeconversion(fromtime));
@@ -1230,9 +1230,10 @@ $( "#historyDetails" ).hide();
             if(!$scope.trackVehID == "" && !$scope.routeName == "")
               $http.get(_routeUrl).success(function(response){
                 if(response.trim()== "false"){
-                  $scope.error = "* Already having this Route Name"
+                  $scope.error = "* Route Name already exists"
                 } else if (response.trim()== "true"){
-                  $scope.error = "* Successfully Stored"
+                  $scope.error = "* Successfully saved";
+                  getRouteNames();
                 } else
                   $scope.error = "* Try again"
               })
@@ -1244,7 +1245,7 @@ $( "#historyDetails" ).hide();
           getRouteNames();
       }catch(err){
         console.log(' error --> '+err)
-        $scope.error  = "* Date Required/Please fill all the field";
+        $scope.error  = "* Please enter the Route Name";
       }
   }
 

@@ -588,8 +588,8 @@
 
           </div>
 
-
         <div class="form-group form-inline" style="margin-bottom: 5px;padding-left: 10px;">
+            
             <div class="input-group">
               <button ng-click="playhis()" id="playButton" class="hidePlay" style="display:none"><i class="glyphicon glyphicon-play"></i></button>
               <button ng-click="pausehis()" id="pauseButton"><i class="glyphicon glyphicon-pause"></i></button>
@@ -607,10 +607,10 @@
               <span>Fast</span>
             </div>
            
-           <div class="input-group" style="float:right;padding-right:10px;">
+            <div class="input-group" style="float:right;padding-right:10px;">
               <button data-target="#myModal1" data-toggle="modal" ng-click="getOrd()" class="sizeInput">Routes</button> 
               <!-- <button ng-click="hideShowTable()" id="btnValue">ShowDetails</button> -->
-         </div>
+            </div>
 
         </div>
 
@@ -636,7 +636,7 @@
                     <table class="dynData">
                       <thead>
                         <tr style="padding: 5px; background-color: #f4f4f4">
-                          <th>&nbsp;Routes Name</th>
+                          <th>&nbsp;Route Name</th>
                           <th>Edit</th>
                           <th>Delete</th>
                         </tr>
@@ -847,7 +847,7 @@
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+   //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");
