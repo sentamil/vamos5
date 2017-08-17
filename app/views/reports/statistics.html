@@ -14,14 +14,11 @@
 <link href="assets/css/jVanilla.css" rel="stylesheet">
 <link href="assets/css/simple-sidebar.css" rel="stylesheet">
 <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
-
 <!-- <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css"> -->
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 <link href="../app/views/reports/c3chart/c3.css" rel="stylesheet" type="text/css">
-
 </head>
 <style>
-
    /* .box > .loading-img {
       z-index: 1020;
       background: transparent url('assets/imgs/status.gif') 50% 50% no-repeat;
@@ -82,10 +79,8 @@ background-color: #ffffff;
                 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
                     <h3 class="box-title">Executive Summary Report</h3>
                     <div class="box-tools pull-right">
-
                         <img style="cursor: pointer;" ng-click="exportData(downloadid)"  src="../app/views/reports/image/xls.png" />
                         <img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV(downloadid)"  src="../app/views/reports/image/csv.jpeg" />
-
                     </div>
                 </div>
                 <div class="row" ng-show="showDate" style="margin-top: 20px;">
@@ -132,11 +127,9 @@ background-color: #ffffff;
                                             <input type="text" ng-model="fromMonthFuel" ng-change="submitMonFuel()" class="form-control placholdercolor" id="monthFrom" placeholder="Month">
                                     </div>
                         </div>
-                   
                 </div>
 
                 <hr>
-               
                         <div class="col-md-12" ng-hide="donut">
                            <div id="container" style="min-width:800px; max-width:800px; height: 350px;"></div>
                         </div>
@@ -145,8 +138,7 @@ background-color: #ffffff;
                            <div id="container_new" style="min-width:800px; max-width:800px; height: 350px;"></div>
                         </div>
                
-                    
-                     <div id="singleDiv" class="row">     
+                    <div id="singleDiv" class="row">     
                         <div class="col-md-5">
                             <div style="min-width:400px; max-width:300px; height: 350px;" id="chart3" ></div>
                         </div>
@@ -155,7 +147,6 @@ background-color: #ffffff;
                         </div>
                     </div>
                     
-
                 <div class="box-body" ng-class="overallEnable?'col-md-9':'col-md-12'" id="statusreport">
                     
                      <tabset class="nav-tabs-custom">
@@ -362,11 +353,11 @@ background-color: #ffffff;
                                    <td ng-if="$even" style="background-color:#ecf7fb;font-weight:bold;" >{{vehi.vehiName}}</td>
 
                                    <td ng-repeat="val in vehi.distsTodays">{{val.distanceToday}}</td>
-                                   <td>{{vehi.totDist}}</td>
+                                   <td>{{parseInts(vehi.totDist)}}</td>
                                 </tr>
                                <tr ng-if="monthData.comulativeDistance!=null">
                                   <td style="background-color:#ecf7fb;font-weight: bold;">Total(Kms)</td>
-                                  <td ng-repeat="val in totDistVehic track by $index">{{val}}</td>
+                                  <td ng-repeat="val in totDistVehic track by $index">{{parseInts(val)}}</td>
                                   <td style="background-color:#f9f9f9;"></td>
                                 </tr>
                             
