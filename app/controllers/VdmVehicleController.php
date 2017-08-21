@@ -1044,7 +1044,7 @@ $orgIdOld=strtoupper($orgIdOld1);
         $deviceId=$vehicleRefData['deviceId'];
         try{
             $date=$vehicleRefData['date'];
-            $onboardDate=$vehicleRefData['onboardDate']
+            $onboardDate=$vehicleRefData['onboardDate'];
             $paymentType=$vehicleRefData['paymentType'];
             $expiredPeriod=$vehicleRefData['expiredPeriod'];
         }catch(\Exception $e)
