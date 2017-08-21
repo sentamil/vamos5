@@ -130,12 +130,12 @@ background-color: #ffffff;
 
         <div class="col-md-12">
             <div class="box box-primary">
-                <div>
+                <div style="overflow-x: auto;">
                     <div class="pull-right">
                         <img style="cursor: pointer;" ng-click="exportData('tripreportkms')"  src="../app/views/reports/image/xls.png" />
                         <img style="cursor: pointer;" ng-click="exportDataCSV('tripreportkms')"  src="../app/views/reports/image/csv.jpeg" />
                     </div>
-                    <div class="box-body" id="tripreportkms" style="overflow-x: auto;">
+                    <div class="box-body" id="tripreportkms" >
                 <div class="empty" align="center"></div> <p style="margin:0" class="page-header">Trip Summary<span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
                             <br>
                                 <table class="table table-bordered table-striped table-condensed table-hover">
