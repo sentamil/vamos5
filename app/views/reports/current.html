@@ -402,8 +402,8 @@ font-family: 'Source Sans Pro', sans-serif;
 								   <!-- <td ng-hide="true"></td> -->
 										<td>{{user.regNo}}</td>
 										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-										<td ng-if="user.driverName == 'nill'"> - </td>
-										<td ng-if="user.driverName!='nill'">{{user.driverName}}</td>
+										<td ng-if="user.driverName == 'nill' || user.driverName == '' "> - </td>
+										<td ng-if="user.driverName!= 'nill' && user.driverName != '' ">{{user.driverName}}</td>
 										<!-- <td ng-hide="true">{{user.mobileNo}}</td> -->
 									    <td>{{user.distanceCovered}}</td>
 										<td>{{user.speed}}</td>
