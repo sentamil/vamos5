@@ -31,8 +31,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		$scope.newSiteTab 	=	false;
 	}
 
-	
-	$scope.tab 			=	true;
+    $scope.tab 			=	true;
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
 	$scope.newAddr      = 	{};
@@ -501,7 +500,6 @@ $scope.geoVehLocations = function(){
 	
 	$scope.consoldate =  function()
 	{
-		
 		// $('#preloader').show(); 
 		// $('#preloader02').show();
 		startLoading();
@@ -519,18 +517,21 @@ $scope.geoVehLocations = function(){
     	//console.log($scope.expVehiName);
     	//console.log(data[0].vehicleName);
 
-    	for(var i=0;i<$scope.expVehiName.length;i++){
+    	if(data){
 
-    	 for(var j=0;j<data.length;j++){	
+    	  for(var i=0;i<$scope.expVehiName.length;i++){
+
+    	    for(var j=0;j<data.length;j++){	
      
-            if($scope.expVehiName[i]==data[j].vehicleName)
-            {
+                if($scope.expVehiName[i]==data[j].vehicleName)
+                {
                         //console.log(data[j].vehicleName);
                         ret_obj.push(data[j]);
 
                  }
-             }
-       }
+            }
+          }
+        }
 
        var new_ret_obj=[];
 
@@ -553,6 +554,8 @@ $scope.geoVehLocations = function(){
 
 		//	console.log(response);
         //  $scope.tripData = response;
+
+            $scope.tripData = [];
 			$scope.tripData = $scope.filterTripData(response.mulitple);
 			stopLoading()
 			// $('#preloader').fadeOut(); 
@@ -561,51 +564,71 @@ $scope.geoVehLocations = function(){
 	}
 
 
-	$scope.checkBox =	{}
+	$scope.checkBox =	{};
 	$scope.consoldateTrip = function(valu)
 	{	
 		startLoading();
 		$scope.stop();
 		$scope.sort = sortByDate('startTime');
+
 		// $('#preloader').show(); 
 		// $('#preloader02').show();
 		// $scope.tripValu = valu;
 		// console.log(' trip '+valu+'---->'+$scope.checkBox.site+$scope.checkBox.loc);
 		if(valu == 'tripButon')
 		{
+			$scope.fromDateSite   =  document.getElementById("tripDatefrom").value;
+			$scope.fromTimeSite   =  document.getElementById("tripTimeFrom").value;
+			$scope.toDateSite     =  document.getElementById("tripDateTo").value;
+			$scope.toTimeSite     =  document.getElementById("tripTimeTo").value;
 
-			$scope.fromdate1   =  document.getElementById("tripfrom").value;
-			$scope.fromTime    =  '12:00 AM';
-			// $scope.todate1     =  document.getElementById("tripto").value;
-			$scope.totime      =  '11:59 PM';
-		
-		} else{
-			$scope.dateFunction(); 
+	    } else  {	
+
+            $scope.checkBox.site =  true;
+            $scope.checkBox.loc  =  false;
+
+		    var dateObj 		  =  new Date();
+			$scope.fromNowTS	  =  new Date(dateObj.setDate(dateObj.getDate()));
+			$scope.fromDateSite   =	 getTodayDate($scope.fromNowTS);
+		    $scope.fromTimeSite	  =	 '12:00 AM';
+		    $scope.toDateSite	  =	 getTodayDate($scope.fromNowTS);
+	        $scope.toTimeSite	  =	 formatAMPM($scope.fromNowTS.getTime());
 		}
 
+        var daysDiff = daydiff(new Date($scope.fromDateSite), new Date($scope.toDateSite));
+
+      if( daysDiff == 0 ){
 
 		if( ($scope.checkBox.loc == true && $scope.checkBox.site == true ) || ($scope.checkBox.loc == true && $scope.checkBox.site == false ) || ($scope.checkBox.loc == false && $scope.checkBox.site == true )){
 
-		  var conUrl  =   GLOBAL.DOMAIN_NAME+'/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromdate1+'&fromTime='+convert_to_24h($scope.fromTime)+'&toDate='+$scope.fromdate1+'&toTime='+convert_to_24h($scope.totime)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site+'&fromDateUTC='+utcFormat($scope.fromdate1,convert_to_24h($scope.fromTime))+'&toDateUTC='+utcFormat($scope.todate1,convert_to_24h($scope.totime));
+		    var conUrl  =   GLOBAL.DOMAIN_NAME+'/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromDateSite+'&fromTime='+convert_to_24h($scope.fromTimeSite)+'&toDate='+$scope.toDateSite+'&toTime='+convert_to_24h($scope.toTimeSite)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site+'&fromDateUTC='+utcFormat($scope.fromDateSite,convert_to_24h($scope.fromTimeSite))+'&toDateUTC='+utcFormat($scope.toDateSite,convert_to_24h($scope.toTimeSite));
 		
-		 $scope.tripData 	=	[];
-		 if(checkXssProtection($scope.fromdate1) == true){
-			serviceCallTrip(conUrl);
+		    
+		    if(checkXssProtection($scope.fromDateSite) == true && checkXssProtection($scope.fromTimeSite) == true && checkXssProtection($scope.toDateSite) == true && checkXssProtection($scope.toTimeSite) == true){
+			   
+			   serviceCallTrip(conUrl);
 		
-		 } else{
-			stopLoading()
-		 }
-		// console.log('  consoldate trip '+$scope.fromdate1 +$scope.fromTime+$scope.todate1 +$scope.totime);
+		    } else {
+			   stopLoading()
+		    }
 
-	   }else{
+	   } else{
 
 	   	   $scope.tripData  = [];
            alert('Please select.. either Site (or) Location (or) both..');
 
         stopLoading();
-	   }
-    }
+	   } 
 
+	} else {
+           
+           $scope.tripData  = [];
+		   alert('From Date and To Date should be same !');
+
+        stopLoading();
+	   }
+	}
+ 
 	// $scope.consoldateTripButton = function(){
 	// 	console.log('  consoldate trip '+$scope.fromdate1 +$scope.fromTime+$scope.todate1 +$scope.totime);
 	// }
@@ -644,7 +667,7 @@ $scope.geoVehLocations = function(){
     }
 
 
-    $scope.siteLocFunc = function(valu)
+/*    $scope.siteLocFunc = function(valu)
 	{	
 		// startLoading();
 		// $scope.ovrData 	=	[];
@@ -687,7 +710,7 @@ $scope.geoVehLocations = function(){
              console.log($scope.tripSiteLocData);
            stopLoading();
 		}); 
-	}
+	} */
 
 	$scope.consOverspeed = function(valu)
 	{	
