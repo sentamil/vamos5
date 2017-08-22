@@ -8,6 +8,7 @@
 <meta name="author" content="Satheesh">
 <title>GPS</title>
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
+<link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -44,6 +45,22 @@
 .table-striped > tbody > tr:nth-child(even) > th {
 background-color: #ffffff;
 }
+
+body{
+font-family: 'Lato', sans-serif;
+/*font-weight: bold;*/	
+
+/* font-family: 'Lato', sans-serif;
+font-family: 'Roboto', sans-serif;
+font-family: 'Open Sans', sans-serif;
+font-family: 'Raleway', sans-serif;
+font-family: 'Faustina', serif;
+font-family: 'PT Sans', sans-serif;
+font-family: 'Ubuntu', sans-serif;
+font-family: 'Droid Sans', sans-serif;
+font-family: 'Source Sans Pro', sans-serif;
+*/
+} 
 	  
 </style>
 </head>
@@ -267,7 +284,7 @@ background-color: #ffffff;
 			        	<div class="small-box bg-yellow">
 	                        <div class="inner">
 	                            <!-- <h3></h3> -->
-	                            <p><i class="fa fa-bell pull-right"></i><b>Alarms/Attentions </b> <span style="float: right;padding-right:18px;color:#fafa51"><b>{{data2.alerts}}</b></span></p>                                   
+	                            <p><i class="fa fa-bell pull-right"></i><b>Alarms / Attentions </b> <span style="float: right;padding-right:18px;color:#fafa51"><b>{{data2.alerts}}</b></span></p>                                   
 	                        </div>
 	                       <!--  <div class="icon">
 	                            <i class="fa fa-bell"></i>
@@ -362,30 +379,31 @@ background-color: #ffffff;
 								      	<td></td>
 								    </tr> -->
 									<tr style="text-align:center">
-										<th width="10%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">Vehicle Name</th>
+										<th width="10%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;background-color:#d2dff7;">Vehicle Name</th>
 								   <!-- <th ng-hide="true" style="text-align:center;">Vehicle Name</th> -->
-										<th width="5%" class="id" custom-sort order="'regNo'" sort="sort" style="text-align:center;">RegNo</th>
-										<th width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">LastSeen</th>
-										<th width="5%" class="id" custom-sort order="'driverName'" sort="sort" style="text-align:center;">Driver</th>
+										<th width="5%" class="id" custom-sort order="'regNo'" sort="sort" style="text-align:center;background-color:#d2dff7;">RegNo</th>
+										<th width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;background-color:#d2dff7;">LastSeen</th>
+										<th width="5%" class="id" custom-sort order="'driverName'" sort="sort" style="text-align:center;background-color:#d2dff7;">Driver</th>
 										<!-- <th ng-hide="true">Mobile Number</th> -->
-										<th width="5%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;">KMs</th>
-										<th width="5%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;">Speed</th>
-										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;">Position</th>
-										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;">Duration H:M:S</th>
+										<th width="5%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;background-color:#d2dff7;">KMs</th>
+										<th width="5%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;background-color:#d2dff7;">Speed</th>
+										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;background-color:#d2dff7;">Position</th>
+										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;background-color:#d2dff7;">Duration H:M:S</th>
 								   <!-- <th width="5%" class="id" custom-sort order="'status'" sort="sort" style="text-align:center;">GPS</th> -->
-								        <th width="5%" class="id" custom-sort order="'gsmLevel'" sort="sort" style="text-align:center;">Sat</th>
-										<th width="5%" class="id" custom-sort order="'loadTruck'" sort="sort" style="text-align:center;">Load</th>
-										<th width="5%" class="id" custom-sort order="'vehicleBusy'" sort="sort" style="text-align:center;">A/C</th>
-										<th width="5%" class="id" custom-sort order="'temperature'" sort="sort" style="text-align:center;">&#8451;</th>
-										<th width="35%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Nearest Location</th>
-										<th width="5%" style="text-align:center;">GMap</th>
+								        <th width="5%" class="id" custom-sort order="'gsmLevel'" sort="sort" style="text-align:center;background-color:#d2dff7;">Sat</th>
+										<th width="5%" class="id" custom-sort order="'loadTruck'" sort="sort" style="text-align:center;background-color:#d2dff7;">Load</th>
+										<th width="5%" class="id" custom-sort order="'vehicleBusy'" sort="sort" style="text-align:center;background-color:#d2dff7;">A/C</th>
+										<th width="5%" class="id" custom-sort order="'temperature'" sort="sort" style="text-align:center;background-color:#d2dff7;">&#8451;</th>
+										<th width="35%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;background-color:#d2dff7;">Nearest Location</th>
+										<th width="5%" style="text-align:center;background-color:#d2dff7;">GMap</th>
 									</tr>
 									<tr ng-repeat="user in data1.vehicleLocations | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center; font-size: 11px">
 										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.shortName}}</a></td>
 								   <!-- <td ng-hide="true"></td> -->
 										<td>{{user.regNo}}</td>
 										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-										<td>{{user.driverName}}</td>
+										<td ng-if="user.driverName == 'nill'"> - </td>
+										<td ng-if="user.driverName!='nill'">{{user.driverName}}</td>
 										<!-- <td ng-hide="true">{{user.mobileNo}}</td> -->
 									    <td>{{user.distanceCovered}}</td>
 										<td>{{user.speed}}</td>

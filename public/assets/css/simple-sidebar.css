@@ -193,36 +193,42 @@
     max-height: 100vh; 
     overflow-y: auto;
     /*border-right: 1px solid #adadad;*/
-    padding-left:10px;
+    padding-left:12px;
     z-index:-1;
     overflow: visible;
   }
-.sidebar-subnav >li > a{ border-bottom:1px solid #ccc; background:url('../imgs/marker-s-red.png') no-repeat 0px center; font-size:12px; text-decoration:none;color:#666;
-font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight"; padding:5px 0px 5px 20px;
+
+.sidebar-subnav >li > a{ border-bottom:1px solid #ccc; background:url('../imgs/marker-s-red.png') no-repeat 3px center; font-size:12px; text-decoration:none;color:#666;
+/*font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight";*/ padding:6px 0px 5px 32px;
 font-weight:bold; margin-bottom:10px; display:inline-block; width:90%;   display:inline-block;
     width:150px;
     white-space: nowrap;
     overflow:hidden !important;
-    text-overflow: ellipsis; }
+    text-overflow: ellipsis; 
+}
+
+.sidebar-subnav >li:nth-child(2){
+  padding-top: 20px;
+}
 
 .sidebar-subnav li nav li a.active{ background:#000 !important; }
 
 .sidebar-subnav >li a:nth-child(2){
 background:url('../imgs/marker-s-pink.png') no-repeat 5px center;
 }
+
 .sidebar-subnav li li a {
 color:#888;
-font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight";
+/*font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight";*/
 font-weight:normal;
 font-size:12px;
-
-padding-left:0px;
+padding-left:8px;
 width:150px;
 white-space: nowrap;
 overflow:hidden !important;
 text-overflow: ellipsis;
-
 }
+
 .sidebar-subnav li li a.red span{ color:red;}
 
 /*.sidebar-subnav li ul li a:hover {
@@ -248,14 +254,14 @@ color:#152b44;
     background-color: #fff;
 }
 
-
 .sidebar-subnav li ul li a span{
- color:#888;
-font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight";
-font-weight:normal;
-font-size:12px;
-padding-left:0px;
+  color:#888;
+  font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight";
+  font-weight:normal;
+  font-size:12px;
+  padding-left:6px;
 }
+
 .sidebar-bottom{ margin-top:30%;}
 .col-lg-12{ padding:0 !important;}
 @media(min-width:768px) {
@@ -1129,11 +1135,6 @@ button[disabled], html input[disabled] {
       border-radius: 5px;
       text-align: center;
 }
-
-
-
-
-
 
 .text-muted {
     color: #555555;
