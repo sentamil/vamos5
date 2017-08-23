@@ -256,7 +256,7 @@ color:#152b44;
 
 .sidebar-subnav li ul li a span{
   color:#888;
-  font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight";
+ /* font-family:"Helvetica Neue", "Helvetica Neue Light", "Helvetica Neue Medium", "Helvetica Neue Thin", "Helvetica Neue UltraLight";*/
   font-weight:normal;
   font-size:12px;
   padding-left:6px;
@@ -1145,3 +1145,8 @@ button[disabled], html input[disabled] {
 input.form-control.ui-select-search.ng-valid.ng-touched.ng-dirty.ng-valid-parse {
     font-size: 11px;
 }
+
+input.form-control.ng-pristine.ng-valid {
+    margin-bottom: 16% !important;
+}
+
