@@ -595,10 +595,24 @@ $scope.geoVehLocations = function(){
 	        $scope.toTimeSite	  =	 formatAMPM($scope.fromNowTS.getTime());
 		}
 
-        var daysDiff = daydiff(new Date($scope.fromDateSite), new Date($scope.toDateSite));
+       // var daysDiff = daydiff(new Date($scope.fromDateSite), new Date($scope.toDateSite));
 
-      if( daysDiff == 0 ){
+          //  console.log( utcFormat($scope.fromDateSite,convert_to_24h($scope.fromTimeSite)) );
+              // console.log( utcFormat($scope.toDateSite,convert_to_24h($scope.toTimeSite))  );
 
+            var fromTms = utcFormat($scope.fromDateSite,convert_to_24h($scope.fromTimeSite));
+               var toTms   = utcFormat($scope.toDateSite,convert_to_24h($scope.toTimeSite));
+				
+            var totalTms=toTms-fromTms;
+             // console.log(  $scope.msToTime(totalTms));
+
+                  var splitTimes=$scope.msToTime(totalTms).split(':');
+                    //  console.log(splitTimes[0]);
+                   
+                  var timesDiff=splitTimes[0];
+
+      if( timesDiff <= 24 ){
+      	
 		if( ($scope.checkBox.loc == true && $scope.checkBox.site == true ) || ($scope.checkBox.loc == true && $scope.checkBox.site == false ) || ($scope.checkBox.loc == false && $scope.checkBox.site == true )){
 
 		    var conUrl  =   GLOBAL.DOMAIN_NAME+'/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromDateSite+'&fromTime='+convert_to_24h($scope.fromTimeSite)+'&toDate='+$scope.toDateSite+'&toTime='+convert_to_24h($scope.toTimeSite)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site+'&fromDateUTC='+utcFormat($scope.fromDateSite,convert_to_24h($scope.fromTimeSite))+'&toDateUTC='+utcFormat($scope.toDateSite,convert_to_24h($scope.toTimeSite));
@@ -623,7 +637,7 @@ $scope.geoVehLocations = function(){
 	} else {
            
            $scope.tripData  = [];
-		   alert('From Date and To Date should be same !');
+		   alert('Time should be within 24 hrs!');
 
         stopLoading();
 	   }
