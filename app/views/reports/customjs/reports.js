@@ -12,25 +12,25 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 		$(window).load(function(){
         	$('#myModal').modal('show');
     	});
-	}
-	else if( index == 2 ){
+	
+	} else if( index == 2 ){
 		$scope.siteTab 		=	true;
 		$scope.sort = sortByDate('startTime');
-	}
-	else if( index == 3 ){
+	
+	} else if( index == 3 ){
 		$scope.overTab 		=	true;
-
-	}
-	else if( index == 4 ){
+	
+	} else if( index == 4 ){
 		$scope.newSiteTab 	=	true;
-	}
-	else {
+	
+	} else {
 		$scope.actTab 	    =	false;
 		$scope.siteTab 	    =	false;
 		$scope.overTab      =   false;
 		$scope.newSiteTab 	=	false;
 	}
-
+ 
+    $scope.msgShow      =   0;
     $scope.tab 			=	true;
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
@@ -40,7 +40,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	
 	$scope.getTodayDate1  =	function(date) {
      	var date = new Date(date);
-		return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
+	 return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };	
 
     $scope.siteSplitName  =	function(data,num) {
@@ -550,14 +550,16 @@ $scope.geoVehLocations = function(){
 
 
 	function serviceCallTrip (url){
+		
 		$http.get(url).success(function(response){
 
 		//	console.log(response);
         //  $scope.tripData = response;
-
             $scope.tripData = [];
 			$scope.tripData = $scope.filterTripData(response.mulitple);
-			stopLoading()
+			$scope.msgShow  = 1;
+
+			stopLoading();
 			// $('#preloader').fadeOut(); 
 			// $('#preloader02').delay(350).fadeOut('slow');
 		})
@@ -611,33 +613,27 @@ $scope.geoVehLocations = function(){
                    
                   var timesDiff=splitTimes[0];
 
-      if( timesDiff <= 24 ){
-      	
-		if( ($scope.checkBox.loc == true && $scope.checkBox.site == true ) || ($scope.checkBox.loc == true && $scope.checkBox.site == false ) || ($scope.checkBox.loc == false && $scope.checkBox.site == true )){
+      if( timesDiff <= 24 ) {
+      	 if( ($scope.checkBox.loc == true && $scope.checkBox.site == true ) || ($scope.checkBox.loc == true && $scope.checkBox.site == false ) || ($scope.checkBox.loc == false && $scope.checkBox.site == true )){
 
 		    var conUrl  =   GLOBAL.DOMAIN_NAME+'/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromDateSite+'&fromTime='+convert_to_24h($scope.fromTimeSite)+'&toDate='+$scope.toDateSite+'&toTime='+convert_to_24h($scope.toTimeSite)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site+'&fromDateUTC='+utcFormat($scope.fromDateSite,convert_to_24h($scope.fromTimeSite))+'&toDateUTC='+utcFormat($scope.toDateSite,convert_to_24h($scope.toTimeSite));
 		
-		    
 		    if(checkXssProtection($scope.fromDateSite) == true && checkXssProtection($scope.fromTimeSite) == true && checkXssProtection($scope.toDateSite) == true && checkXssProtection($scope.toTimeSite) == true){
-			   
-			   serviceCallTrip(conUrl);
-		
-		    } else {
-			   stopLoading()
-		    }
 
-	   } else{
+			 serviceCallTrip(conUrl);
+		    }
+	   } else {
 
 	   	   $scope.tripData  = [];
            alert('Please select.. either Site (or) Location (or) both..');
-
+           $scope.msgShow  = 1;
         stopLoading();
 	   } 
-
 	} else {
            
            $scope.tripData  = [];
 		   alert('Time should be within 24 hrs!');
+		   $scope.msgShow  = 1;
 
         stopLoading();
 	   }

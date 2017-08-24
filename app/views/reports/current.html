@@ -50,7 +50,7 @@ body{
 font-family: 'Lato', sans-serif;
 /*font-weight: bold;*/	
 
-/* font-family: 'Lato', sans-serif;
+/*font-family: 'Lato', sans-serif;
 font-family: 'Roboto', sans-serif;
 font-family: 'Open Sans', sans-serif;
 font-family: 'Raleway', sans-serif;
@@ -760,8 +760,9 @@ font-family: 'Source Sans Pro', sans-serif;
 											<div ng-if="tripVal.tduration!=undefined">{{msToTime(tripVal.tduration)}}</div>
 											</td> -->
 									</tr>
-									<tr ng-if="tripData.mulitple.length==0 || tripData.mulitple==' ' || tripData.mulitple==null" align="center">
-										<td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+									<tr ng-if="tripData.mulitple.length==0 || tripData.mulitple==' ' || tripData.mulitple==null" align="center" >
+										<td ng-show="msgShow" colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+										<td ng-hide="msgShow" colspan="4" class="err"><h5>Please Wait.. Report will come in few seconds..</h5></td>
 									</tr>
 								</table>
 		                	</div>

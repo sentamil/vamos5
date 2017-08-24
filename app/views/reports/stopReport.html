@@ -7,6 +7,7 @@
 <meta name="description" content="">
 <title>GPS</title>
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
+<link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
@@ -23,6 +24,23 @@
 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
 background-color: #ffffff;
 }
+
+body{
+
+font-family: 'Lato', sans-serif;
+/*font-weight: bold;*/  
+
+/* font-family: 'Lato', sans-serif;
+font-family: 'Roboto', sans-serif;
+font-family: 'Open Sans', sans-serif;
+font-family: 'Raleway', sans-serif;
+font-family: 'Faustina', serif;
+font-family: 'PT Sans', sans-serif;
+font-family: 'Ubuntu', sans-serif;
+font-family: 'Droid Sans', sans-serif;
+font-family: 'Source Sans Pro', sans-serif;
+*/
+} 
 
 </style>
 
@@ -311,7 +329,6 @@ background-color: #ffffff;
     
     <script>
 
-   
         $("#example1").dataTable();
           
         $("#menu-toggle").click(function(e) {
@@ -327,11 +344,9 @@ background-color: #ffffff;
                 });
                 $('#timeFrom').datetimepicker({
                     pickDate: false,
-                    
                 });
                 $('#timeTo').datetimepicker({
                     pickDate: false,
-                    
                 });
         });      
         $("#menu-toggle").click(function(e) {
