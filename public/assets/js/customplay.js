@@ -1887,7 +1887,7 @@ function smoothZoom (map, max, cnt) {
           }
           else
           {
-              if(days<3){
+              if(days<=3){
 
                 $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
               } else if(days < 7) {
