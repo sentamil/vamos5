@@ -613,7 +613,7 @@ $scope.geoVehLocations = function(){
                    
                   var timesDiff=splitTimes[0];
 
-      if( timesDiff <= 24 ) {
+      if( timesDiff <= 48 ) {
       	 if( ($scope.checkBox.loc == true && $scope.checkBox.site == true ) || ($scope.checkBox.loc == true && $scope.checkBox.site == false ) || ($scope.checkBox.loc == false && $scope.checkBox.site == true )){
 
 		    var conUrl  =   GLOBAL.DOMAIN_NAME+'/getOverallSiteLocationReport?group='+$scope.vehigroup+'&fromDate='+$scope.fromDateSite+'&fromTime='+convert_to_24h($scope.fromTimeSite)+'&toDate='+$scope.toDateSite+'&toTime='+convert_to_24h($scope.toTimeSite)+'&location='+$scope.checkBox.loc+'&site='+$scope.checkBox.site+'&fromDateUTC='+utcFormat($scope.fromDateSite,convert_to_24h($scope.fromTimeSite))+'&toDateUTC='+utcFormat($scope.toDateSite,convert_to_24h($scope.toTimeSite));
