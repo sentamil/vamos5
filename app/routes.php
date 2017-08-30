@@ -978,6 +978,7 @@ Route::get('vdmVehicles/index1', array('uses' => 'VdmVehicleController@index1'))
  
 Route::get('vdmVehicles/migration/{param1}', array('uses' => 'VdmVehicleController@migration'));
 Route::get('vdmVehicles/rename/{param}', array('uses' => 'VdmVehicleController@rename'));
+Route::get('vdmVehicles/move_vehicle/{param}', array('uses' => 'VdmVehicleViewController@move_vehicle'));
 Route::post('vdmVehicles/findDealerList', array('uses' => 'VdmVehicleController@findDealerList'));
  
 Route::get('vdmVehicles/stops/{param}/{param1}', array('uses' => 'VdmVehicleController@stops'));
@@ -998,7 +999,7 @@ Route::post('vdmVehicles/generate', array('uses' => 'VdmVehicleController@genera
  
 Route::post('vdmVehicles/migrationUpdate', array('uses' => 'VdmVehicleController@migrationUpdate'));
 Route::post('vdmVehicles/renameUpdate', array('uses' => 'VdmVehicleController@renameUpdate'));
- 
+Route::post('vdmVehicles/moveVehicle', array('uses' => 'VdmVehicleViewController@moveVehicleUpdate'));
  
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
 ///Advance scan for GROUPS      

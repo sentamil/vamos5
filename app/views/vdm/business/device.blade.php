@@ -22,7 +22,7 @@
 								<th style="text-align: center;">Dealer Name</th>
 								<th style="text-align: center;">Onboard Date</th>
 								<th style="text-align: center;">Vehicle Expiry</th>
-							
+							    <th style="text-align: center;">Move Vehicle</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -35,6 +35,9 @@
 								<td>{{ explode (',' ,$value )[2]  }}</td>
 								<td>{{ explode (',' ,$value )[3]  }}</td>
 								<td>{{ explode (',' ,$value )[4]  }}</td>
+								<td>
+								 <a class="btn btn-sm btn-danger" href="{{ URL::to('vdmVehicles/move_vehicle/' . $value) }}">Move Vehicle</a>
+								</td>
 							</tr>
 							@endforeach
 						 @endif
