@@ -149,7 +149,13 @@ class VdmVehicleViewController extends \BaseController {
         	$redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
         }
     }
-    $error='Vehicle moved successfully ';
+	if($dealerIdOld!='OWN')
+    {
+      $error='Vehicle moved successfully ';
+	}
+	else {
+	  $error=' Vehicle movement is not allowed';
+	}
     return Redirect::to('Business')->withErrors ( $error );
  }
 
