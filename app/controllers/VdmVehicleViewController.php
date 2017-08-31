@@ -67,8 +67,8 @@ class VdmVehicleViewController extends \BaseController {
   $orgId =isset($refDataFromDBR['orgId'])?$refDataFromDBR['orgId']:'default';
   log::info(' orgIdOK = ' . $orgId);
   $OWN =isset($refDataFromDBR['OWN'])?$refDataFromDBR['OWN']:'';
-        $redis->srem ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleIdOld);
-        $redis->sadd ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleId);
+       // $redis->srem ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleIdOld);
+        // $redis->sadd ( 'S_Vehicles_' . $orgId.'_'.$fcode, $vehicleId);
    $groupList = $redis->smembers('S_Groups_' . $fcode);
         foreach ( $groupList as $group ) {
             if($redis->sismember($group,$vehicleIdOld)==1)
