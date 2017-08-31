@@ -156,7 +156,7 @@ class VdmVehicleViewController extends \BaseController {
 	else {
 	  $error=' Vehicle movement is not allowed';
 	}
-    return Redirect::to('Business')->withErrors ( $error );
+    return Redirect::to('Device')->withErrors ( $error );
  }
 
 /**
