@@ -3,13 +3,30 @@
 <head>
   <title>GPS</title>
   <link rel="shortcut icon" href="assets/imgs/tab.ico">
+  <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
   <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
   <link href="assets/css/bootstrap.css" rel="stylesheet">
   <link href="assets/css/jVanilla.css" rel="stylesheet">
   <link href="assets/css/simple-sidebar.css" rel="stylesheet">
   <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
   <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+  
   <style>
+  
+  body{
+     font-family: 'Lato', sans-serif;
+   /*font-weight: bold;*/  
+   /*font-family: 'Lato', sans-serif;
+     font-family: 'Roboto', sans-serif;
+     font-family: 'Open Sans', sans-serif;
+     font-family: 'Raleway', sans-serif;
+     font-family: 'Faustina', serif;
+     font-family: 'PT Sans', sans-serif;
+     font-family: 'Ubuntu', sans-serif;
+     font-family: 'Droid Sans', sans-serif;
+     font-family: 'Source Sans Pro', sans-serif;*/
+  }
+
   .squaredFour {
     width: 20px;
     position: relative;
@@ -61,9 +78,9 @@
   /*#perloader{
     z-index: 1020;
     background: transparent url('assets/imgs/loader.gif') 50% 50% no-repeat;*/
-}
   }
-  </style>
+}
+</style>
 </head>
 <div id="preloader" >
     <div id="status">&nbsp;</div>
@@ -91,9 +108,9 @@
           <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
         </div>
       </li>
-      <li ng-repeat="location in locations" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+      <li ng-repeat="location in locations track by $index | orderBy:natural('group')" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
         <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-          <li ng-repeat="loc in location.vehicleLocations | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index, loc.shortName)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
+          <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index, loc.shortName)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
         </ul>
       </li>
     </ul>
@@ -425,15 +442,13 @@
     <script src="assets/js/highcharts.js"></script>
     <script src="../app/views/reports/customjs/moment.js"></script>
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
+    <script src="assets/js/naturalSortVersionDatesCaching.js"></script>
+<!--<script src="assets/js/naturalSortVersionDates.js"></script> -->
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/unique.js"></script>
     <script src="assets/js/fuelreport.js"></script>
     <script>
 
-    
-
-
-    
     </script>
   </body>
   </html>

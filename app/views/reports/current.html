@@ -371,7 +371,7 @@ font-family: 'Source Sans Pro', sans-serif;
 	                
 		        </div>
 		       
-		        <div class="box-body" id="statusreport">
+		        <div class="box-body" id="statusreport" style="overflow-y:auto;">
 
 		           <table class="table table-striped table-bordered table-condensed table-hover" id="table_address">
 		           				  <!--  <tr ng-hide ="true" style="font-weight: bold;">
@@ -397,12 +397,13 @@ font-family: 'Source Sans Pro', sans-serif;
 									<tr style="text-align:center">
 										<th width="10%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;background-color:#d2dff7;">Vehicle Name</th>
 								   <!-- <th ng-hide="true" style="text-align:center;">Vehicle Name</th> -->
-										<th width="5%" class="id" custom-sort order="'regNo'" sort="sort" style="text-align:center;background-color:#d2dff7;">RegNo</th>
-										<th width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;background-color:#d2dff7;">LastSeen</th>
+										<th width="5%" class="id" custom-sort order="'regNo'" sort="sort" style="text-align:center;background-color:#d2dff7;">Reg No</th>
+										<th width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;background-color:#d2dff7;">Last Seen</th>
 										<th width="5%" class="id" custom-sort order="'driverName'" sort="sort" style="text-align:center;background-color:#d2dff7;">Driver</th>
 										<!-- <th ng-hide="true">Mobile Number</th> -->
-										<th width="5%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;background-color:#d2dff7;">KMs</th>
+										<th width="5%" class="id" custom-sort order="'distanceCovered'" sort="sort" style="text-align:center;background-color:#d2dff7;">KMS</th>
 										<th width="5%" class="id" custom-sort order="'speed'" sort="sort" style="text-align:center;background-color:#d2dff7;">Speed</th>
+										<th width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;background-color:#d2dff7;">Loc Time</th>
 										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;background-color:#d2dff7;">Position</th>
 										<th width="5%" class="id" custom-sort order="'position'" sort="sort" style="text-align:center;background-color:#d2dff7;">Duration H:M:S</th>
 								   <!-- <th width="5%" class="id" custom-sort order="'status'" sort="sort" style="text-align:center;">GPS</th> -->
@@ -417,12 +418,13 @@ font-family: 'Source Sans Pro', sans-serif;
 										<td><a href="history?vid={{user.vehicleId}}&vg={{data1.group}}">{{user.shortName}}</a></td>
 								   <!-- <td ng-hide="true"></td> -->
 										<td>{{user.regNo}}</td>
-										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-										<td ng-if="user.driverName == 'nill' || user.driverName == '' "> -- </td>
+										<td>{{user.lastComunicationTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+										<td ng-if="user.driverName == 'nill' || user.driverName == '' ">--</td>
 										<td ng-if="user.driverName!= 'nill' && user.driverName != '' ">{{user.driverName}}</td>
 										<!-- <td ng-hide="true">{{user.mobileNo}}</td> -->
 									    <td>{{user.distanceCovered}}</td>
 										<td>{{user.speed}}</td>
+										<td>{{user.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td ng-switch on="user.position">
 			                                <span ng-switch-when="S"><img title="Vehicle Standing" src="assets/imgs/orange.png"/></span>
 			                                <span ng-switch-when="M">
@@ -446,8 +448,7 @@ font-family: 'Source Sans Pro', sans-serif;
 			                           <td ng-switch on="user.ignitionStatus">
 			                                <span ng-switch-when="OFF"><img src="assets/imgs/no.png"/></span>
 			                                <span ng-switch-when="ON"><img src="assets/imgs/yes.png"/></span>
-			                                          
-			                            </td> -->
+			                           </td> -->
 										<td ng-if="user.loadTruck=='nill'">--</td>
 										<td ng-if="user.loadTruck!='nill'">{{user.loadTruck}}</td>
 										<td ng-switch on="user.vehicleBusy">
