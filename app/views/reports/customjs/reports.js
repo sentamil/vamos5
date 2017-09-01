@@ -31,6 +31,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	}
  
     $scope.msgShow      =   0;
+    $scope.cardMsgShow  =   false;
     $scope.tab 			=	true;
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
@@ -252,7 +253,8 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 				sessionStorage.setItem('user', JSON.stringify($scope.vehiname+','+$scope.vehigroup));
 				angular.forEach(data, function(value, key) {
 					   if(value.totalVehicles) {
-					  	    $scope.data2		=	data[key];
+					  	    $scope.data2 = data[key];
+					  	    $scope.cardMsgShow = true;
 					  		$scope.vehiLen(data[key]);
                         //  console.log(data[key]);
                         //  console.log( $scope.filterExpire(data) );
@@ -973,3 +975,5 @@ app.directive("getLocation", function () {
     }
   };
 });
+
+
