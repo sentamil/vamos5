@@ -1,5 +1,4 @@
 
-
 <div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;"  >     
 <nav class="menus" >
     <ul >
@@ -69,19 +68,19 @@
                 <!-- <a><span data-hover="analytics">analytics</span></a> -->
                 <a><span  data-hover="analytics"><div class="glyphicon glyphicon-screenshot"></div>&nbsp;analytics</span></a>
                 <ul>
-                    <li class="removeli"><a id="movement" href="/"> Movement </a></li>
-                    <li class="removeli"><a id="overspeed" href="#"> OverSpeed </a></li>
-                    <li class="removeli"><a id="parked" href="#"> Parked </a></li>
+                    <li class="removeli"><a id="movement" href=""> Movement</a></li>
+                    <li class="removeli"><a id="overspeed" href=""> OverSpeed </a></li>
+                    <li class="removeli"><a id="parked" href=""> Parked </a></li>
                     <li class="removeli"><a id="idle" href=""> Idle </a></li>
-                    <li class="removeli"><a id="event" href="#"> Event </a></li>
-                    <li class="removeli"><a id="site" href="#"> Site </a></li>
-                    <li class="removeli"><a id="multiSite" href="#"> Site (Mulitple Site)</a></li>
-                    <li class="removeli"><a id="tripSite" href="#"> Site Trip</a></li>
-                    <li class="removeli"><a id="trip" href="#"> Trip Time </a></li>
-                    <li class="removeli"><a id="tripkms" href="#"> Trip Summary</a></li>
-                    <li class="removeli"><a id="alarm" href="#">Alarm</a></li>
-                    <li class="removeli"><a id="ac" href="#">A/C</a></li>
-                    <li class="removeli"><a id="stoppage" href="#">Stoppage</a></li>
+                    <li class="removeli"><a id="event" href=""> Event </a></li>
+                    <li class="removeli"><a id="site" href=""> Site </a></li>
+                    <li class="removeli"><a id="multiSite" href=""> Site (Mulitple Site)</a></li>
+                    <li class="removeli"><a id="tripSite" href=""> Site Trip</a></li>
+                    <li class="removeli"><a id="trip" href=""> Trip Time </a></li>
+                    <li class="removeli"><a id="tripkms" href=""> Trip Summary</a></li>
+                    <li class="removeli"><a id="alarm" href="">Alarm</a></li>
+                    <li class="removeli"><a id="ac" href="">A/C</a></li>
+                    <li class="removeli"><a id="stoppage" href="">Stoppage</a></li>
                 </ul>
             </li>
         <li class="cl-effect-5">
@@ -178,14 +177,14 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
 
         window.localStorage.setItem("userMasterName",menuValue);
         sp1 = menuValue.split(",");
-    $('#valueUser').text("  "+sp1[1]);
+        $('#valueUser').text("  "+sp1[1]);
 
-    console.log(sp1[1]);
+        console.log(sp1[1]);
 
 
-    var obj = JSON.parse(sessionStorage.getItem('user'));
-      var menuObj = JSON.parse(window.localStorage.getItem('MenuData'));
-        console.log(menuObj);
+         var obj = JSON.parse(sessionStorage.getItem('user'));
+         var menuObj = JSON.parse(window.localStorage.getItem('MenuData'));
+         console.log(menuObj);
   
             var sp  = obj.split(',');
             var vid = sp[0];
