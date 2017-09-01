@@ -29,7 +29,8 @@
                         <div class="row">
                         <div class="col-md-2"></div>
                         <div class="col-md-3">{{ Form::label('dealerId', 'Dealer Name :') }}</div>
-                            <div class="col-md-3">{{ Form::select('dealerId', array($dealerId),  Input::old('dealerId'),array('class'=>'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
+                            <!--<div class="col-md-3">{{ Form::select('dealerId', array($dealerId),  Input::old('dealerId'),array('class'=>'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>-->
+							<div class="col-md-3">{{ Form::select( 'dealerId', $dealerId, array($OWN),  array( 'class'=>'form-control  selectpicker show-menu-arrow',  'data-live-search'=> 'true','selected' => $OWN)) }} </div>
                         </div>
                          <br>
                 		 <!-- <br>
