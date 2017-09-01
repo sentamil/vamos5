@@ -1,6 +1,8 @@
-<div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;">     
-<nav class="menus">
-    <ul>
+
+
+<div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;"  >     
+<nav class="menus" >
+    <ul >
         <li class="cl-effect-5">
             
             <!-- <a><span  data-hover="Tracking">Tracking</span></a><span class="glyphicons glyphicons-road"></span> -->
@@ -13,7 +15,7 @@
                 <li class="removeli removeli_2"><!-- <a id="addsites">Admin</a>
                    <div  style="padding-left: 10px"> -->
                        <a href="../public/password_check" id="addsites">AddSites / Geo Fence</a>
-                 <!--   </div> -->
+              <!-- </div> -->
                 </li>
                 <!-- <li id="removeli"><a href="../public/groupEdit">Edit Group</a></li> -->
             </ul>
@@ -22,10 +24,10 @@
             <!-- <a><span data-hover="Reports">Reports</span></a> -->
             <a><span  data-hover="Reports"><div class="glyphicon glyphicon-list-alt"></div>&nbsp;Reports</span></a>
             <ul>
-                <li class="removeli" ><a href="../public/reports">CURRENT STATUS</a></li>
+                <li class="removeli"><a href="../public/reports">CURRENT STATUS</a></li>
                 <li class="removeli"><a href="../public/reports?ind=1">Vehicles Consolidated </a></li>
                 <li class="removeli"><a href="../public/reports?ind=2"> Consolidated Site & Location</a></li>
-        <!--    <li class="removeli"><a href="../public/reports?ind=4"> Site Location</a></li> -->
+           <!-- <li class="removeli"><a href="../public/reports?ind=4"> Site Location</a></li> -->
                 <li class="removeli"><a href="../public/reports?ind=3"> Consolidated Overspeed</a></li>
                 <li class="removeli"><a id="stopReport" href="">Consolidated Stoppage</a></li>
                 <li class="removeli"><a id="tollReport" href="">Tollgate Report</a></li>
@@ -67,21 +69,19 @@
                 <!-- <a><span data-hover="analytics">analytics</span></a> -->
                 <a><span  data-hover="analytics"><div class="glyphicon glyphicon-screenshot"></div>&nbsp;analytics</span></a>
                 <ul>
-                    <li class="removeli"><a id="movement" href=""> Movement </a></li>
-                    <li class="removeli"><a id="overspeed" href=""> OverSpeed </a></li>
-                    <li class="removeli"><a id="parked" href=""> Parked </a></li>
+                    <li class="removeli"><a id="movement" href="/"> Movement </a></li>
+                    <li class="removeli"><a id="overspeed" href="#"> OverSpeed </a></li>
+                    <li class="removeli"><a id="parked" href="#"> Parked </a></li>
                     <li class="removeli"><a id="idle" href=""> Idle </a></li>
-                    <li class="removeli"><a id="event" href=""> Event </a></li>
-                    <li class="removeli"><a id="site" href=""> Site </a></li>
-                    <li class="removeli"><a id="multiSite" href=""> Site (Mulitple Site)</a></li>
-                    <li class="removeli"><a id="tripSite" href=""> Site Trip</a></li>
-                    
-                    <li class="removeli"><a id="trip" href=""> Trip Time </a></li>
-                    <li class="removeli"><a id="tripkms" href=""> Trip Summary</a></li>
-                    
-                    <li class="removeli"><a id="alarm" href="">Alarm</a></li>
-                    <li class="removeli"><a id="ac" href="">A/C</a></li>
-                    <li class="removeli"><a id="stoppage" href="">Stoppage</a></li>
+                    <li class="removeli"><a id="event" href="#"> Event </a></li>
+                    <li class="removeli"><a id="site" href="#"> Site </a></li>
+                    <li class="removeli"><a id="multiSite" href="#"> Site (Mulitple Site)</a></li>
+                    <li class="removeli"><a id="tripSite" href="#"> Site Trip</a></li>
+                    <li class="removeli"><a id="trip" href="#"> Trip Time </a></li>
+                    <li class="removeli"><a id="tripkms" href="#"> Trip Summary</a></li>
+                    <li class="removeli"><a id="alarm" href="#">Alarm</a></li>
+                    <li class="removeli"><a id="ac" href="#">A/C</a></li>
+                    <li class="removeli"><a id="stoppage" href="#">Stoppage</a></li>
                 </ul>
             </li>
         <li class="cl-effect-5">
@@ -101,7 +101,6 @@
             <!-- <a><span data-hover="sensor">sensor</span></a> -->
             <ul>
                 <li class="removeli"><a id="load" href=""> Load </a></li>
-                   
                     <li class="removeli"><a id="ignition" href=""> Ignition </a></li>
                     <li class="removeli"><a id="temp" href=""> Temperature</a></li>
                     <li class="removeli"><a id="tempdev" href=""> Temperature Deviation</a></li>
@@ -185,9 +184,13 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
 
 
     var obj = JSON.parse(sessionStorage.getItem('user'));
+      var menuObj = JSON.parse(window.localStorage.getItem('MenuData'));
+        console.log(menuObj);
+  
             var sp  = obj.split(',');
             var vid = sp[0];
             var gname = sp[1];
+            
             $("#movement").click(function() {
                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement')
             });
@@ -245,7 +248,7 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             })
 
             $('#stoppage').click(function(){
-                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=stopReport')
+                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=stoppageReport')
             })
 
             $('#rfid').click(function(){
@@ -363,6 +366,8 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
         }).error(function(){
                     console.log('Error in Zoho Url(Nav Menu Page)');
                 }); */
+
+
 
 </script>
 
