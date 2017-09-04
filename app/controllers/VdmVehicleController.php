@@ -2503,7 +2503,7 @@ $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.
             log::info('-----------inside admin-----------');
             $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
-		$redis->hdel ('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId1.':'.$mobileNo.':OWN');
+		$redis->hdel ('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId1.':'.$mobileNoOld.':OWN');
 		$redis->hset ('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$mobileNo.':OWN', $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Admin_'.$fcode);
         }
