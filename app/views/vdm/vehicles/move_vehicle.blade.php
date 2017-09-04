@@ -42,8 +42,8 @@
                 		<br>
                 		<div class="row">
                 			<div class="col-md-2"></div>
-                			<div class="col-md-3"></div><a class="btn btn-sm btn-primary" style="position: relative; right: 30%" href="{{ URL::previous() }}">Cancel</a>
-                			<div class="col-md-4" style="position: relative; left: 10%">	{{ Form::submit('confirm', array('class' => 'btn btn-primary')) }}</div>
+                			<div class="col-md-4" style="position: relative; left: 30%">	{{ Form::submit('confirm', array('class' => 'btn btn-success')) }}</div>
+							<div class="col-md-3"></div><a class="btn btn btn-danger" style="position: relative; right: 20%" href="{{ URL::previous() }}">Cancel</a>
                 		</div>
                 	</div>
                 	{{ Form::close() }}
