@@ -1894,7 +1894,7 @@ function smoothZoom (map, max, cnt) {
 
                  $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
               } else {
-                  alert('Please select less than 7 days !...');
+                  alert(' Please select date range within 7 days. ');
                   stopLoading();
               }
               
