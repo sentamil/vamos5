@@ -187,8 +187,8 @@ font-family: 'Source Sans Pro', sans-serif;
             <ul class='tabs'>
               <li ng-click="addressResolve('all')" ><a href='#all'>All</a></li>
               <li ng-click="addressResolve('movement')" ><a href='#movement'>Movement</a></li>
-         <!-- <li ng-click="addressResolve('movement')"><a href='#speed'>Speed</a></li>
-              <li ng-click="addressResolve('overspeed')"><a href='#overspeed'>OverSpeed</a></li> -->
+         <!-- <li ng-click="addressResolve('movement')"><a href='#speed'>Speed</a></li>-->
+              <li ng-click="addressResolve('overspeed')"><a href='#overspeed'>OverSpeed</a></li>
               <li ng-click="addressResolve('parked')" ><a href='#parked'>Parked</a></li>
               <li ng-click="addressResolve('idle')" ><a href='#idle'>Idle</a></li>
          <!-- <li ng-click="addressResolve('fuel')"><a href='#fuel'>Fuel</a></li> -->
@@ -320,7 +320,7 @@ font-family: 'Source Sans Pro', sans-serif;
             </div> -->
 
             <!-- overspeed -->
-      <!--      <div id='overspeed' class="pane">
+            <div id='overspeed' class="pane">
               <table class="tables">
                 <tr>
                   <td colspan="2">Vehicle Group</td>
@@ -367,7 +367,7 @@ font-family: 'Source Sans Pro', sans-serif;
                   <td colspan="7" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
               </table>
-            </div> -->
+            </div> 
 
             <!-- parked -->
             <div id='parked' class="pane">
@@ -864,7 +864,7 @@ font-family: 'Source Sans Pro', sans-serif;
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+// scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");

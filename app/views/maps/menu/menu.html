@@ -1,7 +1,7 @@
 
-<div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;"  >     
+<div style="box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;">     
 <nav class="menus" >
-    <ul >
+    <ul>
         <li class="cl-effect-5">
             
             <!-- <a><span  data-hover="Tracking">Tracking</span></a><span class="glyphicons glyphicons-road"></span> -->
@@ -68,7 +68,7 @@
                 <!-- <a><span data-hover="analytics">analytics</span></a> -->
                 <a><span  data-hover="analytics"><div class="glyphicon glyphicon-screenshot"></div>&nbsp;analytics</span></a>
                 <ul>
-                    <li class="removeli"><a id="movement" href=""> Movement</a></li>
+                    <li class="removeli"><a id="movement" href="" > Movement</a></li>
                     <li class="removeli"><a id="overspeed" href=""> OverSpeed </a></li>
                     <li class="removeli"><a id="parked" href=""> Parked </a></li>
                     <li class="removeli"><a id="idle" href=""> Idle </a></li>
@@ -173,7 +173,7 @@
     //     // console.log(document.location)
     // }
 
-var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
+        var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
 
         window.localStorage.setItem("userMasterName",menuValue);
         sp1 = menuValue.split(",");
@@ -190,9 +190,13 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             var vid = sp[0];
             var gname = sp[1];
             
+
             $("#movement").click(function() {
-               $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement')
+                window.localStorage.removeItem("reload");
+               $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement' );
+
             });
+
             $("#overspeed").click(function() {
                 $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=overspeed')
             });
@@ -286,6 +290,69 @@ var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
             $('#history').click(function () {
                 $(this).attr("href", "track?maps=replay&vehicleId="+vid+'&gid='+gname);
             })
+
+
+            //auto logout 
+
+            function logout(){                                                                                                                                                        
+
+             window.location ="./public/login";
+            }
+
+            setTimeout(function(){ logout() }, 3600000);  //logout after one hour
+
+        
+        /*  setInterval(function(){ 
+                $.get( "http://localhost/vamo/public/getVehicleHistory?vehicleId=TN66M0451&fromDate=2017-09-04&fromTime=16:17:20&fromDateUTC=1504522040000&userId=MSS", function( data ) {
+                      $( ".result" ).html( data );
+                      console.log(JSON.parse(data));
+                });
+             }, 3000); */
+
+
+             //on click menu function to refresh START
+                $('.funMe').click(function(){
+
+                    $("#wrapper").click(function() {
+                        window.location='history?vid='+vid+'&vg='+gname+'&tn=movement';
+                    });        
+                })
+
+           // on click menu function to refresh END
+
+
+           // code for onload div selection START
+  
+                function callSelectedDiv(){
+                    {        
+                         $('#wrapper').click(function()
+                         {
+                            $("#wrapper").click(function()
+                            {
+                                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement' );
+                                window.localStorage.setItem("reload",1);
+                            });
+                                
+                            window.location="#"+vid;
+                           });
+
+                           $('#movement').trigger('click'); // trigger auto click
+                           window.localStorage.setItem("reload",1);
+                          }
+                        }
+
+            // code for onload div selection END
+
+
+            // calling SelectedDiv Function START                
+
+             $(document).ready(function(){
+                
+                callSelectedDiv();
+             });
+
+             //calling SelectedDiv Function END
+
 
             $('#addsites').click(function(){
                 if(sessionStorage.getItem('auth') == 'sitesVal')
