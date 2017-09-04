@@ -218,7 +218,8 @@ class VdmVehicleViewController extends \BaseController {
 	else {
 	  $error=' Vehicle movement is not allowed';
 	}
-	Session::flash ( 'message', 'Successfully updated ' . '!' );
+	Session::flash ( 'message', $vehicleIdOld . ' is updated successfully. ' );
+	Session::flash('alert-class', 'alert-success');
     return Redirect::to('Device');
  }
 
