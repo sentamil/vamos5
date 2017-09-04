@@ -7,6 +7,7 @@
 <meta name="description" content="">
 <title>GPS</title>
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
+<link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/jVanilla.css" rel="stylesheet">
@@ -16,6 +17,20 @@
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
 <style>
+body{
+font-family: 'Lato', sans-serif;
+/*font-weight: bold;*/  
+/* font-family: 'Lato', sans-serif;
+font-family: 'Roboto', sans-serif;
+font-family: 'Open Sans', sans-serif;
+font-family: 'Raleway', sans-serif;
+font-family: 'Faustina', serif;
+font-family: 'PT Sans', sans-serif;
+font-family: 'Ubuntu', sans-serif;
+font-family: 'Droid Sans', sans-serif;
+font-family: 'Source Sans Pro', sans-serif;
+*/
+}
 .empty{
   height: 1px; width: 1px; padding-right: 30px; float: left;
 }
@@ -45,13 +60,13 @@
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
             <ul class="sidebar-subnav ">
-                <li style="padding-left:25px;">
+            <li style="padding-left:25px;">
                     <div class="right-inner-addon" align="center"> 
                     <i class="fa fa-search"></i>
                     <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
                     </div>
-                </li>
-                <li ng-repeat="location in vehicle_list" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+            </li>
+            <li ng-repeat="location in vehicle_list track by $index | orderBy:natural('group')" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
                     <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox" ng-class="{active:vehiname ==loc.vehicleId}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
                     </ul>
@@ -149,23 +164,33 @@
                         
                     </div>
                     <div class="box-body" id="tripreport">
-                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">Trip Time Report <span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
+                <div class="empty" align="center"></div> <p style="margin:0;font-size:18px;">Trip Time Report <span style="float: right;font-size:15px;padding-right: 30px;"><b>From</b> : &nbsp;{{uiDate.fromdate}} &nbsp;{{convert_to_24hrs(uiDate.fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{uiDate.todate}} &nbsp;{{convert_to_24hrs(uiDate.totime)}}</span> </p> 
                             
+                           <div class="row">
+                               <div class="col-md-1" align="center"></div>
+
+                               <div class="col-md-2" align="center">
+                                 <div class="form-group">
+
+                                 </div>
+                               </div>
+                           </div> 
+
                                 <table class="table table-bordered table-striped table-condensed table-hover">
                                     <thead>
                                         <tr style="text-align:center; font-weight: bold;">
-                                            <td>Vehicle Group</td>
-                                            <td  colspan="2">{{uiGroup}}</td>
-                                            <td>Vehicle Name</td>
-                                            <td>{{shortNam}}</td>   
+                                            <td style="background-color:#ecf7fb;">Vehicle Group</td>
+                                            <td  colspan="2" style="background-color:#f9f9f9;">{{uiGroup}}</td>
+                                            <td style="background-color:#ecf7fb;">Vehicle Name</td>
+                                            <td style="background-color:#f9f9f9;">{{shortNam}}</td>   
                                         </tr>
                                         <tr><td colspan="5"></td></tr>
                                         <tr style="text-align:center;font-weight: bold;">
-                                            <th class="id" custom-sort order="'date'" sort="sort" style="text-align:center;" width="15%">Date &amp; Time</th>
-                                            <th class="id" custom-sort order="'distanse'" sort="sort" style="text-align:center;" width="15%">Distance</th>
-                                            <th class="id" custom-sort order="'cumDistance'" sort="sort" style="text-align:center;" width="15%">cumulative</th>
-                                            <th class="id" custom-sort order="'odoDistance'" sort="sort" style="text-align:center;" width="15%">Odo Meter</th>
-                                            <th class="id" custom-sort order="'address'" sort="sort" style="text-align: center;" width="35%">Nearest Location</th>
+                                            <th class="id" custom-sort order="'date'" sort="sort" style="text-align:center;background-color:#d2dff7;" width="15%">Date &amp; Time</th>
+                                            <th class="id" custom-sort order="'distanse'" sort="sort" style="text-align:center;background-color:#d2dff7;" width="15%">Distance</th>
+                                            <th class="id" custom-sort order="'cumDistance'" sort="sort" style="text-align:center;background-color:#d2dff7;" width="15%">Cumulative</th>
+                                            <th class="id" custom-sort order="'odoDistance'" sort="sort" style="text-align:center;background-color:#d2dff7;" width="15%">Odo Meter</th>
+                                            <th class="id" custom-sort order="'address'" sort="sort" style="text-align: center;background-color:#d2dff7;" width="35%">Nearest Location</th>
                                             <!-- <th class="id" style="text-align: center;" width="20%">G-Map</th> -->
                                         </tr>
                                 </thead>
@@ -247,5 +272,3 @@
     
 </body>
 </html>
-
-

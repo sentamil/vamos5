@@ -1,9 +1,8 @@
 app.controller('mainCtrl',['$scope','vamoservice','$filter','_global', function($scope, vamoservice, $filter, GLOBAL){
 
  // trip summary , 	site report, trip report , rfid Report, multiple sites
+ // global declaration
 
-
-   	//global declaration
     $scope.g_Url 	=	GLOBAL.DOMAIN_NAME;
 
 	$scope.locations = [];
@@ -36,6 +35,36 @@ app.controller('mainCtrl',['$scope','vamoservice','$filter','_global', function(
 		}
     }
 
+
+  $scope.convert_to_24hrs = function(time_str) {
+
+   if(time_str != undefined){
+      
+      var str   = time_str.split(' ');
+      var stradd  = str[0].concat(":00");
+      var strAMPM = stradd.concat(' '+str[1]);
+      var time = strAMPM.match(/(\d+):(\d+):(\d+) (\w)/);
+      var hours = Number(time[1]);
+      var minutes = Number(time[2]);
+      var seconds = Number(time[2]);
+      var meridian = time[4].toLowerCase();
+  
+      if (meridian == 'p' && hours < 12) {
+        hours = hours + 12;
+      }
+      else if (meridian == 'a' && hours == 12) {
+        hours = hours - 12;
+      } 
+
+      hours   = hours < 10 ? '0'+hours : hours;
+      minutes = minutes < 10 ? '0'+minutes : minutes;  
+      seconds = seconds < 10 ? '0'+seconds : seconds; 
+
+      var marktimestr = ''+hours+':'+minutes+':'+seconds;   
+    }
+
+  return marktimestr;
+  };
 
     //chants for temperature
 
@@ -230,9 +259,7 @@ function plottinGraphs(valueGraph, timeData){
 				urlWebservice 	= 	$scope.g_Url+"/getTripReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval;
 				break;
 			case 'tripkms' :
-				urlWebservice 	    = $scope.g_Url+"/getTripSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
-				$scope.tripFromDate = $scope.uiDate.fromdate+' '+convert_to_24h($scope.uiDate.fromtime);
-                $scope.tripToDate   = $scope.uiDate.todate+' '+convert_to_24h($scope.uiDate.totime);
+				urlWebservice 	= $scope.g_Url+"/getTripSummary?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
 			case 'load' :           
 				urlWebservice 	=	$scope.g_Url+"/getLoadReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
@@ -270,8 +297,8 @@ function plottinGraphs(valueGraph, timeData){
 			default :
 				break;
 			}
-			return urlWebservice;
 
+	return urlWebservice;
 	}
 
 	var delayed6 = (function () {
@@ -348,6 +375,9 @@ function plottinGraphs(valueGraph, timeData){
 			urlUTC = url+'&fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
 		if ((url != undefined) && (checkXssProtection($scope.uiDate.fromdate) == true) && (checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true)){
 			vamoservice.getDataCall(urlUTC).then(function(responseVal){
+
+              console.log(responseVal);
+
 				try{
 					if(tab == 'alarm')
 						try{
@@ -535,12 +565,12 @@ function plottinGraphs(valueGraph, timeData){
 	}
 
 
-	$scope.genericFunction 	= function (vehid,vName,index){
+	$scope.genericFunction 	= function (vehid, index){
 		startLoading();
 		$scope.mSiteError   =   0;
 		$scope.vehiname		= vehid;
            
-        $scope.vehTripName = vName;
+        $scope.vehTripName = vehid;
 
 		sessionValue($scope.vehiname, $scope.gName)
 		angular.forEach($scope.vehicle_list[$scope.gIndex].vehicleLocations, function(val, key){

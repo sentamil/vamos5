@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <title>GPS</title>
-
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
+<link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -18,6 +18,20 @@
 <link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
 
 <style>
+body{
+font-family: 'Lato', sans-serif;
+/*font-weight: bold;*/  
+/* font-family: 'Lato', sans-serif;
+font-family: 'Roboto', sans-serif;
+font-family: 'Open Sans', sans-serif;
+font-family: 'Raleway', sans-serif;
+font-family: 'Faustina', serif;
+font-family: 'PT Sans', sans-serif;
+font-family: 'Ubuntu', sans-serif;
+font-family: 'Droid Sans', sans-serif;
+font-family: 'Source Sans Pro', sans-serif;
+*/
+}
 .empty{
     height: 1px; width: 1px; padding-right: 30px; float: left;
 }
@@ -53,7 +67,7 @@ background-color: #ffffff;
                     <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
                     </div>
                 </li>
-                <li ng-repeat="location in vehicle_list" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+            <li ng-repeat="location in vehicle_list track by $index | orderBy:natural('group')" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
                     <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox" ng-class="{active:vehiname ==loc.vehicleId}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId,loc.shortName,$index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
                     </ul>
@@ -136,18 +150,16 @@ background-color: #ffffff;
                         <img style="cursor: pointer;" ng-click="exportDataCSV('tripreportkms')"  src="../app/views/reports/image/csv.jpeg" />
                     </div>
                     <div class="box-body" id="tripreportkms" >
-                <div class="empty" align="center"></div> <p style="margin:0" class="page-header">Trip Summary<span style="float: right;">From : {{uiDate.fromdate}} {{uiDate.fromtime}} - To : {{uiDate.todate}} {{uiDate.totime}}</span></p> 
+                <div class="empty" align="center"></div> <p style="margin:0;font-size:18px;">Trip Summary Report <span style="float: right;font-size:15px;padding-right: 30px;"><b>From</b> : &nbsp;{{uiDate.fromdate}} &nbsp;{{convert_to_24hrs(uiDate.fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{uiDate.todate}} &nbsp;{{convert_to_24hrs(uiDate.totime)}}</span></p> 
                             <br>
                                 <table class="table table-bordered table-striped table-condensed table-hover">
                                     <thead style="font-weight: bold;">
                                         
-                                        <tr class="active">
-                                
-                                            <td colspan="2"><div class="col-md-12">Start Time</div></td>
-            <td colspan="2"><div class="col-md-12" ng-show="siteData.historyConsilated.length != 0">{{siteData.fromTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div><div class="col-md-12" ng-show=" siteData.historyConsilated.length== 0">{{tripFromDate}}</div><div class="col-md-12" ng-show=" siteData.historyConsilated == null ">{{tripFromDate}}</div></td>
-                                       
-                                            <td colspan="2"><div class="col-md-12">End Time</div></td>
-            <td colspan="2"><div class="col-md-12" ng-show="siteData.historyConsilated.length != 0">{{siteData.toTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div><div class="col-md-12" ng-show=" siteData.historyConsilated.length== 0">{{tripToDate}}</div><div class="col-md-12" ng-show=" siteData.historyConsilated == null ">{{tripToDate}}</div></td>
+                                    <tr class="active">
+                                         <td colspan="2"> <div class="col-md-12">Start Time</div> </td>
+                                         <td colspan="2"> <div class="col-md-12" >{{siteData.fromTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div>  </td>
+                                         <td colspan="2"><div class="col-md-12">End Time</div></td>
+                                         <td colspan="2"> <div class="col-md-12">{{siteData.toTime |  date:'yyyy-MM-dd HH:mm:ss'}}</div>  </td>
                                            
                                             <!-- <td colspan="1" rowspan="3"><div class="col-md-12">Last Sighted Location</div></td> -->
                                             <td colspan="4" rowspan="3">
@@ -162,7 +174,7 @@ background-color: #ffffff;
                                             <td colspan="2"><div class="col-md-12">Group Name</div></td>
                                             <td colspan="2"><div class="col-md-12">{{uiGroup}}</div></td>
                                         </tr>
-                                         <tr class="success">
+                                         <tr class="danger">
                                             <td colspan="2"><div class="col-md-12">Trip Distance</div></td>
                                             <td colspan="2"><div class="col-md-12">{{siteData.totalTripLength}} kms</div></td>
                                             <td colspan="2"><div class="col-md-12">Milage</div></td>
@@ -217,20 +229,20 @@ background-color: #ffffff;
                                     <tr>
                                         <td colspan="11"></td>
                                     </tr>
-                                    <tr style="font-weight: bold; background-color: #d1d1d1; text-align : center">
-                                        <td class="id" custom-sort order="'startTime'" sort="sort">Start Time</td>
-                                        <td class="id" custom-sort order="'endTime'" sort="sort">End Time</td>
-                                        <td class="id" custom-sort order="'duration'" sort="sort">Duration (h:m:s)</td>
-                                        <td class="id" custom-sort order="'tripDistance'" sort="sort">Distance (kms)</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'intLoc'" sort="sort">Start Loc</td>
-                                        <td ng-show="siteData.totalFuelConsume==0" colspan="3" class="id" custom-sort order="'intLoc'" sort="sort">Start Loc</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'finLoc'" sort="sort">End Loc</td>
-                                        <td ng-show="siteData.totalFuelConsume==0" colspan="3" class="id" custom-sort order="'finLoc'" sort="sort">End Loc</td>
-                                        <td class="id" custom-sort order="'position'" sort="sort">Position</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'fuelConsume'" sort="sort">Fuel Consume (ltr)</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'intFuel'" sort="sort">Intial Fuel (ltr)</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'finFuel'" sort="sort">End Fuel (ltr)</td>
-                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'filledFuel'" sort="sort">Fuel Filled (ltr) </td>
+                                    <tr>
+                                        <td class="id" custom-sort order="'startTime'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">Start Time</td>
+                                        <td class="id" custom-sort order="'endTime'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">End Time</td>
+                                        <td class="id" custom-sort order="'duration'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">Duration (h:m:s)</td>
+                                        <td class="id" custom-sort order="'tripDistance'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">Distance (kms)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'intLoc'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">Start Loc</td>
+                                        <td ng-show="siteData.totalFuelConsume==0" colspan="3" class="id" custom-sort order="'intLoc'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">Start Loc</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'finLoc'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">End Loc</td>
+                                        <td ng-show="siteData.totalFuelConsume==0" colspan="3" class="id" custom-sort order="'finLoc'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">End Loc</td>
+                                        <td class="id" custom-sort order="'position'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">Position</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'fuelConsume'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">Fuel Consume (ltr)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'intFuel'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">Intial Fuel (ltr)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'finFuel'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">End Fuel (ltr)</td>
+                                        <td ng-hide="siteData.totalFuelConsume==0" class="id" custom-sort order="'filledFuel'" sort="sort" style="text-align:center;background-color:#d2dff7;font-weight: bold;">Fuel Filled (ltr) </td>
                                     </tr>
                                     <tr>
                                         <td colspan="11"></td>
@@ -357,7 +369,7 @@ background-color: #ffffff;
     <script>
 
     var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
-var url = "https://maps.google.com/maps/api/js?sensor=false";
+    var url = "https://maps.google.com/maps/api/js?sensor=false";
 
 if(apikey_url != null ||  apikey_url != undefined)
         url = "https://maps.google.com/maps/api/js?key="+apikey_url;
@@ -429,5 +441,4 @@ if(apikey_url != null ||  apikey_url != undefined)
     
 </body>
 </html>
-
 
