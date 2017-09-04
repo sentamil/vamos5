@@ -364,7 +364,7 @@ font-family: 'Source Sans Pro', sans-serif;
                   <td>{{over.tripDistance}}</td>
                 </tr>
                 <tr ng-if="overspeeddata.length == 0 || overspeeddata == undefined">
-                  <td colspan="7" class="err"><h6>No Data Found! Choose some other date</h6></td>
+                  <td colspan="8" class="err"><h6>No Data Found! Choose some other date</h6></td>
                 </tr>
               </table>
             </div> 
