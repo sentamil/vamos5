@@ -70,11 +70,7 @@ font-family: 'Source Sans Pro', sans-serif;
                 </li>
                 <li ng-repeat="location in locations track by $index | orderBy:natural('group')" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
                     <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-                    <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox"  id="{{loc.vehicleId}}" ng-class="{active:vehiname ==loc.vehicleId}" >
-
-                    <a id="{{loc.vehicleId}}" href="history?vid={{loc.vehicleId}}&vg={{location.group}}" class="funMe"  ng-class="{active: $index == selected, red:loc.status=='OFF'}"  ng-click="genericFunction(loc.vehicleId, $index)" ><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span  id="{{loc.vehicleId}}">{{loc.shortName}}</span></a>
-
-                    </li>
+                    <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox" ng-class="{active:vehiname ==loc.vehicleId}"><a href="history?vid={{loc.vehicleId}}&vg={{location.group}}" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
                     </ul>
                 </li>
             </ul>
@@ -229,10 +225,10 @@ font-family: 'Source Sans Pro', sans-serif;
 										<td>{{move.distanceCovered}}</td>
 										<td>{{move.odoDistance}}</td>
 									</tr>	
-									<tr ng-if="errMsg==null" align="center" ng-show="showErrMsg">
+									<tr ng-if=" errMsg == null " align="center" ng-show="showErrMsg">
 										<td ng-if="movementdata == null || movementdata.length==0" colspan="8" class="err"><h5>Got zero records. Please change the dates and try.</h5></td>
 									</tr>
-									<tr ng-if="errMsg != null" align="center" ng-show="showErrMsg">
+									<tr ng-if="errMsg != null " align="center" ng-show="showErrMsg">
 										<td colspan="8" class="err"><h5>{{errMsg}}</h5></td>
 									</tr>
 							</table>
@@ -960,4 +956,3 @@ font-family: 'Source Sans Pro', sans-serif;
     </style>
 </body>
 </html>
-
