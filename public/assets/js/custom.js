@@ -2155,9 +2155,23 @@ $scope.starSplit 	=	function(val){
         replace: true,
         template: '<div></div>',
         link: function(scope, element, attrs){
+
+          scope.trafficLayer = new google.maps.TrafficLayer();
+		  scope.checkVal=false;
+		  
+		  scope.trafficEnable = function(){
+				if(scope.checkVal==false){
+					scope.trafficLayer.setMap(scope.map);
+					scope.checkVal = true;
+				}else{
+					scope.trafficLayer.setMap(null);
+					scope.checkVal = false;
+				}
+			}
+
           scope.$watch("url", function (val) {
 
-          var interValRef=window.localStorage.getItem('refreshTime');
+            var interValRef=window.localStorage.getItem('refreshTime');
 
 			setintrvl = setInterval(function(){
 				scope.inits=1;
@@ -2508,3 +2522,4 @@ var gaugeOptions = {
             document.body.style.zoom="90%";
         }
     });
+
