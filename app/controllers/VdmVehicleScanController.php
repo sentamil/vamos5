@@ -7,13 +7,13 @@ class VdmVehicleScanController extends \BaseController {
 	 * @return Response
 	
 	 */	
-public function vehicleSearch()
+public function index()
     {
         log::info(' reach the road speed function ');
         $orgLis = [];
             return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
     }   
-public function vehicleScan() {
+public function store() {
     if (! Auth::check () ) {
         return Redirect::to ( 'login' );
     }
