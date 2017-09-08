@@ -105,6 +105,7 @@ class RfidController extends \BaseController {
             //Log::info('orgListId=' . $orgListId);
 
             $orgList = $redis->smembers ( $orgListId);
+			sort($orgList);
             $orgArray = array();
 
             foreach ( $orgList as $org ) {
@@ -289,6 +290,7 @@ class RfidController extends \BaseController {
                 $orgListId = 'S_Organisations_Admin_'.$fcode;
             }
             $orgList = $redis->smembers ( $orgListId);
+			sort($orgList);
             $orgArray = array();
             foreach ( $orgList as $org ) {
 

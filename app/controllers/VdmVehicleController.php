@@ -591,12 +591,12 @@ public function edit($id) {
 	 $refData = array_add($refData, 'vehicleExpiry', 'null');
 	 $refData = array_add($refData, 'onboardDate', ' ');
         $refData = array_add($refData, 'overSpeedLimit', '50');
-        $refData = array_add($refData, 'driverName', '');
+        $refData = array_add($refData, 'driverName', 'nill');
         $refData = array_add($refData, 'gpsSimNo', '0123456789');
         $refData = array_add($refData, 'email', ' ');
         $refData = array_add($refData, 'odoDistance', '0');
         $refData = array_add($refData, 'sendGeoFenceSMS', 'no');
-        $refData = array_add($refData, 'morningTripStartTime', ' ');
+        $refData = array_add($refData, 'morningTripStartTime', 'nill');
         $refData = array_add($refData, 'eveningTripStartTime', ' ');
         $refData= array_add($refData, 'altShortName',' ');
         $refData= array_add($refData, 'date',' ');
@@ -620,7 +620,7 @@ public function edit($id) {
         $refData= array_add($refData, 'digitalout', '');
         $refData= array_add($refData, 'mintemp', '');
         $refData= array_add($refData, 'maxtemp', '');
-        $refData= array_add($refData, 'routeName', '');
+        $refData= array_add($refData, 'routeName', 'nill');
 
         
 
@@ -1368,9 +1368,9 @@ $parameters = 'fcode='.$fcode . '&expiryDate='.$vehicleExpiry. '&vehicleId='.$ve
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 //
-//return Redirect::to ( 'vdmVehicles' );
- $orgLis = [];
- return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
+return Redirect::to ( 'VdmVehicleScan' );
+// $orgLis = [];
+// return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
 
 //            return VdmVehicleController::edit($vehicleId);
 }
@@ -2154,9 +2154,9 @@ $current = Carbon::now();
     // log::info('device id--->'.$deviceId);
     // log::info('vechicle id-->'.$vehicleId);
     Session::flash ( 'message', 'Successfully updated ' . '!' );
-   // return Redirect::to ( 'vdmVehicles' );
-    $orgLis = [];
-    return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
+    return Redirect::to ( 'VdmVehicleScan' );
+    //$orgLis = [];
+   // return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
 //            return View::make ( 'vdm.vehicles.migration', array ('vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 
 }
@@ -2214,7 +2214,7 @@ public function migrationUpdate() {
         if($vehicleId==$vehicleIdOld && $deviceId==$deviceIdOld)
         {
             log::info('-----------inside same vehicleid and device Id no change');
-            Session::flash ( 'message', 'Same vehicle Id and device Id no change' .'!' );
+            Session::flash ( 'message', 'Vehicle is not migrated. Since it has same vehicle Id and Device Id' .'!' );
             $deviceId= $deviceIdOld;
             $vehicleId= $vehicleIdOld;
             return View::make ( 'vdm.vehicles.migration', array (
@@ -2522,10 +2522,10 @@ $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.
 
     // log::info('device id--->'.$deviceId);
     // log::info('vechicle id-->'.$vehicleId);
-    Session::flash ( 'message', 'Successfully updated ' . '!' );
-    //return Redirect::to ( 'vdmVehicles' );
-	$orgLis = [];
-    return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
+    Session::flash ( 'message', 'Migrated successfully ' . '!' );
+    return Redirect::to ( 'VdmVehicleScan' );
+	//$orgLis = [];
+   // return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
 
 //            return View::make ( 'vdm.vehicles.migration', array ('vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
 

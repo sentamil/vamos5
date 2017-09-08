@@ -7,8 +7,8 @@
 		<div class="row">
     		<div class="col-lg-12">
        			 <div class="hpanel">
-               		<div class="panel-heading" align="center">
-                   		<h4><font>Vehicle Migration</font></h4>
+               		<div style="background-color: #66cc99" class="panel-heading" align="center">
+                   		<h4><font size="6px" color="#133926" >Vehicle Migration</font></h4>
                 	</div>
                 	<hr>
                 	{{ HTML::ul($errors->all()) }}
@@ -35,7 +35,7 @@
                 		<div class="row">
                 			<div class="col-md-2"></div>
                 			<div class="col-md-3"></div>
-                			<div class="col-md-4">	{{ Form::submit('Migrate the Vehicle!', array('class' => 'btn btn-primary')) }}</div>
+                			<div class="col-md-4">	{{ Form::submit('Migrate Vehicle', array('class' => 'btn btn-primary')) }}</div>
                 		</div>
                 	</div>
                 	{{ Form::close() }}

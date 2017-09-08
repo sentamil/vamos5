@@ -5,7 +5,9 @@
 			<div class="col-lg-12">
 				<div class="hpanel">
 					<div class="panel-heading">
-						<h4> <b>View Tags</b></h4>
+						<h4> <b>View Tags</b>
+						<a style="position: relative; left: 90%" class="btn btn-sm btn-primary" href="{{ URL::previous() }}">Go Back</a>
+						</h4>
 					</div>
 					<div class="panel-body">
 						{{ HTML::ul($errors->all()) }}

@@ -136,7 +136,7 @@
                <a href="../vdmVehicles/create"> <span class="nav-label">Add Vehicles</span></a>
             </li>
             -->
-			<li><a href="../vdmVehiclesSearch/Scan"> <span class="nav-label">Vehicles Search</span> </a></li>
+			<li><a href="../VdmVehicleScan"> <span class="nav-label">Vehicles Search</span> </a></li>
 			<li><a href="../vdmVehicles"> <span class="nav-label">Vehicles List</span> </a></li>
 			
 			<li><a href="../vdmVehiclesView"> <span class="nav-label">View Vehicles</span> </a></li>

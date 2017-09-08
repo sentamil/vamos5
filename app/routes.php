@@ -859,6 +859,12 @@ Route::get('register', function() {
     return View::make('pages.register');
 });
  
+//ramaa
+  Route::get('/vdmVehicles/migrationUpdate', function() {
+//    // return View::make('login');
+     return Redirect::to('login');
+ });
+
 Route::get('viewSite', function() {
     return View::make('vls.viewSite');
 });
@@ -1010,15 +1016,16 @@ Route::resource('vdmGroups', 'VdmGroupController');
 Route::get('vdmVehicles/create/{param1}', array('uses' => 'VdmVehicleController@create'));
 Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dealerSearch'));
 ///Advance scan for VEHICLES        
-Route::get('vdmVehiclesSearch/Scan', array('uses' => 'VdmVehicleScanController@vehicleSearch'));        
-Route::post('vdmVehiclesSearch/scan', array('uses' => 'VdmVehicleScanController@vehicleScan'));
+//Route::get('vdmVehiclesSearch/Scan', array('uses' => 'VdmVehicleScanController@vehicleSearch'));        
+//Route::post('vdmVehiclesSearch/scan', array('uses' => 'VdmVehicleScanController@vehicleScan'));
 
 Route::resource('vdmVehicles', 'VdmVehicleController');
 Route::get('vdmVehicles/edit/{param1}', array('uses' => 'VdmVehicleController@edit'));
 Route::resource('vdmVehiclesView', 'VdmVehicleViewController');
  
-Route::resource('DashBoard', 'DashBoardController');
+Route::resource('VdmVehicleScan', 'VdmVehicleScanController'); 
  
+Route::resource('DashBoard', 'DashBoardController');
  
 Route::resource('Business', 'BusinessController');
 Route::resource('rfid', 'RfidController');

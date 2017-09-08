@@ -7,7 +7,14 @@
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
-                    <h4><b>Vehicles List</b></h4>  
+                    <h4>
+					@if(Session::get('vCol')=='1')
+                    <b>Vehicles List</b>
+                    @endif  
+                    @if(Session::get('vCol')=='2')
+                    <b>View Vehicles</b>
+                    @endif
+                    </h4> 
 
 
                    <!--  @if(Session::get('cur')=='admin')

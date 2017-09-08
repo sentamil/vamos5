@@ -76,11 +76,16 @@
 							
 						</div>
 						
+						<script>
+                         function caps(element){
+                          element.value = element.value.toUpperCase();
+                         }                         
+                         </script>
 						<div class="row" Id="t1">
 							<br>
 							<hr>
 							<div class="col-md-2"></div>
-							<div class="col-md-2">{{ Form::text('userId', Input::old('userId'), array('id'=>'userIdtempNew','class' => 'form-control','placeholder'=>'User Name')) }}</div>
+							<div class="col-md-2">{{ Form::text('userId', Input::old('userId'), array('id'=>'userIdtempNew','class' => 'form-control','onkeyup' => 'caps(this)','placeholder'=>'User Name')) }}</div>
 							<div class="col-md-2">{{ Form::text('mobileNoUser', Input::old('mobileNoUser'),array('class' => 'form-control','placeholder'=>'Mobile Number')) }}</div>
 							<div class="col-md-2">{{ Form::Email('emailUser', Input::old('emailUser'),array('class' => 'form-control','placeholder'=>'Email')) }}</div>
 							<div class="col-md-2">{{ Form::text('password', Input::old('password'),array('class' => 'form-control','placeholder'=>'Password'))}}</div>

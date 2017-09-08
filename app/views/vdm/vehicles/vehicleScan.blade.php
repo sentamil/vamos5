@@ -1,4 +1,4 @@
-@include('includes.header_create')
+@include('includes.header_index')
 <style>
 table {
 width: 100%; 
@@ -65,10 +65,13 @@ tr:nth-of-type(odd) {
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
+				     @if(Session::has('message'))
+                	 <p class="alert {{ Session::get('alert-class', 'alert-success') }}">{{ Session::get('message') }}</p>
+                	 @endif
                     <h4><b>Vehicles Search</b></h4>                
                 </div>
                 <div class="panel-body">
-                {{ Form::open(array('url' => 'vdmVehiclesSearch/scan','method' => 'post')) }}
+                {{ Form::open(array('url' => 'VdmVehicleScan','method' => 'post')) }}
                 <div class="row">
                     <div class="col-md-12">
                       <div class="col-md-6">
@@ -191,6 +194,6 @@ tr:nth-of-type(odd) {
 </div>
 </div>
 </div>
-@include('includes.js_create')
+@include('includes.js_index')
 </body>
 </html>

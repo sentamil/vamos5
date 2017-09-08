@@ -196,7 +196,7 @@
  <script>   
     $(function() {
         // $( "#calendar" ).datepicker();   
-         $( "#calendar" ).datepicker({ dateFormat: 'yy-mm-dd' });
+         $( "#calendar" ).datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
     }); 
  </script>
 {{ Form::text('vehicleExpiry', $refData['vehicleExpiry'], array( 'id' => 'calendar', 'class' => 'form-control', 'readonly' => 'true')) }}
