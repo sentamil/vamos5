@@ -859,12 +859,6 @@ Route::get('register', function() {
     return View::make('pages.register');
 });
  
-//ramaa
-  Route::get('/vdmVehicles/migrationUpdate', function() {
-//    // return View::make('login');
-     return Redirect::to('login');
- });
-
 Route::get('viewSite', function() {
     return View::make('vls.viewSite');
 });
