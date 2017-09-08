@@ -301,8 +301,8 @@ font-family: 'Source Sans Pro', sans-serif;
                         
                         <div id="contentmin" class="rightsection">
                        
-                               <input type="button" id="traffic" ng-click="check()" value="Traffic" />
-                               <input type="button" value="Measure" id="pac-input02" ng-click="distance();"/>
+                               <input type="button" id="traffic" ng-click="checkme('traffic')" value="Traffic" />
+                               <input type="button" value="Measure" id="pac-input02" ng-click="distance('pac-input02');"/>
                                <input type="text" id="distanceVal" value="0" disabled/> <span style="font-size:12px;">Kms</span>
                                <div class="_caption_rightSide" align="center">Live Tracking <div id="google_translate_element"></div></div>
                             
@@ -695,5 +695,3 @@ if(apikey_url != null || apikey_url != undefined)
 
 </body>
 </html>
-
-

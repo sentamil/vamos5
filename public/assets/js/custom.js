@@ -597,11 +597,13 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		})
 	}
 
-	$scope.check = function(){
+	$scope.checkme = function(val){
 		if($scope.checkVal==false){
+			document.getElementById(val).style.backgroundColor = "yellow"
 			$scope.trafficLayer.setMap($scope.map);
 			$scope.checkVal = true;
 		}else{
+			document.getElementById(val).style.backgroundColor = "#FFFFFF"
 			$scope.trafficLayer.setMap(null);
 			$scope.checkVal = false;
 		}
@@ -684,10 +686,11 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 		return result;
 	}
 
-	$scope.distance = function(){
+	$scope.distance = function(val){
 		$scope.nearbyflag=false;
 		$('.nearbyTable').hide();
 		if($scope.clickflag==true){
+			document.getElementById(val).style.backgroundColor = "#FFFFFF"
 			$scope.clickflagVal = 0;
 			$('#distanceVal').val(0);
 			$scope.clickflag=false;
@@ -695,6 +698,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 				$scope.flightpathall[i].setMap(null);	
 			}
 		}else{
+			document.getElementById(val).style.backgroundColor = "yellow"
 			$scope.clickflag=true;	
 		}
 	}
@@ -2522,4 +2526,6 @@ var gaugeOptions = {
             document.body.style.zoom="90%";
         }
     });
+
+
 
