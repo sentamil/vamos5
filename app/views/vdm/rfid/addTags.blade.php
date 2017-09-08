@@ -52,9 +52,9 @@
 										@for($i=1;$i<=$tags;$i++)
 										<tr style="text-align: center;">
 											<td>{{ $i }}</td>
-											<td>{{ Form::text('tagid'.$i, Input::old('tagid')) }}</td>
-											<td>{{ Form::text('mobile'.$i, Input::old('nobile')) }}</td>
-											<td>{{ Form::text('tagname'.$i, Input::old('tagname')) }}</td>
+											<td>{{ Form::text('tagid'.$i, Input::old('tagid'), array('class' => 'form-control', 'required' => 'required')) }}</td>
+											<td>{{ Form::text('mobile'.$i, Input::old('nobile'), array('class' => 'form-control', 'required' => 'required')) }}</td>
+											<td>{{ Form::text('tagname'.$i, Input::old('tagname'), array('class' => 'form-control', 'required' => 'required')) }}</td>
 											<!-- <td>{{ Form::select('belongsTo' .$i, $vehList, Input::old('belongsTo'),array('id' => 'useri')) }}</td>
 
 											<td>{{Form::select('swipedBy'.$i, $vehRfidYesList, array('swipedBy'.$i), array('multiple','name'=>'sports'.$i.'[]'))}}</td> -->
