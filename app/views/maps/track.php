@@ -46,7 +46,7 @@
                         
                         <div class="form-group form-inline" style="margin-bottom: 5px">
                             <div class="input-group datecomp">
-                              <input type="button" id="traffic" ng-click="check()" value="Traffic" class="sizeInput"/>
+                              <input type="button" id="traffic" ng-click="checkme('traffic')" value="Traffic" class="sizeInput"/>
                             </div>
                             <div class="input-group datecomp">
                               <input type="text" value="0.0" id="latinput" class="sizeInput" style="width:200px" readonly/>

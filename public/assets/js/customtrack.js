@@ -565,11 +565,13 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 	$scope.trafficLayer = new google.maps.TrafficLayer();
 	$scope.checkVal=false;
 	$scope.clickflagVal =0;
-	$scope.check = function(){
+	$scope.checkme = function(val){
 		if($scope.checkVal==false){
+			document.getElementById(val).style.backgroundColor = "yellow"
 			$scope.trafficLayer.setMap($scope.map);
 			$scope.checkVal = true;
 		}else{
+			document.getElementById(val).style.backgroundColor = "#FFFFFF"
 			$scope.trafficLayer.setMap(null);
 			$scope.checkVal = false;
 		}
@@ -941,4 +943,3 @@ $(document).ready(function(e) {
             $("#wrapper").toggleClass("toggled");
         });
 });
- 
