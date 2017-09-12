@@ -591,12 +591,12 @@ public function edit($id) {
 	 $refData = array_add($refData, 'vehicleExpiry', 'null');
 	 $refData = array_add($refData, 'onboardDate', ' ');
         $refData = array_add($refData, 'overSpeedLimit', '50');
-        $refData = array_add($refData, 'driverName', 'nill');
+        $refData = array_add($refData, 'driverName', '');
         $refData = array_add($refData, 'gpsSimNo', '0123456789');
         $refData = array_add($refData, 'email', ' ');
         $refData = array_add($refData, 'odoDistance', '0');
         $refData = array_add($refData, 'sendGeoFenceSMS', 'no');
-        $refData = array_add($refData, 'morningTripStartTime', 'nill');
+        $refData = array_add($refData, 'morningTripStartTime', ' ');
         $refData = array_add($refData, 'eveningTripStartTime', ' ');
         $refData= array_add($refData, 'altShortName',' ');
         $refData= array_add($refData, 'date',' ');
@@ -620,7 +620,7 @@ public function edit($id) {
         $refData= array_add($refData, 'digitalout', '');
         $refData= array_add($refData, 'mintemp', '');
         $refData= array_add($refData, 'maxtemp', '');
-        $refData= array_add($refData, 'routeName', 'nill');
+        $refData= array_add($refData, 'routeName', '');
 
         
 
@@ -2153,7 +2153,7 @@ $current = Carbon::now();
 
     // log::info('device id--->'.$deviceId);
     // log::info('vechicle id-->'.$vehicleId);
-    Session::flash ( 'message', 'Successfully updated ' . '!' );
+    Session::flash ( 'message', 'Asset Id/Vehicle Id has been renamed successfully. ' . '!' );
     return Redirect::to ( 'VdmVehicleScan' );
     //$orgLis = [];
    // return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);

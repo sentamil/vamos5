@@ -685,9 +685,9 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$overSpeedLimit=Input::get ( 'overSpeedLimit'.$i);
 	$overSpeedLimit=!empty($overSpeedLimit) ? $overSpeedLimit : '60';	
 	$driverName=Input::get ( 'driverName'.$i);	
-	$driverName=!empty($driverName) ? $driverName : 'nill';	
+	$driverName=!empty($driverName) ? $driverName : '';	
 	$email=Input::get ( 'email'.$i);	
-	$email=!empty($email) ? $email : 'nill';	
+	$email=!empty($email) ? $email : '';	
 	//
 	$vehicleExpiry=Input::get ( 'vehicleExpiry');
 	if($fcode == 'TRKPT') {
@@ -695,17 +695,17 @@ for($i =1;$i<=$numberofdevice;$i++)
     }
     else
 	{
-    $vehicleExpiry=!empty($vehicleExpiry) ? $vehicleExpiry : 'null';	
+    $vehicleExpiry=!empty($vehicleExpiry) ? $vehicleExpiry : '';	
     }
     //$vehicleExpiry=!empty($vehicleExpiry) ? $vehicleExpiry : 'nill';
 	$altShortName=Input::get ( 'altShortName'.$i);	
-	$altShortName=!empty($altShortName) ? $altShortName : 'nill';						
+	$altShortName=!empty($altShortName) ? $altShortName : '';						
 	$sendGeoFenceSMS=Input::get ( 'sendGeoFenceSMS'.$i);
 	$sendGeoFenceSMS=!empty($sendGeoFenceSMS) ? $sendGeoFenceSMS : 'no';	
 	$morningTripStartTime=Input::get ( 'morningTripStartTime'.$i);
-	$morningTripStartTime=!empty($morningTripStartTime) ? $morningTripStartTime : 'nill';	
+	$morningTripStartTime=!empty($morningTripStartTime) ? $morningTripStartTime : '';	
 	$eveningTripStartTime=Input::get ( 'eveningTripStartTime'.$i);	
-	$eveningTripStartTime=!empty($eveningTripStartTime) ? $eveningTripStartTime : 'nill';
+	$eveningTripStartTime=!empty($eveningTripStartTime) ? $eveningTripStartTime : '';
 
 	$gpsSimNo=Input::get ( 'gpsSimNo'.$i);	
 	$gpsSimNo=!empty($gpsSimNo) ? $gpsSimNo : '0123456789';
@@ -1393,7 +1393,7 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
 
 			 $refDataArr = array (
 			            'deviceId' => $deviceId,
-			            'shortName' => isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill',
+			            'shortName' => isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'',
 			            'deviceModel' => isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:'GT06N',
 			            'regNo' => isset($refDataJson1['regNo'])?$refDataJson1['regNo']:'XXXXX',
 			            'vehicleMake' => isset($refDataJson1['vehicleMake'])?$refDataJson1['vehicleMake']:' ',
@@ -1410,7 +1410,7 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
 			            'morningTripStartTime' => isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' ',
 			            'eveningTripStartTime' => isset($refDataJson1['eveningTripStartTime'])?$refDataJson1['eveningTripStartTime']:' ',
 			            'parkingAlert' => isset($refDataJson1['parkingAlert'])?$refDataJson1['parkingAlert']:'no',
-			            'altShortName'=>isset($refDataJson1['altShortName'])?$refDataJson1['altShortName']:'nill',
+			            'altShortName'=>isset($refDataJson1['altShortName'])?$refDataJson1['altShortName']:'',
 			            'date' =>date('F d Y', strtotime("+0 month")),
 			            'paymentType'=>isset($refDataJson1['paymentType'])?$refDataJson1['paymentType']:' ',
 			            'expiredPeriod'=>isset($refDataJson1['expiredPeriod'])?$refDataJson1['expiredPeriod']:' ',

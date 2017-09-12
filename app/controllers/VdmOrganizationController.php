@@ -507,8 +507,8 @@ public function siteUpdate()
 		$username = Auth::user()->username;
 		$redis = Redis::connection();
 		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-		$time = array('' => '', '10' => '10', '20' => '20', '30' => '30', '40' => '40', '50' => '50', '60' => '60', '70' => '70', '80' => '80', '90' => '90', '100' => '100'); 
-		$enable = array('N' => 'N', 'Y' => 'Y');
+		$time = array('' => '', '10' => '10 minutes', '20' => '20 minutes', '30' => '30 minutes', '40' => '40 minutes', '50' => '50 minutes', '60' => '60 minutes', '70' => '70 minutes', '80' => '80 minutes', '90' => '90 minutes', '100' => '100 minutes'); 
+		$enable = array('N' => 'NO', 'Y' => 'YES');
 		log::info($time);
 		$alertList=array();
 		$smsArray=array();

@@ -35,7 +35,8 @@
                 		<div class="row">
                 			<div class="col-md-2"></div>
                 			<div class="col-md-3"></div>
-                			<div class="col-md-4">	{{ Form::submit('Rename the VehicleId!', array('class' => 'btn btn-primary')) }}</div>
+                			<div class="col-md-4" style="position: relative; left: 10%">{{ Form::submit('Submit', array('class' => 'btn btn-success')) }}</div>
+							<div class="col-md-3"><a class="btn btn btn-danger" style="position: relative; right: 70%" href="{{ URL::previous() }}">Cancel</a></div>
                 		</div>
                 	</div>
                 	{{ Form::close() }}
