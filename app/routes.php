@@ -1056,6 +1056,8 @@ Route::resource('Licence', 'LicenceController');
 ///Advance scan for USERS       
 Route::get('vdmUserSearch/Scan', array('uses' => 'VdmUserController@search'));      
 Route::post('vdmUserScan/user', array('uses' => 'VdmUserController@scan'));
+Route::get('vdmUsers/reports/{param}', array('uses' => 'VdmUserController@reports'));
+Route::post('vdmUsers/updateReports', array('uses' => 'VdmUserController@updateReports'));
 
 Route::get('vdmUsers/notification/{param}', array('uses' => 'VdmUserController@notification'));
 Route::post('vdmUsers/updateNotification', array('uses' => 'VdmUserController@updateNotification'));
