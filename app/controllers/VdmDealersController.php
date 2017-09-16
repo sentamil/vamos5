@@ -374,8 +374,13 @@ class VdmDealersController extends \BaseController {
 			$detailJson=json_encode($detail);
 			$redis->hset ( 'H_DealerDetails_' . $fcode, $dealerid, $detailJson );
 			$redis->hmset ( 'H_UserId_Cust_Map', $dealerid . ':fcode', $fcode, $dealerid . ':mobileNo', $mobileNo,$dealerid.':email',$email, $dealerid.':zoho',$zoho, $dealerid.':mapKey',$mapKey, $dealerid.':addressKey',$addressKey, $dealerid.':notificationKey',$notificationKey );
-			
-
+			$totalReports = $redis->smembers('S_Users_Reports_Admin_'.$username.'_'.$fcode);	
+			if($totalReports != null)
+			{
+				foreach ($totalReports as $key => $value) {
+        				$redis-> sadd('S_Users_Reports_Dealer_'.$userId.'_'.$fcode);
+        			}
+			}
 			$oldDealerList = json_decode($oldDealerList, true);
 
 			$imageName = $this->utilMethod($website);

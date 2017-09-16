@@ -977,6 +977,10 @@ public function users()
 			$redis->sadd ( 'S_Users_' . $fcode, $userId );
 			$password='awesome';
 			$redis->hmset ( 'H_UserId_Cust_Map', $userId . ':fcode', $fcode, $userId . ':mobileNo', $mobileNo1,$userId.':email',$email1 ,$userId.':password',$password,$userId. ':zoho',$zoho, $userId. 'auth',$auth, $userId. ':OWN','admin');
+			$defaultReports = $redis->smembers('S_Default_ReportList');
+                foreach ($defaultReports as $key => $value) {
+                    $redis-> sadd('S_Users_Reports_Admin_'.$fcode , $value);
+                }
 			$user = new User;
 			$user->name = $fname;
 			$user->username=$userId;
@@ -1519,5 +1523,119 @@ public function users()
 		Session::flash ( 'message', 'Successfully deleted ' . 'fname:'.$fcode . '!' );
 		return Redirect::to ( 'vdmFranchises' );
 	}
+/**
+         * Show the form for editing the specified resource.
+         *
+         * @param int $id
+         * @return Response
+         */
+
+
+
+    public function reports($id) {
+        if (! Auth::check () ) {
+            return Redirect::to ( 'login' );
+        }
+        $totalReportList = array();
+        $list = array();
+        $totalList = array();
+        $reportsList = array();
+        $username = Auth::user ()->username;
+        $fcode = $id;
+        $redis = Redis::connection ();
+        $totalReport = null;
+        $totalReport = $redis->smembers("S_TotalReports");
+                foreach ($totalReport as $key => $getReport)
+                {
+                        $specReports = $redis->smembers($getReport);
+                        $reportType = explode("_",$getReport);
+                        foreach ($specReports as $key => $ReportName) {
+                                $report[]=$ReportName.':'.$reportType[0];
+                        }
+                        $reportsList[] = $getReport;
+                        $totalReportList[] = $report;
+                        $totalList[$getReport] = $report;
+                        $report = null;
+                }
+                $userReports = $redis->smembers("S_Users_Reports_Admin_".$fcode);
+                return View::make ( 'vdm.franchise.reports', array (
+                                'fcode' => $fcode
+                ) )->with ( 'reportsList', $reportsList )
+                ->with('totalReportList',$totalReportList)
+                ->with('totalList',$totalList)
+                ->with('userReports',$userReports);
+        }
+
+
+    public function updateReports() {
+        if (! Auth::check ()) {
+            return Redirect::to ( 'login' );
+        }
+        $fcode = Input::get('fcode');
+        $username = Auth::user ()->username;
+        $reportName = Input::get('reportName');
+        $redis = Redis::connection ();
+
+                if($reportName != null)
+				{
+                                $prevReportList = $redis->smembers('S_Users_Reports_Admin_'.$fcode);
+                                $redis->del('S_Users_Reports_Admin_'.$fcode);
+                                foreach ($reportName as $key => $value) {
+                                        $redis->sadd('S_Users_Reports_Admin_'.$fcode, $value);
+                                }
+                        $defaultReports = $redis->smembers('S_Default_ReportList');
+                        foreach ($defaultReports as $key => $value) {
+                                $redis-> sadd('S_Users_Reports_Admin_'.$fcode , $value);
+                        }
+                        $removeList = '';
+                        $currentReportList = $redis->smembers('S_Users_Reports_Admin_'.$fcode);
+                        foreach ($prevReportList as $key => $value) {
+                                if (in_array($value, $currentReportList)) {
+                                        log::info("GotErix");
+                                }else
+                                {
+                                        $removeList = $value.','.$removeList;
+                                        log::info("GotErix2");
+                                }
+                        }
+                 $parameters = 'fcode='.$fcode . '&removeList='.$removeList;
+                 $ipaddress = $redis->get('ipaddress');
+                 $url = 'http://'.ipaddress.':9000/getRemoveReports?' . $parameters;
+                 $url=htmlspecialchars_decode($url);
+                 log::info( ' url :' . $url);
+                 $ch = curl_init();
+                 curl_setopt($ch, CURLOPT_URL, $url);
+                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                 curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+                $response = curl_exec($ch);
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
+                        // if($removeList != null)
+                        // {
+                                // $dealerList[] = $redis->smembers("S_Dealers_".$fcode);
+                                // $dealerList[] = $redis->smembers("S_Users_".$fcode);
+                                // log::info($dealerList);
+                                // // foreach ($dealerList as $key => $dealer) {
+                                //      $redis->srem("S_Users_Reports_Dealer_".$dealer.'_'.$fcode, $removeList);
+                                // }
+                                // $userList = $redis->smembers("S_Users_".$fcode);
+                                // foreach ($userList as $key => $user) {
+                                //      $redis->srem("S_Users_Reports_".$dealer.'_'.$fcode, $removeList);
+                                // }
+
+                }
+                else {
+                        $redis->del('S_Users_Reports_Admin_'.$fcode);
+                        $defaultReports = $redis->smembers('S_Default_ReportList');
+                        foreach ($defaultReports as $key => $value) {
+                        $redis-> sadd('S_Users_Reports_Admin_'.$fcode , $value);
+                        }
+
+                }
+
+                return Redirect::to ( 'vdmFranchises' );
+        }
 }
+
 

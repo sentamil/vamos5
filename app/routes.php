@@ -1132,6 +1132,8 @@ Route::resource('vdmFranchises', 'VdmFranchiseController');
 Route::post('vdmFranchises/updateAddCount', array('uses' => 'VdmFranchiseController@updateAddCount'));
 Route::post('vdmFranchises/findFransList', array('uses' => 'VdmFranchiseController@findFransList'));
 Route::post('vdmFranchises/findUsersList', array('uses' => 'VdmFranchiseController@findUsersList'));
+Route::get('vdmFranchises/reports/{param}', array('uses' => 'VdmFranchiseController@reports'));
+Route::post('vdmFranchises/updateReports', array('uses' => 'VdmFranchiseController@updateReports'));
  
 Route::get('notificationFrontend', array('uses' => 'VdmUserController@notificationFrontend'));
 Route::post('notificationFrontendUpdate', array('uses' => 'VdmUserController@notificationFrontendUpdate'));

@@ -504,6 +504,27 @@ public function adddevice() {
 			$orgList=BusinessController::getOrg();
 			$dealerId=array();
 			$dealerId=BusinessController::getdealer();
+			//thiru
+			if( $type1 != null && $type1 =='new')
+			{
+				if(Session::get('cur')=='dealer')		
+        		{		
+            		log::info( '------login 1---------- '.Session::get('cur'));		
+            		
+            		$totalReports = $redis->smembers('S_Users_Reports_Dealer_'.$username.'_'.$fcode);		
+        		}		
+        		else if(Session::get('cur')=='admin')		
+        		{		
+					$totalReports = $redis->smembers('S_Users_Reports_Admin_'.$fcode);
+        		}
+        		if($totalReports != null)
+        		{
+        			foreach ($totalReports as $key => $value) {
+        				$redis-> sadd('S_Users_Reports_'.$userId.'_'.$fcode, $value);
+        			}
+        		}
+				// addReportsForNewUser($userId);
+			}
 			if($type1=='existing')
 			{
 				$userId      = Input::get('userIdtemp');
@@ -1252,13 +1273,22 @@ return Redirect::to ( 'Business' )->withErrors($error);
 				return Redirect::to ( 'Business' )->withErrors ( 'Select the user' );
 			}
 			 if($type1=='new')
-			{
-				log::info($ownerShip.'3----a------->'.Session::get('cur'));
-				 $rules = array (
-				'userId' => 'required|alpha_dash',
-				'email' => 'required|email',
-				
-				);             
+            {
+                if(Session::get('cur')=='dealer'){
+                    $totalReports = $redis->smembers('S_Users_Reports_Dealer_'.$username.'_'.$fcode);
+                }
+                if($totalReports != null)
+                {
+                   foreach ($totalReports as $key => $value) {
+                   $redis-> sadd('S_Users_Reports_'.$userId.'_'.$fcode, $value);
+                  }
+                }
+        log::info($ownerShip.'3----a------->'.Session::get('cur'));
+         $rules = array (
+        'userId' => 'required|alpha_dash',
+        'email' => 'required|email',
+
+        );             
                 
 				$validator = Validator::make ( Input::all (), $rules );
 			   

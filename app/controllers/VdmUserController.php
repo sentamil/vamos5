@@ -188,7 +188,24 @@ class VdmUserController extends \BaseController {
             foreach ( $vehicleGroups as $grp ) {
 				$redis->sadd ( $userId, $grp );
 			}
-            
+            // thirumani set Reports
+                        if(Session::get('cur')=='dealer')
+                        {
+                        log::info( '------login 1---------- '.Session::get('cur'));
+
+                        $totalReports = $redis->smembers('S_Users_Reports_Dealer_'.$username.'_'.$fcode);
+                        }
+                        else if(Session::get('cur')=='admin')
+                        {
+                                        $totalReports = $redis->smembers('S_Users_Reports_Admin_'.$fcode);
+                        }
+                        if($totalReports != null)
+                        {
+                                foreach ($totalReports as $key => $value) {
+                                        $redis-> sadd('S_Users_Reports_'.$userId.'_'.$fcode, $value);
+                                }
+                        }
+
             $virtualaccount=Input::get ( 'virtualaccount' );
 
 
@@ -697,4 +714,184 @@ public function updateNotification() {
 		}
 	}
 
+    public function reports($id)
+    {
+     if (! Auth::check ()) {
+        return Redirect::to ( 'login' );
+     }
+     $totalReportList = array();
+     $list = array();
+     $totalList = array();
+     $reportsList = array();
+     $username = Auth::user ()->username;
+     $user = $id;
+     $redis = Redis::connection ();
+     $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+     $totalReport = null;
+     if(Session::get('cur')=='dealer')
+        {
+            log::info( '------login 1---------- '.Session::get('cur'));
+            $dealeReportLen = $redis->scard('S_Users_Reports_Dealer_'.$username.'_'.$fcode);
+            $adminLength =      $redis->scard('S_Users_Reports_Admin_'.$fcode);
+            if($adminLength >= $dealeReportLen)
+            {
+                $totalReports = $redis->smembers('S_Users_Reports_Dealer_'.$username.'_'.$fcode);
+            }else{
+                $totalReports = $redis->smembers('S_Users_Reports_Admin_'.$fcode);
+                log::info('its incorrect report');
+                $redis->del('S_Users_Reports_Dealer_'.$username.'_'.$fcode);
+                foreach ($totalReports as $key => $value) {
+                        $redis->sadd('S_Users_Reports_Dealer_'.$username.'_'.$fcode, $value);
+                }
+            }
+        }
+        else if(Session::get('cur')=='admin')
+        {
+            $totalReports = $redis->smembers('S_Users_Reports_Admin_'.$fcode);
+        }
+        $isVirtualuser = $redis->sismember("S_Users_Virtual_".$fcode, $user);
+        $virtualReports = array();
+        log::info(gettype($virtualReports));
+        if($isVirtualuser)
+         {
+           $virtualReports = $redis->smembers('S_UserVirtualReports');
+         }
+        if($totalReports != null){
+                foreach ($totalReports as $key => $value) {
+                        if(in_array($value, $virtualReports))
+                        {
+                                log::info('checking');
+                        }else{
+
+                                $totalReport[explode(":",$value)[1]][] = $value;
+                        }
+                }
+                $totalList = $totalReport;
+                }
+        if($totalList == null)
+        {
+                $totalReport = $redis->keys("*_Reports");
+                $report[] = array();
+                        foreach ($totalReport as $key => $getReport) {
+                        $specReports = $redis->smembers($getReport);
+                        foreach ($specReports as $key => $ReportName) {
+                                // $report[]=$ReportName.':'.$reportType[0];
+                        }
+                        // log::info($report);
+                        $reportsList[] = $getReport;
+                        $totalReportList[] = $report;
+                        $totalList[$getReport] = $report;
+                        $report = null;
+                $dealerOrUser = $redis->sismember('S_Dealers_'.$fcode, $user);
+                if($dealerOrUser)
+                        {
+                                return Redirect::to ( 'vdmDealers' );
+                        }else
+                        {
+                                return Redirect::to ( 'vdmUsers' );
+                        }
+                        // log::info('mmmmm');
+                        // log::info($totalReport);
+                }
+        }
+                $dealerOrUser = $redis->sismember('S_Dealers_'.$fcode, $user);
+                if($dealerOrUser)
+                {
+                        $userReports = $redis->smembers("S_Users_Reports_Dealer_".$user.'_'.$fcode);
+                }else
+                {
+                        $userReports = $redis->smembers("S_Users_Reports_".$user.'_'.$fcode);
+                }
+                log::info($totalList);
+                return View::make ( 'vdm.users.reports', array (
+                                'userId' => $user
+                ) )->with ( 'reportsList', $reportsList )
+                ->with('totalReportList',$totalReportList)
+                ->with('totalList',$totalList)
+                ->with('userReports',$userReports);
+        }
+
+        public function updateReports()
+        {
+                if (! Auth::check ()) {
+                        return Redirect::to ( 'login' );
+                }
+                log::info('Entry');
+                $userId = Input::get('userId');
+                log::info($userId);
+                $username = Auth::user ()->username;
+                log::info($username);
+            $reportName = Input::get('reportName');
+                $redis = Redis::connection ();
+                $fcode = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
+                $dealerOrUser = false;
+                $dealerOrUser = $redis->sismember('S_Dealers_'.$fcode, $userId);
+                if($reportName != null)
+                {
+                        log::info($dealerOrUser);
+                        if($dealerOrUser)
+                        {
+                                log::info('Dealer');
+                                $prevReportList = $redis->smembers('S_Users_Reports_Dealer_'.$userId.'_'.$fcode);
+                                $redis->del("S_Users_Reports_Dealer_".$userId.'_'.$fcode);
+                                foreach ($reportName as $key => $value) {
+                                        $redis->sadd("S_Users_Reports_Dealer_".$userId.'_'.$fcode, $value);
+                                }
+                                $removeList = array();
+                                $currentReportList = $redis->smembers('S_Users_Reports_Dealer_'.$userId.'_'.$fcode);
+                                foreach ($prevReportList as $key => $value) {
+                                if (in_array($value, $currentReportList)) {
+                                        log::info("GotErix");
+                                }else
+                                {
+                                        $removeList[] = $value;
+                                        log::info("GotErix2");
+                                }
+                        }
+                        log::info($removeList);
+                        if($removeList != null)
+                        {
+                                $userList = $redis->smembers("S_Users_Dealer_".$userId.'_'.$fcode);
+                                log::info($userList);
+                                foreach ($userList as $key => $dealer) {
+                                        $redis->srem("S_Users_Reports_".$dealer.'_'.$fcode, $removeList);
+                                }
+
+                        }
+                        }
+                        else if(!$dealerOrUser)
+                        {
+                                log::info('user define');
+                                $redis->del("S_Users_Reports_".$userId.'_'.$fcode);
+                                $redis->sadd("S_Users_Reports_".$userId.'_'.$fcode, $reportName);
+                        }
+                }
+                else {
+                        log::info('jjjjjjjj');
+
+            if($dealerOrUser)
+                        {
+                                $redis->del("S_Users_Reports_Dealer_".$userId.'_'.$fcode);
+                        }else
+                        {
+                                log::info(" correct identification ");
+                                 $redis->del("S_Users_Reports_".$userId.'_'.$fcode);
+                        }
+
+                }
+
+                log::info($reportName);
+
+
+                //$redis->sadd('S_Reports_'.$userId.'_'.$fcode, 'SINGLE_TRACK:Tracking', 'HISTORY:Tracking','MULTITRACK:Tracking','CURRENT_STATUS:Consolidatedvehicles','MOVEMENT:Analytics','OVERSPEED:Analytics','PARKED:Analytics','IDLE:Analytics','DAILY:Statistics', 'DAILY_PERFORMANCE:Performance','PAYMENT_REPORTS:Useradmin','RESET_PASSWORD:Useradmin');
+                if($dealerOrUser)
+                {
+                        return Redirect::to ( 'vdmDealers' );
+                }else
+                {
+                        return Redirect::to ( 'vdmUsers' );
+                }
+        }
+
 }
+	

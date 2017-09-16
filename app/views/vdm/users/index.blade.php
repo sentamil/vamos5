@@ -37,7 +37,8 @@
 								<a class="btn btn-small btn-success" href="{{ URL::to('vdmUsers/' . $value) }}">Show this User</a>
 
 									<a class="btn btn-small btn-info" href="{{ URL::to('vdmUsers/' . $value . '/edit') }}">Edit this User</a>	
-									<a class="btn btn-small btn-success" href="{{ URL::to('vdmUsers/notification/' . $value ) }}">Edit Notification</a>				
+									<a class="btn btn-small btn-success" href="{{ URL::to('vdmUsers/notification/' . $value ) }}">Edit Notification</a>
+                                    <a class="btn btn-small btn-info"  href="{{ URL::to('vdmUsers/reports/' . $value ) }}">Edit Reports</a>									
 									{{ Form::open(array('url' => 'vdmUsers/' . $value, 'class' => 'pull-right' ,'onsubmit' => 'return ConfirmDelete()')) }}
 										{{ Form::hidden('_method', 'DELETE') }}
 										{{ Form::submit('Delete this User', array('class' => 'btn btn-warning')) }}
