@@ -6,11 +6,11 @@
             <!-- <a><span  data-hover="Tracking">Tracking</span></a><span class="glyphicons glyphicons-road"></span> -->
             <a><span  data-hover="Tracking"><div class="glyphicon glyphicon-map-marker"></div>&nbsp;Tracking</span></a>
             <ul>
-                <li class="removeli"><a id="history" href="" target="_blank">History</a></li>
-                <li class="removeli"><a id="singleTrack" href="">Single Track</a></li>
-                <li class="removeli"><a id="multiTrack" href="">Multi Track</a></li>
-                <li class="removeli removeli_2"><a href="../public/track?maps=replay&rt=routes">Routes</a></li>
-                <li class="removeli removeli_2"><!-- <a id="addsites">Admin</a>
+                <li class="removeli" id="historyRl"><a id="history" href="" target="_blank">History</a></li>
+                <li class="removeli" id="singleTrackRl"><a id="singleTrack" href="">Single Track</a></li>
+                <li class="removeli" id="multiTrackRl"><a id="multiTrack" href="">Multi Track</a></li>
+                <li class="removeli removeli_2" id="routesRl"><a href="../public/track?maps=replay&rt=routes">Routes</a></li>
+                <li class="removeli removeli_2" id="addsiteRl"><!-- <a id="addsites">Admin</a>
                    <div  style="padding-left: 10px"> -->
                        <a href="../public/password_check" id="addsites">AddSites / Geo Fence</a>
               <!-- </div> -->
@@ -22,15 +22,16 @@
             <!-- <a><span data-hover="Reports">Reports</span></a> -->
             <a><span  data-hover="Reports"><div class="glyphicon glyphicon-list-alt"></div>&nbsp;Reports</span></a>
             <ul>
-                <li class="removeli"><a href="../public/reports">CURRENT STATUS</a></li>
-                <li class="removeli"><a href="../public/reports?ind=1">Vehicles Consolidated </a></li>
-                <li class="removeli"><a href="../public/reports?ind=2"> Consolidated Site & Location</a></li>
+                <li class="removeli" id="curStatRl"><a href="../public/reports?ind=1">CURRENT STATUS</a></li>
+                <li class="removeli" id="vehConsRl"><a href="../public/reports?ind=2">Vehicles Consolidated </a></li>
+                <li class="removeli" id="conSiteRl"><a href="../public/reports?ind=3"> Consolidated Site & Location</a></li>
            <!-- <li class="removeli"><a href="../public/reports?ind=4"> Site Location</a></li> -->
-                <li class="removeli"><a href="../public/reports?ind=3"> Consolidated Overspeed</a></li>
-                <li class="removeli"><a id="stopReport" href="">Consolidated Stoppage</a></li>
-                <li class="removeli"><a id="tollReport" href="">Tollgate Report</a></li>
-                <li class="removeli"><a id="SchoolSmsReport" href="">School SMS Daily Report</a></li>
-                <li class="removeli"><a id="siteAlertReport" href="">Site Stopppage Alert </a></li>
+                <li class="removeli" id="conOvrRl"><a href="../public/reports?ind=4"> Consolidated Overspeed</a></li>
+                <li class="removeli" id="stopReportRl"><a id="stopReport" href="">Consolidated Stoppage</a></li>
+                <li class="removeli" id="conSiteLocRl"><a id="ConSiteLocReport" href="">Consolidated Site Report</a></li>
+                <li class="removeli" id="tollReportRl"><a id="tollReport" href="">Tollgate Report</a></li>
+                <li class="removeli" id="SchoolSmsReportRl"><a id="SchoolSmsReport" href="">School SMS Daily Report</a></li>
+                <li class="removeli" id="siteAlertReportRl"><a id="siteAlertReport" href="">Site Stopppage Alert </a></li>
                 <!-- <li> <a href="#"> Advanced &nbsp; </a>
                      <div style="padding-left: 10px">
                         <table style="width: 300px; height: 100px;">
@@ -67,46 +68,46 @@
                 <!-- <a><span data-hover="analytics">analytics</span></a> -->
                 <a><span  data-hover="analytics"><div class="glyphicon glyphicon-screenshot"></div>&nbsp;analytics</span></a>
                 <ul>
-                    <li class="removeli"><a id="movement" href="" > Movement</a></li>
-                    <li class="removeli"><a id="overspeed" href=""> OverSpeed </a></li>
-                    <li class="removeli"><a id="parked" href=""> Parked </a></li>
-                    <li class="removeli"><a id="idle" href=""> Idle </a></li>
-                    <li class="removeli"><a id="event" href=""> Event </a></li>
-                    <li class="removeli"><a id="site" href=""> Site </a></li>
-                    <li class="removeli"><a id="multiSite" href=""> Site (Mulitple Site)</a></li>
-                    <li class="removeli"><a id="tripSite" href=""> Site Trip</a></li>
-                    <li class="removeli"><a id="trip" href=""> Trip Time </a></li>
-                    <li class="removeli"><a id="tripkms" href=""> Trip Summary</a></li>
-                    <li class="removeli"><a id="alarm" href="">Alarm</a></li>
-                    <li class="removeli"><a id="ac" href="">A/C</a></li>
-                    <li class="removeli"><a id="stoppage" href="">Stoppage</a></li>
+                    <li class="removeli" id="movementRl"><a id="movement" href="" > Movement</a></li>
+                    <li class="removeli" id="overspeedRl"><a id="overspeed" href=""> OverSpeed </a></li>
+                    <li class="removeli" id="parkedRl"><a id="parked" href=""> Parked </a></li>
+                    <li class="removeli" id="idleRl"><a id="idle" href=""> Idle </a></li>
+                    <li class="removeli" id="ignitionRl"><a id="ignition" href=""> Ignition </a></li>
+                    <li class="removeli" id="fuelRl"><a id="fuel" href=""> Fuel </a></li>
+                    <li class="removeli" id="eventRl"><a id="event" href=""> Event </a></li>
+                    <li class="removeli" id="siteRl"><a id="site" href=""> Site </a></li>
+                    <li class="removeli" id="multiSiteRl"><a id="multiSite" href=""> Site (Mulitple Site)</a></li>
+                    <li class="removeli" id="tripSiteRl"><a id="tripSite" href=""> Site Trip</a></li>
+                    <li class="removeli" id="tripRl"><a id="trip" href=""> Trip Time </a></li>
+                    <li class="removeli" id="tripkmsRl"><a id="tripkms" href=""> Trip Summary</a></li>
+                    <li class="removeli" id="alarmRl"><a id="alarm" href="">Alarm</a></li>
+                    <li class="removeli" id="acRl"><a id="ac" href="">A/C</a></li>
+                    <li class="removeli" id="stoppageRl"><a id="stoppage" href="">Stoppage</a></li>
                 </ul>
             </li>
         <li class="cl-effect-5">
             <!-- <a><span data-hover="Statistics">Statistics</span></a> -->
             <a><span  data-hover="Statistics"><div class="glyphicon glyphicon-stats"></div>&nbsp;Statistics</span></a>
             <ul>
-                <li class="removeli"><a href="../public/statistics">Daily</a></li>
-                <li class="removeli"><a href="../public/statistics?ind=1">POI</a></li>
-                <li class="removeli"><a href="../public/statistics?ind=2">Consolidated</a></li>
-                <li class="removeli"><a href="../public/statistics?ind=3">Executive Fuel</a></li>
-                <li class="removeli"><a href="../public/statistics?ind=4">Monthly Dist</a></li> 
-                <li class="removeli"><a href="../public/statistics?ind=5">Monthly Dist and Fuel</a></li> 
+                <li class="removeli" id="dailyRl"><a href="../public/statistics?ind=1">Daily</a></li>
+                <li class="removeli" id="poiRl"><a href="../public/statistics?ind=2">POI</a></li>
+                <li class="removeli" id="consolRl"><a href="../public/statistics?ind=3">Consolidated</a></li>
+                <li class="removeli" id="exfuelRl"><a href="../public/statistics?ind=4">Executive Fuel</a></li>
+                <li class="removeli" id="monDistRl"><a href="../public/statistics?ind=5">Monthly Dist</a></li> 
+                <li class="removeli" id="monDistFuelRl"><a href="../public/statistics?ind=6">Monthly Dist and Fuel</a></li> 
             </ul>
         </li>
         <li class="cl-effect-5">
         <a><span  data-hover="sensor"><div class="glyphicon glyphicon-list"></div>&nbsp;sensor</span></a>
             <!-- <a><span data-hover="sensor">sensor</span></a> -->
             <ul>
-                <li class="removeli"><a id="load" href=""> Load </a></li>
-                    <li class="removeli"><a id="ignition" href=""> Ignition </a></li>
-                    <li class="removeli"><a id="temp" href=""> Temperature</a></li>
-                    <li class="removeli"><a id="tempdev" href=""> Temperature Deviation</a></li>
-                    <li class="removeli"><a id="fuel" href=""> Fuel </a></li>
-                    <li class="removeli"><a href="../public/fuel">Distance &amp; Time</a></li>
-                    <li class="removeli"><a href="../public/fuel?tab=fuelfill">Fuel Fill</a></li>
-                    <li class="removeli"><a id="rfid" href="">Rfid</a></li>
-                    <li class="removeli"><a id="camera" href="">Camera</a></li> 
+                    <li class="removeli" id="loadRl"><a id="load" href=""> Load </a></li>
+                    <li class="removeli" id="tempRl"><a id="temp" href=""> Temperature</a></li>
+                    <li class="removeli" id="tempdevRl"><a id="tempdev" href=""> Temperature Deviation</a></li>
+                    <li class="removeli" id="distTimeRl"><a href="../public/fuel">Distance &amp; Time</a></li>
+                    <li class="removeli" id="fuelFillRl"><a href="../public/fuel?tab=fuelfill">Fuel Fill</a></li>
+                    <li class="removeli" id="rfidRl"><a id="rfid" href="">Rfid</a></li>
+                    <li class="removeli" id="cameraRl"><a id="camera" href="">Camera</a></li> 
             </ul>
         </li>
         <!-- <li class="cl-effect-5">
@@ -121,20 +122,20 @@
             <a><span  data-hover="Performance"><div class="glyphicon glyphicon-charts"></div>&nbsp;Performance</span></a>
             <!-- <a><span  data-hover="Performance">Performance</span></a> -->
             <ul>
-                <li class="removeli"><a href="../public/performance?tab=daily">Daily Performance</a></li>
-                <li class="removeli"><a href="../public/performance">Monthly Performance</a></li>
+                <li class="removeli" id="dailyPerfRl"><a href="../public/performance?tab=daily">Daily Performance</a></li>
+                <li class="removeli" id="monPerfRl"><a href="../public/performance">Monthly Performance</a></li>
             </ul>
         </li>
         
         <li id="userId">
             <span class="glyphicon glyphicon-user"><span id="valueUser" style="font-size:12px; font-weight: bold; font-family: Helvetica"></span></span>  
             <ul>           
-                <li><a href="../public/payDetails">Payment Details</a></li>
-                <li class="removeli removeli_2"><a href="../public/groupEdit">Edit Group</a></li>
-                <li class="removeli removeli_2"><a  href="../public/passWd?userlevel=notify" >Edit Notification</a></li>
-                <li class="removeli removeli_2"><a  href="../public/passWd?userlevel=reset" >Reset Password</a></li>
-                <li class="removeli removeli_2"><a  href="../public/passWd?userlevel=busStop" >Edit BusStop</a></li>
-                <li class="removeli removeli_2"><a  href="../public/passWd?userlevel=apiKeys" >Get ApiKey</a></li>
+                <li id="payDetRl" ><a href="../public/payDetails">Payment Details</a></li>
+                <li class="removeli removeli_2" id="editGrpRl"><a href="../public/groupEdit">Edit Group</a></li>
+                <li class="removeli removeli_2" id="editNotRl"><a  href="../public/passWd?userlevel=notify" >Edit Notification</a></li>
+                <li class="removeli removeli_2" id="resetRl"><a  href="../public/passWd?userlevel=reset" >Reset Password</a></li>
+                <li class="removeli removeli_2" id="editBusRl"><a  href="../public/passWd?userlevel=busStop" >Edit BusStop</a></li>
+                <li class="removeli removeli_2" id="getApiRl"><a  href="../public/passWd?userlevel=apiKeys" >Get ApiKey</a></li>
             </ul>
         </li>
         
@@ -172,6 +173,10 @@
     //     // console.log(document.location)
     // }
 
+
+        var globalIP = document.location.host;
+        var contextMenu = '/gps';
+
         var menuValue = JSON.parse(sessionStorage.getItem('userIdName'));
 
         window.localStorage.setItem("userMasterName",menuValue);
@@ -180,10 +185,297 @@
 
         console.log(sp1[1]);
 
+        var obj = JSON.parse(sessionStorage.getItem('user'));
 
-         var obj = JSON.parse(sessionStorage.getItem('user'));
-         var menuObj = JSON.parse(window.localStorage.getItem('MenuData'));
-         console.log(menuObj);
+        
+      //  var menuObj = JSON.parse(window.localStorage.getItem('MenuData'));
+      //   console.log(menuObj);
+
+    $.get('//'+globalIP+contextMenu+'/public/getReportsList', function(response) {
+
+        if(response){
+              var menuObj=JSON.parse(response);
+               //console.log(menuObj);
+
+           if( menuObj != "" && menuObj!=null ){ 
+
+             for(var i=0;i<menuObj.length;i++){
+
+            // console.log( Object.getOwnPropertyNames(menuObj[i]).sort() );
+                  var newReportName = Object.getOwnPropertyNames(menuObj[i]).sort();
+
+                if(newReportName == "Analytics_IndivdiualReportsList"){
+
+                  //  console.log( "Analytics_Reports");
+                  //  console.log(menuObj[i].Analytics_IndivdiualReportsList.length);
+               
+
+                       var newReportNamesss = Object.getOwnPropertyNames(menuObj[i].Analytics_IndivdiualReportsList[0]).sort();
+                     //  console.log(newReportNamesss.length);
+
+                        
+                        for(var k=0;k<newReportNamesss.length;k++){
+
+                            switch(newReportNamesss[k]){
+
+                                case 'ALARM':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].ALARM==false){ document.getElementById('alarmRl').innerHTML ='';}
+                                break;
+                                case 'IDLE':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].IDLE==false){   document.getElementById('idleRl').innerHTML = '';}
+                                break;
+                                case 'MOVEMENT':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].MOVEMENT==false){   document.getElementById('movementRl').innerHTML = '';}
+                                break;
+                                case 'OVERSPEED':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].OVERSPEED==false){   document.getElementById('overspeedRl').innerHTML = '';}
+                                break;
+                                case 'PARKED':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].PARKED==false){   document.getElementById('parkedRl').innerHTML = '';}
+                                break;
+                                case 'TRIP_TIME':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].TRIP_TIME==false){   document.getElementById('tripRl').innerHTML = '';}
+                                break;
+                                case 'TRIP_SUMMARY':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].TRIP_SUMMARY==false){   document.getElementById('tripkmsRl').innerHTML = '';}
+                                break;
+                                case 'SITE':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].SITE==false){   document.getElementById('siteRl').innerHTML = '';}
+                                break;
+                                case 'SITE_TRIP':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].SITE_TRIP==false){   document.getElementById('tripSiteRl').innerHTML = '';}
+                                break;
+                                case 'EVENT':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].EVENT==false){   document.getElementById('eventRl').innerHTML = '';}
+                                break;
+                                case 'AC':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].AC==false){   document.getElementById('acRl').innerHTML = '';}
+                                break;
+                                case 'STOPPAGE':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].STOPPAGE==false){   document.getElementById('stoppageRl').innerHTML = '';}
+                                break;
+                                case 'MULTIPLE_SITE':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].MULTIPLE_SITE==false){   document.getElementById('multiSiteRl').innerHTML = '';}
+                                break;
+                                case 'FUEL':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].FUEL==false){  document.getElementById('fuelRl').innerHTML = '';}
+                                break;
+                                case 'IGNITION':
+                                  if( menuObj[i].Analytics_IndivdiualReportsList[0].IGNITION==false){  document.getElementById('ignitionRl').innerHTML = '';}
+                                break;
+                            }
+ 
+                        }
+
+                } else if(newReportName == "Consolidatedvehicles_IndivdiualReportsList"){
+
+                   // console.log( "Consolidatedvehicles_Reports");
+                   // console.log(menuObj[i].Consolidatedvehicles_IndivdiualReportsList.length);
+               
+                     var newReportNamesss = Object.getOwnPropertyNames(menuObj[i].Consolidatedvehicles_IndivdiualReportsList[0]).sort();
+                    // console.log(newReportNamesss.length);
+
+                        for(var k=0;k<newReportNamesss.length;k++){
+
+                            switch(newReportNamesss[k]){
+
+                                case 'CONSOLIDATED_SITE_LOCATION':
+                                  if( menuObj[i].Consolidatedvehicles_IndivdiualReportsList[0].CONSOLIDATED_SITE_LOCATION==false){ document.getElementById('conSiteRl').innerHTML ='';}
+                                break;
+                                case 'SCHOOL_SMS_REPORT':
+                                  if( menuObj[i].Consolidatedvehicles_IndivdiualReportsList[0].SCHOOL_SMS_REPORT==false){ document.getElementById('SchoolSmsReportRl').innerHTML = '';}
+                                break;
+                                case 'CONSOLIDATED_STOPPAGE':
+                                  if( menuObj[i].Consolidatedvehicles_IndivdiualReportsList[0].CONSOLIDATED_STOPPAGE==false){ document.getElementById('stopReportRl').innerHTML = '';}
+                                break;
+                                case 'SITESTOPPAGE_ALERT':
+                                  if( menuObj[i].Consolidatedvehicles_IndivdiualReportsList[0].SITESTOPPAGE_ALERT==false){ document.getElementById('siteAlertReportRl').innerHTML = '';}
+                                break;
+                                case 'CURRENT_STATUS':
+                                  if( menuObj[i].Consolidatedvehicles_IndivdiualReportsList[0].CURRENT_STATUS==false){ document.getElementById('curStatRl').innerHTML = '';}
+                                break;
+                                case 'TOLLGATE_REPORT':
+                                  if( menuObj[i].Consolidatedvehicles_IndivdiualReportsList[0].TOLLGATE_REPORT==false){ document.getElementById('tollReportRl').innerHTML = '';}
+                                break;
+                                case 'CONSOLIDATED_OVERSPEED':
+                                  if( menuObj[i].Consolidatedvehicles_IndivdiualReportsList[0].CONSOLIDATED_OVERSPEED==false){ document.getElementById('conOvrRl').innerHTML = '';}
+                                break;
+                                case 'VEHICLES_CONSOLIDATED':
+                                  if( menuObj[i].Consolidatedvehicles_IndivdiualReportsList[0].VEHICLES_CONSOLIDATED==false){ document.getElementById('vehConsRl').innerHTML = '';}
+                                break;
+                            }
+                         }
+
+                } else if(newReportName == "Performance_IndivdiualReportsList"){
+
+                  //  console.log( "Performance_Reports");
+                   // console.log(menuObj[i].Performance_IndivdiualReportsList.length);
+               
+                       var newReportNamesss = Object.getOwnPropertyNames(menuObj[i].Performance_IndivdiualReportsList[0]).sort();
+                     //  console.log(newReportNamesss.length);
+
+                        for(var k=0;k<newReportNamesss.length;k++){
+
+                            switch(newReportNamesss[k]){
+
+                                case 'DAILY_PERFORMANCE':
+                                  if( menuObj[i].Performance_IndivdiualReportsList[0].DAILY_PERFORMANCE==false){ document.getElementById('dailyPerfRl').innerHTML ='';}
+                                break;
+                                case 'MONTHLY_PERFORMANCE':
+                                  if( menuObj[i].Performance_IndivdiualReportsList[0].MONTHLY_PERFORMANCE==false){   document.getElementById('monPerfRl').innerHTML = '';}
+                                break;
+                            }
+                         }
+
+                } else if(newReportName == "Sensor_IndivdiualReportsList"){
+
+                   // console.log( "Sensor_Reports");
+                   // console.log(menuObj[i].Sensor_IndivdiualReportsList.length);
+               
+
+                       var newReportNamesss = Object.getOwnPropertyNames(menuObj[i].Sensor_IndivdiualReportsList[0]).sort();
+                      // console.log(newReportNamesss.length);
+
+                        
+                        for(var k=0;k<newReportNamesss.length;k++){
+
+                            switch(newReportNamesss[k]){
+
+                                case 'DISTANCE_TIME':
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].DISTANCE_TIME==false){ document.getElementById('distTimeRl').innerHTML ='';}
+                                break;
+                                case 'TEMPERATURE_DEVIATION':
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].TEMPERATURE_DEVIATION==false){  document.getElementById('tempdevRl').innerHTML = '';}
+                                break;
+                                case 'TEMPERATURE':
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].TEMPERATURE==false){  document.getElementById('tempRl').innerHTML = '';}
+                                break;
+                                case 'LOAD':
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].LOAD==false){  document.getElementById('loadRl').innerHTML = '';}
+                                break;
+                                case 'FUEL_FILL':
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].FUEL_FILL==false){  document.getElementById('fuelFillRl').innerHTML = '';}
+                                break;
+                                case 'RFID':
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].RFID==false){  document.getElementById('rfidRl').innerHTML = '';}
+                                break;
+                                case 'CAMERA':
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].CAMERA==false){  document.getElementById('cameraRl').innerHTML = '';}
+                                break;
+                              
+                            }
+ 
+                        }
+
+                } else if(newReportName == "Statistics_IndivdiualReportsList"){
+
+                   // console.log( "Statistics_Reports");
+                   // console.log(menuObj[i].Statistics_IndivdiualReportsList.length);
+               
+                       var newReportNamesss = Object.getOwnPropertyNames(menuObj[i].Statistics_IndivdiualReportsList[0]).sort();
+                     //  console.log(newReportNamesss.length);
+
+                        for(var k=0;k<newReportNamesss.length;k++){
+
+                            switch(newReportNamesss[k]){
+
+                                case 'EXECUTIVE_FUEL':
+                                  if( menuObj[i].Statistics_IndivdiualReportsList[0].EXECUTIVE_FUEL==false){ document.getElementById('exfuelRl').innerHTML ='';}
+                                break;
+                                case 'MONTHLY_DIST_AND_FUEL':
+                                  if( menuObj[i].Statistics_IndivdiualReportsList[0].MONTHLY_DIST_AND_FUEL==false){  document.getElementById('monDistFuelRl').innerHTML = '';}
+                                break;
+                                case 'DAILY':
+                                  if( menuObj[i].Statistics_IndivdiualReportsList[0].DAILY==false){  document.getElementById('dailyRl').innerHTML = '';}
+                                break;
+                                case 'MONTHLY_DIST':
+                                  if( menuObj[i].Statistics_IndivdiualReportsList[0].MONTHLY_DIST==false){  document.getElementById('monDistRl').innerHTML = '';}
+                                break;
+                                case 'POI':
+                                  if( menuObj[i].Statistics_IndivdiualReportsList[0].POI==false){  document.getElementById('poiRl').innerHTML = '';}
+                                break;
+                                case 'CONSOLIDATED':
+                                  if( menuObj[i].Statistics_IndivdiualReportsList[0].CONSOLIDATED==false){  document.getElementById('consolRl').innerHTML = '';}
+                                break;
+                            }
+ 
+                        }
+
+                } else if(newReportName == "Tracking_IndivdiualReportsList"){
+
+                   // console.log( "Tracking_Reports");
+                   // console.log(menuObj[i].Tracking_IndivdiualReportsList.length);
+               
+                       var newReportNamesss = Object.getOwnPropertyNames(menuObj[i].Tracking_IndivdiualReportsList[0]).sort();
+                     //  console.log(newReportNamesss.length);
+
+                        
+                        for(var k=0;k<newReportNamesss.length;k++){
+
+                            switch(newReportNamesss[k]){
+
+                                case 'SINGLE_TRACK':
+                                  if( menuObj[i].Tracking_IndivdiualReportsList[0].SINGLE_TRACK==false){ document.getElementById('singleTrackRl').innerHTML ='';}
+                                break;
+                                case 'ROUTES':
+                                  if( menuObj[i].Tracking_IndivdiualReportsList[0].ROUTES==false){ document.getElementById('routesRl').innerHTML = '';}
+                                break;
+                                case 'ADDSITES_GEOFENCE':
+                                  if( menuObj[i].Tracking_IndivdiualReportsList[0].ADDSITES_GEOFENCE==false){ document.getElementById('addsiteRl').innerHTML = '';}
+                                break;
+                                case 'MULTITRACK':
+                                  if( menuObj[i].Tracking_IndivdiualReportsList[0].MULTITRACK==false){ document.getElementById('multiTrackRl').innerHTML = '';}
+                                break;
+                                case 'HISTORY':
+                                  if( menuObj[i].Tracking_IndivdiualReportsList[0].HISTORY==false){ document.getElementById('historyRl').innerHTML = '';}
+                                break;
+                            }
+                         }
+
+                } else if(newReportName == "Useradmin_IndivdiualReportsList"){
+
+                   // console.log( "Useradmin_Reports");
+                   // console.log(menuObj[i].Useradmin_IndivdiualReportsList.length);
+               
+                       var newReportNamesss = Object.getOwnPropertyNames(menuObj[i].Useradmin_IndivdiualReportsList[0]).sort();
+                    //   console.log(newReportNamesss.length);
+
+                        for(var k=0;k<newReportNamesss.length;k++){
+
+                            switch(newReportNamesss[k]){
+
+                                case 'EDIT_NOTIFICATION':
+                                  if( menuObj[i].Useradmin_IndivdiualReportsList[0].EDIT_NOTIFICATION==false){ document.getElementById('editNotRl').innerHTML ='';}
+                                break;
+                                case 'PAYMENT_REPORTS':
+                                  if( menuObj[i].Useradmin_IndivdiualReportsList[0].PAYMENT_REPORTS==false){  document.getElementById('payDetRl').innerHTML = '';}
+                                break;
+                                case 'GET_APIKEY':
+                                  if( menuObj[i].Useradmin_IndivdiualReportsList[0].GET_APIKEY==false){  document.getElementById('getApiRl').innerHTML = '';}
+                                break;
+                                case 'EDIT_BUSSTOP':
+                                  if( menuObj[i].Useradmin_IndivdiualReportsList[0].EDIT_BUSSTOP==false){  document.getElementById('editBusRl').innerHTML = '';}
+                                break;
+                                case 'RESET_PASSWORD':
+                                  if( menuObj[i].Useradmin_IndivdiualReportsList[0].RESET_PASSWORD==false){  document.getElementById('resetRl').innerHTML = '';}
+                                break;
+                                case 'EDIT_GROUP':
+                                  if( menuObj[i].Useradmin_IndivdiualReportsList[0].EDIT_GROUP==false){  document.getElementById('editGrpRl').innerHTML = '';}
+                                break;
+                            }
+                        }
+                }
+            }
+
+        } else{
+            console.log('Empty getReportsList API ....');
+        }
+   }
+
+    }).error(function(){
+
+        console.log('error getReportsList');
+     });;
   
             var sp  = obj.split(',');
             var vid = sp[0];
@@ -263,6 +555,10 @@
             
             $('#stopReport').click(function(){
                 $(this).attr("href", 'stopReport?vid='+vid+'&vg='+gname+'&tn=stopReport')
+            })
+
+            $('#ConSiteLocReport').click(function(){
+                $(this).attr("href", 'ConSiteLocReport?vid='+vid+'&vg='+gname+'&tn=ConSiteLocReport')
             })
 
             $('#tollReport').click(function(){
@@ -363,8 +659,7 @@
 
         //    var isVir = JSON.parse(sessionStorage.getItem('isVirtualUser'));
         //    if(isVir == null || isVir == undefined){
-                var globalIP = document.location.host;
-                var contextMenu = '/gps';
+              
 
                 $.get('//'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
                 
@@ -432,6 +727,6 @@
                     console.log('Error in Zoho Url(Nav Menu Page)');
                 }); */
 
-
-
 </script>
+
+

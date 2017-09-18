@@ -718,6 +718,14 @@ Route::get('/getRouteList', function() {
     return View::make('vls.getRouteList');
 });
 
+Route::get('/getReportsList', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getReportsList..');
+    return View::make('vls.getReportsList');
+});
+
  Route::get('/getStoppageReport', function() {
      if (!Auth::check()) {
          return Redirect::to('login');

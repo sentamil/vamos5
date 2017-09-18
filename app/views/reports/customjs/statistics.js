@@ -1,92 +1,500 @@
 app.controller('mainCtrl', ['$scope','$http' ,'$filter','vamoservice', '_global', function($scope, $http, $filter, vamoservice, GLOBAL){
 
-  $scope.donut_new    =  0;
-  $scope.donut        =  1;
-  $scope.showMonTable =  false;
-  $scope.showMonFuelTable = false;
+  $scope.reportBanShow    =  false;
+  $scope.donut_new        =  0;
+  $scope.donut            =  1;
+  $scope.showMonTable     =  false;
+  $scope.showMonFuelTable =  false;
 
-    var getUrl          =  document.location.href;
-    var tabId;
-  //var tabId           =  'executive';
-  //$scope.donut_new    =  false;
-    var index           =  getParameterByName("ind");
-  //$scope.fromMonthFuel='06/2017';
+  var getUrl          =  document.location.href;
+  var tabId;
+//var tabId           =  'executive';
+//$scope.donut_new    =  false;
+  var index           =  getParameterByName("ind");
+//$scope.fromMonthFuel='06/2017';
+  $scope.reportUrl  =  GLOBAL.DOMAIN_NAME+'/getReportsList';
 
-  //tab view
+  $scope.$watch("reportUrl", function (val) {
+      
+    $http.get($scope.reportUrl).success(function(data){
+
+     var tabShow = data;
+       // console.log(tabShow);
+    
+      if(tabShow != "" && tabShow != null)  {     
+
+        //console.log('not Empty getReportList API ...');
+
+        angular.forEach(tabShow,function(val, key){
+
+            var newReportName = Object.getOwnPropertyNames(val).sort();
+             
+            if(newReportName == 'Statistics_IndivdiualReportsList'){
+
+
+              if(val.Statistics_IndivdiualReportsList[0].EXECUTIVE_FUEL==false&&val.Statistics_IndivdiualReportsList[0].MONTHLY_DIST_AND_FUEL==false&&val.Statistics_IndivdiualReportsList[0].DAILY==false&&val.Statistics_IndivdiualReportsList[0].MONTHLY_DIST==false&&val.Statistics_IndivdiualReportsList[0].POI==false&&val.Statistics_IndivdiualReportsList[0].CONSOLIDATED==false) {
+
+                  $scope.sort  = sortByDate('date');
+                  $scope.reportBanShow =true;
+                  $(window).load(function(){
+                      $('#allReport').modal('show');
+                  });
+                  stopLoading();
+
+              } else {
+
+                  var reportSubName = Object.getOwnPropertyNames(val.Statistics_IndivdiualReportsList[0]).sort();
+                  //console.log(reportSubName);
+
+                  angular.forEach(reportSubName,function(value, keys){
+
+                    switch(value){
+                       case 'EXECUTIVE_FUEL':
+                        //if(val.Statistics_IndivdiualReportsList[0].EXECUTIVE_FUEL==false){ $scope.exFuelTabShow=false; }
+                        $scope.exFuelTabShow=val.Statistics_IndivdiualReportsList[0].EXECUTIVE_FUEL;
+                       break;
+                       case 'MONTHLY_DIST_AND_FUEL':
+                        //if(val.Statistics_IndivdiualReportsList[0].MONTHLY_DIST_AND_FUEL==false){ $scope.distMonFuelTabShow=false; }
+                        $scope.distMonFuelTabShow=val.Statistics_IndivdiualReportsList[0].MONTHLY_DIST_AND_FUEL;
+                       break;
+                       case 'DAILY':
+                        //if(val.Statistics_IndivdiualReportsList[0].DAILY==false){ $scope.dailyTabShow=false; }
+                        $scope.dailyTabShow=val.Statistics_IndivdiualReportsList[0].DAILY;
+                       break;
+                       case 'MONTHLY_DIST':
+                        //if(val.Statistics_IndivdiualReportsList[0].MONTHLY_DIST==false){ $scope.distMonTabShow=false; }
+                        $scope.distMonTabShow=val.Statistics_IndivdiualReportsList[0].MONTHLY_DIST;
+                       break;
+                       case 'POI':
+                        //if(val.Statistics_IndivdiualReportsList[0].POI==false){ $scope.poiTabShow=false; }
+                        $scope.poiTabShow=val.Statistics_IndivdiualReportsList[0].POI;
+                       break;
+                       case 'CONSOLIDATED':
+                        //if(val.Statistics_IndivdiualReportsList[0].CONSOLIDATED==false){ $scope.consolTabShow=false; }
+                        $scope.consolTabShow=val.Statistics_IndivdiualReportsList[0].CONSOLIDATED;
+                       break;
+                    }
+                });
+
+  switch(index){
+
+    case '1':
+      tabId                = 'executive';
+      $scope.downloadid    = 'executive';
+      $scope.donut_new     = false;
+      $scope.donut         = false;
+      $scope.showDate      = true;
+      $scope.showMonth     = false;
+      $scope.showMonthFuel = false;
+      $scope.sort          = sortByDate('date');
+    break;
+    case '2':
+      tabId                = 'poi';
+      $scope.downloadid    = 'poi';
+      $scope.actTab        = true;
+      $scope.donut_new     = false;
+      $scope.donut         = true;
+      $scope.showDate      = true;
+      $scope.showMonth     = false;
+      $scope.showMonthFuel = false;
+      $scope.sort          = sortByDate('time');
+    break;
+    case '3':
+      tabId                 = 'executive';
+      $scope.donut_new      = false;
+      $scope.donut          = false;
+      $scope.downloadid     = 'consolidated';
+      $scope.actCons        = true;
+      $scope.showDate       = true;
+      $scope.showMonth      = false;
+      $scope.showMonthFuel  = false;
+      $scope.sort           = sortByDate('date');
+    break;
+    case '4':
+      $scope.donut_new      = true;
+      $scope.donut          = true;
+      tabId                 = 'fuel';
+      $scope.downloadid     = 'fuel';
+      $scope.showDate       = true;
+      $scope.showMonth      = false;
+      $scope.showMonthFuel  = false;
+      $scope.actFuel        = true;
+      $scope.sort           = sortByDate('date');
+    break;
+    case '5':
+      $scope.donut_new        = false;
+      $scope.donut            = true;
+      tabId                   = 'month';
+      $scope.downloadid       = 'month';
+      $scope.showDate         = false;
+      $scope.showMonth        = true;
+      $scope.showMonthFuel    = false;
+      $scope.actMonth         = true;
+      $scope.showMonTable     = false;
+      $scope.sort             = sortByDate('date');
+    break;
+    case '6':
+      $scope.donut_new        = false;
+      $scope.donut            = true;
+      tabId                   = 'monthFuel';
+      $scope.downloadid       = 'monthFuel';
+      $scope.showDate         = false;
+      $scope.showMonth        = false;
+      $scope.showMonthFuel    = true;
+      $scope.actMonthFuel     = true;
+      $scope.showMonFuelTable = false;
+      $scope.sort             = sortByDate('date');
+    break;
+    default:
+      if($scope.dailyTabShow==true) {
+        tabId                = 'executive';
+        $scope.downloadid    = 'executive';
+        $scope.donut_new     = false;
+        $scope.donut         = false;
+        $scope.showDate      = true;
+        $scope.showMonth     = false;
+        $scope.showMonthFuel = false;
+        $scope.sort          = sortByDate('date');
+      } else if($scope.poiTabShow==true) {
+        tabId                = 'poi';
+        $scope.downloadid    = 'poi';
+        $scope.actTab        = true;
+        $scope.donut_new     = false;
+        $scope.donut         = true;
+        $scope.showDate      = true;
+        $scope.showMonth     = false;
+        $scope.showMonthFuel = false;
+        $scope.sort          = sortByDate('time');
+      } else if($scope.consolTabShow==true) {
+        tabId                 = 'executive';
+        $scope.donut_new      = false;
+        $scope.donut          = false;
+        $scope.downloadid     = 'consolidated';
+        $scope.actCons        = true;
+        $scope.showDate       = true;
+        $scope.showMonth      = false;
+        $scope.showMonthFuel  = false;
+        $scope.sort           = sortByDate('date');
+      } else if($scope.exFuelTabShow==true) {
+        $scope.donut_new      = true;
+        $scope.donut          = true;
+        tabId                 = 'fuel';
+        $scope.downloadid     = 'fuel';
+        $scope.showDate       = true;
+        $scope.showMonth      = false;
+        $scope.showMonthFuel  = false;
+        $scope.actFuel        = true;
+        $scope.sort           = sortByDate('date');
+      } else if($scope.distMonTabShow==true) {
+        $scope.donut_new        = false;
+        $scope.donut            = true;
+        tabId                   = 'month';
+        $scope.downloadid       = 'month';
+        $scope.showDate         = false;
+        $scope.showMonth        = true;
+        $scope.showMonthFuel    = false;
+        $scope.actMonth         = true;
+        $scope.showMonTable     = false;
+        $scope.sort             = sortByDate('date');
+      } else if($scope.distMonFuelTabShow==true){
+        $scope.donut_new        =false;
+        $scope.donut            =true;
+        tabId                   = 'monthFuel';
+        $scope.downloadid       = 'monthFuel';
+        $scope.showDate         = false;
+        $scope.showMonth        = false;
+        $scope.showMonthFuel    = true;
+        $scope.actMonthFuel     = true;
+        $scope.showMonFuelTable = false;
+        $scope.sort             = sortByDate('date');
+      } else {
+        tabId                = 'executive';
+        $scope.downloadid    = 'executive';
+        $scope.donut_new     = false;
+        $scope.donut         = false;
+        $scope.showDate      = true;
+        $scope.showMonth     = false;
+        $scope.showMonthFuel = false;
+        $scope.sort          = sortByDate('date');
+      }
+    break;
+  }
+
+  }
+            
+}
+
+});
+
+} else {
+
+    $scope.exFuelTabShow=true;
+    $scope.distMonFuelTabShow=true; 
+    $scope.dailyTabShow=true;
+    $scope.distMonTabShow=true;
+    $scope.poiTabShow=true;
+    $scope.consolTabShow=true;
+
+    console.log('Empty getReportList API ...');
+
+  switch(index){
+    case '1':
+      tabId                = 'executive';
+      $scope.downloadid    = 'executive';
+      $scope.donut_new     = false;
+      $scope.donut         = false;
+      $scope.showDate      = true;
+      $scope.showMonth     = false;
+      $scope.showMonthFuel = false;
+      $scope.sort          = sortByDate('date');
+    break;
+    case '2':
+      tabId                = 'poi';
+      $scope.downloadid    = 'poi';
+      $scope.actTab        = true;
+      $scope.donut_new     = false;
+      $scope.donut         = true;
+      $scope.showDate      = true;
+      $scope.showMonth     = false;
+      $scope.showMonthFuel = false;
+      $scope.sort          = sortByDate('time');
+    break;
+    case '3':
+      tabId                 = 'executive';
+      $scope.donut_new      = false;
+      $scope.donut          = false;
+      $scope.downloadid     = 'consolidated';
+      $scope.actCons        = true;
+      $scope.showDate       = true;
+      $scope.showMonth      = false;
+      $scope.showMonthFuel  = false;
+      $scope.sort           = sortByDate('date');
+    break;
+    case '4':
+      $scope.donut_new      = true;
+      $scope.donut          = true;
+      tabId                 = 'fuel';
+      $scope.downloadid     = 'fuel';
+      $scope.showDate       = true;
+      $scope.showMonth      = false;
+      $scope.showMonthFuel  = false;
+      $scope.actFuel        = true;
+      $scope.sort           = sortByDate('date');
+    break;
+    case '5':
+      $scope.donut_new        = false;
+      $scope.donut            = true;
+    //console.log('index 4...');
+      tabId                   = 'month';
+      $scope.downloadid       = 'month';
+      $scope.showDate         = false;
+      $scope.showMonth        = true;
+      $scope.showMonthFuel    = false;
+      $scope.actMonth         = true;
+      $scope.showMonTable     = false;
+      $scope.sort             = sortByDate('date');
+    break;
+    case '6':
+      $scope.donut_new        =false;
+      $scope.donut            =true;
+      //console.log('index 5...');
+      tabId                   = 'monthFuel';
+      $scope.downloadid       = 'monthFuel';
+      $scope.showDate         = false;
+      $scope.showMonth        = false;
+      $scope.showMonthFuel    = true;
+      $scope.actMonthFuel     = true;
+      $scope.showMonFuelTable = false;
+      $scope.sort             = sortByDate('date');
+    break;
+    default:
+      tabId                = 'executive';
+      $scope.downloadid    = 'executive';
+      $scope.donut_new     = false;
+      $scope.donut         = false;
+      $scope.showDate      = true;
+      $scope.showMonth     = false;
+      $scope.showMonthFuel = false;
+      $scope.sort          = sortByDate('date');
+    break;
+    }
+  }
+
+})
+.error(function(data, status) {
+    
+    console.error('Repos error', status, data);
+    console.log('Empty getReportList API ...');
+
+    $scope.exFuelTabShow=true;
+    $scope.distMonFuelTabShow=true; 
+    $scope.dailyTabShow=true;
+    $scope.distMonTabShow=true;
+    $scope.poiTabShow=true;
+    $scope.consolTabShow=true;
+
+  switch(index){
+    case '1':
+      tabId                = 'executive';
+      $scope.downloadid    = 'executive';
+      $scope.donut_new     = false;
+      $scope.donut         = false;
+      $scope.showDate      = true;
+      $scope.showMonth     = false;
+      $scope.showMonthFuel = false;
+      $scope.sort          = sortByDate('date');
+    break;
+    case '2':
+      tabId                = 'poi';
+      $scope.downloadid    = 'poi';
+      $scope.actTab        = true;
+      $scope.donut_new     = false;
+      $scope.donut         = true;
+      $scope.showDate      = true;
+      $scope.showMonth     = false;
+      $scope.showMonthFuel = false;
+      $scope.sort          = sortByDate('time');
+    break;
+    case '3':
+      tabId                 = 'executive';
+      $scope.donut_new      = false;
+      $scope.donut          = false;
+      $scope.downloadid     = 'consolidated';
+      $scope.actCons        = true;
+      $scope.showDate       = true;
+      $scope.showMonth      = false;
+      $scope.showMonthFuel  = false;
+      $scope.sort           = sortByDate('date');
+    break;
+    case '4':
+      $scope.donut_new      = true;
+      $scope.donut          = true;
+      tabId                 = 'fuel';
+      $scope.downloadid     = 'fuel';
+      $scope.showDate       = true;
+      $scope.showMonth      = false;
+      $scope.showMonthFuel  = false;
+      $scope.actFuel        = true;
+      $scope.sort           = sortByDate('date');
+    break;
+    case '5':
+      $scope.donut_new        = false;
+      $scope.donut            = true;
+      tabId                   = 'month';
+      $scope.downloadid       = 'month';
+      $scope.showDate         = false;
+      $scope.showMonth        = true;
+      $scope.showMonthFuel    = false;
+      $scope.actMonth         = true;
+      $scope.showMonTable     = false;
+      $scope.sort             = sortByDate('date');
+    break;
+    case '6':
+      $scope.donut_new        =false;
+      $scope.donut            =true;
+      tabId                   = 'monthFuel';
+      $scope.downloadid       = 'monthFuel';
+      $scope.showDate         = false;
+      $scope.showMonth        = false;
+      $scope.showMonthFuel    = true;
+      $scope.actMonthFuel     = true;
+      $scope.showMonFuelTable = false;
+      $scope.sort             = sortByDate('date');
+    break;
+    default:
+      tabId                = 'executive';
+      $scope.downloadid    = 'executive';
+      $scope.donut_new     = false;
+      $scope.donut         = false;
+      $scope.showDate      = true;
+      $scope.showMonth     = false;
+      $scope.showMonthFuel = false;
+      $scope.sort          = sortByDate('date');
+    break;
+    }
+
+ });
+
+});
+
+/*  //tab view
   if(index == 1) {
-    tabId         = 'poi';
-    $scope.downloadid   = 'poi';
-    $scope.actTab     = true;
-    $scope.donut_new    = false;
-    $scope.donut        = true;
-    $scope.showDate     = true;
-    $scope.showMonth    = false;
-    $scope.showMonthFuel = false;
-    $scope.sort     = sortByDate('time')
+      tabId                = 'poi';
+      $scope.downloadid    = 'poi';
+      $scope.actTab        = true;
+      $scope.donut_new     = false;
+      $scope.donut         = true;
+      $scope.showDate      = true;
+      $scope.showMonth     = false;
+      $scope.showMonthFuel = false;
+      $scope.sort          = sortByDate('time');
+
   } else if(index == 2){
-    tabId               = 'executive';
-    $scope.donut_new    = false;
-    $scope.donut        = false;
-    $scope.downloadid   = 'consolidated';
-    $scope.actCons    = true;
-    $scope.showDate     = true;
-    $scope.showMonth    = false;
-    $scope.showMonthFuel = false;
-    $scope.sort     = sortByDate('date')
+      tabId                 = 'executive';
+      $scope.donut_new      = false;
+      $scope.donut          = false;
+      $scope.downloadid     = 'consolidated';
+      $scope.actCons        = true;
+      $scope.showDate       = true;
+      $scope.showMonth      = false;
+      $scope.showMonthFuel  = false;
+      $scope.sort           = sortByDate('date');
   } 
     else if(index == 3){
       $scope.donut_new    = true;
       $scope.donut        = true;
-      tabId         = 'fuel';
-    $scope.downloadid   = 'fuel';
-    $scope.showDate     = true;
-    $scope.showMonth    = false;
-    $scope.showMonthFuel = false;
-    $scope.actFuel    = true;
-    $scope.sort     = sortByDate('date')
-  }
-   else if(index == 4){
+      tabId               = 'fuel';
+      $scope.downloadid     = 'fuel';
+      $scope.showDate       = true;
+      $scope.showMonth      = false;
+      $scope.showMonthFuel  = false;
+      $scope.actFuel        = true;
+      $scope.sort           = sortByDate('date');
+
+  } else if(index == 4) {
       $scope.donut_new=false;
       $scope.donut    =true;
     //console.log('index 4...');
       tabId         = 'month';
-    $scope.downloadid   = 'month';
-    $scope.showDate     = false;
-    $scope.showMonth    = true;
-    $scope.showMonthFuel = false;
-    $scope.actMonth   = true;
-    $scope.showMonTable = false;
-    $scope.sort     = sortByDate('date');
+      $scope.downloadid   = 'month';
+      $scope.showDate     = false;
+      $scope.showMonth    = true;
+      $scope.showMonthFuel = false;
+      $scope.actMonth   = true;
+      $scope.showMonTable = false;
+      $scope.sort     = sortByDate('date');
   }
    else if(index == 5){
       $scope.donut_new=false;
       $scope.donut    =true;
       //console.log('index 5...');
-    tabId         = 'monthFuel';
-    $scope.downloadid   = 'monthFuel';
-    $scope.showDate     = false;
-    $scope.showMonth    = false;
-    $scope.showMonthFuel = true;
-    $scope.actMonthFuel    = true;
-    $scope.showMonFuelTable = false;
-    $scope.sort     = sortByDate('date');
+      tabId         = 'monthFuel';
+      $scope.downloadid   = 'monthFuel';
+      $scope.showDate     = false;
+      $scope.showMonth    = false;
+      $scope.showMonthFuel = true;
+      $scope.actMonthFuel    = true;
+      $scope.showMonFuelTable = false;
+      $scope.sort     = sortByDate('date');
   }
   else {
-    tabId               = 'executive';
-    $scope.downloadid   = 'executive';
-    $scope.donut_new    = false;
-    $scope.donut        =false;
-    $scope.showDate     = true;
-    $scope.showMonth    = false;
-    $scope.showMonthFuel = false;
-    $scope.sort     = sortByDate('date');
+      tabId               = 'executive';
+      $scope.downloadid   = 'executive';
+      $scope.donut_new    = false;
+      $scope.donut        =false;
+      $scope.showDate     = true;
+      $scope.showMonth    = false;
+      $scope.showMonthFuel = false;
+      $scope.sort     = sortByDate('date');
   }
 
+*/
 
- $scope.trimHyphens = function(textVal){
+  $scope.trimHyphens = function(textVal){
        var splitValue = textVal.split(/[-]+/);
   return splitValue[2];
   }
+
 
 function daysInThisMonth() {
   var now = new Date();
@@ -278,6 +686,44 @@ var vehicleSelected = '';
 $scope.parseInts=function(data){
  return parseInt(data);
 }
+
+ $scope.getUpdateData = function(shortName,date){
+    // alert("Hello");
+
+      var usernameMater = window.localStorage.getItem("userMasterName");
+      var sendUser = usernameMater.split(',');
+      // alert(sendUser[1]);
+    $http.get('http://128.199.159.130:9000/addExecutiveDetailsTableData?userId='+sendUser[1]+'&date='+date+'&vehicleId='+shortName+'');
+    //window.location.reload();
+    console.log(shortName+date);
+     var groupUrl    = GLOBAL.DOMAIN_NAME+'/getExecutiveReport?groupId='+$scope.viewGroup.group+'&fromDate='+$scope.fromdate+'&toDate='+$scope.todate;
+      vamoservice.getDataCall(groupUrl).then(function(responseGroup){
+        var tagsCheck   = (responseGroup.error) ? true :  false;
+        // console.log($scope.to_trusted($scope.fromdate));
+        $scope.execGroupReportData    = [];
+        if(tagsCheck == false)
+        if(vehicleSelected){
+          //$scope.donut  =   false;
+          //$scope.donut_new=   false;
+          $scope.donut  = 1;
+          $scope.bar    = false;
+          $('#singleDiv').show(500);
+          $scope.execGroupReportData  = ($filter('filter')(responseGroup.execReportData, {'vehicleId':vehicleSelected}));
+          
+          barLoad(vehicleSelected);
+        } else {
+          //$scope.donut  =   false;
+          //$scope.donut_new=   false;
+          $scope.bar    = true;
+          $('#singleDiv').hide();
+          $scope.execGroupReportData  = responseGroup.execReportData;
+          donutLoad(responseGroup);
+        }
+        else
+          barLoad(vehicleSelected),donutLoad(responseGroup);
+        stopLoading();
+      })
+  }
 
 function formatAMPM(date) {
   var date = new Date(date);
@@ -689,6 +1135,8 @@ $('#container_new').highcharts({
 }
 
 
+
+
 $scope.msToTime = function(ms) 
 {
     days = Math.floor(ms / (24 * 60 * 60 * 1000));
@@ -803,9 +1251,10 @@ return ret_obj;
 }
 
 */
-  
+ 
 
-function serviceCall(){
+function serviceCall(shortName,date){
+
 
  if( tabId == 'executive' || tabId == 'poi' || tabId == 'fuel'){
   if((checkXssProtection($scope.fromdate) == true) && (checkXssProtection($scope.todate) == true)){
@@ -823,6 +1272,7 @@ function serviceCall(){
           $scope.bar    = false;
           $('#singleDiv').show(500);
           $scope.execGroupReportData  = ($filter('filter')(responseGroup.execReportData, {'vehicleId':vehicleSelected}));
+
           barLoad(vehicleSelected);
         } else {
           //$scope.donut  =   false;
@@ -878,8 +1328,9 @@ function serviceCall(){
      stopLoading();
   }
 
-} else if(tabId == 'month' || $scope.actMonth == true){
-        $scope.donut    =   true;
+} else if(tabId == 'month' || $scope.actMonth == true) {
+
+      $scope.donut    =   true;
       $scope.donut_new    =   false;
       $scope.bar      =   true;
       $('#singleDiv').hide();
@@ -912,8 +1363,9 @@ function serviceCall(){
           $scope.showMonTable=true;
         stopLoading();
       });
-  } 
-  else if(tabId == 'monthFuel' || $scope.actMonthFuel == true){
+  
+  } else if(tabId == 'monthFuel' || $scope.actMonthFuel == true) {
+
       $scope.donut      =   true;
       $scope.donut_new  =   false;
       $scope.bar        =   true;
@@ -975,6 +1427,12 @@ $scope.alertMe    =   function(tabClick)
       tabId               = 'executive';
       $scope.sort         = sortByDate('date');
       $scope.downloadid   = 'executive';
+      $scope.tabActive    = true;
+      $scope.actTab       = false;
+      $scope.actFuel      = false;
+      $scope.actMonth     = false;
+      $scope.actMonthFuel = false;
+      $scope.actCons      = false;
       $scope.showDate     = true;
       $scope.showMonth    = false;
       $scope.showMonthFuel = false;
@@ -987,6 +1445,12 @@ $scope.alertMe    =   function(tabClick)
       $scope.sort         = sortByDate('time');
       tabId               = 'poi';
       $scope.downloadid   = 'poi';
+      $scope.tabActive    = false;
+      $scope.actTab       = true;
+      $scope.actFuel      = false;
+      $scope.actMonth     = false;
+      $scope.actMonthFuel = false;
+      $scope.actCons      = false;
       $scope.showDate     = true;
       $scope.showMonth    = false;
       $scope.showMonthFuel = false;
@@ -997,18 +1461,30 @@ $scope.alertMe    =   function(tabClick)
       $scope.sort         = sortByDate('date');
       tabId               = 'executive';
       $scope.downloadid   = 'consolidated';
+      $scope.tabActive    = false;
+      $scope.actTab       = false;
+      $scope.actFuel      = false;
+      $scope.actMonth     = false;
+      $scope.actMonthFuel = false;
+      $scope.actCons      = true;
       $scope.showDate     = true;
       $scope.showMonth    = false;
       $scope.showMonthFuel = false;
       serviceCall();
       $scope.donut        = false;
       $scope.donut_new    = false;
-        break;
+      break;
     case 'fuel' :
       startLoading();
       $scope.sort         = sortByDate('date');
       tabId               = 'fuel';
       $scope.downloadid   = 'fuel';
+      $scope.tabActive    = false;
+      $scope.actTab       = false;
+      $scope.actFuel      = true;
+      $scope.actMonth     = false;
+      $scope.actMonthFuel = false;
+      $scope.actCons      = false;
       $scope.showDate     = true;
       $scope.showMonth    = false;
       $scope.showMonthFuel = false;
@@ -1017,19 +1493,31 @@ $scope.alertMe    =   function(tabClick)
     case 'distMonth' :
       startLoading();
       $scope.sort         = sortByDate('date');
+      $scope.tabActive    = false;
+      $scope.actTab       = false;
+      $scope.actFuel      = false;
+      $scope.actMonth     = true;
+      $scope.actMonthFuel = false;
+      $scope.actCons      = false;
       $scope.showMonTable = false;
       tabId               = 'month';
       $scope.downloadid   = 'month';
       $scope.showDate     = false;
-      $scope.showMonth    = true;
       $scope.showMonthFuel = false;
+      $scope.showMonth    = true;
       serviceCall();
       break;
     case 'distMonthFuel' :
       startLoading();
+      tabId  = 'monthFuel';
       $scope.sort         = sortByDate('date');
+      $scope.tabActive    = false;
+      $scope.actTab       = false;
+      $scope.actFuel      = false;
+      $scope.actMonth     = false;
+      $scope.actCons      = false;
+      $scope.actMonthFuel = true;
       $scope.showMonFuelTable = false;
-      tabId               = 'monthFuel';
       $scope.downloadid   = 'monthFuel';
       $scope.showDate     = false;
       $scope.showMonth    = false;

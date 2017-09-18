@@ -65,7 +65,7 @@ font-family: 'Source Sans Pro', sans-serif;
                 <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>         
             </ul>
-            <ul class="sidebar-subnav" style="max-height: 100vh; overflow-y: auto;margin-left:0;padding-left:0;" ng-init="vehicleStatus='ALL'">
+            <ul class="sidebar-subnav" ng-init="vehicleStatus='ALL'">
                 <li style="padding-left:25px;">
                     <div class="right-inner-addon" align="center"> 
                     <i class="fa fa-search"></i>
@@ -86,8 +86,25 @@ font-family: 'Source Sans Pro', sans-serif;
             </div>
         </div>
         <div id="testLoad"></div>
+
+        <div ng-show="reportBanShow" class="modal fade" id="allReport" role="dialog" style="top: 100px">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                        <div class="modal-body">
+                            <p class="err" style="text-align: center;"> You are not a premium user !... </p>
+                        </div>
+                </div>
+            </div>
+        </div> 
+
+        <div ng-show="reportBanShow" class="col-md-10" >
+            <div class="box box-primary" style="height:90px; padding-top:30px; margin-top:5%; margin-left:8%;">
+                <p ><h5 class="err" style="text-align: center;"> No Reports Found! </h5></p>
+            </div>
+        </div>
+
         
-       <div class="col-md-12">
+       <div ng-hide="reportBanShow" class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
                     <h3 class="box-title">Executive Summary Report</h3>
@@ -164,7 +181,7 @@ font-family: 'Source Sans Pro', sans-serif;
                     
                      <tabset class="nav-tabs-custom">
 
-                         <tab select="alertMe('executive')" heading="Daily"  active="tabActive">
+                         <tab ng-show="dailyTabShow" select="alertMe('executive')" heading="Daily"  active="tabActive">
                          <div class="form-group pull-right">
                                 <input type="search" class="form-control input-sm" placeholder="Search" ng-model="searchboxExe" name="search" />
                             </div>
@@ -177,17 +194,17 @@ font-family: 'Source Sans Pro', sans-serif;
                                     </tr>
                                    
                                     <tr style="text-align:center; font-weight: bold;">
-                                        <td width="6%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">VehicleName</td>
-                                        <td width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;">Date</td>
-                                        <td width="7%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">Kms</td>
-                                        <td width="7%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">ParkCount</td>
-                                        <td width="7%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;">OverSpeed Count</td>
-                                        <td width="7%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;">Odo Start</td>
-                                        <td width="7%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;">Odo End</td>
-                                        <td width="7%" class="id" custom-sort order="'totalRunningTime'" sort="sort" style="text-align:center;">Moving (h:m:s)</td>
-                                        <td width="7%" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;">Parked (h:m:s)</td>
-                                        <td width="7%" class="id" custom-sort order="'totalNoDataTime'" sort="sort" style="text-align:center;">No Data (h:m:s)</td>
-                                        <td width="7%" class="id" custom-sort order="'totalIdleTime'" sort="sort" style="text-align:center;">Idle (h:m:s)</td>
+                                        <td width="6%" class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;background-color:#d2dff7;">Vehicle Name</td>
+                                        <td width="10%" class="id" custom-sort order="'date'" sort="sort" style="text-align:center;background-color:#d2dff7;">Date</td>
+                                        <td width="7%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;background-color:#d2dff7;">Kms</td>
+                                        <td width="7%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;background-color:#d2dff7;">Park Count</td>
+                                        <td width="7%" class="id" custom-sort order="'overSpeedInstances'" sort="sort" style="text-align:center;background-color:#d2dff7;">Over Speed Count</td>
+                                        <td width="7%" class="id" custom-sort order="'odoOpeningReading'" sort="sort" style="text-align:center;background-color:#d2dff7;">Odo Start</td>
+                                        <td width="7%" class="id" custom-sort order="'odoClosingReading'" sort="sort" style="text-align:center;background-color:#d2dff7;">Odo End</td>
+                                        <td width="7%" class="id" custom-sort order="'totalRunningTime'" sort="sort" style="text-align:center;background-color:#d2dff7;">Moving (h:m:s)</td>
+                                        <td width="7%" class="id" custom-sort order="'totalParkedTime'" sort="sort" style="text-align:center;background-color:#d2dff7;">Parked (h:m:s)</td>
+                                        <td width="7%" class="id" custom-sort order="'totalNoDataTime'" sort="sort" style="text-align:center;background-color:#d2dff7;">No Data (h:m:s)</td>
+                                        <td width="7%" class="id" custom-sort order="'totalIdleTime'" sort="sort" style="text-align:center;background-color:#d2dff7;">Idle (h:m:s)</td>
                                     </tr>
 
                                     <tr ng-repeat="user in execGroupReportData | orderBy:natural(sort.sortingOrder):sort.reverse | filter:searchboxExe" class="active" style="text-align:center; font-size: 12px">
@@ -211,7 +228,7 @@ font-family: 'Source Sans Pro', sans-serif;
                                 </table>
                             </div>
                         </tab>
-                        <tab select="alertMe('poi')" heading="POI" active="actTab"> 
+                        <tab ng-show="poiTabShow" select="alertMe('poi')" heading="POI" active="actTab"> 
                             <div class="form-group pull-right">
                                 <input type="search" class="form-control input-sm" placeholder="Vehicle Name or POI" ng-model="searchbox" name="search" />
                             </div>
@@ -224,11 +241,11 @@ font-family: 'Source Sans Pro', sans-serif;
                             <table class="table table-bordered table-striped table-condensed table-hover table-striped">
                                 <thead>
                                     <tr style="text-align:center" >
-                                        <th class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;">Vehicle Name </th>
-                                        <th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;">Date</th>
-                                        <th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;">Time</th>
-                                        <th class="id" custom-sort order="'place'" sort="sort" style="text-align:center;">Place</th>
-                                        <th class="id" sort="sort" style="text-align:center;">G-Map</th>
+                                        <th class="id" custom-sort order="'shortName'" sort="sort" style="text-align:center;background-color:#d2dff7;">Vehicle Name </th>
+                                        <th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;background-color:#d2dff7;">Date</th>
+                                        <th class="id" custom-sort order="'time'" sort="sort" style="text-align:center;background-color:#d2dff7;">Time</th>
+                                        <th class="id" custom-sort order="'place'" sort="sort" style="text-align:center;background-color:#d2dff7;">Place</th>
+                                        <th class="id" sort="sort" style="text-align:center;background-color:#d2dff7;">G-Map</th>
                                     </tr></thead>
                                     <tr ng-repeat="user in geofencedata | orderBy:sort.sortingOrder:sort.reverse | filter:searchbox" class="active" style="text-align:center">
                                         <td>{{user.shortName}}</td>
@@ -246,7 +263,7 @@ font-family: 'Source Sans Pro', sans-serif;
                             </div>
                          </tab>
 
-                         <tab select="alertMe('consolidated')" heading="Consolidated" active="actCons"> 
+                         <tab ng-show="consolTabShow" select="alertMe('consolidated')" heading="Consolidated" active="actCons"> 
                             <div class="form-group pull-right">
                                 <input type="search" class="form-control input-sm" placeholder="Search" ng-model="searchboxExe" name="search" />
                             </div>
@@ -259,10 +276,10 @@ font-family: 'Source Sans Pro', sans-serif;
                                     </tr>
                                    
                                     <tr style="text-align:center; font-weight: bold;">
-                                        <td>Start Date</td>
-                                        <td>End Date</td>
-                                        <td custom-sort order="'user[0]'" sort="sort" style="text-align:center;">Vehicle Name</td>
-                                        <td custom-sort order="'user[1]'" sort="sort" style="text-align:center;">Distance (Kms)</td>
+                                        <td style="text-align:center;background-color:#d2dff7;">Start Date</td>
+                                        <td style="text-align:center;background-color:#d2dff7;">End Date</td>
+                                       H <td custom-sort order="'user[0]'" sort="sort" style="text-align:center;background-color:#d2dff7;">Vehicle Name</td>
+                                        <td custom-sort order="'user[1]'" sort="sort" style="text-align:center;background-color:#d2dff7;">Distance (Kms)</td>
                                         <!-- <td width="15%" class="id" custom-sort order="'distanceToday'" sort="sort" style="text-align:center;">Distance (Kms)</td>
                                         <td width="55%" class="id" custom-sort order="'address'" sort="sort" style="text-align:center;">Distance (Kms)</td> -->
                                         <!-- <td width="7%" class="id" custom-sort order="'parkingCount'" sort="sort" style="text-align:center;">ParkCount</td>
@@ -293,7 +310,7 @@ font-family: 'Source Sans Pro', sans-serif;
                             </div>
                          </tab>
 
-                          <tab select="alertMe('fuel')" heading="Exec Fuel" active="actFuel"> 
+                          <tab ng-show="exFuelTabShow" select="alertMe('fuel')" heading="Exec Fuel" active="actFuel"> 
 
                             <div class="form-group pull-right">
                                 <input type="search" class="form-control input-sm" placeholder="Enter Vehicle Id" align="center" ng-model="searchbox" name="search" />
@@ -336,7 +353,7 @@ font-family: 'Source Sans Pro', sans-serif;
                             </div>
                          </tab>
 
-                          <tab select="alertMe('distMonth')" heading="Monthly Dist" active="actMonth"> 
+                          <tab ng-show="distMonTabShow" select="alertMe('distMonth')" heading="Monthly Dist" active="actMonth"> 
 
                        <!-- <div class="form-group pull-right">
                                 <input type="search" class="form-control input-sm" placeholder="Enter VehicleId" align="center" ng-model="searchbox" name="search" />
@@ -380,7 +397,7 @@ font-family: 'Source Sans Pro', sans-serif;
                             </div>
                          </tab>
 
-                         <tab  select="alertMe('distMonthFuel')" heading="Dist and Fuel" active="actMonthFuel"> 
+                         <tab ng-show="distMonFuelTabShow"  select="alertMe('distMonthFuel')" heading="Dist and Fuel" active="actMonthFuel"> 
 
                          <!-- <div class="form-group pull-right">
                                 <input type="search" class="form-control input-sm" placeholder="Enter VehicleId" align="center" ng-model="searchbox" name="search" />
@@ -468,12 +485,10 @@ font-family: 'Source Sans Pro', sans-serif;
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
     <script src="../app/views/reports/customjs/html5csv.js"></script>
-    
     <script src="../app/views/reports/c3chart/d3.js"></script>
-    
     <script src="../app/views/reports/c3chart/c3.min.js"></script>
     <script src="assets/js/naturalSortVersionDatesCaching.js"></script>
-<!-- <script src="assets/js/naturalSortVersionDates.js"></script> -->
+<!--<script src="assets/js/naturalSortVersionDates.js"></script> -->
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/services.js"></script>
     <script src="../app/views/reports/customjs/statistics.js"></script>
@@ -491,7 +506,9 @@ font-family: 'Source Sans Pro', sans-serif;
                 $('#dateFrom, #dateTo').datetimepicker({
                     format:'YYYY-MM-DD',
                     useCurrent:true,
-                    pickTime: false
+                    pickTime: false,
+                    maxDate: new Date,
+                    minDate: new Date(2015, 12, 1)
                 });
                 $('#timeFrom').datetimepicker({
                     pickDate: false
@@ -502,13 +519,13 @@ font-family: 'Source Sans Pro', sans-serif;
                 });
                 
                 $('#monthFrom').datetimepicker({
-
                     minViewMode: 'months',
                     viewMode: 'months',
                     pickTime: false,
                     useCurrent:true,
                     format:'MM/YYYY',
-                 
+                    maxDate: new Date,
+                    minDate: new Date(2015, 12, 1)
                 });
         });      
     
