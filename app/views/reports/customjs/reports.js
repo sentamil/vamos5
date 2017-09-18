@@ -1,58 +1,253 @@
-//comment by satheesh ++...
+//comment by satheesh,arun,rajeev ++...
 var getIP	=	globalIP;
 app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global', function($scope, $http, $timeout, $interval, GLOBAL){
 	
-  // $("#testLoad").load("../public/menu");
-	 var getUrl  =   document.location.href;
-  // var index   =   getUrl.split("=")[1];
-	 var index=getParameterByName('ind');
+ //$("#testLoad").load("../public/menu");
+	 var getUrl   =  document.location.href;
+ //var index   =  getUrl.split("=")[1];
+	 var index    =  getParameterByName('ind');
+
+   $scope.reportBanShow = false;
+   $scope.filtDatasCall = 0;
+   $scope.thisFunCall   = 0;
+
+   $scope.reportUrl  =  GLOBAL.DOMAIN_NAME+'/getReportsList';
+
+  o$scope.$watch("reportUrl", function (val) {
+      
+    $http.get($scope.reportUrl).success(function(data){
+
+      var tabShow = data;
+        //console.log(tabShow); 
+
+     if(tabShow != "" && tabShow != null)  {     
+
+     	 //console.log('not Empty getReportList API ...');
+
+        angular.forEach(tabShow,function(val, key){
+
+            var newReportName = Object.getOwnPropertyNames(val).sort();
+             
+            if(newReportName == 'Consolidatedvehicles_IndivdiualReportsList'){
+
+            	if(val.Consolidatedvehicles_IndivdiualReportsList[0].CONSOLIDATED_OVERSPEED==false&&val.Consolidatedvehicles_IndivdiualReportsList[0].CONSOLIDATED_SITE_LOCATION==false&&val.Consolidatedvehicles_IndivdiualReportsList[0].VEHICLES_CONSOLIDATED==false&&val.Consolidatedvehicles_IndivdiualReportsList[0].CURRENT_STATUS==false){
+            	
+            	        $scope.reportBanShow=true;
+
+            	        $(window).load(function(){
+        	                 $('#allReport').modal('show');
+    	                 });
+
+                } else {
+            	
+            	 var reportSubName = Object.getOwnPropertyNames(val.Consolidatedvehicles_IndivdiualReportsList[0]).sort();
+            	  //console.log(reportSubName);
+
+            	  angular.forEach(reportSubName,function(value, keys){
+
+            		switch(value){
+                       case 'CONSOLIDATED_OVERSPEED':
+                        //if(val.Consolidatedvehicles_IndivdiualReportsList[0].CONSOLIDATED_OVERSPEED==false){ $scope.overTabShow=true; }
+                        $scope.overTabShow=val.Consolidatedvehicles_IndivdiualReportsList[0].CONSOLIDATED_OVERSPEED;
+                       break;
+                       case 'CONSOLIDATED_SITE_LOCATION':
+                        //if(val.Consolidatedvehicles_IndivdiualReportsList[0].CONSOLIDATED_SITE_LOCATION==false){ $scope.conSitTabShow=true; }
+                        $scope.conSitTabShow=val.Consolidatedvehicles_IndivdiualReportsList[0].CONSOLIDATED_SITE_LOCATION;
+                       break;
+                       case 'VEHICLES_CONSOLIDATED':
+                        //if(val.Consolidatedvehicles_IndivdiualReportsList[0].VEHICLES_CONSOLIDATED==false){ $scope.consolTabShow=true; }
+                        $scope.consolTabShow=val.Consolidatedvehicles_IndivdiualReportsList[0].VEHICLES_CONSOLIDATED;
+                       break;
+                       case 'CURRENT_STATUS':
+                        //if(val.Consolidatedvehicles_IndivdiualReportsList[0].CURRENT_STATUS==false){ $scope.curStatShow=true; }
+                        $scope.curStatShow=val.Consolidatedvehicles_IndivdiualReportsList[0].CURRENT_STATUS;
+                       break;
+            		}
+                   
+                  });
+
+                    switch(index){
+                      case '1':
+                        if($scope.curStatShow==true){
+		                   $scope.firstTab  = true;
+	                    }
+                      break;	
+                      case '2':
+                        if($scope.consolTabShow==true){
+		                   $scope.actTab = true;
+		                   $(window).load(function(){
+        	                 $('#myModal').modal('show');
+    	                   });
+	                    }
+                      break;
+                      case '3':
+                        if($scope.conSitTabShow==true){
+		                   $scope.siteTab =	true;
+		                   $scope.sort = sortByDate('startTime');
+	                    }
+                      break;
+                      case '4':
+                        if($scope.overTabShow==true) {
+		                   $scope.overTab = true;
+	                    }
+                      break;
+                      default:
+                        if($scope.curStatShow==true){
+         	               $scope.firstTab  = true;
+
+                        } else if($scope.consolTabShow==true){
+          	               $scope.actTab 	 =	true;
+		                   $(window).load(function(){
+        	                 $('#myModal').modal('show');
+    	                   });
+
+		                } else if($scope.conSitTabShow==true){
+                           $scope.siteTab 	=	true;
+		                   $scope.sort = sortByDate('startTime');
+
+		                } else if($scope.overTabShow==true){
+                           $scope.overTab = true;
+		                }
+                       break;
+                    } 
+
+                }
+            }
+        });
+
+} else {
+
+    console.log('Empty getReportList API ...');
+
+    $scope.curStatShow    =  true;
+    $scope.consolTabShow  =  true;
+    $scope.overTabShow    =  true;
+    $scope.conSitTabShow  =  true;
+
+      switch(index){
+       	case '1':
+       	 $scope.firstTab  =  true;
+       	break;
+       	case '2':
+		     $scope.actTab 	=  true;
+		     $(window).load(function(){
+        	 $('#myModal').modal('show');
+    	   });
+	      break; 
+        case '3':
+       	 $scope.siteTab  =	true;
+		     $scope.sort = sortByDate('startTime');
+        break;
+	      case '4': 
+		     $scope.overTab = true;
+	      break;  
+	      default:
+	       $scope.firstTab    =	true;
+		     $scope.actTab 	    =	false;
+	       $scope.siteTab 	=	false;
+		     $scope.overTab     =   false;
+		    break; 
+      }
+
+     }
+
+  })
+.error(function(data, status) {
+  
+  console.error('Repos error', status, data);
+  console.log('Empty getReportList API ...');
+
+    $scope.curStatShow    =  true;
+    $scope.consolTabShow  =  true;
+    $scope.overTabShow    =  true;
+    $scope.conSitTabShow  =  true;
+
+    switch(index){
+        case '1':
+         $scope.firstTab  =  true;
+        break;
+        case '2':
+         $scope.actTab  =  true;
+         $(window).load(function(){
+           $('#myModal').modal('show');
+         });
+        break; 
+        case '3':
+         $scope.siteTab  =  true;
+         $scope.sort = sortByDate('startTime');
+        case '4': 
+         $scope.overTab = true;
+        break;  
+        default:
+         $scope.firstTab    = true;
+         $scope.actTab      = false;
+         $scope.siteTab     = false;
+         $scope.overTab     =   false;
+        break; 
+    }
+
+});
+
+
+});
+
+/* if( index == 1){
+
+		if($scope.consolTabShow==true){
+
+		  $scope.actTab 	=	true;
+
+		  $(window).load(function(){
+        	  $('#myModal').modal('show');
+    	  });
+	    }
+    } else if( index == 2 ) {
+        
+        if( $scope.conSitTabShow==true){
+		    $scope.siteTab 		=	true;
+		    $scope.sort = sortByDate('startTime');
+	    }
 	
-	if( index == 1){
-		$scope.actTab 	=	true;
+	} else if( index == 3 ) {
+		if($scope.overTabShow==true) {
+		  $scope.overTab = true;
+	    }
+	} else if( index == 4 ) {
+		$scope.newSiteTab 	=	true;
+	} else {
+		$scope.firstTab     =	false;
+		$scope.actTab 	    =	true;
 		$(window).load(function(){
         	$('#myModal').modal('show');
     	});
-	
-	} else if( index == 2 ){
-		$scope.siteTab 		=	true;
-		$scope.sort = sortByDate('startTime');
-	
-	} else if( index == 3 ){
-		$scope.overTab 		=	true;
-	
-	} else if( index == 4 ){
-		$scope.newSiteTab 	=	true;
-	
-	} else {
-		$scope.actTab 	    =	false;
 		$scope.siteTab 	    =	false;
 		$scope.overTab      =   false;
 		$scope.newSiteTab 	=	false;
-	}
- 
-    $scope.msgShow      =   0;
-    $scope.cardMsgShow  =   false;
-    $scope.tab 			=	true;
+	} */
+
+
+  $scope.msgShow      =   0;
+  $scope.cardMsgShow  =   false;
+  $scope.tab 			=	true;
 	$scope.vvid			=	getParameterByName('vid');
 	$scope.mainlist		=	[];
 	$scope.newAddr      = 	{};
 	$scope.groupId 		=   0;
 	$scope.url 			= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 	
-	$scope.getTodayDate1  =	function(date) {
+	$scope.getTodayDate1 = function(date) {
      	var date = new Date(date);
 	 return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
     };	
 
-    $scope.siteSplitName  =	function(data,num) {
+  $scope.siteSplitName  =	function(data,num) {
      //console.log(num);
        var splitRetValue;
 
-      if(data)
+       if(data)
          {
          splitRetValue = data.split(/[:]+/);
-            // splitRetValue = splitValue[0];
-       
+       //splitRetValue = splitValue[0];
          switch(num){ 
         	case 1:
      	      return splitRetValue[0];
@@ -72,11 +267,12 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
           }
 
        }else{
-            return splitRetValue ="";        
-          }
-    }
+         
+         return splitRetValue ="";        
+        }
+  }
     
-    function convert_to_24h(time_str) {
+  function convert_to_24h(time_str) {
 		//console.log(time_str);
  		var str		=	time_str.split(' ');
  		var stradd	=	str[0].concat(":00");
@@ -116,7 +312,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	      hours = hours - 12;
 	    }	
 
-        hours   = hours < 10 ? '0'+hours : hours;
+      hours   = hours < 10 ? '0'+hours : hours;
 	    minutes = minutes < 10 ? '0'+minutes : minutes;  
 	    seconds = seconds < 10 ? '0'+seconds : seconds; 
 
@@ -124,8 +320,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	return marktimestr;
     };
 
-    function format24hrs(date)
-    {
+    function format24hrs(date) {
     	var date1 = new Date(date);
     	var hrs   = date.getHours();
     	var min   = date.getMinutes();
@@ -138,7 +333,6 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 
         var splitValue;
     	if(data){
-
           var splitValue = data.split(/[:]+/);
 
         return splitValue[0];  
@@ -235,17 +429,111 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 	$scope.consoldateData =   [];
 	$scope.today 		  =   new Date();
 	$("#testLoad").load("../public/menu");
+
+  $scope.filtDatas  = function(name){
+
+    if($scope.thisFunCall==1){
+      document.getElementById(''+$scope.filtDatasName+'Click').style.color = "white"
+    }
+      document.getElementById(''+name+'Click').style.color = "yellow"
+      document.getElementById(''+name+'Click').style.fontSize = 26
+
+    var retVal=[];
+    var newArr=$scope.data3;
+  //console.log(newArr);
+    $scope.thisFunCall   = 1;
+    $scope.filtDatasName = name;
+    $scope.filtDatasCall = 1;
+
+    if(name!= 'tot'){
+
+      switch(name){
+        case 'move':
+         //console.log('move');
+          angular.forEach(newArr,function(value, key) {
+            if(key=='vehicleLocations'){
+               angular.forEach(value, function(values, keys) {
+                if(values.position=="M"){
+                  retVal.push(values);
+                }
+              }); 
+            }
+          });
+        break;
+        case 'idle':
+         //console.log('idle');
+          angular.forEach(newArr,function(value, key) {
+            if(key=='vehicleLocations'){
+              angular.forEach(value, function(values, keys) {
+               if(values.position=="S"){
+                  retVal.push(values);
+                }
+              }); 
+            }
+          });
+        break;
+        case 'park':
+        //console.log('park');
+         angular.forEach(newArr,function(value, key) {
+            if(key=='vehicleLocations'){
+              angular.forEach(value, function(values, keys) {
+                if(values.position=="P"){
+                  retVal.push(values);
+                }
+              }); 
+           }
+        });
+        break;
+        case 'noDat':
+        //console.log('noDat');
+          angular.forEach(newArr,function(value, key) {
+            if(key=='vehicleLocations'){
+              angular.forEach(value, function(values, keys) {
+                if(values.position=="U"){
+                  retVal.push(values);
+                }
+              }); 
+            }
+          });
+        break;
+        case 'vehiOn':
+         //console.log('vehiOn');
+           angular.forEach(newArr,function(value, key) {
+            if(key=='vehicleLocations'){
+              angular.forEach(value, function(values, keys) {
+                if(values.position!="U"){
+                  retVal.push(values);
+                }
+              }); 
+            }
+          });
+        break;
+     }
+
+    var retValNew=[{'vehicleLocations':retVal}];
+    $scope.data1=retValNew[0];
+  //console.log("no data vehicles....");
+
+   } else if(name=='tot') {
+
+    //console.log('tot');
+      $scope.filtDatasCall=0;
+      $scope.data1=$scope.data3;
+   }
+
+}
 	 
 
 	$scope._globalInit 	= function() {
-	  //console.log('global...');
-	    startLoading();
+	//console.log('global...');
+	  startLoading();
+
 	 	$http.get($scope.url).success(function(data){
 	 		if(data.length >0 && data != ''){
 	 			$scope.locations 	=   [];
 				//$scope.locations 	= 	data;
 
-                $scope.locations 	= $scope.vehiSidebar(data);
+        $scope.locations 	= $scope.vehiSidebar(data);
 
 				$scope.vehigroup    =   data[$scope.groupId].group;
 				window.localStorage.setItem("groupname",$scope.vehigroup);
@@ -254,11 +542,19 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 				angular.forEach(data, function(value, key) {
 					   if(value.totalVehicles) {
 					  	    $scope.data2 = data[key];
+
 					  	    $scope.cardMsgShow = true;
-					  		$scope.vehiLen(data[key]);
-                        //  console.log(data[key]);
-                        //  console.log( $scope.filterExpire(data) );
-                            $scope.data1 = $scope.filterExpire(data);
+					  		  $scope.vehiLen(data[key]);
+                //  console.log(data[key]);
+                //  console.log( $scope.filterExpire(data) );
+
+                        $scope.data1 = $scope.filterExpire(data);
+                        $scope.data3 = $scope.data1;
+
+                        if($scope.filtDatasCall==1){
+                           $scope.filtDatas($scope.filtDatasName);
+                        }
+                    //console.log($scope.data3);
 					  }
 				});				
 				if($scope.siteTab == true)
@@ -271,7 +567,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 					$scope.consOverspeed(' ');
 				  //$scope.overTab == false;
 				}
-                if($scope.newSiteTab == true)
+        if($scope.newSiteTab == true)
 				{
 					$scope.siteLocFunc(' ');
 				}
@@ -294,7 +590,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 
 	$scope.startTime('shortName', index);
 
-    $scope.$watch("url", function (val) {
+  $scope.$watch("url", function (val) {
   		
   		$scope._globalInit();
 
@@ -466,6 +762,8 @@ $scope.geoVehLocations = function(){
 
 	$scope.consoldate1 =  function()
 	{
+
+		console.log('vehi consolidates...');
 		// $('#preloader').show(); 
 		// $('#preloader02').show();
 		startLoading();
@@ -502,6 +800,8 @@ $scope.geoVehLocations = function(){
 	
 	$scope.consoldate =  function()
 	{
+
+		console.log('vehi consolidates2...');
 		// $('#preloader').show(); 
 		// $('#preloader02').show();
 		startLoading();
@@ -737,7 +1037,7 @@ $scope.geoVehLocations = function(){
 		if(valu === 'ovrButon')
 		{
 	  //console.log('ovrButon');
-		$scope.fromdate2 	=	$('#ovrFrom').val();
+	  	$scope.fromdate2 	=	$('#ovrFrom').val();
 	  	$scope.fromTime2	=	$('#ovrTimeFrom').val();
 	  	$scope.todate2 		=	$('#ovrTo').val();
 	    $scope.toTime2 		=	$('#ovrTimeTo').val();
@@ -746,8 +1046,8 @@ $scope.geoVehLocations = function(){
 		else
 		{	
 		    var dateObj 			= 	new Date();
-			$scope.fromNowTS		=	new Date(dateObj.setDate(dateObj.getDate()-1));
-			$scope.fromdate2 		=	getTodayDate($scope.fromNowTS);
+			  $scope.fromNowTS		=	new Date(dateObj.setDate(dateObj.getDate()-1));
+			  $scope.fromdate2 		=	getTodayDate($scope.fromNowTS);
 		  	$scope.fromTime2		=	'12:00 AM';
 		  	$scope.todate2		=	getTodayDate($scope.fromNowTS);
 		  //$scope.totime2 		=	formatAMPM($scope.fromNowTS.getTime());
@@ -920,8 +1220,11 @@ $scope.geoVehLocations = function(){
 	var newGroupSelectionName="";
 	var oldGroupSelectionName="";
 	var initValss=0;
+  $scope.groupSelections=0;
 	
 	$scope.groupSelection = function(groupname, groupid){
+
+      $scope.groupSelections=1;
 
        if(initValss>0){
         oldGroupSelectionName=newGroupSelectionName;
@@ -937,10 +1240,12 @@ $scope.geoVehLocations = function(){
 		$scope.url     	= 	GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+$scope.vehigroup;
 		$('#preloader').show(); 
 		$('#preloader02').show();
-		if($('#consoldate').attr('id')=='consoldate')
+	/*	if($('#consoldate').attr('id')=='consoldate'){
 			$scope.consoldate1();
-		else if($('#tripTab').attr('id')=='tripTab')
+    }
+		else if($('#tripTab').attr('id')=='tripTab'){
 			$scope.consoldateTrip('tripButon');
+    }*/
 
 	   }
 	}

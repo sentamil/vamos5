@@ -38,9 +38,29 @@
                 </ul> -->
             </div>
             <div id="testLoad"></div>
-            <div style="position: relative; min-height: 1px; padding-right: 15px; padding-left: 15px; top: 40px; background-color: #fcfcfc; margin: 10px; border-radius: 3px; border: 0.7px solid #dcdcdc; ">
-                <h4>Mail Scheduling</h4><h6 style="margin-left: 15px; color: red">{{error}}</h6>
+
+<!--<div ng-show="reportBanShow" class="modal fade" id="allReport" role="dialog" style="top: 100px">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-body">
+                  <p class="err" style="text-align: center;"> You are not a premium user !... </p>
+              </div>
+          </div>
+      </div>
+      </div> -->
+
+        <div ng-show="reportBanShow" class="col-md-10" >
+            <div class="box box-primary" style="height:90px; padding-top:30px; margin-top:15%; margin-left:8%;">
+                <p ><h5 class="err" style="text-align: center;border:1px solid bold;"> No Reports Found! </h5></p>
+            </div>
+        </div>
+
+          <div ng-show="schReportShow" style="position: relative; min-height: 1px; padding-right: 15px; padding-left: 15px; top: 40px; background-color: #fcfcfc; margin: 10px; border-radius: 3px; border: 0.7px solid #dcdcdc; ">
+                <h4>Mail Scheduling</h4>
+
+                <h6 style="margin-left: 15px; color: red">{{error}}</h6>
                 <div class="col-md-1" ></div>
+                
                 <div class="col-md-3">
                   <!-- <select class="form-control" ng-options="trimColon(grpName.group) for grpName in locations02" ng-model="groupName" ng-change="groupChange()">
                      <option style="display:none" value="">Select Group</option>
@@ -49,16 +69,19 @@
                             <option style="display:none" value="">Select Group</option>
                         </select>
                 </div>
+
                 <div class="col-md-3" align="center">
                   <div class="form-group">
                     <input type="text" class="form-control" ng-model="mailId" placeholder="E-Mail" data-toggle="tooltip" data-placement="left"  title="please don't use space"><span style="font-size: 10px">(Use Comma ',' for more MailId)</span>
                   </div>
                 </div>
+
                 <div class="col-md-2" align="center">
                   <div class="form-group">
                     <button ng-click="storeValue()">Submit</button>
                   </div>
                 </div>
+
                <table class="table table-bordered table-striped table-condensed table-hover" id="reportable">
                   <thead>
                     <tr style="text-align:center;font-weight: bold;">
@@ -109,6 +132,7 @@
                 </tbody>
                 
               </table>
+
                
                 <div class="row">
                     <div class="col-md-1" align="center"></div>
@@ -119,15 +143,14 @@
                     </div>
 
                 </div>
+
                 <div class="row">
                 <div class="col-md-4" align="center"></div>
                     
                 </div>
-            </div>
+
+      </div>
          
-        </div>
-    </div>
-  
   <script src="assets/js/static.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 

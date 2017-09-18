@@ -83,9 +83,25 @@ font-family: 'Source Sans Pro', sans-serif;
         	</div>
         <!-- /#page-content-wrapper -->
     	</div>
+
+    	<div ng-show="reportBanShow" class="modal fade" id="allReport" role="dialog" style="top: 100px">
+			<div class="modal-dialog">
+			    <div class="modal-content">
+					    <div class="modal-body">
+					        <p class="err" style="text-align: center;"> You are not a premium user !... </p>
+					    </div>
+			    </div>
+			</div>
+	    </div> 
+
+        <div ng-show="reportBanShow" class="col-md-10" >
+            <div class="box box-primary" style="height:90px; padding-top:30px; margin-top:5%; margin-left:8%;">
+                <p ><h5 class="err" style="text-align: center;"> No Reports Found! </h5></p>
+            </div>
+        </div>
  
     <!-- AdminLTE css box-->
-          <div class="col-md-12">
+          <div class="col-md-12" ng-hide="reportBanShow">
 	       	<div class="box box-primary">
 		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
 		            <h3 class="box-title">History Reports </h3>
@@ -148,6 +164,7 @@ font-family: 'Source Sans Pro', sans-serif;
                                   	</div>
                                 </div> 
                            <!-- <div class="col-md-1" align="center"><div class="form-group"></div></div> -->
+                                <div class="col-md-1" align="center"></div>
                                 <div class="col-md-1" align="center">
                                     <button ng-click="plotHist()" style="margin-left: -100%;">Submit</button>
                                 </div>
@@ -156,7 +173,7 @@ font-family: 'Source Sans Pro', sans-serif;
 		        <div class="box-body" ng-class="overallEnable?'col-md-9':'col-md-12'" id="statusreport">
 		        	 <!-- Tabset -->
 					 <tabset class="nav-tabs-custom">
-					 	<tab select="alertMe('Movement')" heading="Movement" active="tabmovement">
+					 	<tab ng-show="tabMovementShow" select="alertMe('Movement')" heading="Movement" active="tabmovement" >
 			   				 <p style="margin:0" class="page-header">Movement Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   				 <div id='movementreport' class="box-body table-responsive">
 			   				 <table class="table table-bordered table-striped table-condensed table-hover">
@@ -235,7 +252,7 @@ font-family: 'Source Sans Pro', sans-serif;
 							<!-- <pagination boundary-links="true" max-size="3" items-per-page="itemsPerPage" total-items="movementdata.length" ng-model="currentPage" ng-change="pageChanged()"></pagination>	
 							 --></div>
 			   			 </tab>
-			   			 <tab select="alertMe('Overspeed')" heading="Overspeed" active="taboverspeed">
+			   			 <tab ng-show="tabOverspeedShow" select="alertMe('Overspeed')" heading="Overspeed" active="taboverspeed">
 			   				 <p style="margin:0" class="page-header">Overspeed Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   				 <div class="box-body table-responsive" id='overspeedreport'>
 			   				 <table class="table table-bordered table-striped table-condensed table-hover">
@@ -311,7 +328,7 @@ font-family: 'Source Sans Pro', sans-serif;
 							</div>
 			   			 </tab>
 			   			 
-			   			 <tab select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked">
+			   			 <tab ng-show="tabParkedShow" select="alertMe('Stopped/Parked')" heading="Parked" active="tabparked">
 			   				 <p style="margin:0" class="page-header">Parked Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span>
                              </p>
                             <div class="form-group pull-right" style="float: right;padding-right: 20px;margin-top: 7px;margin-bottom: 7px;">
@@ -380,7 +397,7 @@ font-family: 'Source Sans Pro', sans-serif;
 							</table>
 							</div>
 			   			 </tab>
-			   			 <tab select="alertMe('idlereport')" heading="Idle" active="tabidle">
+			   			 <tab ng-show="tabIdleShow" select="alertMe('idlereport')" heading="Idle" active="tabidle">
 			   			 	 <p style="margin:0" class="page-header">Idle Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	 <div class="box-body table-responsive" id="idlereport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
@@ -583,7 +600,7 @@ font-family: 'Source Sans Pro', sans-serif;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-			   			 <tab heading="Fuel" select="alertMe('fuelreport')" active="tabfuel">
+			   			 <tab ng-show="tabFuelShow" heading="Fuel" select="alertMe('fuelreport')" active="tabfuel">
 			   			 	<p style="margin:0" class="page-header">Fuel Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	<div style="min-width:700px; max-width:700px; width: 700px; height: 300px" id="container"></div> 
 			   			 	<div class="box-body table-responsive" id="fuelreport">
@@ -632,7 +649,7 @@ font-family: 'Source Sans Pro', sans-serif;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-			   			 <tab heading="Ignition" select="alertMe('ignitionreport')" active="tabignition">
+			   			 <tab ng-show="tabIgnitionShow" heading="Ignition" select="alertMe('ignitionreport')" active="tabignition">
 			   			 	<p style="margin:0" class="page-header">Ignition Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	<div class="box-body table-responsive" id="ignitionreport">
 			   			 	 	<table class="table table-bordered table-striped table-condensed table-hover">
@@ -679,7 +696,7 @@ font-family: 'Source Sans Pro', sans-serif;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-			   			 <tab heading="A/C" select="alertMe('acreport')" active="tabac">
+			   			 <tab ng-show="tabAcreportShow" heading="A/C" select="alertMe('acreport')" active="tabac">
 			   			 	<p style="margin:0" class="page-header">A/C Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 			   			 	<br>
 			   			 	
@@ -732,7 +749,7 @@ font-family: 'Source Sans Pro', sans-serif;
 			   			 	 	</table>
 			   			 	</div>
 			   			 </tab>
-                          <tab select="alertMe('stoppageReport')" heading="Stoppage" active="tabStop" >
+                         <tab ng-show="tabStopShow" select="alertMe('stoppageReport')" heading="Stoppage" active="tabStop" >
 			   			 	 <p style="margin:0" class="page-header">Stoppage Report <span style="float: right;font-size:15px;padding-right: 15px;"><b>From</b> : &nbsp;{{fromdate}} &nbsp;{{convert_to_24hrs(fromtime)}} &nbsp;&nbsp; - &nbsp;&nbsp; <b>To</b> :&nbsp; {{todate}} &nbsp;{{convert_to_24hrs(totime)}}</span></p>
 
 			   			 <div class="form-group pull-right" style="float: right;padding-right: 20px;margin-top: 7px;margin-bottom: 7px;">
@@ -938,7 +955,9 @@ font-family: 'Source Sans Pro', sans-serif;
                 $('#dateFrom, #dateTo').datetimepicker({
 					format:'YYYY-MM-DD',
 					useCurrent:true,
-					pickTime: false
+					pickTime: false,
+					maxDate: new Date,
+                    minDate: new Date(2015, 12, 1)
 				});
 				$('#timeFrom').datetimepicker({
 					pickDate: false

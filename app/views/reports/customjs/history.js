@@ -1,10 +1,109 @@
-var getIP = globalIP;
-// var app = angular.module('hist',['ui.bootstrap']);
+  
+  var getIP = globalIP;
+//var app = angular.module('hist',['ui.bootstrap']);
 
 app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($scope, $http, $filter, GLOBAL){
   
-  // $scope.getLocation1(13.0401945,80.2153889);
-  // $location.path('http://localhost/vamo/public/track?maps=replay&vehicleId=MSS-TN52-W-9969&gid=MSS-BUS:SMP').replace().reload(false)
+ $scope.reportBanShow = false;
+ $scope.reportUrl     = GLOBAL.DOMAIN_NAME+'/getReportsList';
+
+ $scope.$watch("reportUrl", function (val) {
+      
+  $http.get($scope.reportUrl).success(function(data){
+
+     var tabShow = data;
+      //console.log(tabShow);
+      if(tabShow != "" && tabShow != null)  {     
+     // console.log('not Empty getReportList API ...');
+        angular.forEach(tabShow,function(val, key){
+
+            var newReportName = Object.getOwnPropertyNames(val).sort();
+             
+            if(newReportName == 'Analytics_IndivdiualReportsList'){
+              if(val.Analytics_IndivdiualReportsList[0].AC==false&&val.Analytics_IndivdiualReportsList[0].OVERSPEED==false&&val.Analytics_IndivdiualReportsList[0].IDLE==false&&val.Analytics_IndivdiualReportsList[0].PARKED==false&&val.Analytics_IndivdiualReportsList[0].STOPPAGE==false&&val.Analytics_IndivdiualReportsList[0].MOVEMENT==false){
+
+                  $scope.reportBanShow = true;
+                  $(window).load(function(){
+                      $('#allReport').modal('show');
+                  });
+
+                  stopLoading();
+
+              } else {
+
+                var reportSubName = Object.getOwnPropertyNames(val.Analytics_IndivdiualReportsList[0]).sort();
+                  //console.log(reportSubName);
+
+                angular.forEach(reportSubName,function(value, keys){
+                //console.log(value);
+                  switch(value){
+                       case 'AC':
+                        //if(val.Analytics_IndivdiualReportsList[0].AC==false){$scope.tabAcreportShow = false; }
+                        $scope.tabAcreportShow = val.Analytics_IndivdiualReportsList[0].AC;
+                       break;
+                       case 'OVERSPEED':
+                        //if(val.Analytics_IndivdiualReportsList[0].OVERSPEED==false){ $scope.tabOverspeedShow = false;  }
+                        $scope.tabOverspeedShow = val.Analytics_IndivdiualReportsList[0].OVERSPEED;
+                       break;
+                       case 'FUEL':
+                        //if(val.Analytics_IndivdiualReportsList[0].FUEL==false){ $scope.tabFuelShow   = false;  }
+                        $scope.tabFuelShow = val.Analytics_IndivdiualReportsList[0].FUEL;
+                       break;
+                       case 'IDLE':
+                        //if(val.Analytics_IndivdiualReportsList[0].IDLE==false){ $scope.tabIdleShow  = false; }
+                        $scope.tabIdleShow  = val.Analytics_IndivdiualReportsList[0].IDLE;
+                       break;
+                       case 'PARKED':
+                        //if(val.Analytics_IndivdiualReportsList[0].PARKED==false){$scope.tabParkedShow  = false; }
+                        $scope.tabParkedShow  = val.Analytics_IndivdiualReportsList[0].PARKED; 
+                       break;
+                       case 'STOPPAGE':
+                        //if(val.Analytics_IndivdiualReportsList[0].STOPPAGE==false){ $scope.tabStopShow = false; }
+                        $scope.tabStopShow = val.Analytics_IndivdiualReportsList[0].STOPPAGE;
+                       break;
+                       case 'MOVEMENT':
+                        //if(val.Analytics_IndivdiualReportsList[0].MOVEMENT==false){ $scope.tabMovementShow = false;}
+                        $scope.tabMovementShow = val.Analytics_IndivdiualReportsList[0].MOVEMENT;
+                       break;
+                       case 'IGNITION':
+                        //if(val.Analytics_IndivdiualReportsList[0].IGNITION==false){ $scope.tabIgnitionShow = false; }
+                        $scope.tabIgnitionShow = val.Analytics_IndivdiualReportsList[0].IGNITION;
+                       break;
+                    }
+                });
+              }
+            }
+        });
+
+    } else {
+      console.log('Empty getReportList API ...');
+
+      $scope.tabStopShow      = true;
+      $scope.tabMovementShow  = true;
+      $scope.tabAcreportShow  = true;
+      $scope.tabIgnitionShow  = true;
+      $scope.tabFuelShow      = true;
+      $scope.tabIdleShow      = true;
+      $scope.tabParkedShow    = true;
+      $scope.tabOverspeedShow = true; 
+    }
+})
+.error(function(data, status) {
+  console.error('Repos error', status, data);
+   console.log('Empty getReportList API ...');
+      
+      $scope.tabStopShow      = true;
+      $scope.tabMovementShow  = true;
+      $scope.tabAcreportShow  = true;
+      $scope.tabIgnitionShow  = true;
+      $scope.tabFuelShow      = true;
+      $scope.tabIdleShow      = true;
+      $scope.tabParkedShow    = true;
+      $scope.tabOverspeedShow = true; 
+  });
+
+});
+
 
   $scope.overallEnable    =   true;
   $scope.tabactive        =   true;
@@ -27,26 +126,25 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
   $scope.interval         =   getParameterByName('interval')?getParameterByName('interval'):"";
   $scope.sort             =   sortByDate('date');
      
-// $scope.itemsPerPage =  5;
-// $scope.currentPage  =  0;
-// $scope.items        = [];
+//$scope.itemsPerPage     =   5;
+//$scope.currentPage      =   0;
+//$scope.items            =   [];
 
-  $scope.filteredTodos = [];
-  $scope.itemsPerPage  = 10;
-  $scope.currentPage   =  1;
+  $scope.filteredTodos    =   [];
+  $scope.itemsPerPage     =   10;
+  $scope.currentPage      =   1;
      
- /* $scope.gap = 5;
-    $scope.itemsPerPage = 5;
-    $scope.currentPage  = 0; */
+/*$scope.gap              =   5;
+  $scope.itemsPerPage     =   5;
+  $scope.currentPage      =   0;*/
   
-  $scope.time_stop='All';
-  $scope.time_park='All';
-   // $scope.timeDrops=[{'timeId' :'Above 5 mins' },{'timeId' :'Above 10 mins' },{'timeId' :'Above 15 mins' },{'timeId' :'Above 30 mins' },{'timeId' :'Above 1 hrs' }];
+  $scope.time_stop        =   'All';
+  $scope.time_park        =   'All';
+   
+//$scope.timeDrops=[{'timeId' :'Above 5 mins' },{'timeId' :'Above 10 mins' },{'timeId' :'Above 15 mins' },{'timeId' :'Above 30 mins' },{'timeId' :'Above 1 hrs' }];
+//console.log($scope.timeChange);
 
-   // console.log($scope.timeChange);
-
-
-   function sessionValue(vid, gname){
+  function sessionValue(vid, gname){
     sessionStorage.setItem('user', JSON.stringify(vid+','+gname));
     $("#testLoad").load("../public/menu");
   }
@@ -172,17 +270,17 @@ function eventButton(eventdate)
 
   function serviceCallEvent()
     {
-      var stoppage    =   document.getElementById ("stop").checked
-      var idleEvent     =   document.getElementById ("idle").checked;
-      var notReachable  =   document.getElementById ("notreach").checked;
+      var stoppage        =   document.getElementById ("stop").checked
+      var idleEvent       =   document.getElementById ("idle").checked;
+      var notReachable    =   document.getElementById ("notreach").checked;
       var overspeedEvent  =   document.getElementById ("overspeed").checked;
-      var stopMints     =   document.getElementById ("stop1").value;
-      var idleMints     =   document.getElementById ("idle1").value;
+      var stopMints       =   document.getElementById ("stop1").value;
+      var idleMints       =   document.getElementById ("idle1").value;
       var notReachMints   =   document.getElementById ("notreach1").value;
-      var speedEvent    =   document.getElementById ("overspeed1").value
-      var locEvent    =   document.getElementById ("location").checked;
-      var siteEvent     =   document.getElementById ("site").checked;
-      var urlEvent  = GLOBAL.DOMAIN_NAME+"/getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+stoppage+"&stopMints="+stopMints+"&idle="+idleEvent+"&idleMints="+idleMints+"&notReachable="+notReachable+"&notReachableMints="+notReachMints+"&overspeed="+overspeedEvent+"&speed="+speedEvent+"&location="+locEvent+"&site="+siteEvent;
+      var speedEvent      =   document.getElementById ("overspeed1").value
+      var locEvent        =   document.getElementById ("location").checked;
+      var siteEvent       =   document.getElementById ("site").checked;
+      var urlEvent        =   GLOBAL.DOMAIN_NAME+"/getActionReport?vehicleId="+prodId+"&fromDate="+$scope.fromdate+"&fromTime="+convert_to_24h($scope.fromtime)+"&toDate="+$scope.todate+"&toTime="+convert_to_24h($scope.totime)+"&interval="+$scope.interval+"&stoppage="+stoppage+"&stopMints="+stopMints+"&idle="+idleEvent+"&idleMints="+idleMints+"&notReachable="+notReachable+"&notReachableMints="+notReachMints+"&overspeed="+overspeedEvent+"&speed="+speedEvent+"&location="+locEvent+"&site="+siteEvent;
       //console.log(' inside the method '+ urlEvent)
 
       $http.get(urlEvent).success(function(eventRes){
@@ -236,54 +334,65 @@ function eventButton(eventdate)
     
     $scope.$watch("tab_val", function (newval, oldval) {
     // $scope.$watch("tabId", function (val) {
-      $scope.tabmovement      = false;
-      $scope.taboverspeed     = false;
+
+   /* $scope.tabStopShow   = true;
+      $scope.tabMovementShow = true;
+      $scope.tabAcreportShow = true;
+      $scope.tabIgnitionShow = true;
+      $scope.tabFuelShow    = true;
+      $scope.tabIdleShow    = true;
+      $scope.tabParkedShow  = true;
+      $scope.tabOverspeedShow = true;*/
+
+      $scope.tabmovement    = false;
+      $scope.taboverspeed   = false;
       $scope.tabparked      = false;
       $scope.tabidle        = false;
       $scope.tabevent       = false;
       $scope.tabsite        = false;
       $scope.tabload        = false;
       $scope.tabfuel        = false;
-      $scope.tabignition      = false;
-      $scope.tabac        =   false;
-      $scope.tabStop      =  false;
+      $scope.tabignition    = false;
+      $scope.tabac          = false;
+      $scope.tabStop        = false;
+
       switch(tabId){
         case 'movement':
-          $scope.tabmovement      = true;
-          break;
+          $scope.tabmovement    = true; 
+        break;
         case 'overspeed':
-          $scope.taboverspeed     = true;
-          break;
+          $scope.taboverspeed   = true;
+        break;
         case 'parked':
           $scope.tabparked      = true;
-          break;
+        break;
         case 'idle':
           $scope.tabidle        = true;
-          break;
+        break;
         case 'event':
           $scope.tabevent       = true;
-          break;
+        break;
         case 'site':
           $scope.tabsite        = true;
-          break;
+        break;
         case 'load':
           $scope.tabload        = true;
-          break;
+        break;
         case 'fuel':
           $scope.tabfuel        = true;
-          break;
+        break;
         case 'ignition':
-          $scope.tabignition      = true;
-          break;
+          $scope.tabignition     = true;
+        break;
         case 'acreport':
-          $scope.tabac        =   true;
-          break;
+          $scope.tabac           = true;
+        break;
         case 'stoppageReport':
-          $scope.tabStop        =   true;
-          break;
+          $scope.tabStop        = true;
+        break;
         default:
-          $scope.tabmovement      = true; 
-          break;
+          $scope.tabmovement    = true; 
+        break;
       }
     }, true);
 
@@ -310,11 +419,11 @@ function eventButton(eventdate)
       try{
         $http.get(histurl).success(function(data){
 
-          // console.log(data.error);
-             $scope.errMsg=data.error;
-             $scope.showErrMsg = true;
+        //console.log(data.error);
+          $scope.errMsg=data.error;
+          $scope.showErrMsg = true;
 
-          if(data.vehicleLocations != null){
+        if(data.vehicleLocations != null) {
 
           $scope.loading        = false;
           $scope.hist           = data; 
@@ -333,7 +442,7 @@ function eventButton(eventdate)
           $scope.fromdate     = $scope.getTodayDate($scope.fromNowTS);
           $scope.todate       = $scope.getTodayDate($scope.toNowTS);
           
-          } else {
+        } else {
           
           var curDates        = new Date();   
           $scope.fromtime     = '12:00 AM';
@@ -341,17 +450,16 @@ function eventButton(eventdate)
           $scope.totime       = formatAMPM(curDates);
           $scope.fromdate     = getTodayDatess();
           $scope.todate       = getTodayDatess();
-
-          }
+        }
         // $scope.eventCall();
         // $scope.siteCall();
-        stopLoading()
+        stopLoading();
       });
     } catch (errr){
       // $('#status').fadeOut(); 
       // $('#preloader').delay(350).fadeOut('slow');  
       console.log(' error '+errr);
-      stopLoading()
+      stopLoading();
     }  
     }(prodId));
 
@@ -412,23 +520,15 @@ function eventButton(eventdate)
            _pairList.pop();
           return _pairList;
       }
-
     }
-
 
     // function ignitionFilter(ignitionValue)
     // {
-
     //  $scope.ignitionData   =_pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
-
     // }
-
-
     // function acFilter(_acData){
-
     //  $scope.acReport   =_pairFilter(_acData, 'yes', 'no', 'vehicleBusy');
     // }
-
 
    function loadReportApi(url){
       //var loadUrl = "http://"+getIP+context+"/public/getLoadReport?vehicleId="+prodId;
@@ -446,8 +546,7 @@ function eventButton(eventdate)
             _returnObj.push(val)
         })
       return _returnObj;
-    }
-*/
+    }*/
 
     function filter(obj,name){
       var _returnObj = [];
@@ -458,10 +557,7 @@ function eventButton(eventdate)
           {
             _returnObj.push(val)
           }
-
-
         })
-
       }
       else if(name=='stoppage'){
 
@@ -487,8 +583,8 @@ function eventButton(eventdate)
     }
 
 
-    function _globalFilter(data)
-    { 
+    function _globalFilter(data) { 
+
       $scope.parkeddata       = [];
       $scope.overspeeddata    = [];
       $scope.movementdata     = [];
@@ -520,16 +616,15 @@ function eventButton(eventdate)
     } catch (error) {
       stopLoading();
     }
-    }
+  }
 
 
+  $scope.timeFilter_park=function(data,fVal) { 
 
-    $scope.timeFilter_park=function(data,fVal)
-    {   
       var filterValues=fVal;
       var ret_obj=[];
-     if(data){
 
+      if(data){
 
           angular.forEach(data,function(val, key){
 
@@ -593,14 +688,14 @@ function eventButton(eventdate)
       }
    
    return ret_obj;
-    }
+  }
 
-  $scope.timeFilter_stop=function(data,fVal)
-    {   
-      var filterValues=fVal;
-      var ret_obj=[];
+  $scope.timeFilter_stop=function(data,fVal) {
+
+    var filterValues=fVal;
+    var ret_obj=[];
+
      if(data){
-
 
           angular.forEach(data,function(val, key){
 
@@ -664,7 +759,7 @@ function eventButton(eventdate)
       }
    
    return ret_obj;
-    }
+  }
 
  /*  $scope.filtersTime= function(val,name){
 
@@ -685,7 +780,7 @@ function eventButton(eventdate)
   }  */
 
 
- $scope.filtersTime= function(val,name){
+ $scope.filtersTime= function(val,name) {
 
  //  $scope.filterValue=val;
  //  $scope.filterValueName=name;
@@ -728,7 +823,7 @@ function eventButton(eventdate)
     
     };*/
 
-      // for submit button click
+// for submit button click
     $scope.dataArray_click    = function(data) {
 
      $scope.time_stop='All';
@@ -750,12 +845,10 @@ function eventButton(eventdate)
       }else if($scope.filterValStop!=undefined){
          $scope.stopReport=[];
          $scope.stopReport=$scope.timeFilter_stop($scope.filterLoc,$scope.filterValStop);
-
       }
 
       $scope.alertMe_click($scope.downloadid);
-    
-    };
+  };
     
 
     $scope.recursive   = function(location_over,index){
@@ -812,7 +905,6 @@ function eventButton(eventdate)
         }
       })
   }
-
 
   var delayed = (function () {
       var queue = [];
@@ -1154,80 +1246,77 @@ function eventButton(eventdate)
     switch($scope.downloadid) {
       case 'overspeedreport':
         $scope.recursive($scope.overspeeddata,ind);
-        break;
+      break;
       case 'movementreport':
         $scope.recursive($scope.movementdata,ind);
-        break;
+      break;
       case 'stoppedparkingreport':
         $scope.recursive($scope.parkeddata,ind);
-        break;
+      break;
       default:
-        break;
+      break;
     }
   };
   
-  
-  
   $scope.alertMe    = function(data) {  
-    console.log(data);
+   // console.log(data);
     switch(data) {
       case 'Overspeed':
         $scope.downloadid  =  'overspeedreport';
         $scope.overallEnable =  true;
         $scope.recursive($scope.overspeeddata,0);
-        break;
+      break;
       case 'Movement':
         $scope.downloadid  =  'movementreport';
         $scope.overallEnable =  true;
         //clearTimeout(promis);
         $scope.recursive1($scope.movementdata,0);
-        break;
+      break;
       case 'Stopped/Parked':
         $scope.downloadid  =  'stoppedparkingreport';
         $scope.overallEnable =  true;
         $scope.recursiveStop($scope.parkeddata,0);
-        break;
+      break;
       case 'Geo Fence':
         $scope.downloadid  =  'geofencereport';
         $scope.overallEnable =  false;
-        break;
+      break;
       case 'idlereport':
         $scope.downloadid    =  'idlereport';
         $scope.overallEnable =  true;
         $scope.recursiveIdle($scope.idlereport,0);
-        break;
+      break;
       case 'eventReport':
-          $scope.downloadid    =  'eventReport';
-          $scope.overallEnable =  true;
-          $scope.recursiveEvent($scope.eventReportData,0);
-          break;
-        case 'sitereport':
-          $scope.overallEnable =  true;
-          $scope.downloadid    =  'sitereport';
-          break;
-        case 'loadreport':
-          $scope.downloadid    =  'loadreport';
-          $scope.overallEnable =  true;
-          //$scope.recursiveLoad($scope.loadreport,0);
-          break;
-        case 'fuelreport':
-          $scope.downloadid    =  'fuelreport';
-          $scope.overallEnable =  true;
-          $scope.fuelChart($scope.fuelValue);
-          $scope.recursiveFuel($scope.fuelValue, 0);
-          break;
-        case 'ignitionreport':
-          $scope.downloadid   = 'ignitionreport';
-          break;
-        case 'acreport':
-          $scope.downloadid   = 'acreport';
-          break;
-        case 'stoppageReport':
-          $scope.downloadid   = 'stoppageReport';
-          break;
-
+        $scope.downloadid    =  'eventReport';
+        $scope.overallEnable =  true;
+        $scope.recursiveEvent($scope.eventReportData,0);
+      break;
+      case 'sitereport':
+        $scope.overallEnable =  true;
+        $scope.downloadid    =  'sitereport';
+      break;
+      case 'loadreport':
+        $scope.downloadid    =  'loadreport';
+        $scope.overallEnable =  true;
+      //$scope.recursiveLoad($scope.loadreport,0);
+      break;
+      case 'fuelreport':
+        $scope.downloadid    =  'fuelreport';
+        $scope.overallEnable =  true;
+        $scope.fuelChart($scope.fuelValue);
+        $scope.recursiveFuel($scope.fuelValue, 0);
+      break;
+      case 'ignitionreport':
+        $scope.downloadid   = 'ignitionreport';
+      break;
+      case 'acreport':
+        $scope.downloadid   = 'acreport';
+      break;
+      case 'stoppageReport':
+        $scope.downloadid   = 'stoppageReport';
+      break;
       default:
-        break;
+      break;
     }
   };
   
@@ -1311,7 +1400,7 @@ function eventButton(eventdate)
 
 
   $scope.exportData = function (data) {
-    console.log(data);
+    //console.log(data);
     var blob = new Blob([document.getElementById(data).innerHTML], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
@@ -1319,7 +1408,7 @@ function eventButton(eventdate)
     };
     
     $scope.exportDataCSV = function (data) {
-    console.log(data);
+    //console.log(data);
     CSV.begin('#'+data).download(data+'.csv').go();
     };
     
@@ -1354,7 +1443,7 @@ function eventButton(eventdate)
         $scope.showErrMsg = true;
         $scope.cardData   = true;
         $scope.filterLoc  = data.vehicleLocations;
-        $scope.topspeedtime   = data.topSpeedTime;
+        $scope.topspeedtime  = data.topSpeedTime;
         // loadReportApi(loadUrl);
         $scope.dataArray_click(data.vehicleLocations);
         // $('#status').fadeOut(); 
@@ -1459,6 +1548,5 @@ app.directive("getLocation", function () {
     }
   };
 });
-
 
 

@@ -1,6 +1,69 @@
 app.controller('mainCtrl',['$scope','vamoservice','$timeout','_global',function($scope, vamoservice,$timeout, GLOBAL){
-	
+  
 $("#testLoad").load("../public/menu");
+
+ $scope.schReportShow=false; 
+ $scope.reportBanShow=false;
+ 
+ $scope.reportUrl  =  GLOBAL.DOMAIN_NAME+'/getReportsList';
+
+  $scope.$watch("reportUrl", function (val) {
+      
+    vamoservice.getDataCall($scope.reportUrl).then(function(data){
+     var tabShow = data;
+        //console.log(tabShow); 
+    if(tabShow != "" && tabShow != null)  {     
+       // console.log('not Empty getReportList API ...');
+         angular.forEach(tabShow,function(val, key){
+
+            var newReportName = Object.getOwnPropertyNames(val).sort();
+             
+            if(newReportName == 'Scheduled_IndivdiualReportsList') {
+              if(val.Scheduled_IndivdiualReportsList[0].SCHEDULED_REPORTS==false) {
+                /*   $(window).load(function(){
+                        $('#allReport').modal('show');
+                    });*/
+                    $scope.schReportShow = false;
+                    $scope.reportBanShow=true;
+                 
+                  stopLoading();
+                } else {
+
+                      $scope.reportBanShow = false;
+                      $scope.schReportShow = true;
+
+                        $scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+                        initFunc();
+
+                  /* var reportSubName = Object.getOwnPropertyNames(val.Scheduled_IndivdiualReportsList[0]).sort();
+                          console.log(reportSubName);
+
+                      angular.forEach(reportSubName,function(value, keys) {
+                         switch(value) {
+                           case 'SCHEDULED_REPORTS':
+                            //if(val.Scheduled_IndivdiualReportsList[0].SCHEDULED_REPORTS==false){ $scope.schReportShow=true; }
+                              $scope.schReportShow=val.Scheduled_IndivdiualReportsList[0].SCHEDULED_REPORTS;
+                              $scope.url_site = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+                            break;
+                          }
+                      });*/
+                }
+            }
+      });
+
+} else{
+    console.log('Empty getReportList API ...');
+
+     $scope.schReportShow=true; 
+     $scope.reportBanShow=false;
+
+    $scope.url  = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+    initFunc();
+  }
+
+ });
+
+});
 
 //global variable
 $scope.vehicles         = [];
@@ -32,7 +95,7 @@ return $scope.repNames;
 
 $scope.reports          = $scope.getReportNames();
 
-var url                 = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+//var url                 = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
 var menuValue           = JSON.parse(sessionStorage.getItem('userIdName'));
 var sp                  = menuValue.split(",");
 
@@ -122,10 +185,14 @@ function addVehi(vehi){
 
 
 //init function
-(function (){
+/*(function (){*/
+
+function initFunc()
+{
+
   startLoading();
 
-  vamoservice.getDataCall(url).then(function(data){
+  vamoservice.getDataCall($scope.url).then(function(data){
     
     addVehi(data[0].vehicleLocations);
     $scope.locations02 = data;
@@ -160,7 +227,8 @@ function addVehi(vehi){
   });
 
   stopLoading();
-}());
+//}());
+}
 
 $scope.trimColon = function(textVal){
   return textVal.split(":")[0].trim();
@@ -359,4 +427,3 @@ $scope.deleteFn   = function(_data, index){
 
 
 }]);
-  

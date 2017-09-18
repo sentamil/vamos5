@@ -24,7 +24,52 @@
 <![endif]-->
 <style type="text/css">.gm-style{font-family:Roboto,Arial,sans-serif;font-size:11px;font-weight:400;text-decoration:none}</style>
 <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+
+<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 <style type="text/css">
+
+
+.tot{
+	font-stretch: expanded;	
+	text-decoration: underline;
+	font-size: 15px;
+}
+
+#table_address {
+    padding-top: 35px;
+    float: left;
+}
+
+.tot:hover{
+    transition: 0.8s;
+	color: yellow;
+}
+
+div#butt:active { 
+    background-color: yellow;
+}
+
+div#butt:focus { 
+    background-color: yellow;
+}
+
+
+  body{
+   font-family: 'Lato', sans-serif;
+ /*font-weight: bold;*/	
+
+ /*font-family: 'Lato', sans-serif;
+   font-family: 'Roboto', sans-serif;
+   font-family: 'Open Sans', sans-serif;
+   font-family: 'Raleway', sans-serif;
+   font-family: 'Faustina', serif;
+   font-family: 'PT Sans', sans-serif;
+   font-family: 'Ubuntu', sans-serif;
+   font-family: 'Droid Sans', sans-serif;
+   font-family: 'Source Sans Pro', sans-serif;
+  */
+} 
+
 	#map_canvas{ width:100%; height:100%;}
 	.drop-menu {
     display: block;
@@ -43,24 +88,12 @@
 	
 .table-striped > tbody > tr:nth-child(even) > td, 
 .table-striped > tbody > tr:nth-child(even) > th {
-background-color: #ffffff;
+ background-color: #ffffff;
 }
 
-body{
-font-family: 'Lato', sans-serif;
-/*font-weight: bold;*/	
-
-/*font-family: 'Lato', sans-serif;
-font-family: 'Roboto', sans-serif;
-font-family: 'Open Sans', sans-serif;
-font-family: 'Raleway', sans-serif;
-font-family: 'Faustina', serif;
-font-family: 'PT Sans', sans-serif;
-font-family: 'Ubuntu', sans-serif;
-font-family: 'Droid Sans', sans-serif;
-font-family: 'Source Sans Pro', sans-serif;
-*/
-} 
+.butList:hover {
+   
+}
 	  
 </style>
 </head>
@@ -106,36 +139,48 @@ font-family: 'Source Sans Pro', sans-serif;
      	<div id="testLoad"></div>
         <div id="page-content-wrapper">
         	 <div class="container-fluid">
-        	
-           
-        		<div class="panel panel-default">
-				 
-				</div>   
-        </div>
+        	       <div class="panel panel-default">
+				   </div>   
+              </div>
         <!-- /#page-content-wrapper -->
-    </div>
+        </div>
  
-    <!-- AdminLTE css box-->
-   
-       <div class="col-md-12">
-	       	<tabset class="nav-tabs-custom">
-			   			 <tab heading="Current Status Report" id="tabs" ng-click="startTime('shortName', 'reload')">
-			   			 	<div class="box box-primary1">
+        <!-- AdminLTE css box-->
 
-		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
+        <div ng-show="reportBanShow" class="modal fade" id="allReport" role="dialog" style="top: 100px">
+			<div class="modal-dialog">
+			    <div class="modal-content">
+					    <div class="modal-body">
+					        <p class="err" style="text-align: center;"> You are not a premium user !... </p>
+					    </div>
+			    </div>
+			</div>
+	    </div> 
+
+        <div ng-show="reportBanShow" class="col-md-10" >
+            <div class="box box-primary" style="height:90px; padding-top:30px; margin-top:5%; margin-left:8%;">
+                <p ><h5 class="err" style="text-align: center;"> No Reports Found! </h5></p>
+            </div>
+        </div>
+   
+       <div class="col-md-12" ng-hide="reportBanShow">
+
+	       	<tabset class="nav-tabs-custom">
+			   <tab ng-show="curStatShow" heading="Current Status Report" id="tabs" active="firstTab" ng-click="startTime('shortName', 'reload')">
+			   	<div class="box box-primary1" ng-show="curStatShow">
+
+		        <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip" >
 		        	
 		           <h5 class="box-title">Current Status Report</h5>
 		            
 		           <!-- language -->
-		            
 		           <!-- <hr style="margin-bottom:0px;"> -->
 		           <!--  <div class="box-tools pull-right">
 		                   <img style="cursor: pointer;" ng-click="exportData('statusreport')"  src="../app/views/reports/image/xls.png" />
 		            	   <img width=30 height=30 style="cursor: pointer;" ng-click="exportDataCSV('statusreport')"  src="../app/views/reports/image/csv.jpeg" />
 		                 </div> -->
 
-                   
-                 <div class="span6 pull-right" style="padding:10px;" ng-init="geoVehLocations()">
+                <div class="span6 pull-right" style="padding:10px;" ng-init="geoVehLocations()">
 					<button type="button" ng-hide= "verifyGeoCount == 0" class="btn btn-primary" data-toggle="modal" data-target="#GeoFenceDetail" ng-click="geoVehLocations()">Geo Fence Report</button>
 
 				<div class="modal fade" id="GeoFenceDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -247,129 +292,94 @@ font-family: 'Source Sans Pro', sans-serif;
 		        	<!-- <input class="btn btn-xs btn-danger pull-right" type="button" value="More" ng-click="toggle = !toggle" > -->
 		        	<hr style="margin:0px 0px 10px 0px;">
 
-
-      			<div class="col-md-3" ng-show="cardMsgShow">
-			        <div class="small-box bg-aqua">
-	                    <div class="inner">
-	                    <!-- <h3></h3> -->
-	                   <div ng-if="data2.distance > 1"> <p><i class="fa fa-tachometer pull-right"></i><b>Total Kms </b> <span style="float: right;padding-right:18px;color:#fafa51"><b>{{data2.distance|number:0}} </b></span> </p></div>
-
-	                   <div ng-if="data2.distance <= 1"> <p><i class="fa fa-tachometer pull-right"></i><b>Total KM </b> <span style="float: right;padding-right:18px;color:#fafa51"><b>{{data2.distance|number:0}} </b></span> </p></div>      
-	                       <!-- <span class='badge badge-success small'>
-								  <i class='icon-user icon-white'></i>
-								  <i class='icon-user icon-white'></i>
-								  <i class='icon-user icon-white'></i> 
-								  <i class="fa fa-tachometer"></i>
-								</span>-->
-								                            
-	                        </div>
-	                        <!-- <div class="icon">
-	                            <i class="fa fa-tachometer"></i>
-	                        </div> -->
-	                     </div>
-	                </div>
-	                
-	                <div class="col-md-3" ng-show="cardMsgShow">
+                <div class="col-md-3" ng-show="cardMsgShow" ng-click="filtDatas('tot')" style="cursor: pointer;">
 			        	<div class="small-box bg-green">
-	                        <div class="inner">
-	                            <!-- <h6></h6> -->
-	                       <div ng-if="data2.online > 1"> <p><i class="fa fa-taxi pull-right"></i><b>Vehicles Online</b> <span style="float: right;padding-right:18px;color:#fafa51"><b> {{data2.online}}</b></span></p></div> 
-	                       <div ng-if="data2.online <= 1"> <p><i class="fa fa-taxi pull-right"></i><b>Vehicle Online</b> <span style="float: right;padding-right:18px;color:#fafa51"><b> {{data2.online}}</b></span></p></div>                                  
-	                        </div>
-	                       <!--  <div class="icon">
-	                            <i class="fa fa-taxi"></i>
-	                        </div> -->
-	                     </div>
-	                </div>
-	                
-	                <div class="col-md-3" ng-show="cardMsgShow">
-			        	<div class="small-box bg-yellow">
-	                        <div class="inner">
-	                        <!-- <h3></h3> -->
-	                         <div ng-if="data2.alerts > 1"><p><i class="fa fa-bell pull-right"></i><b>Alarms / Attentions </b> <span style="float: right;padding-right:18px;color:#fafa51"><b>{{data2.alerts}}</b></span></p></div> 
-	                          <div ng-if="data2.alerts <= 1"><p><i class="fa fa-bell pull-right"></i><b>Alarm / Attention </b> <span style="float: right;padding-right:18px;color:#fafa51"><b>{{data2.alerts}}</b></span></p></div>                                  
-	                        </div>
-	                       <!--  <div class="icon">
-	                            <i class="fa fa-bell"></i>
-	                        </div> -->
-	                     </div>
-	                </div>
-	                
-	                <div class="col-md-3" ng-show="cardMsgShow">
-			        	<div class="small-box bg-red">
 	                       <div class="inner">
-	                       <!-- <h3></h3> -->
-	                       <div ng-if="data2.totalVehicles > 1"><p><i class="fa fa-taxi pull-right"></i><b>Total Vehicles </b> <span style="float: right;padding-right:18px;color:#fafa51"><b>{{data2.totalVehicles}}</b></span></p></div> 
-	                       <div ng-if="data2.totalVehicles <= 1"><p><i class="fa fa-taxi pull-right"></i><b>Total Vehicle </b> <span style="float: right;padding-right:18px;color:#fafa51"><b>{{data2.totalVehicles}}</b></span></p></div>                                  
+	
+	                       <div id="totClick"><p><i class="fa fa-taxi pull-right"></i><a class="butList" href="" ng-click="filtDatas('tot')" style="color: inherit;font-weight: bold;"><span class="tot">Total</span></a> <span style="float: right;padding-right:18px;"><b>{{data2.totalVehicles}}</b></span></p></div> 
 	                       </div>
-	                       <!--  <div class="icon">
-	                            <i class="fa fa-taxi"></i>
-	                        </div> -->
+	               	    </div>
+	            </div>
+
+	       <div class="col-md-3" ng-show="cardMsgShow" ng-click="filtDatas('vehiOn')" style="cursor: pointer;">
+			   <div class="small-box bg-yellow">
+	              <div class="inner">
+	              <div id="vehiOnClick"> <p><i class="fa fa-taxi pull-right"></i><a  class="butList" href="" ng-click="filtDatas('vehiOn')"  style="color: inherit;font-weight: bold;"><span class="tot">Online</span></a> <span style="float: right;padding-right:18px;"><b> {{data2.online}}</b></span></p></div> 
+	             </div>
+	         </div>
+	     </div>
+	                
+	                 <div class="col-md-3" ng-show="cardMsgShow" ng-click="filtDatas('move')" style="cursor: pointer;">
+			        	<div class="small-box bg-red">
+	                        <div class="inner">
+	                       
+	                        <div   id="moveClick" > <p><i class="fa fa-taxi pull-right" ></i><a class="butList" href="" ng-click="filtDatas('move')" style="color: inherit;font-weight: bold;"><span class="tot">Moving</span></a> <span style="float: right;padding-right:18px;"><b> {{data2.totalMovingVehicles}}</b></span></p> </div> 
+	                        </div>
+	                
 	                     </div>
 	                </div>
-	                
-	                
-	                <div class="col-md-3" ng-show="cardMsgShow">
+
+
+	               <div  class="col-md-3" ng-show="cardMsgShow" ng-click="filtDatas('idle')" style="cursor: pointer;">
 			        	<div class="small-box bg-blue">
 	                        <div class="inner">
-	                        <!-- <h3></h3> -->
-	                        <div ng-if="data2.totalMovingVehicles > 1"> <p><i class="fa fa-taxi pull-right" style="color: #7feb1c"></i><b>Moving Vehicles</b> <span style="float: right;padding-right:18px;color:#fafa51"><b> {{data2.totalMovingVehicles}}</b></span></p> </div> 
-
-	                         <div ng-if="data2.totalMovingVehicles <= 1"> <p><i class="fa fa-taxi pull-right" style="color: #7feb1c"></i><b>Moving Vehicle</b> <span style="float: right;padding-right:18px;color:#fafa51"><b> {{data2.totalMovingVehicles}}</b></span></p> </div>  
-
-	                        </div>
-	                       <!--  <div class="icon">
-	                            <i class="fa fa-taxi"></i>
-	                        </div> -->
-	                     </div>
-	                </div>
-	                
-	                <div class="col-md-3" ng-show="cardMsgShow">
-			        	<div class="small-box bg-purple">
-	                        <div class="inner">
 	                         <!-- <h3></h3> -->
-	                          <div ng-if="data2.totalIdleVehicles > 1">  <p><i class="fa fa-taxi pull-right" style="color: #eb881c"></i><b>Idle Vehicles</b> <span style="float: right;padding-right:18px;color:#fafa51"><b> {{data2.totalIdleVehicles}}</b></span></p>  </div>
-                               
-                               <div ng-if="data2.totalIdleVehicles <= 1">  <p><i class="fa fa-taxi pull-right" style="color: #eb881c"></i><b>Idle Vehicle</b> <span style="float: right;padding-right:18px;color:#fafa51"><b> {{data2.totalIdleVehicles}}</b></span></p>  </div>
-
-	                        </div>
-	                        <!-- <div class="icon">
-	                            <i class="fa fa-taxi"></i>
-	                        </div> -->
+	                          <div id="idleClick"><p><i class="fa fa-taxi pull-right"></i><a class="butList" href="" ng-click="filtDatas('idle')" style="color: inherit;font-weight: bold;"><span class="tot">Idle</span></a> <span style="float: right;padding-right:18px;"><b> {{data2.totalIdleVehicles}}</b></span></p>  </div>
+                          
+	                      </div>
 	                     </div>
-	                </div>
-	                
-	                <div class="col-md-3" ng-show="cardMsgShow">
-			        	<div class="small-box bg-teal">
+	                </div>   
+
+                         
+	               <div  class="col-md-3" ng-show="cardMsgShow" ng-click="filtDatas('park')" style="cursor: pointer;">
+			        	<div class="small-box bg-aqua">
 	                        <div class="inner">
-	                            <!-- <h3></h3> -->
-	                         <div ng-if="data2.totalParkedVehicles > 1"> <p><i class="fa fa-taxi pull-right" style="color: #7b7b7b"></i><b>Parked Vehicles </b> <span style="float: right;padding-right:18px;color:#fafa51"><b>{{data2.totalParkedVehicles}}</b></span></p>   </div>
+	                 
+	                         <div id="parkClick" > <p><i class="fa fa-taxi pull-right"></i><a class="butList" href="" ng-click="filtDatas('park')"  style="color: inherit;font-weight: bold;"><span class="tot">Parking</span> </a><span style="float: right;padding-right:18px;"><b>{{data2.totalParkedVehicles}}</b></span></p>   </div>
 
-                             <div ng-if="data2.totalParkedVehicles <= 1">   <p><i class="fa fa-taxi pull-right" style="color: #7b7b7b"></i><b>Parked Vehicle </b> <span style="float: right;padding-right:18px;color:#fafa51"><b>{{data2.totalParkedVehicles}}</b></span></p>   </div>
+             
 
 	                        </div>
-	                        <!-- <div class="icon">
-	                            <i class="fa fa-taxi"></i>
-	                        </div> -->
+	                
 	                     </div>
 	                </div>
-	                
-	                <div class="col-md-3" ng-show="cardMsgShow">
-			        	<div class="small-box bg-maroon">
+
+	                <div class="col-md-3" ng-show="cardMsgShow" ng-click="filtDatas('noDat')" style="cursor: pointer;" >
+			        	<div  class="small-box bg-dark-gray active" >
 	                     <div class="inner">
-	                       <!-- <h3></h3> -->
-	                         <div ng-if="data2.totalNoDataVehicles > 1"> <p><i class="fa fa-taxi pull-right" style="color: #ff62b0"></i><b>No Data Vehicles</b> <span style="float: right;padding-right:18px;color:#fafa51"><b> {{data2.totalNoDataVehicles}}</b></span></p> </div>
-
-                             <div ng-if="data2.totalNoDataVehicles <= 1"> <p><i class="fa fa-taxi pull-right" style="color: #ff62b0"></i><b>No Data Vehicle</b> <span style="float: right;padding-right:18px;color:#fafa51"><b> {{data2.totalNoDataVehicles}}</b></span></p> </div>
+	      
+	                         <div id="noDatClick"> <p><i class="fa fa-taxi pull-right"></i><a class="butList" href="" ng-click="filtDatas('noDat')" style="color: inherit;font-weight: bold;"><span class="tot">No Data</span ></a> <span style="float: right;padding-right:18px;"><b> {{data2.totalNoDataVehicles}}</b></span></p> </div> 
+                      
 
 	                        </div>
-	                        <!-- <div class="icon">
-	                            <i class="fa fa-taxi"></i>
-	                        </div> -->
+	            
+	                     </div>
+	                </div>
+
+
+      			<div  class="col-md-3" ng-show="cardMsgShow">
+			        <div class="small-box bg-teal">
+	                    <div class="inner">
+	                    <!-- <h3></h3> -->
+	                   <div ng-if="data2.distance > 1" > <p><i class="fa fa-tachometer pull-right"></i><span style="text-decoration: none;font-weight: bold;" class="tot">Total Kms </span> <span style="float: right;padding-right:18px;"><b>{{data2.distance|number:0}} </b></span> </p></div>
+
+	                   <div ng-if="data2.distance <= 1" > <p><i class="fa fa-tachometer pull-right"></i><span style="text-decoration: none;font-weight: bold;" class="tot">Total Km </span> <span style="float: right;padding-right:18px;"><b>{{data2.distance|number:0}} </b></span> </p></div>      
+	          			</div>
+	                </div>
+	            </div>
+	                
+	               	<div class="col-md-3" ng-show="cardMsgShow">
+			        	<div class="small-box bg-maroon">
+	                        <div class="inner">
+	                        <!-- <h3></h3> -->
+	                         <div ng-if="data2.alerts > 1"><p><i class="fa fa-bell pull-right"></i><span style="text-decoration: none;font-weight: bold;" class="tot">Alarms / Attentions </span> <span style="float: right;padding-right:18px;"><b>{{data2.alerts}}</b></span></p></div> 
+	                          <div ng-if="data2.alerts <= 1"><p><i class="fa fa-bell pull-right"></i><span style="text-decoration: none;font-weight: bold;" class="tot">Alarm / Attention </span> <span style="float: right;padding-right:18px;"><b>{{data2.alerts}}</b></span></p></div>                                  
+	                        </div>
+	                    
 	                     </div>
 	                </div>
 	                
-		        </div>
+	       		</div>
 		       
 		        <div class="box-body" id="statusreport" style="overflow-y:auto;">
 
@@ -461,16 +471,16 @@ font-family: 'Source Sans Pro', sans-serif;
 										<td style="cursor: pointer;" ng-if="user.address==null && mainlist[$index]!=null">{{mainlist[$index]}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{user.latitude}},{{user.longitude}}" target="_blank">Link</a></td>														
 									</tr>
-									<tr ng-if="data1.vehicleLocations==null">
-										<td colspan="14" class="err"><h5>No Data Found ! Try Again</h5></td>
+									<tr ng-if="data1.vehicleLocations==null || data1.vehicleLocations.length==0">
+										<td colspan="15" class="err"><h5>No Data Found!</h5></td>
 									</tr>
 								</table>		
 		        </div>
 		    </div>	
     		</tab>
-    		<tab heading="Consolidated Report" ng-click="dialogBox()" active="actTab" id="consoldate" data-toggle="modal" data-target="#myModal"> 
+    		<tab ng-show="consolTabShow" heading="Consolidated Report" ng-click="dialogBox()" active="actTab" id="consoldate" data-toggle="modal" data-target="#myModal"> 
     			
-    			<div class="box box-primary1">
+    			<div class="box box-primary1" ng-show="consolTabShow">
     				
     				 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
 		        	
@@ -653,8 +663,8 @@ font-family: 'Source Sans Pro', sans-serif;
 			  </div>
 			</div>
 		    </tab>
-		    <tab heading="Consolidated Location & Site" active="siteTab" ng-click="consoldateTrip('trip')" id="tripTab">
-			    <div class="box box-primary">
+		    <tab ng-show="conSitTabShow" heading="Consolidated Location & Site" active="siteTab" ng-click="consoldateTrip('trip')" id="tripTab">
+			    <div class="box box-primary" ng-show="conSitTabShow">
 	    			<div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
 			        	<h5 class="box-title">Consolidated Location & Site</h5>
 			            <div class="box-tools pull-right">
@@ -899,8 +909,8 @@ font-family: 'Source Sans Pro', sans-serif;
 		        </div>
 		    </tab>  -->
 
-		    <tab heading="Consolidated OverSpeed" active="overTab" ng-click="consOverspeed('ovr')">
-			    <div class="box box-primary1">
+		    <tab ng-show="overTabShow" heading="Consolidated OverSpeed" active="overTab" ng-click="consOverspeed('ovr')">
+			    <div class="box box-primary1" ng-show="overTabShow">
 	    			<div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
 			        	<h5 class="box-title">Consolidated OverSpeed</h5>
 			            <div class="box-tools pull-right">
@@ -1015,7 +1025,6 @@ font-family: 'Source Sans Pro', sans-serif;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
-
     <script src="assets/js/bootstrap.min.js"></script>
 <!--<script src="assets/js/bootstrap.min.js"></script> -->
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -1053,13 +1062,17 @@ font-family: 'Source Sans Pro', sans-serif;
         		$('#tripDatefrom, #tripDateTo').datetimepicker({
 					format:'YYYY-MM-DD',
 					useCurrent:true,
-					pickTime: false
+					pickTime: false,
+					maxDate: new Date,
+                    minDate: new Date(2015, 12, 1)
 				});
                
                 $('#dateFrom, #dateTo, #tripfrom, #tripto, #ovrFrom, #ovrTo').datetimepicker({
 					format:'YYYY-MM-DD',
 					useCurrent:true,
-					pickTime: false
+					pickTime: false,
+					maxDate: new Date,
+                    minDate: new Date(2015, 12, 1)
 				});
 				
 				$('#timeFrom, #ovrTimeFrom, #timefromTrip, #tripTimeFrom').datetimepicker({

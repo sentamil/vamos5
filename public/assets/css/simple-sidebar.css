@@ -113,7 +113,7 @@
 .sidebar-nav {
     position: absolute;
     top: 0;
-    width: 80px;
+    width: 90px;
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -180,7 +180,7 @@
 }
 
 .sidebar-subnav { 
-    left:80px;
+    left:85px;
     height:100%;
     margin: 0;
     padding: 0;
