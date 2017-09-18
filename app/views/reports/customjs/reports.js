@@ -13,7 +13,7 @@ app.controller('mainCtrl',['$scope', '$http', '$timeout', '$interval', '_global'
 
    $scope.reportUrl  =  GLOBAL.DOMAIN_NAME+'/getReportsList';
 
-  o$scope.$watch("reportUrl", function (val) {
+   $scope.$watch("reportUrl", function (val) {
       
     $http.get($scope.reportUrl).success(function(data){
 
