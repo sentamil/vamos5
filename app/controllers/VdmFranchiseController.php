@@ -1600,7 +1600,7 @@ public function users()
                         }
                  $parameters = 'fcode='.$fcode . '&removeList='.$removeList;
                  $ipaddress = $redis->get('ipaddress');
-                 $url = 'http://'.ipaddress.':9000/getRemoveReports?' . $parameters;
+                 $url = 'http://'.$ipaddress.':9000/getRemoveReports?' . $parameters;
                  $url=htmlspecialchars_decode($url);
                  log::info( ' url :' . $url);
                  $ch = curl_init();
