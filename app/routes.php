@@ -211,6 +211,13 @@ Route::get('/tollReport', function() {
     return View::make('reports.tollReport');
 });
 
+Route::get('/ConSiteLocReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.ConSiteLocReport');
+});
+
 Route::get('/SchoolSmsReport', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -726,6 +733,14 @@ Route::get('/getReportsList', function() {
     return View::make('vls.getReportsList');
 });
 
+Route::get('/getConsolidatedSiteReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getConsolidatedSiteReport..');
+    return View::make('vls.getConsolidatedSiteReport');
+});
+
  Route::get('/getStoppageReport', function() {
      if (!Auth::check()) {
          return Redirect::to('login');
@@ -876,8 +891,6 @@ Route::get('viewSite', function() {
     return View::make('vls.viewSite');
 });
  
-;
-
 
 Route::group(array('before' => 'userauth'), function(){ 
         Route::get('/sites', function() {
@@ -1036,19 +1049,19 @@ Route::resource('DashBoard', 'DashBoardController');
  
 Route::resource('Business', 'BusinessController');
 Route::resource('rfid', 'RfidController');
- Route::get('rfid/{param}/destroy', array('uses' => 'RfidController@destroy'));
- Route::get('rfid/editRfid/{param}', array('uses' => 'RfidController@edit1'));
- Route::post('rfid/index1', array('uses' => 'RfidController@index1'));
+Route::get('rfid/{param}/destroy', array('uses' => 'RfidController@destroy'));
+Route::get('rfid/editRfid/{param}', array('uses' => 'RfidController@edit1'));
+Route::post('rfid/index1', array('uses' => 'RfidController@index1'));
 
 Route::post('Business/adddevice', array('uses' => 'BusinessController@adddevice'));
 
 Route::post('rfid/addTags', array('uses' => 'RfidController@addTags'));
 Route::post('rfid/update', array('uses' => 'RfidController@update'));
- Route::post('user_select', array('as' => 'ajax.user_select', 'uses' => 'RfidController@getVehicle'));
- Route::post('select', array('as' => 'ajax.checkvehicle', 'uses' => 'BusinessController@checkvehicle'));
- Route::post('select1', array('as' => 'ajax.checkDevice', 'uses' => 'BusinessController@checkDevice'));
- Route::post('select3', array('as' => 'ajax.checkUser', 'uses' => 'BusinessController@checkUser'));
-  Route::post('select2', array('as' => 'ajax.getGroup', 'uses' => 'BusinessController@getGroup'));
+Route::post('user_select', array('as' => 'ajax.user_select', 'uses' => 'RfidController@getVehicle'));
+Route::post('select', array('as' => 'ajax.checkvehicle', 'uses' => 'BusinessController@checkvehicle'));
+Route::post('select1', array('as' => 'ajax.checkDevice', 'uses' => 'BusinessController@checkDevice'));
+Route::post('select3', array('as' => 'ajax.checkUser', 'uses' => 'BusinessController@checkUser'));
+Route::post('select2', array('as' => 'ajax.getGroup', 'uses' => 'BusinessController@getGroup'));
 Route::post('Business/batchSale', array('uses' => 'BusinessController@batchSale'));
 
 // ajax call
@@ -1106,7 +1119,6 @@ Route::get('vdmOrganization/Scan', array('uses' => 'VdmOrganizationController@Se
 Route::post('vdmOrganization/adhi', array('uses' => 'VdmOrganizationController@Scan'));
 
 
- 
 Route::get('vdmOrganization/{param}/poiEdit', array('uses' => 'VdmOrganizationController@poiEdit'));
  
 Route::get('vdmOrganization/{param}/poiDelete', array('uses' => 'VdmOrganizationController@poiDelete'));
