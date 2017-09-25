@@ -4,10 +4,13 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	$scope.uiDate 				=	{};
 	$scope.uiValue	 			= 	{};
 	$scope.getOrgId             =   GLOBAL.DOMAIN_NAME+'/viewSite';
-  //$scope.sort                 = sortByDate('startTime');
-    $scope.sitesNam             =   "";
+  //$scope.sort                 =   sortByDate('startTime');
+    $scope.sitesNam             =   '';
+    $scope.preSiteNam           =   '';
+    $scope.siteSelected         =   0;
+    $scope.vehiSelected         =   0;
+    
 
-    $scope.pageLoads            =   0;
     var tab = getParameterByName('tn');
        
 	function getParameterByName(name) {
@@ -19,8 +22,8 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
 	//global declartion
 	$scope.locations = [];
-	$scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
-	$scope.gIndex =0;
+	$scope.url       = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+getParameterByName('vg');
+	$scope.gIndex    = 0;
 
   //$scope.locations01 = vamoservice.getDataCall($scope.url);
 	$scope.trimColon = function(textVal){
@@ -39,13 +42,13 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
     function convert_to_24h(time_str) {
 		//console.log(time_str);
- 		var str		=	time_str.split(' ');
- 		var stradd	=	str[0].concat(":00");
- 		var strAMPM	=	stradd.concat(' '+str[1]);
- 		var time = strAMPM.match(/(\d+):(\d+):(\d+) (\w)/);
-	    var hours = Number(time[1]);
-	    var minutes = Number(time[2]);
-	    var seconds = Number(time[2]);
+ 		var str		 =	time_str.split(' ');
+ 		var stradd	 =	str[0].concat(":00");
+ 		var strAMPM	 =	stradd.concat(' '+str[1]);
+ 		var time     =  strAMPM.match(/(\d+):(\d+):(\d+) (\w)/);
+	    var hours    =  Number(time[1]);
+	    var minutes  =  Number(time[2]);
+	    var seconds  =  Number(time[2]);
 	    var meridian = time[4].toLowerCase();
 	
 	    if (meridian == 'p' && hours < 12) {
@@ -62,22 +65,22 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
     $scope.msToTime = function(ms) 
     {
     	if(ms != null){
-            days = Math.floor(ms / (24 * 60 * 60 * 1000));
-	  	    daysms = ms % (24 * 60 * 60 * 1000);
-		    hours = Math.floor((ms) / (60 * 60 * 1000));
-		    hoursms = ms % (60 * 60 * 1000);
-		    minutes = Math.floor((hoursms) / (60 * 1000));
+            days      = Math.floor(ms / (24 * 60 * 60 * 1000));
+	  	    daysms    = ms % (24 * 60 * 60 * 1000);
+		    hours     = Math.floor((ms) / (60 * 60 * 1000));
+		    hoursms   = ms % (60 * 60 * 1000);
+		    minutes   = Math.floor((hoursms) / (60 * 1000));
 		    minutesms = ms % (60 * 1000);
-		    seconds = Math.floor((minutesms) / 1000);
+		    seconds   = Math.floor((minutesms) / 1000);
 		  // if(days==0)
 		  // 	return hours +" h "+minutes+" m "+seconds+" s ";
 		  // else
-	   return hours +":"+minutes+":"+seconds;
-	   }
+	    return hours +":"+minutes+":"+seconds;
+	            }
 	}
 
 
-   		var delayed4 = (function () {
+    var delayed4 = (function () {
   		var queue = [];
 
 	  	function processQueue() {
@@ -116,7 +119,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 			{
 				var latEvent		 =	locationEvent[index4].latitude;
 			 	var lonEvent		 =	locationEvent[index4].longitude;
-				var tempurlEvent =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
+				var tempurlEvent     =	"https://maps.googleapis.com/maps/api/geocode/json?latlng="+latEvent+','+lonEvent+"&sensor=true";
 				delayed4(2000, function (index4) {
 				      return function () {
 				        google_api_call_Event(tempurlEvent, index4, latEvent, lonEvent);
@@ -128,29 +131,31 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
 
 	function formatAMPM(date) {
-    	  var date = new Date(date);
-		  var hours = date.getHours();
+
+    	  var date    = new Date(date);
+		  var hours   = date.getHours();
 		  var minutes = date.getMinutes();
-		  var ampm = hours >= 12 ? 'PM' : 'AM';
-		  hours = hours % 12;
-		  hours = hours ? hours : 12; // the hour '0' should be '12'
-		  minutes = minutes < 10 ? '0'+minutes : minutes;
+		  var ampm    = hours >= 12 ? 'PM' : 'AM';
+		  hours       = hours % 12;
+		  hours       = hours ? hours : 12; // the hour '0' should be '12'
+		  minutes     = minutes < 10 ? '0'+minutes : minutes;
 		  var strTime = hours + ':' + minutes + ' ' + ampm;
-		  return strTime;
+
+     return strTime;
 	}
 
 
 	$scope.convert_to_24hrs = function(time_str) {
 
 		//console.log(time_str);
- 		var str		=	time_str.split(' ');
- 		var stradd	=	str[0].concat(":00");
- 		var strAMPM	=	stradd.concat(' '+str[1]);
- 		var time = strAMPM.match(/(\d+):(\d+):(\d+) (\w)/);
-	    var hours = Number(time[1]);
-	    var minutes = Number(time[2]);
-	    var seconds = Number(time[2]);
-	    var meridian = time[4].toLowerCase();
+ 		var str		 =	time_str.split(' ');
+ 		var stradd	 =	str[0].concat(":00");
+ 		var strAMPM	 =	stradd.concat(' '+str[1]);
+ 		var time     =  strAMPM.match(/(\d+):(\d+):(\d+) (\w)/);
+	    var hours    =  Number(time[1]);
+	    var minutes  =  Number(time[2]);
+	    var seconds  =  Number(time[2]);
+	    var meridian =  time[4].toLowerCase();
 	
 	    if (meridian == 'p' && hours < 12) {
 	      hours = hours + 12;
@@ -176,8 +181,8 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	    $http.get($scope.getOrgId).success(function(response){
 
 	        if(response){
-		      $scope.organsIds = response.orgIds;
-		      $scope.orgIds = $scope.organsIds[0];
+		        $scope.organsIds = response.orgIds;
+		        $scope.orgIds = $scope.organsIds[0];
 	        }
         });
     });
@@ -202,90 +207,160 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
         displayProp: 'id'
     };
 
-    $scope.vehicleFilter = function(data,filtVal){
+    $scope.vehicleFilter = function(filtVal,data){
 
-      var ret_obj=[];
-      var firstVal=0;
+
+    	$scope.lastFiltVal = filtVal;
+
+
+      $scope.vehiSelected = 1;
+
+      var ret_obj  = [];
+      var firstVal = 0;
     
-      //console.log(data);
-         //console.log(filtVal);
         if(data){
 
-            angular.forEach(data,function(value, key){
-            	//console.log(value.id);
-                angular.forEach(filtVal.getDetails, function(sval, sKey){
-        	       //console.log(sval.vehicleId);
+        	console.log(data);
+
+            angular.forEach(filtVal,function(value, key){
+                angular.forEach(data.getDetails, function(sval, sKey){
+      
                     if(value.id==sval.vehicleId){
-         	          //console.log(sval);
          	            ret_obj.push(sval);   
                     }    
                 })
             })
-        //console.log(ret_obj);
+
         return ret_obj;
         }
     }
 
 
-    $scope.selectVehicle = function(selectVal){
+  $scope.selectVehicle = function(selectVal){
 
-        if(selectVal.length != 0) {
-    
-          var retValNew=[{'getDetails':$scope.vehicleFilter(selectVal,$scope.filtconSiteData),'siteList':$scope.filtconSiteData.siteList}];
-            //console.log(retValNew);
-              $scope.conSiteLocData =retValNew[0];
+     if(selectVal.length!=0){
 
-        } else if(selectVal) {
+     	if( $scope.siteSelected == 1 ){
 
-   	        $scope.conSiteLocData = $scope.filtconSiteData;
-        }
+           $scope.vehiFiltData     =  $scope.vehicleFilter(selectVal,$scope.siteDataBackUp);
+           var retValNew           =  [{'getDetails':$scope.vehiFiltData,'siteList':$scope.siteDataBackUp.siteList}];
+           $scope.conSiteLocData   =  retValNew[0];
+           $scope.vehiFiltBackUp   =  $scope.conSiteLocData;
+           $scope.siteFiltData     =  undefined;
+
+     	} else{
+
+     	   $scope.vehiFiltData     =  $scope.vehicleFilter(selectVal,$scope.conSiteBackData);
+           var retValNew           =  [{'getDetails':$scope.vehiFiltData,'siteList':$scope.conSiteBackData.siteList}];
+           $scope.conSiteLocData   =  retValNew[0];
+           $scope.vehiFiltBackUp   =  $scope.conSiteLocData;
+     	}
+
+     }else {
+
+     	if( $scope.siteSelected == 1 ){
+
+     		if($scope.siteFiltData!=undefined){
+
+     			$scope.conSiteLocData  = $scope.siteFiltData;
+     			$scope.vehiSelected    = 0;
+
+     		} else {
+
+                  $scope.conSiteLocData  =  $scope.siteDataBackUp;
+                  $scope.lastFiltVal     =  [];
+                  $scope.vehiSelected    =  0;
+     		}
+
+     	} else{
+
+            $scope.conSiteLocData  =  $scope.conSiteBackData;
+            $scope.vehiSelected    =  0;
+     		
+     	}
+
     }
+
+}
 
 
     $scope.siteFilter = function(data){
 
-  	  //console.log(data);
         var firstVal = 0;
         var newArr   = '';
     
         if(data){
-
             angular.forEach(data,function(value, key){
-      	     //console.log(value.id);
       	       if(firstVal == 0 ) {
                   newArr =  newArr+value.id;
                   firstVal++;
-
       	       } else {
                   newArr =  newArr+','+value.id;
         	   }
             });
 
-        //console.log(newArr)
         return newArr;
        }
     }
 
+
     $scope.selectSite = function(selectVal){
 
-    	$scope.pageLoads = 1;
 
-    	console.log(selectVal);
+      if(selectVal.length!=0){
 
-        if(selectVal.length != 0){
+     	$scope.sitesNam = $scope.siteFilter(selectVal);
 
-         	$scope.sitesNam = $scope.siteFilter(selectVal);
+        if($scope.sitesNam != $scope.preSiteNam){
+
+        	$scope.siteSelected = 1;
+
       	    $scope.submitFunction();
- 
-        } else if(selectVal) {
+      	}
 
-        	$scope.conSiteLocData = $scope.filtconSiteData;
+     }else {
 
+     	if( $scope.vehiSelected == 1 ){
+
+     		if($scope.siteSelected == 1){
+
+                   if($scope.lastFiltVal.length!=0){
+
+                      $scope.vehiFiltData     =  $scope.vehicleFilter($scope.lastFiltVal,$scope.conSiteBackData);
+                      var retValNew           =  [{'getDetails':$scope.vehiFiltData,'siteList':$scope.conSiteBackData.siteList}];
+                      $scope.conSiteLocData   =  retValNew[0];
+                      $scope.vehiFiltBackUp   =  $scope.conSiteLocData;
+                      $scope.preSiteNam       =  '';
+                      $scope.siteSelected     =  0;
+
+                   }  else{
+
+                   	  $scope.conSiteLocData   =  $scope.conSiteBackData;
+                      $scope.preSiteNam       =  '';
+                      $scope.siteSelected     =  0;
+                      $scope.vehiSelected     =  0;
+
+                   }
+  
+     		}else{
+
+              $scope.conSiteLocData  =  $scope.vehiFiltBackUp;
+              $scope.siteSelected    =  0;
+              $scope.preSiteNam      =  '';
+            }
+
+     	} else{
+
+            $scope.conSiteLocData  =  $scope.conSiteBackData;
+            $scope.siteSelected    =  0;
+            $scope.preSiteNam      =  '';
         }
-    }
+    } 
+
+ }
 
 
-    function webCall(){
+function webCall(){
 
       //$scope.sitesNam="";
     	$scope.vehicleNam="";
@@ -299,71 +374,90 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
                  // console.log(splitTimes[0]);
                 var timesDiff   =  splitTimes[0];
 
-      if( timesDiff <= 120 ) {
+    if( timesDiff <= 120 ) {
 
          if((checkXssProtection($scope.uiDate.fromdate) == true) && ((checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true))) {
        
-             var conSiteLocUrl = GLOBAL.DOMAIN_NAME+'/getConsolidatedSiteReport?vehicle='+$scope.vehicleNam+'&siteName='+$scope.sitesNam+'&fromTimeUtc='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toTimeUtc='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupId='+$scope.gName+'&orgId='+$scope.orgIds;
-              //var conSiteLocUrl=GLOBAL.DOMAIN_NAME+'/getConsolidatedSiteReport?vehicle=VLI_TTAIPL-TN01X6747&userId=vantec_user&siteName=&fromTimeUtc=1505413800000&toTimeUtc=1505500200000&groupId=vantec:SMP&orgId=vli_ttaipl';
+            var conSiteLocUrl = GLOBAL.DOMAIN_NAME+'/getConsolidatedSiteReport?vehicle='+$scope.vehicleNam+'&siteName='+$scope.sitesNam+'&fromTimeUtc='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toTimeUtc='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&groupId='+$scope.gName+'&orgId='+$scope.orgIds;
+            
+            console.log(conSiteLocUrl);
 
-             console.log(conSiteLocUrl);
+            $scope.preSiteNam = $scope.sitesNam;
 
-            //$http.get('http://128.199.159.130:9000/getConsolidatedSiteReport?vehicle=&siteName=&fromTimeUtc=1505413800000&toTimeUtc=1505845799000&groupId=MSS-CARGO:SMP&orgId=MSS-CARGO&userId=MSS').success(function(data){
+   
+    $http.get(conSiteLocUrl).success(function(data){
 
-            $http.get(conSiteLocUrl).success(function(data){
-
-             if(data){
-
-                $scope.conSiteLocData  = [];
-                $scope.conSiteLocData  = data;
+        if(data){
 
                 $scope.selectVehicleList  = [];
-              //console.log(data.vehicleList);
 
                 angular.forEach(data.vehicleList, function(value, keys){
-
                     $scope.selectVehicleList.push({label:value,id:value});
 				});
 
-                if($scope.pageLoads == 0) {
+             	if( $scope.siteSelected == 0 ){
 
-                    $scope.selectSiteList = [];
-                        
+                      $scope.conSiteLocData   = [];
+                      $scope.conSiteLocData   = data;
+                      $scope.conSiteBackData  = data;
+                      $scope.siteListBackData = data.siteList;
+
+                        $scope.selectSiteList = [];
+                                
                         angular.forEach(data.siteList, function(value, keys){
-
-                           $scope.selectSiteList.push({label:value,id:value});
+                            $scope.selectSiteList.push({label:value,id:value});
 			            });
+
+                } else if($scope.siteSelected == 1){
+
+                  $scope.siteDataBackUp = data;
+
+                    if($scope.vehiSelected == 1){
+
+                     	var vehiFiltDataArr = [];
+
+                             angular.forEach(data.getDetails, function(fvalue, fkeys){
+           	                    angular.forEach($scope.vehiFiltData, function(tvalue, tkeys){
+
+                    	            if(fvalue.vehicleId == tvalue.vehicleId){
+                                        vehiFiltDataArr.push({'vehicleId':fvalue.vehicleId,'vehicleName':fvalue.vehicleName,'hist':fvalue.hist});
+           	                        }                  
+                                });
+                            });
+
+                                var retValsNewOne     = [{'getDetails':vehiFiltDataArr,'siteList':data.siteList}];
+                                $scope.conSiteLocData = retValsNewOne[0];
+                                $scope.siteFiltData   = $scope.conSiteLocData;
+
+                    }else {
+
+                         $scope.conSiteLocData  = data;
+                         $scope.siteFiltData    = undefined;
+                    }
                 }
+        }
 
-                $scope.filtconSiteData = data;
-
-                // console.log($scope.conSiteLocData);
-               }
-
-                stopLoading();
-		     })
-		      .error(function(data, status) {
+    stopLoading();
+	}).error(function(data, status) {
           
-                  console.error('Repos error', status, data);
+            console.error('Repos error', status, data);
 
-               stopLoading();
-             }); 
-	      }
+         stopLoading();
+        }); 
+	 }
 
-	  } else {
+   } else {
 
 	  	   $scope.conSiteLocData  = [];
 
            alert('Please select less than 6 days..');
 
         stopLoading();
+	}
 
-	  }
-    
-    }
+}
 
-
-	//get the value from the ui
+  //get the value from the ui
 	function getUiValue(){
 		$scope.uiDate.fromdate 		=	$('#dateFrom').val();
 	  	$scope.uiDate.fromtime		=	$('#timeFrom').val();
@@ -371,39 +465,12 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 	  	$scope.uiDate.totime 		=	$('#timeTo').val();
  	}
 
-
-// service call for the event report
-
-/*	function webServiceCall(){
-		$scope.siteData = [];
-		if((checkXssProtection($scope.uiDate.fromdate) == true) && (checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true)) {
-			
-			var url 	= GLOBAL.DOMAIN_NAME+"/getActionReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime)+"&interval="+$scope.interval+"&stoppage="+$scope.uiValue.stop+"&stopMints="+$scope.uiValue.stopmins+"&idle="+$scope.uiValue.idle+"&idleMints="+$scope.uiValue.idlemins+"&notReachable="+$scope.uiValue.notreach+"&notReachableMints="+$scope.uiValue.notreachmins+"&overspeed="+$scope.uiValue.speed+"&speed="+$scope.uiValue.speedkms+"&location="+$scope.uiValue.locat+"&site="+$scope.uiValue.site+'&fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
-			vamoservice.getDataCall(url).then(function(responseVal){
-				$scope.recursiveEvent(responseVal, 0);
-				$scope.eventData = responseVal;
-				var entry=0,exit=0; 
-				angular.forEach(responseVal, function(val, key){
-					if(val.state == 'SiteExit')
-						exit++ 
-					else if (val.state == 'SiteEntry')
-						entry++
-				})
-				$scope.siteEntry 	=	entry;
-				$scope.siteExit 	=	exit;
-				stopLoading();
-			});
-		}
-		stopLoading();
-	}*/
-
 	// initial method
-
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
            
           //startLoading();
-        //  $scope.selectVehicleList = [];
+          //$scope.selectVehicleList = [];
 			$scope.vehicle_group=[];
 			$scope.vehicle_list = data;
 
@@ -428,9 +495,9 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 					}
 			    })
 
-		  //console.log($scope.selectVehiData);
-		    sessionValue($scope.vehiname, $scope.gName)
-		}
+		    //console.log($scope.selectVehiData);
+		      sessionValue($scope.vehiname, $scope.gName)
+		    }
 
 			var dateObj 			    = 	new Date();
 			var dateObjS 			    = 	new Date();
@@ -496,14 +563,33 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 		getUiValue();
 	//	webServiceCall();
 
-	}*/
+	} */
 
-  	$scope.submitFunction 	=	function(){
-	  startLoading();
-	  getUiValue();
-	  webCall();
-	//webServiceCall();
-    //stopLoading();
+  	$scope.submitFunction =	function(val){
+
+  	  console.log(val);
+
+      if(val=='org'){
+
+      	console.log('in ........');
+
+        $scope.siteSelected       = 0;
+        $scope.vehiSelected       = 0;
+
+         startLoading();
+	     getUiValue();
+	     webCall();
+	    //webServiceCall();
+        //stopLoading();
+
+      } else if(val==undefined) {
+
+              startLoading();
+	          getUiValue();
+	          webCall();
+	        //webServiceCall();
+            //stopLoading();
+	     }
 	}
 
 	$scope.exportData = function (data) {

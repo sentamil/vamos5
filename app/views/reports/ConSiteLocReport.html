@@ -184,12 +184,12 @@ background-color: #ffffff;
 
               <div class="pull-right" style="margin-top: 15px;margin-right: 5px;">
                      
-                    <img style="cursor: pointer;" ng-click="exportData('conSiteReport')"  src="../app/views/reports/image/xls.png" />
-                    <img style="cursor: pointer;" ng-click="exportDataCSV('conSiteReport')"  src="../app/views/reports/image/csv.jpeg" />
+                    <img style="cursor: pointer;" ng-click="exportData('Consolidated_Site_Report')"  src="../app/views/reports/image/xls.png" />
+                    <img style="cursor: pointer;" ng-click="exportDataCSV('Consolidated_Site_Report')"  src="../app/views/reports/image/csv.jpeg" />
               </div>
 
               <div> 
-                    <select ng-model="orgIds" ng-change="submitFunction()" class="pull-right" style="margin-top: 15px;margin-right: 80px;">
+                    <select ng-model="orgIds" ng-change="submitFunction('org')" class="pull-right" style="margin-top: 15px;margin-right: 80px;">
                       <option ng-repeat="route in organsIds" value="{{route}}">{{route}}</option>
                     </select>
 
@@ -217,7 +217,7 @@ background-color: #ffffff;
             <div class="box " style="min-height:570px;">
               <div>
               
-              <div class="box-body" id="conSiteReport" style="overflow-x:auto;">
+              <div class="box-body" id="Consolidated_Site_Report" style="overflow-y:auto;">
                 <div class="empty" align="center"></div>
            
                   <div class="row" style="padding-top: 20px;"></div>
@@ -232,7 +232,7 @@ background-color: #ffffff;
                           </col>
                           
                           <tr>
-                              <td rowspan="2" style="text-align:center;padding-top:25px;">Vehicle Name</td>
+                              <td rowspan="2" style="text-align:center;padding-top:25px;">Vehicle Id</td>
                               <th colspan="2" scope="colgroup" ng-repeat="master in conSiteLocData.siteList" style="background-color:#d2dff7;">{{master}}</th>
                           </tr>
                           
@@ -249,7 +249,7 @@ background-color: #ffffff;
 
                             <tr ng-repeat="data in conSiteLocData.getDetails" >
                               
-                              <td style="text-align:center;border-right: 1px solid darkgray;">{{data.vehicleName}}</td>
+                              <td style="text-align:center;border-right: 1px solid darkgray;">{{data.vehicleId}}</td>
                            
                               <td  ng-repeat-start="(key,value) in data.hist" >
                                 <div ng-repeat="dat in value" style="padding-bottom:0px !important;padding-right: 10px;">
