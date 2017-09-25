@@ -159,7 +159,7 @@ background-color: #ffffff;
 
                     <div class="col-md-1" align="center"></div>
                      <div class="col-md-1" align="center">
-                        <button style="margin-left: -100%; padding : 5px" ng-click="submitFunction()">Submit</button>
+                        <button style="margin-left: -100%; padding : 5px" ng-click="submitFunction('date')">Submit</button>
                     </div>
                 </div>
 
@@ -273,7 +273,13 @@ background-color: #ffffff;
 
                            </tr>
 
-                          </tbody>  
+
+                          </tbody>
+
+                          <tr>
+
+                          <td colspan="35" ng-if="conSiteLocData.getDetails==null || conSiteLocData.getDetails.length==0 || conSiteLocData.getDetails==''" class="err">No Data found!</td>
+                          </tr>
 
                        </table>
 

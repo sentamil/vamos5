@@ -567,30 +567,42 @@ function webCall(){
 
   	$scope.submitFunction =	function(val){
 
-  	  console.log(val);
-
-      if(val=='org'){
-
-      	console.log('in ........');
-
-        $scope.siteSelected       = 0;
-        $scope.vehiSelected       = 0;
-
-         startLoading();
-	     getUiValue();
-	     webCall();
-	    //webServiceCall();
-        //stopLoading();
-
-      } else if(val==undefined) {
-
+       switch(val){
+       	    case 'org':
+      	      $scope.selectVehicleModel = [];
+              $scope.selectSiteModel    = [];
+              $scope.siteSelected       = 0;
+              $scope.vehiSelected       = 0;
+              $scope.sitesNam           =  '';
+              $scope.preSiteNam         =  '';
               startLoading();
 	          getUiValue();
 	          webCall();
 	        //webServiceCall();
             //stopLoading();
-	     }
-	}
+            break;
+      	    case 'date':
+              $scope.selectVehicleModel = [];
+              $scope.selectSiteModel    = [];
+              $scope.siteSelected       = 0;
+              $scope.vehiSelected       = 0;
+              $scope.sitesNam           =  '';
+              $scope.preSiteNam         =  ''; 
+              startLoading();
+  	          getUiValue();
+	          webCall();
+	        //webServiceCall();
+            //stopLoading();
+            break;
+            case undefined: 
+              startLoading();
+	          getUiValue();
+	          webCall();
+	        //webServiceCall();
+            //stopLoading();
+	        break;
+	    }
+    }
 
 	$scope.exportData = function (data) {
 		// console.log(data);
