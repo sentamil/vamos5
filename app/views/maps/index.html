@@ -60,6 +60,7 @@ font-family: 'Source Sans Pro', sans-serif;
                 console.log(response)
                 aUthName = response;
                 sessionStorage.setItem('apiKey', JSON.stringify(aUthName[0]));
+                window.localStorage.setItem("mapKey",aUthName[0]);
                 sessionStorage.setItem('userIdName', JSON.stringify('username'+","+aUthName[1]));
             }
         })

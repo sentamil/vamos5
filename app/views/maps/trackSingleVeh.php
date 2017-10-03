@@ -184,7 +184,7 @@
     <script src="assets/js/ui-bootstrap-0.6.0.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/highcharts-more.js"></script>
-  <script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
+    <script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places" type="text/javascript"></script>
     <script src="assets/js/markerwithlabel.js"></script>
     <script src="assets/js/infobubble.js"  type="text/javascript"></script> 
@@ -194,11 +194,18 @@
     <script src="assets/js/customtrack.js"></script> -->
     <script>
 
-var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
-var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
+    var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
+    var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
 
-if(apikey_url != null || apikey_url != undefined)
-  url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url;
+  /* if(apikey_url != null || apikey_url != undefined){
+       url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url;
+  }  */
+
+    var mapkey_url = window.localStorage.getItem("mapKey");
+
+    if(mapkey_url != null ||  mapkey_url != undefined){
+      url = "https://maps.googleapis.com/maps/api/js?key="+mapkey_url+"&libraries=places";
+    }
 
    function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
      if (scriptsCollection[startIndex]) {
