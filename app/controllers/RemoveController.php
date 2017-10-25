@@ -281,6 +281,7 @@ public function store() {
              if($owner=='OWN')
                 {
                 $vname=$redis->hdel('H_VehicleName_Mobile_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$mon);
+                $v1name=$redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$mon.':OWN');
                 $rorg=$redis->srem('S_Organisations_Admin_'.$fcode,$shortName);
              
                 $prodata=$redis->hdel('H_ProData_' .$fcode, $vid);
@@ -389,6 +390,7 @@ public function store() {
             if($owner=='OWN')
                 {
                 $vname=$redis->hdel('H_VehicleName_Mobile_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$mon);
+				$v1name=$redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$mon.':OWN');
                 $rorg=$redis->srem('S_Organisations_Admin_'.$fcode,$shortName);
              
                 $prodata=$redis->hdel('H_ProData_' .$fcode, $vid);
