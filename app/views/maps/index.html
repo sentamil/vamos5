@@ -44,7 +44,7 @@ font-family: 'Source Sans Pro', sans-serif;
 
 </style>
 
-<script src="assets/js/static.js"></script>
+<!--<script src="assets/js/static.js"></script>
 <script src="assets/js/jquery-1.11.0.js"></script>
 <script type="text/javascript">
     
@@ -68,7 +68,7 @@ font-family: 'Source Sans Pro', sans-serif;
       //sp[1] = 'DEMO';
         console.log(err)
     }
-</script>
+</script>-->
 </head>
 
 <div id="status">&nbsp;</div>
@@ -637,6 +637,7 @@ function googleTranslateElementInit()
      new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
 }
 var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
+console.log('Api_Key : '+apikey_url);
 var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
 
 if(apikey_url != null || apikey_url != undefined)

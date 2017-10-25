@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <title>GPS</title>
-
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
@@ -38,8 +37,60 @@ body{
 .empty{
     height: 1px; width: 1px; padding-right: 30px; float: left;
 }
+
 .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
-background-color: #ffffff;
+    background-color: #ffffff;
+}
+
+.bgColor{
+
+    background-color: #999999 !important;
+    color: dimgrey !important;
+    border: solid 0.3px #999999 !important;
+    height: 0.5px !important;
+}
+
+.bxTop{
+    border-top: 2px solid #eceaea;
+    margin-top: -20px;
+    margin-bottom: 60px;
+  }
+
+  .bxTopss{
+    border-top: 2px solid #eceaea;
+    margin-top: -8px;
+  }
+
+  .btn {
+  
+    padding: 3.5px 8px;
+  /* 
+    display: inline-block;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;*/
+}
+
+.selCls{
+    text-align: center;
+    min-width: 98px;
+    height: 27px;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius:4px;
 }
 
 </style>
@@ -92,16 +143,18 @@ background-color: #ffffff;
         
         <div id="testLoad"></div>
         
-        <div id="page-content-wrapper">
+       <!-- <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="panel panel-default">
                  
                 </div>   
             </div>
-        </div>
+        </div>-->
+
+  <div id="page-content-wrapper">
  
-    <div class="col-md-12">
-       <div class="box box-primary" style="padding-top: 5px;margin-top: 10px;">
+    <div class="col-md-12" style="padding-top: 5px;margin-top: 60px;">
+       <div class="box box-primary" >
         <!-- <div class="row"> -->
                 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip" >
                     <h3 class="box-title">Consolidated Site Report</h3>
@@ -179,27 +232,27 @@ background-color: #ffffff;
             </div>
         </div>
 
-        <div class="col-md-12"">
-            <div class="box box-primary" >
+        <div class="col-md-12">
+            <div class="box bxTop" >
 
-              <div class="pull-right" style="margin-top: 15px;margin-right: 5px;">
+              <div class="pull-right" style="margin-top: 18px;margin-right: 5px;">
                      
                     <img style="cursor: pointer;" ng-click="exportData('Consolidated_Site_Report')"  src="../app/views/reports/image/xls.png" />
                     <img style="cursor: pointer;" ng-click="exportDataCSV('Consolidated_Site_Report')"  src="../app/views/reports/image/csv.jpeg" />
               </div>
 
               <div> 
-                    <select ng-model="orgIds" ng-change="submitFunction('org')" class="pull-right" style="margin-top: 15px;margin-right: 80px;">
+                    <select ng-model="orgIds" ng-change="submitFunction('org')" class="pull-right selCls" style="margin-top: 18px;margin-right: 90px;">
                       <option ng-repeat="route in organsIds" value="{{route}}">{{route}}</option>
                     </select>
 
-                    <span class="pull-right" style="margin-top: 15px;margin-right: 30px;">Organisation Name : </span>
+                    <span class="pull-right" style="margin-top: 21px;margin-right: 30px;">Organisation Name : </span>
 
               </div>
 
-          <div class="form-group pull-right" style="z-index:2;padding-right:15%;margin-top:8px;width:20px;height:6px;cursor:pointer;" ng-dropdown-multiselect="" options="selectVehicleList" selected-model="selectVehicleModel" ng-click="selectVehicle(selectVehicleModel)"  extra-settings="example14settings"></div> 
+          <div class="form-group pull-right" style="z-index:2;padding-right:15%;margin-top:18px;width:20px;height:6px;cursor:pointer;" ng-dropdown-multiselect="" options="selectVehicleList" selected-model="selectVehicleModel" ng-click="selectVehicle(selectVehicleModel)"  extra-settings="example14settings"></div> 
 
-          <div class="form-group pull-right" style="z-index:2;padding-right:15%;margin-top:8px;width:20px;height:6px;cursor:pointer;" ng-dropdown-multiselect="" options="selectSiteList" selected-model="selectSiteModel" ng-click="selectSite(selectSiteModel)"  extra-settings="example14settings" translation-texts="example14texts"></div> 
+          <div class="form-group pull-right" style="z-index:2;padding-right:15%;margin-top:18px;width:20px;height:6px;cursor:pointer;" ng-dropdown-multiselect="" options="selectSiteList" selected-model="selectSiteModel" ng-click="selectSite(selectSiteModel)"  extra-settings="example14settings" translation-texts="example14texts"></div> 
 
 
 
@@ -214,10 +267,11 @@ background-color: #ffffff;
         </div>
 
         <div class="col-md-12">
-            <div class="box " style="min-height:570px;">
-              <div>
+          <div class="box bxTopss" style="min-height:570px;">
               
-              <div class="box-body" id="Consolidated_Site_Report" style="overflow-y:auto;">
+            <div id="Consolidated_Site_Report" style="overflow-x: auto; padding-top: 5px;">
+              
+              <div class="box-body">
                 <div class="empty" align="center"></div>
            
                   <div class="row" style="padding-top: 20px;"></div>
@@ -232,7 +286,7 @@ background-color: #ffffff;
                           </col>
                           
                           <tr>
-                              <td rowspan="2" style="text-align:center;padding-top:25px;">Vehicle Id</td>
+                              <td rowspan="2" ng-show="vehiShow"  style="text-align:center;padding-top:25px;">Vehicle Id</td>
                               <th colspan="2" scope="colgroup" ng-repeat="master in conSiteLocData.siteList" style="background-color:#d2dff7;">{{master}}</th>
                           </tr>
                           
@@ -253,21 +307,27 @@ background-color: #ffffff;
                            
                               <td  ng-repeat-start="(key,value) in data.hist" >
                                 <div ng-repeat="dat in value" style="padding-bottom:0px !important;padding-right: 10px;">
-                                   <span ng-if="dat.startTime!=0" class="fontStyle garage-title" >{{dat.startTime | date:'dd-MMM-yyyy'}} </span> 
-                                   <span ng-if="dat.startTime!=0" class="fontStyle garage-title" >{{dat.startTime | date:'HH:mm:ss'}}<hr> </span> 
+                                   <span ng-if="dat.startTime!=0" class="fontStyle garage-title" style="color:#557fa8;">{{dat.startTime | date:'dd-MMM-yyyy'}} </span> 
+                                   <span ng-if="dat.startTime!=0" class="fontStyle garage-title" style="color:#557fa8;">{{dat.startTime | date:'HH:mm:ss'}}<hr> </span> 
                                 
                                    <span ng-if="dat.startTime==0" style="text-align: center;" class="err"> Entry Time </span> 
                                    <span ng-if="dat.startTime==0" style="text-align: center;" class="err"> not found <hr> </span> 
+
+                                   <span class="fontStyle garage-title" style="color:#e18e32;">{{dat.siteEntryTemp}}<hr class="bgColor"> </span> 
+                            
                                 </div>   
                               </td>
                                
                               <td  ng-repeat-end="(key,value) in data.hist" style="border-right: 1px solid darkgray;">
                                 <div ng-repeat="dat in value" style="padding-bottom:0px !important;padding-right: 10px;">
-                                  <span ng-if="dat.endTime!=0" class="fontStyle garage-title" >{{dat.endTime | date:'dd-MMM-yyyy'}} </span> 
-                                  <span ng-if="dat.endTime!=0" class="fontStyle garage-title" >{{dat.endTime | date:'HH:mm:ss'}} <hr> </span> 
+                                  <span ng-if="dat.endTime!=0" class="fontStyle garage-title" style="color:#557fa8;">{{dat.endTime | date:'dd-MMM-yyyy'}} </span> 
+                                  <span ng-if="dat.endTime!=0" class="fontStyle garage-title" style="color:#557fa8;">{{dat.endTime | date:'HH:mm:ss'}} <hr> </span> 
                                   
                                   <span ng-if="dat.endTime==0" style="text-align: center;" class="err"> Exit Time </span> 
                                   <span ng-if="dat.endTime==0" style="text-align: center;" class="err"> not found <hr> </span> 
+
+                                  <span class="fontStyle garage-title" style="color:#e18e32;"> {{dat.siteExitTemp}}<hr class="bgColor"> </span> 
+                         
                                 </div>  
                               </td>
 
@@ -276,9 +336,8 @@ background-color: #ffffff;
 
                           </tbody>
 
-                          <tr>
-
-                          <td colspan="35" ng-if="conSiteLocData.getDetails==null || conSiteLocData.getDetails.length==0 || conSiteLocData.getDetails==''" class="err">No Data found!</td>
+                          <tr ng-hide="vehiShow">
+                             <td colspan="35" ng-if="conSiteLocData.getDetails==null || conSiteLocData.getDetails.length==0 || conSiteLocData.getDetails==''" style="padding: 25px;margin-top:20px;font-size:14px;" class="err">No Data found !</td>
                           </tr>
 
                        </table>
@@ -288,6 +347,7 @@ background-color: #ffffff;
                     </div>
                 </div>
             </div>
+          </div>
 
           </div>
         </div>

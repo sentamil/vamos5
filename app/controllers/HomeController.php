@@ -2,11 +2,7 @@
 
 class HomeController extends BaseController {
 
-	
-
-	
-
-	public function showLogin()
+    public function showLogin()
 	{
 		// show the form
 		return View::make('login');
@@ -230,7 +226,7 @@ class HomeController extends BaseController {
 	}
 	
 
-	public function getApi()
+/*	public function getApi()
 	{
 		
 		log::info(' inside the api key ');
@@ -246,9 +242,99 @@ class HomeController extends BaseController {
 		else
 			$apiKey='';
 
-		
-		return $apiKey;
+	 return $apiKey;
 	}
+*/
+    
+    public function getApi()
+	{
+		
+		log::info(' inside the api key ');
+		$username = Input::get ('id');
+		$redis    = Redis::connection();
+
+		$fcodeKey   = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+	    $dealerName = $redis->hget ( 'H_UserId_Cust_Map', $username . ':OWN' );
+
+
+        log::info('------------------- Dealer Name : '.$dealerName.'--------------------------------' );
+
+
+    	if( $dealerName !='' && $dealerName !='admin'  ){
+
+            log::info('-------------- inside dealer ------------------');
+
+          	$detailJson     = $redis->hget ( 'H_DealerDetails_' . $fcodeKey, $dealerName);
+			$detailsDealer  = json_decode($detailJson,true); 
+			  // log::info( $detailsDealer );
+
+             if(isset($detailsDealer['mapKey'])==1){
+
+                	log::info('-------------- inside dealer if...------------------');  
+                   
+			         $apiKey = $detailsDealer['mapKey'];
+
+			         //log::info( $detailsDealer );
+                  
+                  if( $apiKey == '') {
+             
+
+                       	log::info('-------------- inside dealer and then franchise if if if ...... ------------------');
+
+			        $franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
+	                $getFranchise=json_decode($franchiseDetails,true);
+		            //log::info($getFranchise);
+		
+		               if(isset($getFranchise['apiKey'])==1){
+		        	       $apiKey=$getFranchise['apiKey'];
+		                }
+		               else{
+		         	     $apiKey='';
+		               }
+
+		          }
+		     
+		      } else{
+
+		     	log::info('-------------- inside dealer and then franchise ------------------');
+
+			    $franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
+	            $getFranchise=json_decode($franchiseDetails,true);
+		        //log::info($getFranchise);
+		
+		         if(isset($getFranchise['apiKey'])==1){
+		        	$apiKey=$getFranchise['apiKey'];
+		         }
+		         else{
+		         	$apiKey='';
+		          }
+
+		    }
+        } else {
+
+         log::info('-------------- inside franchise ------------------');
+
+         $franchiseDetails = $redis->hget( 'H_Franchise', $fcodeKey);
+	     $getFranchise=json_decode($franchiseDetails,true);
+		 //log::info($getFranchise);
+		
+		 if(isset($getFranchise['apiKey'])==1){
+			$apiKey=$getFranchise['apiKey'];
+		 }
+		 else{
+			$apiKey='';
+		 }
+
+       }
+
+       log::info('------------------------- return api value starts -------------------------------');
+       log::info($apiKey);
+       log::info('------------------------- return api value ends -------------------------------');
+       
+    return $apiKey;
+	}
+
+
 
 	public function track(){
 		

@@ -9,8 +9,9 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
     $scope.preSiteNam           =   '';
     $scope.siteSelected         =   0;
     $scope.vehiSelected         =   0;
-    
 
+    $scope.vehiShow             =   false;
+    
     var tab = getParameterByName('tn');
        
 	function getParameterByName(name) {
@@ -314,7 +315,6 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
         if($scope.sitesNam != $scope.preSiteNam){
 
         	$scope.siteSelected = 1;
-
       	    $scope.submitFunction();
       	}
 
@@ -386,6 +386,17 @@ function webCall(){
 
    
     $http.get(conSiteLocUrl).success(function(data){
+
+    	console.log(data);
+
+    	if(data.getDetails == null){
+            $scope.vehiShow = false;
+            
+    	} else if(data.getDetails.length == 0){
+    		$scope.vehiShow = false;
+    	} else{
+            $scope.vehiShow = true;
+    	}
 
         if(data){
 
