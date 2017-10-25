@@ -927,9 +927,7 @@ Route::post('password/reset/{token}', array('before' => 'csrf', 'uses' => 'Remin
 Route::post('userIds', array('as' => 'ajax.apiKeyAcess', 'uses'=>'HomeController@getApi')); 
 Route::post('getApiKeys', array('uses'=>'HomeController@getApi')); 
 
-
- 
-  //vdmGeoFence
+//vdmGeoFence
  
 Route::get('passwordremind', array('uses' => 'RemindersController@getRemind'));
  
@@ -942,7 +940,7 @@ Route::get('aUthName', array('uses' => 'HomeController@authName'));
 Route::get('logout', array('uses' => 'HomeController@doLogout'));
 Route::get('vdmVehicles/logout', array('uses' => 'HomeController@doLogout'));
  
-Route::get('yammaha8689', array('uses' => 'HomeController@admin'));
+Route::get('honda9999', array('uses' => 'HomeController@admin'));
 Route::get('adhocMail', array('uses' => 'HomeController@adhocMail'));
  
 Route::post('sendAdhocMail', array('before' => 'csrf', 'uses' => 'HomeController@sendAdhocMail'));
@@ -991,8 +989,12 @@ Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeControl
 //adminauth
  
 Route::group(array('before' => 'adminauth'), function(){   //admin auth starts here
-   
-
+//s  
+Route::resource('Remove', 'RemoveController');
+Route::post('Remove/removedevices', array('uses' => 'RemoveController@removedevice'));
+Route::post('select4', array('as' => 'ajax.checkvehicle1', 'uses' => 'RemoveController@checkvehicle'));
+Route::post('select5', array('as' => 'ajax.checkDevice1', 'uses' => 'RemoveController@checkDevice'));
+//s 
 Route::get('vdmVehicles/calibrateOil/{param}', array('uses' => 'VdmVehicleController@calibrate'));
 
 
@@ -1120,16 +1122,13 @@ Route::post('vdmOrganization/adhi', array('uses' => 'VdmOrganizationController@S
 
 
 Route::get('vdmOrganization/{param}/poiEdit', array('uses' => 'VdmOrganizationController@poiEdit'));
- 
 Route::get('vdmOrganization/{param}/poiDelete', array('uses' => 'VdmOrganizationController@poiDelete'));
  
-
-
 Route::get('vdmOrganization/{param}/getSmsReport', array('uses' => 'VdmOrganizationController@getSmsReport'));
 Route::resource('vdmOrganization', 'VdmOrganizationController');
 Route::post('vdmVehicles/calibrate/analog', array('uses' => 'VdmVehicleController@analogCalibrate'));
  
-});   //admin auth ends here
+//admin auth ends here
 
 Route::post('AddSiteController/store', array('uses' => 'AddSiteController@store'));
 Route::post('AddSiteController/update', array('uses' => 'AddSiteController@update'));
@@ -1140,10 +1139,7 @@ Route::get('vdmSmsReportFilter', array('uses' => 'VdmSmsController@filter'));
  
 Route::post('vdmSmsReport', array('uses' => 'VdmSmsController@show'));
  
-
- 
 Route::get('vdmGeoFence/{token}', array('uses' => 'VdmGeoFenceController@show'));
- 
 Route::get('vdmGeoFence/{token}/view', array('uses' => 'VdmGeoFenceController@view'));
  
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
@@ -1163,9 +1159,12 @@ Route::post('notificationFrontendUpdate', array('uses' => 'VdmUserController@not
 Route::post('ScheduledController/reportScheduling', array('uses' => 'ScheduledController@reportScheduling'));
 Route::get('ScheduledController/getRepName', array('uses' => 'ScheduledController@getRepName'));
 Route::get('ScheduledController/getValue', array('uses' => 'ScheduledController@getValue'));
+Route::post('ScheduledController/getMonValue', array('uses' => 'ScheduledController@getMonValue'));
 Route::get('ScheduledController/reportDelete', array('uses'=>'ScheduledController@reportDelete'));
+Route::post('ScheduledController/reportMonDelete', array('uses'=>'ScheduledController@reportMonDelete'));
+Route::post('ScheduledController/monthReportScheduling', array('uses' => 'ScheduledController@monthReportScheduling'));
 
-// // invoke from javascript
+// invoke from javascript
 Route::get('storeOrgValues/val', array('uses' => 'VdmOrganizationController@storedOrg'));
 Route::get('storeOrgValues/editRoutes', array('uses' => 'VdmOrganizationController@_editRoutes'));
 Route::get('storeOrgValues/deleteRoutes', array('uses' => 'VdmOrganizationController@_deleteRoutes'));
@@ -1177,6 +1176,11 @@ Route::post('VdmGroup/removingGroup', array('uses'=>'VdmGroupController@removeGr
 Route::post('VdmGroup/showGroup', array('uses'=>'VdmGroupController@_showGroup'));
 Route::post('VdmGroup/saveGroup', array('uses'=>'VdmGroupController@_saveGroup'));
 Route::post('VdmGroup/groupId', array('uses'=>'VdmGroupController@groupIdCheck'));
+
+Route::resource('Remove', 'RemoveController');
+Route::post('Remove/removedevices', array('uses' => 'RemoveController@removedevice'));
+Route::post('select4', array('as' => 'ajax.checkvehicle1', 'uses' => 'RemoveController@checkvehicle'));
+Route::post('select5', array('as' => 'ajax.checkDevice1', 'uses' => 'RemoveController@checkDevice'));
 
  
 Route::get('/setPOIName', function() {
@@ -1208,4 +1212,3 @@ Route::get('/Test',array('uses'=>'TestController@postAuth'));
 Route::get('/Example',array('uses'=>'ExampleController@testExample'));
 Route::get('/Hello',array('uses'=>'HelloController@testHello'));
 Route::post('/meenatest',array('uses'=>'HelloController@meenatest'));
-

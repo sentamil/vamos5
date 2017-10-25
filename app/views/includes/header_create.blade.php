@@ -112,6 +112,9 @@
 					 <li>
                 <a href="../Business/create"> <span class="nav-label">Add Device</span></a>
             </li>
+			<li>
+                <a href="../Remove/create"> <span class="nav-label">Remove Device</span></a>
+            </li>
 			 <li>
                 <a href="../Device"> <span class="nav-label">Onboard Devices</span></a>
             </li>
