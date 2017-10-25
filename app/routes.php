@@ -991,8 +991,12 @@ Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeControl
 //adminauth
  
 Route::group(array('before' => 'adminauth'), function(){   //admin auth starts here
-   
-
+//s  
+Route::resource('Remove', 'RemoveController');
+Route::post('Remove/removedevices', array('uses' => 'RemoveController@removedevice'));
+Route::post('select4', array('as' => 'ajax.checkvehicle1', 'uses' => 'RemoveController@checkvehicle'));
+Route::post('select5', array('as' => 'ajax.checkDevice1', 'uses' => 'RemoveController@checkDevice'));
+//s 
 Route::get('vdmVehicles/calibrateOil/{param}', array('uses' => 'VdmVehicleController@calibrate'));
 
 
