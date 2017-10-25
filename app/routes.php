@@ -942,7 +942,7 @@ Route::get('aUthName', array('uses' => 'HomeController@authName'));
 Route::get('logout', array('uses' => 'HomeController@doLogout'));
 Route::get('vdmVehicles/logout', array('uses' => 'HomeController@doLogout'));
  
-Route::get('yammaha8689', array('uses' => 'HomeController@admin'));
+Route::get('honda9999', array('uses' => 'HomeController@admin'));
 Route::get('adhocMail', array('uses' => 'HomeController@adhocMail'));
  
 Route::post('sendAdhocMail', array('before' => 'csrf', 'uses' => 'HomeController@sendAdhocMail'));
@@ -991,8 +991,12 @@ Route::post('ipAddressManager', array('before' => 'csrf', 'uses' => 'HomeControl
 //adminauth
  
 Route::group(array('before' => 'adminauth'), function(){   //admin auth starts here
-   
-
+//s  
+Route::resource('Remove', 'RemoveController');
+Route::post('Remove/removedevices', array('uses' => 'RemoveController@removedevice'));
+Route::post('select4', array('as' => 'ajax.checkvehicle1', 'uses' => 'RemoveController@checkvehicle'));
+Route::post('select5', array('as' => 'ajax.checkDevice1', 'uses' => 'RemoveController@checkDevice'));
+//s 
 Route::get('vdmVehicles/calibrateOil/{param}', array('uses' => 'VdmVehicleController@calibrate'));
 
 
