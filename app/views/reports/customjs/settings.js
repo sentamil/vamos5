@@ -25,6 +25,8 @@ $("#testLoad").load("../public/menu");
   $scope.vehiId               = [];
   $scope.grpId                = [];
 
+  $scope.from                 = "";
+  $scope.to                   = "";
 
   $scope.hoursFrom            = ['0:00','1:00','2:00','3:00','4:00','5:00','6:00','7:00','8:00','9:00','10:00', '11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00']
   $scope.hoursTo              = ['0:59','1:59','2:59','3:59','4:59','5:59','6:59','7:59','8:59','9:59','10:59','11:59','12:59','13:59','14:59','15:59','16:59','17:59','18:59','19:59','20:59','21:59','22:59','23:59'];
@@ -546,13 +548,16 @@ $scope.storeValue   = function(){
 
   startLoading();
 
-  $scope.from   = $('#fromTime').val();
-  $scope.to     = $('#toTime').val();
-  $scope.mailId = $('#mailIdDaily').val();
+   $scope.mailId = $('#mailIdDaily').val();
 
- // console.log($scope.mailId);
+   var fromss   =  parseInt($('#fromTime').val().split(':'));
+   var toss     =  parseInt($('#toTime').val().split(':'));
 
-if($scope.mailId){
+   $scope.from   = $scope.hoursFrom[fromss];
+   $scope.to     = $scope.hoursTo[toss];
+
+
+   if($scope.mailId){
       var reportsList = [];
       angular.forEach($scope.vehiId,function(val,id){
         
