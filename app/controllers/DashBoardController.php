@@ -210,8 +210,8 @@ public function index() {
 	            log::info($prevMonthCount);
 				log::info(' prev ');
 
-				$nextMonthCount=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month,$year), DashBoardController::getDateT(59,59,23,15,DashBoardController::getnextmonth($month, 1),$year)))->where('belongs_to', $username)->count();
+				//$nextMonthCount=DB::table('Vehicle_details')
+	           // ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month,$year), DashBoardController::getDateT(59,59,23,15,DashBoardController::getnextmonth($month, 1),$year)))->where('belongs_to', $username)->count();
 			}
 			else if(Session::get('cur')=='admin')
 			{
@@ -241,14 +241,14 @@ public function index() {
 
 	           $prevMonthCount=DB::table('Vehicle_details')
 	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,DashBoardController::getprevmonth($month, 2),$year), DashBoardController::getDateT(59,59,23,15,DashBoardController::getprevmonth($month, 1),$year)))->count();
-				$nextMonthCount=DB::table('Vehicle_details')
-	            ->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month,$year), DashBoardController::getDateT(59,59,23,15,DashBoardController::getnextmonth($month, 1),$year)))->count();
+				//$nextMonthCount=DB::table('Vehicle_details')
+	            //->where('fcode', $fcode)->whereBetween('sold_date', array(DashBoardController::getDateT(0,0,0,16,$month,$year), DashBoardController::getDateT(59,59,23,15,DashBoardController::getnextmonth($month, 1),$year)))->count();
 
 			}
 
 
 
-
+        $nextMonthCount=[];
 		
 		$vechile=array();$vechileEx=0;$vechileEx1=0;
 		return View::make ( 'vdm.vehicles.dashboard')->with('count',$count)->with('dealerId',$dealerId)->with('vechile',$vechile)->with('temp',$temp)->with('vechileEx',$vechileEx)->with('vechileEx1',$vechileEx1)->with('prsentMonthCount',$prsentMonthCount)->with('nextMonthCount',$nextMonthCount)->with('prevMonthCount',$prevMonthCount);
