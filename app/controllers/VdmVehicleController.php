@@ -1183,7 +1183,7 @@ foreach ( $details as $gr ) {
         if($i==10 && $vehicleRefData['odoDistance']!==$odoDistance)
         {
             Log::info('-----------inside log----------'.$odoDistance);
-			$odoupdate=$redis->sadd('S_OdometerChangedVehicles',$vehicleId);
+			//$odoupdate=$redis->sadd('S_OdometerChangedVehicles',$vehicleId);
             $temp=$temp.','.$odoDistance;
         }
         else{
@@ -1622,6 +1622,7 @@ foreach ( $details as $gr ) {
         if($i==10 && $vehicleRefData['odoDistance']!==$odoDistance)
         {
             Log::info('-----------inside log----------'.$odoDistance);
+			$odoupdate=$redis->sadd('S_OdometerChangedVehicles',$vehicleId);
             $temp=$temp.','.$odoDistance;
         }
         else{

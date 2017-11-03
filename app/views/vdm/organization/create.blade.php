@@ -55,8 +55,9 @@
 				</div>
 				<br />
 				<div class="row">
-					<div class="col-md-3">{{ Form::label('providerPassword', 'SMS Provider Password') }}</div>
-					<div class="col-md-6">{{ Form::text('providerPassword', Input::old('providerPassword'), array('class' => 'form-control','placeholder'=>'SMS Provider Password')) }}</div>
+				    <div class="col-md-3">{{ Form::label('providerPassword', 'SMS Provider Password') }}</div>
+					<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+					<div class="col-md-6"> {{ Form::text('providerPassword',Input::old('providerPassword'), array('class' => 'form-control','placeholder'=>'SMS Provider Password','id'=>'method2')) }}</div>
 				</div>
 				<br />
 				<div class="row">
@@ -128,6 +129,16 @@
 	</div>	
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){	
+    $("#method2").mouseover(function(){
+        this.type = "text";
+    }).mouseout(function(){
+        this.type = "password";
+    })
+});
+</script>
 
 <script type="text/javascript">
 	$('#orgId').on('change', function() {
