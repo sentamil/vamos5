@@ -1215,18 +1215,72 @@ public function siteUpdate()
           	
           		log::info(' change value ');
           		$updateJson 	= json_decode($orgDataJson, true);
-          		foreach ($updateJson as $key => $value) {
+          		$updateJson1 = array(
+          			'mobile' => $mobile,
+                    'email' => $email,
+                    'address' => $address,
+                    'description' => $description,
+					'startTime' => $startTime,
+					'endTime'  => $endTime,
+					'atc' => $atc,
+					'etc' =>$etc,
+					'mtc' =>$mtc,
+					'parkingAlert'=>$parkingAlert,
+					'idleAlert'=>$idleAlert,
+					'parkDuration'=>$parkDuration,
+					'idleDuration'=>$idleDuration,
+					'overspeedalert'=>$overspeedalert,
+					'sendGeoFenceSMS'=>$sendGeoFenceSMS,
+					'radius'=>$radius,
+					'smsSender'=>$smsSender,
+					'sosAlert'=>$sosAlert,
+					'live'=>$live,
+					'smsProvider'=>$smsProvider,
+					'providerUserName'=>$providerUserName,
+					'providerPassword'=>'changed',
+					'schoolPattern'=>$smsPattern,
+          		);
+          		$mapping_Array1 = array(
+
+		        'mobile' => 'Mobile',
+                'email' => 'Email',
+                'address' => 'Address',
+                'description' => 'Description',
+				'startTime' => 'Start Time',
+				'endTime'  => 'End Time',
+				'atc' => 'AfterNoon Trip Cron',
+				'etc' =>'Evening Trip Cron',
+				'mtc' =>'Morning Trip Cron',
+				'parkingAlert'=>'Parking Alert',
+				'idleAlert'=>'Idle Alert',
+				'parkDuration'=>'Park Duration',
+				'idleDuration'=>'Idle Duration',
+				'overspeedalert'=>'Over Speed Alert',
+				'sendGeoFenceSMS'=>'Send GeoFence SMS',
+				'radius'=>'Radius',
+				'smsSender'=>'SMS Sender',
+				'sosAlert'=>'SOS Alert',
+				'live'=>'Show Live Site',
+				'smsProvider'=>'SMS Provider',
+				'providerUserName'=>'Provider UserName',
+				'providerPassword'=>'Provider Password',
+				'schoolPattern'=>'SMS Pattern',
+
+		    );
+          		$orgDataJson2 = json_encode ( $updateJson1 );
+          		$updateJson3	= json_decode($orgDataJson2, true);
+          		foreach ($updateJson3 as $key => $value) {
           			
           			if(isset($orgDataJson1[$key]) == 1) {
           				
-          				if($orgDataJson1[$key] != $updateJson[$key]){
+          				if($orgDataJson1[$key] != $updateJson3[$key]){
           					$oldOrg 	= array_add($oldOrg, $mapping_Array[$key], $orgDataJson1[$key]);
-          					$NewOrg 	= array_add($NewOrg, $mapping_Array[$key], $updateJson[$key]);
+          					$NewOrg 	= array_add($NewOrg, $mapping_Array[$key], $updateJson3[$key]);
           				}
           			} else {
 
           				$oldOrg 	= array_add($oldOrg, $mapping_Array[$key], '');
-          				$NewOrg 	= array_add($NewOrg, $mapping_Array[$key], $updateJson[$key]);
+          				$NewOrg 	= array_add($NewOrg, $mapping_Array[$key], $updateJson3[$key]);
           			}
           			
           		}
