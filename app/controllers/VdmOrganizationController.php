@@ -1107,6 +1107,7 @@ public function siteUpdate()
 					'live'=>$live,
 					'smsProvider'=>$smsProvider,
 					'providerUserName'=>$providerUserName,
+					'providerPassword'=>$providerPassword,
 					'schoolPattern'=>$smsPattern,
             );
             
@@ -1133,6 +1134,7 @@ public function siteUpdate()
 				'live'=>'Show Live Site',
 				'smsProvider'=>'SMS Provider',
 				'providerUserName'=>'Provider UserName',
+				'providerPassword'=>'Provider Password',
 				'schoolPattern'=>'SMS Pattern',
 
 		    );
