@@ -1237,7 +1237,7 @@ public function siteUpdate()
 					'live'=>$live,
 					'smsProvider'=>$smsProvider,
 					'providerUserName'=>$providerUserName,
-					'providerPassword'=>'changed',
+					'providerPassword'=>'********',
 					'schoolPattern'=>$smsPattern,
           		);
           		$mapping_Array1 = array(
@@ -1274,13 +1274,13 @@ public function siteUpdate()
           			if(isset($orgDataJson1[$key]) == 1) {
           				
           				if($orgDataJson1[$key] != $updateJson3[$key]){
-          					$oldOrg 	= array_add($oldOrg, $mapping_Array[$key], $orgDataJson1[$key]);
-          					$NewOrg 	= array_add($NewOrg, $mapping_Array[$key], $updateJson3[$key]);
+          					$oldOrg 	= array_add($oldOrg, $mapping_Array1[$key], $orgDataJson1[$key]);
+          					$NewOrg 	= array_add($NewOrg, $mapping_Array1[$key], $updateJson3[$key]);
           				}
           			} else {
 
-          				$oldOrg 	= array_add($oldOrg, $mapping_Array[$key], '');
-          				$NewOrg 	= array_add($NewOrg, $mapping_Array[$key], $updateJson3[$key]);
+          				$oldOrg 	= array_add($oldOrg, $mapping_Array1[$key], '');
+          				$NewOrg 	= array_add($NewOrg, $mapping_Array1[$key], $updateJson3[$key]);
           			}
           			
           		}
