@@ -108,6 +108,7 @@
                     <li class="removeli" id="fuelFillRl"><a href="../public/fuel?tab=fuelfill">Fuel Fill</a></li>
                     <li class="removeli" id="rfidRl"><a id="rfid" href="">Rfid</a></li>
                     <li class="removeli" id="cameraRl"><a id="camera" href="">Camera</a></li> 
+                    <li class="removeli" id="cameraNewRl"><a id="cameraNew" href="">Camera New</a></li> 
             </ul>
         </li>
         <!-- <li class="cl-effect-5">
@@ -365,6 +366,9 @@
                                 case 'CAMERA':
                                   if( menuObj[i].Sensor_IndivdiualReportsList[0].CAMERA==false){  document.getElementById('cameraRl').innerHTML = '';}
                                 break;
+                                case 'CAMERA_NEW':
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].CAMERA_NEW==false){  document.getElementById('cameraNewRl').innerHTML = '';}
+                                break;
                               
                             }
  
@@ -555,6 +559,10 @@
             $('#camera').click(function(){
                 $(this).attr("href", 'camera?vid='+vid+'&vg='+gname+'&tn=camera')
             })
+
+            $('#cameraNew').click(function(){
+                $(this).attr("href", 'cameraNew?vid='+vid+'&vg='+gname+'&tn=cameraNew')
+            })
             
             $('#stopReport').click(function(){
                 $(this).attr("href", 'stopReport?vid='+vid+'&vg='+gname+'&tn=stopReport')
@@ -731,5 +739,4 @@
                 }); */
 
 </script>
-
 

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<title>GPS</title>
+<link rel="shortcut icon" href="assets/imgs/tab.ico">
+<link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
+<link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/jquery.timepicker.css" rel="stylesheet">
+<link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="assets/css/jVanilla.css" rel="stylesheet">
+<link href="assets/css/simple-sidebar.css" rel="stylesheet">
+<link href="assets/css/lightbox.css" rel="stylesheet">
+<link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="../app/views/reports/table/font-awesome.css" rel="stylesheet" type="text/css">
+
+
+<style>
+
+body{
+font-family: 'Lato', sans-serif;
+/*font-weight: bold;*/  
+
+/* font-family: 'Lato', sans-serif;
+font-family: 'Roboto', sans-serif;
+font-family: 'Open Sans', sans-serif;
+font-family: 'Raleway', sans-serif;
+font-family: 'Faustina', serif;
+font-family: 'PT Sans', sans-serif;
+font-family: 'Ubuntu', sans-serif;
+font-family: 'Droid Sans', sans-serif;
+font-family: 'Source Sans Pro', sans-serif;
+*/
+} 
+
+.empty{
+  height: 1px; width: 1px; padding-right: 30px; float: left;
+}
+.table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+background-color: #ffffff;
+}
+
+.col-md-12 {
+    width: 98% !important;
+    left: 20px !important;
+    padding-left: 20px !important;
+} 
+
+.lightbox .lb-image {
+  min-width:1080px !important;
+  min-height:620px !important; 
+}
+
+.ui-timepicker-wrapper {
+  max-height: 260px !important;
+}
+
+h3 {
+  text-align: center;
+  font-size: 1.65em;
+  margin: 0 0 30px;
+}
+
+figure {
+  overflow: hidden;
+  width:262px;
+
+}
+
+ figcaption {
+ /* margin-top: 7px;
+ text-align: center;*/
+  margin-top:5px;
+  font-size:12px;
+  padding:1px;
+  text-align:center;
+}
+
+
+#imgDate { 
+   position: relative; 
+   width: 100%; /* for IE 6 */
+}
+
+#imgDate img{
+  height:180px;
+}
+
+h6{
+  position: absolute;
+  top:-5px;
+  left: 0;
+  width: 100%;
+  opacity:0.8;
+}
+h6 span{
+  height:20px; 
+  color: #e0e1dd; 
+  font: bold 14px; 
+  background: rgb(0, 0, 0); /* fallback color */
+  background: rgba(0, 0, 0, 0.4);
+  padding: 5px;
+}
+
+</style>
+</head>
+
+<div id="preloader" >
+    <div id="status">&nbsp;</div>
+</div>
+<div id="preloader02" >
+    <div id="status02">&nbsp;</div>
+</div>
+
+<body ng-app="mapApp">
+  <div id="wrapper" ng-controller="mainCtrl" class="ng-cloak">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="javascript:void(0);"><img id="imagesrc" src=""/></i></a></li>
+                <li class="track"><a href="../public/track"><div></div><label>Track</label></a></li>
+                <!-- <li class="history"><a href="../public/track?maps=replay"><div></div><label>History</label></a></li> -->
+                <li class="alert01"><a href="../public/reports" ><div></div><label>Reports</label></a></li>
+        <li class="stastics"><a href="../public/statistics"><div></div><label>Statistics</label></a></li>
+                <li class="admin"><a href="../public/settings"><div></div><label>Scheduled</label></a></li>
+                <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
+                <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
+            </ul>
+            <ul class="sidebar-subnav ">
+                <li style="padding-left:25px;">
+                  <div class="right-inner-addon" align="center"> 
+                    <i class="fa fa-search"></i>
+                    <input type="search" class="form-control" placeholder="Search" ng-model="searchbox" name="search" />
+                    </div>
+                </li>
+
+                <li ng-repeat="location in vehicle_list" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
+                    <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
+                    <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox" ng-class="{active:vehiname ==loc.vehicleId}"><a href="javascript:void(0);" ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
+                    </ul>
+                </li>
+        
+
+            </ul>
+          
+        </div>
+        
+      <div id="testLoad"></div> 
+        
+        <div id="page-content-wrapper">
+          <div class="container-fluid">
+            <div class="panel panel-default">
+         
+        </div>   
+          </div>
+        </div>
+ 
+
+
+
+    <!-- AdminLTE css box-->
+
+    <div class="col-md-12">
+       <div class="box box-primary" style="border-top-color: #e4e4e4;">
+        <!-- <div class="row"> -->
+                <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
+                    <h3 class="box-title">Camera New</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-1" align="center"></div>
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.fromdate" class="form-control placholdercolor" id="dateFrom"  placeholder="From date">
+                                <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.fromtime" class="form-control placholdercolor" id="timeFrom" placeholder="From time">
+                                <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.todate" class="form-control placholdercolor" id="dateTo" placeholder="To date">
+                                <!-- <div class="input-group-addon"><i class="fa fa-calendar"></i></div> -->
+                           </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2" align="center">
+                        <div class="form-group">
+                            <div class="input-group datecomp">
+                                <input type="text" ng-model="uiDate.totime" class="form-control placholdercolor" id="timeTo" placeholder="From time">
+                                <!-- <div class="input-group-addon"><i class="glyphicon glyphicon-time"></i></div> -->
+                            </div>
+                        </div>
+                    </div>
+                 <!--   <div class="col-md-1" align="center">
+                        <div class="form-group">
+                            
+                                <select class="input-sm form-control" ng-model="interval">
+                                     <option value="">Interval</option>
+                                     <option label="1 mins">1</option>
+                                     <option label="2 mins">2</option>
+                                     <option label="5 mins">5</option>
+                                     <option label="10 mins">10</option>
+                                     <option label="15 mins">15</option>
+                                     <option label="30 mins">30</option>
+                                </select>
+                           
+                        </div>
+                    </div>-->
+                    <div class="col-md-1" align="center"></div>
+                     <div class="col-md-1" align="center">
+                        <button style="margin-left: -100%; padding : 5px" ng-click="submitFunction()">Submit</button>
+                    </div>
+                </div>
+
+              <!--  </div> -->
+            </div>
+        </div>
+
+ <div class="col-md-12">
+       <div class="box box-primary" style="background: #f7f7f7">
+     <ul>
+       <li ng-repeat="img in imgSrcData"  style="display:inline-flex; padding: 15px 2px 2px 5px;margin-top:20px;" >
+
+       <a href="http://128.199.139.188/{{img.imageName}}" data-lightbox="roadtrip" data-title="{{img.address}}">
+        <figure>
+
+          <div id="imgDate">
+            <img style="" ng-src="http://128.199.139.188/{{img.imageName}}" alt="" />
+            <h6><span>{{img.timeStamp | date:'yyyy-MM-dd HH:mm:ss'}}</span></h6>
+          </div> 
+          <figcaption>{{img.address}}</figcaption>
+        </figure>
+      </a>
+   </li>
+  </ul>
+
+  <div ng-if="imgSrcData.length == 0" class="col-md-12 err" align="center"><h5> No Images Found ! Try some other Date & Time. <h5></div>
+
+ </div>
+</div>
+
+ </div>
+    <script src="assets/js/static.js"></script>
+    <script src="assets/js/jquery-1.11.0.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
+    <script src="../app/views/reports/customjs/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
+    <script src="assets/js/lightbox.js"></script>
+    <script src="../app/views/reports/customjs/html5csv.js"></script>
+    <script src="../app/views/reports/customjs/moment.js"></script>
+    <script src="../app/views/reports/customjs/FileSaver.js"></script>
+    <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
+    <script src="assets/js/jquery.timepicker.js"></script>
+        <script src="assets/js/naturalSortVersionDatesCaching.js"></script>
+<!--<script src="assets/js/naturalSortVersionDates.js"></script> -->
+    <script src="assets/js/vamoApp.js"></script>
+    <script src="assets/js/services.js"></script>
+    <script src="assets/js/cameraReportNew.js"></script>
+    
+    <script>
+
+     // $("#example1").dataTable();
+          
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        
+         $(function() {
+                    $('#timeFrom').timepicker({ 'timeFormat': 'H:i:s'  });
+                    $('#timeTo').timepicker({ 'timeFormat': 'H:i:s' });
+              });
+
+        $(function () {
+                $('#dateFrom, #dateTo').datetimepicker({
+                    format:'YYYY-MM-DD',
+                    useCurrent:true,
+                    pickTime: false,
+                    maxDate: new Date,
+                    minDate: new Date(2015, 12, 1)
+                });
+               
+             /* $('#timeFrom').datetimepicker({
+                    pickDate: false,
+                    maxHours:24
+                });
+
+                $('#timeTo').datetimepicker({
+                    pickDate: false,
+                    
+                });*/
+        });  
+
+        $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+ 
+
+  </script>
+    
+</body>
+</html>
+
+
+
