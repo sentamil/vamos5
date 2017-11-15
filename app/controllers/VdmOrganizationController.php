@@ -612,6 +612,7 @@ public function siteUpdate()
 			$providerUserName=Input::get ('providerUserName');
 			$providerPassword=Input::get ('providerPassword');
 			$geofense=Input::get('geofence');
+			$geofense=Input::get('safemove');
             $orgDataArr = array (
                     'description' => $description,
                     'email' => $email,
@@ -636,6 +637,7 @@ public function siteUpdate()
 					'providerUserName'=>$providerUserName,
 					'providerPassword'=>$providerPassword,
 					'geofense'=>$geofense,
+					'safemove'=>$safemove,
 					
             );
 			 $redis = Redis::connection();
@@ -980,6 +982,7 @@ public function siteUpdate()
 		$providerUserName=isset($orgDataArr['providerUserName'])?$orgDataArr['providerUserName']:'';
 		$providerPassword=isset($orgDataArr['providerPassword'])?$orgDataArr['providerPassword']:'';
 		$geofence=isset($orgDataArr['geofence'])?$orgDataArr['geofence']:'nill';
+		$geofence=isset($orgDataArr['safemove'])?$orgDataArr['safemove']:'no';
 		$smsPattern=isset($orgDataArr['schoolPattern'])?$orgDataArr['schoolPattern']:'nill';
         log::info( 'time1 ::' . $time1);
          log::info( 'time2 ::' . $time2);
@@ -1001,7 +1004,7 @@ public function siteUpdate()
 		$i=0;
 		$j=0;$k=0;$m=0;
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
-        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius)->with('smsSender',$smsSender)->with('sosAlert',$sosAlert)->with('live',$live)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP())->with('smsPattern',$smsPattern)->with('geofence',$geofence);   
+        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius)->with('smsSender',$smsSender)->with('sosAlert',$sosAlert)->with('live',$live)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP())->with('smsPattern',$smsPattern)->with('geofence',$geofence)->with('safemove',$safemove);   
         
     }
     
@@ -1085,6 +1088,7 @@ public function siteUpdate()
 			$providerPassword=Input::get('providerPassword');
 			$smsPattern=Input::get('smsPattern');
 			$geofence=Input::get('geofence');
+			$safemove=Input::get('safemove');
 			$live=Input::get('live');
 					$startTime =$time1;
 			$endTime=$time2;
@@ -1114,6 +1118,8 @@ public function siteUpdate()
 					'providerPassword'=>$providerPassword,
 					'schoolPattern'=>$smsPattern,
 					'geofence'=>$geofence,
+					'safemove'=>$safemove,
+					
             );
             
             $mapping_Array = array(
@@ -1142,7 +1148,7 @@ public function siteUpdate()
 				'providerPassword'=>'Provider Password',
 				'schoolPattern'=>'SMS Pattern',
 				'geofence'=>'GeoFence',
-
+                'safemove'=>'Safety Movement Alert',
 
 		    );
 
