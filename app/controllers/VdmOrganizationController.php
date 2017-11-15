@@ -982,7 +982,7 @@ public function siteUpdate()
 		$providerUserName=isset($orgDataArr['providerUserName'])?$orgDataArr['providerUserName']:'';
 		$providerPassword=isset($orgDataArr['providerPassword'])?$orgDataArr['providerPassword']:'';
 		$geofence=isset($orgDataArr['geofence'])?$orgDataArr['geofence']:'nill';
-		$geofence=isset($orgDataArr['safemove'])?$orgDataArr['safemove']:'no';
+		$safemove=isset($orgDataArr['safemove'])?$orgDataArr['safemove']:'no';
 		$smsPattern=isset($orgDataArr['schoolPattern'])?$orgDataArr['schoolPattern']:'nill';
         log::info( 'time1 ::' . $time1);
          log::info( 'time2 ::' . $time2);
