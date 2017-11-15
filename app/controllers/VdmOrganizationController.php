@@ -612,7 +612,7 @@ public function siteUpdate()
 			$providerUserName=Input::get ('providerUserName');
 			$providerPassword=Input::get ('providerPassword');
 			$geofense=Input::get('geofence');
-			$geofense=Input::get('safemove');
+			$safemove=Input::get('safemove');
             $orgDataArr = array (
                     'description' => $description,
                     'email' => $email,
