@@ -52,6 +52,10 @@
                                     {{ Form::label('sendGeoFenceSMS', 'Send GeoFence SMS') }}
                                     {{ Form::select('sendGeoFenceSMS',  array( 'no' => 'No','yes' => 'Yes' ), $sendGeoFenceSMS, array('class' => 'form-control','id'=>'sendGeoFenceSMS')) }} 
                                 </div>
+								<div class="form-group">
+                                 {{ Form::label('geofence', 'GeoFence') }}
+                                    {{ Form::select('geofence',  array( 'no' => 'No','yes' => 'Yes' ), $geofence, array('class' => 'form-control')) }}
+                                </div>
                                 <div class="form-group">
                                     {{ Form::label('address', 'Address') }}
                                     {{ Form::textarea('address', $address, array('class' => 'form-control', 'placeholder'=>'Address')) }}
