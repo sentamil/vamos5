@@ -54,7 +54,7 @@
                                 </div>
 								<div class="form-group">
                                  {{ Form::label('geofence', 'GeoFence') }}
-                                    {{ Form::select('geofence',  array( 'no' => 'No','yes' => 'Yes' ), $geofence, array('class' => 'form-control')) }}
+                                    {{ Form::select('geofence',  array(  'nill' => 'nill','no' => 'No','yes' => 'Yes' ), $geofence, array('class' => 'form-control')) }}
                                 </div>
                                 <div class="form-group">
                                     {{ Form::label('address', 'Address') }}
