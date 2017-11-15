@@ -56,6 +56,10 @@
                                  {{ Form::label('geofence', 'GeoFence') }}
                                     {{ Form::select('geofence',  array(  'nill' => 'nill','no' => 'No','yes' => 'Yes' ), $geofence, array('class' => 'form-control')) }}
                                 </div>
+								<div class="form-group">
+                                 {{ Form::label('safemove', 'Safety Movement Alert') }}
+                                    {{ Form::select('safemove',  array(  'no' => 'No','yes' => 'Yes' ), $safemove, array('class' => 'form-control')) }}
+                                </div>
                                 <div class="form-group">
                                     {{ Form::label('address', 'Address') }}
                                     {{ Form::textarea('address', $address, array('class' => 'form-control', 'placeholder'=>'Address')) }}

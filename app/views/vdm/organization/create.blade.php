@@ -91,6 +91,11 @@
 				</div>
 				<br />
 				<div class="row">
+					<div class="col-md-3">{{ Form::label('safemove', 'Safety Movement Alert') }}</div>
+					<div class="col-md-6">{{ Form::select('safemove',  array( 'no' => 'No','yes' => 'Yes' ), Input::old('safemove'), array('class' => 'form-control')) }} </div>
+				</div>
+				<br />
+				<div class="row">
 					<div class="col-md-3">{{ Form::label('parkDuration', 'Park Duration (mins) :') }}</div>
 					<div class="col-md-6">{{ Form::text('parkDuration', Input::old('parkDuration'), array('class' => 'form-control','placeholder'=>'Park Duration (mins)')) }}</div>
 				</div>
