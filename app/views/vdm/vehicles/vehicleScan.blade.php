@@ -102,7 +102,7 @@ tr:nth-of-type(odd) {
 							<th style="text-align: center;">Vehicle Name</th>
 							<th style="text-align: center;">Org Name</th>
 							<th style="text-align: center;">Device ID</th>
-							<th style="text-align: center;">Mobile No</th>
+							<th style="text-align: center;">Gps Sim No</th>
 							<th style="text-align: center;">status</th>
 							<th style="text-align: center;">Device Model</th>
 							<th style="text-align: center;">Action</th> 
