@@ -1329,7 +1329,7 @@ public function siteUpdate()
 					'live'=>$liveOld,
 					'smsProvider'=>$smsProviderOld,
 					'providerUserName'=>$providerUserNameOld,
-					'providerPassword'=>"********",
+					'providerPassword'=>"*******",
 					'schoolPattern'=>$schoolPatternOld,
 					'geofence'=>$geofenceOld,
             );
