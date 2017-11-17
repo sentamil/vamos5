@@ -42,7 +42,7 @@ public function store() {
     }
         $text_word1 = Input::get('text_word');
 		$text_trim= str_replace(' ', '', $text_word1);
-		$text_word = strtoupper(text_trim);
+		$text_word = strtoupper($text_trim);
         $vehicleList = $redis->smembers ( $vehicleListId); //log::info($vehicleList);
         $cou = $redis->SCARD($vehicleListId); //log::info($cou);
 		$orgLi = $redis->HScan( $vehicleNameMob, 0,  'count', $cou, 'match', '*'.$text_word.'*');
