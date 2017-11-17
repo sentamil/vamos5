@@ -872,7 +872,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 						$expireData=$redis->hget ( 'H_Expire_' . $fcode, $new_date2);
 						$redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
 					   $orgId1=strtoupper($orgId);
-					   $redis->hset ( 'H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$mobileNo, $vehicleId );
+					   $redis->hset ( 'H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
 						$cpyDeviceSet = 'S_Device_' . $fcode;
 						$redis->sadd ( $cpyDeviceSet, $deviceid );
 						$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
@@ -909,13 +909,13 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 				{
 					$redis->sadd('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
 					$redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleId);
-					$redis->hset('H_VehicleName_Mobile_Dealer_'.$ownerShip.'_Org_'.$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$mobileNo, $vehicleId );
+					$redis->hset('H_VehicleName_Mobile_Dealer_'.$ownerShip.'_Org_'.$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
 				}
 				else if($ownerShip=='OWN')
 				{
 					$redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
 					$redis->srem('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
-					$redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$mobileNo.':OWN', $vehicleId );
+					$redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$gpsSimNo.':OWN', $vehicleId );
 				}		
 				$details=$redis->hget('H_Organisations_'.$fcode,$organizationId);
 				//Log::info($details.'before '.$ownerShip);
@@ -1470,11 +1470,12 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
                                  $refDataJson=json_decode($refDataJson,true);
                                  $shortName1=isset($refDataJson['shortName'])?$refDataJson['shortName']:'default';
                                  $mobileNo1=isset($refDataJson['mobileNo'])?$refDataJson['mobileNo']:'0123456789';
+								 $gpsSimNo1=isset($refDataJson['gpsSimNo1'])?$refDataJson['gpsSimNo1']:'0123456789';
                                  $orgIdOld1=isset($refDataJson['orgId'])?$refDataJson['orgId']:'default';
                                  $orgIdOld=strtoupper($orgIdOld1);
                                  $orgId1=strtoupper($orgId);
-                                 $redis->hset('H_VehicleName_Mobile_Dealer_'.$ownerShip.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName1.':'.$orgId1.':'.$mobileNo1, $vehicleId );
-                                 $redis->hdel('H_VehicleName_Mobile_Dealer_'.$ownerShip.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName1.':DEFAULT:'.$mobileNo1, $vehicleId );								 
+                                 $redis->hset('H_VehicleName_Mobile_Dealer_'.$ownerShip.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName1.':'.$orgId1.':'.$gpsSimNo1, $vehicleId );
+                                 $redis->hdel('H_VehicleName_Mobile_Dealer_'.$ownerShip.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName1.':DEFAULT:'.$gpsSimNo1, $vehicleId );								 
 												$details=$redis->hget('H_Organisations_'.$fcode,$organizationId);
 												Log::info($details.'before '.$ownerShip);
 												if($type=='Sale' && $type1=='new' && $organizationId!=='default' && $organizationId!=='Default')

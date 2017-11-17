@@ -109,6 +109,11 @@ class VdmVehicleViewController extends \BaseController {
         $refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleIdOld);
         $refDataJson1=json_decode($refDataJson1,true);
         $dealerIdOld=$refDataJson1['OWN'];
+		$shortName1 =isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'';
+        $shortName = strtoupper($shortName1);
+        $gpsSimNo =isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'';
+        $orgId3 =isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'';
+        $orgId2 = strtoupper($orgId3);
         $refDataArr = array (
         	'deviceId' => isset($refDataJson1['deviceId'])?$refDataJson1['deviceId']:' ',
             'shortName' => isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill',
@@ -196,6 +201,8 @@ class VdmVehicleViewController extends \BaseController {
         $oo=$redis->sismember('S_Vehicles_Dealer_'.$dealerId.'_'.$fcode,$vehicleIdOld);
         if($qq=='1')
        {
+		    $redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo.':OWN', $vehicleIdOld );
+            $redis->hset('H_VehicleName_Mobile_Dealer_'.$dealerId.'_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo, $vehicleIdOld );
             $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
             $redis->srem('S_Vehicles_Dealer_'.$dealerIdOld.'_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Dealer_'.$dealerId.'_'.$fcode,$vehicleIdOld);
@@ -204,6 +211,8 @@ class VdmVehicleViewController extends \BaseController {
         }
         elseif($qq=='0' || $oo=='1')
         {
+			$redis->hdel('H_VehicleName_Mobile_Dealer_'.$dealerIdOld.'_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo, $vehicleIdOld );
+            $redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo.':OWN', $vehicleIdOld );
             $redis->srem('S_Vehicles_Dealer_'.$dealerId.'_'.$fcode,$vehicleIdOld);
 			 $redis->srem('S_Vehicles_Dealer_'.$dealerIdOld.'_'.$fcode,$vehicleIdOld);
         	$redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);

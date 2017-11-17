@@ -41,7 +41,8 @@ public function store() {
 		$vehicleNameMob='H_VehicleName_Mobile_Org_'.$fcode;
     }
         $text_word1 = Input::get('text_word');
-		$text_word = strtoupper($text_word1);
+		$text_trim= str_replace(' ', '', $text_word1);
+		$text_word = strtoupper(text_trim);
         $vehicleList = $redis->smembers ( $vehicleListId); //log::info($vehicleList);
         $cou = $redis->SCARD($vehicleListId); //log::info($cou);
 		$orgLi = $redis->HScan( $vehicleNameMob, 0,  'count', $cou, 'match', '*'.$text_word.'*');

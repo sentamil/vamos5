@@ -277,11 +277,12 @@ public function store() {
             $orgId1 = strtoupper($orgId);
             $owner = $details['OWN'];
             $mon=isset($details['mobileNo'])?$details['mobileNo']:'';
+			$gpsSimNo=isset($details['gpsSimNo'])?$details['gpsSimNo']:'';
         
              if($owner=='OWN')
                 {
-                $vname=$redis->hdel('H_VehicleName_Mobile_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$mon);
-                $v1name=$redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$mon.':OWN');
+                $vname=$redis->hdel('H_VehicleName_Mobile_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$gpsSimNo);
+                $v1name=$redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$gpsSimNo.':OWN');
                 $rorg=$redis->srem('S_Organisations_Admin_'.$fcode,$shortName);
              
                 $prodata=$redis->hdel('H_ProData_' .$fcode, $vid);
@@ -385,12 +386,13 @@ public function store() {
             $orgId = $details['orgId'];
             $orgId1 = strtoupper($orgId);
             $owner = $details['OWN'];
-            $mon=isset($details['mobileNo'])?$details['mobileNo']:'';             
+            $mon=isset($details['mobileNo'])?$details['mobileNo']:'';  
+            $gpsSimNo=isset($details['gpsSimNo'])?$details['gpsSimNo']:''; 			
                 
             if($owner=='OWN')
                 {
-                $vname=$redis->hdel('H_VehicleName_Mobile_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$mon);
-				$v1name=$redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$mon.':OWN');
+                $vname=$redis->hdel('H_VehicleName_Mobile_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$gpsSimNo);
+				$v1name=$redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$gpsSimNo.':OWN');
                 $rorg=$redis->srem('S_Organisations_Admin_'.$fcode,$shortName);
              
                 $prodata=$redis->hdel('H_ProData_' .$fcode, $vid);
