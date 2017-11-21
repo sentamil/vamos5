@@ -1000,8 +1000,7 @@ $orgIdOld=strtoupper($orgIdOld1);
     } else {
 // store
         $shortName1 = Input::get ( 'shortName' );
-		$shortName2= str_replace(' ', '', $shortName1);
-		$shortName = strtoupper($shortName2);
+		$shortName = strtoupper($shortName1);
         $regNo = Input::get ( 'regNo' );
         $vehicleMake = Input::get ( 'vehicleMake' );
         $vehicleType = Input::get ( 'vehicleType' );
@@ -1200,18 +1199,19 @@ foreach ( $details as $gr ) {
 $redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $temp );
 //ram-new-key--
 $orgId1=strtoupper($orgId);
+$shortNameNew= str_replace(' ', '', $shortName);
 $redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$gpsSimNoOld);
-$redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
+$redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
 //---
    if($own!=='OWN')	
 	   {
 		$redis->hdel('H_VehicleName_Mobile_Dealer_'.$own.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$gpsSimNoOld);	
-		$redis->hset('H_VehicleName_Mobile_Dealer_'.$own.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
+		$redis->hset('H_VehicleName_Mobile_Dealer_'.$own.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
 	   }
     else if($own=='OWN')
     {
 	 $redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$gpsSimNoOld.':OWN');	
-	 $redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$gpsSimNo.':OWN', $vehicleId );
+	 $redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo.':OWN', $vehicleId );
 	}		
 //
 
