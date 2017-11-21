@@ -73,7 +73,7 @@
                                     <td><b>Reg No</b></td>
                                     <td>{{histVal[0].regNo}}</td>
                                     <td><b>Analog Volt</b></td>
-                                    <td>{{histVal[0].deviceVolt}}%</td>
+                                    <td>{{histVal[0].deviceVolt}}</td>
                                 </tr>
                             </table>
                         </div>
