@@ -971,7 +971,8 @@ $refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleId);
 $refDataJson1=json_decode($refDataJson1,true);
 //log::info($refDataJson1);
 $shortName1=$refDataJson1['shortName'];
-$shortNameOld=strtoupper($shortName1);
+$shortName2= str_replace(' ', '', $shortName1);
+$shortNameOld=strtoupper($shortName2);
 $mobileNoOld=isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'';
 $gpsSimNoOld=isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'';
 $orgIdOld1=$refDataJson1['orgId'];
@@ -999,7 +1000,8 @@ $orgIdOld=strtoupper($orgIdOld1);
     } else {
 // store
         $shortName1 = Input::get ( 'shortName' );
-		$shortName = strtoupper($shortName1);
+		$shortName2= str_replace(' ', '', $shortName1);
+		$shortName = strtoupper($shortName2);
         $regNo = Input::get ( 'regNo' );
         $vehicleMake = Input::get ( 'vehicleMake' );
         $vehicleType = Input::get ( 'vehicleType' );
