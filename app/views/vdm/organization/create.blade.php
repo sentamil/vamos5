@@ -87,7 +87,7 @@
 				<br />
 				<div class="row">
 					<div class="col-md-3">{{ Form::label('geofence', 'GeoFence') }}</div>
-					<div class="col-md-6">{{ Form::select('geofence',  array( 'nill' => 'nill','no' => 'No','yes' => 'Yes' ), Input::old('geofence'), array('class' => 'form-control')) }} </div>
+					<div class="col-md-6">{{ Form::select('geofence',  array( 'nill' => 'nill','no' => 'OUTSIDE','yes' => 'INSIDE' ), Input::old('geofence'), array('class' => 'form-control')) }} </div>
 				</div>
 				<br />
 				<div class="row">
