@@ -169,8 +169,16 @@ h6 span{
                 <div class="box-header" data-toggle="tooltip" title="" data-original-title="Header tooltip">
                     <h3 class="box-title">Camera New</h3>
                 </div>
-                <div class="row">
-                    <div class="col-md-1" align="center"></div>
+
+                <div class="row" style="padding-top: 10px;">
+                  <!--  <div class="col-md-1" align="center"></div>-->
+
+                  <div class="col-md-2" align="center">
+                        <div class="form-group">
+                          <h5 style="color: grey;">{{vehIds}}</h5>
+                        </div>
+                  </div>
+
                     <div class="col-md-2" align="center">
                         <div class="form-group">
                             <div class="input-group datecomp">
@@ -231,6 +239,7 @@ h6 span{
 
  <div class="col-md-12">
        <div class="box box-primary" style="background: #f7f7f7">
+
      <ul>
        <li ng-repeat="img in imgSrcData"  style="display:inline-flex; padding: 15px 2px 2px 5px;margin-top:20px;" >
 

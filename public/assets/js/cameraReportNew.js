@@ -236,6 +236,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 						angular.forEach(data[$scope.gIndex].vehicleLocations, function(value, keys){
 							if($scope.vehiname == value.vehicleId)
 							$scope.shortNam	= value.shortName;
+						    $scope.vehIds = value.vehicleId;
 						})
 			        }
 				});
