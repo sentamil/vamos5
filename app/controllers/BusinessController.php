@@ -673,8 +673,9 @@ for($i =1;$i<=$numberofdevice;$i++)
 {
 	$deviceid = Input::get ( 'deviceid'.$i);
 	$vehicleId1 = Input::get ( 'vehicleId'.$i);
-	$vehicleId2 = str_replace('.', '-', $vehicleId1);
-	$vehicleId = strtoupper($vehicleId2);
+	$vehicleId2 = str_replace('/', '-', $vehicleId1);
+	$vehicleId3 = str_replace('.', '-', $vehicleId2);
+	$vehicleId = strtoupper($vehicleId3);
 	
 	$vehicleId=!empty($vehicleId) ? $vehicleId : 'GPSVTS_'.substr($deviceid, -6);
 	//isset($vehicleRefData['shortName'])?$vehicleRefData['shortName']:'nill';
