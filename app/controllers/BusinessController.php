@@ -682,7 +682,6 @@ for($i =1;$i<=$numberofdevice;$i++)
     { 
        return Redirect::back()->withErrors ( 'special charecter used '.$deviceid);
     }
-    else {
 	$vehicleId2 = str_replace('.', '-', $vehicleId1);
 	$vehicleId = strtoupper($vehicleId2);
 	
@@ -1153,7 +1152,6 @@ if($type=='Sale' )
   //           }					
 		}
 	}
-   }	
  		if($count>0)
 		{
 			log::info('inside count present');
