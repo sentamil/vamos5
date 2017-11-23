@@ -673,9 +673,18 @@ for($i =1;$i<=$numberofdevice;$i++)
 {
 	$deviceid = Input::get ( 'deviceid'.$i);
 	$vehicleId1 = Input::get ( 'vehicleId'.$i);
-	$vehicleId2 = str_replace('/', '-', $vehicleId1);
-	$vehicleId3 = str_replace('.', '-', $vehicleId2);
-	$vehicleId = strtoupper($vehicleId3);
+	//
+	if (strstr($vehicleId1, '/'))
+	{ 
+       return Redirect::back()->withErrors ( 'special charecter used '.$vehicleId1);
+	}
+	else if (strstr($deviceid, '/'))
+    { 
+       return Redirect::back()->withErrors ( 'special charecter used '.$deviceid);
+    }
+    else {
+	$vehicleId2 = str_replace('.', '-', $vehicleId1);
+	$vehicleId = strtoupper($vehicleId2);
 	
 	$vehicleId=!empty($vehicleId) ? $vehicleId : 'GPSVTS_'.substr($deviceid, -6);
 	//isset($vehicleRefData['shortName'])?$vehicleRefData['shortName']:'nill';
@@ -1144,7 +1153,8 @@ if($type=='Sale' )
   //           }					
 		}
 	}
-		if($count>0)
+   }	
+ 		if($count>0)
 		{
 			log::info('inside count present');
 			$franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
