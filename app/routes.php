@@ -206,6 +206,13 @@ Route::get('/cameraNew', function() {
     return View::make('reports.cameraReportNew');
 });
 
+Route::get('/acNew', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.acReportNew');
+});
+
 Route::get('/stopReport', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -675,6 +682,14 @@ Route::get('/getImages', function() {
     }
     Log::info('getImages');
     return View::make('vls.getImages');
+});
+
+Route::get('/getAcReport', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getAcReport');
+    return View::make('vls.getAcReport');
 });
 
 Route::get('/getSitewiseVehicleCount', function() {
@@ -1228,3 +1243,4 @@ Route::get('/Test',array('uses'=>'TestController@postAuth'));
 Route::get('/Example',array('uses'=>'ExampleController@testExample'));
 Route::get('/Hello',array('uses'=>'HelloController@testHello'));
 Route::post('/meenatest',array('uses'=>'HelloController@meenatest'));
+
