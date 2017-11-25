@@ -29,7 +29,7 @@ $parameters='?userId='. $username;
  $parameters="{$parameters}&{$web}={$val}";
  log::info( ' parameters :' . $parameters);
 
-		 $url = 'http://'.'128.199.159.130'.':9000/getAcReport'.$parameters;
+		 $url = 'http://'.$ipaddress.':9000/getAcReport'.$parameters;
 		 $url=htmlspecialchars_decode($url);
 		 log::info( 'Routing to backed :' . $url );
 
