@@ -807,8 +807,8 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
 			+'<div><b class="_info_caption">'+vamoservice.statusTime(data).tempcaption+'</span></b> - '+vamoservice.statusTime(data).temptime+'</div>'
 			+'<div><b class="_info_caption">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
 			+'<div><b class="_info_caption">Loc Time</b> - <span>'+$filter('date')(data.date, "dd-MMM-yy HH:mm")+'</span> </div>'
-			+'<div ><b class="_info_caption">Comm Time</b> - <span>'+$filter('date')(data.lastComunicationTime, "dd-MMM-yy HH:mm")+'</span> </div>'
-			+'<div style="padding-top:5px;"><a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp; <a href="#" ng-click="addPoi('+lat+','+lng+')">Save Site</a>'
+			+'<div><b class="_info_caption">Comm Time</b> - <span>'+$filter('date')(data.lastComunicationTime, "dd-MMM-yy HH:mm")+'</span> </div>'
+			+'<div style="padding-top:5px;"><a href="history?vid='+vehicleID+'&vg='+$scope.gName+'">Reports</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp; <a href="#" ng-click="addPoi('+lat+','+lng+')">Save Site</a>'
 		 // +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
 			+'</div>';
 			
@@ -2526,6 +2526,4 @@ var gaugeOptions = {
             document.body.style.zoom="90%";
         }
     });
-
-
 
