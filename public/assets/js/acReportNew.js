@@ -72,7 +72,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 		// if(days==0)
 		// 	return hours +" h "+minutes+" m "+seconds+" s ";
 		// else
-			return hours +":"+minutes+":"+seconds;
+	  return hours +":"+minutes+":"+seconds;
 	}
    	
 	var delayed4 = (function () {
@@ -154,23 +154,19 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
          var acUrl = GLOBAL.DOMAIN_NAME+'/getAcReport?vehicleId='+$scope.vehIds+'&fromTimeUtc='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toTimeUtc='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime));
        }
 
-     // var acUrl = 'http://128.199.159.130:9000/getAcReport?userId=sainiji&vehicleId=UP16BT9281&fromTimeUtc=1511530256000&toTimeUtc=1511530518000';
-        console.log(acUrl);
+       //console.log(acUrl);
 
         $scope.acData=[];
 
         $http.get(acUrl).success(function(data){
-            $scope.acData=data;
-
-             console.log($scope.acData);
-          
+         $scope.acData=data;
+        //console.log($scope.acData);
           stopLoading();
 		}); 
     }
 
 
 	// initial method
-
 	$scope.$watch("url", function (val) {
 		vamoservice.getDataCall($scope.url).then(function(data) {
            
