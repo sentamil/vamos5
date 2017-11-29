@@ -1,5 +1,5 @@
   
-var getIP = globalIP;
+  var getIP = globalIP;
 //var app = angular.module('hist',['ui.bootstrap']);
 
 app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($scope, $http, $filter, GLOBAL){
@@ -20,7 +20,7 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
             var newReportName = Object.getOwnPropertyNames(val).sort();
              
             if(newReportName == 'Analytics_IndivdiualReportsList'){
-              if(val.Analytics_IndivdiualReportsList[0].AC==false&&val.Analytics_IndivdiualReportsList[0].OVERSPEED==false&&val.Analytics_IndivdiualReportsList[0].IDLE==false&&val.Analytics_IndivdiualReportsList[0].PARKED==false&&val.Analytics_IndivdiualReportsList[0].STOPPAGE==false&&val.Analytics_IndivdiualReportsList[0].MOVEMENT==false){
+              if(val.Analytics_IndivdiualReportsList[0].IDLE==false&&val.Analytics_IndivdiualReportsList[0].PARKED==false&&val.Analytics_IndivdiualReportsList[0].STOPPAGE==false&&val.Analytics_IndivdiualReportsList[0].MOVEMENT==false){
 
                   $scope.reportBanShow = true;
                   $(window).load(function(){
@@ -37,7 +37,7 @@ app.controller('histCtrl',['$scope', '$http', '$filter', '_global', function($sc
                 angular.forEach(reportSubName,function(value, keys){
                 //console.log(value);
                   switch(value){
-                      /* case 'AC':
+                    /* case 'AC':
                         //if(val.Analytics_IndivdiualReportsList[0].AC==false){$scope.tabAcreportShow = false; }
                         $scope.tabAcreportShow = val.Analytics_IndivdiualReportsList[0].AC;
                        break; */
@@ -353,7 +353,7 @@ function eventButton(eventdate)
       $scope.tabload        = false;
       $scope.tabfuel        = false;
       $scope.tabignition    = false;
-    //$scope.tabac          = false;
+   // $scope.tabac          = false;
       $scope.tabStop        = false;
 
       switch(tabId){
@@ -482,7 +482,7 @@ function eventButton(eventdate)
           break;
      /* case 'acreport':
           // $scope.recursiveLoad($scope.loadreport,0);
-        break;*/
+          break; */
         case 'fuelreport':
           $scope.fuelChart($scope.fuelValue);
           $scope.recursiveFuel($scope.fuelValue,0);
@@ -858,8 +858,8 @@ function eventButton(eventdate)
         if(location_over[indexs].address == undefined)
         {
           //console.log(' address over speed'+indexs)
-          var latOv      =  location_over[indexs].latitude;
-          var lonOv      =  location_over[indexs].longitude;
+          var latOv    =  location_over[indexs].latitude;
+          var lonOv    =  location_over[indexs].longitude;
           var tempurlOv  =  "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latOv+','+lonOv+"&sensor=true";
           //console.log(' in overspeed '+indexs)
           delayed(3000, function (indexs) {
@@ -893,8 +893,8 @@ function eventButton(eventdate)
         if(locations[index1].address == undefined)
         {
           //console.log(' address movementreport'+index1)
-          var latMo      =  locations[index1].latitude;
-          var lonMo      =  locations[index1].longitude;
+          var latMo    =  locations[index1].latitude;
+          var lonMo    =  locations[index1].longitude;
           var tempurlMo  =  "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latMo+','+lonMo+"&sensor=true";
           //console.log('  movement report  '+index1)
           delayed1(3000, function (index1) {
@@ -1074,8 +1074,8 @@ function eventButton(eventdate)
         if(locationStop[index2].address == undefined)
         {
           //console.log(' address stop'+index2)
-          var latStop      =  locationStop[index2].latitude;
-          var lonStop      =  locationStop[index2].longitude;
+          var latStop    =  locationStop[index2].latitude;
+          var lonStop    =  locationStop[index2].longitude;
           var tempurlStop  =  "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latStop+','+lonStop+"&sensor=true";
           //console.log('  stopped or parked '+index2)
           delayed2(3000, function (index2) {
@@ -1113,7 +1113,7 @@ function eventButton(eventdate)
                 return function () {
                   google_api_call_Idle(tempurlIdle, index3, latIdle, lonIdle);
                 };
-          }(index3));
+              }(index3));
         }
       })
   }
@@ -1210,10 +1210,10 @@ function eventButton(eventdate)
     var stradd  = str[0].concat(":00");
     var strAMPM = stradd.concat(' '+str[1]);
     var time = strAMPM.match(/(\d+):(\d+):(\d+) (\w)/);
-    var hours = Number(time[1]);
-    var minutes = Number(time[2]);
-    var seconds = Number(time[2]);
-    var meridian = time[4].toLowerCase();
+      var hours = Number(time[1]);
+      var minutes = Number(time[2]);
+      var seconds = Number(time[2]);
+      var meridian = time[4].toLowerCase();
   
       if (meridian == 'p' && hours < 12) {
         hours = hours + 12;
@@ -1223,7 +1223,7 @@ function eventButton(eventdate)
       }     
       var marktimestr = ''+hours+':'+minutes+':'+seconds;     
       return marktimestr;
-  }
+    };
   
   $scope.genericFunction = function(vehid, index){
     sessionValue(vehid, $scope.gName);
@@ -1309,9 +1309,9 @@ function eventButton(eventdate)
       case 'ignitionreport':
         $scope.downloadid   = 'ignitionreport';
       break;
-   /* case 'acreport':
+    /*case 'acreport':
         $scope.downloadid   = 'acreport';
-      break;*/
+      break; */
       case 'stoppageReport':
         $scope.downloadid   = 'stoppageReport';
       break;
@@ -1548,4 +1548,5 @@ app.directive("getLocation", function () {
     }
   };
 });
+
 
