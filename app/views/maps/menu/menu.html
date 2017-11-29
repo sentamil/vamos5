@@ -11,9 +11,9 @@
                 <li class="removeli" id="multiTrackRl"><a id="multiTrack" href="">Multi Track</a></li>
                 <li class="removeli removeli_2" id="routesRl"><a href="../public/track?maps=replay&rt=routes">Routes</a></li>
                 <li class="removeli removeli_2" id="addsiteRl"><!-- <a id="addsites">Admin</a>
-                   <div  style="padding-left: 10px"> -->
+                    <div  style="padding-left: 10px"> -->
                        <a href="../public/password_check" id="addsites">AddSites / Geo Fence</a>
-              <!-- </div> -->
+               <!-- </div> -->
                 </li>
                 <!-- <li id="removeli"><a href="../public/groupEdit">Edit Group</a></li> -->
             </ul>
@@ -81,7 +81,7 @@
                     <li class="removeli" id="tripRl"><a id="trip" href=""> Trip Time </a></li>
                     <li class="removeli" id="tripkmsRl"><a id="tripkms" href=""> Trip Summary</a></li>
                     <li class="removeli" id="alarmRl"><a id="alarm" href="">Alarm</a></li>
-                    <li class="removeli" id="acRl"><a id="ac" href="">A/C</a></li>
+                <!--<li class="removeli" id="acRl"><a id="ac" href="">A/C</a></li>-->
                     <li class="removeli" id="stoppageRl"><a id="stoppage" href="">Stoppage</a></li>
                 </ul>
             </li>
@@ -134,10 +134,10 @@
             <ul>           
                 <li id="payDetRl" ><a href="../public/payDetails">Payment Details</a></li>
                 <li class="removeli removeli_2" id="editGrpRl"><a href="../public/groupEdit">Edit Group</a></li>
-                <li class="removeli removeli_2" id="editNotRl"><a  href="../public/passWd?userlevel=notify" >Edit Notification</a></li>
-                <li class="removeli removeli_2" id="resetRl"><a  href="../public/passWd?userlevel=reset" >Reset Password</a></li>
-                <li class="removeli removeli_2" id="editBusRl"><a  href="../public/passWd?userlevel=busStop" >Edit BusStop</a></li>
-                <li class="removeli removeli_2" id="getApiRl"><a  href="../public/passWd?userlevel=apiKeys" >Get ApiKey</a></li>
+                <li class="removeli removeli_2" id="editNotRl"><a href="../public/passWd?userlevel=notify">Edit Notification</a></li>
+                <li class="removeli removeli_2" id="resetRl"><a href="../public/passWd?userlevel=reset">Reset Password</a></li>
+                <li class="removeli removeli_2" id="editBusRl"><a href="../public/passWd?userlevel=busStop">Edit BusStop</a></li>
+                <li class="removeli removeli_2" id="getApiRl"><a href="../public/passWd?userlevel=apiKeys">Get ApiKey</a></li>
             </ul>
         </li>
         
@@ -250,9 +250,9 @@
                                 case 'EVENT':
                                   if( menuObj[i].Analytics_IndivdiualReportsList[0].EVENT==false){   document.getElementById('eventRl').innerHTML = '';}
                                 break;
-                                case 'AC':
+                            /*  case 'AC':
                                   if( menuObj[i].Analytics_IndivdiualReportsList[0].AC==false){   document.getElementById('acRl').innerHTML = '';}
-                                break;
+                                break; */
                                 case 'STOPPAGE':
                                   if( menuObj[i].Analytics_IndivdiualReportsList[0].STOPPAGE==false){   document.getElementById('stoppageRl').innerHTML = '';}
                                 break;
@@ -496,7 +496,6 @@
             $("#movement").click(function() {
                 window.localStorage.removeItem("reload");
                $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=movement' );
-
             });
 
             $("#overspeed").click(function() {
@@ -548,9 +547,9 @@
                 $(this).attr("href", 'alarm?vid='+vid+'&vg='+gname+'&tn=alarm')
             })
 
-            $('#ac').click(function(){
+        /*  $('#ac').click(function(){
                 $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=acreport')
-            })
+            }) */
 
             $('#stoppage').click(function(){
                 $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=stoppageReport')
@@ -680,22 +679,22 @@
         //    if(isVir == null || isVir == undefined){
               
 
-                $.get('//'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
+            $.get('//'+globalIP+contextMenu+'/public/isVirtualUser', function(response) {
                 
-                    var menuVal =response.trim();
-                    sessionStorage.setItem('isVirtualUser', JSON.stringify(menuVal));
+                var menuVal =response.trim();
+                sessionStorage.setItem('isVirtualUser', JSON.stringify(menuVal));
 
-                    if(menuVal == 'true') {
-                        var myList = document.getElementsByClassName('removeli_2');
+                if(menuVal == 'true') {
+                    var myList = document.getElementsByClassName('removeli_2');
                         for (var i = 0; myList.length > i ; i++) {
                             myList[i].innerHTML = '';
                         }
-                    }
+                }
                 
-                }).error(function(){
+            }).error(function(){
                     console.log('error in isVirtualUser');
-                });
-        //    }
+            });
+    // }
     
 /*      function getMaxOfArray(numArray) {
            return Math.max.apply(null, numArray);
@@ -744,6 +743,7 @@
                
         }).error(function(){
                     console.log('Error in Zoho Url(Nav Menu Page)');
-                }); */
+     }); */
 
 </script>
+
