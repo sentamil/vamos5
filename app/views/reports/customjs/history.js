@@ -1230,16 +1230,20 @@ function eventButton(eventdate)
   }
 
   $scope.groupSelection = function(groupname, groupid){
-    startLoading()
+   //startLoading();
     var urlGroup = GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group='+groupname;
     $http.get(urlGroup).success(function(data){
-      $scope.vehiname   = data[groupid].vehicleLocations[0].vehicleId;
-      $scope.gName    =   data[groupid].group; 
-      $scope.locations  =   data;
+      $scope.vehiname   =  data[groupid].vehicleLocations[0].vehicleId;
+      $scope.shortNam   =  data[groupid].vehicleLocations[0].shortName;
+      $scope.gName      =  data[groupid].group; 
+      $scope.locations  =  data;
       sessionValue($scope.vehiname, $scope.gName);
-      stopLoading()
-    });
-  };
+      var pageUrl='history?vid='+$scope.vehiname+'&vg='+$scope.gName+'';
+      $(location).attr('href',pageUrl);
+   //stopLoading();
+   });
+
+  }
   
   $scope.getLocation  = function(lat,lon,ind) { 
     //alert(ind);
