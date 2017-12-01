@@ -37,13 +37,14 @@
             position: fixed;
             border-radius: 3px;
             height: 30px;
-            width: 190px;
+            width: 220px;
+            max-width: 220px;
             top: 10px;
             left: 20%;
             z-index: 1;
             font-size: 12px;
             opacity: 0.8;
-            padding: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 8px;
           } 
 
           #map_canvas{
