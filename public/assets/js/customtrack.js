@@ -472,7 +472,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 
 	$('#graphsId').hide();
 
-    
+    var markerSearch  = new google.maps.Marker({});
     var input_value   =  document.getElementById('pac-inputs');
     var sbox          =  new google.maps.places.SearchBox(input_value);
   // search box function
