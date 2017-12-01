@@ -268,8 +268,8 @@ public function store() {
         $vehicleType = Input::get ( 'vehicleType' );
         $oprName = Input::get ( 'oprName' );
         $mobileNo = Input::get ( 'mobileNo' );
-        $vehicleExpiry = Input::get ( 'vehicleExpiry' );
-        $onboardDate = Input::get ( 'onboardDate' );
+	    $vehicleExpiry = Input::get ( 'vehicleExpiry' );
+	    $onboardDate = Input::get ( 'onboardDate' );
         $overSpeedLimit = Input::get ( 'overSpeedLimit' );
         $deviceModel = Input::get ( 'deviceModel' );
         $odoDistance = Input::get ('odoDistance');
@@ -327,8 +327,8 @@ else if(Session::get('cur')=='admin')
             'vehicleType' => $vehicleType,
             'oprName' => $oprName,
             'mobileNo' => $mobileNo,
-            'vehicleExpiry' => $vehicleExpiry,
-            'onboardDate' => $onboardDate,
+		    'vehicleExpiry' => $vehicleExpiry,
+		    'onboardDate' => $onboardDate,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
             'driverName' => $driverName,
@@ -588,8 +588,8 @@ public function edit($id) {
         $refData = array_add($refData, 'vehicleType', ' ');
         $refData = array_add($refData, 'oprName', ' ');
         $refData = array_add($refData, 'mobileNo', '0123456789');
-     $refData = array_add($refData, 'vehicleExpiry', 'null');
-     $refData = array_add($refData, 'onboardDate', ' ');
+	 $refData = array_add($refData, 'vehicleExpiry', 'null');
+	 $refData = array_add($refData, 'onboardDate', ' ');
         $refData = array_add($refData, 'overSpeedLimit', '50');
         $refData = array_add($refData, 'driverName', '');
         $refData = array_add($refData, 'gpsSimNo', '0123456789');
@@ -977,10 +977,10 @@ $mobileNoOld=isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'';
 $gpsSimNoOld=isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'';
 $orgIdOld1=$refDataJson1['orgId'];
 $orgIdOld=strtoupper($orgIdOld1);
- $orgId=$refDataJson1['orgId']; 
- $orgId1=strtoupper($orgId);    
- $own=$refDataJson1['OWN']; 
-//log::info('areeeerrrrr'.$own);    
+ $orgId=$refDataJson1['orgId'];	
+ $orgId1=strtoupper($orgId);	
+ $own=$refDataJson1['OWN'];	
+//log::info('areeeerrrrr'.$own);	
 //---    
 
     $rules = array (
@@ -1000,14 +1000,14 @@ $orgIdOld=strtoupper($orgIdOld1);
     } else {
 // store
         $shortName1 = Input::get ( 'shortName' );
-        $shortName = strtoupper($shortName1);
+		$shortName = strtoupper($shortName1);
         $regNo = Input::get ( 'regNo' );
         $vehicleMake = Input::get ( 'vehicleMake' );
         $vehicleType = Input::get ( 'vehicleType' );
         $oprName = Input::get ( 'oprName' );
         $mobileNo = Input::get ( 'mobileNo' );
-      $vehicleExpiry = Input::get ( 'vehicleExpiry' );
-      $onboardDate = Input::get ( 'onboardDate' );
+	  $vehicleExpiry = Input::get ( 'vehicleExpiry' );
+	  $onboardDate = Input::get ( 'onboardDate' );
         $overSpeedLimit = Input::get ( 'overSpeedLimit' );
         $deviceModel = Input::get ( 'deviceModel' );
         $driverName = Input::get ( 'driverName' );
@@ -1088,7 +1088,7 @@ else if(Session::get('cur')=='admin')
             'vehicleType' => $vehicleType,
             'oprName' => $oprName,
             'mobileNo' => $mobileNo,
-            //'vehicleExpiry' => $vehicleExpiry,
+			//'vehicleExpiry' => $vehicleExpiry,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
             'driverName' => $driverName,
@@ -1123,8 +1123,8 @@ else if(Session::get('cur')=='admin')
             'mintemp'=>$mintemp,
             'maxtemp'=>$maxtemp,
             'routeName'=>$routeName,
-        'vehicleExpiry' => $vehicleExpiry,
-        'onboardDate' => $onboardDate,
+		'vehicleExpiry' => $vehicleExpiry,
+		'onboardDate' => $onboardDate,
             );
 
 try{
@@ -1185,7 +1185,7 @@ foreach ( $details as $gr ) {
         if($i==10 && $vehicleRefData['odoDistance']!==$odoDistance)
         {
             Log::info('-----------inside log----------'.$odoDistance);
-            //$odoupdate=$redis->sadd('S_OdometerChangedVehicles',$vehicleId);
+			//$odoupdate=$redis->sadd('S_OdometerChangedVehicles',$vehicleId);
             $temp=$temp.','.$odoDistance;
         }
         else{
@@ -1203,16 +1203,16 @@ $shortNameNew= str_replace(' ', '', $shortName);
 $redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$gpsSimNoOld);
 $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
 //---
-   if($own!=='OWN') 
-       {
-        $redis->hdel('H_VehicleName_Mobile_Dealer_'.$own.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$gpsSimNoOld);    
-        $redis->hset('H_VehicleName_Mobile_Dealer_'.$own.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
-       }
+   if($own!=='OWN')	
+	   {
+		$redis->hdel('H_VehicleName_Mobile_Dealer_'.$own.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$gpsSimNoOld);	
+		$redis->hset('H_VehicleName_Mobile_Dealer_'.$own.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
+	   }
     else if($own=='OWN')
     {
-     $redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$gpsSimNoOld.':OWN');  
-     $redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo.':OWN', $vehicleId );
-    }       
+	 $redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$gpsSimNoOld.':OWN');	
+	 $redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo.':OWN', $vehicleId );
+	}		
 //
 
 
@@ -1232,13 +1232,13 @@ Session::flash ( 'message', 'Successfully updated ' . $vehicleId . '!' );
     checking old and new refdata for sending mail...
 
 $devices=null;
-                $devicestypes=null;
-                $i=0;
-                foreach($details as $key => $value)
-                {
-                    $valueData=json_decode($value,true);
-                    $devices = array_add($devices, $i,$valueData['deviceid']);
-                    $devicestypes = array_add($devicestypes,$i,$valueData['deviceidtype']);
+				$devicestypes=null;
+				$i=0;
+				foreach($details as $key => $value)
+				{
+					$valueData=json_decode($value,true);
+					$devices = array_add($devices, $i,$valueData['deviceid']);
+					$devicestypes = array_add($devicestypes,$i,$valueData['deviceidtype']);
 
 
 */
@@ -1259,8 +1259,8 @@ if($refVehicle != $refDataJson)
         "vehicleType" => "Vehicle Type",
         "oprName" => "Telecom Operator Name",
         "mobileNo" => "Mobile Number for Alerts",
-    "vehicleExpiry" => "Vehicle Expiration Date",
-    "onboardDate" => "Onboard Date",
+	"vehicleExpiry" => "Vehicle Expiration Date",
+	"onboardDate" => "Onboard Date",
         "overSpeedLimit" => "OverSpeed Limit",
         "odoDistance" => "Odometer Reading",
         "driverName" => "Driver Name",
@@ -1294,7 +1294,7 @@ if($refVehicle != $refDataJson)
     {
         try{
 
-    log::info("------old_Key-----");
+	log::info("------old_Key-----");
         // log::info($update_Key);
         // log::info($update_Value);
         // log::info($updated_Value[$update_Key]);
@@ -1414,10 +1414,10 @@ public function updateLive($id) {
         $driverName = Input::get ( 'driverName' );
         $odoDistance = Input::get ('odoDistance');
         $mobileNo = Input::get ( 'mobileNo' );
-        $routeName = Input::get ( 'routeName' );
+		$routeName = Input::get ( 'routeName' );
         log::info(' mobileNo value  '.$mobileNo.'  vehihile type   '.$vehicleType);
-        //
-        $vehicleExpiry = Input::get ( 'vehicleExpiry' );
+		//
+		$vehicleExpiry = Input::get ( 'vehicleExpiry' );
         log::info(' vehicleExpiry value  '.$vehicleExpiry.'  vehicle type   '.$vehicleType);
         $redis = Redis::connection ();
         $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
@@ -1553,7 +1553,7 @@ public function updateLive($id) {
             'vehicleType' => $vehicleType,
             'oprName' => $oprName,
             'mobileNo' => $mobileNo,
-         'vehicleExpiry' => $vehicleExpiry,
+		 'vehicleExpiry' => $vehicleExpiry,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
             'driverName' => $driverName,
@@ -1584,7 +1584,7 @@ public function updateLive($id) {
             'rfidType'=>$rfidType,
             'mintemp'=>$mintemp,
             'maxtemp'=>$maxtemp,
-            'routeName'=>$routeName,
+			'routeName'=>$routeName,
             );
 
         $refDataJson = json_encode ( $refDataArr );
@@ -1625,7 +1625,7 @@ foreach ( $details as $gr ) {
         if($i==10 && $vehicleRefData['odoDistance']!==$odoDistance)
         {
             Log::info('-----------inside log----------'.$odoDistance);
-            $odoupdate=$redis->sadd('S_OdometerChangedVehicles',$vehicleId);
+			$odoupdate=$redis->sadd('S_OdometerChangedVehicles',$vehicleId);
             $temp=$temp.','.$odoDistance;
         }
         else{
@@ -1702,7 +1702,7 @@ public function update1() {
         $vehicleType = Input::get ( 'vehicleType' );
         $oprName = Input::get ( 'oprName' );
         $mobileNo = Input::get ( 'mobileNo' );
-     $vehicleExpiry = Input::get ( 'vehicleExpiry' );
+	 $vehicleExpiry = Input::get ( 'vehicleExpiry' );
         $overSpeedLimit = Input::get ( 'overSpeedLimit' );
         $deviceModel = Input::get ( 'deviceModel' );
         $odoDistance = Input::get ('odoDistance');
@@ -1771,7 +1771,7 @@ public function update1() {
             'vehicleType' => $vehicleType,
             'oprName' => $oprName,
             'mobileNo' => $mobileNo,
-          'vehicleExpiry' => $vehicleExpiry,
+		  'vehicleExpiry' => $vehicleExpiry,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
             'driverName' => $driverName,
@@ -2109,21 +2109,24 @@ $current = Carbon::now();
                 $result = $redis->srem($group,$vehicleIdOld);
                 $redis->sadd($group,$vehicleId);
             }
-
-//            Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
+       // Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
         }
+
       $deviceId =isset($refDataFromDBR['deviceId'])?$refDataFromDBR['deviceId']:'';
-      $shortNameOld =isset($refDataFromDBR['shortName'])?$refDataFromDBR['shortName']:'';
-    //$orgId1=strtoupper($orgId);
+	  $shortNameOld =isset($refDataFromDBR['shortName'])?$refDataFromDBR['shortName']:'';
 
-      $shortNameNew = preg_replace('/\s+/', '', $shortName);
-      $orgId2       = strtoupper($orgId);
-      $orgId1       = preg_replace('/\s+/', '', $orgId2); 
+      $shortNameNew=preg_replace('/\s+/', '', $shortName);
+      $orgId2=strtoupper($orgId);
+      $orgId1= preg_replace('/\s+/', '', $orgId2); 
 
-      $redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$gpsSimNo);
-      $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
-        $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
+   // $orgId1=strtoupper($orgId);
+
+	  $redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$gpsSimNo);
+	  $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
+      $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
+
         log::info(' expire---->'.$expiredPeriodOld);
+
         if(!$expiredPeriod==null)
         {
             log::info('inside expire---->'.$expiredPeriod);
@@ -2136,8 +2139,8 @@ $current = Carbon::now();
             log::info('-----------inside dealer-----------');
             $redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
-        $redis->hdel ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$gpsSimNo);
-        $redis->hset ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
+		    $redis->hdel ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$gpsSimNo);
+		    $redis->hset ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Dealer_'.$username.'_' . $fcode);
         }
         else if(Session::get('cur')=='admin')
@@ -2145,8 +2148,8 @@ $current = Carbon::now();
             log::info('-----------inside admin-----------');
             $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
-            $redis->hdel ('H_VehicleName_Mobile_Admin_OWN_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$gpsSimNo.':OWN');
-            $redis->hset ('H_VehicleName_Mobile_Admin_OWN_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo.':OWN', $vehicleId);
+			$redis->hdel ('H_VehicleName_Mobile_Admin_OWN_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$gpsSimNo.':OWN');
+			$redis->hset ('H_VehicleName_Mobile_Admin_OWN_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo.':OWN', $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Admin_'.$fcode);
         }
         foreach ( $groupList1 as $group ) {
@@ -2179,15 +2182,23 @@ $current = Carbon::now();
 * @return Response
 */
 
+
+
+
+
+
+
+
+
 public function migrationUpdate() {
     log::info('-----------inside migrationUpdate---------');
     if (! Auth::check ()) {
         return Redirect::to ( 'login' );
     }
     $vehicleId1 = Input::get ( 'vehicleId' );
-    $vehicleId2 = str_replace('.', '-', $vehicleId1);
+	$vehicleId2 = str_replace('.', '-', $vehicleId1);
     $vehicleId = strtoupper($vehicleId2);
-    $deviceId = Input::get ( 'deviceId' );
+	$deviceId = Input::get ( 'deviceId' );
     $vehicleId =preg_replace('/\s+/', '', $vehicleId);
     $deviceId =preg_replace('/\s+/', '', $deviceId);
 
@@ -2336,7 +2347,7 @@ public function migrationUpdate() {
     $mobileNoOld=isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'';
     $mobileNo1=isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789';
     $mobileNo=strtoupper($mobileNo1);
-    $gpsSimNo=isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'';
+	$gpsSimNo=isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'';
     //----
         $orgId=isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'default';
     $orgId1=strtoupper($orgId); 
@@ -2403,8 +2414,8 @@ public function migrationUpdate() {
             'vehicleType' =>  isset($refDataJson1['vehicleType'])?$refDataJson1['vehicleType']:'Bus',
             'oprName' => isset($refDataJson1['oprName'])?$refDataJson1['oprName']:'airtel',
             'mobileNo' =>isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789',
-        'vehicleExpiry' =>isset($refDataJson1['vehicleExpiry'])?$refDataJson1['vehicleExpiry']:'null',
-        'onboardDate' =>isset($refDataJson1['onboardDate'])?$refDataJson1['onboardDate']:' ',
+		'vehicleExpiry' =>isset($refDataJson1['vehicleExpiry'])?$refDataJson1['vehicleExpiry']:'null',
+		'onboardDate' =>isset($refDataJson1['onboardDate'])?$refDataJson1['onboardDate']:' ',
             'overSpeedLimit' => isset($refDataJson1['overSpeedLimit'])?$refDataJson1['overSpeedLimit']:'60',
             'odoDistance' => isset($refDataJson1['odoDistance'])?$refDataJson1['odoDistance']:'0',
             'driverName' => isset($refDataJson1['driverName'])?$refDataJson1['driverName']:'XXX',
@@ -2414,7 +2425,7 @@ public function migrationUpdate() {
             'sendGeoFenceSMS' => isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:'no',
             'morningTripStartTime' => isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' ',
             'eveningTripStartTime' => 'TIMEZONE',
-          //'eveningTripStartTime' => isset($refDataJson1['eveningTripStartTime'])?$refDataJson1['eveningTripStartTime']:' ',
+		  //'eveningTripStartTime' => isset($refDataJson1['eveningTripStartTime'])?$refDataJson1['eveningTripStartTime']:' ',
             'parkingAlert' => isset($refDataJson1['parkingAlert'])?$refDataJson1['parkingAlert']:'no',
             'altShortName'=>isset($refDataJson1['altShortName'])?$refDataJson1['altShortName']:'nill',
             'date' =>isset($refDataJson1['date'])?$refDataJson1['date']:' ',
@@ -2498,7 +2509,7 @@ $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.
             log::info('-----------inside dealer-----------');
             $redis->srem('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
-        $redis->hdel ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId1.':'.$gpsSimNo);
+		$redis->hdel ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId1.':'.$gpsSimNo);
         $redis->hset ('H_VehicleName_Mobile_Dealer_'.$username.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Dealer_'.$username.'_' . $fcode);
         }
@@ -2507,8 +2518,8 @@ $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.
             log::info('-----------inside admin-----------');
             $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
             $redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleId);
-        $redis->hdel ('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId1.':'.$gpsSimNo.':OWN');
-        $redis->hset ('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$gpsSimNo.':OWN', $vehicleId);
+		$redis->hdel ('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId1.':'.$gpsSimNo.':OWN');
+		$redis->hset ('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$gpsSimNo.':OWN', $vehicleId);
             $groupList1 = $redis->smembers('S_Groups_Admin_'.$fcode);
         }
         foreach ( $groupList1 as $group ) {
@@ -2528,7 +2539,7 @@ $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.
     // log::info('vechicle id-->'.$vehicleId);
     Session::flash ( 'message', 'Migrated successfully ' . '!' );
     return Redirect::to ( 'VdmVehicleScan' );
-    //$orgLis = [];
+	//$orgLis = [];
    // return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
 
 //            return View::make ( 'vdm.vehicles.migration', array ('vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );

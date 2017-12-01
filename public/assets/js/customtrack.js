@@ -298,7 +298,7 @@ $(document).on('pageshow', '#maploc', function(e, data){
 
 //Global section ends...
 
-		setInterval(function() {
+	scope.timeIntervals=setInterval(function() {
 		    vamoservice.getDataCall(scope.url).then(function(data) {
 
                 if(scope.path.length==1){
@@ -459,6 +459,7 @@ $(document).on('pageshow', '#maploc', function(e, data){
 app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function($scope, $http, vamoservice, GLOBAL){ 
 	var res = document.location.href.split("?");
 	$scope.vehicleno = getParameterByName('vehicleId');
+	$scope.timeIntervals=null;
 	$scope.url = GLOBAL.DOMAIN_NAME+'/getSelectedVehicleLocation?'+res[1];
 	$scope.urlVeh = GLOBAL.DOMAIN_NAME+'/getSelectedVehicleLocation1?'+res[1];
 	$scope.path = [];
@@ -477,6 +478,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
     var sbox          =  new google.maps.places.SearchBox(input_value);
   // search box function
     sbox.addListener('places_changed', function() {
+      window.clearInterval($scope.timeIntervals);	
       markerSearch.setMap(null);
       var places = sbox.getPlaces();
       markerSearch = new google.maps.Marker({
