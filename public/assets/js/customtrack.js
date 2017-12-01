@@ -31,13 +31,12 @@ app.directive('map', function($http, vamoservice) {
 				$('#deviceVolt span').text(locs.deviceVolt);
 				$('#vehdevtype span').text(locs.odoDistance);
 				$('#mobno span').text(locs.overSpeedLimit);
-				
-
 				$('#graphsId #speed').text(locs.speed);
 				$('#graphsId #fuel').text(locs.tankSize);
-				tankSize 		 = parseInt(locs.tankSize);
-				fuelLtr 		 = parseInt(locs.fuelLitre);
-				total  			 = parseInt(locs.speed);
+
+				tankSize = parseInt(locs.tankSize);
+				fuelLtr  = parseInt(locs.fuelLitre);
+				total  	 = parseInt(locs.speed);
 				
 				if((data && data != '') && (data.address == null || data.address == undefined || data.address == ' ')){
 					scope.getLocation(locs.latitude, locs.longitude, function(count){
@@ -473,7 +472,23 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 
 	$('#graphsId').hide();
 
-
+    
+    var input_value   =  document.getElementById('pac-inputs');
+    var sbox          =  new google.maps.places.SearchBox(input_value);
+  // search box function
+    sbox.addListener('places_changed', function() {
+      markerSearch.setMap(null);
+      var places = sbox.getPlaces();
+      markerSearch = new google.maps.Marker({
+        position: new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()),
+        animation: google.maps.Animation.BOUNCE,
+        map: $scope.map,
+    
+      });
+      console.log(' lat lan  '+places[0].geometry.location.lat(), places[0].geometry.location.lng())
+      $scope.map.setCenter(new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()));
+      $scope.map.setZoom(13);
+    });
 
 
 	$scope.getLocation = function(lat,lon, callback){
@@ -891,7 +906,6 @@ $(document).ready(function(e) {
         }
     }
 };
-
 
 
    $('#container-fuel').highcharts(Highcharts.merge(gaugeOptions, {
