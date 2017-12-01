@@ -2113,8 +2113,11 @@ $current = Carbon::now();
 //            Log::info('going to delete vehicle from group ' . $group . $redisVehicleId . $result);
         }
       $deviceId =isset($refDataFromDBR['deviceId'])?$refDataFromDBR['deviceId']:'';
-      $shortNameOld =isset($refDataFromDBR['shortName'])?$refDataFromDBR['shortName']:'';
+    //$shortNameOld =isset($refDataFromDBR['shortName'])?$refDataFromDBR['shortName']:'';
     //$orgId1=strtoupper($orgId);
+
+      $shortNameOldTrim =isset($refDataFromDBR['shortName'])?$refDataFromDBR['shortName']:'';
+      $shortNameOld=preg_replace('/\s+/', '',$shortNameOldTrim );
 
       $shortNameNew = preg_replace('/\s+/', '', $shortName);
       $orgId2       = strtoupper($orgId);
@@ -2122,8 +2125,10 @@ $current = Carbon::now();
 
       $redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$gpsSimNo);
       $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
-        $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
+      $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
+
         log::info(' expire---->'.$expiredPeriodOld);
+        
         if(!$expiredPeriod==null)
         {
             log::info('inside expire---->'.$expiredPeriod);
