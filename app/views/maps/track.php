@@ -8,6 +8,7 @@
     <meta name="author" content="Arun">
     <title>GPS</title>
     <link rel="shortcut icon" href="assets/imgs/tab.ico">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
@@ -16,16 +17,47 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
-        #map_canvas{
+          body{
+              font-family: 'Lato', sans-serif;
+            /*font-weight: bold;  
+              font-family: 'Lato', sans-serif;
+              font-family: 'Roboto', sans-serif;
+              font-family: 'Open Sans', sans-serif;
+              font-family: 'Raleway', sans-serif;
+              font-family: 'Faustina', serif;
+              font-family: 'PT Sans', sans-serif;
+              font-family: 'Ubuntu', sans-serif;
+              font-family: 'Droid Sans', sans-serif;
+              font-family: 'Source Sans Pro', sans-serif;
+              */
+          } 
+
+          #pac-inputs {
+            text-align: center;
+            position: fixed;
+            border-radius: 3px;
+            height: 30px;
+            width: 190px;
+            top: 10px;
+            left: 20%;
+            z-index: 1;
+            font-size: 12px;
+            opacity: 0.8;
+            padding: 0px 0px 0px 0px;
+          } 
+
+          #map_canvas{
             width:100%;
             height: 100vh; 
-        }
-        .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
-        div.pane  td{
-          border:  0.5px solid #d9d9d9;
-          padding:  2px;
-          word-wrap: break-word;
-        }
+          }
+
+          .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
+           div.pane  td{
+             border:  0.5px solid #d9d9d9;
+             padding:  2px;
+             word-wrap: break-word;
+          }
+
     </style>
 </head>
 <body ng-app="mapApp">
@@ -35,6 +67,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
+                        <input id="pac-inputs" class="controls" type="text" placeholder="Search Location">
                         <div id="maploc">
                             <map id="map_canvas"></map>
                         </div>
@@ -209,8 +242,9 @@
 var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
 var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
 
-if(apikey_url != null || apikey_url != undefined)
-        url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places";
+  if(apikey_url != null || apikey_url != undefined){
+    url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places";
+  }
 
    function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
      if (scriptsCollection[startIndex]) {
