@@ -1954,7 +1954,7 @@ function locat_address(locs) {
 	     clusterMarker();
 	    // console.log("asa");
         } 
-    },3000);
+    },6000);
 
 
 	//view map on load
@@ -2526,4 +2526,3 @@ var gaugeOptions = {
             document.body.style.zoom="90%";
         }
     });
-
