@@ -134,7 +134,7 @@
 
             var usersID = JSON.stringify(userId);
 
-              if(usersID == '\"BSMOTORS\"')
+              if(usersID == '\"BSMOTORS\"' || usersID == '\"TVS\"')
               {
                  window.localStorage.setItem('refreshTime',120000);
               }else{

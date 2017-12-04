@@ -733,9 +733,10 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
           {
            $scope.displayErrorMsg = false;
            clusterMarker();
+           $scope.map.setZoom(8);
            } 
           }
-         },3500);
+         },6000);
 
         ginfowindow[0].setMap(null);
 		clearInterval(setintrvl);
@@ -1953,6 +1954,7 @@ function locat_address(locs) {
 		 $scope.displayErrorMsg = false;
 	     clusterMarker();
 	    // console.log("asa");
+	    $scope.map.setZoom(8);
         } 
     },6000);
 
