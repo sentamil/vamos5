@@ -733,7 +733,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
           {
            $scope.displayErrorMsg = false;
            clusterMarker();
-           $scope.map.setZoom(8);
+           $scope.map.setZoom(14);
            } 
           }
          },6000);
@@ -1954,7 +1954,7 @@ function locat_address(locs) {
 		 $scope.displayErrorMsg = false;
 	     clusterMarker();
 	    // console.log("asa");
-	    $scope.map.setZoom(8);
+	    $scope.map.setZoom(14);
         } 
     },6000);
 
