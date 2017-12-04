@@ -1293,14 +1293,56 @@ public function users()
 				{
 					$numberofLicence=0;
 				}
+				if($numberofLicence>0) 
+				{
+				   log::info('--------------inside add-----------');
+                    $availableLincence=Input::get('availableLincenceO')+$numberofLicence;
+                    $numberofLicence=Input::get('numberofLicenceO')+$numberofLicence;       
+       		    }
+				if($numberofLicence<0)
+                {  
+				  log::info('--------------inside remove-----------');
+                  $noofLic=(-1)*$numberofLicence;
+				   if(Input::get('availableLincenceO')<$noofLic)
+				   {
+                     if(Input::get('availableLincenceO')== 0)
+                     {
+				        Session::flash ( 'message', 'Update Failed !' );
+			            return Redirect::to ( 'vdmFranchises' );
+					 }                                 
+                     else
+                     { 
+					  $availableLic=(Input::get('availableLincenceO')-Input::get('availableLincenceO'));
+					  $numberofLic=(Input::get('numberofLicenceO')-Input::get('availableLincenceO'));
+                     }
+                   }
+					if(Input::get('availableLincenceO')>=$noofLic)
+					{
+					  $availableLic=Input::get('availableLincenceO')-$noofLic;
+                      $numberofLic=Input::get('numberofLicenceO')-$noofLic;
+                    }                        
+					if($availableLic>=0)
+  					{
+					 $availableLincence=$availableLic;
+              		}
+					else {
+					$availableLincence=0;
+					}
+					if($numberofLic>=0) 
+                     { 
+                        $numberofLicence=$numberofLic;
+                     }
+					 else {
+					  $numberofLicence=0;
+					 }
+				}				
 				/*if($numberofLicence<Session::get('available'))
 				{
 					log::info('--------------inside less value-----------');
 					return Redirect::to ( 'vdmFranchises/update' )->withErrors ( 'Please check the License count' );
 				}
 				else{*/
-					$availableLincence=$numberofLicence+Input::get('availableLincenceO');
-					$numberofLicence=$numberofLicence+Input::get('numberofLicenceO');
+
 				//}
 				
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
