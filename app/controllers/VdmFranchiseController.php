@@ -1292,6 +1292,9 @@ public function users()
 				if($numberofLicence==null)
 				{
 					$numberofLicence=0;
+					$availableLincence=Input::get('availableLincenceO');
+                    $numberofLicence=Input::get('numberofLicenceO');
+
 				}
 				if($numberofLicence>0) 
 				{
