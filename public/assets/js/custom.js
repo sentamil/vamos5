@@ -736,7 +736,7 @@ app.controller('mainCtrl',['$scope', '$compile','$http','vamoservice','$filter',
            $scope.map.setZoom(3);
            } 
           }
-         },8000);
+         },5000);
 
         ginfowindow[0].setMap(null);
 		clearInterval(setintrvl);
@@ -1956,7 +1956,7 @@ function locat_address(locs) {
 	    // console.log("asa");
 	    $scope.map.setZoom(3);
         } 
-    },8000);
+    },5000);
 
 
 	//view map on load
