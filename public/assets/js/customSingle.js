@@ -24,38 +24,19 @@ app.directive('maposm', function($http, vamoservice) {
 
 app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function($scope, $http, vamoservice, GLOBAL){ 
 
-    
-    
+    $scope.mapsHist      = 0;
+    $scope.maps_no       = 0;
     $scope.lineCount_osm = 0;
     $scope.newArr        = [];
     $scope.mapInitOsm    = 0;
     $scope.polyInit      = 0;
     $scope.osmPaths      = [];
-    //$scope.polyline      = [];
 
     var lineCountOsm     = 0;
     var markerInit       = 0;
 
-
-    var mapsVal=sessionStorage.getItem('mapNo');
-    console.log(mapsVal);
-
-    if(mapsVal==0){
-       $scope.maps_no  = 0;
-       $scope.mapsHist = 0;
-
-       document.getElementById("map_canvas2").style.display="none"; 
-         document.getElementById("map_canvas").style.display="block"; 
-    }else if(mapsVal==1){
-       $scope.maps_no  = 1;
-       $scope.mapsHist = 1;
-
-       document.getElementById("map_canvas").style.display="none"; 
-         document.getElementById("map_canvas2").style.display="block"; 
-    }
-
-
-    
+    document.getElementById("map_canvas2").style.display="none"; 
+       document.getElementById("map_canvas").style.display="block"; 
 
 	var res = document.location.href.split("?");
 	$scope.vehicleno = getParameterByName('vehicleId');
@@ -104,7 +85,6 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 								
 								clickable: true
 						  	});
-				 //$scope.polylines.setMap($scope.map);
 				 $scope.elatlong = $scope.slatlong;
     }
 
@@ -246,14 +226,13 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 						var strokeColorvar = '#ff0000';
 					}
          			
-				  	$scope.polyline = new google.maps.Polyline({
+				  	var polyline = new google.maps.Polyline({
 			            map: $scope.map,
 			            path: [$scope.startlatlong, $scope.endlatlong],
 			            strokeColor: strokeColorvar,
 			            strokeOpacity: 0.7,
 			            strokeWeight: 5
 			        });
-			       // $scope.polylines.setMap($scope.map);
 			        
 			        $scope.startlatlong = $scope.endlatlong;
 			        google.maps.event.trigger(document.getElementById('maploc'), "resize");
@@ -265,12 +244,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
                	linesCount++;	
 		   		});
 
-      
-
-
-
-
-      }
+            }
 
           
 
@@ -584,8 +558,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
           }).addTo($scope.map_osm); 
 
 
-        $scope.markerss = new L.marker();
-        $scope.infowin_osm = new L.popup({maxWidth:800});
+        $scope.markerss = new L.marker().bindLabel($scope.locss.shortName, { noHide: true });
 
         var myIcon1 = L.icon({
             iconUrl:vamoservice.iconURL($scope.locss),
@@ -594,11 +567,16 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
             popupAnchor: [-1, -40],
         });
 
+
         var conString_osm = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
 						+'<div style="width:200px; display:inline-block;"><b >Address</b> - <span>'+$scope.addres+'</span></div></div>';
 
-        $scope.infowin_osm.setContent(conString_osm);
-        $scope.markerss.bindPopup($scope.infowin_osm);
+		var infowin_osm = new google.maps.InfoWindow({
+				    content: contentString
+		});
+
+        var infowin_osm = new L.popup().setContent(conString_osm);
+        $scope.markerss.bindPopup(infowindow);
         $scope.markerss.setIcon(myIcon1);
 
         $scope.markerss.addEventListener('click', function(e) {
@@ -636,6 +614,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
   }
 
  }); // first vamoservice ends..... 
+
 
 }
 
@@ -741,12 +720,6 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
                 popupAnchor: [-1, -40],
             });
 
-            var conString_osm = '<div style="padding:5px; padding-top:10px; width:auto; max-height:170px; height:auto;">'
-						+'<div style="width:200px; display:inline-block;"><b >Address</b> - <span>'+$scope.addres+'</span></div></div>';
-
-		    $scope.infowin_osm.setContent(conString_osm);
-            $scope.markerss.bindPopup($scope.infowin_osm);
-
             $scope.markerss.setIcon(myIcons);
             $scope.markerss.setLatLng(markerLatLng);
 
@@ -771,8 +744,6 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
         $scope.maps_no = val;
 
         if($scope.maps_no == 0){
-
-        	console.log('google...');
 
               clearInterval($scope.osmTimeInterval);
               $scope.timesIntervalss = setInterval(function(){ timesInterval() }, 10000);
@@ -1242,7 +1213,7 @@ $(document).ready(function(e) {
         }]
     }));
 
-    setInterval(function () {
+    setInterval(function() {
 
         var chart = $('#container-speed').highcharts(), point;
 

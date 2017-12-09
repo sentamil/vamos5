@@ -10,6 +10,7 @@
 <title>GPS</title>
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
@@ -36,14 +37,158 @@ font-family: 'Source Sans Pro', sans-serif;
 */
 }
 
+button[disabled], html input[disabled] {
+    background-color: #bdbdbd !important;
+}
+
 #container, #speedGraph{
   max-width: 480px !important;
   max-height: 200px !important;
   min-width: 480px; height: 200px; margin: 0 auto
 }
+
 .box > .loading-img, .loading-img,#status, #status02{
    width: 1px !important;height: 1px !important;z-index: 9999;position: absolute;left: 50%;top: 50%;background-image: url(../imgs/loading.gif);background-repeat: no-repeat;background-position: center;margin: -100px 0 0 -100px; border-radius: 3px;
 }
+
+.leaflet-top,
+ .leaflet-bottom {
+    position: absolute;
+    z-index: 1 !important;
+    pointer-events: none;
+ }
+
+.btn {
+    display: inline-block;
+    padding: 2px 12px;
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    color: #060606;
+    background-color: #ffffff;
+    border-color: #ffffff;
+ } 
+
+ .btns {
+    display: inline-block;
+    padding: 4.7px 8.5px;
+    margin-bottom: 0;
+    font-size: 11px;
+    font-weight: 200;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 2.5px;
+    background-color: #fff;
+ }
+
+ .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open>.dropdown-toggle.btn-primary.focus, .open>.dropdown-toggle.btn-primary:focus, .open>.dropdown-toggle.btn-primary:hover {
+     color: #060606;
+     background-color: #ffffff;
+     border-color: #ffffff;
+ }
+
+  .btn-primary:hover {
+    color: #060606;
+    background-color: #ffffff;
+    border-color: #ffffff;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 90px;
+    padding: 0px 0;
+    margin: 2px 0 0 16px;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  }
+
+  .dropdown-menu>li>a {
+    display: block;
+    padding: 1px 16px 2px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+  }
+
+
+  #dropdownss{
+      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2); 
+   /* top: 48px;
+      left: 12%;*/
+      position: absolute;
+      z-index: 1;
+    /* opacity: 0.9;
+      position: fixed;*/
+      top: 10px;
+      left: 130px; 
+   /* z-index:99;
+      background: #fff;
+      padding:2px;
+      border-radius: 2px;*/
+      cursor: pointer;
+
+   /* height: 26px;
+      width: 64px;
+      background: rgba(255, 255, 255, 0.9);*/
+
+ }
+
+  .ui-select-bootstrap .ui-select-toggle {
+    position: relative !important;
+    padding-right: 22px !important;
+    height:25px !important;
+}
+
+button, input, select, textarea {
+    font-family: inherit !important;
+    font-size: 12px !important;
+    line-height: inherit !important;
+}
+
 </style>
 
 </head>
@@ -607,12 +752,12 @@ font-family: 'Source Sans Pro', sans-serif;
 
         <div class="form-group form-inline" style="margin-bottom: 5px;padding-left: 10px;">
             
-            <div class="input-group">
-              <button ng-click="playhis()" id="playButton" class="hidePlay" style="display:none"><i class="glyphicon glyphicon-play"></i></button>
-              <button ng-click="pausehis()" id="pauseButton"><i class="glyphicon glyphicon-pause"></i></button>
-              <button ng-click="replays()" id="replayButton"><i class="glyphicon glyphicon-repeat"></i></button>
-              <button ng-click="stophis()" id="stopButton"><i class="glyphicon glyphicon-stop"></i></button>
-            </div>
+      <div style="display: inline-block;">
+        <button ng-click="playhis()"  id="playButton" class="hidePlay" ><i class="glyphicon glyphicon-play"></i></button>
+        <button ng-click="pausehis()" id="pauseButton" ><i class="glyphicon glyphicon-pause"></i></button>
+        <button ng-click="replays()"  id="replayButton" ><i class="glyphicon glyphicon-repeat"></i></button>
+        <button ng-click="stophis()" id="stopButton" ><i class="glyphicon glyphicon-stop"></i></button>
+      </div>
 
             <div class="input-group speedbutt hideClass" id="animatecontrols" ng-init="timeDelay=180" style="padding-left:30px;">
               <!-- <label>Speed :</label> -->
@@ -697,10 +842,41 @@ font-family: 'Source Sans Pro', sans-serif;
                     font-size: 18px !important;
                    }
             </style>
+
+                      <!--  <div class="dropdown" id="dropdowns">
+                              <button class="btns btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Maps&nbsp;
+                                 <span class="caret" ></span></button>
+                                    <ul class="dropdown-menu">
+                                      <li id="googDrop"><a href="#" ng-click="initMap(0)" >Google</a></li>
+                                      <li id="osmDrop"><a href="#" ng-click="initMap(1)" >Osm</a></li>
+                                 <!-- <li><a href="#" >Bing</a></li>-->
+                      <!--              </ul>
+                            </div> -->
+
+                        <div  id="dropdownss">
+                          <select ng-model="mapsHist" ng-change="initMap(mapsHist)" style="height: 26px; width: 64px; background: rgba(255, 255, 255, 0.9);border: none !important;">
+                            <option value="0">Google</option>
+                            <option value="1">Osm</a></option>
+                          </select>
+                        </div>
+
+
                             <!-- <div class="row"> -->
                             <!-- class="col-lg-7" style=" width: 70%; float: left; margin-left: 10px; margin-right: 10px" -->
                               <!-- <div> -->
-                                <map on-load-callback="callMapFun()" id="map_canvas"></map>
+
+
+                              <div>
+                                <map  id="map_canvas"  ></map>
+                             </div>
+
+                              <div>
+                                <maposm  id="map_canvas2"></maposm> 
+                             </div>
+
+
+                                
+                                
                               <!-- </div> -->
 
 
@@ -713,7 +889,7 @@ font-family: 'Source Sans Pro', sans-serif;
                               <span style="padding:10px; background:#fff; margin-top:200px; display:inline-block; font-size: 12px !important;" >No Data Found. Please select another date range</span>
                             </div>
                             
-                            <div style="position: fixed;top: 10px;left: 150px; z-index:99; background-color: #fff; padding:2px; border-radius: 2px; cursor: pointer;" class="viewList">
+                        <div id="inviewList" style="position: fixed;top: 10px;left: 230px; z-index:99; background-color: #fff; padding:2px; border-radius: 2px; cursor: pointer;" class="viewList">
 
                             <img src="assets/imgs/add.png" />
                             
@@ -769,6 +945,7 @@ font-family: 'Source Sans Pro', sans-serif;
                                       <td>No Data</td>
                                       <td><img src="assets/imgs/gray.png"/></td>
                                   </tr>
+                                  </tbody>
                                 </table>
                               </div>
                             </div>
@@ -858,13 +1035,15 @@ font-family: 'Source Sans Pro', sans-serif;
  //An array of scripts you want to load in order
    var scriptLibrary = [];
    scriptLibrary.push("assets/js/static.js");
-   scriptLibrary.push("assets/js/jquery-1.11.0.js");
+ //  scriptLibrary.push("assets/js/jquery-1.11.0.js");
+   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
-   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
+   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
-// scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+   scriptLibrary.push("http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js");   
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");

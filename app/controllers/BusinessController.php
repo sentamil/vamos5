@@ -674,16 +674,17 @@ for($i =1;$i<=$numberofdevice;$i++)
 	$deviceid = Input::get ( 'deviceid'.$i);
 	$vehicleId1 = Input::get ( 'vehicleId'.$i);
 	//
-	if (strstr($vehicleId1, '/'))
-	{ 
-       return Redirect::back()->withErrors ( 'special charecter used '.$vehicleId1);
-	}
-	else if (strstr($deviceid, '/'))
-    { 
-       return Redirect::back()->withErrors ( 'special charecter used '.$deviceid);
+	$pattern = '/[\'\/~`\!@#\$%\^&\*\(\)\ \\\+=\{\}\[\]\|;:"\<\>,\.\?\\\']/';
+    if (preg_match($pattern, $vehicleId1))
+    {
+        return Redirect::back()->withErrors ('Vehicle ID should be in alphanumeric with _ or - Characters '.$vehicleId1);
     }
-	$vehicleId2 = str_replace('.', '-', $vehicleId1);
-	$vehicleId = strtoupper($vehicleId2);
+    else if (preg_match($pattern, $deviceid))
+    {
+       return Redirect::back()->withErrors ( 'Device ID should be in alphanumeric with _ or - Characters '.$deviceid);
+    }
+//	$vehicleId2 = str_replace('.', '-', $vehicleId1);
+	$vehicleId = strtoupper($vehicleId1);
 	
 	$vehicleId=!empty($vehicleId) ? $vehicleId : 'GPSVTS_'.substr($deviceid, -6);
 	//isset($vehicleRefData['shortName'])?$vehicleRefData['shortName']:'nill';
@@ -880,8 +881,8 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 						//log::info('json data --->'.$refDataJson);
 						$expireData=$redis->hget ( 'H_Expire_' . $fcode, $new_date2);
 						$redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
-					   $orgId1=strtoupper($orgId);
-					   $redis->hset ( 'H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
+					    $orgId1=strtoupper($orgId);
+					    $redis->hset ( 'H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
 						$cpyDeviceSet = 'S_Device_' . $fcode;
 						$redis->sadd ( $cpyDeviceSet, $deviceid );
 						$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
@@ -914,6 +915,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 						}	
 						$redis->hset ( 'H_ProData_' . $fcode, $vehicleId, $tmpPositon );
 				}
+				$shortName=str_replace(' ', '', $shortName);
 				if($ownerShip!=='OWN')
 				{
 					$redis->sadd('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
@@ -1691,13 +1693,10 @@ try{
     }
 }
 	
-	
-	
-	 protected function schedule(Schedule $schedule)
-    	{
-        	$schedule->call(function () {
+	    protected function schedule(Schedule $schedule){
+           	$schedule->call(function () {
             //DB::table('recent_users')->delete();
         	})->everyMinute();
-    	       }
+        }
+	
 	}
-

@@ -248,6 +248,11 @@
 								{{ Form::number('maxtemp', $refData['maxtemp'],array('class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'-100')) }} 
 							</div>
 
+							<div class="form-group">
+                                {{ Form::label('safetyParking', 'Safety Parking') }}<br>
+                                {{ Form::select('safetyParking', array('yes' => 'Yes','no' => 'No'), isset($refData['safetyParking'])?$refData['safetyParking']:'no', array('class' => 'form-control')) }}
+                            </div>
+
 							<br/>
 					
 								<div class="col-md-5" style="top: 30px; position: relative; left: 40%">
@@ -276,3 +281,4 @@
 
     </script>
 <div align="center">@stop</div>
+

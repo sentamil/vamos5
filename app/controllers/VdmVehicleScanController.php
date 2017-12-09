@@ -44,7 +44,8 @@ public function store() {
 		$text_trim= str_replace(' ', '', $text_word1);
 		$text_word = strtoupper($text_trim);
         $vehicleList = $redis->smembers ( $vehicleListId); //log::info($vehicleList);
-        $cou = $redis->SCARD($vehicleListId); //log::info($cou);
+      //$cou = $redis->SCARD($vehicleListId); //log::info($cou);
+        $cou = $redis->hlen($vehicleNameMob);
 		$orgLi = $redis->HScan( $vehicleNameMob, 0,  'count', $cou, 'match', '*'.$text_word.'*');
        // $orgLi = $redis->sScan( $vehicleListId, 0,  'count', $cou, 'match', $text_word); //log::info($orgLi);
         $orgL = $orgLi[1];

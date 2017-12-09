@@ -397,7 +397,7 @@ border-width: 10px;
     ._button{ width:58px; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa;}
     ._button_select{width:82px; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #aaa;-webkit-appearance: none; -webkit-border-radius: 0px; -webkit-appearance:none; -moz-appearance:none; background-position:right 50%; background-repeat:no-repeat; background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=); padding: .25em; padding-right:1.5em;  border-radius : 0px }
     ._button_select_small{width:70px;height:20px; background:none; border:none; font-size:11px; background-color:#fff; border:1px solid #ccc;-webkit-appearance: none; -webkit-border-radius: 0px; -webkit-appearance:none; -moz-appearance:none; background-position:right 50%; background-repeat:no-repeat; background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=); padding: .25em; padding-right:1.5em;  border-radius : 0px }
-    ._input{ border:1px solid #ccc; height:18px; padding-right:5px; font-size:11px; width:70px; border-radius: 0px}
+    ._input{ border:1px solid #ccc; height:18px; padding-right:5px; font-size:11px; width:78px; border-radius: 0px}
       #ploti{height: 25px; width:70px; background-color:transparent;  font-size:11px; border:1px solid #aaa;}
       #ploti:hover{
         background-color: #00b3b3; border: none; color: #f4f4f4; font-size:12px; -moz-transform: scale(1); -webkit-transform: scale(1); transform: scale(1);
@@ -504,7 +504,7 @@ border-width: 10px;
 #menuView {position: absolute;top: 175px;left: 5px; z-index:1; padding: 5px; font-size: 11px;}
 #draggable {position: absolute;top: 70px;left: 130px; z-index:99; width: 250px;padding: 7px;background: #fff; -webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
 #contentmin{position: fixed;top: 50px;right: 20px; z-index:1; width: 250px;padding: 10px;background-color: rgba(255, 255, 255, 0.9);-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}
-#contentreply{position: fixed;top: 2px;right: 2px; z-index:99; width: 500px;padding: 5px;background: #fff;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;}
+#contentreply { position: fixed; top: 2px; right: 2px; z-index: 99; width: 500px; padding: 5px; background: rgba(255, 255, 255, 0.9); opacity: 0.9; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;}
 .sizeInput {width:92px; height: 25px; font-size: 11px; margin-right: 1px }
 input[name="anispeed"] { margin-left: 10px}
 /*position: absolute;margin-top: 0px;right: 2px; z-index:9; width: 300px;padding: 10px;*/
@@ -654,7 +654,7 @@ input[type=range]:focus::-ms-fill-upper {
 /*rightside selection*/
 #minmax
 {
-    position: fixed;top: 40px;right: 15px; z-index:99; background-color: #fff; padding: 2px;  border-radius: 2px; cursor: pointer;background-color: yellow;
+    position: fixed;top: 43px;right: 16px; z-index:99; background-color: #F4F4F4; padding: 2px;  border-radius: 2px; cursor: pointer;
 }
 /*#togl_buton
 {
@@ -667,11 +667,11 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .radioBut{
-    position: fixed;top: 10px;left:350px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
+    position: fixed;top: 10px;left:396px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
 }
 
 .radioButts{
-    position: fixed;top: 10px;left:470px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
+    position: fixed;top: 10px;left:496px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
 }
 
 .PlaceCheckbox{
@@ -679,7 +679,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .radioButts2{
-    position: fixed;top: 10px;left:540px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
+    position: fixed;top: 10px;left:586px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
 }
 
 #flexcolor{
@@ -731,6 +731,7 @@ input[type=range]:focus::-ms-fill-upper {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
  }
+
 #pac-input{
            border-radius: 3px;
             height: 30px;
@@ -885,6 +886,10 @@ div.pane .gap td {
 div.pane tr:nth-child(odd){background-color: #e6e6e6;}
 
 #map_canvas{
+  height:100vh; width:100%; 
+}
+
+#map_canvas2{
   height:100vh; width:100%; 
 }
   

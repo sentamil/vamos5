@@ -1,33 +1,219 @@
-// var app = angular.module('mapApp', ['ui.select']);
-
-var gmarkers=[];
-var ginfowindow=[];
-var gsmarker=[];
-var gsinfoWindow=[];
-var geoinfowindow=[];
-var contentString = [];
-var contentString01=[];
+//var app = angular.module('mapApp', ['ui.select']);
+var gmarkers         = [];
+var ginfowindow      = [];
+var gsmarker         = [];
+var gsinfoWindow     = [];
+var geoinfowindow    = [];
+var contentString    = [];
+var contentString01  = [];
+var geomarker        = [], geoinfo = [];
 var id;
-var geomarker=[], geoinfo=[];
 
-app.directive('map', ['$http', '_global', function($http, GLOBAL) {
-    return {
-        restrict: 'E',
-        replace: true,
-        template: '<div></div>',
-        link: function(scope, element, attrs) {
-          scope.path=[];
-          var geoUrl = GLOBAL.DOMAIN_NAME+'/viewSite';
-            var polygenColors,labelAnchorpos,markers;
+app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '$q', '$filter','_global',function($scope, $http, vamoservice, $q, $filter, GLOBAL){
 
-          function utcdateConvert(milliseconds){
+
+  $scope.locations        = [];
+  $scope.path             = [];
+  $scope.osmPath          = [];
+  $scope.polylinearr      = [];
+  $scope.polylineOsmColor = [];
+  $scope.polyline1        = [];
+  $scope.tempadd01        = '';
+  $scope.cityCircle       = [];
+  $scope.geoMarkerDetails = {};
+
+  $scope.url              = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
+  $scope.url_site         = GLOBAL.DOMAIN_NAME+'/viewSite';
+  $scope.vehicle_list     = [];
+  $scope.markerValue      = 0;
+  $scope.popupmarker;
+  var vehicIcon           = [];
+  var vehicsIcon          = [];
+  var gmarkersOsm         = [];
+  var infoWindowOsm       = [];
+  var VehiType;
+  var myIcons;
+  var osmInterVal;
+  $scope.lineCount_osm    = 0;
+  $scope.initGoogVal=0;
+  $scope.plotVal=0; 
+
+  /* $('#pauseButton').hide();
+     $('#playButton').hide();      
+     $('#stopButton').hide();   
+     $('#replayButton').hide(); */
+
+  $('#playButton').prop('disabled', true);
+    $('#replayButton').prop('disabled', true);
+      $('#stopButton').prop('disabled', true);
+        $('#pauseButton').prop('disabled', true);
+
+
+
+
+  $scope.addTinyMarker_osm = function(data){
+
+    //console.log(data);
+
+    var tinyIcon, pinImage, latlng,addresss;
+
+    angular.forEach(data.vehicleLocations,function(val,key){
+
+      latlng = new L.LatLng(val.latitude,val.longitude);
+      $scope.tinyMarkers  = new L.marker(latlng);
+
+      //console.log(val.address);
+
+      if(val.position =='P') {
+        
+      //pinImage = 'assets/imgs/'+pos.data.position+'.png';
+        pinImage = 'assets/imgs/flag.png';
+        posval = 'Parked Time';
+
+       
+
+        var contentString = '<h3 class="infoh3">'+$scope.shortVehiId+'</h3><div class="nearbyTable02">'
+         +'<div><table cellpadding="0" cellspacing="0"><tbody>'
+         +'<tr><td>Location</td><td>'+val.address+'</td></tr>'
+         +'<tr><td>Last seen</td><td>'+dateFormat(val.date)+'</td></tr>'
+         +'<tr><td>'+posval+'</td><td>'+$scope.timeCalculate(val.parkedTime)+'</td></tr>'
+         +'<tr><td>Trip Distance</td><td>'+val.tripDistance+'</td></tr>'
+         +'</table></div>';
+
+        var infowindow = new L.popup({maxWidth:600/*,maxHeight: 170*/}).setContent(contentString);
+            
+        infoWindowOsm.push(infowindow);
+
+        tinyIcon = L.icon({
+          iconUrl: pinImage,
+          iconAnchor:[11,20],
+          popupAnchor: [0, -20],
+        });
+
+        $scope.tinyMarkers.bindPopup(infowindow);
+        $scope.tinyMarkers.setIcon(tinyIcon);
+   
+
+      } 
+      //else 
+
+      if(val.position =='S') {
+
+      //pinImage = 'assets/imgs/A_'+pos.data.direction+'.png';
+        pinImage = 'assets/imgs/orange.png';
+        posval = 'Idle Time';
+
+
+
+        var contentString = '<h3 class="infoh3">'+$scope.shortVehiId+'</h3><div class="nearbyTable02">'
+         +'<div><table cellpadding="0" cellspacing="0"><tbody>'
+         +'<tr><td>Location</td><td>'+val.address+'</td></tr>'
+         +'<tr><td>Last seen</td><td>'+dateFormat(val.date)+'</td></tr>'
+         +'<tr><td>'+posval+'</td><td>'+$scope.timeCalculate(val.idleTime)+'</td></tr>'
+         +'<tr><td>Trip Distance</td><td>'+val.tripDistance+'</td></tr>'
+         +'</table></div>';
+
+        var infowindow = new L.popup({maxWidth:600/*,maxHeight: 170*/}).setContent(contentString);
+            
+        infoWindowOsm.push(infowindow);
+
+        tinyIcon = L.icon({
+          iconUrl: pinImage,
+          iconAnchor:[11,20],
+          popupAnchor: [0, -20],
+        });
+
+        $scope.tinyMarkers.bindPopup(infowindow);
+        $scope.tinyMarkers.setIcon(tinyIcon);
+     
+      } 
+
+      //else 
+
+     if(val.position !='P' && val.position !='S') {
+        pinImage = 'assets/imgs/trans.png';
+
+           tinyIcon = L.icon({
+             iconUrl: pinImage,
+           });
+
+        $scope.tinyMarkers.setIcon(tinyIcon);
+      }
+
+      gmarkersOsm.push($scope.tinyMarkers);
+      $scope.tinyMarkers.addTo($scope.map_osm);
+
+     // }
+
+});
+
+} 
+
+
+  $scope.addMarkerstart_osm = function(data) {
+
+      var startFlagVal = new L.LatLng(data.latitude, data.longitude);
+      var myIconStart = L.icon({
+          iconUrl: 'assets/imgs/startflag.png',
+          iconSize: [68,70], 
+          iconAnchor:[43,68],
+          popupAnchor: [0, -65],
+      });
+
+      var contentString_osm = '<h3 class="infoh3">Vehicle Details ('+$scope.shortVehiId+') </h3><div class="nearbyTable02"><div>'
+        +'<table cellpadding="0" cellspacing="0">'
+        +'<tbody><!--<tr><td>Location</td><td>'+$scope.tempadd+'</td></tr>-->'
+        +'<tr><td>Last seen</td><td>'+dateFormat(data.date)+'</td></tr>'
+        +'<tr><td>Parked Time</td><td>'+$scope.timeCalculate(data.parkedTime)+'</td></tr>'
+        +'<tr><td>Trip Distance</td><td>'+data.tripDistance+'</td></tr></table></div>';
+
+        $scope.markerStart     = new L.marker();
+        $scope.infowindowStart = new L.popup(/*{maxWidth:400,maxHeight: 170}*/);
+
+        $scope.infowindowStart.setContent(contentString_osm);
+        $scope.markerStart.bindPopup($scope.infowindowStart);
+        $scope.markerStart.setIcon(myIconStart);
+        $scope.markerStart.setLatLng(startFlagVal).addTo($scope.map_osm);
+
+    }  
+
+  $scope.endMarkerstart_osm = function(data){
+
+
+        var endFlagval  = new L.LatLng(data.latitude, data.longitude); 
+
+        var myIconEnd = L.icon({
+          iconUrl: 'assets/imgs/endflag.png',
+          iconSize: [68,70], 
+          iconAnchor:[22,70],
+          popupAnchor: [3, -65],
+        });
+
+       var contentString_osm2 = '<h3 class="infoh3">Vehicle Details ('+$scope.shortVehiId+') </h3><div class="nearbyTable02"><div>'
+        +'<table cellpadding="0" cellspacing="0">'
+        +'<tbody><!--<tr><td>Location</td><td>'+$scope.tempadd+'</td></tr>-->'
+        +'<tr><td>Last seen</td><td>'+dateFormat(data.date)+'</td></tr>'
+        +'<tr><td>Parked Time</td><td>'+$scope.timeCalculate(data.parkedTime)+'</td></tr>'
+        +'<tr><td>Trip Distance</td><td>'+data.tripDistance+'</td></tr></table></div>';
+
+        $scope.markerEnd     = new L.marker();
+        $scope.infoWindowEnd = new L.popup(/*{maxWidth:400,maxHeight: 170}*/);
+
+        $scope.infoWindowEnd.setContent(contentString_osm2);
+        $scope.markerEnd.bindPopup($scope.infoWindowEnd);
+        $scope.markerEnd.setIcon(myIconEnd);
+        $scope.markerEnd.setLatLng(endFlagval).addTo($scope.map_osm);
+  } 
+
+
+   function utcdateConvert(milliseconds){
         //var milliseconds=1440700484003;
         var offset='+10';
         var d = new Date(milliseconds);
         utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-        nd = new Date(utc + (3600000*offset));
+        nd  = new Date(utc + (3600000*offset));
         var result=nd.toLocaleString();
-        return result;
+      return result;
       }
 
       function currentTimes() {
@@ -43,284 +229,362 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
       return strTimes;
       }
 
-        function getTodayDatesss() {
-                       var date = new Date();
-                       return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
-                    };
-        
-        scope.$watch("hisurl", function (val) {
-        //startLoading();
-        scope.path = [];
+      function getTodayDatesss() {
+        var date = new Date();
+        return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
+      };
 
-        if(scope.hisurl != undefined)
-          $http.get(scope.hisurl).success(function(data){
 
-            var locs = data;
-          scope.hisloc = locs;
-          scope._tableValue(locs);
+      function formatAMPM(date) {
+        var date = new Date(date);
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+      return strTime;
+      }
 
-          if(data.fromDateTime=='' || data.fromDateTime==undefined || data.fromDateTime=='NaN-aN-aN'){ 
-            if(data.error==null){}else{
-              $('.alert-danger').show();
-              // $('#myModal').modal();
-            }
-            $('#lastseen').html('<strong>From Date & time :</strong> -');
-            $('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
 
-                        scope.fromdate      = getTodayDatesss();
-              scope.todate      = scope.fromdate;
-              scope.fromtime      = '12:00 AM';
-              scope.totime      = currentTimes();
+          $scope.initGoogle_Map = function(data){
 
-          }else{
-            $('.alert-danger').hide();
-            if(data.error==null){
-              // var fromNow =new Date(data.fromDateTime.replace('IST',''));
-              // var toNow  = new Date(data.toDateTimeUTC);
-              scope.fromNowTS       = data.fromDateTimeUTC;
-              scope.toNowTS     = data.toDateTimeUTC; 
-              function formatAMPM(date) {
-                  var date = new Date(date);
-                  var hours = date.getHours();
-                  var minutes = date.getMinutes();
-                  var ampm = hours >= 12 ? 'PM' : 'AM';
-                  hours = hours % 12;
-                  hours = hours ? hours : 12; // the hour '0' should be '12'
-                  minutes = minutes < 10 ? '0'+minutes : minutes;
-                  var strTime = hours + ':' + minutes + ' ' + ampm;
-                  return strTime;
-              }
-              scope.fromtime      = formatAMPM(scope.fromNowTS);
-              scope.totime      = formatAMPM(scope.toNowTS);
-              scope.fromdate      = scope.getTodayDate(scope.fromNowTS);
-              scope.todate      = scope.getTodayDate(scope.toNowTS);
-              
-              $('#vehiid h3').text(locs.shortName);
-              // $('#toddist h6').text(scope.timeCalculate(locs.totalRunningTime));
-              // $('#vehstat h6').text(scope.timeCalculate(locs.totalIdleTime));
-              // $('#vehdevtype h6 span').text(locs.odoDistance);
-              // $('#mobno h6').text(scope.timeCalculate(locs.totalParkedTime));
-              // $('#regno h6 span').text(locs.tripDistance);
-              
-              $('#lastseen').html('<strong>From Date & time :</strong> '+ new Date(data.fromDateTimeUTC).toString().split('GMT')[0]);
-              $('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> '+ new Date(data.toDateTimeUTC).toString().split('GMT')[0]);
+            console.log('google init...');
 
-                if (data.vehicleLocations.length != 0) {
-
+               if(data.vehicleLocations.length != 0) {
                     //console.log(parseInt(locs.tripDistance));
-                   
-                      if(parseInt(locs.tripDistance) > 200) {
-                          scope.zoomCtrlVal     =  true;
-                          locs.zoomLevel        =  12;
-                          scope.ZoomDisableBtn  =  true;
-                          scope.scrollsWheel    =  false;
+                      if(parseInt(data.tripDistance) > 200) {
+                          $scope.zoomCtrlVal     =  true;
+                          data.zoomLevel        =  12;
+                          $scope.ZoomDisableBtn  =  true;
+                          $scope.scrollsWheel    =  false;
                        // console.log(locs.tripDistance+"Active no Zoom");
                       } else{
-                          scope.zoomCtrlVal    = false;
-                          scope.ZoomDisableBtn = false;
-                          scope.scrollsWheel   = true;
-                      }
+                          $scope.zoomCtrlVal    = false;
+                          $scope.ZoomDisableBtn = false;
+                          $scope.scrollsWheel   = true;
+                       }
 
-                   /*  var myOptions = {
-                
+                   /* var myOptions = {
                         zoom: Number(locs.zoomLevel),zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
                         center: new google.maps.LatLng(data.vehicleLocations[0].latitude, data.vehicleLocations[0].longitude),
                         mapTypeId: google.maps.MapTypeId.ROADMAP
-                          //styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
+                      //styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
                     }; */
 
                     var myOptions = {
-                        zoom: Number(locs.zoomLevel),
-                        zoomControl: scope.scrollsWheel,
+                        zoom: Number(data.zoomLevel),
+                        zoomControl: $scope.scrollsWheel,
                         zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
                         center: new google.maps.LatLng(data.vehicleLocations[0].latitude, data.vehicleLocations[0].longitude),
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
-                        disableDoubleClickZoom: scope.zoomCtrlVal,
-                        scrollwheel: scope.scrollsWheel,
-                        disableDefaultUI: scope.ZoomDisableBtn,
+                        disableDoubleClickZoom: $scope.zoomCtrlVal,
+                        scrollwheel: $scope.scrollsWheel,
+                        disableDefaultUI: $scope.ZoomDisableBtn,
                      // styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
                     };
 
-                    scope.map = new google.maps.Map(document.getElementById(attrs.id), myOptions);
+                    $scope.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
 
-                } else {
-                  alert("Data Not Found!..");
-                  console.log('vehicleLocations not found!...'+data);
-                }
+              //  }else{
+              //    alert("Data Not Found!..");
+              //    console.log('vehicleLocations not found!...'+data);
+              //  }
 
-                    //draw the geo code
-              // (function geosite(){
-              //  var geoUrl = GLOBAL.DOMAIN_NAME+'/viewSite';
-                // var myOptions = {
-                //  zoom: Number(6),zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
-                //  center: new google.maps.LatLng(0,0),
-                //  mapTypeId: google.maps.MapTypeId.ROADMAP
-      
-        
-                // };
-                // $scope.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
-            /*    $http.get(geoUrl).success(function(response){
-                  polygenList =[];
-                  var latLanlist, seclat, seclan, sp; 
-
-                  function centerMarker(listMarker){
-                      var bounds = new google.maps.LatLngBounds();
-                      for (i = 0; i < listMarker.length; i++) {
-                            bounds.extend(listMarker[i]);
-                        }
-                      return bounds.getCenter()
-                  }
-
-                  for (var listSite = 0; listSite < response.siteParent.length; listSite++) {
-                    
-                    var len = response.siteParent[listSite].site.length;
-                    for (var k = 0; k < len; k++) {
-                    // if(response.siteParent[i].site.length)
-                    // {
-                      var orgName = response.siteParent[listSite].site[k].siteName;
-                      var splitLatLan = response.siteParent[listSite].site[k].latLng.split(",");
-                      
-                      polygenList = [];
-                      for(var j = 0; splitLatLan.length>j; j++)
-                          {
-                            sp    = splitLatLan[j].split(":");
-                            polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
-                            // console.log(sp[0]+' ---- '+ sp[1])
-                            // latlanList.push(sp[0]+":"+sp[1]);
-                            // seclat        = sp[0];
-                            // seclan        = sp[1];
-                          }
-                      
-                          var polygenColor = new google.maps.Polygon({
-                            path: polygenList,
-                            strokeColor: "#282828",
-                            strokeWeight: 1,
-                            fillColor: '#808080',
-                            fillOpacity: 0.50,
-                            map: scope.map
-                          });
-                        
-                          var labelAnchorpos = new google.maps.Point(19, 0);  ///12, 37
-                          var marker = new MarkerWithLabel({
-                            position: centerMarker(polygenList), 
-                            map: scope.map,
-                            icon: 'assets/imgs/area_img.png',
-                            labelContent: orgName,
-                            labelAnchor: labelAnchorpos,
-                            labelClass: "labels", 
-                            labelInBackground: false
-                          });
-                        // scope.map.setCenter(centerMarker(polygenList)); 
-                        // scope.map.setZoom(14); 
-                      // }
-                      }
-                  };
-                });
-              // }());*/
-
-              google.maps.event.addListener(scope.map, 'click', function(event) {
-                scope.clickedLatlng = event.latLng.lat() +','+ event.latLng.lng();
-                $('#latinput').val(scope.clickedLatlng);
+              google.maps.event.addListener($scope.map, 'click', function(event) {
+                $scope.clickedLatlng = event.latLng.lat() +','+ event.latLng.lng();
+                $('#latinput').val($scope.clickedLatlng);
               });
                 
-                for(var i=0;i<locs.vehicleLocations.length;i++){
+           
 
-                  scope.path.push(new google.maps.LatLng(locs.vehicleLocations[i].latitude, locs.vehicleLocations[i].longitude));
-                  
-                    if(locs.vehicleLocations[i].isOverSpeed=='Y'){
-                          var pscolorval = '#ff0000';
-                       }else{
-                          var pscolorval = '#6dd538';
-                          // var pscolorval = '#38d552';
-                          // var pscolorval = '#068b03';
-                       }
-                  scope.polylinearr.push(pscolorval);
-                  // if(locs.vehicleLocations[i].mileKal=='Y'){
-                  //    scope.pointMarker(locs.vehicleLocations[i]);
-                  //    scope.pointinfowindow(scope.map, gsmarker[i], locs.vehicleLocations[i]);
-                  //  }
+                  $scope.polylineCtrl();
+               // console.log($scope.path.length);
+
+                if($scope.getValue != undefined){
+
+                  $scope.getValueCheck($scope.getValue);
                 }
-
-                scope.polylineCtrl();
-                console.log(scope.path.length);
-
-                if(scope.getValue != undefined){
-
-                    scope.getValueCheck(scope.getValue);
-                  }
               
-                    scope.pointDistances=[];
-                var sphericalLib = google.maps.geometry.spherical;
-                var pointZero = scope.path[0];
+                $scope.pointDistances = [];
+                var sphericalLib     = google.maps.geometry.spherical;
+                var pointZero        = $scope.path[0];
+                var wholeDist        = sphericalLib.computeDistanceBetween(pointZero, $scope.path[$scope.path.length - 1]);
               
-              var wholeDist = sphericalLib.computeDistanceBetween(pointZero, scope.path[scope.path.length - 1]);
-              
-              // commented by Mayank START
-              //alert(scope.path.length);
-
-                // for (var i = 0; i < scope.path.length; i++) {
-                //     scope.pointDistances[i] = 100 * sphericalLib.computeDistanceBetween(scope.path[i], pointZero) / wholeDist;
-                // }
-              // commented by Mayank END
-                
-              
-                // window.setTimeout(function () {
-                //  scope.animated();
-                // },1000);
-                
                 $('#replaybutton').removeAttr('disabled');
-                // scope.map.fitBounds(latLngBounds); 
-                
-            }else{
-              $('.error').show();
-              $('#lastseen').html('<strong>From Date & time :</strong> -');
-              $('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
-            }
-          }
-          var url = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?vehicleId='+scope.trackVehID;
-    
-        scope.createGeofence(url);
-        stopLoading();
-          }).error(function(){ stopLoading();});
-      });
 
-       scope.SiteCheckbox = {
+            //}else{
+            //  $('.error').show();
+            //  $('#lastseen').html('<strong>From Date & time :</strong> -');
+            //  $('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
+          // }
+        //  }
+
+      }
+
+          
+        var url = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?vehicleId='+$scope.trackVehID;
+    
+        $scope.createGeofence(url);
+        stopLoading();
+         
+           //}
+
+          $scope.SiteCheckbox = {
              value1 : true,
              value2 : 'YES'
           }
+  }
 
 
-    scope.getValueCheck = function(getStatus){
+  $scope.initOsm_Map=function(data){
+ 
 
-        scope.getValue = getStatus;
 
-            if(scope.getValue == 'YES')
-          {
-                scope.hideMe = false;
-                scope.hideMarker= false;
+      if($scope.map_osm!=undefined){
+
+         //console.log("osm map undefined....");
+
+      // $scope.map_osm.panTo(null);
+      // window.clearInterval(timeInterval);  
+
+        if($scope.markerss){
+        
+          $scope.map_osm.removeLayer($scope.markerss);
+        }
+
+       if($scope.polylines_osm){
+         $scope.map_osm.removeLayer($scope.polylines_osm);
+       }
+
+      /*   delete $scope.markerss;
+         delete $scope.polylines_osm;
+         delete myIcons;*/
+         
+         $scope.map_osm.removeLayer($scope.tileOsm);
+         $scope.map_osm.remove();
+      /*   delete $scope.map_osm;
+         delete $scope.tileOsm;
+         
+         delete osmInterVal;*/
+
+         var osmInterVal;
+         var myIcons;
+
+         gmarkersOsm       = [];
+         infoWindowOsm     = [];
+        
+
+         //stopLoading();
+      } 
+      
+
+         
+
+      // if($scope.map_osm ==undefined){
+
+       // console.log('map_osm');
+
+          var mapLink    = '<a href="http://207.154.194.241/nominatim/lf.html">OpenStreeetMap</a>';
+          $scope.map_osm = new L.map('map_canvas2',{ center: [13.0827,80.2707],/* minZoom: 4,*/zoom: 8 });
+
+          $scope.tileOsm = new L.tileLayer(
+               'http://207.154.194.241/osm_tiles/{z}/{x}/{y}.png', {
+               attribution: '&copy; '+mapLink+' Contributors',
+            // maxZoom: 18,
+            }).addTo($scope.map_osm);
+
+           // console.log(data);
+
+      if($scope.hisloc.vehicleLocations!=null){     
+
+            var vehType=$scope.hisloc.vehicleLocations[0].vehicleType;
+            vehicsIcon = vehiclesChange(vehType);
+
+            $scope.osmPath=[];
+
+            for(var i=0;i<$scope.hisloc.vehicleLocations.length;i++){
+
+            //  console.log(data.vehicleLocations[i].latitude+" "+data.vehicleLocations[i].longitude);
+                  $scope.osmPath.push(new L.LatLng($scope.hisloc.vehicleLocations[i].latitude, $scope.hisloc.vehicleLocations[i].longitude));
+              
+                  if($scope.hisloc.vehicleLocations[i].isOverSpeed == 'Y'){
+                    var pscolorvals = '#ff0000';
+                  } else {
+                    var pscolorvals = '#6dd538';
+                  }
+
+              $scope.polylineOsmColor.push(pscolorvals);
+            } 
+
+           // console.log($scope.osmPath.length);
+           // console.log($scope.osmPath);
+           // console.log(vamoservice.iconURL($scope.hisloc.vehicleLocations[0]));
+              $scope.markerss     = new L.marker();
+              $scope.infowindowss = new L.popup({maxWidth:400,maxHeight: 170});
+
+             // $scope.startFlagval = new L.LatLng($scope.hisloc.vehicleLocations[0].latitude, $scope.hisloc.vehicleLocations[0].longitude);
+             
+              var latLength   = $scope.hisloc.vehicleLocations.length-1;
+              $scope.addMarkerstart_osm($scope.hisloc.vehicleLocations[0]);
+              $scope.endMarkerstart_osm($scope.hisloc.vehicleLocations[latLength]);
+              $scope.polylines_osm = L.polyline($scope.osmPath, {stroke:true, color:'#04B308', weight:5, fillColor:'#04B308'}).addTo($scope.map_osm);
+              
+             // $scope.hisloc2=data;
+
+              if( $scope.lineCount_osm != 0){
+                $scope.lineCount_osm = 0;
+              }
+                stopLoading();
+
+              $scope.osmInterVal  = setInterval(function(){ osmPolyLine() },600);
+
+
+              }else{
+
+                stopLoading();
+              }
+
+              
+        //}
+    }
+
+
+  function osmPolyLine(){
+
+    //console.log('poly liness....');
+
+    /*  $scope.polyline1[lineCount] = new google.maps.Polyline({
+            map: $scope.map,
+            path: [$scope.path[lineCount], $scope.path[lineCount+1]],
+            strokeColor: $scope.polylinearr[lineCount],
+            strokeOpacity: 0,
+            //strokeOpacity: 1,
+            strokeWeight: 3,
+            icons: [{
+                    icon: doubleLine,
+                    offset: '50%',
+                    repeat: '15px'
+                }],
+            clickable: true
+        }); */
+
+       // console.log(lineCount_osm);
+       // console.log($scope.osmPath.length);
+       // console.log($scope.hisloc2.vehicleLocations.length);
+
+        if($scope.osmPath.length == $scope.lineCount_osm+1) {
+         // console.log('Interval.......');
+
+               clearInterval($scope.osmInterVal);
+
+               $('#playButton').prop('disabled',  true);
+               $('#replayButton').prop('disabled',false);
+               $('#stopButton').prop('disabled', true);
+               $('#pauseButton').prop('disabled', true);
+               $scope.speedVal=1; 
+      
+          // $scope.endMarkerstart_osm($scope.endFlagval);
+        }
+        
+        if($scope.osmPath.length != $scope.lineCount_osm+1) {
+
+          /*  $scope.markerhead.setIcon({
+                path:vehicIcon[0],
+                scale:vehicIcon[1],
+                strokeWeight: 1,
+                fillColor: $scope.polylinearr[lineCount],
+                fillOpacity: 1,
+                anchor:vehicIcon[2],
+                rotation: rotationd,
+              });
+
+           // var myIcon = L.icon({iconUrl: vamoservice.iconURL(pos.data)}); */
+           // var myIcons = L.icon({iconUrl: vamoservice.iconURL($scope.hisloc.vehicleLocations[0])});
+           // $scope.markerss  = new L.marker({icon:myIcons});
+
+         //  if(lineCount_osm==0){   
+
+         //   $scope.markerss.addTo($scope.map_osm);
+        //  }
+
+             // $scope.markerss.setLatLng($scope.osmPath[lineCount_osm]);
+              
+      var contenttsString = '<div style="padding:2px; padding-top:3px; width:175px;">'
+      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">LocTime</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+dateFormat($scope.hisloc.vehicleLocations[$scope.lineCount_osm].date)+'</span> </div>'
+      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">Speed</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[$scope.lineCount_osm].speed+'</span><span style="font-size:10px;padding-left:10px;">kmph</span></div>'
+      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">DistCov</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[$scope.lineCount_osm].distanceCovered+'</span><span style="font-size:10px;padding-left:10px;">kms</span></div>'
+      +'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[$scope.lineCount_osm].address)+'</span></div>'
+   // +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
+      +'</div>';
+
+        myIcons = L.icon({
+            iconUrl: vamoservice.iconURL($scope.hisloc.vehicleLocations[$scope.lineCount_osm]),
+            iconSize: [40,40], 
+            iconAnchor: [20,40],
+            popupAnchor: [-1, -40],
+        });
+
+        $scope.infowindowss.setContent(contenttsString);
+        $scope.markerss.bindPopup($scope.infowindowss);
+        $scope.markerss.setIcon(myIcons);
+        $scope.markerss.setLatLng($scope.osmPath[$scope.lineCount_osm]);
+
+        if($scope.lineCount_osm==0){   
+          $scope.markerss.addTo($scope.map_osm);
+          $scope.markerss.openPopup();
+
+          $scope.addTinyMarker_osm($scope.hisloc);
+          $scope.tinyMarkers.addEventListener('click', function(e) {
+                $scope.tinyMarkers.openPopup();             
+          });
+        }
+
+           // var nVar      = [$scope.osmPath[lineCount_osm],$scope.osmPath[lineCount_osm+1]];
+           // var polylines = L.polyline(nVar, {color: $scope.polylineOsmColor[lineCount_osm]}).addTo($scope.map_osm);
+           // $scope.addTinyMarker_osm($scope.osmPath[lineCount_osm],$scope.hisloc.vehicleLocations[lineCount_osm]);
+              $scope.map_osm.panTo($scope.osmPath[$scope.lineCount_osm]);
+
+           // console.log($scope.osmPath[lineCount_osm]);
+
+          $scope.lineCount_osm++;
+        }
+
+  }
+  
+
+    $scope.getValueCheck = function(getStatus){
+
+        $scope.getValue = getStatus;
+
+          if($scope.getValue == 'YES') {
+                $scope.hideMe = false;
+                $scope.hideMarker= false;
 
           (function(){
 
-                  var siteLength;
+            var siteLength;
 
-                    $http.get(geoUrl).success(function(response){
+                $http.get(geoUrl).success(function(response){
+
                   polygenList =[];
                   var latLanlist, seclat, seclan, sp; 
 
                   function centerMarker(listMarker){
-                      var bounds = new google.maps.LatLngBounds();
+                    var bounds = new google.maps.LatLngBounds();
                       for (i = 0; i < listMarker.length; i++) {
                             bounds.extend(listMarker[i]);
-                        }
-                      return bounds.getCenter()
+                      }
+                    return bounds.getCenter()
                   }
                                  
-                                 if(response.siteParent!=null){
-                                    siteLength = response.siteParent.length;
-                                    polygenList.push(new google.maps.LatLng(11, 11));
-                                  }
+                    if(response.siteParent!=null){
+                      siteLength = response.siteParent.length;
+                      polygenList.push(new google.maps.LatLng(11, 11));
+                    }
 
-                                  for (var listSite = 0; listSite < siteLength; listSite++) {
+                  for (var listSite = 0; listSite < siteLength; listSite++) {
                     
                     var len = response.siteParent[listSite].site.length;
                     for (var k = 0; k < len; k++) {
@@ -340,7 +604,7 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
                             // seclan        = sp[1];
                           }
                       
-                           polygenColors = new google.maps.Polygon({
+                          polygenColors = new google.maps.Polygon({
                             path: polygenList,
                             strokeColor: "#282828",
                             strokeWeight: 1,
@@ -348,11 +612,11 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
                             fillOpacity: 0.50,
                             //map: scope.map
                           });
-                           polygenColors.setMap(scope.map);
-                        
-                           labelAnchorpos = new google.maps.Point(19, 0);  ///12, 37
 
-                            markers = new MarkerWithLabel({
+                          polygenColors.setMap($scope.map);
+                          labelAnchorpos = new google.maps.Point(19, 0);  //12, 37
+
+                          markers = new MarkerWithLabel({
 
                             position: centerMarker(polygenList), 
                          // map: scope.map,
@@ -363,66 +627,253 @@ app.directive('map', ['$http', '_global', function($http, GLOBAL) {
                             labelInBackground: false
                           });
 
-                            markers.setMap(scope.map);
+                          markers.setMap($scope.map);
                         // scope.map.setCenter(centerMarker(polygenList)); 
                         // scope.map.setZoom(14); 
-                      // }
+                        // }
                       }
                   }
               });
-                    }())
-        }
-         else if (scope.getValue == 'NO')
-         {
-           scope.hideMe = true;
-
-           }
-        }
+          }())
+      } else if ($scope.getValue == 'NO') {
+          $scope.hideMe = true;
       }
-    };
-}]);
+        
+  }
+
+var osmInitsVal=0;
+// $scope.$watch("hisurl", function (val) {
+
+$scope.initMap  = function(vals,initVal){
+
+  console.log('map init...');
+
+   startLoading();
+
+  if(initVal==true) {
+
+      $scope.path   = [];
+      $scope.hisloc = [];
+
+      var locs;
+      var geoUrl  = GLOBAL.DOMAIN_NAME+'/viewSite';
+      var polygenColors,labelAnchorpos,markers;
+
+      $http.get($scope.hisurl).success(function(data){
+
+          locs            = data;
+          $scope.hisloc   = data;
+
+        //  console.log($scope.hisloc );
+
+          $scope._tableValue(locs);
 
 
-app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function($scope, $http, $q, $filter, GLOBAL){
-  $scope.locations = [];
-  $scope.path = [];
-  $scope.polylinearr=[];
-  $scope.polyline1=[];
-  $scope.tempadd01='';
-  $scope.cityCircle=[];
-  $scope.geoMarkerDetails={};
-  $scope.popupmarker;
-  $scope.url = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
-  $scope.url_site    = GLOBAL.DOMAIN_NAME+'/viewSite';
-    $scope.vehicle_list=[];
-  $scope.markerValue=0;
-  var VehiType;
-    var vehicIcon=[];
+         if($scope.hisloc.vehicleLocations==null ){
+          stopLoading();
 
-    $('.hideClass').hide();
-    $('#pauseButton').hide();
-    $('#playButton').hide();      
-    $('#stopButton').hide();   
-    $('#replayButton').hide(); 
+         }
+
+          if(data.fromDateTime=='' || data.fromDateTime==undefined || data.fromDateTime=='NaN-aN-aN'){ 
+            if(data.error==null){}else{
+              $('.alert-danger').show();
+              // $('#myModal').modal();
+            }
+            $('#lastseen').html('<strong>From Date & time :</strong> -');
+            $('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
+
+              $scope.fromdate   =  getTodayDatesss();
+              $scope.todate     =  $scope.fromdate;
+              $scope.fromtime   =  '12:00 AM';
+              $scope.totime     =  currentTimes();
+
+          } else {
+
+            $('.alert-danger').hide();
+
+            if(data.error==null){
+  
+              $scope.fromNowTS = data.fromDateTimeUTC;
+              $scope.toNowTS   = data.toDateTimeUTC; 
+       
+              $scope.fromtime  = formatAMPM($scope.fromNowTS);
+              $scope.totime    = formatAMPM($scope.toNowTS);
+              $scope.fromdate  = $scope.getTodayDate($scope.fromNowTS);
+              $scope.todate    = $scope.getTodayDate($scope.toNowTS);
+              
+              $('#vehiid h3').text(locs.shortName);
+              $('#lastseen').html('<strong>From Date & time :</strong> '+ new Date(data.fromDateTimeUTC).toString().split('GMT')[0]);
+              $('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> '+ new Date(data.toDateTimeUTC).toString().split('GMT')[0]);
+
+            }
+        } 
+
+    if(vals==0){
+
+   
+        $('#playButton').prop('disabled', true);
+        $('#replayButton').prop('disabled', false);
+        $('#stopButton').prop('disabled', false);
+        $('#pauseButton').prop('disabled', false);
+
+      //  console.log("gooooogle...........");
+
+        clearInterval($scope.osmInterVal);
+
+        document.getElementById("map_canvas").style.display="block"; 
+          document.getElementById("map_canvas2").style.display="none"; 
+
+        if($scope.initGoogVal==0){
+           $scope.initGoogle_Map($scope.hisloc);
+           $scope.initGoogVal=1;
+        }else if($scope.initGoogVal==1){
+           $scope.polylineCtrl();
+        }
+
+        $scope.googleMap=true;
+        $scope.osmMap=false;
+
+    } else if(vals==1){
+        
+
+        $('#playButton').prop('disabled', true);
+        $('#replayButton').prop('disabled', false);
+        $('#stopButton').prop('disabled', false);
+        $('#pauseButton').prop('disabled', false);
+
+   /*  $('#pauseButton').show();
+       $('#playButton').hide();      
+    // $('#stopButton').show();   
+       $('#replayButton').show();*/
+
+     // console.log('osm mapsssssss...');
+
+      clearInterval($scope.osmInterVal);
+
+        document.getElementById("map_canvas").style.display="none"; 
+          document.getElementById("map_canvas2").style.display="block"; 
+
+        //  if(osmInitsVal==0){
+            $scope.initOsm_Map();
+          //}
+
+          $scope.googleMap=false;
+          $scope.osmMap=true;
+         // osmInitsVal++;
+      }
+
+   }).error(function(){ 
+        stopLoading();
+      }); 
+
+ } else {
+
+      if(vals==0){
+
+        $('#playButton').prop('disabled', true);
+        $('#replayButton').prop('disabled', false);
+        $('#stopButton').prop('disabled', false);
+        $('#pauseButton').prop('disabled', false);
+
+        //console.log("gooooogle elseee...........");
+
+        clearInterval($scope.osmInterVal);
+         window.clearInterval(timeInterval);  
+
+        document.getElementById("map_canvas").style.display="block"; 
+          document.getElementById("map_canvas2").style.display="none"; 
+
+         // console.log($scope.hisloc);
+
+        // $scope.initGoogVal=1; 
+       //  $scope.plotVal=0;
+
+         pcount = 0; 
+         //$scope.initGoogle_Map($scope.hisloc);
+
+      // $scope.initGoogle_Map($scope.hisloc);
+        $scope.polylineCtrl();
+
+         $scope.googleMap=true;
+         $scope.osmMap=false;
+
+     } else if(vals==1){
+
+
+        $('#playButton').prop('disabled', true);
+        $('#replayButton').prop('disabled', false);
+        $('#stopButton').prop('disabled', false);
+        $('#pauseButton').prop('disabled', false);
+
+        // $scope.initGoogVal=1; 
+        // $scope.plotVal=0;
+
+       // console.log('osm mapsssssss elseeee...');
+
+        clearInterval($scope.osmInterVal);
+
+        document.getElementById("map_canvas").style.display="none"; 
+        document.getElementById("map_canvas2").style.display="block"; 
+
+        $scope.initOsm_Map();
+        $scope.googleMap = false;
+        $scope.osmMap    = true;
+
+      }
+
+ }
+
+
+
+}
+
+// });
+
+
+  /* $scope.changeMap = function(val) {
+
+    if(val==0){
+
+      $scope.googleMap=false;
+        $scope.osmMap=true;
+
+      document.getElementById("map_canvas").style.display="block"; 
+        document.getElementById("map_canvas2").style.display="none"; 
+
+      $scope.initGoogle_Map($scope.hisloc);
+
+    } else if(val==1){
+
+       $scope.googleMap=false;
+         $scope.osmMap=true;
+
+        document.getElementById("map_canvas").style.display="none"; 
+          document.getElementById("map_canvas2").style.display="block"; 
+
+        $scope.initOsm_Map();
+    }
+  } */
 
   $scope.getTodayDate  =  function(date) {
     var date = new Date(date);
     return date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + (date.getDate())).slice(-2);
-  };
+  }
 
-    $scope.parseInts=function(data){
+  $scope.parseInts=function(data){
      return parseInt(data);
-     }
-    $scope.alladdress     = [];
-  $scope.moveaddress      = [];
-  //$scope.overaddress    = [];
-  $scope.parkaddress      = [];
-  $scope.idleaddress      = [];
-//  $scope.fueladdress    =   [];
-  $scope.igniaddress    =   [];
-  //$scope.acc_address    =   [];
-    $scope.stop_address     =   [];
-  // //loading start function
+  }
+
+  $scope.alladdress    = [];
+  $scope.moveaddress   = [];
+//$scope.overaddress   = [];
+  $scope.parkaddress   = [];
+  $scope.idleaddress   = [];
+//$scope.fueladdress   = [];
+  $scope.igniaddress   = [];
+//$scope.acc_address   = [];
+  $scope.stop_address  = [];
+
+  // loading start function
   // $scope.startLoading    = function () {
   //  $('#status').show(); 
   //  $('#preloader').show();
@@ -473,7 +924,7 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 
     }
 
-/*    function filter(obj){
+/*  function filter(obj){
       var _returnObj = [];
       if(obj)
         angular.forEach(obj,function(val, key){
@@ -481,7 +932,7 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
             _returnObj.push(val)
         })
       return _returnObj;
-    }*/
+    } */
 
 
     function filter(obj,name){
@@ -494,7 +945,7 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
             _returnObj.push(val)
           }
         })
-      }*/
+      } */
       
       if(name=='stoppage'){
 
@@ -517,7 +968,7 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
         })
       }*/
     return _returnObj;
-    }
+  }
 
 /*    $scope.fuelChart  =   function(data){
     var ltrs    = [];
@@ -684,25 +1135,25 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 }
 */
   $scope._tableValue = function(_value){
-  //if(_value && _value.vehicleLocations != null){
-    $scope.moveaddress    = [];
-    $scope.alladdress     = [];
-  //$scope.overaddress    = [];
-    $scope.parkaddress    = [];
-    $scope.idleaddress    = [];
-  //$scope.fueladdress    = [];
-    $scope.igniaddress    = [];
-  //$scope.acc_address    = [];
-    $scope.stop_address   = [];
-    $scope.parkeddata     = [];
-    $scope.overspeeddata  = [];
-    $scope.allData        = [];
-    $scope.movementdata   = [];
-    $scope.idlereport     = [];
-    $scope.ignitValue     = [];
-  //  $scope.acReport     = [];
-    $scope.stopReport     = [];
-  //  $scope.fuelValue    = [];
+//if(_value && _value.vehicleLocations != null){
+    $scope.moveaddress   = [];
+    $scope.alladdress    = [];
+  //$scope.overaddress   = [];
+    $scope.parkaddress   = [];
+    $scope.idleaddress   = [];
+  //$scope.fueladdress   = [];
+    $scope.igniaddress   = [];
+  //$scope.acc_address   = [];
+    $scope.stop_address  = [];
+    $scope.parkeddata    = [];
+    $scope.overspeeddata = [];
+    $scope.allData       = [];
+    $scope.movementdata  = [];
+    $scope.idlereport    = [];
+    $scope.ignitValue    = [];
+  //$scope.acReport      = [];
+    $scope.stopReport    = [];
+  //$scope.fuelValue     = [];
 
     if(_value && _value.vehicleLocations != null) {
 
@@ -714,38 +1165,37 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
       $scope.movementdata   = ($filter('filter')(_value.vehicleLocations, {'position':"M"}));
       $scope.idlereport     = ($filter('filter')(_value.vehicleLocations, {'position':"S"}));
       $scope.ignitValue     = _pairFilter(ignitionValue, 'ON', 'OFF', 'ignitionStatus');
-    //  $scope.acReport     = _pairFilter(_value.vehicleLocations, 'yes', 'no', 'vehicleBusy');
-    //  $scope.fuelValue    =  filter(_value.vehicleLocations);
-    //  $scope.fuelValue    =  filter(_value.vehicleLocations,'fuel');
+    //$scope.acReport       = _pairFilter(_value.vehicleLocations, 'yes', 'no', 'vehicleBusy');
+    //$scope.fuelValue      =  filter(_value.vehicleLocations);
+    //$scope.fuelValue      =  filter(_value.vehicleLocations,'fuel');
       $scope.stopReport     =  filter(_value.vehicleLocations,'stoppage');
       
       // console.log($scope.ignitValue);
     }
-  //  $scope.speedKms($scope.movementdata);
-  //  $scope.fuelChart($scope.fuelValue);
+  // $scope.speedKms($scope.movementdata);
+  // $scope.fuelChart($scope.fuelValue);
 }
 
   function google_api_call(tempurlMo, index1, _stat) {
-      // console.log(' temperature ')
-      //  $scope.av = "adasdas"
-  //  $scope.moveaddress      = [];
-  // $scope.overaddress     = [];
-  // $scope.parkaddress       = [];
-  // $scope.idleaddress     = [];
-  // $scope.fueladdress   =   [];
-  // $scope.igniaddress   =   [];
-  // $scope.acc_address     =   [];
+  // console.log(' temperature ')
+  // $scope.av           = "adasdas"
+  // $scope.moveaddress  = [];
+  // $scope.overaddress  = [];
+  // $scope.parkaddress  = [];
+  // $scope.idleaddress  = [];
+  // $scope.fueladdress  = [];
+  // $scope.igniaddress  = [];
+  // $scope.acc_address  = [];
     $http.get(tempurlMo).success(function(data){
-      // $.ajax({
-
-   //          async: false,
-   //          method: 'GET', 
-   //          url: tempurlMo,
-   //          success: function (data) {
-               // console.log(data)
-                // aUthName = response;
-                // sessionStorage.setItem('apiKey', JSON.stringify(aUthName[0]));
-                // sessionStorage.setItem('userIdName', JSON.stringify('username'+","+aUthName[1]));
+      //  $.ajax({
+           // async: false,
+           // method: 'GET', 
+           // url: tempurlMo,
+           // success: function (data) {
+              // console.log(data)
+              // aUthName = response;
+              // sessionStorage.setItem('apiKey', JSON.stringify(aUthName[0]));
+              // sessionStorage.setItem('userIdName', JSON.stringify('username'+","+aUthName[1]));
        switch (_stat){
         case 'all':
           console.log(_stat);
@@ -783,8 +1233,6 @@ app.controller('mainCtrl',['$scope', '$http', '$q', '$filter','_global',function
 var queue1 = [];
   var delaying = (function () {
       
-      
-
       function processQueue1() {
         if (queue1.length > 0) {
           setTimeout(function () {
@@ -916,8 +1364,31 @@ var queue1 = [];
    };
 
     
-    (function init(){
-    startLoading()
+(function init(){
+   // startLoading();
+
+   var mapsVal=sessionStorage.getItem('mapNo');
+    console.log(mapsVal);
+
+    if(mapsVal==0){
+       $scope.maps_no  = 0;
+       $scope.mapsHist = 0;
+         $scope.googleMap  = true;
+           $scope.osmMap   = false;
+
+       document.getElementById("map_canvas2").style.display="none"; 
+         document.getElementById("map_canvas").style.display="block"; 
+    }else if(mapsVal==1){
+       $scope.maps_no  = 1;
+       $scope.mapsHist = 1;
+
+           $scope.osmMap    = true;
+             $scope.googleMap  = false;
+                 
+       document.getElementById("map_canvas").style.display="none"; 
+         document.getElementById("map_canvas2").style.display="block"; 
+    }
+
     var url;
     $scope.groupname = getParameterByName('gid');
     url =(getParameterByName('vehicleId')=='' && getParameterByName('gid')=='')?$scope.url:$scope.url+'?group='+$scope.groupname;
@@ -970,10 +1441,16 @@ var queue1 = [];
         $scope.fromDates = getTodayDatess();
       //$scope.toDates   = getTodayDatess();
         
-         if((checkXssProtection($scope.fromDates) == true) && (checkXssProtection($scope.fromTimes) == true)){
+      if((checkXssProtection($scope.fromDates) == true) && (checkXssProtection($scope.fromTimes) == true)){
        //$scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+$scope.fromDates+'&fromTime='+$scope.fromTimes+'&toDate='+$scope.toDates+'&toTime='+$scope.toTimes+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes)+'&toDateUTC='+utcFormat($scope.toDates,$scope.toTimes);
          $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+$scope.fromDates+'&fromTime='+$scope.fromTimes+'&fromDateUTC='+utcFormat($scope.fromDates,$scope.fromTimes);
-     }
+    
+          if($scope.googleMap==true && $scope.osmMap==false){
+               $scope.initMap(0,true);
+          } else if($scope.osmMap==true && $scope.googleMap==false){
+               $scope.initMap(1,true);
+          }
+      }
 
     $('.nav-second-level li').eq(0).children('a').addClass('active');
     // stopLoading();
@@ -1082,7 +1559,7 @@ var queue1 = [];
   
   function getRouteNames(){
 
-    if($scope.orgIds)
+    if($scope.orgIds){
       $.ajax({
         
         async: false,
@@ -1090,35 +1567,30 @@ var queue1 = [];
             url: "storeOrgValues/val",
             data: {"orgId":$scope.orgIds},
             success: function (response) {
-
               $scope.routedValue = response;
- 
             }
-          })
+        });
+    }
   }
 
     
   
-    $scope.getMap = function(routesMap){
+  $scope.getMap = function(routesMap){
 
-       $scope.windowRouteName=routesMap;
+    $scope.windowRouteName=routesMap;
        
-       if(!routesMap =='' && $scope.orgIds.length>0 && !$scope.orgIds==''){
-             $.ajax({
-                       async:false,
-                       method:'GET',
-                       url:"storeOrgValues/mapHistory",
-                       data:{"maproute":routesMap,"organId":$scope.orgIds},
-                       success:function(response){
-
-                                 $scope.mapValues =response;
-
-                                 getMapArray($scope.mapValues);
-                       }
-
-               })
-        }        
-    }
+    if(!routesMap =='' && $scope.orgIds.length>0 && !$scope.orgIds==''){
+        $.ajax({
+          async:false,
+          method:'GET',
+          url:"storeOrgValues/mapHistory",
+          data:{"maproute":routesMap,"organId":$scope.orgIds},
+          success:function(response){
+            $scope.mapValues =response;
+            getMapArray($scope.mapValues);                       }
+        });
+    }        
+  }
 
 var latLanpath=[];
 var markerList=[];
@@ -1127,9 +1599,8 @@ var pathCoords=[];
 
 function clearMap(path){
     
-  for (var i=0; i<latLanpath.length; i++){
+    for (var i=0; i<latLanpath.length; i++){
       latLanpath[i].setMap(null);
-
     }
 
     for (var i = 0; i < markerList.length; i++) {
@@ -1191,22 +1662,25 @@ function autoRefresh(map) {
   latLanpath.push(route);
     marker = new google.maps.Marker({map:map,icon:""});
     markerList.push(marker);
-  for (i=0; i<pathCoords.length; i++) {
+  
+    for(i=0; i<pathCoords.length; i++) {
     
-    setTimeout(function (coords)
-      {
+      setTimeout(function (coords){
         var latlng = new google.maps.LatLng(coords.lat, coords.lng);
         route.getPath().push(latlng);
                 moveMarker( marker, latlng);
                 map.panTo(latlng);
             
-            }, 0* i, pathCoords[i]);
+      }, 0* i, pathCoords[i]);
     }
 }
-    /*
+  
+  /*
     show table in view
   */
-$( "#historyDetails" ).hide();
+
+  $( "#historyDetails" ).hide();
+
   $scope.hideShowTable  = function(){
     var btValue = ($("#btnValue").text()=='ShowDetails')?'HideDetails':'ShowDetails';
     $('#btnValue').text(btValue);
@@ -1258,46 +1732,107 @@ $( "#historyDetails" ).hide();
     if($scope.popupmarker !== undefined){
         $scope.popupmarker.setMap(null);
         $scope.infowindow.close();
-      $scope.infowindow .setMap(null);
+      $scope.infowindow.setMap(null);
     }
   }
 
   
-  $scope.markerPoup   =   function(val)
-  {
+  $scope.markerPoup   =   function(val) {
+
+   if($scope.googleMap==true){
+
     $scope.popUpMarkerNull();
-        $scope.popupmarker = new google.maps.Marker({
+    $scope.popupmarker = new google.maps.Marker({
           icon: 'assets/imgs/popup.png',
-      });
+    });
 
-        var latLngs=new google.maps.LatLng(val.latitude, val.longitude);
+    var latLngs = new google.maps.LatLng(val.latitude, val.longitude);
 
-        $scope.popupmarker.setMap($scope.map);
-        $scope.popupmarker.setPosition(latLngs);
+    $scope.popupmarker.setMap($scope.map);
+    $scope.popupmarker.setPosition(latLngs);
 
-        var contentString = '<div style="padding:2px; padding-top:3px; width:190px;">'
-      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;color:#666463;">Date&amp;Time</b> <span style="padding-left:9px;">-</span> <span style="font-size:10px;padding-left:3px;color:#666463;font-weight:bold;border-bottom:0.5px;">'+dateFormat(val.date)+'</span></div>'
-      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;color:#666463;">Speed</b> <span style="padding-left:9px;">-</span> <span style="font-size:10px;padding-left:3px;color:#666463;font-weight:bold;border-bottom:0.5px;">'+ val.speed +'</span><span style="font-size:10px;padding-left:10px;border-bottom:0.5px;">kmph</span></div>'
-      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;color:#666463;">OdoDist</b> <span style="padding-left:9px;">-</span> <span style="font-size:10px;padding-left:3px;color:#666463;font-weight:bold;border-bottom:0.5px;">'+val.odoDistance+'</span><span style="font-size:10px;padding-left:10px;border-bottom:0.5px;">kms</span></div>'
-      +'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma(val.address)+'</span></div>'
-     // +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
-      +'</div>';
+    var contentString = '<div style="padding:2px; padding-top:3px; width:190px;">'
+    +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;color:#666463;">Date&amp;Time</b> <span style="padding-left:9px;">-</span> <span style="font-size:10px;padding-left:3px;color:#666463;font-weight:bold;border-bottom:0.5px;">'+dateFormat(val.date)+'</span></div>'
+    +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;color:#666463;">Speed</b> <span style="padding-left:9px;">-</span> <span style="font-size:10px;padding-left:3px;color:#666463;font-weight:bold;border-bottom:0.5px;">'+ val.speed +'</span><span style="font-size:10px;padding-left:10px;border-bottom:0.5px;">kmph</span></div>'
+    +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;color:#666463;">OdoDist</b> <span style="padding-left:9px;">-</span> <span style="font-size:10px;padding-left:3px;color:#666463;font-weight:bold;border-bottom:0.5px;">'+val.odoDistance+'</span><span style="font-size:10px;padding-left:10px;border-bottom:0.5px;">kms</span></div>'
+    +'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma(val.address)+'</span></div>'
+ // +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
+    +'</div>';
 
-      /* $scope.infowindow = new InfoBubble({
-        maxWidth: 400,  
+ /* $scope.infowindow = new InfoBubble({
+      maxWidth: 400,  
       maxHeight:170,
-        content: contentString,
+      content: contentString,
     });*/
 
     $scope.infowindow = new google.maps.InfoWindow({ maxWidth: 200, maxHeight:150 });
 
     $scope.infowindow.setContent(contentString); 
-        $scope.infowindow.setPosition(latLngs);
-        $scope.infowindow.open($scope.map, $scope.popupmarker);
+    $scope.infowindow.setPosition(latLngs);
+    $scope.infowindow.open($scope.map, $scope.popupmarker);
 
-      google.maps.event.addListener($scope.infowindow,'closeclick',function(){
+    google.maps.event.addListener($scope.infowindow,'closeclick',function(){
        $scope.popUpMarkerNull();
     }); 
+
+   } else if($scope.osmMap==true){
+
+    if($scope.popupmarker_osm!=undefined){
+       $scope.map_osm.removeLayer($scope.popupmarker_osm);
+    }
+
+
+    var latlng_osm = new L.LatLng(val.latitude, val.longitude);
+
+      var popupIcon = L.icon({
+          iconUrl: 'assets/imgs/popup.png',
+          iconSize: [40,40], 
+          iconAnchor: [20,40],
+          popupAnchor: [-1, -40],
+      });
+
+       var contentString_osm = '<div style="padding:2px; padding-top:3px; width:190px;">'
+    +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;color:#666463;">Date&amp;Time</b> <span style="padding-left:9px;">-</span> <span style="font-size:10px;padding-left:3px;color:#666463;font-weight:bold;border-bottom:0.5px;">'+dateFormat(val.date)+'</span></div>'
+    +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;color:#666463;">Speed</b> <span style="padding-left:9px;">-</span> <span style="font-size:10px;padding-left:3px;color:#666463;font-weight:bold;border-bottom:0.5px;">'+ val.speed +'</span><span style="font-size:10px;padding-left:10px;border-bottom:0.5px;">kmph</span></div>'
+    +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;color:#666463;">OdoDist</b> <span style="padding-left:9px;">-</span> <span style="font-size:10px;padding-left:3px;color:#666463;font-weight:bold;border-bottom:0.5px;">'+val.odoDistance+'</span><span style="font-size:10px;padding-left:10px;border-bottom:0.5px;">kms</span></div>'
+    +'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma(val.address)+'</span></div>'
+ // +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
+    +'</div>';
+
+
+        var infoPopup_osm = new L.popup({maxWidth: 400,  
+          maxHeight:170}).setContent(contentString_osm);
+
+        $scope.popupmarker_osm  = new L.marker();
+
+        $scope.popupmarker_osm.bindPopup(infoPopup_osm);
+        $scope.popupmarker_osm.setIcon(popupIcon);
+        $scope.popupmarker_osm.setLatLng(latlng_osm).addTo($scope.map_osm);
+        $scope.popupmarker_osm.openPopup();
+          
+        $scope.popupmarker_osm.addEventListener('click', function(e) {
+           $scope.popupmarker_osm.openPopup();
+        });
+
+
+   /*       myIcons = L.icon({
+            iconUrl: vamoservice.iconURL($scope.hisloc.vehicleLocations[lineCount_osm]),
+            iconSize: [40,40], 
+            iconAnchor: [20,40],
+            popupAnchor: [-1, -40],
+        });
+
+        $scope.infowindowss.setContent(contenttsString);
+        $scope.markerss.bindPopup($scope.infowindowss);
+        $scope.markerss.setIcon(myIcons);
+        $scope.markerss.setLatLng($scope.osmPath[lineCount_osm]);
+
+        if(lineCount_osm==0){   
+          $scope.markerss.addTo($scope.map_osm);
+          $scope.markerss.openPopup();
+
+            */
+   }
 
   }
 
@@ -1310,7 +1845,7 @@ $( "#historyDetails" ).hide();
     $scope.btn12Hrs = false;
     $scope.btn1Day = false;
     $scope.btn2Day = false;
-    }
+  }
 
   $scope.deleteRouteName  = function(deleteValue){
    // $scope.routeName = deleteValue;
@@ -1512,7 +2047,7 @@ function smoothZoom (map, max, cnt) {
         $scope.polyline.setMap(null);
             }
 
-            if($scope.markerstart){
+      if($scope.markerstart){
         
         $scope.markerstart.setMap(null);
         $scope.markerend.setMap(null);
@@ -1520,21 +2055,21 @@ function smoothZoom (map, max, cnt) {
         $scope.polylinearr = [];
         gmarkers=[];
         ginfowindow=[];
-          contentString = [];
+        contentString = [];
         gsmarker=[];
         gsinfoWindow=[];
         window.clearInterval(id);
         $('#replaybutton').attr('disabled','disabled');
         $('#lastseen').html('<strong>From Date & time :</strong> -');
         $('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
-            }
+      }
 
         $http.get($scope.url).success(function(data){
          
          $scope.locations = data;
          
          if(data.length)
-        $scope.vehiname = data[$scope.gIndex].vehicleLocations[0].vehicleId;
+          $scope.vehiname = data[$scope.gIndex].vehicleLocations[0].vehicleId;
           $scope.groupname  = data[$scope.gIndex].group;
           $scope.trackVehID   = $scope.locations[$scope.gIndex].vehicleLocations[$scope.selected].vehicleId;
           sessionValue($scope.trackVehID, $scope.groupname);
@@ -1612,6 +2147,7 @@ function smoothZoom (map, max, cnt) {
 
   $scope.locationname="";
   $scope.getLocation = function(lat,lon, callback){
+
     var tempurl01 =  "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+','+lon;
     var t = $.ajax({
       dataType:"json",
@@ -1725,6 +2261,12 @@ function smoothZoom (map, max, cnt) {
 
   $scope.plotting = function(val,parameter){
     //console.log("Plotting button pressed");
+
+    $scope.plotVal=1; 
+
+   window.clearInterval(timeInterval);
+   clearInterval($scope.osmInterVal);
+
     startLoading();
 
     var allDataOk = 0;
@@ -1865,12 +2407,23 @@ function smoothZoom (map, max, cnt) {
         if(document.getElementById('dateTo').value==''){
           
              $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID;
+
+              if($scope.googleMap==true && $scope.osmMap==false){
+               $scope.initMap(0,true);
+              } else if($scope.osmMap==true && $scope.googleMap==false){
+               $scope.initMap(1,true);
+              } 
         }
 
       } else {
         
         if(document.getElementById('dateTo').value==''){
           $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime;
+            if($scope.googleMap==true && $scope.osmMap==false){
+               $scope.initMap(0,true);
+            } else if($scope.osmMap==true && $scope.googleMap==false){
+               $scope.initMap(1,true);
+            } 
 
         } else {
          
@@ -1884,6 +2437,12 @@ function smoothZoom (map, max, cnt) {
             } else {
                 
                 $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+                if($scope.googleMap==true && $scope.osmMap==false){
+                 $scope.initMap(0,true);
+                } else if($scope.osmMap==true && $scope.googleMap==false){
+                 $scope.initMap(1,true);
+                }
+
               }
             } else if (fromdate > todate){
           
@@ -1894,9 +2453,21 @@ function smoothZoom (map, max, cnt) {
               if(days<=3){
 
                 $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+                if($scope.googleMap==true && $scope.osmMap==false){
+                  $scope.initMap(0,true);
+                } else if($scope.osmMap==true && $scope.googleMap==false){
+                  $scope.initMap(1,true);
+                }
+
               } else if(days < 7) {
 
                  $scope.hisurl = GLOBAL.DOMAIN_NAME+'/getVehicleHistory?vehicleId='+$scope.trackVehID+'&fromDate='+fromdate+'&fromTime='+fromtime+'&toDate='+todate+'&toTime='+totime+'&interval=1'+'&fromDateUTC='+utcFormat(fromdate,fromtime)+'&toDateUTC='+utcFormat(todate,totime);
+                  if($scope.googleMap==true && $scope.osmMap==false){
+                   $scope.initMap(0,true);
+                  } else if($scope.osmMap==true && $scope.googleMap==false){
+                   $scope.initMap(1,true);
+                  }
+
               } else {
                   alert(' Please select date range within 7 days. ');
                   stopLoading();
@@ -1923,26 +2494,26 @@ function smoothZoom (map, max, cnt) {
         gsinfoWindow=[];
            
             if($scope.mhValue==1){
-             window.clearInterval(intervalPoly);  
-                if($scope.markerValue != 1){
+             //window.clearInterval(intervalPoly);  
+              if($scope.markerValue != 1){
                //$scope.infosWindows.close();
                  $scope.infosWindows=null;
-               $scope.markerhead.setMap(null);
-                 }
+                 $scope.markerheads.setMap(null);
+              }
         }  
 
-      if($scope.markerValue==1){
-                window.clearInterval(timeInterval);
-          $scope.polyline.setMap(null);
-        $scope.markerstart.setMap(null);
-        $scope.markerend.setMap(null);
-                $scope.infosWindow.close();
-                $scope.infosWindow=null;
+        if($scope.markerValue==1){
+               // window.clearInterval(timeInterval);
+            $scope.polyline.setMap(null);
+            $scope.markerstart.setMap(null);
+            $scope.markerend.setMap(null);
+            $scope.infosWindow.close();
+            $scope.infosWindow=null;
             $scope.markerheads.setMap(null);
             $scope.markerValue=0;
-               }
+        }
 
-        $('#replaybutton').attr('disabled','disabled');
+      //  $('#replaybutton').attr('disabled','disabled');
         $('#lastseen').html('<strong>From Date & time :</strong> -');
         $('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
 
@@ -1963,23 +2534,26 @@ function smoothZoom (map, max, cnt) {
     var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
     var labelAnchorpos = new google.maps.Point(12, 37);
   
-    if(pos.data.insideGeoFence =='Y'){
+  /*  if(pos.data.insideGeoFence =='Y'){
       //pinImage = 'assets/imgs/F_'+pos.data.direction+'.png';
         pinImage = 'assets/imgs/trans.png';
-    }else{  
-
+    }
+    else{  */
       if(pos.data.position =='P') {
-        
-        //pinImage = 'assets/imgs/'+pos.data.position+'.png';
+      //pinImage = 'assets/imgs/'+pos.data.position+'.png';
         pinImage = 'assets/imgs/flag.png';
-
-      } else if(pos.data.position =='S') {
+      } 
+    //else 
+        if(pos.data.position =='S') {
         
         //pinImage = 'assets/imgs/A_'+pos.data.direction+'.png';
         pinImage = 'assets/imgs/orange.png';
       }
+  //}
+    if(pos.data.position !='P' &&  pos.data.position !='S'){
+      pinImage = 'assets/imgs/trans.png';
     }
-    
+
     $scope.marker = new MarkerWithLabel({
          position: pos.path, 
          map: $scope.map,
@@ -2023,15 +2597,18 @@ function smoothZoom (map, max, cnt) {
        map: $scope.map,
        icon: pinImage
     });
+    
     $scope.geocoder(pos.lat, pos.lng, function(count){
       $scope.tempadd = count;
     });
 
     var contentString = '<h3 class="infoh3">Vehicle Details ('+$scope.shortVehiId+') </h3><div class="nearbyTable02"><div><table cellpadding="0" cellspacing="0"><tbody><!--<tr><td>Location</td><td>'+$scope.tempadd+'</td></tr>--><tr><td>Last seen</td><td>'+dateFormat(pos.data.date)+'</td></tr><tr><td>Parked Time</td><td>'+$scope.timeCalculate(pos.data.parkedTime)+'</td></tr><tr><td>Trip Distance</td><td>'+pos.data.tripDistance+'</td></tr></table></div>';
     var infoWindow = new google.maps.InfoWindow({content: contentString});
+    
     google.maps.event.addListener($scope.markerstart, "click", function(e){
       infoWindow.open($scope.map, $scope.markerstart);  
     });
+    
     (function(marker, data, contentString) {
       google.maps.event.addListener(marker, "click", function(e) {
       infoWindow.open($scope.map, marker);
@@ -2116,7 +2693,7 @@ function smoothZoom (map, max, cnt) {
      return img;
   }
 
-  $scope.infoBox = function(map, marker, data){
+   $scope.infoBox = function(map, marker, data){
      
     var t = $scope.getLocation(data.latitude, data.longitude, function(count){
       
@@ -2129,6 +2706,7 @@ function smoothZoom (map, max, cnt) {
     });
   };
 
+   
     $scope.trimComma = function(textVal){
 
       var strValues;
@@ -2177,8 +2755,8 @@ function smoothZoom (map, max, cnt) {
     }
   }
 
-    var markerhead, intervalPoly;
-    var timeInterval;
+  var intervalPoly;
+  var timeInterval;
 
   $scope.polylineCheck  = true;
   $scope.markerPark     = [];
@@ -2191,45 +2769,46 @@ function smoothZoom (map, max, cnt) {
 
     for(var i=0; i<gmarkers.length; i++){
         gmarkers[i].setMap(null);
-      }
-      if($scope.polylineLoad)
-    if($scope.polylineLoad.length >0)
-      for (var i = $scope.polylineLoad[0].length - 1; i >= 0; i--) {
-        $scope.polylineLoad[0][i].setMap(null);
-      }
-
+    }
+    if($scope.polylineLoad)
+      if($scope.polylineLoad.length >0)
+        for (var i = $scope.polylineLoad[0].length - 1; i >= 0; i--) {
+         $scope.polylineLoad[0][i].setMap(null);
+        }
   }
 
-  var pcount    = 0;
-  var lenCount2 = 0;
-    $scope.timeDelay=180;
-    $scope.speedVal=0;
-    $scope.pasVal=0;
+  
+  var pcount       = 0;
+  var lenCount2    = 0;
+  $scope.timeDelay = 180;
+  $scope.speedVal  = 0;
+  $scope.pasVal    = 0;
 
-    function timerSet(){
+
+  function timerSet(){
 
       if($scope.hisloc.vehicleLocations.length!= pcount+1){
 
           var latlngs = new google.maps.LatLng($scope.hisloc.vehicleLocations[pcount+1].latitude,$scope.hisloc.vehicleLocations[pcount+1].longitude);
-       //  if(($scope.hisloc.vehicleLocations[pcount].latitude+''+$scope.hisloc.vehicleLocations[pcount].longitude)!=($scope.hisloc.vehicleLocations[pcount+1].latitude+''+$scope.hisloc.vehicleLocations[pcount+1].latitude)){
+       // if(($scope.hisloc.vehicleLocations[pcount].latitude+''+$scope.hisloc.vehicleLocations[pcount].longitude)!=($scope.hisloc.vehicleLocations[pcount+1].latitude+''+$scope.hisloc.vehicleLocations[pcount+1].latitude)){
              $scope.rotationsd = getBearing($scope.hisloc.vehicleLocations[pcount].latitude,$scope.hisloc.vehicleLocations[pcount].longitude,$scope.hisloc.vehicleLocations[pcount+1].latitude,$scope.hisloc.vehicleLocations[pcount+1].longitude);                
                    
                                  
-                        $scope.markerheads.setIcon({
-                                      path:vehicIcon[0],
+                            $scope.markerheads.setIcon({
+                              path:vehicIcon[0],
                               scale:vehicIcon[1],
-                          strokeWeight: 1,
-                          fillColor:$scope.polylinearr[pcount+1],
+                              strokeWeight: 1,
+                              fillColor:$scope.polylinearr[pcount+1],
                               fillOpacity: 1,
                               anchor:vehicIcon[2],
                               rotation:$scope.rotationsd,
-                        });
+                            });
 
-                        if(pcount==0){
-                          $scope.markerheads.setMap($scope.map);
-                        }
+                            if(pcount==0){
+                               $scope.markerheads.setMap($scope.map);
+                            }
 
-                                $scope.markerheads.setPosition(latlngs);
+                            $scope.markerheads.setPosition(latlngs);
 
 
       var contenttString = '<div style="padding:2px; padding-top:3px; width:175px;">'
@@ -2240,35 +2819,21 @@ function smoothZoom (map, max, cnt) {
       // +'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
       +'</div>';
 
-                        /* var contenttString ='<table class="infoTables">'
-                                +'<tbody>'
+                 //console.log(contenttString);
 
-                                          +'<tr>'+'<td>'+'Odo (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount+1].odoDistance+'</td>'+'</tr>'
-                                                     
-                                    +'<tr>'+'<td>'+'Dist (kms):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount+1].distanceCovered+'</td>'+'</tr>'      
-                                              
-                                  +'<tr>'+'<td>'+'Speed (kmph):'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount+1].speed+'</td>'+'</tr>'
-                                                         
-                                    +'<tr>'+'<td>'+'Last Seen:'+'</td>'+'<td>'+$scope.hisloc.vehicleLocations[pcount+1].lastSeen+'</td>'+'</tr>'
-                                                  
-                                    +'<tr style="max-width:150px;min-width:150px;">'+'<td colspan="2" style="max-height:60px;min-height:60px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[pcount+1].address)+'</td>'+'<td style="max-height:60px;min-height:60px;">'+'</td>'+'</tr>'                                                 
-                             
-                              +'</tbody>'
-                               +'</table>';  */
+                    $scope.infosWindow.setContent(contenttString);
+                    $scope.infosWindow.setPosition(latlngs);
 
-                     $scope.infosWindow.setContent(contenttString);
-                     $scope.infosWindow.setPosition(latlngs);
-
-                   if(pcount==0){
-                                $scope.infosWindow.open($scope.map,$scope.markerheads);
-                                $scope.infosWindow.close();
-                             }   
+                    if(pcount==0){
+                      $scope.infosWindow.open($scope.map,$scope.markerheads);
+                      $scope.infosWindow.close();
+                    }   
        
-                            $scope.map.panTo(latlngs);
+                    $scope.map.panTo(latlngs);
     // }
       pcount++;
-     }
-     else{
+    
+  } else {
 
        if(lenCount2 == 0 ){
 
@@ -2278,22 +2843,22 @@ function smoothZoom (map, max, cnt) {
           //  if(($scope.hisloc.vehicleLocations[pcount].latitude+''+$scope.hisloc.vehicleLocations[pcount].longitude)!=($scope.hisloc.vehicleLocations[pcount+1].latitude+''+$scope.hisloc.vehicleLocations[pcount+1].latitude)){
             //  $scope.rotationsd = getBearing($scope.hisloc.vehicleLocations[pcount].latitude,$scope.hisloc.vehicleLocations[pcount].longitude,$scope.hisloc.vehicleLocations[pcount+1].latitude,$scope.hisloc.vehicleLocations[pcount+1].longitude);                
                    
-                                $scope.markerheads.setIcon({
-                                      path:vehicIcon[0],
-                              scale:vehicIcon[1],
-                          strokeWeight: 1,
-                          fillColor:$scope.polylinearr[0],
-                              fillOpacity: 1,
-                              anchor:vehicIcon[2],
-                           // rotation:$scope.rotationsd,
-                        });
+                              $scope.markerheads.setIcon({
+                                    path:vehicIcon[0],
+                                    scale:vehicIcon[1],
+                                    strokeWeight: 1,
+                                    fillColor:$scope.polylinearr[0],
+                                    fillOpacity: 1,
+                                    anchor:vehicIcon[2],
+                                  //rotation:$scope.rotationsd,
+                              });
 
-                        $scope.markerheads.setMap($scope.map);
-                                $scope.markerheads.setPosition(latlngs);
+                              $scope.markerheads.setMap($scope.map);
+                              $scope.markerheads.setPosition(latlngs);
                             
 
-            var contenttString = '<div style="padding:2px; padding-top:3px; width:175px;">'
-            +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">LocTime</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+dateFormat($scope.hisloc.vehicleLocations[0].date)+'</span> </div>'
+      var contenttString = '<div style="padding:2px; padding-top:3px; width:175px;">'
+      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">LocTime</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+dateFormat($scope.hisloc.vehicleLocations[0].date)+'</span> </div>'
       +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">Speed</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[0].speed+'</span><span style="font-size:10px;padding-left:10px;">kmph</span></div>'
       +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">DistCov</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[0].distanceCovered+'</span><span style="font-size:10px;padding-left:10px;">kms</span></div>'
       +'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[0].address)+'</span></div>'
@@ -2302,334 +2867,149 @@ function smoothZoom (map, max, cnt) {
 
                      $scope.infosWindow.setContent(contenttString);
                      $scope.infosWindow.setPosition(latlngs);
-                             $scope.infosWindow.open($scope.map,$scope.markerheads);
-                             $scope.infosWindow.close();
+                     $scope.infosWindow.open($scope.map,$scope.markerheads);
+                     $scope.infosWindow.close();
           }
 
         lenCount2++;
         }
 
-          $('#pauseButton').hide();
-          $('#playButton').hide();      
-          $('#stopButton').hide();   
-          $('#replayButton').show(); 
+        if(pcount==$scope.hisloc.vehicleLocations.length-1){
+
+          window.clearInterval(timeInterval);
+
+          $('#playButton').prop('disabled',  true);
+          $('#replayButton').prop('disabled',false);
+          $('#stopButton').prop('disabled', true);
+          $('#pauseButton').prop('disabled', true);
           $scope.speedVal=1; 
+        }
 
      } 
 }
 
 $scope.polylineCheck = {
-
   value1: 'YES',
   value2 : 'NO'
 }
-$scope.hideAllDetail = function(val)
-{
-  if (val == 'NO')
-    {
-      $scope.hideAllDetailVal = true;
-          $scope.hideMe = true;
-        $scope.hideMarkerVal = true;
-      $('.hideClass').hide();
-      $('#pauseButton').hide();
+
+$scope.hideAllDetail = function(val) {
+
+  if(val == 'NO') {
+
+        $scope.hideAllDetailVal = true;
+        $scope.hideMe           = true;
+        $scope.hideMarkerVal    = true;
+        /*  $('.hideClass').hide();
+            $('#pauseButton').hide();
             $('#playButton').hide();      
             $('#stopButton').hide();   
-            $('#replayButton').hide();
-    } 
-    else if(val == 'YES')
-      {
+            $('#replayButton').hide();*/
+
+            $('#playButton').prop('disabled', true);
+            $('#replayButton').prop('disabled', true);
+            $('#stopButton').prop('disabled', true);
+            $('#pauseButton').prop('disabled', true);
+
+  } else if(val == 'YES') {
+
         $scope.hideAllDetailVal = false;
         $scope.hideMe = false;
         $scope.hideMarkerVal = false;
 
-      $('.hideClass').show();
-      $('#pauseButton').show();
+         /* $('.hideClass').show();
+            $('#pauseButton').show();
          // $('#playButton').show();      
             $('#stopButton').show();   
-            $('#replayButton').show();
-      }
+            $('#replayButton').show(); */
+
+            $('#playButton').prop('disabled', false);
+            $('#replayButton').prop('disabled', false);
+            $('#stopButton').prop('disabled', false);
+            $('#pauseButton').prop('disabled', false);
+  } 
 }
 
-  $scope.polylineCtrl   = function(){
-    startLoading();
-    
-   // console.log("Page Load");
-     //console.log($scope.hisloc);
-       if($scope.hisloc.vehicleLocations!=null){
+ 
 
-    // startLoading();
+
+$scope.polylineCtrl   = function(){
+  
+  startLoading();
+
+  console.log('polylineCtrl...');
+
+
+  if($scope.hisloc.vehicleLocations!=null){
+
+   
+
+
+   if($scope.initGoogVal==0){
+
+
+
+    for(var i=0;i<$scope.hisloc.vehicleLocations.length;i++){
+
+                  $scope.path.push(new google.maps.LatLng($scope.hisloc.vehicleLocations[i].latitude, $scope.hisloc.vehicleLocations[i].longitude));
+                  
+                    if($scope.hisloc.vehicleLocations[i].isOverSpeed=='Y'){
+                          var pscolorval = '#ff0000';
+                    } else {
+                          var pscolorval = '#6dd538';
+                    }
+
+                  $scope.polylinearr.push(pscolorval);
+              }
+
+
+   // console.log('vehicle locations...');
+
     myStopFunction();
-     // $scope.polylinearr = [];
+
     markerClear();
     gmarkers=[];
     ginfowindow=[];
-    // contentString = [];
-    // gsmarker=[];
-    // gsinfoWindow=[];
+
     var j =0;
 
     $('.radioBut').hide(0).delay(5000).show(100);
-    // $('.hideClass').hide();
-    /*
-      loadall in map polyline
-    */
+
   
-     vehicIcon=vehiclesChange(VehiType);
+    vehicIcon=vehiclesChange(VehiType);
      
-     if ($scope.polylineCheck == false)
-      {
-        $scope.hideAllDetail = true;
-        $('.hideClass').hide();
-         $('#pauseButton').hide();
-                 $('#playButton').hide();      
-                   $('#stopButton').hide();   
-                     $('#replayButton').hide();
-      }
-
-    if($scope.polylineCheck == 'false'){
-
-      $scope.hideAllDetail  = true;
-
-      $('.hideClass').hide();
-         $('#pauseButton').hide();
-                 $('#playButton').hide();      
-                   $('#stopButton').hide();   
-                     $('#replayButton').hide(); 
 
 
-        var doubleLine = {
-            path: 'M 0,-1 0,1',
-            strokeOpacity: 1,
-            strokeWeight: 3,
-            scale: 5
-        //     path: 'M 0.5,-1 0.5,1 M -0.5,-1 -0.5,1',
-        // strokeOpacity: 0.6,
-        // strokeWeight: 2,
-        // scale: 5
 
-        };
-
-            if($scope.markerValue==1){
-                window.clearInterval(timeInterval);
-                 $scope.infosWindow.close();
-                 $scope.infosWindow=null;
-           $scope.markerheads.setMap(null);
-                   $scope.markerheads=null;
-                   $scope.markerValue=0;
-            }
-
-        if($scope.polyline && $scope.markerstart && $scope.markerend){
+      //    console.log('google mapsss....');
           
-        $scope.polyline.setMap(null);
-        $scope.markerstart.setMap(null);
-        $scope.markerend.setMap(null);
-      }
-              
-      $scope.polylineLoad   =[];
-      //vehicIcon=vehiclesChange(VehiType); 
-
-  function myTimer() {
-
-    if($scope.path.length == lineCount+1){
-            myStopFunction();
-        }
-        
-    if($scope.path.length != lineCount+1){
-
-      var rotationd = getBearing($scope.path[lineCount].lat(), $scope.path[lineCount].lng(), $scope.path[lineCount+1].lat(), $scope.path[lineCount+1].lng());
-        
-      /*  markerhead = new google.maps.Marker({
-                position: $scope.path[lineCount+1],
-                icon: 
-                {
-                  path:vehicIcon[0],
-                  scale:vehicIcon[1],
-              strokeWeight: 1,
-                  fillColor: $scope.polylinearr[lineCount],
-                  fillOpacity: 1,
-                  anchor:vehicIcon[2],
-                  rotation: rotationd,
-                /*path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                  scale: 5,
-                  strokeWeight: 1,
-                  fillColor: $scope.polylinearr[lineCount],
-                //fillColor: '#a8d6e9',
-                  fillOpacity: 1,
-                  anchor: new google.maps.Point(0, 2.6),*/
-            /*    },
-
-            }); */
-
-               $scope.markerhead.setIcon({
-                                path:vehicIcon[0],
-                        scale:vehicIcon[1],
-                    strokeWeight: 1,
-                        fillColor: $scope.polylinearr[lineCount],
-                        fillOpacity: 1,
-                        anchor:vehicIcon[2],
-                        rotation: rotationd,
-                        });
-
-                 if(lineCount == 0){
-               $scope.markerhead.setMap($scope.map);
-                  }
-                    $scope.markerhead.setPosition($scope.path[lineCount+1]);
-
-          // for(var i=0;i<$scope.path.length-1;i++){
-            $scope.polyline1[lineCount] = new google.maps.Polyline({
-            map: $scope.map,
-            path: [$scope.path[lineCount], $scope.path[lineCount+1]],
-            strokeColor: $scope.polylinearr[lineCount],
-            strokeOpacity: 0,
-            //strokeOpacity: 1,
-            strokeWeight: 3,
-            icons: [{
-                    icon: doubleLine,
-                    offset: '50%',
-                    repeat: '15px'
-                }],
-
-            clickable: true
-            });
-
-               
-            var contenttString = '<div style="padding:2px; padding-top:3px; width:175px;">'
-            +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">LocTime</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+dateFormat($scope.hisloc.vehicleLocations[lineCount+1].date)+'</span> </div>'
-      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">Speed</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[lineCount+1].speed+'</span><span style="font-size:10px;padding-left:10px;">kmph</span></div>'
-      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">DistCov</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[lineCount+1].distanceCovered+'</span><span style="font-size:10px;padding-left:10px;">kms</span></div>'
-      +'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[lineCount+1].address)+'</span></div>'
-      //+'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
-      +'</div>';
-
-
-                    $scope.infosWindows.setContent(contenttString);
-                    $scope.infosWindows.setPosition($scope.path[lineCount+1]);
-
-                          if(lineCount == 0){
-                              $scope.infosWindows.open($scope.map,$scope.markerhead);
-                              $scope.infosWindows.close();
-                            } 
-
-                    $scope.map.panTo($scope.path[lineCount]);
-
-          var latLngBounds = new google.maps.LatLngBounds();
-            // for(var i = 0; i < $scope.path.length; i++) {
-            latLngBounds.extend($scope.path[lineCount]);
-            if($scope.hisloc.vehicleLocations[lineCount])
-              if($scope.hisloc.vehicleLocations[lineCount].position!=undefined){
-              if($scope.hisloc.vehicleLocations[lineCount].position=='P' || $scope.hisloc.vehicleLocations[lineCount].position=='S' || $scope.hisloc.vehicleLocations[lineCount].insideGeoFence=='Y' ){
-                
-              $scope.addMarker({ lat: $scope.hisloc.vehicleLocations[lineCount].latitude, lng: $scope.hisloc.vehicleLocations[lineCount].longitude , data: $scope.hisloc.vehicleLocations[lineCount], path:$scope.path[lineCount]});
-              $scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[lineCount]);
-                //$scope.markerPark.push($scope.marker)
-              j++;
-              }
-            }
-            // }
-
-            $scope.polylineLoad.push($scope.polyline1);
-          lineCount++;
-          
-        } else if($scope.path.length == 1){
-
-          if(lenCount == 0){
-              //console.log(vehicIcon[0]);
-                        $scope.markerhead.setIcon({
-                                path:vehicIcon[0],
-                        scale:vehicIcon[1],
-                    strokeWeight: 1,
-                        fillColor: $scope.polylinearr[0],
-                        fillOpacity: 1,
-                        anchor:vehicIcon[2],
-                    //    rotation: rotationd,
-                        });
-
-               $scope.markerhead.setMap($scope.map);
-                     $scope.markerhead.setPosition($scope.path[0]);
-
-          // for(var i=0;i<$scope.path.length-1;i++){
-            $scope.polyline1[lineCount] = new google.maps.Polyline({
-            map: $scope.map,
-            path: [$scope.path[0], $scope.path[0]],
-            strokeColor: $scope.polylinearr[0],
-            strokeOpacity: 0,
-            //strokeOpacity: 1,
-            strokeWeight: 3,
-            icons: [{
-                    icon: doubleLine,
-                    offset: '50%',
-                    repeat: '15px'
-                }],
-
-            clickable: true
-            });
-
-            var contenttString = '<div style="padding:2px; padding-top:3px;width:175px;">'
-            +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">LocTime</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+dateFormat($scope.hisloc.vehicleLocations[0].date)+'</span> </div>'
-      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">Speed</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+ $scope.hisloc.vehicleLocations[0].speed+'</span><span style="font-size:10px;padding-left:10px;">kmph</span></div>'
-      +'<div style="font-size=11px;border-bottom: 0.5px solid #f3eeeb;"><b class="_info_caption2" style="font-size:11px;padding-right:3px;color:#666463;">DistCov</b> - <span style="font-size:10px;padding-left:2px;color:green;font-weight:bold;">'+$scope.hisloc.vehicleLocations[0].distanceCovered+'</span><span style="font-size:10px;padding-left:10px;">kms</span></div>'
-      +'<div style="text-align:center;padding-top:3px;"><span style="font-size:10px;width:100px;">'+$scope.trimComma($scope.hisloc.vehicleLocations[0].address)+'</span></div>'
-      //+'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
-      +'</div>';
-
-                    $scope.infosWindows.setContent(contenttString);
-                    $scope.infosWindows.setPosition($scope.path[0]);
-                            $scope.infosWindows.open($scope.map,$scope.markerhead);
-                            $scope.infosWindows.close();
-
-                lenCount++;
-        }
-
-       }
-           }
-          var lineCount = 0;
-          var lenCount  = 0;
-
-          $scope.markerhead   = new google.maps.Marker();
-                $scope.infosWindows = new google.maps.InfoWindow({maxWidth:180}); 
-
-          $scope.mhValue=1;
-
-            $scope.markerhead.addListener('click', function() {
-           $scope.infosWindows.open($scope.map,$scope.markerhead);
-          });
-
-      intervalPoly = setInterval(function(){ myTimer() }, 600);
-    }
-    else{
-    // var j =0;
-     $('.hideClass').show();
-       $('#playButton').hide();
-         $('#replayButton').show();
-         $('#pauseButton').show(); 
-         $('#stopButton').show();
- 
-          if($scope.markerhead){
-                  $scope.infosWindows.close();
+                if($scope.markerheads){
+                 // $scope.infosWindows.close();
+                   $scope.markerstart.setMap(null);
+                   $scope.markerend.setMap(null);
                   $scope.infosWindows=null;
-          $scope.markerhead.setMap(null);
-          $scope.markerhead=null;
-            }
+                  $scope.markerheads.setMap(null);
+                  $scope.markerheads=null;
+                }
       
-             var tempFlag=false;
-                 for(var k=0;k<$scope.hisloc.vehicleLocations.length;k++){
-                   if($scope.hisloc.vehicleLocations[k].position =='M' && tempFlag==false){
+              var tempFlag=false;
+                 
+              for(var k=0;k<$scope.hisloc.vehicleLocations.length;k++){
+                  if($scope.hisloc.vehicleLocations[k].position =='M' && tempFlag==false){
                     var firstval = k;
-                    
-                     tempFlag=true;
-                   }
-                 }
-                  if(firstval==undefined){
-                    firstval=0;
+                    tempFlag=true;
                   }
+              }
+
+              if(firstval==undefined){
+                  firstval=0;
+              }
+
             var lastval = $scope.hisloc.vehicleLocations.length-1;
             $scope.addMarkerstart({ lat: $scope.hisloc.vehicleLocations[firstval].latitude, lng: $scope.hisloc.vehicleLocations[firstval].longitude , data: $scope.hisloc.vehicleLocations[firstval], path:$scope.path[firstval]});
-          $scope.addMarkerend({ lat: $scope.hisloc.vehicleLocations[lastval].latitude, lng: $scope.hisloc.vehicleLocations[lastval].longitude, data: $scope.hisloc.vehicleLocations[lastval], path:$scope.path[lastval] });
+            $scope.addMarkerend({ lat: $scope.hisloc.vehicleLocations[lastval].latitude, lng: $scope.hisloc.vehicleLocations[lastval].longitude, data: $scope.hisloc.vehicleLocations[lastval], path:$scope.path[lastval] });
               
-            /*  var lineSymbol = {
-                  path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                  scale: 3,
-                };*/
+
                 $scope.polyline = new google.maps.Polyline({
                 map: $scope.map,
                 path: $scope.path,
@@ -2644,24 +3024,26 @@ $scope.hideAllDetail = function(val)
                 });
 
               $scope.markerheads = new google.maps.Marker();
-            $scope.infosWindow = new google.maps.InfoWindow({maxWidth:180});
 
-                    $scope.markerheads.addListener('click', function() {
-             $scope.infosWindow.open($scope.map,$scope.markerheads);
-          });
+              $scope.infosWindow = new google.maps.InfoWindow({maxWidth:180});
+             // console.log('infowindow..');
 
-            $scope.markerValue=1;
+              $scope.markerheads.addListener('click', function() {
+                 $scope.infosWindow.open($scope.map,$scope.markerheads);
+              });
 
-                    pcount    = 0;
-                    lenCount2 = 0;
-                    timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay);
+              $scope.markerValue=1;
+
+              pcount       = 0;
+              lenCount2    = 0;
+              timeInterval = setInterval(function(){ timerSet() }, $scope.timeDelay);
       
       
-             var latLngBounds = new google.maps.LatLngBounds();
+              var latLngBounds = new google.maps.LatLngBounds();
                 for(var i = 0; i < $scope.path.length; i++) {
                 latLngBounds.extend($scope.path[i]);
-                  if($scope.hisloc.vehicleLocations[i])
-                  if($scope.hisloc.vehicleLocations[i].position!=undefined){
+                  if($scope.hisloc.vehicleLocations[i]){
+                   if($scope.hisloc.vehicleLocations[i].position!=undefined){
                     if($scope.hisloc.vehicleLocations[i].position=='P' || $scope.hisloc.vehicleLocations[i].position=='S' || $scope.hisloc.vehicleLocations[i].insideGeoFence=='Y' ){
                       
                     $scope.addMarker({ lat: $scope.hisloc.vehicleLocations[i].latitude, lng: $scope.hisloc.vehicleLocations[i].longitude , data: $scope.hisloc.vehicleLocations[i], path:$scope.path[i]});
@@ -2671,108 +3053,315 @@ $scope.hideAllDetail = function(val)
                     }
                     
                   }
+                }
+              }
+
+            stopLoading();  
+
+
+   }else if($scope.plotVal==1){
+
+
+    $scope.path=[];
+       for(var i=0;i<$scope.hisloc.vehicleLocations.length;i++){
+
+                  $scope.path.push(new google.maps.LatLng($scope.hisloc.vehicleLocations[i].latitude, $scope.hisloc.vehicleLocations[i].longitude));
+                  
+                    if($scope.hisloc.vehicleLocations[i].isOverSpeed=='Y'){
+                          var pscolorval = '#ff0000';
+                    } else {
+                          var pscolorval = '#6dd538';
+                    }
+
+                  $scope.polylinearr.push(pscolorval);
+              }
+     $scope.plotVal=0; 
+
+
+     
+   // console.log('vehicle locations...');
+
+    myStopFunction();
+
+    markerClear();
+    gmarkers=[];
+    ginfowindow=[];
+
+    var j =0;
+
+    $('.radioBut').hide(0).delay(5000).show(100);
+
+  
+    vehicIcon=vehiclesChange(VehiType);
+     
+
+
+
+      //    console.log('google mapsss....');
+          
+                if($scope.markerheads){
+                 // $scope.infosWindows.close();
+                   $scope.markerstart.setMap(null);
+                   $scope.markerend.setMap(null);
+                  $scope.infosWindows=null;
+                  $scope.markerheads.setMap(null);
+                  $scope.markerheads=null;
+                }
+      
+              var tempFlag=false;
+                 
+              for(var k=0;k<$scope.hisloc.vehicleLocations.length;k++){
+                  if($scope.hisloc.vehicleLocations[k].position =='M' && tempFlag==false){
+                    var firstval = k;
+                    tempFlag=true;
                   }
-        }
-       // console.log($scope.path);
-       // console.log($scope.polylineCheck);
-    stopLoading();
+              }
+
+              if(firstval==undefined){
+                  firstval=0;
+              }
+
+            var lastval = $scope.hisloc.vehicleLocations.length-1;
+            $scope.addMarkerstart({ lat: $scope.hisloc.vehicleLocations[firstval].latitude, lng: $scope.hisloc.vehicleLocations[firstval].longitude , data: $scope.hisloc.vehicleLocations[firstval], path:$scope.path[firstval]});
+            $scope.addMarkerend({ lat: $scope.hisloc.vehicleLocations[lastval].latitude, lng: $scope.hisloc.vehicleLocations[lastval].longitude, data: $scope.hisloc.vehicleLocations[lastval], path:$scope.path[lastval] });
+              
+
+                $scope.polyline = new google.maps.Polyline({
+                map: $scope.map,
+                path: $scope.path,
+                strokeColor: '#068b03',
+                strokeOpacity: 0.7,
+                strokeWeight: 3,
+                /*icons: [{
+                        icon: lineSymbol,
+                       offset: '100%'
+                    }],*/
+                clickable: true
+                });
+
+              $scope.markerheads = new google.maps.Marker();
+
+              $scope.infosWindow = new google.maps.InfoWindow({maxWidth:180});
+             // console.log('infowindow..');
+
+              $scope.markerheads.addListener('click', function() {
+                 $scope.infosWindow.open($scope.map,$scope.markerheads);
+              });
+
+              $scope.markerValue=1;
+
+              pcount       = 0;
+              lenCount2    = 0;
+              timeInterval = setInterval(function(){ timerSet() }, $scope.timeDelay);
+      
+      
+              var latLngBounds = new google.maps.LatLngBounds();
+                for(var i = 0; i < $scope.path.length; i++) {
+                latLngBounds.extend($scope.path[i]);
+                  if($scope.hisloc.vehicleLocations[i]){
+                   if($scope.hisloc.vehicleLocations[i].position!=undefined){
+                    if($scope.hisloc.vehicleLocations[i].position=='P' || $scope.hisloc.vehicleLocations[i].position=='S' || $scope.hisloc.vehicleLocations[i].insideGeoFence=='Y' ){
+                      
+                    $scope.addMarker({ lat: $scope.hisloc.vehicleLocations[i].latitude, lng: $scope.hisloc.vehicleLocations[i].longitude , data: $scope.hisloc.vehicleLocations[i], path:$scope.path[i]});
+                    $scope.infoBox($scope.map, gmarkers[j], $scope.hisloc.vehicleLocations[i]);
+                    //$scope.markerPark.push($scope.marker);
+                      j++;
+                    }
+                    
+                  }
+                }
+              }
+
+            stopLoading();  
+
+          
+
+
+     }else{
+
+      console.log('pol lin else...');
+
+          stopLoading();  
+         timeInterval = setInterval(function(){ timerSet() }, $scope.timeDelay);
+     }
+  
+       
+
+    
     }
   }
 
+
+
+
+
+
   $scope.replays= function(){
 
-      $('#playButton').hide();
-      $('#replayButton').show();
-    $('#stopButton').show();  
-      $('#pauseButton').show();
+    /*  $('#playButton').hide();
+        $('#replayButton').show();
+        $('#stopButton').show();  
+        $('#pauseButton').show(); */
 
-        window.clearInterval(timeInterval);               
+      $('#playButton').prop('disabled', true);
+      $('#replayButton').prop('disabled', false);
+      $('#stopButton').prop('disabled', false);
+      $('#pauseButton').prop('disabled', false);
 
-        pcount=0; 
-        timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay);
+      if($scope.googleMap==true && $scope.osmMap==false){
+
+         window.clearInterval(timeInterval);               
+         pcount = 0; 
+         timeInterval = setInterval(function(){ timerSet() }, $scope.timeDelay);
+     
+      } else if($scope.osmMap==true && $scope.googleMap==false){
+
+         clearInterval($scope.osmInterVal);
+         $scope.lineCount_osm = 0;
+         $scope.osmInterVal  = setInterval(function(){ osmPolyLine() },$scope.timeDelay);
+      }
+
   }
   
   $scope.pausehis= function(){
 
      $scope.pasVal=1; 
-       $('#stopButton').hide(); 
-     $('#pauseButton').hide();
-     $('#replayButton').hide();
-     $('#playButton').show();
+    
+    /* $('#stopButton').hide(); 
+       $('#pauseButton').hide();
+       $('#replayButton').hide();
+       $('#playButton').show(); */
+
+      $('#playButton').prop('disabled', false);
+      $('#replayButton').prop('disabled', false);
+      $('#stopButton').prop('disabled', true);
+      $('#pauseButton').prop('disabled', true);
+
+  if($scope.googleMap==true && $scope.osmMap==false){
        
     window.clearInterval(timeInterval);
-    }
+
+  } else if($scope.osmMap==true && $scope.googleMap==false){
+
+    clearInterval($scope.osmInterVal);
+  }
+
+}
 
   $scope.speedchange=function(){
 
     if($scope.speedVal!==1){
-          $('#playButton').hide();
-      $('#replayButton').show();
-        $('#stopButton').show();  
-      $('#pauseButton').show();
-        }
+      $('#playButton').prop('disabled', true);
+      $('#replayButton').prop('disabled', false);
+      $('#stopButton').prop('disabled', false);
+      $('#pauseButton').prop('disabled', false);
 
-        if($scope.pasVal==1){
-          $('#playButton').hide();
-      $('#replayButton').show();
-        $('#stopButton').show();  
-      $('#pauseButton').show();
+      /* $('#playButton').hide();
+         $('#replayButton').show();
+         $('#stopButton').show();  
+         $('#pauseButton').show(); */
+    }
+
+    if($scope.pasVal==1){
+      /* $('#playButton').hide();
+         $('#replayButton').show();
+         $('#stopButton').show();  
+         $('#pauseButton').show(); */
+
+      $('#playButton').prop('disabled', true);
+      $('#replayButton').prop('disabled', false);
+      $('#stopButton').prop('disabled', false);
+      $('#pauseButton').prop('disabled', false);
+
       $scope.pasVal=0;
-         }
+    }
 
-    window.clearInterval(timeInterval);
-      timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay );
+      if($scope.googleMap==true && $scope.osmMap==false){
+
+        window.clearInterval(timeInterval);
+            timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay );
+
+      } else if($scope.osmMap==true && $scope.googleMap==false){
+
+          clearInterval($scope.osmInterVal);
+              $scope.osmInterVal  = setInterval(function(){ osmPolyLine() },$scope.timeDelay);
+      }
 
   }
   
   $scope.playhis=function(){
 
-        $('#playButton').hide();
-      $('#replayButton').show();
+    /*  $('#playButton').hide();
+        $('#replayButton').show();
         $('#stopButton').show();  
-      $('#pauseButton').show();
+        $('#pauseButton').show();  */
 
-      window.clearInterval(timeInterval);     
-        timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay );
+      $('#playButton').prop('disabled', true);
+      $('#replayButton').prop('disabled', false);
+      $('#stopButton').prop('disabled', false);
+      $('#pauseButton').prop('disabled', false);
+
+      if($scope.googleMap==true && $scope.osmMap==false){
+
+        window.clearInterval(timeInterval);     
+          timeInterval=setInterval(function(){ timerSet() }, $scope.timeDelay );
+
+      } else if($scope.osmMap==true && $scope.googleMap==false){
+
+          clearInterval($scope.osmInterVal);
+          $scope.osmInterVal  = setInterval(function(){ osmPolyLine() },$scope.timeDelay);
+      }
   }
 
   $scope.stophis=function(){
 
-         $('#stopButton').hide(); 
+    /*  $('#stopButton').hide(); 
         $('#pauseButton').hide();
-                $('#replayButton').show();
-                   $('#playButton').show();
+        $('#replayButton').show();
+        $('#playButton').show();  */
 
-    window.clearInterval(timeInterval);
+      $('#playButton').prop('disabled', true);
+      $('#replayButton').prop('disabled', false);
+      $('#stopButton').prop('disabled', true);
+      $('#pauseButton').prop('disabled', true);
+
+      if($scope.googleMap==true && $scope.osmMap==false){
+
+        window.clearInterval(timeInterval);
+      } else if($scope.osmMap==true && $scope.googleMap==false){
+
+        clearInterval($scope.osmInterVal);
+      }
   }
 
   $(document).ready(function(){
-        $('#minmax1').click(function(){
-            $('#contentreply').animate({
+      $('#minmax1').click(function(){
+        $('#contentreply').animate({
                 height: 'toggle'
             },500);
         });
-    });
-    $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-    });
+      });
+
+  $("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
     
-        $(function () {
-        $('#dateFrom, #dateTo').datetimepicker({
-          format:'YYYY-MM-DD',
-          useCurrent:true,
-          pickTime: false
-        });
-        $('#timeFrom').datetimepicker({
-          pickDate: false,
-                    useCurrent:true,
-        });
-        $('#timeTo').datetimepicker({
-          useCurrent:true,
-          pickDate: false
-        });
-        });
+  $(function () {
+    $('#dateFrom, #dateTo').datetimepicker({
+        format:'YYYY-MM-DD',
+        useCurrent:true,
+        pickTime: false
+    });
+    $('#timeFrom').datetimepicker({
+        pickDate: false,
+        useCurrent:true,
+    });
+    $('#timeTo').datetimepicker({
+        useCurrent:true,
+        pickDate: false
+    });
+  });
         
   $(document).ready(function(){
         $('#editAction').click(function(){
@@ -2827,6 +3416,39 @@ $scope.hideAllDetail = function(val)
   });
 });
 
+}])
+.directive('map', ['$http', '_global', function($http, GLOBAL) {
+    return {
+      restrict: 'E',
+      replace: true,
+      template: '<div></div>',
+      link: function(scope, element, attrs) {
+
+
+      }
+    };
 }]);
+
+app.directive('maposm', function($http, vamoservice) {
+    return {
+        restrict: 'E',
+        replace: true,
+        template: '<div></div>',
+        link: function(scope, element, attrs){
+
+         // console.log('osm map directive...');
+
+      /*  var mapLink = '<a href="http://207.154.194.241/nominatim/lf.html">OpenStreeetMap</a>'
+          var map_osm = new L.map('map_canvas2',{ center: [13.0827,80.2707],/* minZoom: 4,zoom: 8 });
+
+          new L.tileLayer(
+            'http://207.154.194.241/osm_tiles/{z}/{x}/{y}.png', {
+             attribution: '&copy; '+mapLink+' Contributors',
+          // maxZoom: 18,
+          }).addTo(map_osm); */
+      }
+  };
+
+}); 
 
 

@@ -1,19 +1,19 @@
 <?php
 class VdmVehicleViewController extends \BaseController {
-	
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
   public function index() {
-		
-		$user = new VdmVehicleController;
-		$page=$user->index();
-		Session::put('vCol',2);
-		return $page;
-	}
-	
+        
+        $user = new VdmVehicleController;
+        $page=$user->index();
+        Session::put('vCol',2);
+        return $page;
+    }
+    
   public function move_vehicle($id) {
     if (! Auth::check ()) {
         return Redirect::to ( 'login' );
@@ -35,19 +35,19 @@ class VdmVehicleViewController extends \BaseController {
     foreach($dealerId as $org) {
         $orgArr = array_add($orgArr, $org,$org);
     }
-	$dealerId = $orgArr;
-	$ownset[]='OWN';
+    $dealerId = $orgArr;
+    $ownset[]='OWN';
     $ownarray = array();
     foreach($ownset as $owq) {
        $ownarray = array_add($ownarray, $owq,$owq);
    }
    $ownset = $ownarray;
 
-	$details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
+    $details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
     $refData = json_decode ( $details, true );
     $OWN =isset($refData['OWN'])?$refData['OWN']:'';
      log::info(' OWN = ' . $OWN);
-	if($OWN!='OWN') {
+    if($OWN!='OWN') {
       $dealerId1=$ownset;
     }
     else {
@@ -109,13 +109,13 @@ class VdmVehicleViewController extends \BaseController {
         $refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleIdOld);
         $refDataJson1=json_decode($refDataJson1,true);
         $dealerIdOld=$refDataJson1['OWN'];
-		$shortName1 =isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'';
+        $shortName1 =isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'';
         $shortName = strtoupper($shortName1);
         $gpsSimNo =isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'';
         $orgId3 =isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'';
         $orgId2 = strtoupper($orgId3);
         $refDataArr = array (
-        	'deviceId' => isset($refDataJson1['deviceId'])?$refDataJson1['deviceId']:' ',
+            'deviceId' => isset($refDataJson1['deviceId'])?$refDataJson1['deviceId']:' ',
             'shortName' => isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill',
             'deviceModel' => isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:'GT06N',
             'regNo' => isset($refDataJson1['regNo'])?$refDataJson1['regNo']:'XXXXX',
@@ -150,6 +150,8 @@ class VdmVehicleViewController extends \BaseController {
             'descriptionStatus'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'',
             'mintemp'=>isset($refDataJson1['mintemp'])?$refDataJson1['mintemp']:'',
             'maxtemp'=>isset($refDataJson1['maxtemp'])?$refDataJson1['maxtemp']:'',
+            'safetyParking'=>isset($refDataJson1['safetyParking'])?$refDataJson1['safetyParking']:'no',
+
             );
 
         $refDataJson = json_encode ( $refDataArr );
@@ -190,6 +192,7 @@ class VdmVehicleViewController extends \BaseController {
             'descriptionStatus'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'',
             'mintemp'=>isset($refDataJson1['mintemp'])?$refDataJson1['mintemp']:'',
             'maxtemp'=>isset($refDataJson1['maxtemp'])?$refDataJson1['maxtemp']:'',
+            'safetyParking'=>isset($refDataJson1['safetyParking'])?$refDataJson1['safetyParking']:'no',
             );
 
         $refDataJson2 = json_encode ( $refDataArr2 );
@@ -201,7 +204,7 @@ class VdmVehicleViewController extends \BaseController {
         $oo=$redis->sismember('S_Vehicles_Dealer_'.$dealerId.'_'.$fcode,$vehicleIdOld);
         if($qq=='1')
        {
-		    $redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo.':OWN', $vehicleIdOld );
+            $redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo.':OWN', $vehicleIdOld );
             $redis->hset('H_VehicleName_Mobile_Dealer_'.$dealerId.'_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo, $vehicleIdOld );
             $redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
             $redis->srem('S_Vehicles_Dealer_'.$dealerIdOld.'_'.$fcode,$vehicleIdOld);
@@ -211,24 +214,24 @@ class VdmVehicleViewController extends \BaseController {
         }
         elseif($qq=='0' || $oo=='1')
         {
-			$redis->hdel('H_VehicleName_Mobile_Dealer_'.$dealerIdOld.'_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo, $vehicleIdOld );
+            $redis->hdel('H_VehicleName_Mobile_Dealer_'.$dealerIdOld.'_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo, $vehicleIdOld );
             $redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo.':OWN', $vehicleIdOld );
             $redis->srem('S_Vehicles_Dealer_'.$dealerId.'_'.$fcode,$vehicleIdOld);
-			 $redis->srem('S_Vehicles_Dealer_'.$dealerIdOld.'_'.$fcode,$vehicleIdOld);
-        	$redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
-			$redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
+             $redis->srem('S_Vehicles_Dealer_'.$dealerIdOld.'_'.$fcode,$vehicleIdOld);
+            $redis->sadd('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
+            $redis->hdel ( 'H_RefData_' . $fcode, $vehicleIdOld );
             $redis->hset ( 'H_RefData_' . $fcode, $vehicleIdOld, $refDataJson2 );
         }
    // }
-	if($dealerIdOld!='OWN')
+    if($dealerIdOld!='OWN')
     {
       $error='Vehicle moved successfully ';
-	}
-	else {
-	  $error=' Vehicle movement is not allowed';
-	}
-	Session::flash ( 'message', $vehicleIdOld . ' is updated successfully. ' );
-	Session::flash('alert-class', 'alert-success');
+    }
+    else {
+      $error=' Vehicle movement is not allowed';
+    }
+    Session::flash ( 'message', $vehicleIdOld . ' is updated successfully. ' );
+    Session::flash('alert-class', 'alert-success');
     return Redirect::to('Device');
  }
 

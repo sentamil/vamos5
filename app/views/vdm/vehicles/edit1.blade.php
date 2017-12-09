@@ -167,6 +167,10 @@
 			{{ Form::label('maxtem', 'Maximum Temperature') }}
 			{{ Form::number('maxtemp', $refData['maxtemp'],array('class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'-100')) }} 
 		</div>
+		<div class="form-group">
+           {{ Form::label('safetyParking', 'Safety Parking') }}<br>
+           {{ Form::select('safetyParking', array('yes' => 'Yes','no' => 'No'), isset($refData['safetyParking'])?$refData['safetyParking']:'no', array('class' => 'form-control')) }}
+        </div>
 		
 	</div>
 </div>
@@ -175,4 +179,3 @@
 
 {{ Form::close() }}
 @stop
-

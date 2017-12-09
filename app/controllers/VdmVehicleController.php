@@ -285,8 +285,9 @@ public function store() {
         $parkingAlert = Input::get('parkingAlert');
         $isRfid = Input::get('isRfid');
         $rfidType = Input::get('rfidType');
+        $safetyParking=Input::get('safetyParking');
         $v=idate("d") ;
-//            $paymentType=Input::get ( 'paymentType' );
+     // $paymentType=Input::get ( 'paymentType' );
         $paymentType='yearly';
         log::info('paymentType--->'.$paymentType);
         if($paymentType=='halfyearly')
@@ -347,6 +348,7 @@ else if(Session::get('cur')=='admin')
             'isRfid'=>$isRfid,
             'rfidType'=>$rfidType,
             'OWN'=>$ownership,
+            'safetyParking'=>$safetyParking,
 
             );
 
@@ -588,8 +590,8 @@ public function edit($id) {
         $refData = array_add($refData, 'vehicleType', ' ');
         $refData = array_add($refData, 'oprName', ' ');
         $refData = array_add($refData, 'mobileNo', '0123456789');
-     $refData = array_add($refData, 'vehicleExpiry', 'null');
-     $refData = array_add($refData, 'onboardDate', ' ');
+        $refData = array_add($refData, 'vehicleExpiry', 'null');
+        $refData = array_add($refData, 'onboardDate', ' ');
         $refData = array_add($refData, 'overSpeedLimit', '50');
         $refData = array_add($refData, 'driverName', '');
         $refData = array_add($refData, 'gpsSimNo', '0123456789');
@@ -621,7 +623,7 @@ public function edit($id) {
         $refData= array_add($refData, 'mintemp', '');
         $refData= array_add($refData, 'maxtemp', '');
         $refData= array_add($refData, 'routeName', '');
-
+        $refData= array_add($refData, 'safetyParking', 'no');
         
 
         
@@ -735,7 +737,7 @@ public function edit1($id) {
          $refData= array_add($refData, 'descriptionStatus', '');
          $refData= array_add($refData, 'mintemp', '');
          $refData= array_add($refData, 'maxtemp', '');
-
+         $refData= array_add($refData, 'safetyParking', '');
         $refDataFromDB = json_decode ( $details, true );
 
 
@@ -1036,11 +1038,10 @@ $orgIdOld=strtoupper($orgIdOld1);
         $mintemp=Input::get ('mintemp');
         $maxtemp=Input::get ('maxtemp');
         $routeName = Input::get('routeName');
-        
+        $safetyParking = Input::get('safetyParking');
 
         $redis = Redis::connection ();
         $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
-
         $vehicleRefData=json_decode($vehicleRefData,true);
 
         $deviceId=$vehicleRefData['deviceId'];
@@ -1125,7 +1126,8 @@ else if(Session::get('cur')=='admin')
             'routeName'=>$routeName,
         'vehicleExpiry' => $vehicleExpiry,
         'onboardDate' => $onboardDate,
-            );
+        'safetyParking'=>$safetyParking,
+    );
 
 try{
 $licence_id = DB::select('select licence_id from Licence where type = :type', ['type' => $Licence]);
@@ -1286,7 +1288,7 @@ if($refVehicle != $refDataJson)
         "mintemp" => "Minimum Temperature",
         "maxtemp" => "Maximum Temperature",
         "routeName" => "Route Name",
-
+        "safetyParking"=>"Safety Parking",
     );
     $updated_Value  = json_decode($refDataJson,true);
     // $oldJsonValue   = json_decode($refVehicle,true);
@@ -1532,6 +1534,11 @@ public function updateLive($id) {
             $maxtemp=$vehicleRefData['maxtemp'];
         else
             $maxtemp=50;  
+        if(isset($vehicleRefData['safetyParking'])==1)
+           $safetyParking=$vehicleRefData['safetyParking'];
+        else
+           $safetyParking='no';
+
 
         $deviceId=$vehicleRefData['deviceId'];
         try{
@@ -1585,6 +1592,7 @@ public function updateLive($id) {
             'mintemp'=>$mintemp,
             'maxtemp'=>$maxtemp,
             'routeName'=>$routeName,
+            'safetyParking'=>$safetyParking,
             );
 
         $refDataJson = json_encode ( $refDataArr );
@@ -1718,6 +1726,7 @@ public function update1() {
         $orgId = Input::get ('orgId');
         $altShortName= Input::get ('altShortName');
         $parkingAlert = Input::get('parkingAlert');
+        $safetyParking = Input::get('safetyParking');
 
     $Licence=Input::get ( 'Licence1');    
     $Licence=!empty($Licence) ? $Licence : 'Advance';
@@ -1771,7 +1780,7 @@ public function update1() {
             'vehicleType' => $vehicleType,
             'oprName' => $oprName,
             'mobileNo' => $mobileNo,
-          'vehicleExpiry' => $vehicleExpiry,
+            'vehicleExpiry' => $vehicleExpiry,
             'overSpeedLimit' => $overSpeedLimit,
             'odoDistance' => $odoDistance,
             'driverName' => $driverName,
@@ -1795,8 +1804,9 @@ public function update1() {
             'descriptionStatus'=>$descriptionStatus,
             'mintemp'=>$mintemp,
             'maxtemp'=>$maxtemp,
+            'safetyParking'=>$safetyParking,
+        );
 
-            );
         VdmVehicleController::destroy($vehicleIdTemp);
         $refDataJson = json_encode ( $refDataArr );
 
@@ -1873,14 +1883,23 @@ public function renameUpdate() {
         return Redirect::to ( 'login' );
     }
 $current = Carbon::now();
-        $rajeev=$current->format('Y-m-d');
-  log::info($rajeev);
-  $tomorrow = Carbon::now()->addDay();
-  log::info($tomorrow);
+    $rajeev=$current->format('Y-m-d');
+    log::info($rajeev);
+    $tomorrow = Carbon::now()->addDay();
+    log::info($tomorrow);
 
     $vehicleId1 = Input::get ( 'vehicleId' );
-    $vehicleId2=str_replace('.', '-', $vehicleId1);
-    $vehicleId = strtoupper($vehicleId2);
+
+    $pattern = '/[\'\/~`\!@#\$%\^&\*\(\)\ \\\+=\{\}\[\]\|;:"\<\>,\.\?\\\']/';
+         //
+         if (preg_match($pattern, $vehicleId1))
+         {
+          Session::flash('message','Vehicle ID should be in alphanumeric with _ or - Characters'.$vehicleId1);
+         return Redirect::back();  
+         }
+
+
+    $vehicleId = strtoupper($vehicleId1);
     $deviceId = Input::get ( 'deviceId' );
     $vehicleId =preg_replace('/\s+/', '', $vehicleId);
     $deviceId =preg_replace('/\s+/', '', $deviceId);
@@ -2117,7 +2136,10 @@ $current = Carbon::now();
     //$orgId1=strtoupper($orgId);
 
       $shortNameOldTrim =isset($refDataFromDBR['shortName'])?$refDataFromDBR['shortName']:'';
-      $shortNameOld=preg_replace('/\s+/', '',$shortNameOldTrim );
+     // $shortNameOld=preg_replace('/\s+/', '',$shortNameOldTrim );
+
+      $shortNameOld1=preg_replace('/\s+/', '',$shortNameOldTrim );                              
+      $shortNameOld=strtoupper($shortNameOld1);
 
       $shortNameNew = preg_replace('/\s+/', '', $shortName);
       $orgId2       = strtoupper($orgId);
@@ -2190,11 +2212,28 @@ public function migrationUpdate() {
         return Redirect::to ( 'login' );
     }
     $vehicleId1 = Input::get ( 'vehicleId' );
-    $vehicleId2 = str_replace('.', '-', $vehicleId1);
-    $vehicleId = strtoupper($vehicleId2);
-    $deviceId = Input::get ( 'deviceId' );
-    $vehicleId =preg_replace('/\s+/', '', $vehicleId);
-    $deviceId =preg_replace('/\s+/', '', $deviceId);
+
+    $pattern = '/[\'\/~`\!@#\$%\^&\*\(\)\ \\\+=\{\}\[\]\|;:"\<\>,\.\?\\\']/';
+      if (preg_match($pattern, $vehicleId1))
+       {
+       Session::flash('message','Vehicle ID should be in alphanumeric with _ or - Characters'.$vehicleId1);
+       return Redirect::back();
+       }
+     //$vehicleId2 = str_replace('.', '-', $vehicleId1);
+     $vehicleId = strtoupper($vehicleId1);
+     $deviceId = Input::get ( 'deviceId' );
+      
+     if (preg_match($pattern, $deviceId)) {
+       Session::flash('message','Device ID should be in alphanumeric with _ or - Characters'.$deviceId);
+       return Redirect::back();
+     }
+
+
+//  $vehicleId2 = str_replace('.', '-', $vehicleId1);
+    $vehicleId = strtoupper($vehicleId1);
+//  $deviceId = Input::get ( 'deviceId' );
+//  $vehicleId =preg_replace('/\s+/', '', $vehicleId);
+//  $deviceId =preg_replace('/\s+/', '', $deviceId);
 
     $vehicleIdOld= Input::get ( 'vehicleIdOld' );
     $deviceIdOld = Input::get ( 'deviceIdOld' );
@@ -2327,16 +2366,16 @@ public function migrationUpdate() {
         $redis->sadd ( $cpyDeviceSet, $deviceId );
 
 
+      $refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleIdOld);
+      $refDataJson1=json_decode($refDataJson1,true);
+   // ram-new-key---
+   // $shortName1=$refDataJson1['shortName'];
+   // $shortName=strtoupper($shortName1);
 
-
-
-
-
-        $refDataJson1=$redis->hget ( 'H_RefData_' . $fcode, $vehicleIdOld);
-        $refDataJson1=json_decode($refDataJson1,true);
-     //ram-new-key---
     $shortName1=$refDataJson1['shortName'];
-    $shortName=strtoupper($shortName1);
+    $shortName2=preg_replace('/\s+/', '', $shortName1);
+    $shortName=strtoupper($shortName2);
+
     //log::info($refDataJson1);
     $mobileNoOld=isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'';
     $mobileNo1=isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'0123456789';
@@ -2435,6 +2474,7 @@ public function migrationUpdate() {
             'descriptionStatus'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'',
             'mintemp'=>isset($refDataJson1['mintemp'])?$refDataJson1['mintemp']:'',
             'maxtemp'=>isset($refDataJson1['maxtemp'])?$refDataJson1['maxtemp']:'',
+            'safetyParking'=>isset($refDataJson1['safetyParking'])?$refDataJson1['safetyParking']:'no',
             );
 
         $refDataJson = json_encode ( $refDataArr );
@@ -3618,4 +3658,3 @@ public function storeMulti() {
   }
 
 }
-

@@ -9,6 +9,7 @@
     <title>GPS</title>
     <link rel="shortcut icon" href="assets/imgs/tab.ico">
     <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     <link href="assets/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
@@ -17,47 +18,45 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
-          body{
-              font-family: 'Lato', sans-serif;
-            /*font-weight: bold;  
-              font-family: 'Lato', sans-serif;
-              font-family: 'Roboto', sans-serif;
-              font-family: 'Open Sans', sans-serif;
-              font-family: 'Raleway', sans-serif;
-              font-family: 'Faustina', serif;
-              font-family: 'PT Sans', sans-serif;
-              font-family: 'Ubuntu', sans-serif;
-              font-family: 'Droid Sans', sans-serif;
-              font-family: 'Source Sans Pro', sans-serif;
-              */
-          } 
 
-          #pac-inputs {
-            text-align: center;
-            position: fixed;
-            border-radius: 3px;
-            height: 30px;
-            width: 220px;
-            max-width: 220px;
-            top: 10px;
-            left: 20%;
+        body{
+           font-family: 'Lato', sans-serif;
+         /*font-weight: bold;font-family: 'Lato', sans-serif;
+           font-family: 'Roboto', sans-serif;
+           font-family: 'Open Sans', sans-serif;
+           font-family: 'Raleway', sans-serif;
+           font-family: 'Faustina', serif;
+           font-family: 'PT Sans', sans-serif;
+           font-family: 'Ubuntu', sans-serif;
+           font-family: 'Droid Sans', sans-serif;
+           font-family: 'Source Sans Pro', sans-serif; */
+          }
+
+          #map_canvas {
+            width: 100%;
+            height:100vh; 
+          }
+
+          #map_canvas2 {
+            width: 100%;
+            height:100vh; 
+          }
+
+        .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
+         div.pane  td{
+          border:  0.5px solid #d9d9d9;
+          padding:  2px;
+          word-wrap: break-word;
+         }
+
+          #dropdowns{
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2); 
+            position: absolute;
             z-index: 1;
-            font-size: 12px;
-            opacity: 0.8;
-            padding: 0px 0px 0px 8px;
-          } 
-
-          #map_canvas{
-            width:100%;
-            height: 100vh; 
-          }
-
-          .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
-           div.pane  td{
-             border:  0.5px solid #d9d9d9;
-             padding:  2px;
-             word-wrap: break-word;
-          }
+            top: 10px;
+            left: 130px; 
+            cursor: pointer;
+           }
 
     </style>
 </head>
@@ -65,14 +64,25 @@
     <div id="wrapper" ng-controller="mainCtrl" style="padding-left:0 !important;" class="ng-cloak">
         
         <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <input id="pac-inputs" class="controls" type="text" placeholder="Search Location">
-                        <div id="maploc">
+
+          <div  id="dropdowns">
+            <select ng-model="mapsHist" ng-change="mapChanges(mapsHist)" style="font-size:12px; height: 26px; width: 64px; background: rgba(255, 255, 255, 0.9);border: none !important;">
+                  <option value="0">Google</option>
+                  <option value="1">Osm</a></option>
+              </select>
+            </div>
+
+                        <div>
                             <map id="map_canvas"></map>
                         </div>
-                    </div>
+
+                        <div>
+                            <maposm  id="map_canvas2"></maposm> 
+                        </div>
+
+            <div class="container-fluid">
+                <div class="row">
+                   
                     <div id="minmax1" style="position: absolute;top: 6px;right: 6px; z-index:999">
                             <img src="assets/imgs/add.png" />
                         </div>
@@ -107,7 +117,7 @@
                                     <td><b>Reg No</b></td>
                                     <td>{{histVal[0].regNo}}</td>
                                     <td><b>Analog Volt</b></td>
-                                    <td>{{histVal[0].deviceVolt}}</td>
+                                    <td>{{histVal[0].deviceVolt}}%</td>
                                 </tr>
                             </table>
                         </div>
@@ -243,9 +253,8 @@
 var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
 var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
 
-  if(apikey_url != null || apikey_url != undefined){
-    url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places";
-  }
+if(apikey_url != null || apikey_url != undefined)
+        url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places";
 
    function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
      if (scriptsCollection[startIndex]) {
@@ -270,8 +279,12 @@ var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
    scriptLibrary.push("assets/js/static.js");
    scriptLibrary.push("assets/js/jquery-1.11.0.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
-   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");
+ /*scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js");*/
+   scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+   scriptLibrary.push(url);
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+   scriptLibrary.push("http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"); 
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
 /* scriptLibrary.push("https://code.highcharts.com/highcharts.js");
    scriptLibrary.push("https://code.highcharts.com/highcharts-more.js");
@@ -279,8 +292,6 @@ var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
    scriptLibrary.push("assets/js/highcharts_new.js");
    scriptLibrary.push("assets/js/highcharts-more_new.js");
    scriptLibrary.push("assets/js/solid-gauge_new.js");
-   scriptLibrary.push(url);
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("assets/js/markerwithlabel.js");
  //scriptLibrary.push("assets/js/infobubble.js");
  //scriptLibrary.push("assets/js/moment.js");

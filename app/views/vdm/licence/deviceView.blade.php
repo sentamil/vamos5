@@ -12,6 +12,9 @@
 				<div class="hpanel">
 					<div class="panel-heading" align="center">
 						<h4><font><b> Licence View  </b> </font></h4>
+						<span  style="position: absolute; float:left; left:33px;z-index: 1;margin-top:22px;">
+                            <a class="btn btn-sm btn-primary" href="{{ URL::previous() }}" style="margin-right: 38px;margin-top: -46px;">Go Back</a>
+                        </span>
 					</div>
 					<div class="panel-body">
 						
