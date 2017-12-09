@@ -16,7 +16,7 @@ app.directive('maposm', function($http, vamoservice) {
         template: '<div></div>',
         link: function(scope, element, attrs){
 
-         console.log('osm map directive...');
+        // console.log('osm map directive...');
 
         }
     }
@@ -250,11 +250,11 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 
         function lineDraw_Osm(data) {
         	
-        	console.log(data.length);
+        	//console.log(data.length);
 
         	for(var i=0;i<data.length;i++){
 
-        		console.log(i);
+        		//console.log(i);
 
         		if(i!=data.length-1){
 
@@ -276,11 +276,11 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 
 	    function mapInit() {
 
-	        console.log('googMapInit......');
+	        //console.log('googMapInit......');
 
             vamoservice.getDataCall($scope.url).then(function(data) {
 
-              	console.log(data);
+              	//console.log(data);
 
 		   	    var locs     = data;
 		   	    $scope.locss = data;
@@ -486,7 +486,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
                  
           } else {
 
-                 console.log('latlanOld data not found.....');
+                // console.log('latlanOld data not found.....');
   
                     $scope.marker = new MarkerWithLabel({
 			   	    position: myLatlng, 
@@ -545,7 +545,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 
 } else if($scope.maps_no == 1){
 
-	console.log('osm map tracking.....');
+	//console.log('osm map tracking.....');
 
 
        var mapLink = '<a href="http://207.154.194.241/nominatim/lf.html">OpenStreeetMap</a>'
@@ -575,6 +575,8 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
 				    content: contentString
 		});
 
+		$scope.myLatLngOsm = new L.LatLng($scope.locss.latitude, $scope.locss.longitude);
+
         var infowin_osm = new L.popup().setContent(conString_osm);
         $scope.markerss.bindPopup(infowindow);
         $scope.markerss.setIcon(myIcon1);
@@ -603,6 +605,13 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
                     $scope.markerss.setLatLng(setLatlng);
                     $scope.markerss.addTo($scope.map_osm);
                     $scope.map_osm.setView(setLatlng); 
+
+		        }else{
+
+                    $scope.markerss.setLatLng($scope.myLatLngOsm);
+                    $scope.markerss.addTo($scope.map_osm);
+                    $scope.map_osm.setView($scope.myLatLngOsm); 
+
 		        }
 
             }); // lanlan vamoservice ends...

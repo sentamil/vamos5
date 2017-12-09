@@ -1269,12 +1269,10 @@ var _markerOnClick = function(e) {
       var ecrypt_code_url = '';
       $http.get(f_code_url).success(function(result){
         
-        $scope.final_data = result;
-
-        console.log($scope.final_data);
-        
-          var url='../public/track?vehicleId='+result.trim()+'&maps=track'+'&userID='+sp1[1];
-          window.open(url,'_blank');
+        //console.log(result);
+          
+        var url='../public/track?vehicleId='+result.trim()+'&maps=track'+'&userID='+sp1[1];
+        window.open(url,'_blank');
         
       });  
       }
@@ -2314,7 +2312,7 @@ $scope.initilize = function(ID){
         map: $scope.map,
     
       });
-      console.log(' lat lan  '+places[0].geometry.location.lat(), places[0].geometry.location.lng())
+    //  console.log(' lat lan  '+places[0].geometry.location.lat(), places[0].geometry.location.lng())
       $scope.map.setCenter(new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()));
       $scope.map.setZoom(13);
     });
