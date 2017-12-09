@@ -646,9 +646,11 @@ var osmInitsVal=0;
 
 $scope.initMap  = function(vals,initVal){
 
-  console.log('map init...');
+  //console.log('map init...');
 
    startLoading();
+
+   console.log(initVal);
 
   if(initVal==true) {
 
@@ -769,6 +771,8 @@ $scope.initMap  = function(vals,initVal){
  } else {
 
       if(vals==0){
+
+       // console.log('google...');
 
         $('#playButton').prop('disabled', true);
         $('#replayButton').prop('disabled', false);
@@ -2828,6 +2832,8 @@ function smoothZoom (map, max, cnt) {
                       $scope.infosWindow.open($scope.map,$scope.markerheads);
                       $scope.infosWindow.close();
                     }   
+
+                   // console.log(latlngs);
        
                     $scope.map.panTo(latlngs);
     // }
@@ -2937,7 +2943,7 @@ $scope.polylineCtrl   = function(){
   
   startLoading();
 
-  console.log('polylineCtrl...');
+  //console.log('polylineCtrl...');
 
 
   if($scope.hisloc.vehicleLocations!=null){
@@ -2947,9 +2953,121 @@ $scope.polylineCtrl   = function(){
 
    if($scope.initGoogVal==0){
 
+   // console.log('initGoogVal==0...');
 
 
-    for(var i=0;i<$scope.hisloc.vehicleLocations.length;i++){
+    if($scope.map==undefined){
+
+      //      console.log('google init...');
+
+               if($scope.hisloc.vehicleLocations.length != 0) {
+                    //console.log(parseInt(locs.tripDistance));
+                      if(parseInt($scope.hisloc.tripDistance) > 200) {
+                          $scope.zoomCtrlVal     =  true;
+                          $scope.hisloc.zoomLevel        =  12;
+                          $scope.ZoomDisableBtn  =  true;
+                          $scope.scrollsWheel    =  false;
+                       // console.log(locs.tripDistance+"Active no Zoom");
+                      } else{
+                          $scope.zoomCtrlVal    = false;
+                          $scope.ZoomDisableBtn = false;
+                          $scope.scrollsWheel   = true;
+                       }
+
+                   /* var myOptions = {
+                        zoom: Number(locs.zoomLevel),zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
+                        center: new google.maps.LatLng(data.vehicleLocations[0].latitude, data.vehicleLocations[0].longitude),
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                      //styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
+                    }; */
+
+                    var myOptions = {
+                        zoom: Number($scope.hisloc.zoomLevel),
+                        zoomControl: $scope.scrollsWheel,
+                        zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP}, 
+                        center: new google.maps.LatLng($scope.hisloc.vehicleLocations[0].latitude, $scope.hisloc.vehicleLocations[0].longitude),
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                        disableDoubleClickZoom: $scope.zoomCtrlVal,
+                        scrollwheel: $scope.scrollsWheel,
+                        disableDefaultUI: $scope.ZoomDisableBtn,
+                     // styles: [{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"color":"#f7f1df"}]},{"featureType":"landscape.natural","elementType":"geometry","stylers":[{"color":"#d0e3b4"}]},{"featureType":"landscape.natural.terrain","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.medical","elementType":"geometry","stylers":[{"color":"#fbd3da"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#bde6ab"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffe15f"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#efd151"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"black"}]},{"featureType":"transit.station.airport","elementType":"geometry.fill","stylers":[{"color":"#cfb2db"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#a2daf2"}]}]
+                    };
+
+                    $scope.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+
+              //  }else{
+              //    alert("Data Not Found!..");
+              //    console.log('vehicleLocations not found!...'+data);
+              //  }
+
+
+              google.maps.event.addListener($scope.map, 'click', function(event) {
+                $scope.clickedLatlng = event.latLng.lat() +','+ event.latLng.lng();
+                $('#latinput').val($scope.clickedLatlng);
+              });
+
+
+                $scope.path=[];
+                $scope.polylinearr=[];
+
+                for(var i=0;i<$scope.hisloc.vehicleLocations.length;i++){
+
+                  $scope.path.push(new google.maps.LatLng($scope.hisloc.vehicleLocations[i].latitude, $scope.hisloc.vehicleLocations[i].longitude));
+                  
+                    if($scope.hisloc.vehicleLocations[i].isOverSpeed=='Y'){
+                          var pscolorval = '#ff0000';
+                    } else {
+                          var pscolorval = '#6dd538';
+                    }
+
+                  $scope.polylinearr.push(pscolorval);
+              }
+                
+           
+
+               
+               // console.log($scope.path.length);
+
+                if($scope.getValue != undefined){
+
+                  $scope.getValueCheck($scope.getValue);
+                }
+              
+                $scope.pointDistances = [];
+                var sphericalLib     = google.maps.geometry.spherical;
+                var pointZero        = $scope.path[0];
+                var wholeDist        = sphericalLib.computeDistanceBetween(pointZero, $scope.path[$scope.path.length - 1]);
+              
+                $('#replaybutton').removeAttr('disabled');
+
+            //}else{
+            //  $('.error').show();
+            //  $('#lastseen').html('<strong>From Date & time :</strong> -');
+            //  $('#lstseendate').html('<strong>To  &nbsp; &nbsp; Date & time :</strong> -');
+          // }
+        //  }
+
+      }
+
+          
+        var url = GLOBAL.DOMAIN_NAME+'/getGeoFenceView?vehicleId='+$scope.trackVehID;
+    
+        $scope.createGeofence(url);
+        stopLoading();
+         
+           //}
+
+          $scope.SiteCheckbox = {
+             value1 : true,
+             value2 : 'YES'
+          }
+
+   } else {
+
+   $scope.path=[];
+   $scope.polylinearr=[];
+
+     for(var i=0;i<$scope.hisloc.vehicleLocations.length;i++){
 
                   $scope.path.push(new google.maps.LatLng($scope.hisloc.vehicleLocations[i].latitude, $scope.hisloc.vehicleLocations[i].longitude));
                   
@@ -2962,6 +3080,10 @@ $scope.polylineCtrl   = function(){
                   $scope.polylinearr.push(pscolorval);
               }
 
+
+   }
+
+  
 
    // console.log('vehicle locations...');
 
@@ -3060,6 +3182,8 @@ $scope.polylineCtrl   = function(){
 
 
    }else if($scope.plotVal==1){
+
+   // console.log('plotVal==1');
 
 
     $scope.path=[];
@@ -3179,7 +3303,7 @@ $scope.polylineCtrl   = function(){
 
      }else{
 
-      console.log('pol lin else...');
+   //   console.log('pol lin else...');
 
           stopLoading();  
          timeInterval = setInterval(function(){ timerSet() }, $scope.timeDelay);

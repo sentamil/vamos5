@@ -889,7 +889,7 @@ button, input, select, textarea {
                               <span style="padding:10px; background:#fff; margin-top:200px; display:inline-block; font-size: 12px !important;" >No Data Found. Please select another date range</span>
                             </div>
                             
-                        <div id="inviewList" style="position: fixed;top: 10px;left: 230px; z-index:99; background-color: #fff; padding:2px; border-radius: 2px; cursor: pointer;" class="viewList">
+                        <div id="inviewList" style="position: fixed;top: 10px;left: 222px; z-index:99; background-color: #fff; padding:2px; border-radius: 2px; cursor: pointer;" class="viewList">
 
                             <img src="assets/imgs/add.png" />
                             
@@ -1035,14 +1035,14 @@ button, input, select, textarea {
  //An array of scripts you want to load in order
    var scriptLibrary = [];
    scriptLibrary.push("assets/js/static.js");
- //  scriptLibrary.push("assets/js/jquery-1.11.0.js");
+ //scriptLibrary.push("assets/js/jquery-1.11.0.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push("assets/js/bootstrap.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+// scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js");   
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");

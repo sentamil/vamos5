@@ -667,7 +667,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .radioBut{
-    position: fixed;top: 10px;left:396px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
+    position: fixed;top: 10px;left:384px; z-index:99; background-color: #fff; padding:2px 5px 2px 5px; border-radius: 2px; cursor: pointer;
 }
 
 .radioButts{
