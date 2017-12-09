@@ -792,11 +792,13 @@ $scope.initMap  = function(vals,initVal){
         // $scope.initGoogVal=1; 
        //  $scope.plotVal=0;
 
-         pcount = 0; 
-         //$scope.initGoogle_Map($scope.hisloc);
+        if( $scope.hisloc.vehicleLocations !=null){
+          pcount = 0; 
+          $scope.polylineCtrl();
 
-      // $scope.initGoogle_Map($scope.hisloc);
-        $scope.polylineCtrl();
+        }else{
+          stopLoading();
+        }
 
          $scope.googleMap=true;
          $scope.osmMap=false;
