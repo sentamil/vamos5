@@ -33,14 +33,29 @@
            font-family: 'Source Sans Pro', sans-serif; */
           }
 
-          #map_canvas {
+        #map_canvas {
             width: 100%;
             height:100vh; 
           }
 
-          #map_canvas2 {
+        #map_canvas2 {
             width: 100%;
             height:100vh; 
+          }
+
+        #pac-inputs {
+            text-align: center;
+            position: fixed;
+            border-radius: 3px;
+            height: 30px;
+            width: 220px;
+            max-width: 220px;
+            top: 10px;
+            left: 20%;
+            z-index: 1;
+            font-size: 12px;
+            opacity: 0.8;
+            padding: 0px 0px 0px 8px;
           }
 
         .rightSection{position:absolute; top:70px; right:5px; width:275px; padding:10px; background:#fff; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px; }
@@ -72,6 +87,7 @@
                   <option value="1">Osm</a></option>
               </select>
             </div>
+            <input id="pac-inputs" class="controls" type="text" placeholder="Search Location">
 
                         <div>
                             <map id="map_canvas"></map>

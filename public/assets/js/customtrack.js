@@ -812,6 +812,27 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
         }
     }
 
+
+    var markerSearch  = new google.maps.Marker({});
+    var input_value   =  document.getElementById('pac-inputs');
+    var sbox          =  new google.maps.places.SearchBox(input_value);
+  // search box function
+    sbox.addListener('places_changed', function() {
+      window.clearInterval($scope.timeIntervals);	
+      markerSearch.setMap(null);
+      var places = sbox.getPlaces();
+      markerSearch = new google.maps.Marker({
+        position: new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()),
+        animation: google.maps.Animation.BOUNCE,
+        map: $scope.map,
+    
+      });
+      console.log(' lat lan  '+places[0].geometry.location.lat(), places[0].geometry.location.lng())
+      $scope.map.setCenter(new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()));
+      $scope.map.setZoom(13);
+    });
+
+
 	$scope.getLocation = function(lat, lon, callback){
 		geocoder   = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(lat,lon);
