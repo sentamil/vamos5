@@ -1,46 +1,45 @@
 // var app = angular.module('fuelapp',['ui.bootstrap']);
 app.controller('mainFuel', function($scope, $http, $filter){
-	
-	// console.log('  inside the js file  ')
+ // console.log('  inside the js file  ')
 
 	$scope.url 				= 	'http://'+globalIP+context+'/public//getVehicleLocations';
 	$scope.gIndex 			=	 0;
 	$scope.alertData 		=	'time';
-	// $scope.hrs    = 1;
-	// $scope.kms 	  = 10;
-
+ // $scope.hrs    = 1;
+ // $scope.kms 	  = 10;
 
 	// function getParameterByName(name) {
- //    	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-	//     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-	//         results = regex.exec(location.search);
-	//     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    //   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	//   var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	//   results = regex.exec(location.search);
+	// return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	// }
 
 	var tabValue  =	 getParameterByName('tab');
 
-
-	// console.log(' value in tabValue '+$scope.tabValue);
+ // console.log(' value in tabValue '+$scope.tabValue);
 
 	$scope.sort = {       
-                sortingOrder : 'date',
-                reverse : true
-            };
+        sortingOrder : 'date',
+        reverse : true
+    };
 
 	function formatAMPM(date) {
-    	  var date = new Date(date);
-		  var hours = date.getHours();
-		  var minutes = date.getMinutes();
-		  var ampm = hours >= 12 ? 'PM' : 'AM';
+    	var date = new Date(date);
+		var hours = date.getHours();
+		var minutes = date.getMinutes();
+		var ampm = hours >= 12 ? 'PM' : 'AM';
 		  hours = hours % 12;
 		  hours = hours ? hours : 12; // the hour '0' should be '12'
 		  minutes = minutes < 10 ? '0'+minutes : minutes;
-		  var strTime = hours + ':' + minutes + ' ' + ampm;
-		  return strTime;
+		var strTime = hours + ':' + minutes + ' ' + ampm;
+	  return strTime;
 	}
+
 	$scope.trimColon = function(textVal){
 		return textVal.split(":")[0].trim();
 	}
+
 	// $scope.fuelCon 		= 	[];
 	// $scope.trip 		= 	[];
 	// $scope.duration 	= 	[];
@@ -81,7 +80,6 @@ app.controller('mainFuel', function($scope, $http, $filter){
 				
 			};
 		}
-		
 		
 	}
 
@@ -278,43 +276,48 @@ app.controller('mainFuel', function($scope, $http, $filter){
    		$http.get(val).success(function(data){
 			$scope.locations 	= 	data;
 
-			//console.log(data[0].vehicleLocations[0].vehicleId);
-			if(data.length)
+		 // console.log(data[0].vehicleLocations[0].vehicleId);
+
+			if(data.length){
 				$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
 				$scope.shortName    =   data[$scope.gIndex].vehicleLocations[0].shortName;
+				$scope.shortNam     =   $scope.shortName;
 				$scope.gName 		= 	data[$scope.gIndex].group;
 				$scope.groupName 	=	$scope.trimColon(data[$scope.gIndex].group);
 				sessionValue($scope.vehiname, $scope.gName)
-			angular.forEach(data, function(value, key) {			  
-				  if(value.totalVehicles) {
-				  		$scope.data1		=	data[key];
-				  }
+			    
+			    angular.forEach(data, function(value, key) {	
 
-			var fromNow 			= 	new Date();
-			//var toNow 				= 	new Date(data.toDateTime.replace('IST',''));
-			$scope.fromNowTS		=	fromNow.getTime();
-			// $scope.toNowTS			=	fromNow.setTime(0,0,0,0);	
-			$scope.fromtime			=	"12:00 AM";
-   			$scope.totime			=	formatAMPM($scope.fromNowTS);
-			$scope.fromdate			=	$scope.getTodayDate($scope.fromNowTS);
-			$scope.todate			=	$scope.getTodayDate($scope.fromNowTS);
-			distanceTime();
-			});				
+		            if(value.totalVehicles){
+				  		$scope.data1  =	data[key];
+				    }
+			    });		
+			}
+
+			var fromNow 		= 	new Date();
+		 // var toNow 		    = 	new Date(data.toDateTime.replace('IST',''));
+			$scope.fromNowTS	=	fromNow.getTime();
+		 // $scope.toNowTS	    =	fromNow.setTime(0,0,0,0);	
+			$scope.fromtime		=	"12:00 AM";
+   			$scope.totime		=	formatAMPM($scope.fromNowTS);
+			$scope.fromdate		=	$scope.getTodayDate($scope.fromNowTS);
+			$scope.todate		=	$scope.getTodayDate($scope.fromNowTS);
+			distanceTime();		
 			
-			
-		}).error(function(){ /*alert('error'); */});
+	    }).error(function(){ /*alert('error'); */});
 	});
 
 	//function for group selection
-	$scope.groupSelection 	=	function(groupname, gid)
-	{
+	$scope.groupSelection 	=	function(groupname, gid) {
+
 		$scope.gName 		= 	groupname;
 		$scope.gIndex		=	gid;
-		var urlGroup 		 	= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupname;
+		var urlGroup 		= 	'http://'+globalIP+context+'/public//getVehicleLocations?group='+groupname;
 		$http.get(urlGroup).success(function(data){
 			$scope.locations 	= 	data;
 			$scope.vehiname		=	data[$scope.gIndex].vehicleLocations[0].vehicleId;
 			$scope.shortName    =   data[$scope.gIndex].vehicleLocations[0].shortName;
+			$scope.shortNam     =   $scope.shortName;
 			$scope.gName 		= 	data[$scope.gIndex].group;
 			$scope.groupName 	=	$scope.trimColon(data[$scope.gIndex].group);
 			sessionValue($scope.vehiname, $scope.gName)
@@ -322,8 +325,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	}
 
 	//page loaded function
-	function distanceTime()
-	{	
+	function distanceTime()	{	
 		$("#fill").hide();
     	$("#eventReport").show();
     	var distanceTimeUrl = ' ';
@@ -333,7 +335,6 @@ app.controller('mainFuel', function($scope, $http, $filter){
     	var idleEvent 		= 	document.getElementById ("idlecheck").checked;
     	var kms 			=   document.getElementsByClassName("kms")[0].value;
     	var hrs 			=   document.getElementsByClassName("hrs")[0].value;
-		
 		
 		if(tabValue == "fuelfill"){
 			$('#fuelValue').val('fill');
@@ -347,51 +348,38 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		}
 	}
 	
-
-	
 	// service call
-	function serviceCall(url)
-	{
+	function serviceCall(url){
 		// $('#perloader').show();
 		// $('#preloader02').show();
 
-		$http.get(url).success(function(data)
-		{
+		$http.get(url).success(function(data){
 			// $('#status02').fadeOut(); 
 			// $('#preloader02').delay(350).fadeOut('slow');
-			if(data.length>0)
-			{
+			if(data.length>0){
 				$scope.fuelTotal 	= 	data;
 				graphData(data);
-			}
-			else
-			{
+			}else{
 				graphData(null);
 				$scope.fuelTotal	= 	[];
 			}
-				
 			stopLoading();
-		})
-		
+		});
 	}
 
-	
-	//button click event
-	$scope.plotHist 		= function()
-	{
+  //button click event
+	$scope.plotHist 		= function(){
 		$scope.getValue('button');
 	}
 
-	$scope.genericFunction  = function(single, index, shortname)
-	{
+	$scope.genericFunction  = function(single, index, shortname){
 		$scope.shortName 	= 	shortname;
 		$scope.vehiname 	= 	single;
 		sessionValue($scope.vehiname, $scope.gName);
 		$scope.getValue('vehicle');
 	}
 	
-	$scope.getValue 	= function(data)
-	{
+	$scope.getValue 	= function(data){
 		// $('#status02').show(); 
 		// $('#preloader02').show(); 
 		startLoading();
@@ -421,8 +409,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
     	CSV.begin('#'+data).download(data+'.csv').go();
     };
 
-	$scope.seperate 	= function()
-	{
+	$scope.seperate 	= function(){
 		var stoppage 		= 	document.getElementById ("stop").checked;
     	var idleEvent 		= 	document.getElementById ("idlecheck").checked;
     	var fill 			= 	document.getElementById ("fillfuel").checked;
@@ -478,3 +465,4 @@ app.controller('mainFuel', function($scope, $http, $filter){
 		$('#chart2').toggle(1000);
 	})
 });
+

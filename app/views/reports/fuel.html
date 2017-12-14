@@ -15,8 +15,8 @@
   
   body{
      font-family: 'Lato', sans-serif;
-   /*font-weight: bold;*/  
-   /*font-family: 'Lato', sans-serif;
+   /*font-weight: bold; 
+     font-family: 'Lato', sans-serif;
      font-family: 'Roboto', sans-serif;
      font-family: 'Open Sans', sans-serif;
      font-family: 'Raleway', sans-serif;
@@ -110,7 +110,7 @@
       </li>
       <li ng-repeat="location in locations track by $index | orderBy:natural('group')" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
         <ul class="nav nav-second-level" style="max-height: 400px; overflow-y: auto;">
-          <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index, loc.shortName)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
+          <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox" ng-class="{active:vehiname ==loc.vehicleId}"><a href="" ng-class="{active: $index == selected, red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index, loc.shortName)"><img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/><span>{{loc.shortName}}</span></a></li>
         </ul>
       </li>
     </ul>
@@ -128,7 +128,14 @@
             <h4 class="box-title">Fuel Analytics</h4>
           </div>
           <div class="row">
-           <div class="col-md-1" align="center"></div>
+           <div class="col-md-2" align="center">
+              <div class="form-group" ng-if="shortNam!=undefined || shortNam!=null">
+                  <h5 style="color: grey;">{{shortNam}}</h5>
+              </div>
+                <div class="form-group" ng-if="shortNam==undefined || shortNam==null">
+                  <h5 style="color: red;">Vehicle not found</h5>
+                </div>
+            </div>
            <div class="col-md-2" align="center">
              <div class="form-group">
                <div class="input-group datecomp">
@@ -161,7 +168,7 @@
            </div>
          </div>
        </div>
-       <div class="col-md-2" align="center">
+       <div class="col-md-1" align="center">
          <div class="form-group">
            <div class="input-group datecomp">
             <select class="input-sm form-control" id="fuelValue">
@@ -173,11 +180,13 @@
          </div>
        </div>
      </div>
+  
       <div class="col-md-1" align="center">
-         
-      <span ng-click="plotHist()" id="button">Submit</span>
-    
-    </div>
+        <div class="form-group">
+          <button ng-click="plotHist()" style="margin-left: -30%; margin-top: 2px;">Submit</button>
+        </div>
+      </div>
+
   </div>
 
 <div class="col-md-12" style="margin-top:20px;">
