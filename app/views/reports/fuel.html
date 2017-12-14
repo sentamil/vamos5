@@ -454,18 +454,16 @@
     <script src="assets/js/naturalSortVersionDatesCaching.js"></script>
 <!--<script src="assets/js/naturalSortVersionDates.js"></script> -->
     <script src="assets/js/vamoApp.js"></script>
-    <script src="assets/js/unique.js"></script>
     <script src="assets/js/fuelreport.js"></script>
     
     <script>
+
+    function googleTranslateElementInit() {
+       new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    } 
      
-        $("#example1").dataTable();
-           $("#menu-toggle").click(function(e) {
-           e.preventDefault();
-           $("#wrapper").toggleClass("toggled");
-        });
-    
-        $(function () {
+ 
+     $(function () {
               $('#dateFrom, #dateTo').datetimepicker({
                 format:'YYYY-MM-DD',
                 useCurrent:true,
@@ -484,5 +482,3 @@
     </script>
   </body>
   </html>
-
-  
