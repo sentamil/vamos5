@@ -556,6 +556,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '$q', '$filter','_g
 
     $scope.getValueCheck = function(getStatus){
 
+
         $scope.getValue = getStatus;
 
           if($scope.getValue == 'YES') {
@@ -566,7 +567,7 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '$q', '$filter','_g
 
             var siteLength;
 
-                $http.get(geoUrl).success(function(response){
+                $http.get($scope.url_site).success(function(response){
 
                   polygenList =[];
                   var latLanlist, seclat, seclan, sp; 
@@ -648,9 +649,9 @@ $scope.initMap  = function(vals,initVal){
 
   //console.log('map init...');
 
-   startLoading();
+  startLoading();
 
-   console.log(initVal);
+//console.log(initVal);
 
   if(initVal==true) {
 
@@ -718,7 +719,7 @@ $scope.initMap  = function(vals,initVal){
         $('#stopButton').prop('disabled', false);
         $('#pauseButton').prop('disabled', false);
 
-      //  console.log("gooooogle...........");
+        console.log("gooooogle...........");
 
         clearInterval($scope.osmInterVal);
 
@@ -779,7 +780,7 @@ $scope.initMap  = function(vals,initVal){
         $('#stopButton').prop('disabled', false);
         $('#pauseButton').prop('disabled', false);
 
-        //console.log("gooooogle elseee...........");
+        console.log("gooooogle elseee...........");
 
         clearInterval($scope.osmInterVal);
          window.clearInterval(timeInterval);  
@@ -792,13 +793,17 @@ $scope.initMap  = function(vals,initVal){
         // $scope.initGoogVal=1; 
        //  $scope.plotVal=0;
 
-        if( $scope.hisloc.vehicleLocations !=null){
-          pcount = 0; 
-          $scope.polylineCtrl();
+      if( $scope.hisloc.vehicleLocations !=null){
 
-        }else{
-          stopLoading();
-        }
+         pcount = 0; 
+         //$scope.initGoogle_Map($scope.hisloc);
+
+      // $scope.initGoogle_Map($scope.hisloc);
+        $scope.polylineCtrl();
+
+      }else{
+        stopLoading();
+      }
 
          $scope.googleMap=true;
          $scope.osmMap=false;
@@ -813,8 +818,7 @@ $scope.initMap  = function(vals,initVal){
 
         // $scope.initGoogVal=1; 
         // $scope.plotVal=0;
-
-       // console.log('osm mapsssssss elseeee...');
+        // console.log('osm mapsssssss elseeee...');
 
         clearInterval($scope.osmInterVal);
 
@@ -2955,12 +2959,12 @@ $scope.polylineCtrl   = function(){
 
    if($scope.initGoogVal==0){
 
-   // console.log('initGoogVal==0...');
+    console.log('initGoogVal==0...');
 
 
     if($scope.map==undefined){
 
-      //      console.log('google init...');
+            console.log('google init...');
 
                if($scope.hisloc.vehicleLocations.length != 0) {
                     //console.log(parseInt(locs.tripDistance));
