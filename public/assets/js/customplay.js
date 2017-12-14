@@ -248,9 +248,9 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '$q', '$filter','_g
       }
 
 
-          $scope.initGoogle_Map = function(data){
+  $scope.initGoogle_Map = function(data){
 
-            console.log('google init...');
+            //console.log('google init...');
 
                if(data.vehicleLocations.length != 0) {
                     //console.log(parseInt(locs.tripDistance));
@@ -719,7 +719,7 @@ $scope.initMap  = function(vals,initVal){
         $('#stopButton').prop('disabled', false);
         $('#pauseButton').prop('disabled', false);
 
-        console.log("gooooogle...........");
+       // console.log("gooooogle...........");
 
         clearInterval($scope.osmInterVal);
 
@@ -780,7 +780,7 @@ $scope.initMap  = function(vals,initVal){
         $('#stopButton').prop('disabled', false);
         $('#pauseButton').prop('disabled', false);
 
-        console.log("gooooogle elseee...........");
+        //console.log("gooooogle elseee...........");
 
         clearInterval($scope.osmInterVal);
          window.clearInterval(timeInterval);  
@@ -1378,7 +1378,7 @@ var queue1 = [];
    // startLoading();
 
    var mapsVal=sessionStorage.getItem('mapNo');
-    console.log(mapsVal);
+    //console.log(mapsVal);
 
     if(mapsVal==0){
        $scope.maps_no  = 0;
@@ -2954,17 +2954,14 @@ $scope.polylineCtrl   = function(){
 
   if($scope.hisloc.vehicleLocations!=null){
 
-   
+  if($scope.initGoogVal==0){
 
-
-   if($scope.initGoogVal==0){
-
-    console.log('initGoogVal==0...');
+   // console.log('initGoogVal==0...');
 
 
     if($scope.map==undefined){
 
-            console.log('google init...');
+           // console.log('google init...');
 
                if($scope.hisloc.vehicleLocations.length != 0) {
                     //console.log(parseInt(locs.tripDistance));
