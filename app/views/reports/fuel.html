@@ -456,8 +456,33 @@
     <script src="assets/js/vamoApp.js"></script>
     <script src="assets/js/unique.js"></script>
     <script src="assets/js/fuelreport.js"></script>
+    
     <script>
-
+     
+        $("#example1").dataTable();
+           $("#menu-toggle").click(function(e) {
+           e.preventDefault();
+           $("#wrapper").toggleClass("toggled");
+        });
+    
+        $(function () {
+              $('#dateFrom, #dateTo').datetimepicker({
+                format:'YYYY-MM-DD',
+                useCurrent:true,
+                pickTime: false,
+                maxDate: new Date,
+                minDate: new Date(2015, 12, 1)
+              });
+              $('#timeFrom').datetimepicker({
+                pickDate: false
+              });
+              $('#timeTo').datetimepicker({
+                useCurrent:true,
+                pickDate: false
+              });
+        });      
     </script>
   </body>
   </html>
+
+  
