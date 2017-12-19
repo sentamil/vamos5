@@ -123,8 +123,8 @@ class DeviceControllerScan extends \BaseController {
                 log::info('--------------email outsite------------------>');
                 $mymail=Mail::send( 'vdm.business.empty',$data,function($message) use($file,$email1)
                  {
-                  //$message->to($email1);
-		              $message->to('ramakrishnan.vamosys@gmail.com');
+                  $message->to($email1);
+		              //$message->to('ramakrishnan.vamosys@gmail.com');
 		              $message->subject('Welcome to Vamosys');
                   $message->attach($file->store("xls",false,true)['full']);
                   log::info('-----------email send------------------>');
