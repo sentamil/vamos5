@@ -3656,5 +3656,134 @@ public function storeMulti() {
 
     return Redirect::to ( 'vdmVehicles' );  
   }
+  public function getVehicleDetails()
+  {
+    $vehicleId = Input::get ( 'id');
+    $redis = Redis::connection ();
+    //$ipaddress = $redis->get('ipaddress');
+    $ipaddress='188.166.244.126';
+    if (! Auth::check ()) {
+    return Redirect::to ( 'login' );
+   }
+    $ch=curl_init();
+    $username = Auth::user ()->username;
+    $parameters='&userId='. $username;
+    $url = 'http://' .$ipaddress .':9000/getSelectedVehicleLocation?vehicleId='.$vehicleId.$parameters;
+    $url=htmlspecialchars_decode($url);
+    log::info( 'Routing to backed  :' . $url );
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+    curl_close($ch);
+        $VehicleData=json_decode($response,true);
+        $lastComm1 = $VehicleData['lastComunicationTime'];
+        $lastComm=date("d-m-Y H:i:s", $lastComm1/1000);
+        $regNo=$VehicleData['regNo'];
+        $lastSeen=$VehicleData['lastSeen'];
+        $driverName=$VehicleData['driverName'];
+        $kms=$VehicleData['distanceCovered'];
+        $speed=$VehicleData['speed'];
+        $position=$VehicleData['position'];
+        $nearLoc=$VehicleData['address'];
+        $sat=$VehicleData['gsmLevel'];
+        $load=$VehicleData['loadTruck'];
+        $ac=$VehicleData['ignitionStatus'];
+        $cel=$VehicleData['temperature'];
+        $latitude=$VehicleData['latitude'];
+        $longitude=$VehicleData['longitude'];
+        $maxSpeed=$VehicleData['maxSpeed'];
+        $deviceVolt=$VehicleData['deviceVolt'];
+        $direction=$VehicleData['direction'];
+        $odoDistance=$VehicleData['odoDistance'];
+        $movingTime=$VehicleData['movingTime'];
+        $parkedTime=$VehicleData['parkedTime'];
+        $noDataTime =$VehicleData['noDataTime'];
+        $idleTime =$VehicleData['idleTime'];
+        $vehicleType =$VehicleData['vehicleType'];
+       
+        
+        if($position=='P')
+        {
+            $statusList='Parking';
+            $devicestatus='Parked';
+            $sec=$parkedTime/1000;
+            $day=floor($sec / (24*60*60));
+            $hour=floor(($sec - ($day*24*60*60)) / (60*60));
+            $min=floor(($sec - ($day*24*60*60)-($hour*60*60)) / 60);
+            $time=($day.'D:'.$hour.'H:'.$min.'m');
+            
+        }
+        else if($position=='M')
+        {
+            $statusList='Moving';
+            $devicestatus='Moving';
+           $sec=$movingTime/1000;
+            $day=floor($sec / (24*60*60));
+            $hour=floor(($sec - ($day*24*60*60)) / (60*60));
+            $min=floor(($sec - ($day*24*60*60)-($hour*60*60)) / 60);
+            $time=($day.'D:'.$hour.'H:'.$min.'m');
+        }
+        else if($position=='S')
+        {
+           $statusList='Idle';
+           $devicestatus='Idle';
+           $sec=$idleTime/1000;
+            $day=floor($sec / (24*60*60));
+            $hour=floor(($sec - ($day*24*60*60)) / (60*60));
+            $min=floor(($sec - ($day*24*60*60)-($hour*60*60)) / 60);
+            $time=($day.'D:'.$hour.'H:'.$min.'m');
+        }
+        else if($position=='N')
+        {
+           $statusList='New Device';
+           
+            $time=('0D:00H:00m');
+        }
+        else 
+        {  
+           $statusList='NoData';
+          $sec=$noDataTime/1000;
+            $day=floor($sec / (24*60*60));
+            $hour=floor(($sec - ($day*24*60*60)) / (60*60));
+            $min=floor(($sec - ($day*24*60*60)-($hour*60*60)) / 60);
+            $time=($day.'D:'.$hour.'H:'.$min.'m');
+        }
+    $error=' ';
+            if(count($response)==0)
+            {
+            $error='No organization available ,Please select another user';
+            }   
+
+        $refDataArr = array (
+
+            'maxSpeed' => $maxSpeed,
+            'regNo' => $regNo,
+            'lastComm'=> $lastComm,
+            'lastSeen' => $lastSeen,
+            'deviceVolt'=> $deviceVolt,
+            'kms' => $kms,
+            'speed' => $speed,
+            'position' => $position,
+            'nearLoc' => $nearLoc,
+            'sat' => $sat,
+            'direction' => $direction,
+            'ac' => $ac,
+            'odoDistance' => $odoDistance,
+            'latitude' => $latitude,
+            'longitude'=> $longitude,
+            'statusList'=>$statusList,
+            'devicestatus'=>$devicestatus,
+            'time'=>$time,
+            'vehicleType'=>$vehicleType,
+            'error'=>$error,
+            );
+
+        $refDataJson = json_encode ( $refDataArr );
+                     
+        return Response::json($refDataArr);
+}
 
 }

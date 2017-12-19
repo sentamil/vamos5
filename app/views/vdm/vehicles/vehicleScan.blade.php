@@ -1,5 +1,32 @@
 @include('includes.header_index')
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style>
+.bt{
+	margin-top: 5px !important;
+}
+.popover {
+	position: absolute;
+	border: 1px solid gray;
+	min-width:380px;
+	max-width:450px;
+	min-height: 240px;
+    max-height:260px;
+    background-color:#fdfdfd; 
+}
+.tabledata {
+    min-width: 350px;
+    max-width: 420px;
+    padding: 1px;
+}
+.tcentre{
+	text-align: center;
+}
+.table-striped{
+background-color:#e7e6e6;
+}
+
 table {
 width: 100%; 
 }
@@ -167,17 +194,81 @@ tr:nth-of-type(odd) {
 								<a class="btn btn-sm btn-warning" href="{{ URL::to('vdmVehicles/calibrateOil/' . $value,'0') }}">Calibrate</a>
 							    
 								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/rename/' . $value) }}">Rename</a>
+								
+								<button  type="button" class="btn btn-sm btn-primary bt" data-toggle="popover" onclick="getVal('{{$value}}')" data-trigger="focus" >Details</button>
 			
 				
 							</td>@endif 
 						</tr>
 						@endforeach
-						<script>
+ <script>
+ var lat;
+ var lng;
+ function getVal(val){   
 
+ 	var vehId=val;
+	
+	console.log('test vamos');
+	var datas = {
+		'id':vehId
+	}
+    $.post('{{ route("ajax.details") }}', datas, function(data, textStatus, xhr) {
+    lat=data.latitude;
+    lng=data.longitude;
+	
+	$('#maxSpeed').text(data.maxSpeed);
+	$('#regNo').text(data.regNo);
+	$('#time').text(data.time);
+	$('#lastComm').text(data.lastComm);
+	$('#lastSeen').text(data.lastSeen);
+	$('#deviceVolt').text(data.deviceVolt);
+	$('#position').text(data.position);
+	$('#sat').text(data.sat);
+	$('#kms').text(data.kms);
+	$('#ac').text(data.ac);
+	$('#speed').text(data.speed);
+	$('#direction').text(data.direction);
+	$('#nearLoc').text(data.nearLoc);
+	$('#latitude').text(data.latitude);
+	$('#longitude').text(data.longitude);
+	$('#odoDistance').text(data.odoDistance);
+	$('#statusList').text(data.statusList);
+	$('#devicestatus').text(data.devicestatus);
+    $('#vehicleType').text(data.vehicleType);
+	$('#error').text(data.error);
 
-
-
-  function ConfirmDelete()
+	if(data.error!=' ')	{
+	 //alert(data.error);
+	}
+   });								
+ }
+ function callFunct() {
+	var url="https://www.google.com/maps?q=loc:"+lat+","+lng;
+	window.open(url,'_blank');
+ }
+ $(document).ready(function(){
+	
+   $('[data-toggle="popover"]').popover({
+        placement : 'right',
+	    html : true,
+        content :'<div id="test1">'
+           +'<table class="tabledata table-striped " style="padding: 8px;">'
+           +'<tbody>'
+           +'<tr style="border-bottom: 1px solid #ddd;">'+'<td  id="regNo" colspan="3"  style="padding-top:5px; padding-left:100px; font-weight:bold; "></td><td><a href="#" onclick="callFunct()">G-Map</a></td></tr>'
+           +'<tr style="border-bottom: 1px solid #ddd;">'+'<td style="padding-top:5px; padding-right:5px; padding-left:8px; font-weight:bold; ">Odo(kms)</td>'+'<td id="odoDistance" style="padding-top:5px;border-right:0.5px solid #c8cec6; padding-left:8px;"></td>'+'<td style="padding-top:5px; padding-left:8px; font-weight:bold; padding-right:5px;">Kms</td>'+'<td id="kms" style="padding-top:5px; padding-left:3px;padding-left:8px;"></td></tr>'
+           +'<tr style="border-bottom: 1px solid #ddd;"><td style="padding-top:5px; padding-left:8px; font-weight:bold; padding-right:5px;">Ignition</td>'+'<td id="ac" style="padding-top:5px; border-right:0.5px solid #c8cec6; padding-left:8px;"></td>'+'<td style="padding-top:5px; padding-left:8px; font-weight:bold; padding-right:5px;">MaxSpeed</td>'+'<td id="maxSpeed" style="padding-top:5px; padding-left:8px;"></td></tr>'
+           +'<tr style="border-bottom: 1px solid #ddd;"><td style="padding-top:5px; padding-left:8px; font-weight:bold; padding-right:5px;">Volt</td>'+'<td id="deviceVolt" style="padding-top:5px; border-right:0.5px solid #c8cec6; padding-left:8px;"></td>'+'<td style="padding-top:5px;padding-left:8px; font-weight:bold; padding-right:5px;">Speed</td>'+'<td id="speed" style="padding-top:5px; padding-left:8px;"></td></tr>'
+           +'<tr style="border-bottom: 1px solid #ddd;"><td style="padding-top:5px; padding-left:8px; font-weight:bold; padding-right:5px;">SatCount</td>'+'<td id="sat" style="padding-top:5px; border-right:0.5px solid #c8cec6; padding-left:8px;"></td>'+'<td style="padding-top:5px;padding-left:8px; font-weight:bold; padding-right:5px;">VehicleType</td>'+'<td id="vehicleType" style="padding-top:5px; padding-left:8px;"></td></tr>'
+           +'<tr style="border-bottom: 1px solid #ddd;"><td style="padding-top:5px; padding-left:8px; font-weight:bold; padding-right:5px;">Position</td>'+'<td id="statusList" style="padding-top:5px; border-right:0.5px solid #c8cec6; padding-left:8px;"></td>'+'<td id="devicestatus" style="padding-top:5px; padding-left:8px; font-weight:bold; padding-right:5px;"></td>'+'<td id="time" style="padding-top:5px; padding-left:8px;"></td>'
+           +'<tr style="border-bottom: 1px solid #ddd;"><td style="padding-top:5px; padding-left:8px; font-weight:bold;">Loc Time</td>'+'<td class="tcentre" style="break-word:wrap; padding-top:5px; border-right:0.5px solid #c8cec6; padding-left:8px;" id="lastSeen"></td>'
+           +'<td style="padding-top:5px; padding-left:8px; font-weight:bold;">Comm Time</td>'
+           +'<td class="tcentre" padding-top:5px; padding-left:8px;" id="lastComm"></td></tr>'
+           +'<tr><td colspan="4" class="tcentre" style="break-word:wrap; padding-top:5px;padding-bottom:5px;" id="nearLoc"></td></tr>'
+           +'</tbody></table>'
+           +'</div>'
+		  });
+    });	
+ function ConfirmDelete()
   {
   var x = confirm("Confirm to remove?");
   if (x)

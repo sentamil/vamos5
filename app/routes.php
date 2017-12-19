@@ -1076,6 +1076,7 @@ Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dea
 
 Route::resource('vdmVehicles', 'VdmVehicleController');
 Route::get('vdmVehicles/edit/{param1}', array('uses' => 'VdmVehicleController@edit'));
+Route::post('select0', array('as' => 'ajax.details', 'uses' => 'VdmVehicleController@getVehicleDetails'));
 Route::resource('vdmVehiclesView', 'VdmVehicleViewController');
  
 Route::resource('VdmVehicleScan', 'VdmVehicleScanController'); 
