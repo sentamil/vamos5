@@ -9,7 +9,7 @@
                 <div class="panel-heading">
                     <h4>
 					@if(Session::get('vCol')=='1')
-                    <b>Vehicles List</b>
+                    <b>Vehicle List</b>
                     @endif  
                     @if(Session::get('vCol')=='2')
                     <b>View Vehicles</b>
