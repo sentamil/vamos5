@@ -1,5 +1,5 @@
 @include('includes.header_index')
-<script>
+<style>
 table {
 width: 100%; 
 }
@@ -167,15 +167,17 @@ tr:nth-of-type(odd) {
 								<a class="btn btn-sm btn-warning" href="{{ URL::to('vdmVehicles/calibrateOil/' . $value,'0') }}">Calibrate</a>
 							    
 								<a class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/rename/' . $value) }}">Rename</a>
-								
 			
 				
 							</td>@endif 
 						</tr>
 						@endforeach
- <script>
+						<script>
 
- function ConfirmDelete()
+
+
+
+  function ConfirmDelete()
   {
   var x = confirm("Confirm to remove?");
   if (x)
