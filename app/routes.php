@@ -1106,6 +1106,10 @@ Route::post('orgId', array('as' => 'ajax.ordIdCheck', 'uses'=>'VdmOrganizationCo
 Route::post('userId', array('as' => 'ajax.userIdCheck', 'uses'=>'VdmUserController@userIdCheck'));
 Route::post('vdmVehicles/calibrate/count', array('uses'=>'VdmVehicleController@calibrateCount'));
 
+///onboard search
+Route::get('DeviceScan/sendExcel', array('uses' => 'DeviceControllerScan@sendExcel'));
+Route::resource('DeviceScan', 'DeviceControllerScan');
+///
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
 Route::resource('Licence', 'LicenceController');
