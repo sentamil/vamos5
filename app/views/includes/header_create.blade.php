@@ -112,6 +112,9 @@
              <li>
                 <a href="../Device"> <span class="nav-label">Onboard Devices</span></a>
             </li>
+            <li>
+                <a href="../DeviceScan"> <span class="nav-label">Onboarded Devices Search</span><span class="label label-success pull-right">NEW</span></a>
+            </li>
             @endif 
              @if(Session::get('cur')=='dealer')
         <li><a href="../Business"> <span class="nav-label">Device List</span> <span class="label label-success pull-right">v.2</span> </a></li> 
