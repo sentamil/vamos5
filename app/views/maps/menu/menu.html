@@ -101,15 +101,15 @@
         <a><span  data-hover="sensor"><div class="glyphicon glyphicon-list"></div>&nbsp;sensor</span></a>
             <!-- <a><span data-hover="sensor">sensor</span></a> -->
             <ul>
-                    <li class="removeli" id="acNewRl"><a id="acNew" href=""> AC </a></li>
+                    <li class="removeli" id="acRl"><a id="ac" href=""> AC </a></li>
                     <li class="removeli" id="loadRl"><a id="load" href=""> Load </a></li>
                     <li class="removeli" id="tempRl"><a id="temp" href=""> Temperature</a></li>
                     <li class="removeli" id="tempdevRl"><a id="tempdev" href=""> Temperature Deviation</a></li>
                     <li class="removeli" id="distTimeRl"><a href="../public/fuel">Distance &amp; Time</a></li>
+                    <li class="removeli" id="fuelNewRl"><a id="fuelNew" href="">Fuel New</a></li>
                     <li class="removeli" id="fuelFillRl"><a href="../public/fuel?tab=fuelfill">Fuel Fill</a></li>
                     <li class="removeli" id="rfidRl"><a id="rfid" href="">Rfid</a></li>
                     <li class="removeli" id="cameraRl"><a id="camera" href="">Camera</a></li> 
-                    <li class="removeli" id="cameraNewRl"><a id="cameraNew" href="">Camera New</a></li> 
             </ul>
         </li>
         <!-- <li class="cl-effect-5">
@@ -346,8 +346,8 @@
 
                             switch(newReportNamesss[k]){
 
-                                case 'AC_NEW':
-                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].AC_NEW==false){ document.getElementById('acNewRl').innerHTML ='';}
+                                case 'AC':
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].AC==false){ document.getElementById('acRl').innerHTML ='';}
                                 break;
                                 case 'DISTANCE_TIME':
                                   if( menuObj[i].Sensor_IndivdiualReportsList[0].DISTANCE_TIME==false){ document.getElementById('distTimeRl').innerHTML ='';}
@@ -361,6 +361,9 @@
                                 case 'LOAD':
                                   if( menuObj[i].Sensor_IndivdiualReportsList[0].LOAD==false){  document.getElementById('loadRl').innerHTML = '';}
                                 break;
+                                case 'FUEL_NEW':
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].FUEL_NEW==false){  document.getElementById('fuelNewRl').innerHTML = '';}
+                                break;
                                 case 'FUEL_FILL':
                                   if( menuObj[i].Sensor_IndivdiualReportsList[0].FUEL_FILL==false){  document.getElementById('fuelFillRl').innerHTML = '';}
                                 break;
@@ -370,10 +373,6 @@
                                 case 'CAMERA':
                                   if( menuObj[i].Sensor_IndivdiualReportsList[0].CAMERA==false){  document.getElementById('cameraRl').innerHTML = '';}
                                 break;
-                                case 'CAMERA_NEW':
-                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].CAMERA_NEW==false){  document.getElementById('cameraNewRl').innerHTML = '';}
-                                break;
-                              
                             }
  
                         }
@@ -525,6 +524,9 @@
             $("#fuel").click(function() {
                 $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=fuel')
             });
+            $("#fuelNew").click(function() {
+                $(this).attr("href", 'fuelNew?vid='+vid+'&vg='+gname+'&tn=fuelNew')
+            });
             $("#ignition").click(function() {
                 $(this).attr("href", 'history?vid='+vid+'&vg='+gname+'&tn=ignition')
             });
@@ -559,18 +561,14 @@
                 $(this).attr("href", 'rfidTag?vid='+vid+'&vg='+gname+'&tn=rfid')
             })
 
-            $('#acNew').click(function(){
-                $(this).attr("href", 'acNew?vid='+vid+'&vg='+gname+'&tn=acNew')
+            $('#ac').click(function(){
+                $(this).attr("href", 'ac?vid='+vid+'&vg='+gname+'&tn=ac')
             })
             
             $('#camera').click(function(){
                 $(this).attr("href", 'camera?vid='+vid+'&vg='+gname+'&tn=camera')
             })
 
-            $('#cameraNew').click(function(){
-                $(this).attr("href", 'cameraNew?vid='+vid+'&vg='+gname+'&tn=cameraNew')
-            })
-            
             $('#stopReport').click(function(){
                 $(this).attr("href", 'stopReport?vid='+vid+'&vg='+gname+'&tn=stopReport')
             })
@@ -746,4 +744,3 @@
      }); */
 
 </script>
-

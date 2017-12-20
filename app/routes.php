@@ -196,17 +196,10 @@ Route::get('/camera', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
-    return View::make('reports.cameraReport');
-});
-
-Route::get('/cameraNew', function() {
-    if (!Auth::check()) {
-        return Redirect::to('login');
-    }
     return View::make('reports.cameraReportNew');
 });
 
-Route::get('/acNew', function() {
+Route::get('/ac', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
@@ -269,6 +262,13 @@ Route::get('/fuel', function(){
         return Redirect::to('login');
     }
     return View::make('reports.fuel');
+});
+
+Route::get('/fuelNew', function(){
+    if(!Auth::check()){
+        return Redirect::to('login');
+    }
+    return View::make('reports.fuelNew');
 });
 
 Route::get('/fuelAnalytics', function(){
@@ -661,6 +661,14 @@ Route::get('/getFuelReportDaily', function() {
     return View::make('vls.getFuelReportDaily');
 });
 
+Route::get('/getVehicleFuelHistory4Mobile', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('get VehicleFuelHistory4Mobile');
+    return View::make('vls.getVehicleFuelHistory4Mobile');
+});
+
 Route::get('getDistanceTimeFuelReport', function(){
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -668,13 +676,13 @@ Route::get('getDistanceTimeFuelReport', function(){
     return View::make('vls.getDistanceTimeFuelReport');
 });
  
-Route::get('/getPictures', function() {
+/*Route::get('/getPictures', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
     }
     Log::info('getPictures');
     return View::make('vls.getPictures');
-});
+});*/
 
 Route::get('/getImages', function() {
     if (!Auth::check()) {
@@ -921,8 +929,11 @@ Route::get('/vdmVehicles/migrationUpdate', function() {
 Route::get('viewSite', function() {
     return View::make('vls.viewSite');
 });
- 
 
+Route::get('configureSafetyParkingAlarm', function() {
+    return View::make('vls.configureSafetyParkingAlarm');
+});
+ 
 Route::group(array('before' => 'userauth'), function(){ 
         Route::get('/sites', function() {
             if (!Auth::check()) {
@@ -1076,6 +1087,7 @@ Route::get('vdmVehicles/dealerSearch', array('uses' => 'VdmVehicleController@dea
 
 Route::resource('vdmVehicles', 'VdmVehicleController');
 Route::get('vdmVehicles/edit/{param1}', array('uses' => 'VdmVehicleController@edit'));
+Route::post('select0', array('as' => 'ajax.details', 'uses' => 'VdmVehicleController@getVehicleDetails'));
 Route::resource('vdmVehiclesView', 'VdmVehicleViewController');
  
 Route::resource('VdmVehicleScan', 'VdmVehicleScanController'); 
@@ -1106,6 +1118,10 @@ Route::post('orgId', array('as' => 'ajax.ordIdCheck', 'uses'=>'VdmOrganizationCo
 Route::post('userId', array('as' => 'ajax.userIdCheck', 'uses'=>'VdmUserController@userIdCheck'));
 Route::post('vdmVehicles/calibrate/count', array('uses'=>'VdmVehicleController@calibrateCount'));
 
+///onboard search
+Route::get('DeviceScan/sendExcel', array('uses' => 'DeviceControllerScan@sendExcel'));
+Route::resource('DeviceScan', 'DeviceControllerScan');
+///
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
 Route::resource('Licence', 'LicenceController');
@@ -1243,4 +1259,3 @@ Route::get('/Test',array('uses'=>'TestController@postAuth'));
 Route::get('/Example',array('uses'=>'ExampleController@testExample'));
 Route::get('/Hello',array('uses'=>'HelloController@testHello'));
 Route::post('/meenatest',array('uses'=>'HelloController@meenatest'));
-

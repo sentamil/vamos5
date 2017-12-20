@@ -349,18 +349,20 @@ button, input, select, textarea {
                 
                 <tr style="border-top: 1px solid #d9d9d9">
                   <td width="15%">Date&amp;Time</td>
-                  <td width="10%">Max (kmph)</td>
+                  <td width="7%">Max (kmph)</td>
+                  <td width="8%">Out</td>
                   <td width="7%">Sat</td>
-                  <td width="37%">Address</td>
-                  <td width="8%">Direction</td>
+                  <td width="35%">Address</td>
+                  <td width="7%">Direction</td>
                   <td width="10%">G-Map</td>
                   <!-- <td width="7%">Dist</td> -->
                   <td width="10%">C-Dist (kms)</td>
-                  <td width="12%">Odo (kms)</td>
+                  <td width="10%">Odo (kms)</td>
                 </tr>
                 <tr ng-repeat="all in allData" ng-click="markerPoup(all)">
                   <td>{{all.date | date:'yy-MM-dd HH:mm:ss'}}</td>
                   <td>{{all.speed}}</td>
+                  <td><span ng-if="all.isOutOfOrder=='yes'">Yes</span ><span ng-if="all.isOutOfOrder=='no'">No</span></td>
                   <td>{{all.gsmLevel}}</td>
                   <td>
                     <p ng-if="all.address!=null">{{all.address}}</p>
@@ -1042,7 +1044,7 @@ button, input, select, textarea {
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
-// scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
    scriptLibrary.push("http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js");   
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
@@ -1096,3 +1098,4 @@ button, input, select, textarea {
 
 </body>
 </html>
+
