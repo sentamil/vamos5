@@ -531,12 +531,14 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
 
   function fetchingAddress(pos){
 
-    if(pos.address == null || pos.address == undefined || pos.address == ' ')
+    if(pos.address == null || pos.address == '-' || pos.address == undefined || pos.address == ' '){
       $scope.getLocation(pos.latitude, pos.longitude, function(count){ 
         $('#lastseen').text(count); 
       });
-    else
+    }
+    else{
       $('#lastseen').text(pos.address.split('<br>Address :')[1] ? pos.address.split('<br>Address :')[1] : pos.address);
+    }
   }
 
   $scope.drawLine = function(loc1, loc2){
@@ -3427,4 +3429,3 @@ var gaugeOptions = {
             document.body.style.zoom="90%";
         }
     });
-
