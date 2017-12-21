@@ -416,36 +416,36 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
         	// }
            		   //Session::put('email',$mailId);
 		   ///user notification
-	 //      $result=array_diff($oldVehi,$updateVehi);
-     //       foreach ($result as $key => $oldV) 
-	 //        {
-     //        $Ulist=$redis->hget('H_Vehicle_Map_Uname_'.$fcode, $oldV.'/'.$id);
-     //        //$redis->hdel('H_Vehicle_Map_Uname_'.$fcode, $oldV.'/'.$id);
-     //        $myArray = explode('/', $Ulist);
-     //          foreach ($myArray as $keyold => $user) 
-     //          {
-     //            $groupList=$redis->smembers($user);
-     //               foreach ($groupList as $keys => $group) 
-	 //               {
-     //                 if($id!=$group)
-     //                 {
-     //                  $gCheck=$redis->sismember($group, $oldV);
-     //                   if($gCheck==1)
-     //                   {
-     //                   	log::info('entry');
-     //                   	break;
-     //                   }
-     //                    else
-     //                    {
-     //                     $getV = $redis->hget('H_Vamo_Notification_Vehicle_map_'.$fcode, $oldV);                      	
-	 //                     $users = str_replace(','.$user, '', $getV);
-	 //                     $redis->hset('H_Vamo_Notification_Vehicle_map_'.$fcode, $oldV, $users);	
-     //                    }
-     //                 }                     
-     //               }
-     //          }
+	      $result=array_diff($oldVehi,$updateVehi);
+           foreach ($result as $key => $oldV) 
+	        {
+            $Ulist=$redis->hget('H_Vehicle_Map_Uname_'.$fcode, $oldV.'/'.$id);
+            $redis->hdel('H_Vehicle_Map_Uname_'.$fcode, $oldV.'/'.$id);
+            $myArray = explode('/', $Ulist);
+              foreach ($myArray as $keyold => $user) 
+              {
+                $groupList=$redis->smembers($user);
+                   foreach ($groupList as $keys => $group) 
+	               {
+                     if($id!=$group)
+                     {
+                      $gCheck=$redis->sismember($group, $oldV);
+                       if($gCheck==1)
+                       {
+                       	log::info('entry');
+                       	break;
+                       }
+                        else
+                        {
+                         $getV = $redis->hget('H_Vamo_Notification_Vehicle_map_'.$fcode, $oldV);                      	
+	                     $users = str_replace(','.$user, '', $getV);
+	                     $redis->hset('H_Vamo_Notification_Vehicle_map_'.$fcode, $oldV, $users);	
+                        }
+                     }                     
+                   }
+              }
                    
-     //       }
+           }
 		   ///
         	log::info('  before sending mail ');
         	log::info(array_values($mailId));

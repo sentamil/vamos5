@@ -883,6 +883,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 						$redis->hset ( 'H_RefData_' . $fcode, $vehicleId, $refDataJson );
 					    $orgId1=strtoupper($orgId);
 					    $redis->hset ( 'H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
+						$redis->hset('H_Vehicle_Map_Uname_' . $fcode, $vehicleId.'/'.$groupId . ':' . $fcode, $userId);
 						$cpyDeviceSet = 'S_Device_' . $fcode;
 						$redis->sadd ( $cpyDeviceSet, $deviceid );
 						$vehicleDeviceMapId = 'H_Vehicle_Device_Map_' . $fcode;
@@ -1487,6 +1488,8 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
                                  $orgId1=strtoupper($orgId);
                                  $redis->hset('H_VehicleName_Mobile_Dealer_'.$ownerShip.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName1.':'.$orgId1.':'.$gpsSimNo1, $vehicleId );
                                  $redis->hdel('H_VehicleName_Mobile_Dealer_'.$ownerShip.'_Org_'.$fcode, $vehicleId.':'.$deviceId.':'.$shortName1.':DEFAULT:'.$gpsSimNo1, $vehicleId );								 
+								 $redis->hdel('H_Vehicle_Map_Uname_' . $fcode, $vehicleId.'/:'.$fcode);
+								 $redis->hset('H_Vehicle_Map_Uname_' . $fcode, $vehicleId.'/'.$groupId . ':' . $fcode, $userId);				
 												$details=$redis->hget('H_Organisations_'.$fcode,$organizationId);
 												Log::info($details.'before '.$ownerShip);
 												if($type=='Sale' && $type1=='new' && $organizationId!=='default' && $organizationId!=='Default')
