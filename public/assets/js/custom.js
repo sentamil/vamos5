@@ -531,12 +531,11 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
 
   function fetchingAddress(pos){
 
-    if(pos.address == null || pos.address == '-' || pos.address == undefined || pos.address == ' '){
+    if( pos.address == '_' || pos.address == null || pos.address == undefined || pos.address == ' '){
       $scope.getLocation(pos.latitude, pos.longitude, function(count){ 
         $('#lastseen').text(count); 
       });
-    }
-    else{
+    } else{
       $('#lastseen').text(pos.address.split('<br>Address :')[1] ? pos.address.split('<br>Address :')[1] : pos.address);
     }
   }
