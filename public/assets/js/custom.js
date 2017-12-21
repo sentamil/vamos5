@@ -97,6 +97,7 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
   $scope._editValue_con   = false;
   $scope._editValue       = {};
   $scope._editValue._vehiTypeList = ['Truck', 'Car', 'Bus', 'Bike'];
+  //$scope.sparkArr   = ['yes','no'];
 
   $scope.navReports = "../public/reports";
   $scope.navStats   = "../public/statistics";
@@ -531,11 +532,12 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
 
   function fetchingAddress(pos){
 
-    if( pos.address == '_' || pos.address == null || pos.address == undefined || pos.address == ' '){
+    if( pos.address == '_' || pos.address == null || pos.address == undefined || pos.address == ' ' ){
       $scope.getLocation(pos.latitude, pos.longitude, function(count){ 
         $('#lastseen').text(count); 
       });
-    } else{
+    }
+    else{
       $('#lastseen').text(pos.address.split('<br>Address :')[1] ? pos.address.split('<br>Address :')[1] : pos.address);
     }
   }
@@ -634,29 +636,26 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
 
 //for edit details in the right side div
 //  document.getElementById("inputEdit").disabled = true;
-  function editableValue()
-  {
+  function editableValue() {
     document.getElementById("inputEdit").disabled = false;
   }
 
-
-
   //update function in the right side div
-  $scope.updateDetails  =   function()
-  {
+  $scope.updateDetails  =   function() {
 
-    console.log('update function called!...');
-    //console.log($scope._editValue.routeName);
+     console.log('update function called!...');
 
+   //console.log($scope._editValue.routeName);
     $('#vehiid #val').text($scope.vehShort);
     $('#toddist #val').text($scope.ododis);
-    //$('#vehstat #val').text(dataVal.position);
+  //$('#vehstat #val').text(dataVal.position);
     $('#regNo span').text($scope.refname);
     $('#routeName span').text($scope._editValue.routeName);
     $('#vehitype span').text($scope.vehType);
     $('#mobNo span').text($scope.mobileNo);
     $('#mobno #val').text($scope.spLimit);
     $('#driverName #val').text($scope.driName);
+    $('#safePark span').text($scope.sparkType);
 
 
     var URL_ROOT = "vdmVehicles/"; 
@@ -673,12 +672,34 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
     })
       .done(function(data) {
     //  updateCall();
-        console.log("Success");
+        console.log("update details success..");
       })
       .fail(function() {
   //  updateCall();
-        console.log("fail");
+        console.log("update details fails..");
       });
+
+     var saferParkUrl  = GLOBAL.DOMAIN_NAME+'/configureSafetyParkingAlarm?vehicleId='+ $scope.vehicleid+'&enableOrDisable='+$scope.sparkType;
+     //console.log(saferParkUrl);
+
+    $.ajax({
+      async: false,
+      method: 'GET', 
+      url: saferParkUrl,
+      success: function (response){
+        if(response=="success"){
+         console.log('safety park updating '+response+'..');
+        } else if(response=="fail"){
+         console.log('safety park updating '+response+'..');
+        } else{
+          console.log('safety park : hello '+response);
+        }
+        //$scope.toast = response;
+        //toastMsg();
+      }
+
+    });
+
       
    // document.getElementById("inputEdit").disabled = false;
     $("#editable").hide();
@@ -1500,12 +1521,14 @@ gmarkers_osm[gmarkers_osm.length-1].addEventListener( "click", function(e){
     $scope.refname   = dataVal.regNo;
     $scope.vehType   = dataVal.vehicleType;
     $scope._editValue.routeName = dataVal.routeName;
+    $scope.sparkType = dataVal.safetyParking;
 
     $('#vehiid #val').text(dataVal.shortName);
     $('#toddist #val').text(dataVal.distanceCovered);
     $('#vehstat #val').text(dataVal.position);
     $('#regNo span').text(dataVal.regNo);
     $('#routeName span').text(dataVal.routeName);
+    $('#safePark span').text(dataVal.safetyParking);
     $('#vehitype span').text(dataVal.vehicleType);
     $('#mobNo span').text(dataVal.mobileNo);
     $('#graphsId #speed').text(dataVal.speed);

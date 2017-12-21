@@ -501,8 +501,11 @@ body{
                                                     <td>Route</td>
                                                     <td id="routeName"><span></span></td>
                                                 </tr>
-                                                
-                                        </table>
+                                                <tr>
+                                                    <td>Safe Park</td>
+                                                    <td id="safePark"><span></span></td>
+                                                </tr>
+                                            </table>
                                     </div>
                                 </div>
 
@@ -540,11 +543,11 @@ body{
                                                 <tr>
                                                     <td>Vehicle Type</td>
                                                     <td>
-                                                        <select style="height: 18px; width: 70px" ng-model="vehType">
+                                                        <select ng-model="vehType" class="_button_select_small">
                                                             <option value = "Car">Car</option>
                                                             <option value = "Bike">Bike</option>
                                                             <option value = "Bus">Bus</option>
-                                                            <option value = "heavy Vehicles">heavy Vehicles</option>
+                                                            <option value = "heavy Vehicles">Heavy Vehicle</option>
                                                         </select>
                                                     </td>
                                                 </tr>
@@ -559,10 +562,19 @@ body{
                                                 <tr>
                                                     <td>Route Name</td>
                                                     <td> 
-                                                    <select ng-options="vehi for vehi in _editValue._vehiRoutesList" ng-model="_editValue.routeName" class="_button_select_small">
-                                                      <option style="display:none" value="">Select Route</option>
-                                                    </select>
+                                                     <select ng-options="vehi for vehi in _editValue._vehiRoutesList" ng-model="_editValue.routeName" class="_button_select_small">
+                                                       <option style="display:none" value="">Select Route</option>
+                                                     </select>
                                                     </td>
+                                                </tr>
+                                                 <tr>
+                                                    <td>Safe Park</td>
+                                                     <td> 
+                                                        <select ng-model="sparkType" class="_button_select_small">
+                                                            <option value = "yes">yes</option>
+                                                            <option value = "no">no</option>
+                                                        </select>
+                                                     </td>
                                                 </tr>
                                         </table>
                                     </div>
@@ -770,8 +782,8 @@ if(apikey_url != null || apikey_url != undefined){
    scriptLibrary.push("assets/js/bootstrap.min.js");
    scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js");
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
- //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push(url);
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
    scriptLibrary.push("http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js");
    scriptLibrary.push("assets/js/leaflet.label.js");
    scriptLibrary.push("http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js");
@@ -803,4 +815,3 @@ if(apikey_url != null || apikey_url != undefined){
    
 </body>
 </html>
-
