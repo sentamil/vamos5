@@ -115,8 +115,9 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
   var markerClusters;
   var map =null;
   
-  var vehicleids=[];
-  var polygenList=[];
+  var vehicleids   = [];
+  var polygenList  = [];
+  var polygonList2 = []; 
 
   $scope.tabView  = 1;
   $scope.orgIds   = [];
@@ -1799,6 +1800,31 @@ function colorChange(value){
 
 }
 
+
+//draw polygon in osm map 
+
+function polygonDraw_osm(data){
+
+    var sp_osm,myLatlngs;
+    polygonList2 = []; 
+
+    var splits   = data.latLng.split(",");
+
+    for(var i = 0; splits.length>i; i++) {
+       sp_osm           = splits[i].split(":");
+       myLatlngs = new L.LatLng(sp_osm[0], sp_osm[1]);
+       polygonList2.push(myLatlngs);
+    }
+
+    $scope.polygonOsm = L.polygon(polygonList2,{ className: 'polygon_osm' }).addTo($scope.map_osm);
+
+    if(myLatlngs) {
+        var markerPoly = new L.marker(myLatlngs);
+        markerPoly.setIcon($scope.iconPoly).bindLabel(data.siteName, { noHide: true, className: 'polygonLabel', clickable: true, direction:'auto' });
+        markerPoly.addTo($scope.map_osm);
+    }
+}
+
 //draw polygen in map function
 function polygenDrawFunction(list){
     
@@ -1861,25 +1887,58 @@ function locat_address(locs) {
  function siteInvoke(val){
     var url_site          = GLOBAL.DOMAIN_NAME+'/viewSite';
     vamoservice.getDataCall(url_site).then(function(data) {
-      // console.log(data)
-      if(data.siteParent && $scope._addPoi == false)
-        angular.forEach(data.siteParent, function(value, key){
-          //console.log(' value'+key)
-          if(val == value.orgId){
-            angular.forEach(value.site, function(vals, keys){
-              //console.log('inside the for loop')
-              polygenDrawFunction(vals);
-            })
+      // console.log(data);
+      if(data.siteParent && $scope._addPoi == false){
 
-          if(value.location.length>0)
-            angular.forEach(value.location, function(locs, ind){
-              locat_address(locs);
-            })
-          }
-        });
-        // && $scope._addPoi == true
-      if(data && data.orgIds != undefined)
+        if(map_change==0){
+          angular.forEach(data.siteParent, function(value, key){
+          //console.log(' value'+key);
+            if(val == value.orgId){
+              angular.forEach(value.site, function(vals, keys){
+              //console.log('inside the for loop');
+                polygenDrawFunction(vals);
+              }); 
+
+              if(value.location.length>0){
+                angular.forEach(value.location, function(locs, ind){
+                 locat_address(locs);
+                });
+              }
+            }
+          });
+        } else if(map_change==1){
+
+           $scope.iconPoly = L.icon({
+             iconUrl: 'assets/imgs/trans.png',
+             iconAnchor:[0,0],
+             labelAnchor: [-15,10],
+           }); 
+
+           angular.forEach(data.siteParent, function(value, key){
+           //console.log(' value'+key);
+            if(val == value.orgId){
+              angular.forEach(value.site, function(vals, keys){
+              //console.log('inside the for loop');
+                polygonDraw_osm(vals);
+              }); 
+
+            if($scope.polygonOsm){
+              $scope.map_osm.fitBounds($scope.polygonOsm.getBounds());
+            }  
+
+             /* if(value.location.length>0){
+                  angular.forEach(value.location, function(locs, ind){
+                     locat_address(locs);
+                  });
+                } */
+            }
+          });
+        }
+      }
+
+      if(data && data.orgIds != undefined){
         $scope.orgIds   = data.orgIds;
+      }
 
     })
   }
@@ -2039,21 +2098,15 @@ function locat_address(locs) {
       if($scope.groupMap == true){
 
      setMapAllOsm(); 
-
-   }
-
     }
-
   }
+}
 
 
 $scope.initilize_osm = function(ID){
 
-
- // console.log('initilize_osm...');
-
-
-        var location02 = $scope.locations02;
+   // console.log('initilize_osm...');
+      var location02 = $scope.locations02;
 
       if($('.nav-second-level li').eq($scope.selected).children('a').hasClass('active')){
         }else{
@@ -2168,30 +2221,14 @@ $scope.initilize_osm = function(ID){
 
   //for the polygen draw
 
-  // polygenFunction(location02_osm);
+   polygenFunction(location02);
 
-    // $('#status').fadeOut(); 
+  // $('#status').fadeOut(); 
   // $('#preloader').delay(350).fadeOut('slow');
   // $('body').delay(350).css({'overflow':'visible'});
   
   stopLoading();
 
-/*  var input_value   =  document.getElementById('pac-input');
-    var sbox     =  new google.maps.places.SearchBox(input_value);
-  // search box function
-    sbox.addListener('places_changed', function() {
-      markerSearch.setMap(null);
-      var places = sbox.getPlaces();
-      markerSearch = new google.maps.Marker({
-        position: new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()),
-        animation: google.maps.Animation.BOUNCE,
-        map: $scope.map,
-    
-      });
-      console.log(' lat lan  '+places[0].geometry.location.lat(), places[0].geometry.location.lng())
-      $scope.map.setCenter(new google.maps.LatLng(places[0].geometry.location.lat(), places[0].geometry.location.lng()));
-      $scope.map.setZoom(13);
-    });*/
 }
 
 

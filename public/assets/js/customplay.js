@@ -31,12 +31,14 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '$q', '$filter','_g
   var vehicsIcon          = [];
   var gmarkersOsm         = [];
   var infoWindowOsm       = [];
-  var VehiType;
-  var myIcons;
-  var osmInterVal;
-  $scope.lineCount_osm    = 0;
-  $scope.initGoogVal=0;
-  $scope.plotVal=0; 
+  var VehiType, myIcons, osmInterVal, polygonval, siteLength;
+  var siteDataCall    = 0;
+  var polygonInitOsm  = 0;
+  var polygonInitGoog = 0;
+  
+  $scope.lineCount_osm = 0;
+  $scope.initGoogVal   = 0;
+  $scope.plotVal       = 0; 
 
   /* $('#pauseButton').hide();
      $('#playButton').hide();      
@@ -340,17 +342,18 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '$q', '$filter','_g
 
   $scope.initOsm_Map=function(data){
  
+    if(polygonInitOsm==1){
+      polygonInitOsm=0;
+    }
 
 
-      if($scope.map_osm!=undefined){
+    if($scope.map_osm!=undefined){
 
-         //console.log("osm map undefined....");
-
+      // console.log("osm map undefined....");
       // $scope.map_osm.panTo(null);
       // window.clearInterval(timeInterval);  
 
         if($scope.markerss){
-        
           $scope.map_osm.removeLayer($scope.markerss);
         }
 
@@ -358,32 +361,26 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '$q', '$filter','_g
          $scope.map_osm.removeLayer($scope.polylines_osm);
        }
 
-      /*   delete $scope.markerss;
+      /* delete $scope.markerss;
          delete $scope.polylines_osm;
-         delete myIcons;*/
+         delete myIcons; */
          
          $scope.map_osm.removeLayer($scope.tileOsm);
          $scope.map_osm.remove();
-      /*   delete $scope.map_osm;
+      
+      /* delete $scope.map_osm;
          delete $scope.tileOsm;
-         
-         delete osmInterVal;*/
+         delete osmInterVal; */
 
          var osmInterVal;
          var myIcons;
-
-         gmarkersOsm       = [];
-         infoWindowOsm     = [];
+         gmarkersOsm     = [];
+         infoWindowOsm   = [];
         
-
          //stopLoading();
       } 
-      
-
-         
-
-      // if($scope.map_osm ==undefined){
-
+       
+       // if($scope.map_osm ==undefined){
        // console.log('map_osm');
 
           var mapLink    = '<a href="http://207.154.194.241/nominatim/lf.html">OpenStreeetMap</a>';
@@ -552,22 +549,13 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '$q', '$filter','_g
         }
 
   }
-  
-
-    $scope.getValueCheck = function(getStatus){
 
 
-        $scope.getValue = getStatus;
+  function drawPolygon(){
 
-          if($scope.getValue == 'YES') {
-                $scope.hideMe = false;
-                $scope.hideMarker= false;
+   if(polygonval==0){
 
-          (function(){
-
-            var siteLength;
-
-                $http.get($scope.url_site).success(function(response){
+        if(polygonInitGoog==0){
 
                   polygenList =[];
                   var latLanlist, seclat, seclan, sp; 
@@ -580,19 +568,19 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '$q', '$filter','_g
                     return bounds.getCenter()
                   }
                                  
-                    if(response.siteParent!=null){
-                      siteLength = response.siteParent.length;
+                    if($scope.siteData.siteParent!=null){
+                      siteLength = $scope.siteData.siteParent.length;
                       polygenList.push(new google.maps.LatLng(11, 11));
                     }
 
                   for (var listSite = 0; listSite < siteLength; listSite++) {
                     
-                    var len = response.siteParent[listSite].site.length;
+                    var len = $scope.siteData.siteParent[listSite].site.length;
                     for (var k = 0; k < len; k++) {
                     // if(response.siteParent[i].site.length)
                     // {
-                      var orgName = response.siteParent[listSite].site[k].siteName;
-                      var splitLatLan = response.siteParent[listSite].site[k].latLng.split(",");
+                      var orgName = $scope.siteData.siteParent[listSite].site[k].siteName;
+                      var splitLatLan = $scope.siteData.siteParent[listSite].site[k].latLng.split(",");
                       
                       polygenList = [];
                       for(var j = 0; splitLatLan.length>j; j++)
@@ -629,17 +617,93 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '$q', '$filter','_g
                           });
 
                           markers.setMap($scope.map);
+                          polygonInitGoog=1;
                         // scope.map.setCenter(centerMarker(polygenList)); 
                         // scope.map.setZoom(14); 
                         // }
                       }
                   }
-              });
-          }())
-      } else if ($scope.getValue == 'NO') {
-          $scope.hideMe = true;
-      }
-        
+                }
+
+    } else if(polygonval==1) {
+
+      console.log('osm polygon');
+
+        if(polygonInitOsm==0){
+
+                  var latLngPoly, sp_osm;
+              
+                  var iconPoly = L.icon({
+                    iconUrl: 'assets/imgs/trans.png',
+                    iconAnchor:[0,0],
+                    labelAnchor: [-15,10],
+                  }); 
+
+                  if($scope.siteData.siteParent!=null) {
+                    siteLength = $scope.siteData.siteParent.length;
+                  }
+               
+                  for(var l=0;l<siteLength;l++){
+                    
+                    var lengths = $scope.siteData.siteParent[l].site.length;
+
+                    for(var k=0;k<lengths;k++){
+                    
+                    //if(response.siteParent[i].site.length){
+
+                        var orgNam     = $scope.siteData.siteParent[l].site[k].siteName;
+                        var spLatLangs = $scope.siteData.siteParent[l].site[k].latLng.split(",");
+                        var polygenList_Osm =[];
+
+                        for(var j=0;spLatLangs.length>j;j++) {
+                          sp_osm = spLatLangs[j].split(":");
+                          latLngPoly = new L.LatLng(sp_osm[0],sp_osm[1]);
+                          polygenList_Osm.push(latLngPoly);
+                        }
+
+                        $scope.polygons = L.polygon(polygenList_Osm,{ className: 'polygonOsm' }).addTo($scope.map_osm);
+                        $scope.markerPoly = new L.marker(latLngPoly);
+                        $scope.markerPoly.setIcon(iconPoly).bindLabel(orgNam, { noHide: true, className: 'polygonLabel', clickable: true, direction:'auto' });
+                        $scope.markerPoly.addTo($scope.map_osm);
+                        polygonInitOsm=1;
+                    }
+                  }
+
+                // $scope.map_osm.fitBounds($scope.polygons.getBounds());
+              }
+    }
+
+}
+  
+
+  $scope.getValueCheck = function(getStatus){
+
+    $scope.getValue = getStatus;
+
+    if($scope.getValue == 'YES') {
+          $scope.hideMe = false;
+          $scope.hideMarker= false;
+
+        (function(){
+
+          if(siteDataCall==0){
+            $http.get($scope.url_site).success(function(response){
+              $scope.siteData=response;
+              siteDataCall=1;
+              drawPolygon();
+            });
+            
+          } else if(siteDataCall==1){
+              if( $scope.siteData != undefined && $scope.siteData!=null ){
+                 drawPolygon();
+              }
+          }
+          
+      }());
+
+    } else if ($scope.getValue == 'NO') {
+      $scope.hideMe = true;
+    }
   }
 
 var osmInitsVal=0;
@@ -648,12 +712,16 @@ var osmInitsVal=0;
 $scope.initMap  = function(vals,initVal){
 
   //console.log('map init...');
+  //console.log(initVal);
+    startLoading();
 
-  startLoading();
+    if(vals == 0){
+      polygonval = 0;
+    } else if(vals == 1){
+      polygonval = 1;
+    } 
 
-//console.log(initVal);
-
-  if(initVal==true) {
+    if(initVal==true) {
 
       $scope.path   = [];
       $scope.hisloc = [];
@@ -3577,5 +3645,4 @@ app.directive('maposm', function($http, vamoservice) {
   };
 
 }); 
-
 

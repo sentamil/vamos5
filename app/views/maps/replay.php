@@ -11,6 +11,7 @@
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
 <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+<link href="assets/css/leaflet.label.css" rel="stylesheet">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
 <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="assets/css/popup.bootstrap.min.css">
@@ -52,7 +53,7 @@ button[disabled], html input[disabled] {
 }
 
 .leaflet-top,
- .leaflet-bottom {
+.leaflet-bottom {
     position: absolute;
     z-index: 1 !important;
     pointer-events: none;
@@ -187,6 +188,41 @@ button, input, select, textarea {
     font-family: inherit !important;
     font-size: 12px !important;
     line-height: inherit !important;
+}
+
+.polygonOsm{ 
+   stroke: green;
+   fill: blue;
+  /* stroke-dasharray: 10,10; */
+   stroke-width: 1;  
+}
+
+ .polygonLabel{ 
+  color:red;
+  background-color:'#f1f1f1';
+  z-index: 1;
+}
+
+
+.polygonLabel:before,
+.polygonLabel:after {
+    border-top: none;
+    border-bottom:none;
+    content: none;
+    position:none;
+    top: none;
+}
+
+.polygonLabel:before {
+    border-right: none;
+    border-right-color:none;
+    left:none;
+}
+
+.polygonLabel:after {
+    border-left: none;
+    border-left-color: none;
+    right:none;
 }
 
 </style>
@@ -817,43 +853,30 @@ button, input, select, textarea {
               </div>
             </div>  
 
-            <style type="text/css" ng-if ="hideMe">
-                  
-                  .labels{
-                       visibility: hidden !important;
-                  }
-        </style>
+          <style type="text/css" ng-if ="hideMe">
+              .labels{ visibility: hidden !important; }
+              .polygonOsm{ visibility: hidden !important; }
+              .polygonLabel{ visibility: hidden !important; }
+          </style>
 
-            <style type="text/css" ng-if="hideAllDetailVal">
+          <style type="text/css" ng-if="hideAllDetailVal">
+            img[src="assets/imgs/endflag.png"], img[src="assets/imgs/startflag.png"]{ visibility:hidden !important; }
+          </style>
 
-              img[src="assets/imgs/endflag.png"], img[src="assets/imgs/startflag.png"]{
+          <style type="text/css" ng-if="hideMarkerVal">
+              img[src="assets/imgs/flag.png"],img[src="assets/imgs/orange.png"]{ visibility: hidden !important; }
+              .h2,h2{ font-size: 18px !important; }
+          </style>
 
-                visibility:hidden !important;
-              }
-              
-            </style>
-
-            <style type="text/css" ng-if="hideMarkerVal">
-                   
-                img[src="assets/imgs/flag.png"],img[src="assets/imgs/orange.png"]{
-
-                  visibility: hidden !important; 
-                }
-                
-                .h2,h2{
-                    font-size: 18px !important;
-                   }
-            </style>
-
-                      <!--  <div class="dropdown" id="dropdowns">
-                              <button class="btns btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Maps&nbsp;
-                                 <span class="caret" ></span></button>
-                                    <ul class="dropdown-menu">
-                                      <li id="googDrop"><a href="#" ng-click="initMap(0)" >Google</a></li>
-                                      <li id="osmDrop"><a href="#" ng-click="initMap(1)" >Osm</a></li>
-                                 <!-- <li><a href="#" >Bing</a></li>-->
-                      <!--              </ul>
-                            </div> -->
+        <!--  <div class="dropdown" id="dropdowns">
+                  <button class="btns btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Maps&nbsp;
+                    <span class="caret" ></span></button>
+                      <ul class="dropdown-menu">
+                        <li id="googDrop"><a href="#" ng-click="initMap(0)" >Google</a></li>
+                        <li id="osmDrop"><a href="#" ng-click="initMap(1)" >Osm</a></li>
+                   <!-- <li><a href="#" >Bing</a></li>-->
+                 <!-- </ul>
+              </div> -->
 
                         <div  id="dropdownss">
                           <select ng-model="mapsHist" ng-change="initMap(mapsHist)" style="height: 26px; width: 64px; background: rgba(255, 255, 255, 0.9);border: none !important;">
@@ -865,8 +888,7 @@ button, input, select, textarea {
 
                             <!-- <div class="row"> -->
                             <!-- class="col-lg-7" style=" width: 70%; float: left; margin-left: 10px; margin-right: 10px" -->
-                              <!-- <div> -->
-
+                            <!-- <div> -->
 
                               <div>
                                 <map  id="map_canvas"  ></map>
@@ -876,14 +898,8 @@ button, input, select, textarea {
                                 <maposm  id="map_canvas2"></maposm> 
                              </div>
 
-
-                                
-                                
-                              <!-- </div> -->
-
-
+                            <!-- </div> -->
                               <!-- <div class="col-lg-4" style="background-color: #196481; position: relative; float: right; height: 100vh; width: 28% !important; ">
-                                
                               </div> -->
                             <!-- </div> -->
                             <!--input id="pac-input" class="controls" type="text" placeholder="Location Search"/-->
@@ -1045,7 +1061,8 @@ button, input, select, textarea {
  //scriptLibrary.push("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
    scriptLibrary.push(url);
  //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places,geometry");
-   scriptLibrary.push("http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js");   
+   scriptLibrary.push("http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"); 
+   scriptLibrary.push("assets/js/leaflet.label.js");  
    scriptLibrary.push("assets/js/ui-bootstrap-0.6.0.min.js");
  //scriptLibrary.push("assets/js/bootstrap.min_3.3.7.js");
  //scriptLibrary.push("http://code.highcharts.com/highcharts.js");
@@ -1098,4 +1115,3 @@ button, input, select, textarea {
 
 </body>
 </html>
-

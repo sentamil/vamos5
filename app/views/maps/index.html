@@ -88,6 +88,40 @@ body{
     cursor: pointer;
  }
 
+ .polygon_osm{ 
+   stroke: green;
+   fill: blue;
+  /* stroke-dasharray: 10,10; */
+   stroke-width: 1;  
+ }
+
+ .polygonLabel { 
+  color:red;
+  background-color:'#f1f1f1';
+  z-index: 1;
+ }
+
+.polygonLabel:before,
+.polygonLabel:after {
+    border-top: none;
+    border-bottom:none;
+    content: none;
+    position:none;
+    top: none;
+ }
+
+ .polygonLabel:before {
+    border-right: none;
+    border-right-color:none;
+    left:none;
+ }
+
+ .polygonLabel:after {
+    border-left: none;
+    border-left-color: none;
+    right:none;
+ }
+
 </style>
 
 <script src="assets/js/static.js"></script>
