@@ -76,7 +76,7 @@
             
             </a>
  <div class="stats-label text-color">
-                <span class="font-extra-bold font-uppercase">GPS ADMIN</span>
+                <span class="font-extra-bold font-uppercase"><font color="#8aa52d">{{Auth::user ()->username }}</font>-GPS ADMIN</span>
             </div>
 
         </div>  

@@ -84,7 +84,7 @@
             </a>
 
             <div class="stats-label text-color">
-                <span class="font-extra-bold font-uppercase">Admin</span>
+                <span class="font-extra-bold font-uppercase"><font color="#8aa52d">{{Auth::user ()->username }}</font>-GPS Admin</span>
             </div>
         </div>
         
