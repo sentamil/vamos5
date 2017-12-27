@@ -109,7 +109,7 @@ class VdmGroupController extends \BaseController {
         $text_word1 = Input::get('text_word');
         $text_word = strtoupper($text_word1);		
         $cou = $redis->SCARD($redisGrpId); //log::info($cou);		
-        $orgLi = $redis->sScan( $redisGrpId, 0, 'count', $cou, 'match', $text_word); //log::info($orgLi);		
+        $orgLi = $redis->sScan( $redisGrpId, 0, 'count', $cou, 'match', '*'.$text_word.'*'); //log::info($orgLi);		
         $orgL = $orgLi[1];		
         foreach ( $orgL as $key=>$group ) {       		
         Log::info(' ---------inside---------------- '.$group);      		
