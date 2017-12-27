@@ -106,7 +106,8 @@ class VdmGroupController extends \BaseController {
             $redisGrpId = 'S_Groups_' . $fcode ;		
         }		
         $groupList = $redis->smembers($redisGrpId);		
-        $text_word = Input::get('text_word');		
+        $text_word1 = Input::get('text_word');
+        $text_word = strtoupper($text_word1);		
         $cou = $redis->SCARD($redisGrpId); //log::info($cou);		
         $orgLi = $redis->sScan( $redisGrpId, 0, 'count', $cou, 'match', $text_word); //log::info($orgLi);		
         $orgL = $orgLi[1];		
@@ -221,9 +222,10 @@ if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.
 			
  		} else {
 			// store
-			
-			$groupId       = Input::get('groupId');
-			$vehicleList      = Input::get('vehicleList');
+
+			$groupId0       = Input::get('groupId');
+            $groupId        = strtoupper($groupId0);
+			$vehicleList    = Input::get('vehicleList');
 			
 			$redis = Redis::connection();
 			$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
@@ -374,7 +376,8 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
       
 
         $username       = Auth::user()->username;
-        $groupId        = Input::get('groupId');
+		$groupId0       = Input::get('groupId');
+        $groupId        = strtoupper($groupId0);
         $vehicleList    = Input::get('vehicleList');
         $redis          = Redis::connection();
         $oldVehi        = $redis->smembers($id);
@@ -585,8 +588,9 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
                 $username =     Auth::user()->username;
                 $redis = Redis::connection();
                 $fcode = $redis->hget('H_UserId_Cust_Map',$username.':fcode');
-
-                $grpName = Input::get ('grpName');
+				
+				$grpName0 = Input::get ('grpName');
+                $grpName  = strtoupper($grpName0);
                 $g_List         = $redis->smembers($username);
                 $vehiList = [];
                 if($grpName !== ''){
