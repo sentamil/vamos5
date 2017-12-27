@@ -105,6 +105,8 @@ tr:nth-of-type(odd) {
 							<th style="text-align: center;">Gps Sim No</th>
 							<th style="text-align: center;">status</th>
 							<th style="text-align: center;">Device Model</th>
+							<th style="text-align: center;">Onboard Date</th>
+                            <th style="text-align: center;">Expire Date</th>
 							<th style="text-align: center;">Action</th> 
 						</tr>
 					</thead>
@@ -145,6 +147,9 @@ tr:nth-of-type(odd) {
 							<td>{{ array_get($deviceModelList, $value)}}</td>
 						<!--  <td>{{ array_get($expiredList, $value)}}</td> -->
 					       <!-- <td>{{ array_get($mobileNoList, $value)}}</td> 	-->
+						    <td>{{ array_get($onboardDateList, $value)}}</td>
+                            <td style="text-align: center;">{{ array_get($expiredList, $value)}}</td>
+
 											
 							@if(Session::get('vCol')=='1')
 							<td>

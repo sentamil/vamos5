@@ -53,8 +53,13 @@
 									<th style="text-align: center;">Device Model</th>
 								<!-- <th style="text-align: center;">Expire Date</th> -->
 								<th style="text-align: center;">Mobile No</th>
+								<th style="text-align: center;">Onboard Date</th>
+                                <th style="text-align: center;">Expire Date</th>
+
 									@endif 
 							@if(Session::get('vCol')=='1')
+    					     <th style="text-align: center;">Onboard Date</th>
+                            <th style="text-align: center;">Expire Date</th>
 							<th style="text-align: center;">Actions</th>
 							@endif 
 						</tr>
@@ -94,9 +99,14 @@
 
 							<td>{{ array_get($deviceModelList, $value)}}</td>
 						<!--  <td>{{ array_get($expiredList, $value)}}</td> -->
-					        <td>{{ array_get($mobileNoList, $value)}}</td> 	
+					        <td>{{ array_get($mobileNoList, $value)}}</td>
+                            <td>{{ array_get($onboardDateList, $value)}}</td>
+                            <td>{{ array_get($expiredList, $value)}}</td>							
 							@endif 							
 							@if(Session::get('vCol')=='1')
+							<td>{{ array_get($onboardDateList, $value)}}</td>
+                            <td>{{ array_get($expiredList, $value)}}</td>
+
 							<td>
 								
 								<a  class="btn btn-sm btn-info" href="{{ URL::to('vdmVehicles/stops/' . $value,'normal') }}" >Show Stops</a>

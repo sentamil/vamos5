@@ -61,6 +61,7 @@ public function store() {
     $deviceModelList = null;
     $expiredList = null;
     $statusList = null;
+	$onboardDateList = null;
     foreach ( $orgL as $key => $vehicle  ) {
 
         Log::info($key.'$vehicle ' .$vehicle);
@@ -88,11 +89,21 @@ public function store() {
         $orgIdList = array_add($orgIdList,$vehicle,$orgId);
         $deviceModel=isset($vehicleRefData['deviceModel'])?$vehicleRefData['deviceModel']:'nill';
         $deviceModelList = array_add($deviceModelList,$vehicle,$deviceModel);
-        $expiredPeriod=isset($vehicleRefData['expiredPeriod'])?$vehicleRefData['expiredPeriod']:'nill';
+		$expiredPeriod=isset($vehicleRefData['vehicleExpiry'])?$vehicleRefData['vehicleExpiry']:'-';
+        $nullval=strlen($expiredPeriod);
+        log::info($nullval);
+        if($nullval==0 || $expiredPeriod=="null")
+        {
+            $expiredPeriod='-';
+        }
+
         $expiredList = array_add($expiredList,$vehicle,$expiredPeriod);
         $statusVehicle = $redis->hget ( 'H_ProData_' . $fcode, $vehicle );
         $statusSeperate = explode(',', $statusVehicle);
         $statusList = array_add($statusList, $vehicle, $statusSeperate[7]);
+		$onboardDate=isset($vehicleRefData['onboardDate'])?$vehicleRefData['onboardDate']:'-';
+        $onboardDateList = array_add($onboardDateList,$vehicle,$onboardDate);
+
         }
         else
         {
@@ -112,7 +123,7 @@ public function store() {
     $dealerId = $orgArr;
     return View::make ( 'vdm.vehicles.vehicleScan', array (
         'vehicleList' => $orgL
-        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList)->with('dealerId',$dealerId); 
+        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList)->with('dealerId',$dealerId)->with('onboardDateList', $onboardDateList); 
 }
 /*
 * Show the form for creating a new resource.

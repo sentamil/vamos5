@@ -48,7 +48,7 @@ border: 2px solid #aaa;
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
-                   <h4><b>Group List </b></h4>
+                   <h4><b>Groups Search </b></h4>
                 </div>
                 <div class="panel-body">
                 {{ Form::open(array('url' => 'vdmGroupsScan/Search','method' => 'post')) }}
