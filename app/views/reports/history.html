@@ -229,22 +229,24 @@ font-family: 'Source Sans Pro', sans-serif;
 								    <table class="table table-bordered table-striped table-condensed table-hover"> 
 								    <thead>
 									<tr style="text-align:center" >
-										<th width="14%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;background-color:#d3e0f1;font-size:12px;">Date&amp;Time</th>
+										<th width="12%" class="id" custom-sort order="'date'" sort="sort"  style="text-align:center;background-color:#d3e0f1;font-size:12px;">Date&amp;Time</th>
 										<th width="8%" class="id" custom-sort order="'speed'" sort="sort"  style="text-align:center;background-color:#d3e0f1;font-size:12px;">Speed</th>
-										<th width="7%" class="id" style="text-align:center;background-color:#d3e0f1;font-size:12px;">G-Map</th>
-										<th width="8%" class="id" custom-sort order="'gsmLevel'" sort="sort"  style="text-align:center;background-color:#d3e0f1;font-size:12px;">Sat</th>
+									    <th width="6%" class="id" custom-sort order="'gsmLevel'" sort="sort"  style="text-align:center;background-color:#d3e0f1;font-size:12px;">Sat</th>
+										<th width="10%" style="text-align:center;background-color:#d3e0f1;font-size:12px;">Lat&Long</th>
+										<th width="6%" class="id" style="text-align:center;background-color:#d3e0f1;font-size:12px;">G-Map</th>
 										<th width="28%" class="id" custom-sort order="'address'" sort="sort"  style="text-align:center;background-color:#d3e0f1;font-size:12px;">Nearest Location</th>
-										<th width="9%" class="id" custom-sort order="'tmpDistance'" sort="sort"  style="text-align:center;background-color:#d3e0f1;font-size:12px;">Dist</th>
-										<th width="15%" class="id" custom-sort order="'distanceCovered'" sort="sort"  style="text-align:center;background-color:#d3e0f1;font-size:12px;">C-Dist (Kms)</th>
-									<th width="18%" class="id" custom-sort order="'odoDistance'" sort="sort"  style="text-align:center;height:3px;background-color:#d3e0f1;font-size:12px;">Odo (Kms)</th>
+										<th width="8%" class="id" custom-sort order="'tmpDistance'" sort="sort"  style="text-align:center;background-color:#d3e0f1;font-size:12px;">Dist</th>
+										<th width="12%" class="id" custom-sort order="'distanceCovered'" sort="sort"  style="text-align:center;background-color:#d3e0f1;font-size:12px;">C-Dist (Kms)</th>
+									<th width="10%" class="id" custom-sort order="'odoDistance'" sort="sort"  style="text-align:center;height:3px;background-color:#d3e0f1;font-size:12px;">Odo (Kms)</th>
 									</tr>
 									</thead>
 									<tbody>
 									<tr ng-repeat="move in movementdata | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
 										<td>{{move.date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
 										<td>{{move.speed}}</td>
+									    <td>{{move.gsmLevel}}</td>
+										<td>{{move.latitude}},{{move.longitude}}</td>
 										<td><a href="https://www.google.com/maps?q=loc:{{move.latitude}},{{move.longitude}}" target="_blank">Link</a></td>
-										<td>{{move.gsmLevel}}</td>
 										<td>
 											<p ng-if="move.address!=null">{{move.address}}</p>
 											<p ng-if="move.address==null && maddress1[$index]!=null">{{maddress1[$index]}}</p>
