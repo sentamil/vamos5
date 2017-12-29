@@ -125,6 +125,124 @@ public function store() {
         'vehicleList' => $orgL
         ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList)->with('dealerId',$dealerId)->with('onboardDateList', $onboardDateList); 
 }
+public function sendExcel()
+{
+    $username = Auth::user ()->username;
+    $redis = Redis::connection ();
+    $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );                    
+    $devicesList=$redis->smembers( 'S_Device_' . $fcode);
+    $file = Excel::create('Vehicles List', function($excel) 
+    {
+        $excel->sheet('Sheetname', function($sheet)  
+        {   
+            $redis = Redis::connection ();
+            $username = Auth::user ()->username;
+            log::info('inside the vehiclescan sendExcel---');
+            $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+            if(Session::get('cur')=='dealer')
+            {
+             $vehicleListId='S_Vehicles_Dealer_'.$username.'_'.$fcode;
+    		 }
+            else if(Session::get('cur')=='admin')
+            {
+            $vehicleListId='S_Vehicles_Admin_'.$fcode;
+            }
+            else{
+            $vehicleListId = 'S_Vehicles_' . $fcode;
+            }
+                               
+            $vehicleList=$redis->smembers($vehicleListId);
+            $temp=0;
+            //$vehicleMap=array();
+            $statusList = null;
+            $deviceList = null;
+            $deviceId = null;
+            $shortName =null;
+            $shortNameList = null;
+            $portNo =null;
+            $portNoList = null;
+            $mobileNo =null;
+            $mobileNoList = null;
+            $orgIdList = null;
+            $deviceModelList = null;
+            $expiredList = null;
+            for($i =0;$i<count($vehicleList);$i++)
+            {
+                $refData    = $redis->hget ( 'H_RefData_' . $fcode, $vehicleList[$i] );
+                $refData    = json_decode($refData,true);
+                $deviceId =isset($refData['deviceId'])?$refData['deviceId']:''; 
+		        $shortName = isset($refData['shortName'])?$refData['shortName']:'nill';
+                $orgId=isset($refData['orgId'])?$refData['orgId']:'Default';
+                $gpsNo=isset($refData['gpsSimNo'])?$refData['gpsSimNo']:99999;
+                $statusVehicle = $redis->hget ( 'H_ProData_' . $fcode, $vehicleList[$i] );
+                $statusSeperate = explode(',', $statusVehicle);
+                $statusList1 = isset($statusSeperate[7])?$statusSeperate[7]:'';
+                if($statusList1=='P')
+                {
+                    $statusList='Parking';
+                }
+                else if($statusList1=='M')
+                {
+                   	$statusList='Moving';
+                }
+                else if($statusList1=='S')
+                {
+                   	$statusList='Idle';
+                }
+                else if($statusList1=='N')
+                {
+                  	$statusList='New Device';
+                }
+                else 
+                {
+                   	$statusList='No data';
+                }
+                $deviceModel=isset($refData['deviceModel'])?$refData['deviceModel']:'nill';
+                $vehLi=count($vehicleList);           
+                $j=$i+2;
+                $sheet->setWidth(array(
+                                     'A'     =>  25,
+                                     'C'    =>   30,
+                                     'D'    =>   35,
+                                     'E'    =>   15,
+                                     'F'    =>   15,
+                                     'G'    =>   15,
+                                     'B'     =>  30
+                             ));          
+
+                $sheet->row(1,function ($row) 
+				{
+             	 $row->setFontWeight('bold');
+                 $row->setAlignment('center');
+
+                });
+                  
+                $sheet->row(2,function ($row) {
+                $row->setAlignment('left');
+                });
+                    //$sheet->setAutoSize(true) ;
+                $sheet->row(1, array('Asset Id','Vehicle Name','Organization Name','Device Id','GPS Sim No','Status','Device Model'));
+                $sheet->row($j, array($vehicleList[$i],$shortName,$orgId,$deviceId,$gpsNo,$statusList,$deviceModel));
+                }
+                }); 
+
+            });//->download('xls');
+              $emailFcode=$redis->hget('H_Franchise', $fcode);
+              $emailFile=json_decode($emailFcode,true);
+              $email1=$emailFile['email2'];
+              $email2=$emailFile['email1'];
+              $data[]='get all de';
+              log::info('--------------email outsite------------------>');
+              $mymail=Mail::send( 'vdm.business.empty',$data,function($message) use($file,$email1)
+              {
+                $message->to($email1);
+                //$message->to('ramakrishnan.vamosys@gmail.com');
+                $message->subject('Welcome to Vamosys');
+                $message->attach($file->store("xls",false,true)['full']);
+                log::info('-----------email send------------------>');
+              });
+    return Redirect::back();
+}
 /*
 * Show the form for creating a new resource.
 * @return Response

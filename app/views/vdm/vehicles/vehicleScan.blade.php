@@ -64,6 +64,9 @@ tr:nth-of-type(odd) {
 <div class="row">
     <div class="col-lg-12">
         <div class="hpanel">
+		    <div class="pull-right">
+                <a href="VehicleScan/sendExcel" ><img  class="pull-right"  width="20%" height="20%" src="../app/views/reports/image/xls.png" method="get"/ ></a>
+            </div>
                 <div class="panel-heading">
 				     @if(Session::has('message'))
                 	 <p class="alert {{ Session::get('alert-class', 'alert-success') }}">{{ Session::get('message') }}</p>

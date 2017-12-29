@@ -1091,6 +1091,7 @@ Route::post('select0', array('as' => 'ajax.details', 'uses' => 'VdmVehicleContro
 Route::resource('vdmVehiclesView', 'VdmVehicleViewController');
  
 Route::resource('VdmVehicleScan', 'VdmVehicleScanController'); 
+Route::get('VehicleScan/sendExcel', array('uses' => 'VdmVehicleScanController@sendExcel')); 
  
 Route::resource('DashBoard', 'DashBoardController');
  
