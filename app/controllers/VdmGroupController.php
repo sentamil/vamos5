@@ -320,6 +320,8 @@ if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.
 		$username = Auth::user()->username;
 		$redis = Redis::connection();
 		$groupId=$id;
+		if(strtoupper($groupId) == $groupId)
+       {
 		Log::info(' $groupId ' . $groupId);
 		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
 
@@ -359,6 +361,12 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		Log::info('-------------- $groupId 2 -----------');
 		return View::make('vdm.groups.edit',array('groupId'=>$groupId))->with('vehicleList', $vehicleList)->
 		with('selectedVehicles',$selectedVehicles)->with('shortNameList',$shortNameList);
+	   }
+	    else
+       {
+       return Redirect::back()->with('message','Please use Groups in UpperCase!');
+      }
+
 	}
 
 

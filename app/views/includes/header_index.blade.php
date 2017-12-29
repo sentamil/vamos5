@@ -156,9 +156,9 @@
                      <li>                            
                 <a href="vdmGroups/Search"> <span class="nav-label">Groups Search</span> <span class="label label-success pull-right">v.3</span> </a>       
             </li>
-                     <li>
+             <!-- <li>
                 <a href="vdmGroups"> <span class="nav-label">Groups List</span></a>
-            </li>
+            </li> -->
             <li> <a href="vdmGroups/create"> <span class="nav-label">Add Group</span></a></li>
                 </ul>
             

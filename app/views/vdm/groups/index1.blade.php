@@ -48,6 +48,9 @@ border: 2px solid #aaa;
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
+				 @if(Session::has('message'))
+                   <p class="alert {{ Session::get('alert-class', 'alert-success') }}">{{ Session::get('message') }}</p>
+                   @endif
                    <h4><b>Groups Search </b></h4>
                 </div>
                 <div class="panel-body">
