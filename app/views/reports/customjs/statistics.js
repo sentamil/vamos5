@@ -510,7 +510,8 @@ function daysInThisMonth() {
 
 $scope.submitMonFuel=function(){
 
-  //console.log($scope.fromMonthFuel);
+  console.log($scope.fromMonthFuel);
+
   var newmonVal=$scope.fromMonthFuel.split('/');
   $scope.monFuelVal=parseInt(newmonVal[0]);
   $scope.yearFuelVal=newmonVal[1];
@@ -1255,6 +1256,8 @@ return ret_obj;
 
 function serviceCall(shortName,date){
 
+  console.log("service....");
+
 
  if( tabId == 'executive' || tabId == 'poi' || tabId == 'fuel'){
   if((checkXssProtection($scope.fromdate) == true) && (checkXssProtection($scope.todate) == true)){
@@ -1335,13 +1338,13 @@ function serviceCall(shortName,date){
       $scope.bar      =   true;
       $('#singleDiv').hide();
 
-      var monthUrl =GLOBAL.DOMAIN_NAME+'/getExecutiveReportVehicleDistance?groupId='+$scope.viewGroup.group+'&month='+$scope.monthNo;
-      //console.log(monthUrl);
+      var monthUrl =GLOBAL.DOMAIN_NAME+'/getExecutiveReportVehicleDistance?groupId='+$scope.viewGroup.group+'&month='+$scope.monFuelVal+'&year='+$scope.yearFuelVal;
+      console.log(monthUrl);
              
           $scope.monthData  = [];
           $http.get(monthUrl).success(function(data){
             $scope.monthData = data;
-          //console.log($scope.monthData);
+          console.log($scope.monthData);
 
           $scope.monthDates=[];
             for(var i=0;i<$scope.lenMon;i++){
@@ -1544,5 +1547,4 @@ $scope.exportData = function (data) {
 
 
 }]);
-
 
