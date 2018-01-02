@@ -7,7 +7,11 @@
 
 {{ Form::open(array('url' => 'vdmFranchises')) }}
 
-
+  <script>
+    function caps(element){
+    element.value = element.value.toUpperCase();
+    }                         
+  </script>
 
 	<div class="form-group">
 		{{ Form::label('fname', 'Franchise Name') }}
@@ -16,7 +20,7 @@
 	
 	<div class="form-group">
 		{{ Form::label('fcode', 'Franchise Code') }}
-		{{ Form::text('fcode', Input::old('fcode'), array('class' => 'form-control')) }}
+		{{ Form::text('fcode', Input::old('fcode'), array('class' => 'form-control','onkeyup' => 'caps(this)')) }}
 	</div>
 	
 	<div class="form-group">
