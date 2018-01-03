@@ -224,12 +224,13 @@ if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.
 			// store
 
 			$groupId0       = Input::get('groupId');
-            $groupId        = strtoupper($groupId0);
+            $groupId        = strtoupper($groupId0);			
 			$vehicleList    = Input::get('vehicleList');
 			
 			$redis = Redis::connection();
 			$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-			$value1=$redis->SISMEMBER('S_Groups_' . $fcode, $groupId . ':' . $fcode);
+			$fcode1=strtoupper($fcode);$fcode1=strtoupper($fcode);
+			$value1=$redis->SISMEMBER('S_Groups_' . $fcode, $groupId . ':' . $fcode1);
 			if($value1==1)
 			{
 				
@@ -237,21 +238,21 @@ if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.
 				return Redirect::to('vdmGroups/create')
 				;
 			}
-			$redis->sadd('S_Groups_' . $fcode, $groupId . ':' . $fcode);
+			$redis->sadd('S_Groups_' . $fcode, $groupId . ':' . $fcode1);
 			foreach($vehicleList as $vehi) {
 				$vehicle    = explode(" || ",$vehi)[0];
-                $redis->sadd($groupId . ':' . $fcode,$vehicle);
+                $redis->sadd($groupId . ':' . $fcode1,$vehicle);
 			}
 
 			
 			if(Session::get('cur')=='dealer')
 			{
 				log::info( '------login 1---------- '.Session::get('cur'));
-				$redis->sadd('S_Groups_Dealer_'.$username.'_'.$fcode,$groupId . ':' . $fcode);
+				$redis->sadd('S_Groups_Dealer_'.$username.'_'.$fcode,$groupId . ':' . $fcode1);
 			}
 			else if(Session::get('cur')=='admin')
 			{
-				$redis->sadd('S_Groups_Admin_'.$fcode,$groupId . ':' . $fcode);
+				$redis->sadd('S_Groups_Admin_'.$fcode,$groupId . ':' . $fcode1);
 			}
 			
  			// redirect
@@ -282,26 +283,27 @@ if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.
 		$username = Auth::user()->username;
 					
 		$redis = Redis::connection();
-		$groupId=$id;
+		$groupId0=$id;
+		$groupId=strtoupper($groupId0);
 		Log::info('-------------- $groupId 1-----------'.$groupId);
 		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+		$fcode1 =strtoupper($fcode);
 		
-		
-		$vehicleList = $redis->smembers($groupId . ':' . $fcode);
+		$vehicleList = $redis->smembers($groupId . ':' . $fcode1);
 		
 		//S_Vehicles_
 		foreach($vehicleList as $vehicle) {
 			$result = $redis->sismember("S_Vehicles_" . $fcode,$vehicle);
 			
 			if($result == 0) {
-				$redis->srem($groupId. ':' . $fcode,$vehicle);
+				$redis->srem($groupId. ':' . $fcode1,$vehicle);
 			}
 		}
 		//query again to get the fresh list
-		$vehicleList = $redis->smembers($groupId. ':' . $fcode);
+		$vehicleList = $redis->smembers($groupId. ':' . $fcode1);
 		$vehicleList = implode('<br/>',$vehicleList);
 			
-		return View::make('vdm.groups.show',array('groupId'=>$groupId. ':' . $fcode))->with('vehicleList', $vehicleList);
+		return View::make('vdm.groups.show',array('groupId'=>$groupId. ':' . $fcode1))->with('vehicleList', $vehicleList);
 	}
 
 
@@ -531,10 +533,12 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		}
 		$username =	Auth::user()->username;
 		$redis = Redis::connection();
-		$newGroupId = Input::get ( 'id');
+		$newGroupId1 = Input::get ( 'id');
+	    $newGroupId=strtoupper($newGroupId1);
 		$fcode = $redis->hget('H_UserId_Cust_Map',$username.':fcode');
 		Log::info(' fcode '.$fcode);
-		$groupValue = $redis->SISMEMBER('S_Groups_'.$fcode, $newGroupId.':'.$fcode);
+		$fcode1 = strtoupper($fcode);
+		$groupValue = $redis->SISMEMBER('S_Groups_'.$fcode, $newGroupId.':'.$fcode1);
 		if($groupValue == $newGroupId)
 		{
 			log::info($groupValue);
@@ -700,7 +704,9 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		$username 	=	Auth::user()->username;
 		$redis 		= 	Redis::connection();
 		$fcode 		= 	$redis->hget('H_UserId_Cust_Map',$username.':fcode');
-		$grpName 	= 	Input::get ('grpName');
+		$fcode1     =   strtoupper($fcode);
+		$grpName1 	= 	Input::get ('grpName');
+		$grpName    =   strtoupper($grpName1);
 		$newValue 	= 	Input::get ('newValu');
 		$vehList 	= 	Input::get ('grplist');
 		$mailId 	= 	array();
@@ -712,7 +718,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 
 
 		if(strpos($grpName, $fcode) === false){
-			$grpName = $grpName .':'.$fcode;
+			$grpName = $grpName .':'.$fcode1;
 		}
 
     	

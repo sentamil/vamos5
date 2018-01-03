@@ -173,15 +173,15 @@ class BusinessController extends \BaseController {
 		$username = Auth::user ()->username;
 		$redis = Redis::connection ();
 		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
-
+        $fcode1=strtoupper($fcode);
 		$userId = Input::get ( 'id');
-		
+		$userId1 =strtoupper($userId);		
 		  $val = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
 		  $val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
 		  $valOrg= $redis->sismember('S_Organisations_'. $fcode, $userId);	
 		   $valOrg1=$redis->sismember('S_Organisations_Admin_'.$fcode,$userId);
-		   $valGroup=$redis->sismember('S_Groups_' . $fcode, $userId . ':' . $fcode);
-		   $valGroup1=$redis->sismember('S_Groups_Admin_'.$fcode,$userId . ':' . $fcode);
+		   $valGroup=$redis->sismember('S_Groups_' . $fcode, $userId1 . ':' . $fcode1);
+		   $valGroup1=$redis->sismember('S_Groups_Admin_'.$fcode,$userId1 . ':' . $fcode1);
 				
 				if($valGroup==1 || $valGroup1==1 ) {
 					log::info('id group exist '.$userId);
@@ -484,9 +484,10 @@ public function adddevice() {
 			$username = Auth::user ()->username;
 			$redis = Redis::connection ();
 			$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+			$fcode1=strtoupper($fcode);
 			$ownerShip      = Input::get('dealerId');
-			$userId1      = Input::get('userId');
-			$userId = strtoupper($userId1);
+			$userId      = Input::get('userId');
+			$userId1 = strtoupper($userId);
 			$mobileNoUser      = Input::get('mobileNoUser');
 			$emailUser      = Input::get('emailUser');
 			$password      = Input::get('password');
@@ -583,8 +584,8 @@ public function adddevice() {
 					  $val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
 					  $valOrg= $redis->sismember('S_Organisations_'. $fcode, $userId);	
 					   $valOrg1=$redis->sismember('S_Organisations_Admin_'.$fcode,$userId);
-					   $valGroup=$redis->sismember('S_Groups_' . $fcode, $userId . ':' . $fcode);
-					   $valGroup1=$redis->sismember('S_Groups_Admin_'.$fcode,$userId . ':' . $fcode);
+					   $valGroup=$redis->sismember('S_Groups_' . $fcode, $userId1 . ':' . $fcode1);
+					   $valGroup1=$redis->sismember('S_Groups_Admin_'.$fcode,$userId1 . ':' . $fcode1);
 				}
 				if($valGroup==1 || $valGroup1==1 || $valOrg==1 || $valOrg1==1 ) {
 					return View::make ( 'vdm.business.create' )->withErrors ( "Name already exist" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
@@ -616,7 +617,8 @@ public function adddevice() {
 				if($type=='Sale')
 				{
 					
-					$groupname      = Input::get('groupname');
+					$groupname1      = Input::get('groupname');
+					$groupname       = strtoupper($groupname1);
 					log::info($userId.'-------------- groupname- 1-------------'.$groupname);
 					if($type1=='existing' && ($groupname==null || $groupname=='' || $groupname=='0'))
 					{
@@ -631,6 +633,7 @@ public function adddevice() {
 			$organizationId=$userId;
 			$orgId=$organizationId;
 			$groupId=$orgId;
+			$groupId1=strtoupper($groupId);
 			if($ownerShip=='OWN' && $type!='Sale')
 			{
 				$orgId='Default';
@@ -1008,7 +1011,8 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 				if($type=='Sale')
 				{
 					
-					$groupname      = Input::get('groupname');
+					$groupname1      = Input::get('groupname');
+					$groupname       = strtoupper($groupname1);
 					log::info($userId.'-------------- groupname- out-------------'.$groupId);
 					if($type1=='existing' && $groupname!==null && $groupname!=='')
 					{
@@ -1017,7 +1021,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 						log::info('-------------- groupname--------------'.$groupId);
 					}
 
-					$redis->sadd($groupId . ':' . $fcode,$vehicleId);
+					$redis->sadd($groupId1 . ':' . $fcode1,$vehicleId);
 					
 				}
 				if(Session::get('cur')=='dealer')
@@ -1077,19 +1081,19 @@ if($type=='Sale' )
 {
 	
 	log::info( '------sale-2--------- '.$ownerShip);
-	$redis->sadd('S_Groups_' . $fcode, $groupId . ':' . $fcode);
+	$redis->sadd('S_Groups_' . $fcode, $groupId1 . ':' . $fcode1);
 	if($ownerShip!='OWN')
 	{
 		log::info( '------login 1---------- '.Session::get('cur'));
-		$redis->sadd('S_Groups_Dealer_'.$ownerShip.'_'.$fcode,$groupId . ':' . $fcode);
+		$redis->sadd('S_Groups_Dealer_'.$ownerShip.'_'.$fcode,$groupId1 . ':' . $fcode1);
 		$redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$userId);
 	}
 	else if($ownerShip=='OWN')
 	{
-		$redis->sadd('S_Groups_Admin_'.$fcode,$groupId . ':' . $fcode);
+		$redis->sadd('S_Groups_Admin_'.$fcode,$groupId1 . ':' . $fcode1);
 		$redis->sadd('S_Users_Admin_'.$fcode,$userId);
 	}
-	$redis->sadd ( $userId, $groupId . ':' . $fcode );
+	$redis->sadd ( $userId, $groupId1 . ':' . $fcode1 );
 	$redis->sadd ( 'S_Users_' . $fcode, $userId );				
 	if(Session::get('cur')=='dealer')
 	{
@@ -1249,10 +1253,12 @@ return Redirect::to ( 'Business' )->withErrors($error);
 		$username = Auth::user()->username;
 			$redis = Redis::connection();
 			$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
+			$fcode1=strtoupper($fcode);
 			$deviceList      = Input::get('vehicleList');
 			$deviceType      = Input::get('deviceType');
 			$ownerShip      = Input::get('dealerId');
 			$userId      = Input::get('userId');
+			$userId1    = strtoupper($userId);
 			$mobileNo      = Input::get('mobileNo');
 			$email      = Input::get('email');
 			$password      = Input::get('password');
@@ -1311,8 +1317,8 @@ return Redirect::to ( 'Business' )->withErrors($error);
 					  $val1= $redis->sismember ( 'S_Users_' . $fcode, $userId );
 					  $valOrg= $redis->sismember('S_Organisations_'. $fcode, $userId);	
 					   $valOrg1=$redis->sismember('S_Organisations_Admin_'.$fcode,$userId);
-					   $valGroup=$redis->sismember('S_Groups_' . $fcode, $userId . ':' . $fcode);
-					   $valGroup1=$redis->sismember('S_Groups_Admin_'.$fcode,$userId . ':' . $fcode);
+					   $valGroup=$redis->sismember('S_Groups_' . $fcode, $userId1 . ':' . $fcode1);
+					   $valGroup1=$redis->sismember('S_Groups_Admin_'.$fcode,$userId1 . ':' . $fcode1);
 				}
 				if($valGroup==1 || $valGroup1==1 ) {
 					log::info('id group exist '.$userId);
@@ -1344,7 +1350,8 @@ return Redirect::to ( 'Business' )->withErrors($error);
 			log::info('value type---->'.$type);
 			$organizationId=$userId;
 			$orgId=$organizationId;
-			$groupId=$orgId;
+			$groupId0=$orgId;
+			$groupId=strtoupper($groupId0);
 			if($ownerShip=='OWN' && $type!='Sale')
 			{
 				$orgId='Default';
@@ -1512,7 +1519,7 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
 													'atc' => '',
 													'etc' =>'',
 													'mtc' =>'',
-													'parkingAlert'=>'',
+												'parkingAlert'=>'',
 													'idleAlert'=>'',
 													'parkDuration'=>'',
 													'idleDuration'=>'',
@@ -1532,16 +1539,18 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
 									
 
 
-												$groupname      = Input::get('groupname');
+												$groupname1      = Input::get('groupname');
+												$groupname       = strtoupper($groupname1);
 											log::info($userId.'-------------- groupname- out-------------'.$groupId);
 											if($type1=='existing' && $groupname!==null && $groupname!=='')
 											{
 												
-												$groupId=explode(":",$groupname)[0];
+												$groupId1=explode(":",$groupname)[0];
+												$groupId=strtoupper($groupId1);
 												log::info('-------------- groupname--------------'.$groupId);
 											}
 
-											$redis->sadd($groupId . ':' . $fcode,$vehicleId);
+											$redis->sadd($groupId1 . ':' . $fcode1,$vehicleId);
 
 
 												
@@ -1565,12 +1574,12 @@ if(count($dbarray)!==0)
 					{
 						log::info( '------sale-2--------- '.$ownerShip);
 						
-							$redis->sadd('S_Groups_' . $fcode, $groupId . ':' . $fcode);
+							$redis->sadd('S_Groups_' . $fcode, $groupId . ':' . $fcode1);
 							log::info( '------login 1---------- '.Session::get('cur'));
-							$redis->sadd('S_Groups_Dealer_'.$ownerShip.'_'.$fcode,$groupId . ':' . $fcode);
+							$redis->sadd('S_Groups_Dealer_'.$ownerShip.'_'.$fcode,$groupId . ':' . $fcode1);
 							$redis->sadd('S_Users_Dealer_'.$ownerShip.'_'.$fcode,$userId);
 							
-						$redis->sadd ( $userId, $groupId . ':' . $fcode );
+						$redis->sadd ( $userId, $groupId . ':' . $fcode1 );
 						$redis->sadd ( 'S_Users_' . $fcode, $userId );
 							$OWN=$username;
 						
