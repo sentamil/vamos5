@@ -1550,7 +1550,7 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
 												log::info('-------------- groupname--------------'.$groupId);
 											}
 
-											$redis->sadd($groupId1 . ':' . $fcode1,$vehicleId);
+											$redis->sadd($groupId . ':' . $fcode1,$vehicleId);
 
 
 												
