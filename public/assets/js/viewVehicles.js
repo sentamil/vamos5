@@ -162,7 +162,7 @@ app.controller('newPlaceCtrl',['$scope', '$http', 'globe', 'vamoservice',  '$fil
 $scope.days=0;
 $scope.days1=0;
 $scope.name = "Calvin";
-$scope.groupid = 0;
+//$scope.groupid = 0;
 $scope.Filter = 'ALL';
 $scope.marker = [];
 $scope.zoom = 6;
@@ -172,14 +172,16 @@ $scope._editValue   = {};
 
 var res  = document.location.href;
 var res2 = res.split('&');
-var res3 = res2[1].split('=');
 
- if(res3[1]==""){
+var gNames=res2[2].split('=');
+//var res3 = res2[1].split('=');
+
+ //if(res3[1]==""){
 //alert(res3[1]);
-   $scope.urlName = GLOBAL.DOMAIN_NAME+'/getVehicleLocations';
- } else{
-   $scope.urlName = GLOBAL.DOMAIN_NAME+'/getVehiLocation?'+res2[1];
- }
+$scope.urlName = GLOBAL.DOMAIN_NAME+'/getVehiLocation?'+res2[1]+'&'+res2[2];
+ //} else{
+ //  $scope.urlName = GLOBAL.DOMAIN_NAME+'/getVehiLocation?'+res2[1];
+ //}
 
 
 //console.log($scope.urlName);
@@ -211,16 +213,25 @@ $scope.trimColon = function(textVal){
             url : $scope.urlName
         }).then(function mySuccess(response) {
 
-          // console.log(response.data);
+           $scope.data = response.data;
 
-            $scope.data = response.data;
-            $scope.totalVehicles = response.data[$scope.groupid]['totalVehicles'];
+          // console.log(response.data);
+            for(i=0;i<$scope.data.length;i++){
+               if( $scope.data[i].group == gNames[1] ){
+
+                $scope.groupid = parseInt($scope.data[i].rowId);  
+
+               }
+            }
+
+            
+        /*  $scope.totalVehicles = response.data[$scope.groupid]['totalVehicles'];
             $scope.vehicleOnline = response.data[$scope.groupid]['online'];
             $scope.attention = response.data[$scope.groupid]['attention'];
             $scope.parkedCount = response.data[$scope.groupid]['totalParkedVehicles'];
             $scope.movingCount = response.data[$scope.groupid]['totalMovingVehicles'];
             $scope.idleCount = response.data[$scope.groupid]['totalIdleVehicles'];
-            $scope.overspeedCount = response.data[$scope.groupid]['topSpeed'];
+            $scope.overspeedCount = response.data[$scope.groupid]['topSpeed'];*/
             
             $scope.vehiname = response.data[$scope.groupid].vehicleLocations[0].vehicleId;
             $scope.gName    = response.data[$scope.groupid].group;
@@ -303,21 +314,14 @@ $scope.trimColon = function(textVal){
       $scope.Filter = 'ALL';
 
       var grpNam = val;
-      var grpUrl="";
+     
 
-       if(res3[1]==""){
-         grpUrl = $scope.urlName+'?group='+grpNam;
+      $scope.urlName = GLOBAL.DOMAIN_NAME+'/getVehiLocation?'+res2[1]+'&group='+grpNam;
 
-           // console.log(grpUrl);
-       } else{
-         grpUrl = $scope.urlName+'&group='+grpNam;
-
-           // console.log(grpUrl);
-       }
 
           $http({
             method : "GET",
-            url : grpUrl,
+            url : $scope.urlName,
           }).then(function mySuccess(response) {
 
            // console.log(response.data);
@@ -350,18 +354,6 @@ $scope.trimColon = function(textVal){
                } 
              });     
 
-
-           /* $scope.totalVehicles = response.data[$scope.groupid]['totalVehicles'];
-            $scope.vehicleOnline = response.data[$scope.groupid]['online'];
-            $scope.attention = response.data[$scope.groupid]['attention'];
-            $scope.parkedCount = response.data[$scope.groupid]['totalParkedVehicles'];
-            $scope.movingCount = response.data[$scope.groupid]['totalMovingVehicles'];
-            $scope.idleCount = response.data[$scope.groupid]['totalIdleVehicles'];
-            $scope.overspeedCount = response.data[$scope.groupid]['topSpeed'];
-            $scope.vehiname = response.data[$scope.groupid].vehicleLocations[0].vehicleId;*/
-          //  $scope.gName    = response.data[$scope.groupid].group;
-           // sessionValue($scope.vehiname, $scope.gName);
-       
             $scope.initilize('mapLoc');
 
         }, function myError(response) {

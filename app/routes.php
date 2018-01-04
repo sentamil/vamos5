@@ -10,10 +10,13 @@ Route::get('/track', function() {
         
         if($_GET['maps'] == 'track'){
             return View::make('maps.trackSingleVeh');
-        } else {
+        } 
+        else if($_GET['maps'] == 'viewVehicles'){
+            return View::make('maps.viewVehicles');
+        }
+        else {
             return Redirect::to('login');    
         }
-        
     }
     else 
     {   
