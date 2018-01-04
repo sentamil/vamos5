@@ -421,8 +421,6 @@ $scope.clearMarkers = function(){
 //view map
 
 
-
-
 $scope.setMarkers = function(req_data, address){
         //var image = {
         //  url: 'assets/imgs/G_E.png'
@@ -477,8 +475,8 @@ $scope.setMarkers = function(req_data, address){
            $scope.marker.push(markertemp);
            if(address != undefined){
             infowindow = new InfoBubble({
-              minWidth: 240,  
-              maxHeight: 140,
+              minWidth: 245,  
+              maxHeight: 152,
               content: $scope.infoContent(location)[0]
             });
             infowindow.open($scope.map, markertemp);
@@ -524,11 +522,10 @@ $scope.infoContent = function(data){
       +'<div><b class="_info_caption">ACC Status</b> - <span style="color:'+classVal+'; font-weight:bold;">'+data.ignitionStatus+'</span> </div>'
       +'<div><b class="_info_caption">Loc Time</b> - <span>'+$filter('date')(data.date, "dd-MMM-yy HH:mm")+'</span> </div>'
       +'<div ><b class="_info_caption">Comm Time</b> - <span>'+$filter('date')(data.lastComunicationTime, "dd-MMM-yy HH:mm")+'</span> </div>'
-      +'<div style="padding-top:5px;"><a href="history?vid='+data.vehicleId+'&vg='+$scope.gName+'">Reports</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+data.vehicleId+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+data.vehicleId+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+data.vehicleId+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp; <a href="#" ng-click="addPoi('+data.latitude+','+data.longitude+')">Site</a>'
+    //+'<div style="padding-top:5px;"><a href="history?vid='+data.vehicleId+'&vg='+$scope.gName+'">Reports</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+data.vehicleId+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+data.vehicleId+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+data.vehicleId+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp; <a href="#" ng-click="addPoi('+data.latitude+','+data.longitude+')">Site</a>'
     //+'<div style="padding-top:5px;"><a href="history?vid='+vehicleID+'&vg='+$scope.gName+'">Reports</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=single&maps=single" target="_blank">Track</a> &nbsp;&nbsp; <a href="../public/track?maps=replay&vehicleId='+vehicleID+'&gid='+$scope.gName+'" target="_blank">History</a> &nbsp;&nbsp; <a href="../public/track?vehicleId='+vehicleID+'&track=multiTrack&maps=mulitple" target="_blank">MultiTrack</a>&nbsp;&nbsp; <a href="#" ng-click="addPoi('+lat+','+lng+')">Save Site</a>'
-    //+'<div style="overflow-wrap: break-word; border-top: 1px solid #eee">'+data.address+'</div>'
+      +'<div style="max-width:240px;word-break: break-all;text-align:center;padding-top:3px;border-top: 1px solid #eee;">'+data.address+'</div>'
       +'</div>';
-
 
         var compiled = $compile(contentString)($scope);
      // var  drop1 = document.getElementById("ddlViewBy");

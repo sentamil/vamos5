@@ -9,14 +9,14 @@
   <meta name="author" content="Vamo">
   <title>GPS</title>
     
-    <link rel="shortcut icon" href="assets/imgs/tab.ico">
-    <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
-    <link href="assets/css/loaders.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="assets/css/simple-sidebar.css" rel="stylesheet">
+  <link rel="shortcut icon" href="assets/imgs/tab.ico">
+  <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
+  <link href="assets/css/loaders.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="assets/css/simple-sidebar.css" rel="stylesheet">
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
       
       function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -83,12 +83,12 @@
     #contentmin{
       position: absolute;
       top: 10px;
-      float: left;
-      left: 25%; 
+      float: right;
+      right: 80px; 
       z-index:1; 
-      min-width: 400px;
-      height: 40px;
-      padding: 10px;
+      max-width: 240px;
+      height: 38px;
+      padding:  8px 8px 8px 12px ;   
       background-color: rgba(247, 247, 247, 0.9);
       -webkit-border-radius: 12px;
       -moz-border-radius: 12px;
@@ -114,13 +114,13 @@
     </span>-->
 
 
-    <span style="padding-left: 15px;">
+   <!-- <span style="padding-left: 15px;">
         <select ng-model="gName"  ng-change="groupSelection(gName)" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
             <option ng-repeat="val in locations04" value="{{val.group}}">{{trimColon(val.group)}}</option>
         </select> 
-    </span>
+    </span>-->
 
-    <span style="padding-left: 20px;">
+    <span>
         <select ng-model="vehinames" ng-options="item as item.vName for item in vehicle_list" ng-change="genericFunction(vehinames)">
            <option style="display:none" value="">Select Vehicle</option>
         </select>
