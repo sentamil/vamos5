@@ -44,6 +44,10 @@ Route::get('/track', function() {
                     log::info(' public ');
                     return View::make('maps.trackSingleVeh');
                 }
+                else if($_GET['maps'] == 'viewVehicles'){
+                    log::info(' public ');
+                    return View::make('maps.viewVehicles');
+                }
                 else
                 {
                     return View::make('maps.index');
@@ -384,6 +388,12 @@ Route::get('/getVehicleLocations', function() {
     return View::make('vls.getVehicleLocations');
 });
 
+Route::get('/getVehiLocation', function() {
+
+  log::info('getVehiLocation 2....');
+
+  return View::make('vls.getVehiLocation');
+});
 
 Route::get('/getSelectedVehicleLocation1', function() {
      if (!Auth::check()) {

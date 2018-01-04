@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta name="description" content="">
+  <meta name="author" content="Vamo">
+  <title>GPS</title>
+    
+    <link rel="shortcut icon" href="assets/imgs/tab.ico">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
+    <link href="assets/css/loaders.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="assets/css/simple-sidebar.css" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      
+      function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+       return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+
+      var postValue = {
+      'id': getParameterByName('userId')
+      };
+
+      if(postValue.id!=""){
+
+       $.ajax({
+            async: false,
+            method: 'post', 
+            url: 'getApiKeys',
+            data: postValue,
+            success: function (response) {
+              sessionStorage.setItem('apiKey', JSON.stringify(response));
+            }
+        });
+      }else{
+
+         alert('userid empty!');
+
+      }
+    </script>
+
+
+    <style type="text/css">
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Lato', sans-serif;
+      /*font-weight: bold;  
+        font-family: 'Lato', sans-serif;
+        font-family: 'Roboto', sans-serif;
+        font-family: 'Open Sans', sans-serif;
+        font-family: 'Raleway', sans-serif;
+        font-family: 'Faustina', serif;
+        font-family: 'PT Sans', sans-serif;
+        font-family: 'Ubuntu', sans-serif;
+        font-family: 'Droid Sans', sans-serif;
+        font-family: 'Source Sans Pro', sans-serif;*/
+    }
+
+    #mapLoc {
+      height: 100%;
+    }
+
+    .ball-spin-fade-loader>div{
+      position: absolute !important;
+      z-index: 1 !important;
+      margin-top: 250px !important;
+      margin-left: 50% !important;
+      background-color: gray !important;
+    }
+
+    #contentmin{
+      position: absolute;
+      top: 10px;
+      float: left;
+      left: 25%; 
+      z-index:1; 
+      min-width: 400px;
+      height: 40px;
+      padding: 10px;
+      background-color: rgba(247, 247, 247, 0.9);
+      -webkit-border-radius: 12px;
+      -moz-border-radius: 12px;
+      border-radius: 4px;
+    }
+
+  </style>
+</head>
+
+ <body ng-app="myApp" ng-controller="newPlaceCtrl">
+    <div class="loader-inner ball-spin-fade-loader" id="statusLoad"><div></div></div>
+    <div id="mapLoc"></div>
+    <div id="contentmin" class="rightsection">
+
+<!--<span style="padding-left: 5px;">Group:&nbsp;&nbsp;<b style="color: green;">{{gName}}</b></span>
+     <span style="padding-left: 15px;">
+        <select ng-model="gName"  ng-change="groupSelection(gName)" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
+            <option ng-repeat="val in locations04" value="{{vehi.group}}">{{vehi.group}}</option>
+        </select> </span>
+       <span style="padding-left: 20px;"><select ng-model="vehiname" ng-options="item as item.vName for item in vehicle_list" ng-change="genericFunction(vehiName)">
+         <option style="display:none" value="">Select Vehicle</option>
+       </select>
+    </span>-->
+
+
+    <span style="padding-left: 15px;">
+        <select ng-model="gName"  ng-change="groupSelection(gName)" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
+            <option ng-repeat="val in locations04" value="{{val.group}}">{{trimColon(val.group)}}</option>
+        </select> 
+    </span>
+
+    <span style="padding-left: 20px;">
+        <select ng-model="vehinames" ng-options="item as item.vName for item in vehicle_list" ng-change="genericFunction(vehinames)">
+           <option style="display:none" value="">Select Vehicle</option>
+        </select>
+    </span>
+
+  <!-- <span style="padding-left: 15px;">
+         <select ng-model="vehiname"  ng-change="genericFunction(vehiname)" style="background-color:#f9f9f9;padding:0 0 0 3px;min-width:110px;max-width:110px;">
+            <option ng-repeat="vehi in vehicle_list" value="{{vehi.vehiID}}">{{vehi.vName}}</option>
+         </select> 
+       </span> -->
+   
+   </div>
+
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src="assets/js/loaders.css.js"></script>
+    <script type='text/javascript' src="assets/js/infobubble.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABtcdlhUVm5aKq7wAlMatI56DKanIKS6o" async defer></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script type='text/javascript' src="assets/js/static.js"></script>
+    <script type='text/javascript' src="assets/js/viewVehicles.js"></script> -->
+
+  <script>
+    var apikey_url = JSON.parse(sessionStorage.getItem('apiKey'));
+    var url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places";
+
+    if(apikey_url != null ||  apikey_url != undefined){
+      url = "https://maps.googleapis.com/maps/api/js?key="+apikey_url+"&libraries=places";
+    }
+
+    function loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback) {
+      if (scriptsCollection[startIndex]) {
+       var fileref = document.createElement('script');
+       fileref.setAttribute("type","text/javascript");
+       fileref.setAttribute("src", scriptsCollection[startIndex]);
+       fileref.onload = function(){
+         startIndex = startIndex + 1;
+         loadJsFilesSequentially(scriptsCollection, startIndex, librariesLoadedCallback)
+       };
+ 
+       document.getElementsByTagName("head")[0].appendChild(fileref)
+      } else {
+       librariesLoadedCallback();
+      }
+    }
+ 
+   // An array of scripts you want to load in order
+   var scriptLibrary = [];
+
+   scriptLibrary.push(url);
+ //scriptLibrary.push("https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places");
+ 
+ //Pass the array of scripts you want loaded in order and a callback function to invoke when its done
+   loadJsFilesSequentially(scriptLibrary, 0, function(){
+     
+   });
+
+  </script> 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src="assets/js/loaders.css.js"></script>
+    <script type='text/javascript' src="assets/js/infobubble.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script type='text/javascript' src="assets/js/static.js"></script>
+    <script type='text/javascript' src="assets/js/viewVehicles.js"></script>
+
+
+ </body>
+</html>

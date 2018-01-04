@@ -184,7 +184,7 @@ InfoBubble.prototype.BACKGROUND_COLOR_ = '#fff';
  * @const
  * @private
  */
-InfoBubble.prototype.CLOSE_SRC_ = 'https://maps.gstatic.com/intl/en_us/mapfiles/iw_close.gif';
+InfoBubble.prototype.CLOSE_SRC_ = 'http://localhost/vamo/public/assets/imgs/cl_red.png';
 
 /**
  * Extends a objects prototype by anothers.
@@ -219,6 +219,7 @@ InfoBubble.prototype.buildDom_ = function() {
   // Close button
   var close = this.close_ = document.createElement('IMG');
   close.style['position'] = 'absolute';
+  close.style['background'] = '#fff9f9';
   close.style['border'] = 0;
   close.style['zIndex'] = this.baseZIndex_ + 1;
   close.style['cursor'] = 'pointer';
