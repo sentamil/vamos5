@@ -184,7 +184,7 @@ InfoBubble.prototype.BACKGROUND_COLOR_ = '#fff';
  * @const
  * @private
  */
-InfoBubble.prototype.CLOSE_SRC_ = 'http://localhost/vamo/public/assets/imgs/cl_red.png';
+InfoBubble.prototype.CLOSE_SRC_ = 'http://gpsvts.net/gps/public/assets/imgs/cl_red.png';
 
 /**
  * Extends a objects prototype by anothers.
