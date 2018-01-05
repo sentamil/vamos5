@@ -1579,7 +1579,6 @@ gmarkers_osm[gmarkers_osm.length-1].addEventListener( "click", function(e){
   $scope.assignValue=function(dataVal) {
 
    // console.log(dataVal);
-   $("#safeParkShow").show();
 
     $scope.vehicleid = dataVal.vehicleId;
     $scope.vehShort  = dataVal.shortName;
@@ -3552,7 +3551,7 @@ var gaugeOptions = {
 
     $(document).ready(function(){
 
-        $("#notifyS").hide();
+         $("#notifyS").hide();
           $("#notifyF").hide();
       
         $('#draggable').hide(0);  
@@ -3565,6 +3564,7 @@ var gaugeOptions = {
     
 
     });
+    
     $("#inputEdit").click(function(e){
         $("#editable").show();
         $("#viewable").hide();
@@ -3581,4 +3581,3 @@ var gaugeOptions = {
         }
     });
 
-    
