@@ -233,7 +233,7 @@ if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.
 			
 			$redis = Redis::connection();
 			$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-			$fcode1=strtoupper($fcode);$fcode1=strtoupper($fcode);
+			$fcode1=strtoupper($fcode);
 			$value1=$redis->SISMEMBER('S_Groups_' . $fcode, $groupId . ':' . $fcode1);
 			if($value1==1)
 			{
@@ -246,6 +246,9 @@ if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.
 			foreach($vehicleList as $vehi) {
 				$vehicle    = explode(" || ",$vehi)[0];
                 $redis->sadd($groupId . ':' . $fcode1,$vehicle);
+                ///ram noti
+                $redis->sadd('S_'.$vehicle.'_'.$fcode, 'S_'.$groupId . ':' . $fcode1);
+			   ///
 			}
 
 			
@@ -432,38 +435,53 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
         	// 	log::info( '------login 2---------- '.Session::get('cur'));
         	// }
            		   //Session::put('email',$mailId);
-		   ///user notification
-	      // $result=array_diff($oldVehi,$updateVehi);
-       //     foreach ($result as $key => $oldV) 
-	      //   {
-       //      $Ulist=$redis->hget('x'.$fcode, $oldV.'/'.$id);
-       //      $redis->hdel('H_Vehicle_Map_Uname_'.$fcode, $oldV.'/'.$id);
-       //      $myArray = explode('/', $Ulist);
-       //        foreach ($myArray as $keyold => $user) 
-       //        {
-       //          $groupList=$redis->smembers($user);
-       //             foreach ($groupList as $keys => $group) 
-	      //          {
-       //               if($id!=$group)
-       //               {
-       //                $gCheck=$redis->sismember($group, $oldV);
-       //                 if($gCheck==1)
-       //                 {
-       //                 	log::info('entry');
-       //                 	break;
-       //                 }
-       //                  else
-       //                  {
-       //                   $getV = $redis->hget('H_Vamo_Notification_Vehicle_map_'.$fcode, $oldV);                      	
-	      //                $users = str_replace(','.$user, '', $getV);
-	      //                $redis->hset('H_Vamo_Notification_Vehicle_map_'.$fcode, $oldV, $users);	
-       //                  }
-       //               }                     
-       //             }
-       //        }
-                   
-       //     }
-		   ///
+
+        /// ram noti
+          $result=array_diff($oldVehi,$updateVehi);
+	      log::info($result);
+	      log::info($id);
+            foreach ($result as $key => $oldV) 
+	         {
+             $Ulist=$redis->sismember('S_'.$oldV.'_'.$fcode, 'S_'.$id);
+             $vehiGrpDel=$redis->srem('S_'.$oldV.'_'.$fcode, 'S_'.$id);
+         }
+         $result1=array_diff($updateVehi,$oldVehi);
+	      log::info($result1);
+	      log::info($id);
+            foreach ($result1 as $key => $newV) 
+	         {
+             $Ulist1=$redis->sismember('S_'.$newV.'_'.$fcode, 'S_'.$id);
+             $vehiGrpDel1=$redis->sadd('S_'.$newV.'_'.$fcode, 'S_'.$id);
+         }
+         ///user notification
+         $remVehi=array_diff($oldVehi,$updateVehi);
+	      log::info($remVehi);
+	      log::info($id);
+           foreach ($remVehi as $keyV => $vehiList) 
+	       {
+	         $checkVehiOld=$redis->hget('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList);
+	         $redis->hdel('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList);
+	         $getGroup=$redis->smembers('S_'.$vehiList.'_'.$fcode);
+	         foreach ($getGroup as $keyG => $groupList) 
+	         {
+	         	$getUser=$redis->smembers($groupList);
+	         	foreach ($getUser as $keyU => $userList) 
+	         	{
+	         	  $checkVehi=$redis->hget('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList);
+	         	  if(empty($checkVehi))
+	         	  {
+	         	  	log::info('now olny added users');
+	         	 	//$redis->hdel('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList);
+	         	 	$success=$redis->hset('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList, ','.$userList.',');
+	         	   }
+	         	   else {
+	         	   	log::info('else already have a users');
+	         	     $success=$redis->hset('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList, $checkVehi.$userList.',');
+                   }
+	         	}
+	         }
+           }
+         ///
         	log::info('  before sending mail ');
         	log::info(array_values($mailId));
 		try {
@@ -478,7 +496,18 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
         	Session::flash('message', 'Successfully updated ' . $id . '!');
         	return Redirect::to('vdmGroups');
         }else {
+<<<<<<< HEAD
             $redis->sadd($id,$oldVehi);
+=======
+            ///ram noti
+            $result2=array_diff($oldVehi,$updateVehi);
+            foreach ($result2 as $key => $oldV) 
+	        {
+             $Ulist=$redis->sismember('S_'.$oldV.'_'.$fcode, 'S_'.$id);
+             $vehiGrpDel=$redis->srem('S_'.$oldV.'_'.$fcode, 'S_'.$id);
+            }
+            ///
+>>>>>>> 8e9ffa585fa2d53edb2ffc79108ea96a3398c42c
         	log::info(' vehicles are not available  !!!!');
         	return Redirect::to('vdmGroups/' . $id . '/edit')->with('message','Please select any one vehicle .  ');
 
@@ -503,7 +532,12 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		
 		$groupId = 	$id;
 		$fcode = $redis->hget('H_UserId_Cust_Map', $username . ':fcode');
-		
+		///ram noti
+		$getVehicle=$redis->smembers($id);
+		foreach ($getVehicle as $key => $getV) {
+			 $redis->srem('S_'.$getV.'_'.$fcode, 'S_'.$id);
+		}
+		///
 		
 		$redis->srem('S_Groups_' . $fcode,$groupId);
 		
@@ -568,6 +602,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		$ownerShip	=	$redis->hget('H_UserId_Cust_Map', $username.':OWN');
 
 		$grpNameId = Input::get ('grpName');
+		$getVehicle=$redis->smembers($grpNameId);
 		$redis->srem('S_Groups_' . $fcode,$grpNameId);
 		if($ownerShip == 'admin')
 			$redis->srem('S_Groups_Admin_'.$fcode,$grpNameId );
@@ -579,7 +614,12 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		foreach ( $userList as $user ) {
 			$redis->srem($user,$grpNameId);
 		}
-
+        ///ram noti
+		foreach ($getVehicle as $key => $getV) {
+			 $redis->srem('S_'.$getV.'_'.$fcode, 'S_'.$grpNameId);
+		}
+		$userDel=$redis->del('S_'.$grpNameId);
+		///
 
 		
 		return 'sucess';
@@ -743,6 +783,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 			}
 			$redis->sadd('S_Groups_' . $fcode, $grpName);
 			$redis->sadd ( $username, $grpName );
+		    $redis->sadd ( 'S_'.$grpName, $username );
 			if($ownerShip == 'admin')
 				$redis->sadd('S_Groups_Admin_'.$fcode,$grpName);
 			else
@@ -754,7 +795,46 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		foreach($vehList as $vehi) {
 			$redis->sadd($grpName,$vehi);
 		}
-		
+		/// ram noti
+          $result=array_diff($oldVehi,$vehList);
+            foreach ($result as $key => $oldV) 
+	         {
+             $Ulist=$redis->sismember('S_'.$oldV.'_'.$fcode, 'S_'.$grpName);
+             $vehiGrpDel=$redis->srem('S_'.$oldV.'_'.$fcode, 'S_'.$grpName);
+         }
+         $result1=array_diff($vehList,$oldVehi);
+            foreach ($result1 as $key => $newV) 
+	         { 
+             $Ulist1=$redis->sismember('S_'.$newV.'_'.$fcode, 'S_'.$grpName);
+             $vehiGrpDel1=$redis->sadd('S_'.$newV.'_'.$fcode, 'S_'.$grpName);
+         }
+         ///user notification
+         $remVehi=array_diff($oldVehi,$vehList);
+           foreach ($remVehi as $keyV => $vehiList) 
+	       {
+	         $checkVehiOld=$redis->hget('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList);
+	         $redis->hdel('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList);
+	         $getGroup=$redis->smembers('S_'.$vehiList.'_'.$fcode);
+	         foreach ($getGroup as $keyG => $groupList) 
+	         {
+	         	$getUser=$redis->smembers($groupList);
+	         	foreach ($getUser as $keyU => $userList) 
+	         	{
+	         	  $checkVehi=$redis->hget('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList);
+	         	  if(empty($checkVehi))
+	         	  {
+	         	  	log::info('now olny added users');
+	         	 	//$redis->hdel('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList);
+	         	 	$success=$redis->hset('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList, ','.$userList.',');
+	         	   }
+	         	   else {
+	         	   	log::info('else already have a users');
+	         	     $success=$redis->hset('H_Vamo_Notification_Vehicle_map_'.$fcode, $vehiList, $checkVehi.$userList.',');
+                   }
+	         	}
+	         }
+		   }
+		  ///
 		if(sizeof($mailId) > 0)
         	Mail::queue('emails.group', array('username'=>$username, 'groupName'=>$grpName, 'oldVehi'=>$oldVehi, 'newVehi'=>$vehList), function($message) use ($mailId, $grpName)
         	{

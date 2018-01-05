@@ -2161,7 +2161,13 @@ $current = Carbon::now();
       $redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleIdOld.':'.$deviceId.':'.$shortNameOld.':'.$orgId1.':'.$gpsSimNo);
       $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortNameNew.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
       $expiredPeriod=$redis->hget('H_Expire_'.$fcode,$vehicleIdOld);
-
+    ///ram noti
+      $oldVehiValues=$redis->smembers ('S_'.$vehicleIdOld.'_'.$fcode);
+      $redis->del('S_'.$vehicleIdOld.'_'.$fcode);
+       foreach ($oldVehiValues as $key => $value) {
+          $redis->sadd('S_'.$vehicleId.'_'.$fcode, $value);
+      }
+    ///
         log::info(' expire---->'.$expiredPeriodOld);
         
         if(!$expiredPeriod==null)
@@ -2527,7 +2533,13 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 $redis->hdel ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId1.':'.$gpsSimNo);
 $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId);
 ///----
-
+///ram noti
+      $oldVehiValues=$redis->smembers ('S_'.$vehicleIdOld.'_'.$fcode);
+      $redis->del('S_'.$vehicleIdOld.'_'.$fcode);
+      foreach ($oldVehiValues as $key => $value) {
+          $redis->sadd('S_'.$vehicleId.'_'.$fcode, $value);
+      }
+///
 
 
         $groupList = $redis->smembers('S_Groups_' . $fcode);

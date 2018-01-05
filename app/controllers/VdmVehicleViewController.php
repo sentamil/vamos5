@@ -200,6 +200,9 @@ class VdmVehicleViewController extends \BaseController {
 
    // if($dealerIdOld!='OWN')
     // {
+        ///ram noti
+        $vehiDel=$redis->del('S_'.$vehicleIdOld.'_'.$fcode);
+        ///
         $qq=$redis->sismember('S_Vehicles_Admin_'.$fcode,$vehicleIdOld);
         $oo=$redis->sismember('S_Vehicles_Dealer_'.$dealerId.'_'.$fcode,$vehicleIdOld);
         if($qq=='1')
