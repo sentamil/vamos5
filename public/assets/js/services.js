@@ -144,6 +144,74 @@ app.factory('vamoservice', function($http, $q){
           return pinImage;
         },
 
+        googleAddress:function(data) {
+
+            var tempVar = data;
+            var strNo  = 'sta:null';
+            var rotNam = 'rot:null';
+            var locs   = 'loc:null';
+            var add1   = 'ad1:null';
+            var add2   = 'ad2:null';
+            var coun   = 'con:null';
+            var postal = 'pin:null';
+
+            for(var i=0;i<tempVar.length;i++){
+             //console.log(newVarr[i].types);
+              for(var j=0;j<tempVar[i].types.length;j++){
+               //console.log(newVarr[i].types[j]);
+                //console.log(newVarr[i].long_name);
+              var valType = tempVar[i].types[j];
+              var valName = tempVar[i].long_name;
+        
+              switch(valType){
+        
+                case "street_number":
+                 //console.log("stn : "+valName);
+                  strNo ='sta:'+valName;
+                break;
+                case "route":
+                 //console.log("rot : "+valName);
+                  rotNam='rot:'+valName;
+                break;
+                case "neighborhood":
+                  //console.log("neigh : "+valName);
+                  //retVar+='nei:'+valName;
+                break;
+                /*case "sublocality":
+                  //console.log("loc : "+valName);
+                  retVar+='loc:'+valName+' ';
+                break;*/
+                case "locality":
+                  //console.log("loc : "+valName);
+                  locs='loc:'+valName;
+                break;
+                case "administrative_area_level_1":
+                  //console.log("ad1 : "+valName);
+                  add1='ad1:'+valName;
+                break;
+                case "administrative_area_level_2":
+                  //console.log("ad2 : "+valName);
+                  add2='ad2:'+valName;
+                break;
+                case "country":
+                  //console.log("con : "+valName);
+                  coun='con:'+valName;
+                break;
+                case "postal_code":
+                  //console.log("pin : "+valName);
+                  postal='pin:'+valName;
+                break;
+              }
+        
+            }
+          }
+
+         var retVar = strNo+' '+rotNam+' '+locs+' '+add1+' '+add2+' '+coun+' '+postal;
+      // console.log(retVar);
+
+      return retVar;
+      },
+
 
     }  
 });

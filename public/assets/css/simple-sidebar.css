@@ -1,3 +1,4 @@
+
 #wrapper {
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
@@ -31,6 +32,15 @@
     overflow:hidden;
     /*box-shadow:0px 8px 17px rgba(0, 0, 0, 0.2)  !important;*/
 }
+
+.ball-spin-fade-loader>div{
+    position: absolute !important;
+    z-index: 1 !important;
+    margin-top: 250px !important;
+    margin-left: 50% !important;
+    background-color: orange !important;
+}
+
 #mapList {
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
@@ -490,7 +500,7 @@ border-width: 10px;
 .dynamicvehicledetails div{ /*padding-bottom: 10px;*/}
 .dynamicvehicledetails td{ font-size: 12px;}
 .dynamicvehicledetails table{width:228px;}
-.dynamicvehicledetails table td, .dynamicvehicledetails table td, .dynamicvehicledetails table td{ padding:3px 7px;}
+.dynamicvehicledetails table td, .dynamicvehicledetails table td, .dynamicvehicledetails table td{ padding:0px 7px;}
 .dynamicvehicledetails table tbody tr:nth-child(odd), .dynamicvehicledetails table tbody tr:nth-child(odd), .dynamicvehicledetails table tbody tr:nth-child(odd){background: #efefef;}
 
 .tracklegend td{ padding:3px;}
@@ -733,16 +743,19 @@ input[type=range]:focus::-ms-fill-upper {
  }
 
 #pac-input{
-           border-radius: 3px;
-            height: 30px;
-            width: 200px;
-            top: -25px;
-            left: 200px;
-            max-width: 200px;
-            z-index: 1;
-            font-size: 12px;
-            font-weight: bold;
-        }
+    border-radius: 3px;
+    height: 30px;
+    width: 200px;
+    top: -25px;
+    left: 200px;
+    max-width: 200px;
+    z-index: 1;
+    font-size: 12px;
+    font-weight: bold;
+    background: #fff;
+    opacity: 0.7;
+}
+
 #pac-input:focus {
     outline: none;
     border-color: #f4f4f4;
@@ -1157,3 +1170,4 @@ input.form-control.ui-select-search.ng-valid.ng-touched.ng-dirty.ng-valid-parse 
 }
 
 
+   

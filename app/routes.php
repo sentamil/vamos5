@@ -51,6 +51,10 @@ Route::get('/track', function() {
                     log::info(' public ');
                     return View::make('maps.viewVehicles');
                 }
+                else if($_GET['maps'] == 'landNew'){
+                    log::info(' public ');
+                    return View::make('maps.landNew');
+                }
                 else
                 {
                     return View::make('maps.index');
@@ -396,6 +400,13 @@ Route::get('/getVehiLocation', function() {
   log::info('getVehiLocation 2....');
 
   return View::make('vls.getVehiLocation');
+});
+
+Route::get('/saveAddress', function() {
+
+  log::info('Save Address...');
+
+  return View::make('vls.saveAddress');
 });
 
 Route::get('/getSelectedVehicleLocation1', function() {

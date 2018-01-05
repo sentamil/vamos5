@@ -148,7 +148,9 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
       }
     ]
   };
-  
+
+
+
 /*  var maploc1 = L.map( 'maploc1', {
       center: [20.0, 5.0],
       minZoom: 4,
@@ -680,32 +682,70 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
         console.log("update details fails..");
       });
 
-     var saferParkUrl  = GLOBAL.DOMAIN_NAME+'/configureSafetyParkingAlarm?vehicleId='+ $scope.vehicleid+'&enableOrDisable='+$scope.sparkType;
-     //console.log(saferParkUrl);
+  // document.getElementById("inputEdit").disabled = false;
+    $("#editable").hide();
+    $("#viewable").show();
+  }
+
+
+  $scope.updateSafePark=function(){
+
+    var timeOutVar;
+
+    console.log('updateSafePark.....');
+
+    $('#safePark span').text($scope.sparkType);
+    var saferParkUrl  = GLOBAL.DOMAIN_NAME+'/configureSafetyParkingAlarm?vehicleId='+ $scope.vehicleid+'&enableOrDisable='+$scope.sparkType;
+
+  //console.log(saferParkUrl);
+
+    function setsTimeOuts() {
+      //alert('timeOut');
+      $("#notifyS").hide(1200);
+      $("#notifyF").hide(1200); 
+        if(timeOutVar!=null){
+          //console.log('timeOutVar'+timeOutVar);
+            clearTimeout(timeOutVar);
+        }
+    }
+
+  (function(){
 
     $.ajax({
       async: false,
       method: 'GET', 
       url: saferParkUrl,
       success: function (response){
-        if(response=="success"){
-         console.log('safety park updating '+response+'..');
-        } else if(response=="fail"){
-         console.log('safety park updating '+response+'..');
-        } else{
-          console.log('safety park : hello '+response);
+        console.log(response);
+        if(response=="success") {
+
+        //$('#notifyS span').text(response+'!..');
+          $("#notifyS").show(500);
+          $("#notifyF").hide(); 
+          timeOutVar = setTimeout(setsTimeOuts, 2000);
+
+        } else if(response=="fail") {
+
+          $('#notifyS span').text(response+'!..');
+          $("#notifyS").show(500);
+          $("#notifyF").hide();
+          timeOutVar = setTimeout(setsTimeOuts, 2000);
+
+        } else {
+
+          $('#notifyF span').text(response);
+          $("#notifyF").show(500);
+          $("#notifyS ").hide();
+          timeOutVar = setTimeout(setsTimeOuts, 2000);
         }
         //$scope.toast = response;
         //toastMsg();
       }
-
     });
 
-      
-   // document.getElementById("inputEdit").disabled = false;
-    $("#editable").hide();
-    $("#viewable").show();
-  }
+ })();
+
+}
 
 
  /* function updateCall()
@@ -857,12 +897,39 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
      */    
   }
 
-  $scope.getLocation = function(lat,lon, callback){
-    geocoder   = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(lat, lon);
-    geocoder.geocode({'latLng': latlng}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        if (results[1]) {
+
+  function saveAddressFunc(val, lat, lan){
+    //console.log(val);
+    //console.log('save Address...');
+    //var saveAddUrl = GLOBAL.DOMAIN_NAME+'/saveAddressFromFrontend?address=hello&lattitude=12.0&longitude=72.0&status=web';
+      var saveAddUrl = GLOBAL.DOMAIN_NAME+'/saveAddress?address='+encodeURIComponent(val)+'&lattitude='+lat+'&longitude='+lan+'&status=web';
+    //console.log(saveAddUrl);
+
+      $http({
+        method: 'GET',
+        url: saveAddUrl
+      }).then(function successCallback(response) {
+         console.log(response.status);
+      }, function errorCallback(response) {
+         console.log(response.status);
+      });
+
+   }
+
+
+  $scope.getLocation = function(lat, lon, callback){
+     //console.log(lat);
+     //console.log(lon);
+      geocoder   = new google.maps.Geocoder();
+      var latlng = new google.maps.LatLng(lat, lon);
+      geocoder.geocode({'latLng': latlng}, function(results, status) {
+      //console.log(results);
+        var newVarr = vamoservice.googleAddress(results[0].address_components);
+        //console.log(newVarr);
+        saveAddressFunc(newVarr,lat,lon);
+
+      if(status == google.maps.GeocoderStatus.OK) {
+        if(results[1]) {
         if(typeof callback === "function") callback(results[1].formatted_address)
         }
       }
@@ -1390,7 +1457,7 @@ $scope.addMarker_osm= function(pos){
 
 
 gmarkers_osm[gmarkers_osm.length-1].addEventListener( "click", function(e){ 
-      
+
       $scope.vehicleno = pos.data.vehicleId;
       $scope.assignValue(pos.data);
       $('#viewable,#rightAddress2').show();
@@ -1472,8 +1539,8 @@ gmarkers_osm[gmarkers_osm.length-1].addEventListener( "click", function(e){
   //$scope.marl.push($scope.marker);
 
     google.maps.event.addListener(gmarkers[gmarkers.length-1], "click", function(e) {  
-      
-  // if($scope.zohoReports==undefined){ 
+
+   // if($scope.zohoReports==undefined){ 
       $scope.vehicleno = pos.data.vehicleId;
       $scope.assignValue(pos.data);
 
@@ -1512,7 +1579,8 @@ gmarkers_osm[gmarkers_osm.length-1].addEventListener( "click", function(e){
   $scope.assignValue=function(dataVal) {
 
    // console.log(dataVal);
-    
+   $("#safeParkShow").show();
+
     $scope.vehicleid = dataVal.vehicleId;
     $scope.vehShort  = dataVal.shortName;
     $scope.ododis    = dataVal.odoDistance;
@@ -1545,6 +1613,8 @@ gmarkers_osm[gmarkers_osm.length-1].addEventListener( "click", function(e){
       tankSize     = parseInt(dataVal.tankSize);
       fuelLtr      = parseInt(dataVal.fuelLitre);
     }
+
+    $("#safeParkShow").show();
     
     total        = parseInt(dataVal.speed);
     $('#vehdevtype #val').text(dataVal.odoDistance);
@@ -3088,6 +3158,23 @@ $scope.starSplit  = function(val){
  return splitVal;  
 }
 
+ $("#safeParkShow").hide();
+ $("#safEdits").show();
+ $("#safeUps").hide();
+
+ $("#safEdit").click(function(e){
+
+      console.log('safe edits...');
+
+       $('#safEdits').hide();
+       $('#safeUps').show();
+  });
+
+ $("#safeUp").click(function(e){
+       $('#safEdits').show();
+      $('#safeUps').hide();
+    });
+
 }])
 
 .directive('ngEnter', function () {
@@ -3458,10 +3545,15 @@ var gaugeOptions = {
         });
     });
 
+    
+
     $("#editable").hide();
     $("#viewable").show();
 
     $(document).ready(function(){
+
+        $("#notifyS").hide();
+          $("#notifyF").hide();
       
         $('#draggable').hide(0);  
         $('#minmaxMarker').click(function(){
@@ -3488,3 +3580,5 @@ var gaugeOptions = {
             document.body.style.zoom="90%";
         }
     });
+
+    

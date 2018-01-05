@@ -15,7 +15,7 @@
                        <a href="../public/password_check" id="addsites">AddSites / Geo Fence</a>
                <!-- </div> -->
                 </li>
-                <!-- <li class="removeli"><a id="vehiView" href="" target="_blank">View Vehicles</a></li> -->
+                <li class="removeli"><a id="landNew" href="" target="_blank">New Landing Page</a></li>
                 <!-- <li id="removeli"><a href="../public/groupEdit">Edit Group</a></li> -->
             </ul>
         </li>
@@ -605,12 +605,15 @@
                 $(this).attr("href", "track?maps=viewVehicles&userId="+sp1[1]+'&group='+gname);
             }) */
 
+            $('#landNew').click(function () {
+                $(this).attr("href", "track?maps=landNew");
+            })
+
             //auto logout 
 
-/*            function logout(){                                                                                                                                                        
-
-             window.location ="./public/login";
-            }
+            /*   
+             function  logout() {                                                                                                                                                               window.location ="./public/login";
+             }
 
             setTimeout(function(){ logout() }, 3600000);  //logout after one hour
 
