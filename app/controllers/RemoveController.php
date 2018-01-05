@@ -284,7 +284,9 @@ public function store() {
                 $vname=$redis->hdel('H_VehicleName_Mobile_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$gpsSimNo);
                 $v1name=$redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode,$vid.':'.$did.':'.$shortName1.':'.$orgId1.':'.$gpsSimNo.':OWN');
                 $rorg=$redis->srem('S_Organisations_Admin_'.$fcode,$shortName);
-             
+                ///ram noti
+                $delVehi=$redis->del('S_'.$vid.'_'.$fcode);
+                ///
                 $prodata=$redis->hdel('H_ProData_' .$fcode, $vid);
                 $hdiv=$redis->hdel('H_Device_Cpy_Map',$did);
                 $adminVehi=$redis->srem('S_Vehicles_Admin_'.$fcode,$vid);

@@ -188,21 +188,23 @@ class VdmUserController extends \BaseController {
             foreach ( $vehicleGroups as $grp ) {
 				$redis->sadd ( $userId, $grp );
 				///ram noti
-				log::info($grp);  
-				$grpVehi=$redis->smembers($grp);
-				foreach ($grpVehi as $keyV => $valueV) 
-				{
-					$checkU=$redis->hget('H_Vehicle_Map_Uname_'.$fcode, $valueV.'/'.$grp);
-					if(empty($checkU)) 
-					{
-					   log::info("vehi data empty");
-                       $redis->hset('H_Vehicle_Map_Uname_'.$fcode, $valueV.'/'.$grp, $userId);               
-               	    } 
-               		else {
-               		   $redis->hset('H_Vehicle_Map_Uname_'.$fcode, $valueV.'/'.$grp, $checkU.'/'.$userId);
-               		}
+				 $redis->sadd ( 'S_'.$grp, $userId );
+				 ///
+				// log::info($grp);  
+				// $grpVehi=$redis->smembers($grp);
+				// foreach ($grpVehi as $keyV => $valueV) 
+				// {
+				// 	$checkU=$redis->hget('H_Vehicle_Map_Uname_'.$fcode, $valueV.'/'.$grp);
+				// 	if(empty($checkU)) 
+				// 	{
+				// 	   log::info("vehi data empty");
+    //                    $redis->hset('H_Vehicle_Map_Uname_'.$fcode, $valueV.'/'.$grp, $userId);               
+    //            	    } 
+    //            		else {
+    //            		   $redis->hset('H_Vehicle_Map_Uname_'.$fcode, $valueV.'/'.$grp, $checkU.'/'.$userId);
+    //            		}
                         
-               	}
+    //            	}
 				///
 			}
             // thirumani set Reports
@@ -515,39 +517,21 @@ public function updateNotification() {
 			
 			$vehicleGroups = Input::get ( 'vehicleGroups' );
 			///ram noti
-			// log::info($vehicleGroups);
-			// log::info($oldGroup);
-			// $result=array_diff($oldGroup,$vehicleGroups);
-			// log::info($result);
-			// foreach ( $result as $delGrp )
-			//  {
-			//     $delVehiList=$redis->smembers($delGrp);
-			//     foreach ($delVehiList as $keyVD => $valueVD) 
-			// 	{
-			// 	   log::info('vehicle delete entry');
-			// 		$checkUD=$redis->hget('H_Vehicle_Map_Uname_'.$fcode, $valueVD.'/'.$delGrp);
-			// 		$newUser1=str_replace($userId, '', $checkUD);
-			// 		$newUser=str_replace('//', '/', $newUser1);
-			// 		log::info($newUser);
-			// 		$redis->hdel('H_Vehicle_Map_Uname_'.$fcode, $valueVD.'/'.$delGrp);
-			// 		$redis->hset('H_Vehicle_Map_Uname_'.$fcode, $valueVD.'/'.$delGrp, $newUser);  
-   //             	}
-   //            }
-   //          $resultAdd=array_diff($vehicleGroups,$oldGroup);
-			// log::info($resultAdd);
-			// foreach ( $resultAdd as $addGrp )
-			//  {
-			//     $addVehiList=$redis->smembers($addGrp);
-			//     foreach ($addVehiList as $keyVA => $valueVA) 
-			// 	{
-			// 		log::info('vehicle Add entry');
-			// 		$checkUA=$redis->hget('H_Vehicle_Map_Uname_'.$fcode, $valueVA.'/'.$addGrp);
-			// 		$newUserA=$checkUA.'/'.$userId;
-			// 		$redis->hdel('H_Vehicle_Map_Uname_'.$fcode, $valueVA.'/'.$addGrp);
-			// 		$redis->hset('H_Vehicle_Map_Uname_'.$fcode, $valueVA.'/'.$addGrp, $newUserA);  
-   //             	}
-   //            }
-            ////
+			$result=array_diff($oldGroup,$vehicleGroups);
+			foreach ( $result as $delGrp )
+			{
+		        $delVehiList=$redis->smembers('S_'.$delGrp);
+		        log::info($delVehiList);
+		        $checkUD=$redis->srem('S_'.$delGrp, $userId);
+		    }
+		    $resultAdd=array_diff($vehicleGroups,$oldGroup);
+			foreach ( $resultAdd as $addGrp )
+			{
+			    $addVehiList=$redis->smembers('S_'.$addGrp);
+			    log::info($addVehiList);
+			    $addU=$redis->sadd('S_'.$addGrp, $userId);
+            }
+            ///
 			$mobileNo = Input::get ( 'mobileNo' );
 			$email = Input::get ( 'email' );
 			$zoho = Input::get ( 'zoho' );
@@ -667,7 +651,12 @@ public function updateNotification() {
 		$redis->srem ( 'S_Users_' . $fcode, $userId );
 		$redis->srem('S_Users_Dealer_'.$username.'_'.$fcode,$userId);
 		$redis->srem('S_Users_Admin_'.$fcode,$userId);
-		
+		///ram noti
+		$getUser=$redis->smembers($userId);
+		foreach ($getUser as $key => $getU) {
+			 $redis->srem('S_'.$getU, $userId);
+		}
+		///
 		
 		$redis->del ( $userId );
          $redis->del('S_Orgs_' .$userId . '_' . $fcode);
