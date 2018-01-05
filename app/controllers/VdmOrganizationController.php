@@ -131,6 +131,7 @@ public function addpoi()
 		$smsProvider=isset($orgDataArr['smsProvider'])?$orgDataArr['smsProvider']:'';
 		$providerUserName=isset($orgDataArr['providerUserName'])?$orgDataArr['providerUserName']:'';
 		$providerPassword=isset($orgDataArr['providerPassword'])?$orgDataArr['providerPassword']:'';
+		$deleteHistoryEod=isset($orgDataArr['deleteHistoryEod'])?$orgDataArr['deleteHistoryEod']:'no';
 		$radius=$radiusrange;
 			 $orgDataArr = array (
                     
@@ -156,6 +157,7 @@ public function addpoi()
 					'smsProvider'=>$smsProvider,
 					'providerUserName'=>$providerUserName,
 					'providerPassword'=>$providerPassword,
+					'deleteHistoryEod'=>$deleteHistoryEod,
             );
             
             $orgDataJson = json_encode ( $orgDataArr );
@@ -613,6 +615,7 @@ public function siteUpdate()
 			$providerPassword=Input::get ('providerPassword');
 			$geofense=Input::get('geofence');
 			$safemove=Input::get('safemove');
+			$deleteHistoryEod=Input::get('deleteHistoryEod');
             $orgDataArr = array (
                     'description' => $description,
                     'email' => $email,
@@ -638,6 +641,7 @@ public function siteUpdate()
 					'providerPassword'=>$providerPassword,
 					'geofense'=>$geofense,
 					'safemove'=>$safemove,
+					'deleteHistoryEod'=>$deleteHistoryEod,
 					
             );
 			 $redis = Redis::connection();
@@ -918,6 +922,11 @@ public function siteUpdate()
 					'email' => $refData['email'],
 					'orgId' =>'Default',
 					'altShortName'=>'Default',
+					'fcode'=>$refData['fcode'],
+					'OWN'=>$refData['OWN'],
+					'onboardDate'=>$refData['onboardDate'],
+					'paymentType'=>$refData['paymentType'],
+					'expiredPeriod'=>$refData['expiredPeriod'],
 					'sendGeoFenceSMS' => $refData['sendGeoFenceSMS'],
 					'morningTripStartTime' => $refData['morningTripStartTime'],
 					'eveningTripStartTime' => $refData['eveningTripStartTime'],
@@ -927,6 +936,18 @@ public function siteUpdate()
 			
 			$refDataJson = json_encode ( $refDataArr );
 			$redis->hset ( 'H_RefData_' . $fcode, $list, $refDataJson );
+			$deviceId1=$refData['deviceId'];
+            $deviceId=strtoupper($deviceId1);
+			$shortNameOld1=$refData['shortName'];
+			$shortNameOld=strtoupper($shortNameOld1);
+			$orgIdOld1=$refData['orgId'];
+            $orgIdOld=strtoupper($orgIdOld1);
+			$gpsSimNoOld=$refData['gpsSimNo'];
+			$orgIdNew='DEFAULT';
+            $OWN1=$refData['OWN'];
+  			$OWN=strtoupper($OWN1);
+			$redis->hdel('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $list.':'.$deviceId.':'.$shortNameOld.':'.$orgIdOld.':'.$gpsSimNoOld.':'.$OWN);
+			$redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $list.':'.$deviceId.':'.$shortNameOld.':'.$orgIdNew.':'.$gpsSimNoOld.':'.$OWN,$list);
         }
 		
 		
@@ -984,6 +1005,7 @@ public function siteUpdate()
 		$geofence=isset($orgDataArr['geofence'])?$orgDataArr['geofence']:'nill';
 		$safemove=isset($orgDataArr['safemove'])?$orgDataArr['safemove']:'no';
 		$smsPattern=isset($orgDataArr['schoolPattern'])?$orgDataArr['schoolPattern']:'nill';
+		$deleteHistoryEod=isset($orgDataArr['deleteHistoryEod'])?$orgDataArr['deleteHistoryEod']:'no';
         log::info( 'time1 ::' . $time1);
          log::info( 'time2 ::' . $time2);
 		$address1=array();
@@ -1004,7 +1026,7 @@ public function siteUpdate()
 		$i=0;
 		$j=0;$k=0;$m=0;
         return View::make('vdm.organization.edit')->with('mobile',$mobile)->with('description',$description)->with('address',$address)->
-        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius)->with('smsSender',$smsSender)->with('sosAlert',$sosAlert)->with('live',$live)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP())->with('smsPattern',$smsPattern)->with('geofence',$geofence)->with('safemove',$safemove);   
+        with('organizationId',$id)->with('email',$email)->with('place',$place)->with('i',$i)->with('j',$j)->with('k',$k)->with('m',$m)->with('time1',$time1)->with('time2',$time2)->with('atc',$atc)->with('etc',$etc)->with('mtc',$mtc)->with('idleAlert',$idleAlert)->with('parkingAlert',$parkingAlert)->with('idleDuration',$idleDuration)->with('parkDuration',$parkDuration)->with('overspeedalert',$overspeedalert)->with('sendGeoFenceSMS',$sendGeoFenceSMS)->with('radius',$radius)->with('smsSender',$smsSender)->with('sosAlert',$sosAlert)->with('live',$live)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP())->with('smsPattern',$smsPattern)->with('geofence',$geofence)->with('safemove',$safemove)->with('deleteHistoryEod',$deleteHistoryEod);   
         
     }
     
@@ -1091,6 +1113,7 @@ public function siteUpdate()
 		$providerPasswordOld=isset($orgDataJson1['providerPassword'])?$orgDataJson1['providerPassword']:'';
 		$schoolPatternOld=isset($orgDataJson1['schoolPattern'])?$orgDataJson1['schoolPattern']:'nill';
 		$geofenceOld=isset($orgDataJson1['geofence'])?$orgDataJson1['geofence']:'no';
+		$deleteHistoryEodOld=isset($orgDataJson1['deleteHistoryEod'])?$orgDataJson1['deleteHistoryEod']:'no';
 
             $mobile      = Input::get('mobile');
             $email      = Input::get('email');
@@ -1115,6 +1138,7 @@ public function siteUpdate()
 			$smsPattern=Input::get('smsPattern');
 			$geofence=Input::get('geofence');
 			$safemove=Input::get('safemove');
+			$deleteHistoryEod=Input::get('deleteHistoryEod');
 			$live=Input::get('live');
 					$startTime =$time1;
 			$endTime=$time2;
@@ -1145,6 +1169,7 @@ public function siteUpdate()
 					'schoolPattern'=>$smsPattern,
 					'geofence'=>$geofence,
 					'safemove'=>$safemove,
+					'deleteHistoryEod'=>$deleteHistoryEod,
 					
             );
             
@@ -1175,6 +1200,7 @@ public function siteUpdate()
 				'schoolPattern'=>'SMS Pattern',
 				'geofence'=>'GeoFence',
                 'safemove'=>'Safety Movement Alert',
+				'deleteHistoryEod'=>'Delete History Eod',
 
 		    );
 
@@ -1332,6 +1358,7 @@ public function siteUpdate()
 					'providerPassword'=>"*******",
 					'schoolPattern'=>$schoolPatternOld,
 					'geofence'=>$geofenceOld,
+					'deleteHistoryEod'=>$deleteHistoryEodOld,
             );
           		$orgDataJson1Old = json_encode ( $orgDataJsonOld );
           		$orgDataJsonOld1	= json_decode($orgDataJson1Old, true);

@@ -40,12 +40,15 @@ class VdmGroupController extends \BaseController {
 		}
 		
 		
-		
+		$groupList1=array();	
 		$groupList = $redis->smembers($redisGrpId);
-		
+		$i=0;
 		foreach($groupList as $key=>$group) {
-		
-		Log::info(' ---------inside---------------- '.$group);		
+		Log::info(' ---------inside---------------- '.$group);
+        $group1=strtoupper($group);	
+        if($group==$group1)	
+	    {		
+			$groupList1=array_add($groupList1,$i,$group);
 			$vehicleList = $redis->smembers($group);
                $shortNameList=null;   
             foreach ( $vehicleList as $vehicle ) {
@@ -61,11 +64,12 @@ class VdmGroupController extends \BaseController {
 	          $shortNameList =implode('<br/>',$shortNameList);
             }
             $shortNameListArr = array_add($shortNameListArr,$group,$shortNameList);
-         
+              $i=$i+1;
+		}
 		
 		}
 		Log::info('  reached group controller1 ');		
-		return View::make('vdm.groups.index', array('groupList'=> $groupList))->with('vehicleListArr',$vehicleListArr)->with('shortNameListArr',$shortNameListArr);
+		return View::make('vdm.groups.index', array('groupList'=> $groupList1))->with('vehicleListArr',$vehicleListArr)->with('shortNameListArr',$shortNameListArr);
 
 	}
 
@@ -474,7 +478,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
         	Session::flash('message', 'Successfully updated ' . $id . '!');
         	return Redirect::to('vdmGroups');
         }else {
-
+            $redis->sadd($id,$oldVehi);
         	log::info(' vehicles are not available  !!!!');
         	return Redirect::to('vdmGroups/' . $id . '/edit')->with('message','Please select any one vehicle .  ');
 
@@ -705,8 +709,8 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 		$redis 		= 	Redis::connection();
 		$fcode 		= 	$redis->hget('H_UserId_Cust_Map',$username.':fcode');
 		$fcode1     =   strtoupper($fcode);
-		$grpName1 	= 	Input::get ('grpName');
-		$grpName    =   strtoupper($grpName1);
+		$GrpName1 	= 	Input::get ('grpName');
+		$grpName    =   strtoupper($GrpName1);
 		$newValue 	= 	Input::get ('newValu');
 		$vehList 	= 	Input::get ('grplist');
 		$mailId 	= 	array();

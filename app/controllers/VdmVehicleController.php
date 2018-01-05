@@ -988,11 +988,13 @@ $shortName2= str_replace(' ', '', $shortName1);
 $shortNameOld=strtoupper($shortName2);
 $mobileNoOld=isset($refDataJson1['mobileNo'])?$refDataJson1['mobileNo']:'';
 $gpsSimNoOld=isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'';
-$orgIdOld1=$refDataJson1['orgId'];
+$orgIdOld1=isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'Default';
+//$orgIdOld1=$refDataJson1['orgId'];
 $orgIdOld=strtoupper($orgIdOld1);
  $orgId=$refDataJson1['orgId']; 
- $orgId1=strtoupper($orgId);    
- $own=$refDataJson1['OWN']; 
+ $orgId1=strtoupper($orgId); 
+$own=isset($refDataJson1['OWN'])?$refDataJson1['OWN']:'OWN';  
+// $own=$refDataJson1['OWN']; 
 //log::info('areeeerrrrr'.$own);    
 //---    
 
