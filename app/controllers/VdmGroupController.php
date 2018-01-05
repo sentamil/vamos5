@@ -775,6 +775,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
 			}
 			$redis->sadd('S_Groups_' . $fcode, $grpName);
 			$redis->sadd ( $username, $grpName );
+		    $redis->sadd ( 'S_'.$grpName, $username );
 			if($ownerShip == 'admin')
 				$redis->sadd('S_Groups_Admin_'.$fcode,$grpName);
 			else
