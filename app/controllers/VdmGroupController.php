@@ -496,9 +496,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
         	Session::flash('message', 'Successfully updated ' . $id . '!');
         	return Redirect::to('vdmGroups');
         }else {
-<<<<<<< HEAD
             $redis->sadd($id,$oldVehi);
-=======
             ///ram noti
             $result2=array_diff($oldVehi,$updateVehi);
             foreach ($result2 as $key => $oldV) 
@@ -507,7 +505,6 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
              $vehiGrpDel=$redis->srem('S_'.$oldV.'_'.$fcode, 'S_'.$id);
             }
             ///
->>>>>>> 8e9ffa585fa2d53edb2ffc79108ea96a3398c42c
         	log::info(' vehicles are not available  !!!!');
         	return Redirect::to('vdmGroups/' . $id . '/edit')->with('message','Please select any one vehicle .  ');
 
