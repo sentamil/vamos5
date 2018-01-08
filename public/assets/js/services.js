@@ -146,7 +146,8 @@ app.factory('vamoservice', function($http, $q){
 
         googleAddress:function(data) {
 
-            var tempVar = data;
+            var tempVar = data.address_components;
+
             var strNo  = 'sta:null';
             var rotNam = 'rot:null';
             var locs   = 'loc:null';
@@ -154,6 +155,8 @@ app.factory('vamoservice', function($http, $q){
             var add2   = 'ad2:null';
             var coun   = 'con:null';
             var postal = 'pin:null';
+
+          if(tempVar!=null || tempVar.length!=0){    
 
             for(var i=0;i<tempVar.length;i++){
              //console.log(newVarr[i].types);
@@ -203,15 +206,17 @@ app.factory('vamoservice', function($http, $q){
                 break;
               }
         
-            }
+             }
+           }
+
           }
 
          var retVar = strNo+' '+rotNam+' '+locs+' '+add1+' '+add2+' '+coun+' '+postal;
-      // console.log(retVar);
+          //console.log(retVar);
 
-      return retVar;
-      },
-
+        return retVar;
+        },
 
     }  
 });
+
