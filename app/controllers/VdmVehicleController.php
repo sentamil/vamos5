@@ -91,7 +91,10 @@ public function index() {
         $statusSeperate = explode(',', $statusVehicle); //log::info($statusVehicle);
         $statusSeperate1=isset($statusSeperate[7])?$statusSeperate[7]:'N';
         $statusList = array_add($statusList, $vehicle, $statusSeperate1); 
-		$onboardDate=isset($vehicleRefData['onboardDate'])?$vehicleRefData['onboardDate']:'-';
+		$date=isset($vehicleRefData['date'])?$vehicleRefData['date']:'';
+        $date1=date("d-m-Y", strtotime($date));
+        log::info($date1);
+		$onboardDate=isset($vehicleRefData['onboardDate'])?$vehicleRefData['onboardDate']:$date1;
         $onboardDateList = array_add($onboardDateList,$vehicle,$onboardDate);
 
        // $statusList = array_add($statusList, $vehicle, $statusSeperate[7]);
@@ -593,6 +596,10 @@ public function edit($id) {
         $deviceId = $redis->hget ( $vehicleDeviceMapId, $vehicleId );
 
         $details = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
+		$details1=json_decode($details, true);
+        $date=isset($details1['date'])?$details1['date']:'';
+        $date1=date("d-m-Y", strtotime($date));
+        log::info($date1);
 
         $refData=null;
         $refData = array_add($refData, 'deviceModel', 'nill');
@@ -602,7 +609,7 @@ public function edit($id) {
         $refData = array_add($refData, 'oprName', ' ');
         $refData = array_add($refData, 'mobileNo', '0123456789');
         $refData = array_add($refData, 'vehicleExpiry', 'null');
-        $refData = array_add($refData, 'onboardDate', ' ');
+        $refData = array_add($refData, 'onboardDate', $date1);
         $refData = array_add($refData, 'overSpeedLimit', '50');
         $refData = array_add($refData, 'driverName', '');
         $refData = array_add($refData, 'gpsSimNo', '0123456789');

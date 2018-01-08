@@ -101,7 +101,10 @@ public function store() {
         $statusVehicle = $redis->hget ( 'H_ProData_' . $fcode, $vehicle );
         $statusSeperate = explode(',', $statusVehicle);
         $statusList = array_add($statusList, $vehicle, $statusSeperate[7]);
-		$onboardDate=isset($vehicleRefData['onboardDate'])?$vehicleRefData['onboardDate']:'-';
+		$date=isset($vehicleRefData['date'])?$vehicleRefData['date']:'';
+        $date1=date("d-m-Y", strtotime($date));
+        log::info($date1);
+		$onboardDate=isset($vehicleRefData['onboardDate'])?$vehicleRefData['onboardDate']:$date1;
         $onboardDateList = array_add($onboardDateList,$vehicle,$onboardDate);
 
         }
