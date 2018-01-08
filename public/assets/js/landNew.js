@@ -1,5 +1,5 @@
  var globalIP = document.location.host;
- var context = '/gps';
+ var context = '/vamo';
  
  var total    = 0;
  var tankSize = 0;
@@ -156,14 +156,17 @@
 
         googleAddress:function(data) {
 
-            var tempVar = data;
-            var strNo   = 'sta:null';
-            var rotNam  = 'rot:null';
-            var locs    = 'loc:null';
-            var add1    = 'ad1:null';
-            var add2    = 'ad2:null';
-            var coun    = 'con:null';
-            var postal  = 'pin:null';
+            var tempVar = data.address_components;
+
+            var strNo  = 'sta:null';
+            var rotNam = 'rot:null';
+            var locs   = 'loc:null';
+            var add1   = 'ad1:null';
+            var add2   = 'ad2:null';
+            var coun   = 'con:null';
+            var postal = 'pin:null';
+
+          if(tempVar!=null || tempVar.length!=0){    
 
             for(var i=0;i<tempVar.length;i++){
              //console.log(newVarr[i].types);
@@ -213,14 +216,16 @@
                 break;
               }
         
-            }
+             }
+           }
+
           }
 
          var retVar = strNo+' '+rotNam+' '+locs+' '+add1+' '+add2+' '+coun+' '+postal;
-       //console.log(retVar);
+          //console.log(retVar);
 
-      return retVar;
-      },
+        return retVar;
+        },
 
     }  
 });
@@ -250,6 +255,7 @@ $scope._editValue      =  {};
 $scope._editValue._vehiTypeList = ['Truck', 'Car', 'Bus', 'Bike'];
 
 var markerSearch;
+var geocoderVar; 
 $scope.flightpathall = []; 
 var tempdistVal = 0;
 
@@ -336,13 +342,19 @@ $scope.updateDetails    =   function(){
 
 
 $scope.updateSafePark=function(){
+   console.log('updateSafePark.....');
 
-    var timeOutVar;
+    var timeOutVar,spVal;
+     
+    if($scope.sparkType=='Yes') {
+      spVal = 'yes';
+      $('#safePark span').text($scope.sparkType);
+    } else if($scope.sparkType=='No') {
+      spVal = 'no';
+      $('#safePark span').text($scope.sparkType);
+    }
 
-    console.log('updateSafePark.....');
-
-    $('#safePark span').text($scope.sparkType);
-    var saferParkUrl  = GLOBAL.DOMAIN_NAME+'/configureSafetyParkingAlarm?vehicleId='+ $scope.vehicleid+'&enableOrDisable='+$scope.sparkType;
+    var saferParkUrl  = GLOBAL.DOMAIN_NAME+'/configureSafetyParkingAlarm?vehicleId='+ $scope.vehicleid+'&enableOrDisable='+spVal;
 
   //console.log(saferParkUrl);
 
@@ -401,6 +413,52 @@ $scope.updateSafePark=function(){
 }
 
 
+  function saveAddressFunc(val, lat, lan){
+    //console.log(val);
+      var saveAddUrl = GLOBAL.DOMAIN_NAME+'/saveAddress?address='+encodeURIComponent(val)+'&lattitude='+lat+'&longitude='+lan+'&status=web';
+    //console.log(saveAddUrl);
+
+      $http({
+        method: 'GET',
+        url: saveAddUrl
+      }).then(function successCallback(response) {
+          if(response.status==200){
+              console.log("Save address successfully!..");
+          }
+      }, function errorCallback(response) {
+         console.log(response.status);
+      });
+
+   }
+
+  function saveAddress(lat, lon){
+  
+    var latlng = new google.maps.LatLng(lat, lon);
+     geocoderVar.geocode({'latLng': latlng}, function(results, status) {
+   
+      if(status == google.maps.GeocoderStatus.OK) {
+        if(results[0]) {
+          var newVal = vamoservice.googleAddress(results[0]);   
+            saveAddressFunc(newVal, lat, lon);
+        }
+      }
+  });
+
+}
+
+    function fetchAddress(dataVal){
+
+       if(dataVal.address == null || dataVal.address == undefined || dataVal.address == ' ')
+          $scope.getLocation(dataVal.latitude, dataVal.longitude, function(count){ 
+            $('#lastseen').text(count); 
+          });
+        else{
+          $('#lastseen').text(dataVal.address.split('<br>Address :')[1] ? dataVal.address.split('<br>Address :')[1] : dataVal.address);
+            saveAddress(dataVal.latitude, dataVal.longitude);
+        }
+    }
+
+
     $scope.assignValue=function(dataVal){
 
         $scope.vehicleid = dataVal.vehicleId;
@@ -410,7 +468,14 @@ $scope.updateSafePark=function(){
         $scope.driName   = dataVal.driverName;
         $scope.refname   = dataVal.regNo;
         $scope.vehType   = dataVal.vehicleType;
-        $scope.sparkType = dataVal.safetyParking;
+            
+        if(dataVal.safetyParking=='yes') {
+          $scope.sparkType = 'Yes';
+          $('#safePark span').text('Yes');
+        } else if(dataVal.safetyParking=='no') {
+          $scope.sparkType = 'No';
+          $('#safePark span').text('No');
+        }
 
         $('#vehiid #val').text(dataVal.shortName);
         $('#toddist #val').text(dataVal.distanceCovered);
@@ -420,9 +485,7 @@ $scope.updateSafePark=function(){
         $('#mobNo span').text(dataVal.mobileNo);
         $('#graphsId #speed').text(dataVal.speed);
         $('#graphsId #fuel').text(dataVal.tankSize);
-        $('#safePark span').text(dataVal.safetyParking);
-
-         
+        
         if(dataVal.tankSize!=0 && dataVal.fuelLitre!=0){ 
           tankSize       = parseInt(dataVal.tankSize);
           fuelLtr        = parseInt(dataVal.fuelLitre);
@@ -452,16 +515,9 @@ $scope.updateSafePark=function(){
         $scope._editValue.routeName     = dataVal.routeName;
 
         $("#safeParkShow").show();
-
-        if(dataVal.address == null || dataVal.address == undefined || dataVal.address == ' ')
-          $scope.getLocation(dataVal.latitude, dataVal.longitude, function(count){ 
-            $('#lastseen').text(count); 
-          });
-        else{
-          $('#lastseen').text(dataVal.address.split('<br>Address :')[1] ? dataVal.address.split('<br>Address :')[1] : dataVal.address);
-        }
-
         $('#viewable').show();
+
+        fetchAddress(dataVal);
 
         $scope.vehiclFuel=graphChange(dataVal.fuel);   
 
@@ -482,7 +538,6 @@ $scope.updateSafePark=function(){
             url : GLOBAL.DOMAIN_NAME+'/getVehicleLocations'
         }).then(function mySuccess(response) {
             $scope.data = response.data;
-            
             $scope.fcode.push(response.data[$scope.groupid]);
 
             $scope.totalVehicles = response.data[$scope.groupid]['totalVehicles'];
@@ -499,10 +554,12 @@ $scope.updateSafePark=function(){
             $scope.apiKeys=response.data[$scope.groupid].apiKey;
             $scope.support   = response.data[$scope.groupid].supportDetails;
 
+            $scope.trafficLayer = new google.maps.TrafficLayer();
+            markerSearch        = new google.maps.Marker({});
+            geocoderVar         = new google.maps.Geocoder();
+
             $scope.initilize('maploc');
 
-            $scope.trafficLayer = new google.maps.TrafficLayer();
-             markerSearch = new google.maps.Marker({});
         }, function myError(response) {
             $scope.myWelcome = response.statusText;
         });
@@ -805,12 +862,10 @@ $('#mapTable-mapList').hide()
     }
 
 
-
 $scope.setMarkers = function(req_data, address){
         //var image = {
         //  url: 'assets/imgs/G_E.png'
       //  };
-        
         $scope.markers = req_data.map(function(location, i) {
          if($scope.Filter != 'SINGLE' && $scope.Filter != 'ALL' && $scope.Filter != location.position && $scope.Filter != 'Y' && $scope.Filter != 'ON' && $scope.Filter != 'OFF')
             return 
@@ -828,13 +883,23 @@ $scope.setMarkers = function(req_data, address){
                 infowindow.close();
             }
 
-          var markertemp = new MarkerWithLabel({
+        /*  var markertemp = new MarkerWithLabel({
             position: new google.maps.LatLng(location['latitude'], location['longitude']),
             map: $scope.map,
             icon: vamoservice.iconURL(location),
             labelContent :location['shortName'],
             labelAnchor: new google.maps.Point(19, 0),
             labelClass: "labels", 
+            labelInBackground: false
+          });*/
+
+          var markertemp = new google.maps.Marker({
+            position: new google.maps.LatLng(location['latitude'], location['longitude']),
+            map: $scope.map,
+            icon: vamoservice.iconURL(location),
+            labelContent :location['shortName'],
+            labelAnchor: new google.maps.Point(19, 0),
+            labelClass: "maps", 
             labelInBackground: false
           });
 
@@ -870,7 +935,7 @@ $scope.setMarkers = function(req_data, address){
             });
             infowindow.open($scope.map, markertemp);
            }
-           $scope.map.setZoom($scope.zoom);
+          $scope.map.setZoom($scope.zoom);
           $scope.map.setCenter(markertemp.position);
            return markertemp;
         })
@@ -912,7 +977,6 @@ $scope.setMarkers = function(req_data, address){
   }
 
    $scope.setsTraffic = function(val){
-
     if($scope.checkVal==false){
       document.getElementById(val).style.backgroundColor = "#fdfdb6"
       $scope.trafficLayer.setMap($scope.map);
@@ -958,40 +1022,19 @@ $scope.setMarkers = function(req_data, address){
     $('#distanceVal').val(tempdistVal.toFixed(2));
   }
 
-  
-  function saveAddressFunc(val, lat, lan){
-    //console.log(val);
-     //console.log('save Address...');
-   //var saveAddUrl = GLOBAL.DOMAIN_NAME+'/saveAddressFromFrontend?address=hello&lattitude=12.0&longitude=72.0&status=web';
-     var saveAddUrl = GLOBAL.DOMAIN_NAME+'/saveAddress?address='+encodeURIComponent(val)+'&lattitude='+lat+'&longitude='+lan+'&status=web';
-   //console.log(saveAddUrl);
-
-      $http({
-        method: 'GET',
-        url: saveAddUrl
-      }).then(function successCallback(response) {
-         console.log(response.status);
-      }, function errorCallback(response) {
-         console.log(response.status);
-      });
-
-  }
-
 
     $scope.getLocation = function(lat,lon, callback){
-
-      //console.log('getLocation.....');
-        geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(lat, lon);
-        geocoder.geocode({'latLng': latlng}, function(results, status) {
+     //console.log('getLocation.....');
+      var latlng = new google.maps.LatLng(lat, lon);
+        geocoderVar.geocode({'latLng': latlng}, function(results, status) {
           //console.log(results);
-            var newVarr = vamoservice.googleAddress(results[0].address_components);
-          //console.log(newVarr);
-            saveAddressFunc(newVarr,lat,lon);
-
             if (status == google.maps.GeocoderStatus.OK) {
               if (results[1]) {
                 if(typeof callback === "function") callback(results[1].formatted_address)
+              }
+              if(results[0]) {
+                var newVals = vamoservice.googleAddress(results[0]);   
+                  saveAddressFunc(newVals,lat,lon);
               }
             }
         });
