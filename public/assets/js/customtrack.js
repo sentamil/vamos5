@@ -840,18 +840,41 @@ app.controller('mainCtrl',['$scope', '$http', 'vamoservice', '_global', function
     });
 
 
+	function saveAddressFunc(val, lat, lan){
+    //console.log(val);
+      var saveAddUrl = GLOBAL.DOMAIN_NAME+'/saveAddress?address='+encodeURIComponent(val)+'&lattitude='+lat+'&longitude='+lan+'&status=web';
+    //console.log(saveAddUrl);
+
+      $http({
+        method: 'GET',
+        url: saveAddUrl
+      }).then(function successCallback(response) {
+          if(response.status==200){
+              console.log("Save address successfully!..");
+          }
+      }, function errorCallback(response) {
+         console.log(response.status);
+      });
+
+   }
+
+
 	$scope.getLocation = function(lat, lon, callback){
 		geocoder   = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(lat,lon);
 		geocoder.geocode({'latLng': latlng}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
+                if(results[0]) {
+                  var newVals = vamoservice.googleAddress(results[0]);   
+                     saveAddressFunc(newVals, lat, lon);
+                } 
+
 			  if (results[1]) {
 				if(typeof callback === "function") callback(results[1].formatted_address)
 			  } else {
 				//alert('No results found');
 			  }
-			} else {
-			}
+			} 
 		  });
     };
 
@@ -1313,7 +1336,5 @@ $(document).ready(function(e) {
             $("#wrapper").toggleClass("toggled");
         });
 });
-
-
 
 

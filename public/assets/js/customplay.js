@@ -2223,6 +2223,26 @@ function smoothZoom (map, max, cnt) {
      }
   }
 
+
+  function saveAddressFunc(val, lat, lan){
+    //console.log(val);
+      var saveAddUrl = GLOBAL.DOMAIN_NAME+'/saveAddress?address='+encodeURIComponent(val)+'&lattitude='+lat+'&longitude='+lan+'&status=web';
+    //console.log(saveAddUrl);
+
+      $http({
+        method: 'GET',
+        url: saveAddUrl
+      }).then(function successCallback(response) {
+          if(response.status==200){
+              console.log("Save address successfully!..");
+          }
+      }, function errorCallback(response) {
+         console.log(response.status);
+      });
+
+   }
+
+
   $scope.locationname="";
   $scope.getLocation = function(lat,lon, callback){
 
@@ -2233,6 +2253,10 @@ function smoothZoom (map, max, cnt) {
       success:function(data){
         
         if(data.results[0]!=undefined){
+
+          var newVals = vamoservice.googleAddress(data.results[0]);   
+            saveAddressFunc(newVals, lat, lon);
+
         if(data.results[0].formatted_address==undefined){
           if(typeof callback === "function") callback('');
         }else{
@@ -3645,4 +3669,3 @@ app.directive('maposm', function($http, vamoservice) {
   };
 
 }); 
-

@@ -454,7 +454,7 @@ $scope.updateSafePark=function(){
           });
         else{
           $('#lastseen').text(dataVal.address.split('<br>Address :')[1] ? dataVal.address.split('<br>Address :')[1] : dataVal.address);
-            saveAddress(dataVal.latitude, dataVal.longitude);
+            //saveAddress(dataVal.latitude, dataVal.longitude);
         }
     }
 
