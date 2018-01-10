@@ -248,7 +248,7 @@ font-family: 'Source Sans Pro', sans-serif;
                   </tr>
                   </thead>
                   <tbody>
-                  <tr ng-repeat="fuel in fuelData.history4Mobile | orderBy:natural(sort.sortingOrder):sort.reverse" class="active" style="text-align:center">
+                  <tr ng-repeat="fuel in fuelData.history4Mobile" class="active" style="text-align:center">
                     <td>{{fuel.dt | date:'yyyy-MM-dd'}}&nbsp;&nbsp;&nbsp;{{fuel.dt | date:'HH:mm:ss'}}</td>
                     <td>{{fuel.fuelLitr}}</td>
                     <td>{{fuel.sp}}</td>
