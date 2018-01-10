@@ -221,9 +221,11 @@ font-family: 'Source Sans Pro', sans-serif;
 
                 <tr style="text-align:center;">
                   <th colspan="2" style="font-weight:unset;font-size:12px;background-color:#f9f9f9;">From Date & Time</th>
-                  <th colspan="2" style="background-color:#ecf7fb;font-weight:unset;font-size:12px;">{{fuelData.fromDateTimeUTC | date:'yyyy-MM-dd'}}&nbsp;&nbsp;&nbsp;{{ fuelData.fromDateTimeUTC | date:'HH:mm:ss'}}</th>
+                  <th ng-if="fuelData.fromDateTimeUTC!==0" colspan="2" style="background-color:#ecf7fb;font-weight:unset;font-size:12px;">{{fuelData.fromDateTimeUTC | date:'yyyy-MM-dd'}}&nbsp;&nbsp;&nbsp;{{ fuelData.fromDateTimeUTC | date:'HH:mm:ss'}}</th>
+                  <th ng-if="fuelData.fromDateTimeUTC==0" colspan="2" style="background-color:#ecf7fb;font-weight:unset;font-size:12px;">-</th>
                   <th colspan="2" style="font-weight:unset;font-size:12px;background-color:#f9f9f9;">To Date & Time</th>
-                  <th colspan="2" style="background-color:#ecf7fb;font-weight: unset;font-size:12px;">{{fuelData.toDateTimeUTC | date:'yyyy-MM-dd'}}&nbsp;&nbsp;&nbsp;{{fuelData.toDateTimeUTC | date:'HH:mm:ss'}}</th>
+                  <th ng-if="fuelData.fromDateTimeUTC!==0" colspan="2" style="background-color:#ecf7fb;font-weight: unset;font-size:12px;">{{fuelData.toDateTimeUTC | date:'yyyy-MM-dd'}}&nbsp;&nbsp;&nbsp;{{fuelData.toDateTimeUTC | date:'HH:mm:ss'}}</th>
+                  <th ng-if="fuelData.fromDateTimeUTC==0" colspan="2" style="background-color:#ecf7fb;font-weight: unset;font-size:12px;">-</th>
                 </tr>
 
                    <tr style="text-align:center;">
@@ -232,7 +234,6 @@ font-family: 'Source Sans Pro', sans-serif;
                         <th  colspan="2" style="font-weight:unset;font-size:12px;background-color:#ecf7fb;">Total Fuel Consume</th>
                         <th  colspan="2" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{fuelData.totalFuelConsume}}</th>
                     </tr>
-
 
                   </thead>
               </table>
@@ -260,18 +261,18 @@ font-family: 'Source Sans Pro', sans-serif;
                            <h5>Got zero records. Please change the dates and try.</h5>
                       </td>
                   </tr>
-                  </tbody>
+                </tbody>
               </table>   
             </div>
 
-
-                       </div>
-                    </div>
-                </div>
             </div>
-
+           </div>
+          
           </div>
         </div>
+
+      </div>
+   </div>
 
     <script src="assets/js/static.js"></script>
 <!--<script src="assets/js/jquery-1.11.0.js"></script>-->

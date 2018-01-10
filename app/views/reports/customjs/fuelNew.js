@@ -1,12 +1,13 @@
 app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', function($scope, $http, vamoservice, $filter, GLOBAL){
   
   //global declaration
-  $scope.uiDate         = {};
-  $scope.uiValue        =   {};
-    $scope.sort                 = sortByDate('alarmTime');
-    $scope.interval             = "";
+  $scope.uiDate      = {};
+  $scope.uiValue     =   {};
+  $scope.sort        = sortByDate('alarmTime');
+  $scope.interval    = "";
 
-    var tab = getParameterByName('tn');
+  var tab = getParameterByName('tn');
+  var retsData;
        
   function getParameterByName(name) {
       name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -158,8 +159,19 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
         $http.get($scope.fuelUrl).success(function(data){
           $scope.fuelData = data;
           //console.log(data);
-          if(data.history4Mobile!=null){
+          if(data.history4Mobile!=null) {
+               if(retsData!=null){
+                  document.getElementById("container").innerHTML = '';
+                  retsData=null;
+               }
             fuelFillData(data.history4Mobile);
+
+          } else if(data.history4Mobile==null) {
+               if(retsData!=null){
+                  document.getElementById("container").innerHTML = '';
+                  retsData=null;
+               }
+
           }
         stopLoading();
       }); 
@@ -315,8 +327,6 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
    return newRetVars;     
   }
 
-var retsData;
-
 function fuelFillData(data){
   //console.log(data);
     var fueltrs    = [];
@@ -344,10 +354,7 @@ $(function() {
   //console.log(fueltrs);
     // console.log(fuelDates);
       // console.log(speedVal);
-  if(retsData!=null){
-     document.getElementById("container").innerHTML = '';
-     retsData=null;
-  }
+  
    
    retsData = dataRet(fuelDates,speedVal,fueltrs);  
 
