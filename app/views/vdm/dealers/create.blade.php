@@ -108,6 +108,15 @@
 	<br />
 	<div class="row">
 		<div class="col-md-3">
+			{{ Form::label('gpsvtsAppKey', 'App Key') }}	
+		</div>
+		<div class="col-md-6">
+	    	{{ Form::text('gpsvtsAppKey', Input::old('gpsvtsAppKey'), array('class' => 'form-control','required' => 'required','placeholder'=>'GPSVTS App Key')) }}
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-md-3">
 			{{ Form::label('mapKey', 'Map Key') }}	
 		</div>
 		<div class="col-md-6">

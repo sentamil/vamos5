@@ -117,6 +117,10 @@
 		{{ Form::text('mapKey', Input::old('mapKey'), array('class' => 'form-control')) }}
 	</div>
 	<div class="form-group">
+		{{ Form::label('gpsvtsAppKey', 'App Key') }}
+		{{ Form::text('gpsvtsAppKey', Input::old('gpsvtsAppKey'), array('class' => 'form-control')) }}
+	</div>
+	<div class="form-group">
 		{{ Form::label('addressKey', 'Address Key') }}
 		{{ Form::text('addressKey', Input::old('addressKey'), array('class' => 'form-control')) }}
 	</div>

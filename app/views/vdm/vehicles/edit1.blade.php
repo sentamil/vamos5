@@ -28,7 +28,7 @@
 
 		<div class="form-group">
 			{{ Form::label('deviceModel', 'Device Model') }}
-			{{ Form::select('deviceModel',array( 'GT06N' => 'GT06N (9964)', 'FM1202' => 'FM1202 (9975)','FM1120' => 'FM1120 (9975)', 'TR02' => 'TR02 (9965)', 'GT03A' => 'GT03A (9969)', 'VTRACK2' => 'VTRACK2 (9964)','ET01'=>'ET01 (9971)','ET02'=>'ET02 (9962)','ET03'=>'ET03 (9974)','msi1001'=>'msi1001 (9964)','msi1002'=>'msi1002 (9968)'), $refData['deviceModel'], array('class' => 'form-control')) }}
+			{{ Form::select('deviceModel',$protocol, $refData['deviceModel'], array('class' => 'form-control')) }}
 		</div>
 
 		<div class="form-group">

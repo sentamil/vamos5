@@ -68,7 +68,13 @@
 		            		<div class="col-md-2">{{ Form::label('zoho', 'zoho :') }}</div>
 		            		<div class="col-md-4">{{ Form::text('zoho', $zoho, array('class' => 'form-control', 'required' => 'required', 'placeholder'=>'Zoho Name')) }} </div>
 		            	</div>
-		            	<br>
+						<br>
+						<div class="row">
+		            		<div class="col-md-3"></div>
+		            		<div class="col-md-2">{{ Form::label('gpsvtsAppKey','App Key') }}:</div>
+		            		<div class="col-md-4">{{ Form::text('gpsvtsAppKey', $gpsvtsAppKey, array('class' => 'form-control', 'required' => 'required', 'placeholder'=>'GPSVTS App Key')) }} </div>
+						</div>
+						<br>
 		            	<div class="row">
 		            		<div class="col-md-3"></div>
 		            		<div class="col-md-2">{{ Form::label('mapKey', 'Map Key :') }}</div>

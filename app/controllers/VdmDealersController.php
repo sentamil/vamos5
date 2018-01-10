@@ -238,11 +238,15 @@ class VdmDealersController extends \BaseController {
 		if(isset($detail['providerPassword'])==1)
 			$providerPassword=$detail['providerPassword'];
 		else
-			$providerPassword='';			
+			$providerPassword='';	
+		if(isset($detail['gpsvtsApp'])==1)
+			$gpsvtsAppKey=$detail['gpsvtsApp'];
+		else
+			$gpsvtsAppKey='null';
 		return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )-> 
-		with('email',$email)-> with('zoho',$zoho)->with('mapKey',$mapKey)->with('addressKey',$addressKey)->with('notificationKey',$notificationKey)->  with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
+		with('email',$email)-> with('zoho',$zoho)->with('gpsvtsAppKey',$gpsvtsAppKey)->with('mapKey',$mapKey)->with('addressKey',$addressKey)->with('notificationKey',$notificationKey)->  with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
 		 
 	 }
 	 
@@ -304,11 +308,15 @@ class VdmDealersController extends \BaseController {
 			$providerPassword=$detail['providerPassword'];
 		else
 			$providerPassword='';
+		if(isset($detail['gpsvtsApp'])==1)
+			$gpsvtsAppKey=$detail['gpsvtsApp'];
+		else
+			$gpsvtsAppKey='null';
 
 		return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email)->with('zoho',$zoho)->with('mapKey',$mapKey)->with('addressKey',$addressKey)->with('notificationKey',$notificationKey)->  with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
+		with('email',$email)->with('zoho',$zoho)->with('gpsvtsAppKey',$gpsvtsAppKey)->with('mapKey',$mapKey)->with('addressKey',$addressKey)->with('notificationKey',$notificationKey)->  with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
 	}
 	
 	/**
@@ -352,6 +360,7 @@ class VdmDealersController extends \BaseController {
 		$mapKey=Input::get('mapKey');
 		$addressKey=Input::get('addressKey');
 		$notificationKey=Input::get('notificationKey');
+		$gpsvtsAppKey=Input::get('gpsvtsAppKey');
 			$website=Input::get ( 'website' );
 			$smsSender=Input::get ( 'smsSender' );
 			$smsProvider=Input::get ( 'smsProvider' );
@@ -360,10 +369,11 @@ class VdmDealersController extends \BaseController {
 			$detail=array(
 			'email'	=> $email,
 			'mobileNo' => $mobileNo,
-		'zoho'   => $zoho,
-		'mapKey' => $mapKey,
-		'addressKey' => $addressKey,
-		'notificationKey' => $notificationKey, 
+			'zoho'   => $zoho,
+			'mapKey' => $mapKey,
+			'addressKey' => $addressKey,
+			'notificationKey' => $notificationKey,
+			'gpsvtsApp' => $gpsvtsAppKey,
 			'website' => $website,
 			'smsSender'=>$smsSender,
 			'smsProvider'=>$smsProvider,
@@ -411,6 +421,11 @@ class VdmDealersController extends \BaseController {
         	if($oldDealerList['notificationKey'] != $notificationKey){
         		$oldList = array_add($oldList, 'Notification Key ', $oldDealerList['notificationKey']);
         		$newList = array_add($newList, 'Notification Key ', $notificationKey);        		
+        	}
+			$gpsvtskey=isset($oldDealerList['gpsvtsAppKey'])?$oldDealerList['gpsvtsAppKey']:'null';
+ 	        if($gpsvtskey != $gpsvtsAppKey){
+        		$oldList = array_add($oldList, 'App Key ', $gpsvtskey);
+        		$newList = array_add($newList, 'App Key ', $gpsvtsAppKey);        		
         	}
 			
         	if($oldDealerList['email'] != $email){
@@ -507,7 +522,7 @@ class VdmDealersController extends \BaseController {
 			return View::make ( 'vdm.dealers.edit', array (
 				'dealerid' => $dealerid 
 		) )->with ( 'mobileNo', $mobileNo )->
-		with('email',$email)->with('zoho',$zoho)->with('mapKey',$mapKey)->with('addressKey',$addressKey)->with('notificationKey',$notificationKey)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
+		with('email',$email)->with('zoho',$zoho)->with('gpsvtsAppKey',$gpsvtsAppKey)->with('mapKey',$mapKey)->with('addressKey',$addressKey)->with('notificationKey',$notificationKey)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
 			}
 			
 			return Redirect::to ( 'vdmDealers' );
@@ -582,6 +597,7 @@ class VdmDealersController extends \BaseController {
 			$mapKey=Input::get ( 'mapKey' );
             $addressKey=Input::get ( 'addressKey' );
             $notificationKey=Input::get ('notificationKey');
+			$gpsvtsAppKey=Input::get ( 'gpsvtsAppKey' );
             // /var/www/gitsrc/vamos/public/assets/imgs/ for production path
             $upload_folder = '/var/www/'.$pathValue[1].'/public/uploads/';
 
@@ -636,8 +652,6 @@ class VdmDealersController extends \BaseController {
 			    }
 			}
 
-
-			 
 				
 
 			
@@ -654,6 +668,7 @@ class VdmDealersController extends \BaseController {
 			'mapKey'=>$mapKey,
 			'addressKey'=>$addressKey,
 			'notificationKey'=>$notificationKey,
+			'gpsvtsApp'=>$gpsvtsAppKey,
 			);
 			
 			$detailJson=json_encode($detail);

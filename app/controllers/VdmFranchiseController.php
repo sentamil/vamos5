@@ -87,7 +87,16 @@ public static function getProtocal(){
 	$getProtocal=array();
 	foreach ($protocal as $pro) {
 		$value 	= explode(":",$pro);
-		$getProtocal=array_add($getProtocal, $value[0], $value[0].' ('.$value[1].') ');
+		$check=isset($getProtocal[$value[0]]);
+		$len=strlen($check);
+            if($len==0)
+            { 
+			$getProtocal=array_add($getProtocal, $value[0], $value[0].' ('.$value[1].') ');
+            }    
+            else
+            {
+		    $getProtocal=array_add($getProtocal, $value[0].'1', $value[0].' ('.$value[1].') ');
+			}
     }
 	return $getProtocal;
 }
@@ -929,6 +938,7 @@ public function users()
 			$dbType=Input::get('dbType');
 			$zoho=Input::get('zoho');
 			$auth=Input::get('auth');
+			$gpsvtsAppKey=Input::get('gpsvtsAppKey');
 			// $refDataArr = array('regNo'=>$regNo,'vehicleMake'=>$vehicleMake,'vehicleType'=>$vehicleType,'oprName'=>$oprName,
 			// 'mobileNo'=>$mobileNo,'vehicleCap'=>$vehicleCap,'deviceModel'=>$deviceModel);
 			
@@ -964,6 +974,7 @@ public function users()
 					'mapKey'=>$mapKey,
 					'addressKey'=>$addressKey,
 					'notificationKey'=>$notificationKey,
+					'gpsvtsApp'=>$gpsvtsAppKey,
 					'backUpDays'=>$backUpDays,
 					'dbType'=>$dbType,
 					'zoho'=>$zoho,
@@ -1181,7 +1192,10 @@ public function users()
 			$dbType=$franchiseDetails['dbType'];
 		else
 			$dbType='mysql';
-		
+		if(isset($franchiseDetails['gpsvtsApp'])==1)
+			$gpsvtsAppKey=$franchiseDetails['gpsvtsApp'];
+		else
+			$gpsvtsAppKey='';
 		$dbIp=$redis->hget('H_Franchise_Mysql_DatabaseIP',$fcode);
 		if($dbIp=='')
 		{
@@ -1218,6 +1232,7 @@ public function users()
 		->with('mapKey', $mapKey)
 		->with('addressKey', $addressKey)
 		->with('notificationKey', $notificationKey)
+		->with('gpsvtsAppKey',$gpsvtsAppKey)
 		->with('dbIp', $dbIp)
 		->with('dbType', $dbType)
 		->with('backUpDays', $backUpDays)
@@ -1285,6 +1300,7 @@ public function users()
 			$mapKey=Input::get('mapKey');
 			$addressKey=Input::get('addressKey');
 			$notificationKey=Input::get('notificationKey');
+			$gpsvtsAppKey=Input::get('gpsvtsAppKey');
 			$backUpDays=Input::get('backUpDays');
 			$dbType=Input::get('dbType');
 			$redis = Redis::connection ();
@@ -1401,6 +1417,7 @@ public function users()
 					'mapKey'=>$mapKey,
 					'addressKey'=>$addressKey,
 					'notificationKey'=>$notificationKey,
+					'gpsvtsApp'=>$gpsvtsAppKey,
 					'backUpDays'=>$backUpDays,
 					'dbType'=>$dbType,
 					
@@ -1446,7 +1463,8 @@ public function users()
 					'apiKey'=>'Api Key',
 					'mapKey'=>'Map Key',
 					'addressKey'=>'Address Key',
-					'notificationKey'=>'Notification Key',	
+					'notificationKey'=>'Notification Key',
+					'gpsvtsApp'=>'App Key',					
 					'backUpDays'=>'DB BackupDays',
 					'dbType'=>'DB Type',
 					'dbIP'=>'DB IP',

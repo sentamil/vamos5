@@ -803,10 +803,10 @@ public function edit1($id) {
         foreach($Licence as  $org) {
         $Licence1 = array_add($Licence1, $org->type,$org->type);
         }
-
+		$protocol = VdmFranchiseController::getProtocal();
 //  var_dump($refData);
         return View::make ( 'vdm.vehicles.edit1', array (
-            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
+            'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with ('protocol', $protocol);
     }catch(\Exception $e)
     {
         return Redirect::to ( 'vdmVehicles' );
@@ -1866,6 +1866,16 @@ if(Session::get('cur')=='dealer')
 {
     log::info( '------login 1---------- '.Session::get('cur'));
     $redis->sadd('S_Vehicles_Dealer_'.$username.'_'.$fcode,$vehicleId);
+	$details=$redis->hget('H_Pre_Onboard_Dealer_'.$username.'_'.$fcode,$deviceId);
+        $valueData=json_decode($details,true);
+        $deviceid1=$valueData['deviceid'];
+        $setProData=array(
+            'deviceid'=>$deviceid1,
+            'deviceidtype'=>$deviceModel,
+            );
+        $jsonProData = json_encode ( $setProData );
+        $proRem=$redis->hdel('H_Pre_Onboard_Dealer_'.$username.'_'.$fcode,$deviceId);
+        $proSet=$redis->hset('H_Pre_Onboard_Dealer_'.$username.'_'.$fcode,$deviceId,$jsonProData);
 }
 else if(Session::get('cur')=='admin')
 {
