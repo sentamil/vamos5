@@ -66,7 +66,7 @@ font-family: 'Source Sans Pro', sans-serif;
                 <li class="fms"><a href="../public/fms"><div></div><label>FMS</label></a></li>
                 <li><a href="../public/logout"><img src="assets/imgs/logout.png"/></a></li>
             </ul>
-            <ul class="sidebar-subnav" style="overflow-y:scroll;">
+            <ul class="sidebar-subnav">
                 <li style="padding-left:25px;">
                     <div class="right-inner-addon" align="center"> 
                     <i class="fa fa-search"></i>
@@ -74,18 +74,13 @@ font-family: 'Source Sans Pro', sans-serif;
                     </div>
                 </li>
 
-
          <li ng-repeat="location in vehicle_list | orderBy:natural('group')" class="active"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)">{{trimColon(location.group)}}</a>
 
-
                 <ul class="nav" style="max-height:400px;overflow-y:scroll;">
-
                     <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox1" data-trigger="hover" ng-class="{active:selected==loc.rowId}">
 
                       <a href="javascript:void(0);"  ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, $index)" ng-cloak>
-
                         <img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>
-
                          <span> {{loc.shortName}} </span>
                       </a> 
                    </li>
@@ -292,7 +287,8 @@ font-family: 'Source Sans Pro', sans-serif;
                                     <!-- <td width="10%" ng-show="geoFence==subdata.isInsideGeofence || geoFence=='Y'">{{subdata.isInsideGeofence}}</td>-->
                                       </tr>
                                       <tr ng-if="data.history==null" style="text-align: center">
-                                        <td colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                        <td ng-if="data.error==null" colspan="4" class="err"><h5>No Data Found! Choose some other date</h5></td>
+                                        <td ng-if="data.error!=null" colspan="4" class="err"><h5>{{data.error}}</h5></td>
                                       </tr>
                                       <tr><td colspan="4" bgcolor="grey"></td><tr>
                                 </tbody>
