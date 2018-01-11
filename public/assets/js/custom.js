@@ -568,7 +568,7 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
 
 function fetchingAddress(pos){
 
-  if( pos.address == '_' || pos.address == null || pos.address == undefined || pos.address == ' ' ){
+  if( pos.address == '_' || pos.address == ',' || pos.address == null || pos.address == undefined || pos.address == ' ' ){
       $scope.getLocation(pos.latitude, pos.longitude, function(count){ 
         $('#lastseen').text(count); 
       });
@@ -3645,4 +3645,3 @@ var gaugeOptions = {
             document.body.style.zoom="90%";
         }
     });
-
