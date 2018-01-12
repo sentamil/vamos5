@@ -1312,13 +1312,14 @@ public function users()
                     $numberofLicence=Input::get('numberofLicenceO');
 
 				}
-				if($numberofLicence>0) 
+				
+				else if($numberofLicence>0) 
 				{
 				   log::info('--------------inside add-----------');
                     $availableLincence=Input::get('availableLincenceO')+$numberofLicence;
                     $numberofLicence=Input::get('numberofLicenceO')+$numberofLicence;       
        		    }
-				if($numberofLicence<0)
+				else if($numberofLicence<0)
                 {  
 				  log::info('--------------inside remove-----------');
                   $noofLic=(-1)*$numberofLicence;
