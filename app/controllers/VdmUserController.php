@@ -604,7 +604,7 @@ public function updateNotification() {
 	        		try{
 	        			log::info(' inside the try function ');
 	        			$caption = "User Id";
-			        	Mail::queue('emails.user', array('username'=>$fcode, 'groupName'=>$id, 'oldVehi'=>$oldList, 'newVehi'=> $newList, 'cap'=>$caption), function($message) use ($mailId, $id)
+			        	Mail::queue('emails.user', array('username'=>$fcode, 'groupName'=>$id, 'oldVehi'=>$newList, 'newVehi'=> $oldList, 'cap'=>$caption), function($message) use ($mailId, $id)
 			        	{
 			                //Log::info("Inside email :" . Session::get ( 'email' ));
 			        		$message->to($mailId)->subject('User Id Updated -' . $id);
