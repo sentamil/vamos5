@@ -1007,6 +1007,7 @@ Route::get('aUthName', array('uses' => 'HomeController@authName'));
 //});
 Route::get('logout', array('uses' => 'HomeController@doLogout'));
 Route::get('vdmVehicles/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmDealers/logout', array('uses' => 'HomeController@doLogout'));
  
 Route::get('honda9999', array('uses' => 'HomeController@admin'));
 Route::get('adhocMail', array('uses' => 'HomeController@adhocMail'));
