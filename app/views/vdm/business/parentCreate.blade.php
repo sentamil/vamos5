@@ -251,7 +251,7 @@
 														<td class="col-md-2">{{ Form::text('mobileNo'.$i, Input::old('mobileNo'), array('class' => 'form-control','placeholder'=>'Alert Mobile No')) }}</td>
 														<td class="col-md-2">{{ Form::text('odoDistance'.$i, Input::old('odoDistance'), array('class' => 'form-control','placeholder'=>'Odometer')) }}</td>
 														<td class="col-md-2">{{ Form::text('driverName'.$i, Input::old('driverName'), array('class' => 'form-control','placeholder'=>'Driver Name')) }}</td>
-														<td class="col-md-2">{{ Form::text('gpsSimNo'.$i, Input::old('gpsSimNo'), array('class' => 'form-control','placeholder'=>'Sim No','maxlength' => 10,'minlength'=>'10')) }}</td>
+														<td class="col-md-2">{{ Form::text('gpsSimNo'.$i, Input::old('gpsSimNo'), array('class' => 'form-control','placeholder'=>'Sim No','maxlength' => 15,'minlength'=>10)) }}</td>
 													</tr>
 													<tr style="height: 50px">	
 														<td class="col-md-2">{{ Form::text('email'.$i, Input::old('email'), array('class' => 'form-control','placeholder'=>'Alert Email')) }}</td>
