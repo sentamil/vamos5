@@ -116,7 +116,7 @@
 
 		<div class="form-group">
 			{{ Form::label('gpsSimNo', 'GPS Sim Number') }}
-			{{ Form::text('gpsSimNo', $refData['gpsSimNo'], array('class' => 'form-control')) }}
+			{{ Form::text('gpsSimNo', $refData['gpsSimNo'], array('class' => 'form-control', 'maxlength' => 10,'minlength'=>'10')) }}
 		</div>
 
 		<div class="form-group">
