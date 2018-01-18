@@ -248,8 +248,8 @@ font-family: 'Source Sans Pro', sans-serif;
                     <th width="12%" style="text-align:center;background-color:#d3e0f1;font-weight:unset;font-size:13px;">Odo</th>
                   </tr>
                   </thead>
-                  <tbody>
-                  <tr ng-repeat="fuel in fuelData.history4Mobile" class="active" style="text-align:center">
+                  <tbody ng-repeat="fuel in fuelData.history4Mobile" >
+                  <tr ng-if="fuel.fuelLitr!='0' && fuel.fuelLitr!='0.0'">
                     <td>{{fuel.dt | date:'yyyy-MM-dd'}}&nbsp;&nbsp;&nbsp;{{fuel.dt | date:'HH:mm:ss'}}</td>
                     <td>{{fuel.fuelLitr}}</td>
                     <td>{{fuel.sp}}</td>
@@ -334,4 +334,3 @@ font-family: 'Source Sans Pro', sans-serif;
     
 </body>
 </html>
-
