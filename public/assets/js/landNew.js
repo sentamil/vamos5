@@ -157,7 +157,6 @@
         googleAddress:function(data) {
 
             var tempVar = data.address_components;
-
             var strNo  = 'sta:null';
             var rotNam = 'rot:null';
             var locs   = 'loc:null';
@@ -244,6 +243,7 @@ $scope.name        =  "Calvin";
 $scope.groupid     =  0;
 $scope.Filter      =  'ALL';
 $scope.marker      =  [];
+$scope.markerLabel      =  [];
 $scope.zoom        =  6;
 $scope.vehiclFuel  =  true;
 $scope.checkVal        =  false;
@@ -253,15 +253,43 @@ $scope.nearbyflag      =  false;
 $scope._editValue_con  =  false;
 $scope._editValue      =  {};
 $scope._editValue._vehiTypeList = ['Truck', 'Car', 'Bus', 'Bike'];
-
+$scope.labeldisplay = true;
 var markerSearch;
 var geocoderVar; 
 $scope.flightpathall = []; 
 var tempdistVal = 0;
+$scope.parseInt = parseInt;
 
 $('#notifyMsg').hide();
 
 $scope.sort = sortByDate('date');
+$scope.column      = 'shortName'; // set the default sort type
+$scope.reverse   = true;  // set the default sort order
+$scope.sortGroup = 'shortName';
+// called on header click
+ $scope.sortColumn = function(col){
+  $scope.column = col;
+  if($scope.reverse){
+   $scope.reverse = false;
+   $scope.reverseclass = 'icon-chevron-up';
+  }else{
+   $scope.reverse = true;
+   $scope.reverseclass = 'icon-chevron-down';
+  }
+ };
+ 
+ // remove and change class
+ $scope.sortClass = function(col){
+  if($scope.column == col ){
+   if($scope.reverse){
+    return 'icon-chevron-down'; 
+   }else{
+    return 'icon-chevron-up';
+   }
+  }else{
+   return 'icon-sort';
+  }
+ } 
 
  var startLoading    = function () {
      $('#statusLoad').show(); 
@@ -339,12 +367,24 @@ $scope.updateDetails    =   function(){
         }
     }
 
+var timeOutVar;   
+
+function setsTimeOuts() {
+      //alert('timeOut');
+      $("#notifyS").hide(1200);
+      $("#notifyF").hide(1200); 
+        if(timeOutVar!=null){
+          //console.log('timeOutVar'+timeOutVar);
+            clearTimeout(timeOutVar);
+        }
+    }
+
 
 
 $scope.updateSafePark=function(){
    console.log('updateSafePark.....');
 
-    var timeOutVar,spVal;
+    var spVal;
      
     if($scope.sparkType=='Yes') {
       spVal = 'yes';
@@ -358,15 +398,7 @@ $scope.updateSafePark=function(){
 
   //console.log(saferParkUrl);
 
-    function setsTimeOuts() {
-      //alert('timeOut');
-      $("#notifyS").hide(1200);
-      $("#notifyF").hide(1200); 
-        if(timeOutVar!=null){
-          //console.log('timeOutVar'+timeOutVar);
-            clearTimeout(timeOutVar);
-        }
-    }
+   
 
   (function(){
 
@@ -375,12 +407,10 @@ $scope.updateSafePark=function(){
       method: 'GET', 
       url: saferParkUrl,
       success: function (response){
-        console.log(response);
+     //   console.log(response);
         if(response=="success") {
-
           $('#notifyMsg').show();
-
-        //$('#notifyS span').text(response+'!..');
+          $('#notifyS span').text('Successfully updated!..');
           $("#notifyS").show(500);
           $("#notifyF").hide(); 
           timeOutVar = setTimeout(setsTimeOuts, 2000);
@@ -565,6 +595,343 @@ $scope.updateSafePark=function(){
         });
 
 
+      // polygen draw function
+  function polygenFunction(getVehicle){
+    //console.log(' getVehicle ')
+    var polygenOrgs   = [];
+    var unique      =   new Set();
+    polygenOrgs     = ($filter('filter')(getVehicle[$scope.groupid].vehicleLocations, {'live': 'yes'}));
+    for (var i=0; polygenOrgs.length > i; i++) {
+      unique.add(polygenOrgs[i].orgId)
+    };
+    if(unique.size>0){
+      $scope._addPoi  =   false; 
+      angular.forEach(unique, function(value, key) {
+        //service call to site details
+        siteInvoke(value);
+      });
+    }
+    else {
+      // $scope._addPoi   =   true; 
+      siteInvoke();
+
+    }
+    
+  }
+
+
+//draw polygen in map function
+  function polygenDrawFunction(list){
+    
+      // if(list.length=>0){
+      var sp;
+      polygenList   = [];
+      var split     = list.latLng.split(",");
+
+      for(var i = 0; split.length>i; i++){
+          sp    = split[i].split(":");
+          polygenList.push(new google.maps.LatLng(sp[0], sp[1]));
+      }
+
+      var labelAnchorpos = new google.maps.Point(19, 0);
+      var polygenColor = new google.maps.Polygon({
+            path: polygenList,
+            strokeColor: "#000",//7e7e7e
+            strokeWeight: 0.7,
+            fillColor: colorChange(list.siteName),//'#' + Math.floor(Math.random()*16777215).toString(16),//'#fe716d',
+          //fillOpacity: ,
+            map: $scope.map
+        });
+      
+        //12, 37
+     /* $scope.marker = new MarkerWithLabel({
+         position: centerMarker(polygenList), 
+         map: $scope.map,
+         icon: 'assets/image/area_img.png',
+         color: '#fff',
+         labelContent: list.siteName,
+         labelAnchor: labelAnchorpos,
+         labelClass: "maps", 
+         labelInBackground: false
+      });*/
+
+          var image = {
+            url: 'assets/image/area_img.png',
+            labelOrigin: new google.maps.Point(19, 0),
+          };
+
+        //  console.log(list.siteName);
+
+         $scope.markerss = new google.maps.Marker({
+           position:centerMarker(polygenList), 
+           map: $scope.map,
+           icon: image,
+           label: {
+           text: list.siteName,
+           color: 'black',
+           fontSize: "12px",
+           fontWeight: "bold",
+           }
+
+         });
+
+  
+      $scope.map.setCenter(centerMarker(polygenList)); 
+      $scope.map.setZoom(14);  
+    // }
+  }
+
+function centerMarker(listMarker){
+    var bounds = new google.maps.LatLngBounds();
+    for (i = 0; i < listMarker.length; i++) {
+          bounds.extend(listMarker[i]);
+      }
+    return bounds.getCenter()
+  }
+
+
+function colorChange(value){
+  var color ='';
+  switch(value){
+    case 'Virugambakkam' :
+      color   = 'c17b97';
+      break;
+    case 'Kolathur' :
+      color   = 'f76c7c';
+      break;
+    case 'Egmore(SC)' :
+      color   = 'e746bc';
+      break;
+    case 'Thiyagaraya_Nagar' :
+      color   = '277f07';
+      break;
+    case 'Saidapet' :
+      color   = 'fad195';
+      break;
+    case 'Dr_Radhakrishnan_Nagar':
+      color   = '28909c';
+      break;
+    case 'Perambur' :
+      color   = 'f381a7';
+      break;
+    case 'Chepauk_Thiruvallikeni': 
+      color   = 'a05071';
+      break;
+    case 'Thiru_Vi_Ka_Nagar_(SC)' :
+      color   = '3d59be';
+      break;
+    case 'Harbour' :
+      color   = 'b28d53';
+      break;
+    case 'Royapuram' :
+      color   = '98beb6';
+      break;
+    case 'Mylapore' :
+      color   = '84c8b6';
+      break;
+    case 'Velachery' :
+      color   = '6f738d';
+      break;
+    case 'Thousand_Lights':
+      color   = '456d4d';
+      break;
+    case 'Anna_Nagar' :
+      color   = 'aca6b7';
+      break;
+    case 'Villivakkam': 
+      color   = 'f22af0';
+      break;
+    default:
+      color   = 'f22af0';
+        break;
+  }
+  return '#'+color;
+
+}
+
+  
+  function siteInvoke(val) {
+    var url_site          = GLOBAL.DOMAIN_NAME+'/viewSite';
+    vamoservice.getDataCall(url_site).then(function(data) {
+      // console.log(data);
+      if(data.siteParent && $scope._addPoi == false){
+
+     //   if(map_change==0){
+          angular.forEach(data.siteParent, function(value, key){
+          //console.log(' value'+key);
+            if(val == value.orgId){
+              angular.forEach(value.site, function(vals, keys){
+              //console.log('inside the for loop');
+                polygenDrawFunction(vals);
+              }); 
+
+              if(value.location.length>0){
+                angular.forEach(value.location, function(locs, ind){
+                 locat_address(locs);
+                });
+              }
+            }
+          });
+       }
+
+      if(data && data.orgIds != undefined){
+        $scope.orgIds   = data.orgIds;
+      }
+    });
+  }  
+
+
+  function calcLatLongForDrawShapes(longitude, lat, distance, bearing) {
+   var EARTH_RADIUS_EQUATOR = 6378140.0;
+     var RADIAN = 180 / Math.PI;
+
+   var b = bearing / RADIAN;
+   var lon = longitude / RADIAN;
+   var lat = lat / RADIAN;
+   var f = 1/298.257;
+   var e = 0.08181922;
+    
+   var R = EARTH_RADIUS_EQUATOR * (1 - e * e) / Math.pow( (1 - e*e * Math.pow(Math.sin(lat),2)), 1.5);  
+   var psi = distance/R;
+   var phi = Math.PI/2 - lat;
+   var arccos = Math.cos(psi) * Math.cos(phi) + Math.sin(psi) * Math.sin(phi) * Math.cos(b);
+   var latA = (Math.PI/2 - Math.acos(arccos)) * RADIAN;
+
+   var arcsin = Math.sin(b) * Math.sin(psi) / Math.sin(phi);
+   var longA = (lon - Math.asin(arcsin)) * RADIAN;
+
+   return latA+':'+longA;
+  };
+
+//create save site
+  $scope.markPoi   =   function(textValue, latlanList)
+  {
+    
+    $scope.toast    = '';
+    if(checkXssProtection(textValue) == true)
+    try
+    {
+
+      var URL_ROOT    = "AddSiteController/";    /* Your website root URL */
+      var text        = textValue;
+      var drop        = 'Home Site';
+      var org         = $scope.orgIds[0];
+      
+      // post request
+      if(text && drop && latlanList.length>=3 && org)
+      {
+        $.ajax({
+          async: false,
+          method: 'POST', 
+          'url' : URL_ROOT+'store',
+          data: {'_token': $('meta[name=csrf-token]').attr('content'), 'siteName': text, 'siteType': drop, 'org':org, 'latLng': latlanList},
+          success: function (response) {
+
+            if(response!='') {
+               $('#notifyS span').text('Successfully updated !..');
+               $('#notifyMsg').show();
+               $("#notifyS").show(500);
+               $("#notifyF").hide(); 
+               timeOutVar = setTimeout(setsTimeOuts, 2000);
+            } else {
+
+               $('#notifyF span').text("Enter all the field / Mark the Site ");
+               $('#notifyMsg').show();
+               $("#notifyF").show(500);
+               $("#notifyS").hide(); 
+               timeOutVar = setTimeout(setsTimeOuts, 2000);
+              stopLoading();
+
+            }
+
+            stopLoading();
+          }
+        }).fail(function() {
+          console.log("fail");
+          stopLoading();
+        });
+       
+      } else {
+
+               $('#notifyF span').text("Enter all the field / Mark the Site ");
+               $('#notifyMsg').show();
+               $("#notifyF").show(500);
+               $("#notifyS").hide(); 
+               timeOutVar = setTimeout(setsTimeOuts, 2000);
+              stopLoading();
+      }
+
+    } catch (err)    {
+
+               $('#notifyF span').text("Enter all the field / Mark the Site ");
+               $('#notifyMsg').show();
+               $("#notifyF").show(500);
+               $("#notifyS").hide(); 
+               timeOutVar = setTimeout(setsTimeOuts, 2000);
+      stopLoading();
+    }
+    stopLoading();
+    
+  }
+
+  //split methods
+  $scope.split_fcode = function(fcode){
+    var str = $scope.fcode[0].group;
+    var strFine = str.substring(str.lastIndexOf(':'));
+    while(strFine.charAt(0)===':')
+    strFine = strFine.substr(1);
+    return strFine;
+  }
+
+  var modalss = document.getElementById('poi');
+  var spanss = document.getElementsByClassName("poi_close")[0];
+  
+  function popUp_Open_Close(){
+
+    modalss.style.display = "block";
+    modalss.style.zIndex= 9999;
+    spanss.onclick = function() {
+        modalss.style.display = "none";
+    }
+  }  
+
+
+  $scope.addPoi   = function(lat, lng){
+
+    $scope.poiLat = lat;
+    $scope.poiLng = lng;
+    popUp_Open_Close();
+
+  }
+
+  $scope.submitPoi  = function(poiName){
+
+    var width       = 1000;
+    var latlngList  = [];
+
+    if($scope.map.getZoom()>5 && $scope.map.getZoom()<=8)
+      width = 1000;
+    else if($scope.map.getZoom()>8 && $scope.map.getZoom()<=12)
+      width = 100;
+    else if($scope.map.getZoom()>12 && $scope.map.getZoom()<=15)
+      width = 10;
+    else if($scope.map.getZoom()>15)
+      width = 1;
+      
+    var radius = (Math.sqrt (2 * (width * width))) / 2;
+    
+    latlngList[0]   = calcLatLongForDrawShapes($scope.poiLng, $scope.poiLat, radius, 45)
+    latlngList[1]   = calcLatLongForDrawShapes($scope.poiLng, $scope.poiLat, radius, -45)
+    latlngList[2]   = calcLatLongForDrawShapes($scope.poiLng, $scope.poiLat, radius, -135)
+    latlngList[3]   = calcLatLongForDrawShapes($scope.poiLng, $scope.poiLat, radius, 45)
+
+    console.log(latlngList);
+    $scope.markPoi(poiName, latlngList)
+    modalss.style.display = "none";
+
+  }  
+
+
 
     $scope.initilize = function(ID){
         
@@ -595,6 +962,7 @@ $scope.updateSafePark=function(){
         });
 
         $scope.setMarkers($scope.data[$scope.groupid].vehicleLocations);
+        polygenFunction($scope.data);
 
         stopLoading();
 
@@ -664,7 +1032,7 @@ $scope.updateSafePark=function(){
     {
       $scope.split_fcode($scope.fcode[0].group);
       var f_code = $scope.split_fcode($scope.fcode[0].group);
-      var f_code_url = 'http://'+globalIP+context+'/public/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
+      var f_code_url =  GLOBAL.DOMAIN_NAME+'/getVehicleExp?vehicleId='+vehi+'&fcode='+f_code+'&days='+days+'&mailId='+mailId+'&phone='+phone;
       var ecrypt_code_url = '';
       $http.get(f_code_url).success(function(result){
         
@@ -684,6 +1052,8 @@ $scope.updateSafePark=function(){
          $scope.Filter = 'ALL';
          $scope.zoom   = 6;
 
+         $scope.marker=[];
+
           $http({
             method : "GET",
             url :GLOBAL.DOMAIN_NAME+'/getVehicleLocations?group=' + group
@@ -701,8 +1071,6 @@ $scope.updateSafePark=function(){
             sessionValue($scope.vehiname, $scope.gName);
             $scope.apiKeys=response.data[$scope.groupid].apiKey;
 
-
-                
             $scope.initilize('maploc');
         }, function myError(response) {
             $scope.myWelcome = response.statusText;
@@ -731,9 +1099,32 @@ $scope.clearMarkers = function(){
     $scope.markerCluster.clearMarkers();
     $scope.marker = []; 
 };
+
+function markerChange(value){
+
+  var icon , img;
+
+    angular.forEach($scope.data[$scope.groupid].vehicleLocations, function(valu, key){
+    //img = ($scope.makerType == 'markerChange')? 'assets/imgs/'+'Car2'+'.png' : vamoservice.iconURL(valu)
+      img = ($scope.makerType == 'markerChange')? vamoservice.markerImage(valu) : vamoservice.iconURL(valu);
+
+      if($scope.makerType == 'markerChange'){
+          icon = {scaledSize: new google.maps.Size(30, 30),url: img,labelOrigin:  new google.maps.Point(25,40)} //scaledSize: new google.maps.Size(25, 25)
+       // icon = {scaledSize: new google.maps.Size(30, 30),url: img} //scaledSize: new google.maps.Size(25, 25) valu.vehicleType
+      } else {
+        icon = {url: img,labelOrigin:  new google.maps.Point(25,40)}
+      }
+
+       $scope.marker[key].setIcon(icon);
+       $scope.marker[key].setMap($scope.map);
+
+      //gmarkers[key].setIcon(icon);
+      //gmarkers[key].setMap($scope.map);
+    });
+  }
+
 //view map
-    $scope.mapView  =   function(value)
-    {
+    $scope.mapView  =   function(value) {
         switch(value){
             case 'listMap' :
                 listMap();
@@ -769,7 +1160,13 @@ $scope.clearMarkers = function(){
                 break;
             case 'tollNo':
                 removeToll();
-                break;*/        
+                break;*/  
+      case 'enableLabel':
+                enableLabel();
+                break;
+            case 'disableLabel':
+                disableLabel();
+                break;        
             case 'undefined':
                 $scope.makerType =  undefined;
                 changeMarker();
@@ -778,6 +1175,81 @@ $scope.clearMarkers = function(){
                 break;
         }
     }
+  function disableLabel()
+  {
+    $("#enableLabel").show();
+    $("#disableLabel").hide();
+    $scope.labeldisplay=false;
+    $scope.tempMarker = $scope.marker;
+    $scope.clearMarkers();
+    $scope.marker = $scope.tempMarker;
+    $scope.tempMarker = [];
+    for(var i=0; i<$scope.marker.length; i++)
+    {
+      $scope.marker[i].setMap($scope.map);
+      $scope.marker[i].setLabel("");
+    }
+  }
+  function enableLabel()
+  {
+    $("#disableLabel").show();
+    $("#enableLabel").hide();
+    $scope.labeldisplay=true;
+    $scope.tempMarker = $scope.marker;
+    $scope.clearMarkers();
+    $scope.marker = $scope.tempMarker;
+    $scope.tempMarker = [];
+    for(var i=0; i<$scope.marker.length; i++)
+    {
+      $scope.marker[i].setMap($scope.map);
+      
+      $scope.marker[i].setLabel($scope.markerLabel[i]);
+    }
+  }
+  // clusterMarker 
+  function clusterMarker()
+  {
+    $("#cluster").hide();
+    $("#single").show();
+    $scope.groupMap=true;
+    // markerCluster  = new MarkerClusterer($scope.map, null, null)
+    // mcOptions = {gridSize: 50,maxZoom: 15,styles: [ { height: 53, url: "assets/imgs/m1.png", width: 53}]}
+    $scope.markerCluster = new MarkerClusterer($scope.map,  $scope.marker,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'}); 
+  }
+  //single
+  function singleMarker()
+  {
+    $("#single").hide();
+    $("#cluster").show();
+    $scope.groupMap=false;
+    $scope.tempMarker = $scope.marker;
+    $scope.clearMarkers();
+    $scope.marker = $scope.tempMarker;
+    $scope.tempMarker = [];
+    for(var i=0; i<$scope.marker.length; i++)
+    {
+      $scope.marker[i].setMap($scope.map);
+    }
+  }
+
+  // changeMarker
+  function changeMarker()
+  {
+    if($scope.makerType == undefined)
+    {
+      $("#carMarker").show();
+      $("#marker").hide();  
+    } else if ($scope.makerType == 'markerChange'){
+      $("#carMarker").hide();
+      $("#marker").show();  
+    }
+    
+    // $scope.groupMap=true;
+    // markerCluster  = new MarkerClusterer($scope.map, null, null)
+    // mcOptions = {gridSize: 50,maxZoom: 15,styles: [ { height: 53, url: "assets/imgs/m1.png", width: 53}]}
+    // markerCluster  = new MarkerClusterer($scope.map, gmarkers, mcOptions)  
+  }
     function fulltable()
     {
         setId();
@@ -827,6 +1299,8 @@ $('#mapTable-mapList').hide()
     $("#marker").hide();
     $("#tollYes").show();
     $("#tollNo").hide();
+  $("#disableLabel").show();
+  $("#enableLabel").hide();
     function listMap ()
     {
     // if($scope.zohoReports==undefined){
@@ -874,7 +1348,9 @@ $scope.setMarkers = function(req_data, address){
         else if($scope.Filter != 'SINGLE' && $scope.Filter != 'ALL' && ($scope.Filter == 'Y' && location.isOverSpeed != $scope.Filter))
             return;
         if($scope.Filter != 'SINGLE'){
-                $scope.locations04[$scope.groupid].vehicleLocations.push(location)
+                $scope.locations04[$scope.groupid].vehicleLocations.push(location);
+                location.gsmLevel=parseInt(location.gsmLevel);
+                //location.shortName=parseInt(location.shortName);
                 $scope.locations04.vehicleLocations.push(location)
         }
           //}
@@ -893,7 +1369,7 @@ $scope.setMarkers = function(req_data, address){
             labelInBackground: false
           });*/
 
-          var markertemp = new google.maps.Marker({
+        /*  var markertemp = new google.maps.Marker({
             position: new google.maps.LatLng(location['latitude'], location['longitude']),
             map: $scope.map,
             icon: vamoservice.iconURL(location),
@@ -901,7 +1377,25 @@ $scope.setMarkers = function(req_data, address){
             labelAnchor: new google.maps.Point(19, 0),
             labelClass: "maps", 
             labelInBackground: false
-          });
+          }); */
+      
+          var image = {
+          url: vamoservice.iconURL(location),
+          labelOrigin:  new google.maps.Point(30,50)
+          };
+        var labelTemp = {
+           text: location['shortName'],
+           color: "red",
+           fontSize: "12px",
+           fontWeight: "bold",
+           };
+         var markertemp = new google.maps.Marker({
+           position: new google.maps.LatLng(location['latitude'], location['longitude']),
+           map: $scope.map,
+           icon: image,
+           label: labelTemp
+
+         });
 
           if($scope.Filter != 'SINGLE'){
             google.maps.event.addListener(markertemp, "click", function(e) {
@@ -927,6 +1421,11 @@ $scope.setMarkers = function(req_data, address){
           });
         }         
            $scope.marker.push(markertemp);
+       $scope.markerLabel.push( labelTemp);
+       if(!$scope.labeldisplay)
+       {
+         markertemp.setLabel('');
+       }
            if(address != undefined){
             infowindow = new InfoBubble({
               minWidth: 240,  
@@ -939,31 +1438,25 @@ $scope.setMarkers = function(req_data, address){
           $scope.map.setCenter(markertemp.position);
            return markertemp;
         })
-        
-        $scope.markerCluster = new MarkerClusterer($scope.map,  $scope.markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-        
-         
+        if($scope.Filter != 'SINGLE'){
+      clusterMarker();
+    }
     };  
 
-  $scope.genericFunction = function(vehicleno, rowId){
+    $scope.genericFunction = function(vehicleno, rowId){
         //angular.forEach($scope.locations, function(value, key){
         //if($scope.zohoReports==undefined){    
       $scope._editValue_con   =   true;
       individualVehicle = $filter('filter')($scope.locations04[$scope.groupid].vehicleLocations, { vehicleId:  vehicleno});
       $scope.individualVehicle = individualVehicle[0];
-        console.log(individualVehicle);
-        //$scope.clearMarkers();
-       // console.log("Selected Value: " + $scope.vehicleStatus.id + "\nSelected Text: " + $scope.vehicleStatus.name);
+        //console.log(individualVehicle);
+    //$scope.clearMarkers();
+      //console.log("Selected Value: " + $scope.vehicleStatus.id + "\nSelected Text: " + $scope.vehicleStatus.name);
       $scope.Filter = 'SINGLE';
       $scope.zoom = 15;
       $scope.setMarkers(individualVehicle, individualVehicle[0].address);
-
       $scope.assignValue(individualVehicle[0]);
-
-        
-       
-  };
+    };
 
   $('.nearbyTable').hide();
   $scope.nearBy = function(){
@@ -1043,7 +1536,6 @@ $scope.setMarkers = function(req_data, address){
 
 $scope.infoContent = function(data){
      
-
       var tempoTime = vamoservice.statusTime(data);
       if(data.ignitionStatus=='ON'){
         var classVal = 'green';
@@ -1122,7 +1614,7 @@ $("#safeUps").hide();
 
  $("#safEdit").click(function(e){
 
-      console.log('safe edits...');
+    //  console.log('safe edits...');
 
        $('#safEdits').hide();
        $('#safeUps').show();
