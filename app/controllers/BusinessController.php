@@ -540,8 +540,8 @@ public function adddevice() {
 				log::info($ownerShip.'valuse ----------->'.Input::get('userIdtemp'));
 				Session::flash ( 'message', 'select the sale!' );
 				//return View::make ( 'vdm.business.store');
-				//return Redirect::back()->withErrors('select the sale!');
-				return View::make ( 'vdm.business.create' )->withErrors ( "select the sale!" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
+				return Redirect::back()->withInput()->withErrors('select the sale!');
+				//return View::make ( 'vdm.business.create' )->withErrors ( "select the sale!" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
 
 			}	
 			if($type=='Sale' && Session::get('cur')!='dealer')
@@ -619,6 +619,7 @@ public function adddevice() {
 					
 					$groupname1      = Input::get('groupname');
 					$groupname       = strtoupper($groupname1);
+					$groupnameId     = explode(':',$groupname);
 					log::info($userId.'-------------- groupname- 1-------------'.$groupname);
 					if($type1=='existing' && ($groupname==null || $groupname=='' || $groupname=='0'))
 					{
@@ -632,7 +633,14 @@ public function adddevice() {
 			log::info('value type---->'.$type);
 			$organizationId=$userId;
 			$orgId=$organizationId;
+			if($groupnameId[0]== null)
+			{
 			$groupId=$orgId;
+ 			}
+			else
+			{
+  			$groupId=$groupnameId[0];
+			}
 			$groupId1=strtoupper($groupId);
 			if($ownerShip=='OWN' && $type!='Sale')
 			{
