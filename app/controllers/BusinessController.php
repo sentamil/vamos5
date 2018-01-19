@@ -497,7 +497,8 @@ public function adddevice() {
 			$numberofdevice = Input::get ( 'numberofdevice1' );
 			// $orgList=array();
 			// $orgList=BusinessController::getOrg();
-
+			$groupnameId=array();
+			$groupnameId[0]=null;
 			$availableLincence=Input::get ( 'availableLincence' );
 			$userList=array();
 			$userList=BusinessController::getUser();
