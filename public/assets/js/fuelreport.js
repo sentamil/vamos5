@@ -374,6 +374,7 @@ app.controller('mainFuel', function($scope, $http, $filter){
 
 	$scope.genericFunction  = function(single, index, shortname){
 		$scope.shortName 	= 	shortname;
+		$scope.shortNam 	= 	shortname;
 		$scope.vehiname 	= 	single;
 		sessionValue($scope.vehiname, $scope.gName);
 		$scope.getValue('vehicle');
