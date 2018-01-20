@@ -498,7 +498,7 @@ public function adddevice() {
 			// $orgList=array();
 			// $orgList=BusinessController::getOrg();
 			$groupnameId=array();
-			$groupnameId[0]=null;
+			$groupnameId[0]='0';
 			$availableLincence=Input::get ( 'availableLincence' );
 			$userList=array();
 			$userList=BusinessController::getUser();
@@ -634,7 +634,7 @@ public function adddevice() {
 			log::info('value type---->'.$type);
 			$organizationId=$userId;
 			$orgId=$organizationId;
-			if($groupnameId[0]== null)
+			if($groupnameId[0]== '0')
 			{
 			$groupId=$orgId;
  			}
