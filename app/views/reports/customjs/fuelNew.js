@@ -393,7 +393,7 @@ Highcharts.Pointer.prototype.reset = function () {
  */
 Highcharts.Point.prototype.highlight = function (event) {
     this.onMouseOver(); // Show the hover marker
-    this.series.chart.tooltip.refresh(this); // Show the tooltip
+    //this.series.chart.tooltip.refresh(this); // Show the tooltip
     this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
 };
 
@@ -421,9 +421,9 @@ function syncExtremes(e) {
   //console.log(retsData.dataSets);
     $.each(retsData.dataSets, function (i, dataset) {
 
-        if(i==1){
+      /*  if(i==1){
           fuelDates = [];
-        }
+        } */
 
      // Add X values
         dataset.data = Highcharts.map(dataset.data, function (val, j) {
@@ -460,7 +460,7 @@ function syncExtremes(e) {
                     labels: {
                      // format: '{value} km'
                       style:{
-                        fontSize: '11px',
+                        fontSize: '10px',
                         fontFamily: 'proxima-nova,helvetica,arial,sans-seri',
                         color:'#505050',
                      // whiteSpace: 'nowrap',
@@ -490,7 +490,7 @@ function syncExtremes(e) {
                      }
                    }
                 },
-                tooltip: {
+              /*  tooltip: {
                     positioner: function () {
                         return {
                             x: this.chart.chartWidth - this.label.width, // right aligned
@@ -505,6 +505,21 @@ function syncExtremes(e) {
                     style: {
                         fontSize: '18px'
                     },
+                    valueDecimals: dataset.valueDecimals
+                },*/
+                tooltip: {
+                    formatter: function () {
+                         var s='';
+                        $.each(this.points, function () {
+                            s +=  this.series.name + ': ' +
+                               '<b>' + this.y + '</b>' + ' ' + dataset.unit;
+                        });
+
+                        s += '<br/>'+'  '+'<br/>'+ this.x;
+
+                      return s;
+                    },
+                    shared: true,
                     valueDecimals: dataset.valueDecimals
                 },
                 series: [{
