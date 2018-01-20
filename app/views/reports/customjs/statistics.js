@@ -1003,7 +1003,7 @@ function chartFuel(data){
   {
     angular.forEach(data, function(val, key){
 
-      curVehiVal=val.vehicleId;
+      curVehiVal=val.vehicleName;
 
       if(key==0){
 
@@ -1547,4 +1547,3 @@ $scope.exportData = function (data) {
 
 
 }]);
-

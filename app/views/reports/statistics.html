@@ -317,7 +317,7 @@ font-family: 'Source Sans Pro', sans-serif;
                           <tab ng-show="exFuelTabShow" select="alertMe('fuel')" heading="Exec Fuel" active="actFuel"> 
 
                             <div class="form-group pull-right">
-                                <input type="search" class="form-control input-sm" placeholder="Enter Vehicle Id" align="center" ng-model="searchbox" name="search" />
+                                <input type="search" class="form-control input-sm" placeholder="Enter Vehicle Name" align="center" ng-model="searchbox" name="search" />
                             </div>
 
                             <h4 style="margin:0" class="page-header">Executive Fuel Report</h4>
@@ -327,7 +327,7 @@ font-family: 'Source Sans Pro', sans-serif;
                                 <thead>
                                     <tr style="text-align:center" >
                                     <th class="id" custom-sort order="'date'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Date</th>
-                                    <th class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Vehicle Id </th>
+                                    <th class="id" custom-sort order="'vehicleId'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Vehicle Name</th>
                                     <th class="id" custom-sort order="'startFuelLevel'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Start Fuel</th>
                                     <th class="id" custom-sort order="'endFuelLevel'" sort="sort" style="text-align:center;background-color:#C2D2F2;">End Fuel</th>
                                     <th class="id" custom-sort order="'fuelFills'" sort="sort" style="text-align:center;background-color:#C2D2F2;">Fuel Fill</th>
@@ -340,7 +340,7 @@ font-family: 'Source Sans Pro', sans-serif;
                         <tr ng-repeat="data in execFuelData | orderBy:natural(sort.sortingOrder):sort.reverse | filter:searchbox" class="active" style="text-align:center" >
                                       
                                         <td>{{data.date | date:'yyyy-MM-dd'}}</td>
-                                        <td>{{data.vehicleId}}</td>                                
+                                        <td>{{data.vehicleName}}</td>                                
                                         <td>{{data.startFuelLevel}}</td>
                                         <td>{{data.endFuelLevel}}</td>
                                         <td>{{data.fuelFills}}</td>
