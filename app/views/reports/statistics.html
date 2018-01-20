@@ -158,7 +158,7 @@ font-family: 'Source Sans Pro', sans-serif;
                               <div class="col-md-2" align="center"></div>
                               <div class="col-md-2 form-group" style="right:0px;padding-top: 7px;">Choose Month and Year :</div>
                                     <div class="input-group datecomp" style="padding-bottom: 20px;">
-                                            <input type="text" ng-model="fromMonthFuel" ng-change="submitMonFuel()" class="form-control placholdercolor" id="monthFrom" placeholder="Month">
+                                            <input type="text" ng-model="fromMonthFuel" ng-change="submitMonFuel()" class="form-control placholdercolor" id="monthFroms" placeholder="Month">
                                     </div>
                         </div>
                 </div>
@@ -522,7 +522,7 @@ font-family: 'Source Sans Pro', sans-serif;
                     pickDate: false
                 });
                 
-                $('#monthFrom').datetimepicker({
+                $('#monthFrom, #monthFroms').datetimepicker({
                     minViewMode: 'months',
                     viewMode: 'months',
                     pickTime: false,
