@@ -210,6 +210,11 @@ body {
 
 			<hr>
 		<div class="box-body" ng-class="overallEnable?'col-md-9':'col-md-12'" id="statusreport">
+
+		    <div class="pull-right" style="margin-top: 10px;margin-right: 5px;">
+		        <img style="cursor: pointer;" ng-click="exportData(dowloadId)"  src="../app/views/reports/image/xls.png" />
+                <img style="cursor: pointer;" ng-click="exportDataCSV(dowloadId)"  src="../app/views/reports/image/csv.jpeg" />
+            </div>
 		
 			<h4 style="margin:0" class="page-header">Performance</h4>
 			
