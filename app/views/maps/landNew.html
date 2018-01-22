@@ -105,10 +105,10 @@
                 </select>
                
                 </li>
-            <li ng-repeat="location in locations04 | orderBy:natural('group')"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ><span title="{{trimColon(location.group)}}" >{{trimColon(location.group)}}</span></a>
+            <li ng-repeat="location in locations04 track by $index | orderBy:natural('group')"><a href="javascript:void(0);" ng-click="groupSelection(location.group, location.rowId)" ><span title="{{trimColon(location.group)}}" >{{trimColon(location.group)}}</span></a>
                     
             <ul class="nav"  style="max-height: 400px; overflow-y: auto;">
-            <li ng-repeat="loc in location.vehicleLocations | orderBy:natural('shortName') | filter:searchbox" ng-class="{active:selected==loc.rowId}">
+            <li ng-repeat="loc in location.vehicleLocations track by $index | orderBy:natural('shortName') | filter:searchbox" ng-class="{active:selected==loc.rowId}">
                         <a href="javascript:void(0);"  ng-class="{red:loc.status=='OFF'}" ng-click="genericFunction(loc.vehicleId, loc.rowId)">
                           <img ng-src="assets/imgs/{{loc.vehicleType}}.png" fall-back-src="assets/imgs/Car.png" width="16" height="16"/>
                         
@@ -646,4 +646,3 @@
 
     </body>
 </html>
-

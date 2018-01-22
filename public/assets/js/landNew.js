@@ -1,4 +1,4 @@
- var globalIP = document.location.host;
+var globalIP = document.location.host;
  var context = '/gps';
  
  var total    = 0;
@@ -1047,6 +1047,9 @@ function colorChange(value){
   
 
     $scope.groupSelection = function(group, rowid){
+
+         startLoading();
+
          $scope.groupid = rowid;
        //$scope.locations04=[];
          $scope.Filter = 'ALL';
@@ -1993,5 +1996,4 @@ $(document).ready(function(){
       'DOMAIN_NAME' : '//'+globalIP+context+'/public', 
       'VALID_PHONE_NUMBER' : '* Phone Number must be 10 digit numbers only !!', 
     });  */
-
 
