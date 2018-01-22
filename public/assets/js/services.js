@@ -167,8 +167,16 @@ app.factory('vamoservice', function($http, $q){
               var valName = tempVar[i].long_name;
         
               switch(valType){
-        
+
+                case "premise":
+                 //console.log("stn : "+valName);
+                  strNo ='sta:'+valName;
+                break;
                 case "street_number":
+                 //console.log("stn : "+valName);
+                  strNo ='sta:'+valName;
+                break;
+                case "street_address":
                  //console.log("stn : "+valName);
                   strNo ='sta:'+valName;
                 break;
@@ -176,25 +184,29 @@ app.factory('vamoservice', function($http, $q){
                  //console.log("rot : "+valName);
                   rotNam='rot:'+valName;
                 break;
-                case "neighborhood":
+              /*case "neighborhood":
                   //console.log("neigh : "+valName);
-                  //retVar+='nei:'+valName;
-                break;
-                /*case "sublocality":
-                  //console.log("loc : "+valName);
-                  retVar+='loc:'+valName+' ';
+                  neigbh='nei:'+valName;
                 break;*/
+              /*case "sublocality_level_2":
+                  //console.log("loc : "+valName);
+                  subLoc2='subLoc2:'+valName;
+                break;*/
+                case "sublocality_level_1":
+                  //console.log("loc : "+valName);
+                  locs='loc:'+valName;
+                break;
                 case "locality":
                   //console.log("loc : "+valName);
                   locs='loc:'+valName;
                 break;
                 case "administrative_area_level_1":
                   //console.log("ad1 : "+valName);
-                  add2='ad2:'+valName;
+                  add1='ad2:'+valName;
                 break;
                 case "administrative_area_level_2":
                   //console.log("ad2 : "+valName);
-                  add1='ad1:'+valName;
+                  add2='ad1:'+valName;
                 break;
                 case "country":
                   //console.log("con : "+valName);
@@ -211,11 +223,11 @@ app.factory('vamoservice', function($http, $q){
 
           }
 
-         var retVar = strNo+' '+rotNam+' '+locs+' '+add1+' '+add2+' '+coun+' '+postal;
+         var retVar = strNo+' '+rotNam+' '+locs+' '+add2+' '+add1+' '+coun+' '+postal;
           //console.log(retVar);
 
-        return retVar;
-        },
+       return retVar;
+      },
 
     }  
 });
