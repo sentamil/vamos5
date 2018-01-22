@@ -85,10 +85,12 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', '_global', function(
 		$scope.daily = true;
 		$scope.monthly = false;
 		status = 'daily';
+		$scope.dowloadId = 'dailyPerformReport';
 	} else {
 		$scope.daily = false;
 		$scope.monthly = true;
 		status = 'monthly';
+		$scope.dowloadId = 'monthlyPerformReport';
 	}
 
 	function sessionValue(vid, gname){
@@ -105,9 +107,21 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', '_global', function(
 		  hours = hours ? hours : 12; // the hour '0' should be '12'
 		  minutes = minutes < 10 ? '0'+minutes : minutes;
 		  var strTime = hours + ':' + minutes + ' ' + ampm;
-		  return strTime;
+	  return strTime;
 	}
 
+	$scope.exportData = function (data) {
+		// console.log(data);
+		var blob = new Blob([document.getElementById(data).innerHTML], {
+           	type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, data+".xls");
+    };
+
+    $scope.exportDataCSV = function (data) {
+		// console.log(data);
+		CSV.begin('#'+data).download(data+'.csv').go();
+    };
 
 	function arrangeMonth(){
 
@@ -653,4 +667,3 @@ app.controller('mainCtrl',['$scope', '$http','vamoservice', '_global', function(
 
 	
 }]);
-

@@ -8,6 +8,7 @@
 <meta name="author" content="Satheesh">
 <title>GPS</title>
 <link rel="shortcut icon" href="assets/imgs/tab.ico">
+<link href="https://fonts.googleapis.com/css?family=Lato|Raleway:500|Roboto|Source+Sans+Pro|Ubuntu" rel="stylesheet">
 <link href="../app/views/reports/AdminLTE/AdminLTE.css" rel="stylesheet">
 <link href="../app/views/reports/datepicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 <link href="assets/css/bootstrap.css" rel="stylesheet">
@@ -22,6 +23,20 @@
  
   <!-- popup code -->
 <style type="text/css">
+body {
+	font-family: 'Lato', sans-serif;
+	/*font-weight: bold;
+	font-family: 'Lato', sans-serif;
+	font-family: 'Roboto', sans-serif;
+	font-family: 'Open Sans', sans-serif;
+	font-family: 'Raleway', sans-serif;
+	font-family: 'Faustina', serif;
+	font-family: 'PT Sans', sans-serif;
+	font-family: 'Ubuntu', sans-serif;
+	font-family: 'Droid Sans', sans-serif;
+	font-family: 'Source Sans Pro', sans-serif;
+	*/
+}
 .ng-modal-overlay {
   /* A dark translucent div that covers the whole screen */
   position:absolute;
@@ -198,17 +213,15 @@
 		
 			<h4 style="margin:0" class="page-header">Performance</h4>
 			
-			
-			  <div>
+			  <div id="{{dowloadId}}">
 				<table id="example" class="table table-striped table-bordered">
-					<tr style="text-align:center">
-						<th width="10%" class="id" custom-sort order="'month'" sort="sort" style="text-align:center;">Vehicle Name / Months</th>
-						<th width="5%" class="id" custom-sort order="'data.weightedBreakAnalysis'" sort="sort" style="text-align:center;">Brake Analysis</th>
-						<th width="5%" class="id" custom-sort order="'data.weightedSpeedAnalysis'" sort="sort" style="text-align:center;">Speed Analysis</th>
-						<th width="5%" class="id" custom-sort order="'data.weightedShockAlarmAnalysis'" sort="sort" style="text-align:center;">Shock Analysis</th>
-						<th width="5%" class="id" custom-sort order="'data.weightedAccelAnalysis'" sort="sort" style="text-align:center;">Acceleration Analysis</th>
-						
-					</tr>
+				<tr style="text-align:center">
+				<th width="10%" class="id" custom-sort order="'month'" sort="sort" style="text-align:center;background-color:#d3e0f1;font-size:12px;">Vehicle Name / Months</th>
+				<th width="5%" class="id" custom-sort order="'data.weightedBreakAnalysis'" sort="sort" style="text-align:center;background-color:#d3e0f1;font-size:12px;">Brake Analysis</th>
+				<th width="5%" class="id" custom-sort order="'data.weightedSpeedAnalysis'" sort="sort" style="text-align:center;background-color:#d3e0f1;font-size:12px;">Speed Analysis</th>
+				<th width="5%" class="id" custom-sort order="'data.weightedShockAlarmAnalysis'" sort="sort" style="text-align:center;background-color:#d3e0f1;font-size:12px;">Shock Analysis</th>
+				<th width="5%" class="id" custom-sort order="'data.weightedAccelAnalysis'" sort="sort" style="text-align:center;background-color:#d3e0f1;font-size:12px;">Acceleration Analysis</th>
+				</tr>
 					<tbody>
 					<tr ng-repeat="user in tableValue | orderBy:sort.sortingOrder:sort.reverse" class="active" style="text-align:center" ng-hide="nullValue(user)">
 						<td>{{user.month}}</td>
@@ -230,6 +243,7 @@
 						<td colspan="5" class="err"><h5>No Data Found! Choose some other date</h5></td>
 					</tr>
 				</table>
+				</div>
 				<!-- <button type="button" class="btn btn-info btn-lg" data-target="#myModal" data-toggle="modal">Open Modal</button> -->
 				<div class="modal fade" id="myModal" role="dialog">
 				    <div class="modal-dialog">
