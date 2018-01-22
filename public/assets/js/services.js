@@ -190,11 +190,11 @@ app.factory('vamoservice', function($http, $q){
                 break;
                 case "administrative_area_level_1":
                   //console.log("ad1 : "+valName);
-                  add2='ad1:'+valName;
+                  add2='ad2:'+valName;
                 break;
                 case "administrative_area_level_2":
                   //console.log("ad2 : "+valName);
-                  add1='ad2:'+valName;
+                  add1='ad1:'+valName;
                 break;
                 case "country":
                   //console.log("con : "+valName);
