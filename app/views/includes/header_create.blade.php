@@ -47,13 +47,13 @@
 
     <div class="color-line">
     </div>
-    <div id="logo" class="light-version">
+    <div id="logo" class="light-version" style="padding-bottom: 67px; text-align: center;">
       <!--   <span>
            GPS Admin
         </span> -->
     </div>
     <nav role="navigation">
-        <div class="header-link hide-menu"><i class="fa fa-bars"></i></div>
+        <div class="header-link hide-menu" style="padding-top: 48px;"><i class="fa fa-bars"></i></div>
         <div class="small-logo">
             <span class="text-primary">
 			<table style="border: 2px solid #2d9b5e; margin-top: -95px; size:25px; margin-left: 81px; border-radius: 5px; border-spacing: 3px;
