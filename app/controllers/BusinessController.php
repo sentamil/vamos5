@@ -1740,5 +1740,67 @@ try{
             //DB::table('recent_users')->delete();
         	})->everyMinute();
         }
+	 public function addvehicle($id) {
+		if (! Auth::check ()) {
+			return Redirect::to ( 'login' );
+		}
+		
+		$username = Auth::user ()->username;
+		$redis = Redis::connection ();
+		$fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+		$numberofdevice = $id;
+		log::info('$numberofdevice'.$numberofdevice);
+		log::info( '-------- store in  ::----------');
+        $franDetails_json = $redis->hget ( 'H_Franchise', $fcode);
+			$franchiseDetails=json_decode($franDetails_json,true);
+			$availableLincence=$franchiseDetails['availableLincence'];
+
+			log::info( '-------- av license in  ::----------'.$availableLincence);
+			if($numberofdevice>$availableLincence)
+			{
+				return View::make ( 'vdm.business.deviceAddCopy' )->withErrors ( "Your license count is less" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', null )->with ( 'dealerId', null )->with ( 'userList', null )->with('orgList',null);
+			}
+		$dealerId = $redis->smembers('S_Dealers_'. $fcode);  
+        $orgArr = array();
+		        // $orgArr = array_add($orgArr, 'OWN','OWN');
+		if($dealerId!=null)
+		{
+			foreach($dealerId as $org) {
+            $orgArr = array_add($orgArr, $org,$org);
+			
+        }
+		$dealerId = $orgArr;
+		}
+		else{
+			$dealerId=null;
+			//$orgArr = array_add($orgArr, 'OWN','OWN');
+			$dealerId = $orgArr;
+		}
+		$userList=array();
+		$userList=BusinessController::getUser();
+		$orgList=array();
+		$orgList=BusinessController::getOrg();
+		$protocol = VdmFranchiseController::getProtocal();
+		$Payment_Mode1 =array();
+		$Payment_Mode = DB::select('select type from Payment_Mode');
+		//log::info( '-------- av  in  ::----------'.count($Payment_Mode));
+		foreach($Payment_Mode as  $org1) {
+      	$Payment_Mode1 = array_add($Payment_Mode1, $org1->type,$org1->type);
+        }
+		$Licence1 =array();
+		$Licence = DB::select('select type from Licence');
+		foreach($Licence as  $org) {
+      	$Licence1 = array_add($Licence1, $org->type,$org->type);
+        }
+		
+		 return View::make ( 'vdm.business.createCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with('protocol', $protocol);
+		
+		
+		
+	}
+
+	
+	
+	
 	
 	}
