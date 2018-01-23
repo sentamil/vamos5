@@ -517,8 +517,7 @@ public function adddevice() {
                                          foreach($Licence as  $org) {
                                  $Licence1 = array_add($Licence1, $org->type,$org->type);
                                  }
-   ->with('protocol', $protocol)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
-			//thiru
+   			//thiru
 			if( $type1 != null && $type1 =='new')
 			{
 				if(Session::get('cur')=='dealer')		
