@@ -37,7 +37,7 @@
 <![endif]-->
 
 <!-- Header -->
-<div id="header">
+<div id="header" style="height: 92px;">
     <div class="color-line">
     </div>
     <div id="logo" class="light-version" style="padding-bottom: 67px; text-align: center;">

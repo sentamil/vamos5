@@ -43,7 +43,7 @@
 <![endif]-->
 
 <!-- Header -->
-<div id="header">
+<div id="header" style="height: 92px;">
 
     <div class="color-line">
     </div>
