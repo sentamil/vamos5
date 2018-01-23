@@ -37,19 +37,19 @@
 <![endif]-->
 
 <!-- Header -->
-<div id="header" style="height: 92px;">
+<div id="header" style="height: 86px;">
     <div class="color-line">
     </div>
-    <div id="logo" class="light-version" style="padding-bottom: 67px; text-align: center;">
+    <div id="logo" class="light-version" style="padding-bottom: 61px; text-align: center;">
     <!--  <span>
            GPS Admin
         </span> -->
     </div>
     <nav role="navigation">
-        <div class="header-link hide-menu" style="padding-top: 48px;"><i class="fa fa-bars"></i></div>
+        <div class="header-link hide-menu" style="padding-top: 43px;"><i class="fa fa-bars"></i></div>
         <div class="small-logo">
             <span class="text-primary">
-			<table style="border: 2px solid #2d9b5e; margin-top: -95px; size:25px; margin-left: 81px; border-radius: 5px; border-spacing: 3px;
+			<table style="border: 2px solid #2d9b5e; margin-top: -92px; size:25px; margin-left: 81px; border-radius: 5px; border-spacing: 3px;
                border-collapse: separate; width: 75%;" >
                 <tr><td style="padding-right:5px; border-right: 3px solid #eee; width: 37%;">
                      <select style="border: 0px;width: 100%;font-size: 75%;" id="choosen1" data-show-subtext="true" data-live-search="true">
@@ -85,7 +85,7 @@
 					<option value="org">Organization</option>
 					@endif 
 					</select></td>
-				<td style="padding-left:5px;">
+				<td style="padding-left:1px; width: 116px;">
 				<input id="getadd1" type="number" style="border: 0px; width: 100%;" placeholder="Enter Quantity to add" name="Searchthis" min="1" max="50"></input></td>
 				<td style="padding-left:5px;background-color:#2d9b5e; "> <a href="" id="addref1"><input id="setadd1" type="button" value="Add" style="color:white;background-color:#2d9b5e; border: 0px; padding-left: 28px;"/></a></td>
 				</tr>
@@ -94,7 +94,7 @@
         </div>
         <form class="navbar-form-custom" method="post">
 		<table style="border: 2px solid #2d9b5e; margin-top: 23px; size:20px; margin-left: 25px; border-radius: 5px; border-spacing: 3px;
-				border-collapse: separate; width: 500px; height: 37px;">
+				border-collapse: separate; width: 415px; height: 32px;">
 		<tr><td style="padding-right:5px; border-right: 3px solid #eee; width: 100px;">
 			<select style="border: 0px;" id="choosen" data-show-subtext="true" data-live-search="true">
 				<option value="">Search</option>
@@ -104,13 +104,13 @@
 				<option value="dealer">Dealer</option>
 				<option value="org">Organization</option>
 			</select></td>
-			<td style="padding-left:5px;">
-				<input id="getsearch" type="search" style="border: 0px; width: 320px" placeholder="Search" name="search" onkeyup ="validate(this)"></input></td>
+			<td style="padding-left:-4px;">
+				<input id="getsearch" type="search" style="border: 0px; width: 225px;" placeholder="Search" name="search" onkeyup ="validate(this)"></input></td>
 			<td style="padding-left:5px;background-color:#2d9b5e; "> <a href="" id="ref"><input  type="button" id="setsearch" value="Submit" style="color:white;background-color:#2d9b5e; border: 0px;"/></a></td>
 		</tr>
 		</table>
-        <table style="border: 2px solid #2d9b5e; margin-top: -37px;; size:20px; margin-left: 580px; border-radius: 5px; border-spacing: 3px;
-			border-collapse: separate; width: 514px; height: 37px;" >
+        <table style="border: 2px solid #2d9b5e; margin-top: -32px;; size:20px; margin-left: 470px; border-radius: 5px; border-spacing: 3px;
+			border-collapse: separate; width: 415px; height: 32px;" >
 		<tr>
 			<td style="padding-right:5px; border-right: 3px solid #eee; width: 100px;">
 				<select style="border: 0px;" id="chooseToAdd" data-show-subtext="true" data-live-search="true">
@@ -130,8 +130,8 @@
 					<option value="org">Organization</option>
 				@endif  
                 </select></td>
-			<td style="padding-left:5px;">
-				<input id="getadd" type="number" style="border: 0px; width: 320px" placeholder="Enter Quantity to add" name="Searchthis"  min="1" max="50"></input></td>
+			<td style="padding-left:-4px; width: 57px;">
+				<input id="getadd" type="number" style="border: 0px; width: 225px;" placeholder="Enter Quantity to add" name="Searchthis"  min="1" max="50"></input></td>
 			<td style="padding-left:17px;background-color:#2d9b5e; "> <a href="" id="addref"><input id="setadd" type="button" value="Add" style="color:white;background-color:#2d9b5e; border: 0px;"/></a></td>
 		</tr>
 		</table>
@@ -424,7 +424,7 @@ $('#addref1').on('click', function() {
 </div>
 <!-- Navigation -->
 <aside id="menu">
-	<ul class="nav" id="side-menu" style="padding-top: 0px; margin-top: 30px;">
+	<ul class="nav" id="side-menu" style="padding-top: 0px; margin-top: 13px;">
 		<li style="padding-bottom: 13px; padding-top: 13px; text-align: center; background-color: white;">
 			<span class="font-extra-bold font-uppercase nav-label"><font color="#8aa52d">{{Auth::user ()->username }}</font>-GPS ADMIN</span>
         </li>	

@@ -2269,7 +2269,7 @@ body {
 }
 
 .navbar-nav > li, .navbar-nav > li > a {
-    height: 56px
+    height: 80px
 }
 
 .navbar-nav > li > a {
@@ -2278,7 +2278,7 @@ body {
 }
 
 .navbar-nav > li:last-child > a {
-    padding-right: 35px
+    padding-right: 34px
 }
 
 .navbar.navbar-static-top .hide-menu {
