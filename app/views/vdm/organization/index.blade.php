@@ -5,7 +5,10 @@
             <div class="col-lg-12">
                 <div class="hpanel">
                     <div class="panel-heading">
-                       <h4><b><font> Organization Name</font></b></h4>
+					@if(Session::has('message'))
+						<p  n class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+					@endif
+                       <h4><b><font> Organizations List</font></b></h4>
                     </div>
                     <div class="panel-body">
                         <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">

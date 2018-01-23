@@ -46,7 +46,10 @@
     <div class="col-lg-12">
         <div class="hpanel">
                 <div class="panel-heading">
-                   <h4><b><font> User List  </font></b></h4>
+				@if(Session::has('message'))
+					<p  n class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+				@endif
+                   <h4><b><font> User Search  </font></b></h4>
                 </div>
                 <div class="panel-body">
                 {{ Form::open(array('url' => 'vdmUserScan/user','method' => 'post')) }}

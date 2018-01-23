@@ -600,15 +600,15 @@ public function adddevice() {
 					   $valGroup1=$redis->sismember('S_Groups_Admin_'.$fcode,$userId1 . ':' . $fcode1);
 				}
 				if($valGroup==1 || $valGroup1==1 || $valOrg==1 || $valOrg1==1 ) {
-					return View::make ( 'vdm.business.create' )->withErrors ( "Name already exist" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
+					return View::make ( 'vdm.business.create' )->withErrors ( "Name already exist" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('protocol', $protocol)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
 				}
 				if($val1==1 || isset($val)) {
-					return View::make ( 'vdm.business.create' )->withErrors ( "User Id already exist" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
+					return View::make ( 'vdm.business.create' )->withErrors ( "User Id already exist" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('protocol', $protocol)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
 				}
 				if (strpos($userId, 'admin') !== false || strpos($userId, 'ADMIN') !== false) {
 					//return Redirect::back()->withErrors ( 'Name with admin not acceptable' );
 
-					return View::make ( 'vdm.business.create' )->withErrors ( "Name with admin not acceptable" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
+					return View::make ( 'vdm.business.create' )->withErrors ( "Name with admin not acceptable" )->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('protocol', $protocol)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
 				}
 				
 
@@ -620,7 +620,7 @@ public function adddevice() {
                 	log::info('id alreasy exist '.$mob);
                 	//return Redirect::back()->withErrors ( );
 
-                	return View::make ( 'vdm.business.create' )->withErrors ( $mob . ' User Id already exist')->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
+                	return View::make ( 'vdm.business.create' )->withErrors ( $mob . ' User Id already exist')->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('protocol', $protocol)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
                  }
 				}	
 
@@ -636,7 +636,7 @@ public function adddevice() {
 					if($type1=='existing' && ($groupname==null || $groupname=='' || $groupname=='0'))
 					{
 						
-						return View::make ( 'vdm.business.create' )->withErrors ( ' Invalid groupname')->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList);
+						return View::make ( 'vdm.business.create' )->withErrors ( ' Invalid groupname')->with ( 'orgList', null )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('protocol', $protocol)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
 					}
 
 					

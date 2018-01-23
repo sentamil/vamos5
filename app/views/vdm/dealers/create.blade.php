@@ -6,7 +6,7 @@
     		<div class="col-lg-12">
         		<div class="hpanel">
                		 <div class="panel-heading">
-                  		<h4><b><font>Dealers Create</font></b></h6> 
+                  		<h4><b><font>Create Dealer</font></b></h6> 
                 	</div>
                		 <div class="panel-body">
                 		{{ HTML::ul($errors->all()) }}

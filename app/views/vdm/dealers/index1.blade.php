@@ -45,7 +45,10 @@ width: 100%;
       <div class="col-lg-12">
         <div class="hpanel">
           <div class="panel-heading">
-            <h4><font><b>Dealer List</b></font></h4>
+		  @if(Session::has('message'))
+				<p  n class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+			@endif
+            <h4><font><b>Dealer Search</b></font></h4>
           </div>
           <div class="panel-body">
           {{ Form::open(array('url' => 'vdmDealersScan/Search','method' => 'post')) }}
