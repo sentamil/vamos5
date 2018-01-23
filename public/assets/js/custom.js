@@ -575,7 +575,7 @@ function fetchingAddress(pos){
     }
     else{
       $('#lastseen').text(pos.address.split('<br>Address :')[1] ? pos.address.split('<br>Address :')[1] : pos.address);
-        //saveAddress(pos.latitude, pos.longitude);
+        saveAddress(pos.latitude, pos.longitude);
     }
 }
 

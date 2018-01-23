@@ -224,11 +224,10 @@ app.factory('vamoservice', function($http, $q){
           }
 
          var retVar = strNo+' '+rotNam+' '+locs+' '+add2+' '+add1+' '+coun+' '+postal;
-          //console.log(retVar);
+           console.log(retVar);
 
        return retVar;
       },
 
     }  
 });
-
