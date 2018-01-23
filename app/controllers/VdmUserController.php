@@ -76,7 +76,7 @@ class VdmUserController extends \BaseController {
         $userList = $redis->smembers ( $redisUserCacheId);		
         $text_word = Input::get('text_word');		
         $cou = $redis->SCARD($redisUserCacheId); // log::info($cou);		
-        $orgLi = $redis->sScan( $redisUserCacheId, 0, 'count', $cou, 'match', $text_word); // log::info($orgLi);		
+        $orgLi = $redis->sScan( $redisUserCacheId, 0, 'count', $cou, 'match', '*'.$text_word.'*'); // log::info($orgLi);		
         $orgL = $orgLi[1];		
         $userGroups = null;		
         $userGroupsArr = null;		
@@ -931,6 +931,49 @@ public function updateNotification() {
                         return Redirect::to ( 'vdmUsers' );
                 }
         }
+     public function scanNew($id) {		
+       if (! Auth::check ()) {		
+            return Redirect::to ( 'login' );		
+        }		
+        $username = Auth::user ()->username;		
+        $redis = Redis::connection ();		
+        $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );		
+        Log::info('username:' . $username . '  :: fcode' . $fcode);		
+        $redisUserCacheId = 'S_Users_' . $fcode;		
+        if(Session::get('cur')=='dealer')		
+        {		
+            log::info( '------login 1---------- '.Session::get('cur'));		
+            		
+            $redisUserCacheId = 'S_Users_Dealer_'.$username.'_'.$fcode;		
+        }		
+        else if(Session::get('cur')=='admin')		
+        {		
+            $redisUserCacheId = 'S_Users_Admin_'.$fcode;		
+        }		
+        $userList = $redis->smembers ( $redisUserCacheId);
+        $text_word1 = $id;
+        $text_word= str_replace(' ', '', $text_word1);
+		$text_word2 = strtoupper($text_word1);	
+		log::info($text_word2);	
+        $cou = $redis->SCARD($redisUserCacheId); // log::info($cou);		
+        $orgLi = $redis->sScan( $redisUserCacheId, 0, 'count', $cou, 'match', '*'.$text_word.'*'); 
+        $orgL=$orgLi[1];
+        $userGroups = null;		
+        $userGroupsArr = null;	
+        	
+        foreach ( $orgL as $key => $value ) { 
 
+            $userGroups = $redis->smembers ( $value);
+            log::info($userGroups); 
+            log::info($value.'--------------');          		
+            $userGroups = implode ( '<br/>', $userGroups );   		
+            $userGroupsArr = array_add ( $userGroupsArr, $value, $userGroups );	
+
+        }   		
+        return View::make ( 'vdm.users.scan' )->with ( 'fcode', $fcode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'userList', $orgL );		
+    }	
+
+		
+		
 }
 	

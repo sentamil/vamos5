@@ -1008,6 +1008,17 @@ Route::get('aUthName', array('uses' => 'HomeController@authName'));
 Route::get('logout', array('uses' => 'HomeController@doLogout'));
 Route::get('vdmVehicles/logout', array('uses' => 'HomeController@doLogout'));
 Route::get('vdmDealers/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmUserScan/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmGroups/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmUserSearch/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmDealersSearch/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmUsers/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmDealersScan/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmOrganization/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmBusRoutes/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmOrganization/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('vdmDealersSearch/logout', array('uses' => 'HomeController@doLogout'));
+Route::get('Business/logout', array('uses' => 'HomeController@doLogout'));
  
 Route::get('honda9999', array('uses' => 'HomeController@admin'));
 Route::get('adhocMail', array('uses' => 'HomeController@adhocMail'));
@@ -1100,6 +1111,7 @@ Route::post('vdmVehicles/moveVehicle', array('uses' => 'VdmVehicleViewController
  
 Route::post('vdmVehicles/storeMulti', array('uses' => 'VdmVehicleController@storeMulti'));
 ///Advance scan for GROUPS      
+Route::get('vdmGroupsScan/Search{parem}', array('uses' => 'VdmGroupController@groupScanNew'));
 Route::get('vdmGroups/Search', array('uses' => 'VdmGroupController@groupSearch'));      
 Route::post('vdmGroupsScan/Search', array('uses' => 'VdmGroupController@groupScan'));
 
@@ -1117,10 +1129,12 @@ Route::resource('vdmVehiclesView', 'VdmVehicleViewController');
  
 Route::resource('VdmVehicleScan', 'VdmVehicleScanController'); 
 Route::get('VehicleScan/sendExcel', array('uses' => 'VdmVehicleScanController@sendExcel')); 
- 
+Route::get('VdmVehicleScan{param}', array('uses' => 'VdmVehicleScanController@scanNew'));
+
 Route::resource('DashBoard', 'DashBoardController');
  
 Route::resource('Business', 'BusinessController');
+Route::get('addDevice{param}', array('uses' => 'BusinessController@addvehicle'));
 Route::resource('rfid', 'RfidController');
 Route::get('rfid/{param}/destroy', array('uses' => 'RfidController@destroy'));
 Route::get('rfid/editRfid/{param}', array('uses' => 'RfidController@edit1'));
@@ -1151,7 +1165,8 @@ Route::resource('DeviceScan', 'DeviceControllerScan');
 Route::resource('Device', 'DeviceController');
 Route::resource('vdmUsers', 'VdmUserController');
 Route::resource('Licence', 'LicenceController');
-///Advance scan for USERS       
+///Advance scan for USERS      
+Route::get('vdmUserScan/user{parem}', array('uses' => 'VdmUserController@scanNew')); 
 Route::get('vdmUserSearch/Scan', array('uses' => 'VdmUserController@search'));      
 Route::post('vdmUserScan/user', array('uses' => 'VdmUserController@scan'));
 Route::get('vdmUsers/reports/{param}', array('uses' => 'VdmUserController@reports'));
@@ -1163,6 +1178,7 @@ Route::get('Licence/ViewDevices/{param}', array('uses' => 'LicenceController@vie
  
 Route::resource('vdmDealers', 'VdmDealersController');
 ///Advance scan for DEALERS     
+Route::get('vdmDealersScan/Search{param}', array('uses' => 'VdmDealersScanController@dealerScanNew'));
 Route::get('vdmDealersSearch/Scan', array('uses' => 'VdmDealersScanController@dealerSearch'));      
 Route::post('vdmDealersScan/Search', array('uses' => 'VdmDealersScanController@dealerScan'));
 
@@ -1192,6 +1208,7 @@ Route::post('vdmOrganization/updateNotification', array('uses' => 'VdmOrganizati
 Route::post('vdmOrganization/siteUpdate', array('uses' => 'VdmOrganizationController@siteUpdate'));
 
 ///Advance scan for ORGANIZATION
+Route::get('vdmOrganization/adhi{param}', array('uses' => 'VdmOrganizationController@ScanNew'));
 Route::get('vdmOrganization/Scan', array('uses' => 'VdmOrganizationController@Search'));
 Route::post('vdmOrganization/adhi', array('uses' => 'VdmOrganizationController@Scan'));
 

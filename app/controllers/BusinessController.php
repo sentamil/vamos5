@@ -506,6 +506,18 @@ public function adddevice() {
 			$orgList=BusinessController::getOrg();
 			$dealerId=array();
 			$dealerId=BusinessController::getdealer();
+			$protocol = VdmFranchiseController::getProtocal();
+                         $Payment_Mode1 =array();
+                         $Payment_Mode = DB::select('select type from Payment_Mode');
+                         foreach($Payment_Mode as  $org1) {
+                                 $Payment_Mode1 = array_add($Payment_Mode1, $org1->type,$org1->type);
+                                 }
+                                         $Licence1 =array();
+                                         $Licence = DB::select('select type from Licence');
+                                         foreach($Licence as  $org) {
+                                 $Licence1 = array_add($Licence1, $org->type,$org->type);
+                                 }
+   ->with('protocol', $protocol)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1);
 			//thiru
 			if( $type1 != null && $type1 =='new')
 			{
@@ -560,7 +572,7 @@ public function adddevice() {
 				}
 					$type='Sale';
 					$ownerShip = $username;
-					$mobArr = explode(',', $mobileNo);
+					$mobArr = explode(',', $mobileNoUser);
 			}
 			if($type=='Sale' && $type1==null)
 			{
