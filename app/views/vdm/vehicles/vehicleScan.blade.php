@@ -1,25 +1,25 @@
 @include('includes.header_index')
 <style>
-table {
+ #tabNew table {
 width: 100%; 
 }
-tr:nth-of-type(odd) {
+ #tabNew tr:nth-of-type(odd) {
  /* background: white;*/
 }
 @media  only screen and (max-width: 760px), 
  (min-device-width: 320px) and (max-device-width: 780px) {
-  table, thead, tbody, th, td, tr {
+   #tabNew table,  #tabNew thead,  #tabNew tbody,  #tabNew th,  #tabNew td,  #tabNew tr {
     display: block;
   }
-   thead tr {
+    #tabNew thead tr {
     position: absolute;
         top: -9999px;
         left: -9999px;
   }
-  tr {
+   #tabNew tr {
     border: 1px solid #eee; 
   }
-  td {
+   #tabNew td {
 
     border-bottom: 1px solid #eee;
     position: relative;
@@ -27,37 +27,34 @@ tr:nth-of-type(odd) {
    /* width: 50%;*/
     font-size: 17px;
   }
- td:before { 
+  #tabNew td:before { 
     position:relative;
     color: #8AC007; 
     padding: 2px;
     right: 10px;
 	border: 2px solid #aaa; 
   }
-  th {
+   #tabNew th {
 	  text-align: left;
   }
 /*.vCol'=='1')
 {
 	td:nth-of-type(6):before {content: "Action ";}
 }*/
-  td:nth-of-type(1):before {content: "ID ";}
-  td:nth-of-type(2):before {content: "AssetID ";}
-  td:nth-of-type(3):before {content: "Vehicles Name ";}
-  td:nth-of-type(4):before {content: "Org Name ";}
-  td:nth-of-type(5):before {content: "Device ID ";}
-  td:nth-of-type(6):before {content: "Mobile No ";}
-  td:nth-of-type(7):before {content: "Status ";}  
-  td:nth-of-type(8):before {content: "Device Model ";}
+   #tabNew td:nth-of-type(1):before {content: "ID ";}
+   #tabNew td:nth-of-type(2):before {content: "AssetID ";}
+   #tabNew td:nth-of-type(3):before {content: "Vehicles Name ";}
+   #tabNew td:nth-of-type(4):before {content: "Org Name ";}
+   #tabNew td:nth-of-type(5):before {content: "Device ID ";}
+   #tabNew td:nth-of-type(6):before {content: "GPS Sim No ";}
+   #tabNew td:nth-of-type(7):before {content: "Status ";}  
+   #tabNew td:nth-of-type(8):before {content: "Device Model ";}
   
   @if(Session::get('vCol')=='1')
 	  
-  td:nth-of-type(9):before {content: "Action "}
+   #tabNew td:nth-of-type(9):before {content: "Action "}
   @endif
-  <!--td:nth-of-type(6):before {content: "Status ";}  
-  td:nth-of-type(7):before {content: "Device Model ";}
-  td:nth-of-type(8):before {content: "Mobile No ";}-->
- } 
+  } 
  </style>
 <div id="wrapper">
 <div class="content animate-panel">
@@ -94,6 +91,7 @@ tr:nth-of-type(odd) {
      {{ Form::text('text_word') }}
   <input type="submit" name="$value" value="search">
    {{ Form::close() }} -->
+				<div id="tabNew">
                 	<table id="example1" class="table table-bordered dataTable">
                		 <thead>
 						<tr>
@@ -198,6 +196,7 @@ tr:nth-of-type(odd) {
 						
 					</tbody>
                 </table>
+				</div>
          
 </div>
 </div>

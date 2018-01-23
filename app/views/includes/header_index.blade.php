@@ -415,7 +415,7 @@ $('#addref1').on('click', function() {
             <ul class="nav navbar-nav no-borders">
                 <li class="dropdown">
                     <a href="logout">
-                        <i class="pe-7s-upload pe-rotate-90"></i>
+                        <i class="pe-7s-upload pe-rotate-90" style="padding-top: 23px;"></i>
                     </a>
                 </li>
             </ul>
@@ -424,7 +424,7 @@ $('#addref1').on('click', function() {
 </div>
 <!-- Navigation -->
 <aside id="menu">
-	<ul class="nav" id="side-menu" style="padding-top: 0px; margin-top: 13px;">
+	<ul class="nav" id="side-menu" style="padding-top: 0px; margin-top: 23px;">
 		<li style="padding-bottom: 13px; padding-top: 13px; text-align: center; background-color: white;">
 			<span class="font-extra-bold font-uppercase nav-label"><font color="#8aa52d">{{Auth::user ()->username }}</font>-GPS ADMIN</span>
         </li>	

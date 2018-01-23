@@ -1,45 +1,45 @@
 @include('includes.header_create')
 <!-- Main Wrapper -->
 <style>
-table {
+#tabNew table {
 width: 100%; 
 }
-tr:nth-of-type(odd) {
+#tabNew tr:nth-of-type(odd) {
  /* background: white;*/
 }
 @media  only screen and (max-width: 760px), 
  (min-device-width: 320px) and (max-device-width: 780px) {
 
-  table, thead, tbody, th, td, tr {
+  #tabNew table, #tabNew thead, #tabNew tbody, #tabNew th, #tabNew td, #tabNew tr {
     display: block;
   }
-   thead tr {
+   #tabNew thead tr {
     position: absolute;
         top: -9999px;
         left: -9999px;
   }
-  tr {
+  #tabNew tr {
     border: 1px solid #eee; 
   }
-  td {
+  #tabNew td {
     border-bottom: 1px solid #eee;
     position: relative; 
     white-space: normal;
    /* width: 50%;*/
     font-size: 17px;
   }
- td:before { 
+ #tabNew td:before { 
     position:relative;
     color: #8AC007;
     padding: 2px;
     right: 10px;
 border: 2px solid #aaa; 
   }
-  td:nth-of-type(1):before {content: "ID ";}
-  td:nth-of-type(2):before {content: "Group ID ";}
-  td:nth-of-type(3):before {content: "Vehicles ";}
-  td:nth-of-type(4):before {content: "Short Name ";}
-  td:nth-of-type(5):before {content: "Actions ";}
+  #tabNew td:nth-of-type(1):before {content: "ID ";}
+  #tabNew td:nth-of-type(2):before {content: "Group ID ";}
+  #tabNew td:nth-of-type(3):before {content: "Vehicles ";}
+  #tabNew td:nth-of-type(4):before {content: "Short Name ";}
+  #tabNew td:nth-of-type(5):before {content: "Actions ";}
  } 
 </style>
 <div id="wrapper">
@@ -74,9 +74,10 @@ border: 2px solid #aaa;
  {{ Form::text('text_word') }}
 <input type="submit" name="$value" value="search">
 {{ Form::close() }} -->
-                <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6">
+				<div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6">
                 <div class="col-sm-6"><div id="example2_filter" class="dataTables_filter"></div></div></div><div class="row">
                   <div class="col-sm-12">
+				   <div id="tabNew">
                   <table id="example1" class="table table-bordered dataTable">
                 <thead>
             <tr>
@@ -116,7 +117,7 @@ border: 2px solid #aaa;
             </tr>
           @endforeach
           </tbody>
-                </table></div></div>
+                </table></div></div></div>
             </div>
     </div>
 </div>

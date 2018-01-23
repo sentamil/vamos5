@@ -1,41 +1,41 @@
 @include('includes.header_create') <!-- Main Wrapper -->
 <style>
-table {
+#tabNew table {
 width: 100%; 
 }
-tr:nth-of-type(odd) {
+#tabNew tr:nth-of-type(odd) {
  /* background: white;*/
 }
 @media  only screen and (max-width: 760px), 
  (min-device-width: 320px) and (max-device-width: 780px) {
-  table, thead, tbody, th, td, tr {  
+  #tabNew table, #tabNew thead, #tabNew tbody, #tabNew th, #tabNew td, #tabNew tr {  
     display: block;
   }
-   thead tr {
+   #tabNew thead tr {
     position: absolute;
         top: -9999px;
         left: -9999px;
   }
-  tr {
+  #tabNew tr {
     border: 1px solid #eee; 
   }
-  td {
+  #tabNew td {
     border-bottom: 1px solid #eee;
     position: relative;
     white-space: normal;
    /* width: 50%;*/
     font-size: 17px;
   }
- td:before {
+ #tabNew td:before {
      position:relative;
     color: #8AC007; 
     padding: 2px;
     right: 10px;
    border: 2px solid #aaa;  
   }
-  td:nth-of-type(1):before {content: "ID ";}
-  td:nth-of-type(2):before {content: "Organization ID ";}
-  td:nth-of-type(3):before {content: "Actions ";}
+  #tabNew td:nth-of-type(1):before {content: "ID ";}
+  #tabNew td:nth-of-type(2):before {content: "Organization ID ";}
+  #tabNew td:nth-of-type(3):before {content: "Actions ";}
  } 
 </style>
 <div id="wrapper">
@@ -64,7 +64,8 @@ tr:nth-of-type(odd) {
                     <hr>
                 </div>
                       </div>
-<table id="example1" class="table table-bordered dataTable">
+								<div id="tabNew">
+									<table id="example1" class="table table-bordered dataTable">
                                             <thead>
                                                 <tr>
                                                     <th style="text-align: center;">ID</th>
@@ -128,6 +129,7 @@ tr:nth-of-type(odd) {
                                                 @endforeach
                                             </tbody>
                                         </table>
+										</div>
                                     </div>
                                 </div>
                             </div>
