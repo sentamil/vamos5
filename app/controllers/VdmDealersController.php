@@ -525,7 +525,7 @@ class VdmDealersController extends \BaseController {
 		with('email',$email)->with('zoho',$zoho)->with('gpsvtsAppKey',$gpsvtsAppKey)->with('mapKey',$mapKey)->with('addressKey',$addressKey)->with('notificationKey',$notificationKey)->with('website',$website)->with('smsSender',$smsSender)->with('smsProvider',$smsProvider)->with('providerUserName',$providerUserName)->with('providerPassword',$providerPassword)->with('smsP',VdmFranchiseController::smsP());
 			}
 			
-			return Redirect::to ( 'vdmDealers' );
+			return Redirect::to ( 'vdmDealersScan/Search'.$dealerid );
 		}
 	}
 
@@ -690,7 +690,7 @@ class VdmDealersController extends \BaseController {
 			$user->save();
 			
 			Session::flash ( 'message', 'Successfully created ' . $dealerId . '!' );
-			return Redirect::to ( 'vdmDealers' );
+			return Redirect::to ( 'vdmDealersScan/Search'.$dealerId );
 		}
 	}
 	public function destroy($id) {

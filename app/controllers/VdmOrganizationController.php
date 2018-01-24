@@ -189,7 +189,7 @@ public function addpoi()
 			}
 			
  			Session::flash('message', 'Successfully created !');
- 			return Redirect::to('vdmOrganization');
+ 			return Redirect::to('vdmOrganization/adhi'.$orgId);
 	 		}
 
 
@@ -225,7 +225,7 @@ public function addpoi()
 		}
 		Log::info('orgid is -->'.$orgId);
 		Session::flash('message', 'Successfully created !');
-		return Redirect::to('vdmOrganization');
+		return Redirect::to('vdmOrganization/adhi'.$orgId);
 	 }
 	
 public function siteUpdate()
@@ -282,7 +282,7 @@ public function siteUpdate()
 		}
 		Log::info('orgid is -->'.$orgId);
 		Session::flash('message', 'Successfully created !');
-		return Redirect::to('vdmOrganization');
+		return Redirect::to('vdmOrganization/adhi'.$orgId);
 	 }
 		
 		
@@ -760,7 +760,7 @@ public function siteUpdate()
          log::info( 'Time1 ::' . $time1);
 		  log::info( 'Time2 ::' . $time2);
             Session::flash('message', 'Successfully created ' . $organizationId . '!');
-            return Redirect::to('vdmOrganization');
+            return Redirect::to('vdmOrganization/adhi'.$organizationId);
         }
         
     }
@@ -1434,7 +1434,7 @@ for ($i = 0; $i < 10; $i++) {
 }
             // redirect
             Session::flash('message', 'Successfully created ' . $organizationId . '!');
-            return Redirect::to('vdmOrganization');
+            return Redirect::to('vdmOrganization/adhi'.$organizationId);
         }
         
     }   

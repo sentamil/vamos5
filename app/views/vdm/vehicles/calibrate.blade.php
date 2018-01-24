@@ -65,7 +65,7 @@
                             {{ Form::close() }} 
                         </div>
                         
-                        <hr>
+                        <!--<hr>
                 		{{ Form::open(array('url' => 'vdmVehicles/calibrate/analog/')) }}
                 		<div class="row">
                 			<div class="col-md-3"></div>
@@ -73,7 +73,7 @@
                 			<div class="col-md-3">{{ Form::text('tanksize', $tanksize, array('class' => 'form-control')) }}</div>
                 			<div class="col-md-2"> {{ Form::hidden('vehicleId', $vehicleId, array('class' => 'form-control')) }}{{ Form::submit('Calibrate Analog!', array('class' => 'btn btn-sm btn-success')) }}</div>
                 		</div>
-                		<hr>
+                		<hr>-->
                 	</div>
                 </div>
             </div>

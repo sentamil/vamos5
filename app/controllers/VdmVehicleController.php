@@ -524,7 +524,7 @@ public function show($id) {
 *
 * @param int $id            
 * @return Response
-*/
+
 public function analogCalibrate() {
     if (! Auth::check ())
     {
@@ -579,7 +579,7 @@ public function analogCalibrate() {
 
     }
     return Redirect::to ( 'vdmVehicles' );     
-}
+}*/
 
 public function edit($id) {
     try{
@@ -716,7 +716,7 @@ public function edit($id) {
     }catch(\Exception $e)
     {
         log::info( '------exception---------- '.$e->getMessage());
-        return Redirect::to ( 'vdmVehicles' );
+        return Redirect::to ( 'VdmVehicleScan'.$vehicleId );
     }
 }
 
@@ -809,7 +809,7 @@ public function edit1($id) {
             'vehicleId' => $vehicleId ) )->with ( 'refData', $refData )->with ( 'orgList', $orgList )->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with ('protocol', $protocol);
     }catch(\Exception $e)
     {
-        return Redirect::to ( 'vdmVehicles' );
+        return Redirect::to ( 'VdmVehicleScan'.$vehicleId );
     }
 }
 
@@ -866,7 +866,7 @@ public function updateCalibration() {
     Log::info('-------------outside calibrate add-----------');
     
     
-return Redirect::to ( 'vdmVehicles' );
+return Redirect::to ( 'VdmVehicleScan'.$vehicleId );
 }
 
 
@@ -1394,7 +1394,7 @@ $parameters = 'fcode='.$fcode . '&expiryDate='.$vehicleExpiry. '&vehicleId='.$ve
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 //
-return Redirect::to ( 'VdmVehicleScan' );
+return Redirect::to ( 'VdmVehicleScan'.$vehicleId  );
 // $orgLis = [];
 // return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
 
@@ -2228,7 +2228,7 @@ $current = Carbon::now();
     // log::info('device id--->'.$deviceId);
     // log::info('vechicle id-->'.$vehicleId);
     Session::flash ( 'message', 'Asset Id/Vehicle Id has been renamed successfully. ' . '!' );
-    return Redirect::to ( 'VdmVehicleScan' );
+    return Redirect::to ( 'VdmVehicleScan'.$vehicleId );
     //$orgLis = [];
    // return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
 //            return View::make ( 'vdm.vehicles.migration', array ('vehicleId' => $vehicleId ) )->with ( 'deviceId', $deviceId );
@@ -2614,7 +2614,7 @@ $redis->hset ('H_VehicleName_Mobile_Org_' .$fcode, $vehicleId.':'.$deviceId.':'.
     // log::info('device id--->'.$deviceId);
     // log::info('vechicle id-->'.$vehicleId);
     Session::flash ( 'message', 'Migrated successfully ' . '!' );
-    return Redirect::to ( 'VdmVehicleScan' );
+    return Redirect::to ( 'VdmVehicleScan'.$vehicleId );
     //$orgLis = [];
    // return View::make('vdm.vehicles.vehicleScan')->with('vehicleList', $orgLis);
 

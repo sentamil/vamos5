@@ -282,7 +282,7 @@ class VdmUserController extends \BaseController {
 			
 			// redirect
 			Session::flash ( 'message', 'Successfully created ' . $userId . '!' );
-			return Redirect::to ( 'vdmUsers' );
+			return Redirect::to ( 'vdmUserScan/user'.$userId );
 		}
 	}
 	
@@ -629,7 +629,7 @@ public function updateNotification() {
                 
 			// redirect
 			Session::flash ( 'message', 'Successfully updated ' . $userId . '!' );
-			return Redirect::to ( 'vdmUsers' );
+			return Redirect::to ( 'vdmUserScan/user'.$userId );
 		}
 	}
 	
@@ -928,7 +928,7 @@ public function updateNotification() {
                         return Redirect::to ( 'vdmDealers' );
                 }else
                 {
-                        return Redirect::to ( 'vdmUsers' );
+                        return Redirect::to ( 'vdmUserScan/user'.$userId );
                 }
         }
      public function scanNew($id) {		

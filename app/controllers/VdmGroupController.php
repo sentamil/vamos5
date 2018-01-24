@@ -264,7 +264,7 @@ if((Session::get('cur')=='dealer' &&  $redis->sismember('S_Pre_Onboard_Dealer_'.
 			
  			// redirect
  			Session::flash('message', 'Successfully created ' . $groupId . '!');
- 			return Redirect::to('vdmGroups');
+ 			return Redirect::to('vdmGroupsScan/Search'.$groupId);
 	 		}
 		
 	}
@@ -494,7 +494,7 @@ $deviceId = isset($vehicleRefData->deviceId)?$vehicleRefData->deviceId:"nill";
         } catch (Exception $e) {
 		}
         	Session::flash('message', 'Successfully updated ' . $id . '!');
-        	return Redirect::to('vdmGroups');
+        	return Redirect::to('vdmGroupsScan/Search'.$id);
         }else {
             $redis->sadd($id,$oldVehi);
             ///ram noti
