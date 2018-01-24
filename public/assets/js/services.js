@@ -151,8 +151,8 @@ app.factory('vamoservice', function($http, $q){
             var strNo  = 'sta:null';
             var rotNam = 'rot:null';
             var locs   = 'loc:null';
-            var add1   = 'ad1:null';
-            var add2   = 'ad2:null';
+            var add1   = 'ad2:null';
+            var add2   = 'ad1:null';
             var coun   = 'con:null';
             var postal = 'pin:null';
 
