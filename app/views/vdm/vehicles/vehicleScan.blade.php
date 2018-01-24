@@ -75,7 +75,7 @@ width: 100%;
                 <div class="row">
                     <div class="col-md-12">
                       <div class="col-md-6">
-                        <div class="row">
+                        <div class="row" style="font-size: 11px;">
                            {{ Form::text('text_word' , Input::old('text_word'),  array('class' => 'form-control', 'placeholder'=>'Search Vehicles'))}}
                            <div style="font-size: 9px; text-align: center;"><b>Note : </b> Use * for getting all Vehicles </div>
                         </div>
@@ -91,7 +91,7 @@ width: 100%;
      {{ Form::text('text_word') }}
   <input type="submit" name="$value" value="search">
    {{ Form::close() }} -->
-				<div id="tabNew">
+				<div id="tabNew" style="font-size: 11px;">
                 	<table id="example1" class="table table-bordered dataTable">
                		 <thead>
 						<tr>

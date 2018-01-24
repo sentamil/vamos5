@@ -44,7 +44,7 @@ width: 100%;
 			<div class="col-lg-12">
 				<div class="hpanel">
 					<div class="panel-heading">
-						<h4><font><b>Organization List</b></font></h4>
+						<h4><font><b>Organization Search</b></font></h4>
 					</div>
 					<div class="panel-body">
           {{ Form::open(array('url' => 'vdmOrganization/adhi','method' => 'post' ,)) }}
