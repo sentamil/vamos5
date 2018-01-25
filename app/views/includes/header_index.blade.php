@@ -53,12 +53,22 @@
                border-collapse: separate; width: 75%;" >
                 <tr><td style="padding-right:5px; border-right: 3px solid #eee; width: 37%;">
                      <select style="border: 0px;width: 100%;font-size: 75%;" id="choosen1" data-show-subtext="true" data-live-search="true">
-                        <option value="">Search</option>
+                        @if(Session::get('cur')=='admin')
+						<option value="">Search</option>
 						<option value="device">Vehicle</option>
 						<option value="group">Group</option>
 						<option value="user">User</option>
 						<option value="dealer">Dealer</option>
 						<option value="org">Organization</option>
+						@endif
+						@if(Session::get('cur')=='dealer')
+						<option value="">Search</option>
+						<option value="device">Vehicle</option>
+						<option value="group">Group</option>
+						<option value="user">User</option>
+						<option value="org">Organization</option>
+						@endif
+						
 					</select></td>
 					<td style="padding-left:5px;">
 					<input id="getsearch1" type="search" style="border: 0px; width: 100%;" placeholder="Search" name="search" onkeyup ="validate(this)"></input></td>
@@ -81,7 +91,6 @@
 					<option value="">Add</option>
 					<option value="group">Group</option>
 					<option value="user">User</option>
-					<option value="dealer">Dealer</option>
 					<option value="org">Organization</option>
 					@endif 
 					</select></td>
@@ -97,12 +106,21 @@
 				border-collapse: separate; width: 415px; height: 32px;">
 		<tr><td style="padding-right:5px; border-right: 3px solid #eee; width: 100px;">
 			<select style="border: 0px;" id="choosen" data-show-subtext="true" data-live-search="true">
+				@if(Session::get('cur')=='admin')
 				<option value="">Search</option>
 				<option value="device">Vehicle</option>
 				<option value="group">Group</option>
 				<option value="user">User</option>
 				<option value="dealer">Dealer</option>
 				<option value="org">Organization</option>
+				@endif 
+				@if(Session::get('cur')=='dealer')
+				<option value="">Search</option>
+				<option value="device">Vehicle</option>
+				<option value="group">Group</option>
+				<option value="user">User</option>
+				<option value="org">Organization</option>
+				@endif 
 			</select></td>
 			<td style="padding-left:-4px;">
 				<input id="getsearch" type="search" style="border: 0px; width: 225px;" placeholder="Search" name="search" onkeyup ="validate(this)"></input></td>
@@ -126,7 +144,6 @@
 					<option value="">Add</option>
 					<option value="group">Group</option>
 					<option value="user">User</option>
-					<option value="dealer">Dealer</option>
 					<option value="org">Organization</option>
 				@endif  
                 </select></td>
