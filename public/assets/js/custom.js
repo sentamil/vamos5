@@ -687,7 +687,8 @@ function fetchingAddress(pos){
 
    //console.log($scope._editValue.routeName);
     $('#vehiid #val').text($scope.vehShort);
-    $('#toddist #val').text($scope.ododis);
+  //$('#toddist #val').text($scope.ododis);
+    $('#vehdevtype #val').text($scope.ododis);
   //$('#vehstat #val').text(dataVal.position);
     $('#regNo span').text($scope.refname);
     $('#routeName span').text($scope._editValue.routeName);
