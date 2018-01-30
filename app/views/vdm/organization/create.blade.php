@@ -11,7 +11,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-3">{{ Form::label('organizationId', 'School/College/Organization Id * :')  }}</div>
-					<div class="col-md-6">{{ Form::text('organizationId', Input::old('organizationId'), array('class' => 'form-control', 'required' => 'required', 'placeholder'=>'School/College/Organization Id', 'id'=>'orgId')) }}</div>
+					<div class="col-md-6">{{ Form::text('organizationId', Input::old('organizationId'), array('class' => 'form-control', 'required' => 'required', 'placeholder'=>'School/College/Organization Id', 'id'=>'orgId','onkeyup' => 'caps(this)')) }}</div>
 				</div>
 				<br />
 				<div class="row">
@@ -170,6 +170,9 @@ $(document).ready(function(){
 
 		
 	})
+function caps(element){
+   element.value = element.value.toUpperCase();
+  }
 
 </script>
 @include('includes.js_create')

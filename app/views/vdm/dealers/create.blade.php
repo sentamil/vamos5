@@ -22,7 +22,7 @@
 									{{ Form::label('dealerId', 'Dealer Name / Dealer ID') }}
 								</div>
 								<div class="col-md-6">
-									{{ Form::text('dealerId', Input::old('dealerId'), array('class' => 'form-control',  'required' => 'required', 'placeholder'=>'Dealer Id', 'id'=>'dealerName')) }}
+									{{ Form::text('dealerId', Input::old('dealerId'), array('class' => 'form-control',  'required' => 'required', 'placeholder'=>'Dealer Id', 'id'=>'dealerName','onkeyup' => 'caps(this)')) }}
 								</div>
 							</div>
 							<br />
@@ -184,7 +184,10 @@
 
 		
 	})
-
+function caps(element){
+    element.value = element.value.toUpperCase();
+  }
+	
 </script>
 @include('includes.js_create')
 </body>

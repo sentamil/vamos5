@@ -20,7 +20,7 @@
 							<h5><font color='red', size='1px'>{{ Form::label('#User name is case sensitive and space is not allowed') }}</font></h5>
 							<div class="form-group">
 							{{ Form::label('userId', 'User Name / User Id *') }}
-							{{ Form::text('userId', Input::old('userId'), array('class' =>'form-control','placeholder'=>'UserName', 'required' => 'required', 'id'=>'userID')) }}
+							{{ Form::text('userId', Input::old('userId'), array('class' =>'form-control','placeholder'=>'UserName', 'required' => 'required', 'id'=>'userID','onkeyup' => 'caps(this)')) }}
 							</div>
 							</br>
 							<div class="form-group">
@@ -127,6 +127,9 @@
 
 		
 	})
+ function caps(element){
+    element.value = element.value.toUpperCase();
+} 
 
 </script>
 @include('includes.js_create')

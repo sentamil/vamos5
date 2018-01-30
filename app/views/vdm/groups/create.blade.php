@@ -21,7 +21,7 @@
 		  	              				<div class="col-md-2">
 		  	              					<h5>{{ Form::label('groupId', 'Group Name / Group ID') }}</h5>
 		  	              				</div>
-										<div class="col-md-4">{{ Form::text('groupId', Input::old('groupId'), array('class' => 'form-control', 'placeholder'=>'Group Id','required'=>'required','id'=>'groupName')) }}</div>
+										<div class="col-md-4">{{ Form::text('groupId', Input::old('groupId'), array('class' => 'form-control', 'placeholder'=>'Group Id','required'=>'required','id'=>'groupName','onkeyup' => 'caps(this)')) }}</div>
 		                				<div class="col-md-3" style="text-align: right">
 		                					{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}
 		                				</div>
@@ -105,6 +105,10 @@
 
 		
 	})
+	
+function caps(element){
+    element.value = element.value.toUpperCase();
+ }
 
 </script>
 @include('includes.js_create')

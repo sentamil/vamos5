@@ -224,13 +224,16 @@
 
 
 											);
+											function caps(element){
+												element.value = element.value.toUpperCase();
+											}
 
 											</script>	
 										<tr style="text-align: center;">
 											<td>{{ $i }}</td>
 											<td >{{ Form::text('deviceid'.$i, Input::old('deviceid'), array('id' => 'deviceid'.$i,'required', 'class' => 'form-control')) }}</td>
 											<td>{{ Form::select('deviceidtype' .$i, $protocol, Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
-											<td>{{ Form::text('vehicleId'.$i, Input::old('vehicleId'), array('id' => 'vehicleId'.$i, 'class' => 'form-control')) }}</td>
+											<td>{{ Form::text('vehicleId'.$i, Input::old('vehicleId'), array('id' => 'vehicleId'.$i, 'class' => 'form-control','onkeyup' => 'caps(this)')) }}</td>
 											<td><a id="refData{{$i}}" class="btn btn-sm btn-success" >Details</a></td>
 										</tr>
 										<tr>

@@ -607,7 +607,7 @@ class VdmDealersController extends \BaseController {
               if($totalReports != null)
               {
               foreach ($totalReports as $key => $value) {
-                                                                                                                                                            $redis-> sadd('S_Users_Reports_Dealer_'.$dealerId.'_'.$fcode, $value);
+                                                                                                                                                            $;
               }
             }
 

@@ -2019,6 +2019,28 @@ $current = Carbon::now();
          $conn->multi_query($update10);
          $update11 = "UPDATE FuelReports SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
          $conn->multi_query($update11);
+		 $update12 = "UPDATE Alarms_History SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update12);
+         $update13 = "UPDATE FUELDETAILS SET vehicle_Id = '$vehicleId' WHERE vehicle_Id ='$vehicleIdOld'";
+         $conn->multi_query($update13);
+         $update14 = "UPDATE FuelDetailsTest SET vehicle_Id = '$vehicleId' WHERE vehicle_Id ='$vehicleIdOld'";
+         $conn->multi_query($update14);
+         $update15 = "UPDATE ImageDetails SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update15);
+         $update16 = "UPDATE MahindrasData SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update16);
+         $update17 = "UPDATE PERFORMANCETemp SET vehicle_Id = '$vehicleId' WHERE vehicle_Id ='$vehicleIdOld'";
+         $conn->multi_query($update17);
+         $update18 = "UPDATE SiteStoppageAlertReport SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update18);
+         $update19 = "UPDATE vehicleExpiryDetails SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update19);
+         $update20 = "UPDATE PERFORMANCETemp SET vehicle_Id = '$vehicleId' WHERE vehicle_Id ='$vehicleIdOld'";
+         $conn->multi_query($update20);
+         $update21 = "UPDATE vehicle_history1 SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update21);
+         $update22 = "UPDATE vehicle_history2 SET vehicleId = '$vehicleId' WHERE vehicleId ='$vehicleIdOld'";
+         $conn->multi_query($update22);
 
         log::info(' Sucessfully inserted/updated !!! ');
         

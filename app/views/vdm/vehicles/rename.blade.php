@@ -17,7 +17,7 @@
                 		<div class="row">
                 			<div class="col-md-2"></div>
                 			<div class="col-md-3">{{ Form::label('vehicleId', 'Asset Id / Vehicle Id :')  }}</div>
-                			<div class="col-md-4"> {{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control', 'required'=>'required')) }}</div>
+                			<div class="col-md-4"> {{ Form::text('vehicleId', $vehicleId, array('class' => 'form-control', 'required'=>'required','onkeyup' => 'caps(this)')) }}</div>
                 		</div>
                 		<div class="row">
                 			<div class="col-md-2"></div>
@@ -25,6 +25,11 @@
                              {{ Form::hidden('expiredPeriodOld', $expiredPeriod, array('class' => 'form-control')) }}{{ Form::hidden('deviceIdOld', $deviceId, array('class' => 'form-control')) }} </div>
                 			
                 		</div>
+						<script>
+                         function caps(element){
+                          element.value = element.value.toUpperCase();
+                         }                         
+                         </script>
                 		 <!-- <br>
                 		<div class="row">
                 			<div class="col-md-2"></div>
