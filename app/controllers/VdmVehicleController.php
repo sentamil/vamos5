@@ -1065,19 +1065,23 @@ $own=isset($refDataJson1['OWN'])?$refDataJson1['OWN']:'OWN';
         $vehicleRefData=json_decode($vehicleRefData,true);
 
         $deviceId=$vehicleRefData['deviceId'];
-        try{
-            $date=$vehicleRefData['date'];
-            $onboardDate=$vehicleRefData['onboardDate'];
-            $paymentType=$vehicleRefData['paymentType'];
-            $expiredPeriod=$vehicleRefData['expiredPeriod'];
-        }catch(\Exception $e)
-        {
-            $date=' ';
-            $onboardDate=' ';
-            $paymentType=' ';
-            $expiredPeriod=' ';
-        }
-
+    //    try{
+    //        $date=$vehicleRefData['date'];
+    //        $onboardDate=$vehicleRefData['onboardDate'];
+    //        $paymentType=$vehicleRefData['paymentType'];
+    //        $expiredPeriod=$vehicleRefData['expiredPeriod'];
+    //    }catch(\Exception $e)
+    //    {
+    //        $date=' ';
+    //        $onboardDate=' ';
+    //        $paymentType=' ';
+    //        $expiredPeriod=' ';
+    //    }
+		$date=isset($vehicleRefData['date'])?$vehicleRefData['date']:'';
+        $date1=date("d-m-Y", strtotime($date));
+        $onboardDate=isset($vehicleRefData['onboardDate'])?$vehicleRefData['onboardDate']:$date1;
+        $paymentType=isset($vehicleRefData['paymentType'])?$vehicleRefData['paymentType']:'';
+        $expiredPeriod=isset($vehicleRefData['expiredPeriod'])?$vehicleRefData['expiredPeriod']:'';
 
         $Licence=Input::get ( 'Licence1');    
         $Licence=!empty($Licence) ? $Licence : 'Advance';
