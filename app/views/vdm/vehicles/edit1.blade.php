@@ -3,7 +3,7 @@
 <h1><font>Edit Vehicle</font></h1>
 
 <!-- if there are creation errors, they will show here -->
-{{ HTML::ul($errors->all()) }}
+ <font color="red">{{ HTML::ul($errors->all()) }}</font>
 {{ Form::open(array('url' => 'vdmVehicles/update1')) }}
 
 <div class="row">

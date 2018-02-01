@@ -1,4 +1,4 @@
-<?php
+/<?php
 class VdmVehicleController extends \BaseController {
 
 /**
@@ -1018,7 +1018,7 @@ $own=isset($refDataJson1['OWN'])?$refDataJson1['OWN']:'OWN';
 
     if ($validator->fails ()) {
         Log::error(' VdmVehicleConrtoller update validation failed++' );
-        return Redirect::to ( 'vdmVehicles/edit' )->withErrors ( $validator );
+        return Redirect::back()->withErrors ( $validator );
     } else {
 // store
         $shortName1 = Input::get ( 'shortName' );

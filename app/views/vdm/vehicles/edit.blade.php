@@ -11,7 +11,7 @@
                		<div style="background-color: #7A7F99" class="panel-heading" align="center">
                    		<h4 style="background-color:  #b3b3cc" ><font size="6px" color="white" >Edit Vehicle</font></h4>
                 	</div>
-                	{{ HTML::ul($errors->all()) }}
+                	 <font color="red">{{ HTML::ul($errors->all()) }}</font>
 					{{ Form::model($vehicleId, array('route' => array('vdmVehicles.update', $vehicleId), 'method' => 'PUT')) }}
                 	<div class="panel-body">
                 		<div class="row">
