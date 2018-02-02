@@ -326,18 +326,16 @@ public function scanNew($id) {
         $deviceModel=isset($vehicleRefData['deviceModel'])?$vehicleRefData['deviceModel']:'nill';
         $deviceModelList = array_add($deviceModelList,$vehicle,$deviceModel);
         $expiredPeriod=isset($vehicleRefData['vehicleExpiry'])?$vehicleRefData['vehicleExpiry']:'-';
-        log::info('=====================');
-        log::info($expiredPeriod);
-        $expiredPeriod=isset($vehicleRefData['vehicleExpiry'])?$vehicleRefData['vehicleExpiry']:'rrr';
-        $rrr=strlen($expiredPeriod);
-        log::info($rrr);
-        if($rrr==0 || $expiredPeriod=='null')
+        $nullval=strlen($expiredPeriod);
+        if($nullval==0 || $expiredPeriod=="null")
         {
             $expiredPeriod='-';
         }
+
         $expiredList = array_add($expiredList,$vehicle,$expiredPeriod);
-        $onboardDate=isset($vehicleRefData['onboardDate'])?$vehicleRefData['onboardDate']:'-';
-        log::info($onboardDate);
+        $date=isset($vehicleRefData['date'])?$vehicleRefData['date']:'';
+        $date1=date("d-m-Y", strtotime($date));
+        $onboardDate=isset($vehicleRefData['onboardDate'])?$vehicleRefData['onboardDate']:$date1;
         $onboardDateList = array_add($onboardDateList,$vehicle,$onboardDate);
         $statusVehicle = $redis->hget ( 'H_ProData_' . $fcode, $vehicle );
         $statusSeperate = explode(',', $statusVehicle);
