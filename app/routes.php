@@ -224,6 +224,7 @@ Route::get('/stopReport', function() {
     return View::make('reports.stopReport');
 });
 
+
 Route::get('/tollReport', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -266,6 +267,14 @@ Route::get('/reports', function() {
         return Redirect::to('login');
     }
     return View::make('reports.current');
+});
+
+View::addExtension('html', 'php');
+Route::get('/dashNew', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.dashNew');
 });
  
 Route::get('/fuel', function(){
