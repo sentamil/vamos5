@@ -112,8 +112,8 @@ class VdmVehicleViewController extends \BaseController {
         $shortName1 =isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'';
         $shortName = strtoupper($shortName1);
         $gpsSimNo =isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'';
-        $orgId3 =isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'';
-        $orgId2 = strtoupper($orgId3);
+        $orgId3 =isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'DEFAULT';
+        $orgId2 = 'DEFAULT';
         $refDataArr = array (
             'deviceId' => isset($refDataJson1['deviceId'])?$refDataJson1['deviceId']:' ',
             'shortName' => isset($refDataJson1['shortName'])?$refDataJson1['shortName']:'nill',
@@ -130,7 +130,7 @@ class VdmVehicleViewController extends \BaseController {
             'driverName' => isset($refDataJson1['driverName'])?$refDataJson1['driverName']:'XXX',
             'gpsSimNo' => isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'0123456789',
             'email' => isset($refDataJson1['email'])?$refDataJson1['email']:' ',
-            'orgId' =>isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'Default',
+            'orgId' =>'DEFAULT',
             'sendGeoFenceSMS' => isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:'no',
             'morningTripStartTime' => isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' ',
             'eveningTripStartTime' => 'TIMEZONE',
@@ -172,7 +172,7 @@ class VdmVehicleViewController extends \BaseController {
             'driverName' => isset($refDataJson1['driverName'])?$refDataJson1['driverName']:'XXX',
             'gpsSimNo' => isset($refDataJson1['gpsSimNo'])?$refDataJson1['gpsSimNo']:'0123456789',
             'email' => isset($refDataJson1['email'])?$refDataJson1['email']:' ',
-            'orgId' =>isset($refDataJson1['orgId'])?$refDataJson1['orgId']:'Default',
+            'orgId' =>'DEFAULT',
             'sendGeoFenceSMS' => isset($refDataJson1['sendGeoFenceSMS'])?$refDataJson1['sendGeoFenceSMS']:'no',
             'morningTripStartTime' => isset($refDataJson1['morningTripStartTime'])?$refDataJson1['morningTripStartTime']:' ',
             'eveningTripStartTime' => 'TIMEZONE',
@@ -217,7 +217,7 @@ class VdmVehicleViewController extends \BaseController {
         }
         elseif($qq=='0' || $oo=='1')
         {
-            $redis->hdel('H_VehicleName_Mobile_Dealer_'.$dealerIdOld.'_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo, $vehicleIdOld );
+            $redis->hdel('H_VehicleName_Mobile_Dealer_'.$dealerIdOld.'_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId3.':'.$gpsSimNo, $vehicleIdOld );
             $redis->hset('H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode, $vehicleIdOld.':'.$deviceIdOld.':'.$shortName.':'.$orgId2.':'.$gpsSimNo.':OWN', $vehicleIdOld );
             $redis->srem('S_Vehicles_Dealer_'.$dealerId.'_'.$fcode,$vehicleIdOld);
              $redis->srem('S_Vehicles_Dealer_'.$dealerIdOld.'_'.$fcode,$vehicleIdOld);
