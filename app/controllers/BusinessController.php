@@ -259,7 +259,7 @@ public function checkvehicle()
 		$vehicleIdCheck = $redis->sismember('S_Vehicles_' . $fcode, $vehicleId);
 		$vehicleIdCheck2 = $redis->sismember('S_KeyVehicles', $vehicleU);
 		$error=' ';
-		if($vehicleIdCheck==1 && $vehicleIdCheck2==1) 
+		if($vehicleIdCheck==1 || $vehicleIdCheck2==1) 
 		{
 			$error='Vehicle Id already present '.$vehicleId;
 		}
@@ -1590,7 +1590,7 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
 								$redis->hdel('H_Pre_Onboard_Dealer_'.$username.'_'.$fcode,$deviceId);
 							
 					$temp++;
-				}
+					}
 				
 log::info('-------------- count($dbarray)--------------'.count($dbarray));
 if(count($dbarray)!==0)
