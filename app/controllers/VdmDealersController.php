@@ -22,6 +22,7 @@ class VdmDealersController extends \BaseController {
 		
 		$userGroups = null;
 		$userGroupsArr = null;
+		$dealerWeb=null;
 		foreach ( $dealerlist as $key => $value ) {
 			
 			
@@ -31,9 +32,10 @@ class VdmDealersController extends \BaseController {
 			$detailJson=$redis->hget ( 'H_DealerDetails_' . $fcode, $value);
 			$detail=json_decode($detailJson,true);
 			$userGroupsArr = array_add ( $userGroupsArr, $value, $detail['mobileNo'] );
+			$dealerWeb = array_add ( $dealerWeb, $value, $detail['website'] );
 		}
 		
-		return View::make ( 'vdm.dealers.index' )->with ( 'fcode', $fcode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'dealerlist', $dealerlist );
+		return View::make ( 'vdm.dealers.index' )->with ( 'fcode', $fcode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'dealerlist', $dealerlist )->with ( 'dealerWeb', $dealerWeb );
 	}
 	
 	/**

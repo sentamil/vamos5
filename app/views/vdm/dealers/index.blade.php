@@ -22,6 +22,7 @@
 								<th style="text-align: center;">ID</th>
 								<th style="text-align: center;">Dealer ID</th>
 								<th style="text-align: center;">Mobile  No</th>
+								<th style="text-align: center;">Website</th>
 								<th style="text-align: center;">Code</th>
 								<th style="text-align: center;">Actions</th>
 					
@@ -35,6 +36,7 @@
 								<td>{{ ++$key }}</td>
 								<td>{{ $value }}</td>
 								<td>{{ array_get($userGroupsArr, $value)}}</td>	
+								<td>{{ array_get($dealerWeb, $value)}}</td>
 								<td>{{ $fcode }}</td>
 								<td>
 									{{ Form::open(array('url' => 'vdmDealers/' . $value, 'class' => 'pull-right' ,'onsubmit' => 'return ConfirmDelete()')) }}

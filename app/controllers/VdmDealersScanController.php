@@ -29,14 +29,16 @@ class VdmDealersScanController extends \BaseController {
         $orgL = $orgLi[1];
         $userGroups = null;
         $userGroupsArr = null;
+		$dealerWeb=null;
         foreach ( $orgL as $key => $value ) { 
             $userGroups = $redis->smembers ( $value);
             $userGroups = implode ( '<br/>', $userGroups );
             $detailJson=$redis->hget ( 'H_DealerDetails_' . $fcode, $value);
             $detail=json_decode($detailJson,true);
             $userGroupsArr = array_add ( $userGroupsArr, $value, $detail['mobileNo'] );
+			$dealerWeb = array_add ( $dealerWeb, $value, $detail['website'] );
         }
-        return View::make ( 'vdm.dealers.index1' )->with ( 'fcode', $fcode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'dealerlist', $orgL );
+        return View::make ( 'vdm.dealers.index1' )->with ( 'fcode', $fcode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'dealerlist', $orgL )->with ( 'dealerWeb', $dealerWeb );
     }
 	public function dealerScanNew($id) {
        if (! Auth::check ()) {
@@ -54,14 +56,16 @@ class VdmDealersScanController extends \BaseController {
         $orgL = $orgLi[1];
         $userGroups = null;
         $userGroupsArr = null;
+		$dealerWeb=null;
         foreach ( $orgL as $key => $value ) { 
             $userGroups = $redis->smembers ( $value);
             $userGroups = implode ( '<br/>', $userGroups );
             $detailJson=$redis->hget ( 'H_DealerDetails_' . $fcode, $value);
             $detail=json_decode($detailJson,true);
             $userGroupsArr = array_add ( $userGroupsArr, $value, $detail['mobileNo'] );
+			$dealerWeb = array_add ( $dealerWeb, $value, $detail['website'] );
         }
-        return View::make ( 'vdm.dealers.index1' )->with ( 'fcode', $fcode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'dealerlist', $orgL );
+        return View::make ( 'vdm.dealers.index1' )->with ( 'fcode', $fcode )->with ( 'userGroupsArr', $userGroupsArr )->with ( 'dealerlist', $orgL )->with ( 'dealerWeb', $dealerWeb );
     }
     /**
      * Show the form for creating a new resource.
