@@ -71,7 +71,7 @@
 							<hr>
 							<div class="col-md-2"></div>
 							<div class="col-md-2">{{ Form::label('ExistingUser', 'Existing User') }}{{ Form::select('userIdtemp', array($userList),'select', array('id'=>'userIdtemp1','class' => 'selectpicker show-menu-arrow form-control', 'data-live-search '=> 'true')) }}</div>
-							<div class="col-md-2">{{ Form::label('Group', 'Group name') }}{{ Form::select('groupname', array(null),Input::old('groupname'), array('id'=>'groupname','class' => 'form-control')) }}</div>
+							<div class="col-md-2">{{ Form::label('Group', 'Group name') }}{{ Form::select('groupname', array(null),Input::old('groupname'), array('id'=>'groupname','class' => 'selectpicker show-menu-arrow form-control', 'data-live-search '=> 'true')) }}</div>
 							<div class="col-md-2">{{ Form::label('orgId', 'org/College Name') }}{{ Form::select('orgId',  array($orgList), Input::old('orgId'), array('class' => 'selectpicker show-menu-arrow form-control', 'data-live-search '=> 'true')) }} </div>
 							
 						</div>
@@ -158,8 +158,7 @@
 														         .attr("value",key)
 														         .text(value)); 
 														});
-
-
+													$('#groupname').selectpicker('refresh');
 											});
 											//alert("The text has been changeded.");
 											});

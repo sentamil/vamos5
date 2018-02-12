@@ -44,9 +44,9 @@
 					<div class="col-md-6">{{ Form::text('etc', Input::old('etc'), array('class' => 'form-control','placeholder'=>'Evening Trip Cron')) }}</div>
 				</div>
 				<br />
-				<div class="row">
-					<div class="col-md-3">{{ Form::label('smsProvider', 'SMS Provider') }}</div>
-					<div class="col-md-6">{{ Form::select('smsProvider',  array( $smsP), Input::old('smsProvider'), array('class' => 'form-control','placeholder'=>'SMS Provider')) }}</div>
+				<div class="rowNew">
+					<div class="col-md-3"  style="width:26% !important; padding-left: 0px !important;">{{ Form::label('smsProvider', 'SMS Provider') }}</div>
+					<div class="col-md-6" style="padding-left: 0px !important; padding-right: 16px !important;">{{ Form::select('smsProvider',  array( $smsP), Input::old('smsProvider'), array('class' => 'selectpicker show-menu-arrow form-control','data-live-search '=> 'true','placeholder'=>'SMS Provider')) }}</div>
 				</div>
 				<br/>
 				<div class="row">

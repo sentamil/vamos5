@@ -28,7 +28,7 @@
 
 		<div class="form-group">
 			{{ Form::label('deviceModel', 'Device Model') }}
-			{{ Form::select('deviceModel',$protocol, $refData['deviceModel'], array('class' => 'form-control')) }}
+			{{ Form::select('deviceModel',$protocol, $refData['deviceModel'], array('class' => 'selectpicker show-menu-arrow form-control','data-live-search '=> 'true')) }}
 		</div>
 
 		<div class="form-group">

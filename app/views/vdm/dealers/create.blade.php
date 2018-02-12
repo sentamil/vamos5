@@ -74,11 +74,11 @@
 							{{ Form::text('smsSender', Input::old('smsSender'), array('class' => 'form-control', 'placeholder'=>'SMS Sender')) }}
 								</div>
 						</div> <br />
-						<div class="row">
-								<div class="col-md-3">
+						<div class="rowNew">
+								<div class="col-md-3" style="width:26% !important; padding-left: 0px !important;">
 		{{ Form::label('smsProvider', 'SMS Provider') }}
-			</div><div class="col-md-6">
-		 		{{ Form::select('smsProvider',  array( $smsP), Input::old('smsProvider'), array('class' => 'form-control')) }} 
+			</div><div class="col-md-6" style="padding-left: 0px !important; padding-right: 16px !important;">
+		 		{{ Form::select('smsProvider',  array( $smsP), Input::old('smsProvider'), array('class' => 'form-control selectpicker show-menu-arrow','data-live-search '=> 'true')) }} 
 			</div>
 			</div> <br />
 							<div class="row">
