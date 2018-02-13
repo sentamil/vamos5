@@ -58,17 +58,17 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
   $scope.locations03  =  [];
   $scope.nearbyLocs   =  [];
   $scope.mapTable     =  [];
-  $scope.mapsHist     =  0;
-  $scope.maps_name    =  0;
-  $scope.setMapOsm    =  0;
+  $scope.mapsHist     =  1;
+  $scope.maps_name    =  1;
+  $scope.setMapOsm    =  1;
   $scope.mapInit      =  0;
 
-  $scope.tabletds     = undefined;
-  $scope.val = 5; 
-  $scope.gIndex = 0;
-  $scope.alertstrack = 0;
-  $scope.totalVehicles = 0;
-  $scope.vehicleOnline = 0;
+  $scope.tabletds        = undefined;
+  $scope.val             = 5; 
+  $scope.gIndex          = 0;
+  $scope.alertstrack     = 0;
+  $scope.totalVehicles   = 0;
+  $scope.vehicleOnline   = 0;
   $scope.distanceCovered = 0;
   $scope.attention       = 0;
   $scope.vehicleno       = '';
@@ -124,8 +124,8 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
   $scope.orgIds   = [];
     
   //var map_osm=null; 
-  var map_change=0;
-  var map_changeOsm=0;
+  var map_change    = 1;
+  //var map_changeOsm = 0;
   var m   =  [];
 
 
@@ -3104,7 +3104,7 @@ if($scope.maps_name==0){
 
    map_change =  0;
    $scope.initilize('maploc');
-   map_changeOsm = 0;
+   //map_changeOsm = 0;
 
   } else if($scope.maps_name==1) {
 
