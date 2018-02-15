@@ -79,6 +79,11 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
   sessionStorage.setItem('mapNo',0);
   var geocoderVar;
 
+//var map_osm=null; 
+  var map_change    = 1;
+//var map_changeOsm = 0;
+  var m   =  [];
+
   $scope.url        = 'http://'+globalIP+context+'/public/getVehicleLocations';
   $scope.getZoho    = GLOBAL.DOMAIN_NAME+'/getZohoInvoice';
   $scope.getRoutes  = GLOBAL.DOMAIN_NAME+'/getRouteList';
@@ -123,12 +128,6 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
   $scope.tabView  = 1;
   $scope.orgIds   = [];
     
-  //var map_osm=null; 
-  var map_change    = 1;
-  //var map_changeOsm = 0;
-  var m   =  [];
-
-
   var mcOptions = {
     maxZoom: 11,
     styles: [
@@ -448,11 +447,10 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
 
         if(map_change==0){
 
-
           // console.log('init_google.....');
 
-            document.getElementById("map_osm").style.display="none"; 
-            document.getElementById("maploc").style.display="block"; 
+          /* document.getElementById("map_osm").style.display="none"; 
+             document.getElementById("maploc").style.display="block"; */
 
             $scope.initilize('maploc');
             markerChange($scope.makerType);
@@ -461,8 +459,8 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
 
          // console.log('init_osm.....');
 
-          /*  document.getElementById("maploc").style.display="none"; 
-            document.getElementById("map_osm").style.display="block"; */
+            document.getElementById("maploc").style.display="none"; 
+            document.getElementById("map_osm").style.display="block";
 
             if($scope.map_osm!=null){
                $scope.map_osm.remove();
