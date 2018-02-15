@@ -83,7 +83,7 @@
 
 								<div class="form-group">
 									{{ Form::label('analog1', 'Analog input 1') }}
-									{{ Form::select('analog1', array('no' => 'No','fuel' => 'Fuel','load' => 'Load' ), $refData['analog1'],array('class' => 'form-control')) }}
+									{{ Form::select('analog1', array('no' => 'No','fuel' => 'Fuel','load' => 'Load' ), $refData['analog1'],array('id'=>'analog','class' => 'form-control')) }}
 								</div>
 
 								<div class="form-group">
@@ -228,7 +228,7 @@
 								<div class="form-group">
 									{{ Form::label('fuelTyp', 'Fuel Type') }}<br>
 
-									{{ Form::select('fuelType', array('digital' => 'Digital','analog' => 'Analog'), isset($refData['fuelType'])?$refData['fuelType']:'Digital', array('class' => 'form-control')) }} 
+									{{ Form::text('fuelType', 'Digital', array('class' => 'form-control', 'readonly' => 'true')) }}
 								</div>
 								
 							<div class="form-group">
@@ -252,12 +252,16 @@
                                 {{ Form::label('safetyParking', 'Safety Parking') }}<br>
                                 {{ Form::select('safetyParking', array('yes' => 'Yes','no' => 'No'), isset($refData['safetyParking'])?$refData['safetyParking']:'no', array('class' => 'form-control')) }}
                             </div>
+							<div class="form-group">
+                                {{ Form::label('tankSize', 'Tank Size') }}
+								{{ Form::number('tankSize', isset($refData['tankSize'])?$refData['tankSize']:' ',array('id'=>'tanksize','class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'1','max'=>'5000')) }}
+							</div>
 
 							<br/>
 					
 								<div class="col-md-5" style="top: 30px; position: relative; left: 40%">
 									
-										 {{ Form::submit('Update Vehicle', array('class' => 'btn btn-primary')) }}
+								{{ Form::submit('Update Vehicle', array('id'=>'sub','class' => 'btn btn-primary')) }}
 								</div>
 								
 							</div>
@@ -278,6 +282,45 @@
       $(function () {
       $('.selectpicker').selectpicker();
       });
+	
+	$('#sub').on('click', function() {
+
+	var datas={
+		'val':$('#tanksize').val(),
+		'val1':$('#analog').val()
+		} 
+       if (datas.val != '') {
+       document.getElementById("analog").value ="fuel";
+	}    
+	if(datas.val1=='fuel' && datas.val == '')
+	{
+	//var neww2=datas.val;
+	//var neww=datas.val1;
+	 alert('Please Enter Tank Size');
+	 document.getElementById("tanksize").focus();
+	return false;
+	}
+
+});
+
+$('#analog').on('change', function() {
+ var input={
+ 	'val':$('#analog').val()
+ }
+  console.log(input.val);
+ if(input.val=='no' || input.val=='load')
+ {
+ 	console.log(input.val);
+  
+   document.getElementById("tanksize").readOnly = true;	
+   document.getElementById("tanksize").value= '';
+ }
+ else {
+ 	document.getElementById("tanksize").readOnly = false;	
+	 document.getElementById("tanksize").value = ''; 
+}
+
+});
 
     </script>
 <div align="center">@stop</div>

@@ -642,7 +642,7 @@ public function edit($id) {
         $refData= array_add($refData, 'maxtemp', '');
         $refData= array_add($refData, 'routeName', '');
         $refData= array_add($refData, 'safetyParking', 'no');
-        
+         $refData= array_add($refData, 'tankSize', 'no');
 
         
         
@@ -1059,7 +1059,8 @@ $own=isset($refDataJson1['OWN'])?$refDataJson1['OWN']:'OWN';
         $maxtemp=Input::get ('maxtemp');
         $routeName = Input::get('routeName');
         $safetyParking = Input::get('safetyParking');
-
+		$tankSize = Input::get('tankSize');
+		
         $redis = Redis::connection ();
         $vehicleRefData = $redis->hget ( 'H_RefData_' . $fcode, $vehicleId );
         $vehicleRefData=json_decode($vehicleRefData,true);
@@ -1151,6 +1152,7 @@ else if(Session::get('cur')=='admin')
         'vehicleExpiry' => $vehicleExpiry,
         'onboardDate' => $onboardDate,
         'safetyParking'=>$safetyParking,
+		'tankSize'=>$tankSize,
     );
 
 try{
@@ -1313,6 +1315,7 @@ if($refVehicle != $refDataJson)
         "maxtemp" => "Maximum Temperature",
         "routeName" => "Route Name",
         "safetyParking"=>"Safety Parking",
+			"tanksize"=>"Tenk Size",
     );
     $updated_Value  = json_decode($refDataJson,true);
     // $oldJsonValue   = json_decode($refVehicle,true);
@@ -1562,6 +1565,10 @@ public function updateLive($id) {
            $safetyParking=$vehicleRefData['safetyParking'];
         else
            $safetyParking='no';
+		if(isset($vehicleRefData['tankSize'])==1)
+           $tankSize=$vehicleRefData['tankSize'];
+        else
+           $tankSize='no';
 
 
         $deviceId=$vehicleRefData['deviceId'];
@@ -1617,6 +1624,7 @@ public function updateLive($id) {
             'maxtemp'=>$maxtemp,
             'routeName'=>$routeName,
             'safetyParking'=>$safetyParking,
+			'tankSize'=>$tankSize,
             );
 
         $refDataJson = json_encode ( $refDataArr );
