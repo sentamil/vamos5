@@ -254,7 +254,7 @@
                             </div>
 							<div class="form-group">
                                 {{ Form::label('tankSize', 'Tank Size') }}
-								{{ Form::number('tankSize', isset($refData['tankSize'])?$refData['tankSize']:'0',array('id'=>'tanksize','class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'1','max'=>'5000')) }}
+								{{ Form::number('tankSize', isset($refData['tankSize'])?$refData['tankSize']:'0',array('id'=>'tanksize','class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'0','max'=>'5000')) }}
 							</div>
 
 							<br/>
