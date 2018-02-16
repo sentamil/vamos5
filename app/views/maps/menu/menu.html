@@ -15,7 +15,7 @@
                        <a href="../public/password_check" id="addsites">AddSites / Geo Fence</a>
                <!-- </div> -->
                 </li>
-                <li class="removeli"><a id="landNew" href="" target="_blank">New Landing Page</a></li>
+                <li class="removeli" id="singleTrackRls"><a id="landNew" href="" target="_blank">New Landing Page</a></li>
               <!--  <li class="removeli"><a id="dashNew" href="../public/dashNew" target="_blank">New DashBoard</a></li> -->
                 <!-- <li id="removeli"><a href="../public/groupEdit">Edit Group</a></li> -->
             </ul>
@@ -83,7 +83,6 @@
                     <li class="removeli" id="tripRl"><a id="trip" href=""> Trip Time </a></li>
                     <li class="removeli" id="tripkmsRl"><a id="tripkms" href=""> Trip Summary</a></li>
                     <li class="removeli" id="alarmRl"><a id="alarm" href="">Alarm</a></li>
-               <!-- <li class="removeli" id="acRl"><a id="ac" href="">A/C</a></li> -->
                     <li class="removeli" id="stoppageRl"><a id="stoppage" href="">Stoppage</a></li>
                 </ul>
             </li>
@@ -134,7 +133,7 @@
         <li id="userId">
             <span class="glyphicon glyphicon-user"><span id="valueUser" style="font-size:12px; font-weight: bold; font-family: Helvetica"></span></span>  
             <ul>           
-                <li id="payDetRl" ><a href="../public/payDetails">Payment Details</a></li>
+                <li id="payDetRl"><a href="../public/payDetails">Payment Details</a></li>
                 <li class="removeli removeli_2" id="editGrpRl"><a href="../public/groupEdit">Edit Group</a></li>
                 <li class="removeli removeli_2" id="editNotRl"><a href="../public/passWd?userlevel=notify">Edit Notification</a></li>
                 <li class="removeli removeli_2" id="resetRl"><a href="../public/passWd?userlevel=reset">Reset Password</a></li>
@@ -243,21 +242,21 @@
                                 case 'TRIP_SUMMARY':
                                   if( menuObj[i].Analytics_IndivdiualReportsList[0].TRIP_SUMMARY==false){   document.getElementById('tripkmsRl').innerHTML = '';}
                                 break;
-                                case 'SITE':
+                            /*  case 'SITE':
                                   if( menuObj[i].Analytics_IndivdiualReportsList[0].SITE==false){   document.getElementById('siteRl').innerHTML = '';}
-                                break;
+                                break; */
                                 case 'SITE_TRIP':
                                   if( menuObj[i].Analytics_IndivdiualReportsList[0].SITE_TRIP==false){   document.getElementById('tripSiteRl').innerHTML = '';}
                                 break;
-                                case 'EVENT':
+                             /* case 'EVENT':
                                   if( menuObj[i].Analytics_IndivdiualReportsList[0].EVENT==false){   document.getElementById('eventRl').innerHTML = '';}
-                                break;
+                                break; */
                                 case 'STOPPAGE':
                                   if( menuObj[i].Analytics_IndivdiualReportsList[0].STOPPAGE==false){   document.getElementById('stoppageRl').innerHTML = '';}
                                 break;
-                                case 'MULTIPLE_SITE':
+                            /*  case 'MULTIPLE_SITE':
                                   if( menuObj[i].Analytics_IndivdiualReportsList[0].MULTIPLE_SITE==false){   document.getElementById('multiSiteRl').innerHTML = '';}
-                                break;
+                                break; */
                                 case 'FUEL':
                                   if( menuObj[i].Analytics_IndivdiualReportsList[0].FUEL==false){  document.getElementById('fuelRl').innerHTML = '';
                                         document.getElementById('fuelNewRl').innerHTML = '';}
@@ -425,7 +424,10 @@
                             switch(newReportNamesss[k]){
 
                                 case 'SINGLE_TRACK':
-                                  if( menuObj[i].Tracking_IndivdiualReportsList[0].SINGLE_TRACK==false){ document.getElementById('singleTrackRl').innerHTML ='';}
+                                  if( menuObj[i].Tracking_IndivdiualReportsList[0].SINGLE_TRACK==false){ 
+                                    document.getElementById('singleTrackRl').innerHTML ='';
+                                    document.getElementById('singleTrackRls').innerHTML ='';
+                                  }
                                 break;
                                 case 'ROUTES':
                                   if( menuObj[i].Tracking_IndivdiualReportsList[0].ROUTES==false){ document.getElementById('routesRl').innerHTML = '';}
