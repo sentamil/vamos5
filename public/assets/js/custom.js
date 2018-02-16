@@ -3279,7 +3279,7 @@ $scope.starSplit  = function(val){
         template: '<div></div>',
         link: function(scope, element, attrs){
 
-        sessionStorage.setItem('mapNo',0);
+        //sessionStorage.setItem('mapNo',0);
 
         scope.trafficLayer = new google.maps.TrafficLayer();
         scope.checkVal     = false;
