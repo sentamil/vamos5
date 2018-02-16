@@ -103,6 +103,9 @@ width: 100%;
 							<th style="text-align: center;">Vehicle Name</th>
 							<th style="text-align: center;">Org Name</th>
 							<th style="text-align: center;">Device ID</th>
+							@if(Session::get('cur')=='admin')
+							 <th style="text-align: center;">Dealer Name</th>
+							@endif
 							<th style="text-align: center;">Gps Sim No</th>
 							<th style="text-align: center;">status</th>
 							<th style="text-align: center;">Device Model</th>
@@ -122,6 +125,9 @@ width: 100%;
 							<td>{{ array_get($shortNameList, $value)}}</td>
 							<td>{{ array_get($orgIdList, $value)}}</td>
 							<td>{{ array_get($deviceList, $value)}}</td>
+							@if(Session::get('cur')=='admin')				
+							<td>{{array_get($owntype, $value)}}</td>
+					       	@endif
 					        <td>{{ array_get($mobileNoList, $value)}}</td>
 							 
 							

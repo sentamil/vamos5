@@ -29,26 +29,44 @@ public function store() {
     if(Session::get('cur')=='dealer')
     {
         $vehicleListId='S_Vehicles_Dealer_'.$username.'_'.$fcode;
-		$vehicleNameMob='H_VehicleName_Mobile_Dealer_'.$username.'_Org_'.$fcode;
+        $vehicleNameMob='H_VehicleName_Mobile_Dealer_'.$username.'_Org_'.$fcode;
     }
     else if(Session::get('cur')=='admin')
     {
-        $vehicleListId='S_Vehicles_Admin_'.$fcode;
-		$vehicleNameMob='H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode;
+        $vehicleListId='S_Vehicles_'.$fcode;
+        $vehicleNameMob='H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode;
     }
     else{
         $vehicleListId = 'S_Vehicles_' . $fcode;
-		$vehicleNameMob='H_VehicleName_Mobile_Org_'.$fcode;
+        $vehicleNameMob='H_VehicleName_Mobile_Org_'.$fcode;
     }
         $text_word1 = Input::get('text_word');
-		$text_trim= str_replace(' ', '', $text_word1);
-		$text_word = strtoupper($text_trim);
+        $text_trim= str_replace(' ', '', $text_word1);
+        $text_word = strtoupper($text_trim);
         $vehicleList = $redis->smembers ( $vehicleListId); //log::info($vehicleList);
-      //$cou = $redis->SCARD($vehicleListId); //log::info($cou);
-        $cou = $redis->hlen($vehicleNameMob);
+    	$cou = $redis->scard($vehicleListId);
+		if(Session::get('cur')=='admin')
+        {
+			log::info('inside admin search');
+			log::info($text_word);
+			$check=$redis->hget('H_RefData_'.$fcode, $text_word);
+	
+			if($check!== null)
+			{ $orgLl=array();
+			$orgLl=array_add($orgLl,$text_word,$text_word);
+                $orgL = $orgLl;
+		    }
+        else{
+			$orgLi = $redis->HScan( $vehicleNameMob, 0,  'count', $cou, 'match', '*'.$text_word.'*');
+            $orgL = $orgLi[1];
+       }
+      }
+		else
+       {
 		$orgLi = $redis->HScan( $vehicleNameMob, 0,  'count', $cou, 'match', '*'.$text_word.'*');
-       // $orgLi = $redis->sScan( $vehicleListId, 0,  'count', $cou, 'match', $text_word); //log::info($orgLi);
         $orgL = $orgLi[1];
+       }
+        
     $deviceList = null;
     $deviceId = null;
     $shortName =null;
@@ -62,6 +80,7 @@ public function store() {
     $expiredList = null;
     $statusList = null;
 	$onboardDateList = null;
+	$owner=null;
     foreach ( $orgL as $key => $vehicle  ) {
 
         Log::info($key.'$vehicle ' .$vehicle);
@@ -106,6 +125,8 @@ public function store() {
         log::info($date1);
 		$onboardDate=isset($vehicleRefData['onboardDate'])?$vehicleRefData['onboardDate']:$date1;
         $onboardDateList = array_add($onboardDateList,$vehicle,$onboardDate);
+		$owntype = isset($vehicleRefData['OWN'])?$vehicleRefData['OWN']:'';
+        $owner = array_add($owner,$vehicle,$owntype);
 
         }
         else
@@ -126,7 +147,7 @@ public function store() {
     $dealerId = $orgArr;
     return View::make ( 'vdm.vehicles.vehicleScan', array (
         'vehicleList' => $orgL
-        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList)->with('dealerId',$dealerId)->with('onboardDateList', $onboardDateList); 
+        ) )->with ( 'deviceList', $deviceList )->with ( 'owntype', $owner )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList)->with('dealerId',$dealerId)->with('onboardDateList', $onboardDateList); 
 }
 public function sendExcel()
 {
@@ -267,7 +288,7 @@ public function scanNew($id) {
     }
     else if(Session::get('cur')=='admin')
     {
-        $vehicleListId='S_Vehicles_Admin_'.$fcode;
+        $vehicleListId='S_Vehicles_'.$fcode;
         $vehicleNameMob='H_VehicleName_Mobile_Admin_OWN_Org_'.$fcode;
     }
     else{
@@ -277,13 +298,29 @@ public function scanNew($id) {
         $text_word1 = $id;
         $text_trim= str_replace(' ', '', $text_word1);
         $text_word = strtoupper($text_trim);
-        log::info($text_word);
         $vehicleList = $redis->smembers ( $vehicleListId); //log::info($vehicleList);
-        $cou = $redis->hlen($vehicleNameMob); //log::info($cou);
-        $orgLi = $redis->HScan( $vehicleNameMob, 0,  'count', $cou, 'match', '*'.$text_word.'*');
-       // $orgLi = $redis->sScan( $vehicleListId, 0,  'count', $cou, 'match', $text_word); //log::info($orgLi);
+    	$cou = $redis->scard($vehicleListId);
+		if(Session::get('cur')=='admin')
+        {
+			log::info('inside admin search');
+			log::info($text_word);
+			$check=$redis->hget('H_RefData_'.$fcode, $text_word);
+	
+			if($check!== null)
+			{ $orgLl=array();
+			$orgLl=array_add($orgLl,$text_word,$text_word);
+                $orgL = $orgLl;
+		    }
+        else{
+			$orgLi = $redis->HScan( $vehicleNameMob, 0,  'count', $cou, 'match', '*'.$text_word.'*');
+            $orgL = $orgLi[1];
+       }
+      }
+		else
+       {
+		$orgLi = $redis->HScan( $vehicleNameMob, 0,  'count', $cou, 'match', '*'.$text_word.'*');
         $orgL = $orgLi[1];
-        //$orgL = strtolower($orgL1);
+       }
     $deviceList = null;
     $deviceId = null;
     $shortName =null;
@@ -298,6 +335,7 @@ public function scanNew($id) {
     $statusList = null;
     //$onboardDate = null;
     $onboardDateList = null;
+	$owner=null;
     foreach ( $orgL as $key => $vehicle  ) {
 
         Log::info($key.'$vehicle ' .$vehicle);
@@ -340,6 +378,8 @@ public function scanNew($id) {
         $statusVehicle = $redis->hget ( 'H_ProData_' . $fcode, $vehicle );
         $statusSeperate = explode(',', $statusVehicle);
         $statusList = array_add($statusList, $vehicle, $statusSeperate[7]);
+		$owntype = isset($vehicleRefData['OWN'])?$vehicleRefData['OWN']:'';
+        $owner = array_add($owner,$vehicle,$owntype);
         }
         else
         {
@@ -359,7 +399,7 @@ public function scanNew($id) {
     $dealerId = $orgArr;
     return View::make ( 'vdm.vehicles.vehicleScan', array (
         'vehicleList' => $orgL
-        ) )->with ( 'deviceList', $deviceList )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList)->with('dealerId',$dealerId)->with ( 'onboardDateList', $onboardDateList ); 
+        ) )->with ( 'deviceList', $deviceList )->with ( 'owntype', $owner )->with('shortNameList',$shortNameList)->with('portNoList',$portNoList)->with('mobileNoList',$mobileNoList)->with('demo',$demo)->with ( 'user', $user )->with ( 'orgIdList', $orgIdList )->with ( 'deviceModelList', $deviceModelList )->with ( 'expiredList', $expiredList )->with ( 'tmp', 0 )->with ('statusList', $statusList)->with('dealerId',$dealerId)->with ( 'onboardDateList', $onboardDateList ); 
 }
 
 /*
