@@ -246,6 +246,17 @@ class HomeController extends BaseController {
 	}
 */
     
+    public function getFcode() {
+
+	  log::info('inside the fcode');
+		$usernames = Input::get ('id');
+		$redis    = Redis::connection();
+	  //log::info('user names.......'.$usernames);
+		$fcodeKeys   = $redis->hget ( 'H_UserId_Cust_Map',$usernames.':fcode' );
+
+	 return $fcodeKeys;
+	}
+
     public function getApi()
 	{
 		

@@ -1000,6 +1000,7 @@ Route::get('password/reset/{token}', array('uses' => 'RemindersController@reset'
 Route::post('password/reset/{token}', array('before' => 'csrf', 'uses' => 'RemindersController@update', 'as' => 'password.update'));
  
 Route::post('userIds', array('as' => 'ajax.apiKeyAcess', 'uses'=>'HomeController@getApi')); 
+Route::post('userIdss', array('as' => 'ajax.fcKeyAcess', 'uses'=>'HomeController@getFcode')); 
 Route::post('getApiKeys', array('uses'=>'HomeController@getApi')); 
 
 
@@ -1305,9 +1306,12 @@ Route::get('/download', function() {
     $headers = array('Content-Type: application/zip');
     return Response::download($file, 'sample.txt.gz', $headers);
 });
+
 Route::get('/SmsReport',array('uses'=>'SmsReportController@testSmsReport'));
 Route::post('/SmsReport',array('uses'=>'SmsReportController@testSmsReport'));
 Route::get('/Test',array('uses'=>'TestController@postAuth'));
 Route::get('/Example',array('uses'=>'ExampleController@testExample'));
 Route::get('/Hello',array('uses'=>'HelloController@testHello'));
 Route::post('/meenatest',array('uses'=>'HelloController@meenatest'));
+
+

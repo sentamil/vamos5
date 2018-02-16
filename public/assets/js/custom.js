@@ -54,15 +54,32 @@ app.filter('statusfilter', function(){
  
 app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','_global', function($scope, $compile, $http, vamoservice, $filter, GLOBAL){
   
-  $scope.locations    =  [];
-  $scope.locations03  =  [];
-  $scope.nearbyLocs   =  [];
-  $scope.mapTable     =  [];
-  $scope.mapsHist     =  1;
-  $scope.maps_name    =  1;
-  $scope.setMapOsm    =  1;
-  $scope.mapInit      =  0;
+  var mapfcode = sessionStorage.getItem('fCode');
+  var map_change;
+  console.log(mapfcode);
 
+  if(mapfcode=="SMP"){
+    map_change          =  1;
+    $scope.mapsHist     =  1;
+    $scope.maps_name    =  1;
+    $scope.setMapOsm    =  1;
+
+  } else {
+    map_change          =  0;
+    $scope.mapsHist     =  0;
+    $scope.maps_name    =  0;
+    $scope.setMapOsm    =  0;
+  }
+
+  $scope.mapInit        =  0;
+//var map_osm           =  null; 
+//var map_changeOsm     =  0;
+
+  $scope.locations       =  [];
+  $scope.locations03     =  [];
+  $scope.nearbyLocs      =  [];
+  $scope.mapTable        =  [];
+  
   $scope.tabletds        = undefined;
   $scope.val             = 5; 
   $scope.gIndex          = 0;
@@ -79,17 +96,8 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
   sessionStorage.setItem('mapNo',0);
   var geocoderVar;
 
-//var map_osm=null; 
-  var map_change    = 1;
-//var map_changeOsm = 0;
-  var m   =  [];
-
-  $scope.url        = 'http://'+globalIP+context+'/public/getVehicleLocations';
-  $scope.getZoho    = GLOBAL.DOMAIN_NAME+'/getZohoInvoice';
-  $scope.getRoutes  = GLOBAL.DOMAIN_NAME+'/getRouteList';
-
-  $scope.historyfor = '';
-  $scope.map        =  null;
+  $scope.historyfor    = '';
+  $scope.map           =  null;
   $scope.flightpathall = []; 
   $scope.clickflag     = false;
 
@@ -98,6 +106,27 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
   $scope.clickflagVal  =  0;
   $scope.nearbyflag    =  false;
   $scope.groupMap      =  false;
+
+  $scope.tabView       = 1;
+  $scope.orgIds        = [];
+
+  var m = [];
+  var newGroupSelectionName="";
+  var oldGroupSelectionName="";
+  var initValss=0;
+
+  var tempdistVal = 0;
+  // var mcOptions={};
+  var markerClusters;
+  var map = null;
+  
+  var vehicleids   = [];
+  var polygenList  = [];
+  var polygonList2 = []; 
+
+  $scope.url        = 'http://'+globalIP+context+'/public/getVehicleLocations';
+  $scope.getZoho    = GLOBAL.DOMAIN_NAME+'/getZohoInvoice';
+  $scope.getRoutes  = GLOBAL.DOMAIN_NAME+'/getRouteList';
 
   $scope.vehiclFuel       =  true;
   $scope._editValue_con   = false;
@@ -112,22 +141,7 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
   $scope.minmaxs    = 1;
   $scope.zohod      = 0;  
 
-  var newGroupSelectionName="";
-  var oldGroupSelectionName="";
-  var initValss=0;
 
-  var tempdistVal = 0;
-  // var mcOptions={};
-  var markerClusters;
-  var map =null;
-  
-  var vehicleids   = [];
-  var polygenList  = [];
-  var polygonList2 = []; 
-
-  $scope.tabView  = 1;
-  $scope.orgIds   = [];
-    
   var mcOptions = {
     maxZoom: 11,
     styles: [
@@ -449,8 +463,8 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
 
           // console.log('init_google.....');
 
-          /* document.getElementById("map_osm").style.display="none"; 
-             document.getElementById("maploc").style.display="block"; */
+             document.getElementById("map_osm").style.display="none"; 
+             document.getElementById("maploc").style.display="block"; 
 
             $scope.initilize('maploc');
             markerChange($scope.makerType);

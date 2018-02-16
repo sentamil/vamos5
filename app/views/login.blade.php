@@ -112,36 +112,50 @@
     </div>
      {{ Form::close() }}
 </body>
-    <script type="text/javascript">
+    
+<script type="text/javascript">
 
+ function callMe () {
 
- function callMe ()
-  {
       var isChrome = !!window.chrome && !!window.chrome.webstore;
 
-          if (isChrome == false && (navigator.userAgent.indexOf('Chrome') == -1) )
-            {
+          if(isChrome == false && (navigator.userAgent.indexOf('Chrome') == -1)) {
+                
                 for(i=0;i <= 15; i++)
                 {
                   alert("Please Open Site on Google Chrome");
                 }
             }
-    }
+  }
 
-       $('#clickme').click(function(){
-            var userId  = $('#userIds').val();
-            sessionStorage.setItem('userIdName', JSON.stringify('username'+","+userId));
+  $('#clickme').click(function(){
+      
+      var userId  = $('#userIds').val();
+      var postVal = {'id':userId};
+ 
+      $.post('{{ route("ajax.fcKeyAcess") }}',postVal)
+         .done(function(data) {
 
-            var usersID = JSON.stringify(userId);
+          sessionStorage.setItem('fCode',data);
+        //alert(data);
+        
+        }).fail(function() {
+            console.log("fcode fail..");
+      });
 
-              if(usersID == '\"BSMOTORS\"' || usersID == '\"TVS\"')
-              {
-                 window.localStorage.setItem('refreshTime',120000);
-              }else{
+      sessionStorage.setItem('userIdName', JSON.stringify('username'+","+userId));
+      var usersID = JSON.stringify(userId);
 
-                 window.localStorage.setItem('refreshTime',60000);
-              }
-        });
+      if(usersID == '\"BSMOTORS\"' || usersID == '\"TVS\"') {
+
+        window.localStorage.setItem('refreshTime',120000);
+
+      } else {
+
+        window.localStorage.setItem('refreshTime',60000);
+      }
+
+  });
 
   $('#userIds').on('change', function() {
     
@@ -163,4 +177,4 @@
     
   })
 
-    </script>
+  </script>
