@@ -11,6 +11,9 @@
 
           </div>
             <div  class="panel-heading">
+			@if(Session::has('message'))
+             <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+             @endif
                 <h4> <b>Device List</b></h4>
             </div>
             <div style="background-color: #a6d4d9" class="panel-body">
