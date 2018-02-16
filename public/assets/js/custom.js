@@ -63,12 +63,14 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
     $scope.mapsHist     =  1;
     $scope.maps_name    =  1;
     $scope.setMapOsm    =  1;
+    sessionStorage.setItem('mapNo',1);
 
   } else {
     map_change          =  0;
     $scope.mapsHist     =  0;
     $scope.maps_name    =  0;
     $scope.setMapOsm    =  0;
+    sessionStorage.setItem('mapNo',0);
   }
 
   $scope.mapInit        =  0;
@@ -93,7 +95,6 @@ app.controller('mainCtrl',['$scope','$compile','$http','vamoservice','$filter','
   $scope.cityCirclecheck = false;
   $scope.markerClicked   = false;
 
-  sessionStorage.setItem('mapNo',0);
   var geocoderVar;
 
   $scope.historyfor    = '';
