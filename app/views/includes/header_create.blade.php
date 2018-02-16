@@ -61,7 +61,7 @@
      <tr><td style="padding-right:5px; border-right: 3px solid #eee; width: 37%;">
         <select style="border: 0px; width: 100%;font-size: 75%;" id="choosen1" data-show-subtext="true" data-live-search="true">
 			@if(Session::get('cur')=='admin')
-			 <option value="">Search</option>
+			 <!-- <option value="">Search</option> -->
              <option value="device">Vehicle</option>
              <option value="group">Group</option>
              <option value="user">User</option>
@@ -69,7 +69,7 @@
              <option value="org">Organization</option>
 			@endif 
             @if(Session::get('cur')=='dealer')
-			 <option value="">Search</option>
+			 <!-- <option value="">Search</option> -->
              <option value="device">Vehicle</option>
              <option value="group">Group</option>
              <option value="user">User</option>
@@ -89,7 +89,7 @@
        <td style="padding-right:5px; border-right: 3px solid #eee; width:37%;">
         <select style="border: 0px; width: 100%;font-size: 75%;" id="chooseToAdd1" data-show-subtext="true" data-live-search="true">
           @if(Session::get('cur')=='admin') 
-			<option value="">Add</option>
+		<!-- <option value="">Add</option> -->
 			<option value="device">Vehicles</option>
             <option value="org">Group</option>
              <option value="group">User</option>
@@ -97,7 +97,7 @@
              <option value="dealer">Organization</option>
             @endif 
             @if(Session::get('cur')=='dealer')
-            <option value="">Add</option>
+          <!--  <option value="">Add</option> -->
             <option value="org">Group</option>
             <option value="group">User</option>
             <option value="dealer">Organization</option>
@@ -116,7 +116,7 @@
      <tr><td style="padding-right:5px; border-right: 3px solid #eee; width: 100px;">
         <select style="border: 0px;" id="choosen" data-show-subtext="true" data-live-search="true">
 			@if(Session::get('cur')=='admin')
-			<option value="">Search</option>
+			<!-- <option value="">Search</option> -->
 			<option value="device">Vehicle</option>
              <option value="group">Group</option>
              <option value="user">User</option>
@@ -124,7 +124,7 @@
              <option value="org">Organization</option>
 			 @endif 
             @if(Session::get('cur')=='dealer')
-			<option value="">Search</option>
+			<!-- <option value="">Search</option> -->
 			<option value="device">Vehicle</option>
              <option value="group">Group</option>
              <option value="user">User</option>
@@ -144,7 +144,7 @@
        <td style="padding-right:5px; border-right: 3px solid #eee; width: 100px;">
         <select style="border: 0px;" id="chooseToAdd" data-show-subtext="true" data-live-search="true">
 	   @if(Session::get('cur')=='admin')
-           <option value="">Add</option>
+           <!-- <option value="">Add</option> -->
            <option value="device">Vehicles</option>
              <option value="group">Group</option>
              <option value="user">User</option>
@@ -152,7 +152,7 @@
 	     <option value="org">Organization</option>
              @endif 
             @if(Session::get('cur')=='dealer')
-            <option value="">Add</option>
+            <!-- <option value="">Add</option> -->
              <option value="group">Group</option>
              <option value="user">User</option>
              <option value="org">Organization</option>
@@ -239,6 +239,31 @@ $('#getadd').keypress(function (e) {
  }
 }
 });
+
+$('#setadd').on('click', function() {
+				var datas={
+				'val':$('#getadd').val(),
+        'val1':$('#chooseToAdd').val()
+				}  
+      console.log(datas.val1);
+      if(datas.val1=='device')	
+      {	
+    		if(datas.val=='')
+				{
+					alert('Enter Quantity to Add');
+					$('#addref').attr('href', '../Business');
+				}
+				else if (datas.val>='1' && datas.val <='50')
+				{
+					$('#addref').attr('href', '../addDevice'+datas.val);
+				}
+				else
+				{
+					$('#addref').attr('href', '../Business');
+				}
+        }
+        
+			});
 
 $('#chooseToAdd').on('change', function() {
   var data={
@@ -366,6 +391,31 @@ $('#setsearch1').on('click', function() {
 //alert('this is'+data1.val1+' '+data1.val2);
 
 });
+
+$('#setadd1').on('click', function() {
+				var datas={
+				'val':$('#getadd1').val(),
+        'val1':$('#chooseToAdd1').val()
+				}  
+      console.log(datas.val1);
+      if(datas.val1=='device')	
+      {	
+    		if(datas.val=='')
+				{
+					alert('Enter Quantity to Add');
+					$('#addref1').attr('href', '../Business');
+				}
+				else if (datas.val>='1' && datas.val <='50')
+				{
+					$('#addref1').attr('href', '../addDevice'+datas.val);
+				}
+				else
+				{
+					$('#addref1').attr('href', '../Business');
+				}
+        }
+        
+			});
 
 $('#chooseToAdd1').on('change', function() {
   var data={
