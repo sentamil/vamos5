@@ -103,7 +103,7 @@
             <option value="dealer">Organization</option>
              @endif   
         </select></td>
-		if(Session::get('cur')=='admin')
+		@if(Session::get('cur')=='admin')
 		<td style="padding-left:1px; width: 116px;">
         <input id="getadd1" type="number" style="border: 0px; width: 100%;" placeholder="Enter Quantity to add" name="Searchthis" min="1" max="50"></input></td>
 		@endif 
