@@ -642,7 +642,7 @@ public function edit($id) {
         $refData= array_add($refData, 'maxtemp', '');
         $refData= array_add($refData, 'routeName', '');
         $refData= array_add($refData, 'safetyParking', 'no');
-         $refData= array_add($refData, 'tankSize', 'no');
+         $refData= array_add($refData, 'tankSize', '0');
 
         
         
@@ -1568,7 +1568,7 @@ public function updateLive($id) {
 		if(isset($vehicleRefData['tankSize'])==1)
            $tankSize=$vehicleRefData['tankSize'];
         else
-           $tankSize='no';
+           $tankSize='0';
 
 
         $deviceId=$vehicleRefData['deviceId'];

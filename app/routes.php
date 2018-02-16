@@ -1169,6 +1169,7 @@ Route::post('userId', array('as' => 'ajax.userIdCheck', 'uses'=>'VdmUserControll
 Route::post('vdmVehicles/calibrate/count', array('uses'=>'VdmVehicleController@calibrateCount'));
 
 ///onboard search
+Route::get('deviceMove{param}', array('uses' => 'DeviceControllerScan@movedVehicle'));
 Route::get('DeviceScan/sendExcel', array('uses' => 'DeviceControllerScan@sendExcel'));
 Route::resource('DeviceScan', 'DeviceControllerScan');
 ///

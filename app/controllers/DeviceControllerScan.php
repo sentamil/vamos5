@@ -132,5 +132,57 @@ class DeviceControllerScan extends \BaseController {
 
         return Redirect::to('DeviceScan');
         } 
+		
+		public function movedVehicle($id)
+{
+                if (! Auth::check ()) {
+                        return Redirect::to ( 'login' );
+                }
+
+                $username = Auth::user ()->username;
+                $redis = Redis::connection ();
+                $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
+
+                $devicesList=$redis->smembers( 'S_Device_' . $fcode); 
+                $orgArr = array();
+               foreach($devicesList as $org) {
+                 $orgArr = array_add($orgArr, $org,$org);
+               }
+               $devicesList1 = $orgArr;//log::info($devicesList);
+                log::info( '------device list size---------- '.count($devicesList));
+                 //$ram = Input::get('value'); log::info($ram);
+                 $text_word = $id; log::info($text_word);
+                 $cou = $redis->SCARD('S_Device_' . $fcode); log::info($cou);
+                 $orgLi = $redis->sScan( 'S_Device_' . $fcode, 0,  'count', $cou, 'match', '*'.$text_word.'*'); log::info($orgLi);
+                 $orgL = $orgLi[1];
+
+                $temp=0;
+                $deviceMap=array();
+                for($i =0;$i<count($orgL);$i++){
+                        $vechicle=$redis->hget ( 'H_Vehicle_Device_Map_' . $fcode, $orgL[$i] );
+                        log::info($vechicle);
+
+                        if($vechicle!==null)
+                        {
+                                $refData        = $redis->hget ( 'H_RefData_' . $fcode, $vechicle );  //        log::info($refData);
+                                $refData        = json_decode($refData,true); log::info($refData);
+                                $orgId          = isset($refData['OWN'])?$refData['OWN']:' '; //log::info($orgL[$i]);
+                                $onboardDate=isset($refData['onboardDate'])?$refData['onboardDate']:'null';
+                                $vehicleExpiry=isset($refData['vehicleExpiry'])?$refData['vehicleExpiry']:'null';
+                                // log::info(isset($refData['OWN']));
+                                 
+                                $deviceMap= array_add($deviceMap,$i,$vechicle.','.$orgL[$i].','.$orgId.','.$onboardDate.','.$vehicleExpiry);
+                        }
+
+                        $temp++;
+                }
+                log::info( '------device map---------- '.count($deviceMap));
+                //log::info($orgL);
+               log::info($text_word);
+                return View::make ( 'vdm.business.scan', array (
+                                'deviceMap' => $deviceMap ) )->with ( 'devicesList', $devicesList1 )->with ('text', $text_word);
+
+        }
+
 
     }

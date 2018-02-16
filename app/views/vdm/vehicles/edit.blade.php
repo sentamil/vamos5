@@ -254,7 +254,7 @@
                             </div>
 							<div class="form-group">
                                 {{ Form::label('tankSize', 'Tank Size') }}
-								{{ Form::number('tankSize', isset($refData['tankSize'])?$refData['tankSize']:' ',array('id'=>'tanksize','class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'1','max'=>'5000')) }}
+								{{ Form::number('tankSize', isset($refData['tankSize'])?$refData['tankSize']:'0',array('id'=>'tanksize','class' => 'form-control', 'placeholder'=>'Quantity', 'min'=>'0','max'=>'5000')) }}
 							</div>
 
 							<br/>
@@ -282,17 +282,17 @@
       $(function () {
       $('.selectpicker').selectpicker();
       });
-	
-	$('#sub').on('click', function() {
+
+$('#sub').on('click', function() {
 
 	var datas={
 		'val':$('#tanksize').val(),
 		'val1':$('#analog').val()
 		} 
-       if (datas.val != '') {
+  if (datas.val != '0' && datas.val != '' ) {
        document.getElementById("analog").value ="fuel";
 	}    
-	if(datas.val1=='fuel' && datas.val == '')
+	else if(datas.val1=='fuel' && datas.val == '0')
 	{
 	//var neww2=datas.val;
 	//var neww=datas.val1;
@@ -300,6 +300,20 @@
 	 document.getElementById("tanksize").focus();
 	return false;
 	}
+  else if(datas.val1=='fuel' && datas.val == '')
+  {
+  alert('Please Enter Tank Size');
+	 document.getElementById("tanksize").focus();
+	return false;
+  }
+  else if(datas.val1=='no' && datas.val == '')
+  {
+   document.getElementById("tanksize").value ='0';
+  }
+  else if(datas.val1=='load' && datas.val == '')
+  {
+   document.getElementById("tanksize").value ='0';
+  }
 
 });
 
@@ -313,11 +327,11 @@ $('#analog').on('change', function() {
  	console.log(input.val);
   
    document.getElementById("tanksize").readOnly = true;	
-   document.getElementById("tanksize").value= '';
+   document.getElementById("tanksize").value= '0';
  }
  else {
  	document.getElementById("tanksize").readOnly = false;	
-	 document.getElementById("tanksize").value = ''; 
+	 document.getElementById("tanksize").value = '0'; 
 }
 
 });

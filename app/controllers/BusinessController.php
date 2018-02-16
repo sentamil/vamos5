@@ -899,6 +899,7 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 								'descriptionStatus'=>$descriptionStatus,
 								'vehicleExpiry' => $vehicleExpiry,
 								'onboardDate' => $onboardDate,
+								'tankSize'=>'0',
 							);
 						$refDataJson = json_encode ( $refDataArr );
 						//log::info('json data --->'.$refDataJson);
@@ -1496,7 +1497,8 @@ $dbarray[$dbtemp++]= array('vehicle_id' => $vehicleId,
            				 'Payment_Mode'=>isset($refDataJson1['Payment_Mode'])?$refDataJson1['Payment_Mode']:'',
            				 'descriptionStatus'=>isset($refDataJson1['descriptionStatus'])?$refDataJson1['descriptionStatus']:'',
 						'vehicleExpiry'=>isset($refDataJson1['vehicleExpiry'])?$refDataJson1['vehicleExpiry']:'',
-                        'onboardDate'=>isset($refDataJson1['onboardDate'])?$refDataJson1['onboardDate']:'',
+                        'onboardDate'=>isset($refDataJson1['onboardDate'])?$refDataJson1['onboardDate']:'',  
+						'tankSize'=>isset($refDataJson1['tankSize'])?$refDataJson1['tankSize']:'0',
 			            );
 
 			        $refDataJson = json_encode ( $refDataArr );

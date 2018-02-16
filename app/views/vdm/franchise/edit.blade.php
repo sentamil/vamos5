@@ -115,7 +115,7 @@
 	</div>
 	<div class="form-group">
 		{{ Form::label('timeZone', 'Time Zone') }}
-		{{ Form::select('timeZone', array($timeZoneC),$timeZone, array('class' => 'form-control')) }}
+		{{ Form::select('timeZone', array($timeZoneC),$timeZone, array('class' => 'selectpicker form-control', 'data-live-search '=> 'true')) }}
 	</div>
 	<div class="form-group">
 		{{ Form::label('apiKey', 'Api Key') }}
