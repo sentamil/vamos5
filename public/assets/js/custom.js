@@ -1669,7 +1669,13 @@ gmarkers_osm[gmarkers_osm.length-1].addEventListener( "click", function(e){
     $('#vehstat #val').text(dataVal.position);
     $('#regNo span').text(dataVal.regNo);
     $('#routeName span').text(dataVal.routeName);
-    $('#vehitype span').text(dataVal.vehicleType);
+    
+    if(dataVal.vehicleType=='heavyVehicle'){
+       $('#vehitype span').text('Heavy Vehicle');
+    }else{
+      $('#vehitype span').text(dataVal.vehicleType);
+    }
+   
     $('#mobNo span').text(dataVal.mobileNo);
     $('#graphsId #speed').text(dataVal.speed);
     $('#graphsId #fuel').text(dataVal.tankSize);
