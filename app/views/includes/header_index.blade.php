@@ -94,8 +94,13 @@
 					<option value="org">Organization</option>
 					@endif 
 					</select></td>
+				@if(Session::get('cur')=='admin')
 				<td style="padding-left:1px; width: 116px;">
 				<input id="getadd1" type="number" style="border: 0px; width: 100%;" placeholder="Enter Quantity to add" name="Searchthis" min="1" max="50"></input></td>
+				@endif
+				@if(Session::get('cur')=='dealer')
+				<input id="getadd1" type="number" style="border: 0px; width: 100%; background-color : #eff1f4;" readOnly = "true" name="Searchthis" min="1" max="50"></input></td>
+				@endif
 				<td style="padding-left:5px;background-color:#2d9b5e; "> <a href="" id="addref1"><input id="setadd1" type="button" value="Add" style="color:white;background-color:#2d9b5e; border: 0px; padding-left: 28px;"/></a></td>
 				</tr>
 			</table>
@@ -147,8 +152,14 @@
 					<option value="org">Organization</option>
 				@endif  
                 </select></td>
-			<td style="padding-left:-4px; width: 57px;">
+				@if(Session::get('cur')=='admin')
+				<td style="padding-left:-4px; width: 57px;">
 				<input id="getadd" type="number" style="border: 0px; width: 225px;" placeholder="Enter Quantity to add" name="Searchthis"  min="1" max="50"></input></td>
+				@endif
+				@if(Session::get('cur')=='dealer')
+				<td style="padding-left:-4px; width: 57px;">
+				<input id="getadd" type="number" style="border: 0px; width: 225px; background-color : #eff1f4;" readOnly = "true" name="Searchthis"  min="1" max="50"></input></td>
+				@endif
 			<td style="padding-left:17px;background-color:#2d9b5e; "> <a href="" id="addref"><input id="setadd" type="button" value="Add" style="color:white;background-color:#2d9b5e; border: 0px;"/></a></td>
 		</tr>
 		</table>
