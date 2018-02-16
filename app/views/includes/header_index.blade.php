@@ -99,6 +99,7 @@
 				<input id="getadd1" type="number" style="border: 0px; width: 100%;" placeholder="Enter Quantity to add" name="Searchthis" min="1" max="50"></input></td>
 				@endif
 				@if(Session::get('cur')=='dealer')
+				<td style="padding-left:1px; width: 116px;">
 				<input id="getadd1" type="number" style="border: 0px; width: 100%; background-color : #eff1f4;" readOnly = "true" name="Searchthis" min="1" max="50"></input></td>
 				@endif
 				<td style="padding-left:5px;background-color:#2d9b5e; "> <a href="" id="addref1"><input id="setadd1" type="button" value="Add" style="color:white;background-color:#2d9b5e; border: 0px; padding-left: 28px;"/></a></td>
