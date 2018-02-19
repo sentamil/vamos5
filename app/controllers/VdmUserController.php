@@ -842,12 +842,26 @@ public function updateNotification() {
                         $userReports = $redis->smembers("S_Users_Reports_".$user.'_'.$fcode);
                 }
                 log::info($totalList);
+				if($userReports==null || $totalReportList==null )
+                {
+                Session::flash ( 'message', ' No Reports Found' . '!' );
                 return View::make ( 'vdm.users.reports', array (
                                 'userId' => $user
                 ) )->with ( 'reportsList', $reportsList )
                 ->with('totalReportList',$totalReportList)
                 ->with('totalList',$totalList)
                 ->with('userReports',$userReports);
+                
+                }
+                else
+                {
+                return View::make ( 'vdm.users.reports', array (
+                                'userId' => $user
+                ) )->with ( 'reportsList', $reportsList )
+                ->with('totalReportList',$totalReportList)
+                ->with('totalList',$totalList)
+                ->with('userReports',$userReports);
+				}
         }
 
         public function updateReports()
@@ -876,27 +890,32 @@ public function updateNotification() {
                                 foreach ($reportName as $key => $value) {
                                         $redis->sadd("S_Users_Reports_Dealer_".$userId.'_'.$fcode, $value);
                                 }
-                                $removeList = array();
-                                $currentReportList = $redis->smembers('S_Users_Reports_Dealer_'.$userId.'_'.$fcode);
-                                foreach ($prevReportList as $key => $value) {
-                                if (in_array($value, $currentReportList)) {
-                                        log::info("GotErix");
-                                }else
-                                {
-                                        $removeList[] = $value;
-                                        log::info("GotErix2");
-                                }
-                        }
-                        log::info($removeList);
-                        if($removeList != null)
-                        {
-                                $userList = $redis->smembers("S_Users_Dealer_".$userId.'_'.$fcode);
-                                log::info($userList);
-                                foreach ($userList as $key => $dealer) {
-                                        $redis->srem("S_Users_Reports_".$dealer.'_'.$fcode, $removeList);
-                                }
+                    //            $removeList = array();
+                    //            $currentReportList = $redis->smembers('S_Users_Reports_Dealer_'.$userId.'_'.$fcode);
+                    //            foreach ($prevReportList as $key => $value) {
+                    //            if (in_array($value, $currentReportList)) {
+                    //                    log::info("GotErix");
+                    //            }else
+                    //            {
+                    //                    $removeList[] = $value;
+                    //                    log::info("GotErix2");
+                    //            }
+                    //    }
+                    //    log::info($removeList);
+                    //    if($removeList != null)
+                    //    {
+								$userList = $redis->smembers("S_Users_Dealer_".$userId.'_'.$fcode);
+								foreach ($userList as $key => $dealer) {
+									$redis->del("S_Users_Reports_".$dealer.'_'.$fcode);
+									foreach ($reportName as $key => $value) {
+                                        $redis->sadd("S_Users_Reports_".$dealer.'_'.$fcode, $value);
+                                
+									}
+                                       
+								}           
+                                
 
-                        }
+                        
                         }
                         else if(!$dealerOrUser)
                         {
@@ -908,9 +927,13 @@ public function updateNotification() {
                 else {
                         log::info('jjjjjjjj');
 
-            if($dealerOrUser)
+						if($dealerOrUser)
                         {
                                 $redis->del("S_Users_Reports_Dealer_".$userId.'_'.$fcode);
+								$userList = $redis->smembers("S_Users_Dealer_".$userId.'_'.$fcode);
+                                foreach ($userList as $key => $dealer) {
+                                $redis->del("S_Users_Reports_".$dealer.'_'.$fcode);
+                                }
                         }else
                         {
                                 log::info(" correct identification ");
