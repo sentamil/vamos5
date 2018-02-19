@@ -842,7 +842,7 @@ public function updateNotification() {
                         $userReports = $redis->smembers("S_Users_Reports_".$user.'_'.$fcode);
                 }
                 log::info($totalList);
-				if($userReports==null || $totalReportList==null )
+				if($userReports==null && $totalReportList==null )
                 {
                 Session::flash ( 'message', ' No Reports Found' . '!' );
                 return View::make ( 'vdm.users.reports', array (
@@ -879,7 +879,7 @@ public function updateNotification() {
                 $fcode = $redis->hget ( 'H_UserId_Cust_Map', $userId . ':fcode' );
                 $dealerOrUser = false;
                 $dealerOrUser = $redis->sismember('S_Dealers_'.$fcode, $userId);
-                if($reportName != null)
+				if($reportName != null)
                 {
                         log::info($dealerOrUser);
                         if($dealerOrUser)
@@ -890,33 +890,49 @@ public function updateNotification() {
                                 foreach ($reportName as $key => $value) {
                                         $redis->sadd("S_Users_Reports_Dealer_".$userId.'_'.$fcode, $value);
                                 }
-                    //            $removeList = array();
-                    //            $currentReportList = $redis->smembers('S_Users_Reports_Dealer_'.$userId.'_'.$fcode);
-                    //            foreach ($prevReportList as $key => $value) {
-                    //            if (in_array($value, $currentReportList)) {
-                    //                    log::info("GotErix");
-                    //            }else
-                    //            {
-                    //                    $removeList[] = $value;
-                    //                    log::info("GotErix2");
-                    //            }
-                    //    }
-                    //    log::info($removeList);
-                    //    if($removeList != null)
-                    //    {
-								$userList = $redis->smembers("S_Users_Dealer_".$userId.'_'.$fcode);
-								foreach ($userList as $key => $dealer) {
-									$redis->del("S_Users_Reports_".$dealer.'_'.$fcode);
-									foreach ($reportName as $key => $value) {
-                                        $redis->sadd("S_Users_Reports_".$dealer.'_'.$fcode, $value);
+                                $removeList = array();
+                                $addList=array();
+                                $currentReportList = $redis->smembers('S_Users_Reports_Dealer_'.$userId.'_'.$fcode);
+                                foreach ($prevReportList as $key => $value) {
+                                if (in_array($value, $currentReportList)) {
+                                        $addList[]=$value;
+                                        log::info("GotErix");
+                                }else
+                                {
+                                        $removeList[] = $value;
+                                        log::info("GotErix2");
+                                }
+                            }
+                        $userList = $redis->smembers("S_Users_Dealer_".$userId.'_'.$fcode);
+                        log::info($userList);
+                        foreach ($userList as $key => $dealer) {
+                                $userReport=$redis->smembers("S_Users_Reports_".$dealer.'_'.$fcode);
+                                {
+                                        if($userReport==null)
+                                        {
+                                        
+                                        foreach ($reportName as $key => $value) {
+                                        $redis->sadd("S_Users_Reports_".$dealer.'_'.$fcode,$value );
+                                        
+                                        }
+                                        }
+                                        
+                                   
+                                }
+                                }
                                 
-									}
-                                       
-								}           
-                                
+                        log::info($removeList);
+                        if($removeList != null)
+                        {
+                                $userList = $redis->smembers("S_Users_Dealer_".$userId.'_'.$fcode);
+                                log::info($userList);
+                                foreach ($userList as $key => $dealer) {
+                                        $redis->srem("S_Users_Reports_".$dealer.'_'.$fcode, $removeList);
+                                }
 
-                        
                         }
+                        }
+                
                         else if(!$dealerOrUser)
                         {
                                 log::info('user define');
