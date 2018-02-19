@@ -432,20 +432,26 @@ app.controller('mainFuel', function($scope, $http, $filter){
 	    		$("#eventReport").show(1000);
 	    		
 	    	}
-	    	else if($scope.report == "fill" || $scope.report == "drops")
+	    	else if($scope.report == "fill" || $scope.report == "drops" || $scope.report == "fill2")
 	    	{
-               var repFill,repDrop;
+               var repFill, repDrop, repFill2;
 
                 if($scope.report=="fill"){
                     repFill=true;
+                    repFill2=false;
                     repDrop=false;  
                 }
                 else if($scope.report=="drops"){
                     repFill=false;
+                    repFill2=false;
                     repDrop=true; 
+                } else if($scope.report=="fill2"){
+                    repFill=false;
+                    repDrop=false;
+                    repFill2=true;
                 }
 
-	    		var distanceUrl = 'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&fuelDrop='+repDrop+'&fuelFill='+repFill+'&fromDateUTC='+utcFormat(fromd,convert_to_24h(fromt))+'&toDateUTC='+utcFormat(tod,convert_to_24h(tot));
+	    		var distanceUrl = 'http://'+globalIP+context+'/public/getFuelDropFillReport?vehicleId='+$scope.vehiname+'&interval='+$scope.interval+'&fromDate='+fromd+'&fromTime='+convert_to_24h(fromt)+'&toDate='+tod+'&toTime='+convert_to_24h(tot)+'&fuelDrop='+repDrop+'&fuelFill='+repFill+'&fuelFillV2='+repFill2+'&fromDateUTC='+utcFormat(fromd,convert_to_24h(fromt))+'&toDateUTC='+utcFormat(tod,convert_to_24h(tot));
 	    		serviceCall(distanceUrl);
 	    		$("#eventReport").hide(1000);
 	    		$("#fill").show(1000);
