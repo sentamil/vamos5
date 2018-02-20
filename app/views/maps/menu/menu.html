@@ -103,6 +103,7 @@
             <!-- <a><span data-hover="sensor">sensor</span></a> -->
             <ul>
                     <li class="removeli" id="acRl"><a id="ac" href=""> AC </a></li>
+                    <li class="removeli" id="engineOnRl"><a id="engineOn" href=""> Engine On </a></li>
                     <li class="removeli" id="loadRl"><a id="load" href=""> Load </a></li>
                     <li class="removeli" id="tempRl"><a id="temp" href=""> Temperature</a></li>
                     <li class="removeli" id="tempdevRl"><a id="tempdev" href=""> Temperature Deviation</a></li>
@@ -346,7 +347,10 @@
                             switch(newReportNamesss[k]){
 
                                 case 'AC':
-                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].AC==false){ document.getElementById('acRl').innerHTML ='';}
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].AC==false){ 
+                                    document.getElementById('acRl').innerHTML ='';
+                                    document.getElementById('engineOnRl').innerHTML ='';
+                                  }
                                 break;
                                 case 'DISTANCE_TIME':
                                   if( menuObj[i].Sensor_IndivdiualReportsList[0].DISTANCE_TIME==false){ document.getElementById('distTimeRl').innerHTML ='';}
@@ -566,6 +570,10 @@
             $('#ac').click(function(){
                 $(this).attr("href", 'ac?vid='+vid+'&vg='+gname+'&tn=ac')
             })
+
+            $('#engineOn').click(function(){
+                $(this).attr("href", 'ac?vid='+vid+'&vg='+gname+'&tn=engine')
+            })
             
             $('#camera').click(function(){
                 $(this).attr("href", 'camera?vid='+vid+'&vg='+gname+'&tn=camera')
@@ -756,5 +764,4 @@
      }); */
 
 </script>
-
 

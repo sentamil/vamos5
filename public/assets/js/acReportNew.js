@@ -1,12 +1,23 @@
 app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', function($scope, $http, vamoservice, $filter, GLOBAL){
 	
+   var tab = getParameterByName('tn');
+
+    if(tab=="ac"){
+
+    	$scope.reportNam = "AC Report";
+    	$scope.reportTdNam = "AC";
+
+    } else if(tab=="engine"){
+       
+        $scope.reportNam = "Engine ON Report";
+        $scope.reportTdNam = "Engine";
+    }
+
   //global declaration
 	$scope.uiDate 				=	{};
 	$scope.uiValue	 			= 	{};
     $scope.sort                 = sortByDate('alarmTime');
 
-    var tab = getParameterByName('tn');
-       
 	function getParameterByName(name) {
     	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
