@@ -609,32 +609,34 @@ function plottinGraphs(valueGraph, timeData){
 
 	
 
-var map;
+var map, myLatlng;
 
-function initialize() {
-	myLatlng = new google.maps.LatLng(12.996250, 80.194750);
+function initialize(latLngVal) {
+
+	console.log('init..');
+	
+	myLatlng = latLngVal;
     var mapOptions = {
+      zoom: 14,	
+      zoomControlOptions: { position: google.maps.ControlPosition.LEFT_TOP },
       center: myLatlng,
-      zoom: 14,
-      mapTypeControl: false,
-      panControl:false,
-      rotateControl:false,
-      streetViewControl: false,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
-}
 
-
-if(tab == 'tripkms')
-	initialize();
-//google.maps.event.addDomListener(window, 'load', initialize);
-
-  //start of modal google map
-  $('#mapmodals').on('shown.bs.modal', function () {
+    $('#mapmodals').on('shown.bs.modal', function () {
       google.maps.event.trigger(map, "resize");
       map.setCenter(myLatlng);
   });
+}
+
+
+//if(tab == 'tripkms')
+	//initialize();
+//google.maps.event.addDomListener(window, 'load', initialize);
+
+  //start of modal google map
+  
 
   // 	jQuery('#mapmodals')
  	// .on('shown.bs.modal',
@@ -648,6 +650,10 @@ if(tab == 'tripkms')
 
     $scope.drawLine = function(loc1, loc2){
     	$scope.startlatlong = new google.maps.LatLng(loc1, loc2);
+
+    	if(map==null){
+		  initialize($scope.startlatlong);
+	    }
 		
 		var flightPlanCoordinates = [$scope.startlatlong, $scope.endlatlong];
 		
@@ -663,7 +669,7 @@ if(tab == 'tripkms')
 		latLanPath.push($scope.flightPath);
 		// console.log(' value '+loc1+'-----'+loc2);
 		map.setCenter($scope.startlatlong);
-	}
+     }
 	
 
 	// clear the polyline function
