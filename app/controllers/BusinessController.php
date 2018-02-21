@@ -376,7 +376,8 @@ if(count($vehicleGroups)==0)
 		foreach($Licence as  $org) {
       	$Licence1 = array_add($Licence1, $org->type,$org->type);
         }
-			$servername = "128.199.159.130";
+			$franchiesJson 	= 	$redis->hget('H_Franchise_Mysql_DatabaseIP', $fcode);
+			$servername = $franchiesJson;
 			if (strlen($servername) > 0 && strlen(trim($servername) == 0)){
 				return 'Ipaddress Failed !!!';
 			}
@@ -1021,7 +1022,8 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 					$redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleId);
 					$redis->hset('H_VehicleName_Mobile_Dealer_'.$ownerShip.'_Org_'.$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
 					
-					$servername = "128.199.159.130";
+					$franchiesJson 	= 	$redis->hget('H_Franchise_Mysql_DatabaseIP', $fcode);
+					$servername = $franchiesJson;
 					if (strlen($servername) > 0 && strlen(trim($servername) == 0))
 					{
 						// $servername = "188.166.237.200";
