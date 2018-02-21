@@ -801,16 +801,20 @@ public function siteUpdate()
       //  Log::info(' $orgList ' . $orgList);
         
         $orgArray = array();
-        
+        $i=1;
         foreach ( $orgList as $org ) {
-            
-            $orgArray = array_add($orgArray, $org,$org);
+             $org1=strtoupper($org);	
+			if($org==$org1)
+        	{ 
+            $orgArray = array_add($orgArray, $i,$org);
             //TODO --- more details obtained here
+			}
+			$i=$i+1;
         }
         
          
         return View::make ( 'vdm.organization.index', array (
-                'orgList' => $orgList 
+                'orgList' => $orgArray 
         ) );
     }
     
