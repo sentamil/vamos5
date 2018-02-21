@@ -376,8 +376,70 @@ if(count($vehicleGroups)==0)
 		foreach($Licence as  $org) {
       	$Licence1 = array_add($Licence1, $org->type,$org->type);
         }
+			$servername = "128.199.159.130";
+			if (strlen($servername) > 0 && strlen(trim($servername) == 0)){
+				return 'Ipaddress Failed !!!';
+			}
+                $usernamedb = "root";
+                $password = "#vamo123";
+                $dbname = $fcode;
+                log::info('franci..----'.$fcode);
+                log::info('ip----'.$servername);
+                $conn = mysqli_connect($servername, $usernamedb, $password, $dbname);
+				if( !$conn ) {
+                 die('Could not connect: ' . mysqli_connect_error());
+                    return 'Please Update One more time Connection failed';
+                } else 
+                { 
+                  log::info(' created connection ');
+                  $max="SELECT COUNT(id) FROM BatchMove";
+                         $results = mysqli_query($conn,$max);
+					while ($row = mysqli_fetch_array($results)) {
+                     log::info('clearr');
+                     log::info($row);
+                     $maxcount = $row[0];
+					}
+                    $conn->close();
+                }
+                $rowcount=$maxcount+1;
+                $deviceId=array();
+                $vehicleId=array();
+                $n=2;
+                for($i=1;$i<=$numberofdevice;$i++)
+               { 
+                  $j=$rowcount+100000;
+			            log::info($j);
+			            $devices="GPS_".$j."_D";
+                  $vehicles=$devices."1";
+	                $dev=$redis->hget('H_Vehicle_Device_Map_'.$fcode,$devices);
+                  $veh=$redis->hget('H_Vehicle_Device_Map_'.$fcode,$vehicles);
+                  
+                  for($m=1;$m<=$n;$m++)
+                  { 
+                    if ($dev==null && $veh==null) 
+		      	        {	 
+                    $deviceCheck=$devices;
+                    $vehicles=$deviceCheck."1";
+                    $deviceId = array_add($deviceId, $i,$deviceCheck);
+                    $vehicleId = array_add($vehicleId, $i,$vehicles);
+                    $rowcount=$rowcount+1;
+                    break;
+                    }
+                    else
+                    {
+                     $j=$rowcount+100000+1;
+                     $devices="GPS_".$j."_D";
+                     $vehicles=$devices."1";
+                     $dev=$redis->hget('H_Vehicle_Device_Map_'.$fcode,$devices);
+                     $veh=$redis->hget('H_Vehicle_Device_Map_'.$fcode,$vehicles);
+                     $n++;
+                     $rowcount=$rowcount+1;
+                    }
+                 }
+                                  
+             }
 		
-		 return View::make ( 'vdm.business.createCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with('protocol', $protocol);
+		 return View::make ( 'vdm.business.createCopy' )->with ( 'orgList', $orgList )->with ( 'availableLincence', $availableLincence )->with ( 'numberofdevice', $numberofdevice )->with ( 'dealerId', $dealerId )->with ( 'userList', $userList )->with('orgList',$orgList)->with('Licence',$Licence1)->with('Payment_Mode',$Payment_Mode1)->with('protocol', $protocol)->with('devices', $deviceId)->with('vehicles', $vehicleId);
 		}
 		
 		
@@ -694,8 +756,16 @@ $dbarray=array();
 $dbtemp=0;
 for($i =1;$i<=$numberofdevice;$i++)
 {
-	$deviceid = Input::get ( 'deviceid'.$i);
-	$vehicleId1 = Input::get ( 'vehicleId'.$i);
+	if($type=='Sale')
+	{ 
+		$deviceid = Input::get ( 'deviceid'.$i);
+		$vehicleId1 = Input::get ( 'vehicleId'.$i);
+	}
+	else
+	{
+		$deviceid = Input::get ( 'deviceid1'.$i);
+		$vehicleId1 = Input::get ( 'vehicleId1'.$i);
+	}
 	//
 	$pattern = '/[\'\/~`\!@#\$%\^&\*\(\)\ \\\+=\{\}\[\]\|;:"\<\>,\.\?\\\']/';
     if (preg_match($pattern, $vehicleId1))
@@ -950,6 +1020,38 @@ $payment_mode_id=$payment_mode_id[0]->payment_mode_id;
 					$redis->sadd('S_Vehicles_Dealer_'.$ownerShip.'_'.$fcode,$vehicleId);
 					$redis->srem('S_Vehicles_Admin_'.$fcode,$vehicleId);
 					$redis->hset('H_VehicleName_Mobile_Dealer_'.$ownerShip.'_Org_'.$fcode, $vehicleId.':'.$deviceid.':'.$shortName.':'.$orgId1.':'.$gpsSimNo, $vehicleId );
+					
+					$servername = "128.199.159.130";
+					if (strlen($servername) > 0 && strlen(trim($servername) == 0))
+					{
+						// $servername = "188.166.237.200";
+					return 'Ipaddress Failed !!!';
+					}
+					$usernamedb = "root";
+					$password = "#vamo123";
+					$dbname = $fcode;
+					log::info('franci..----'.$fcode);
+					log::info('ip----'.$servername);
+					$conn = mysqli_connect($servername, $usernamedb, $password, $dbname);
+					if( !$conn ) {
+						die('Could not connect: ' . mysqli_connect_error());
+						return 'Please Update One more time Connection failed';
+					} else { 
+                     log::info(' created connection ');
+                     $max="SELECT COUNT(id) FROM BatchMove";
+                     $results = mysqli_query($conn,$max);
+                     while ($row = mysqli_fetch_array($results)) 
+                     {
+                      $maxcount = $row[0];
+                     }
+                   $j=$maxcount+$i;
+                   $insertval = "INSERT INTO BatchMove (id, Device_Id, Dealer_Name, Vehicle_Id) VALUES ('$j','$deviceid','$ownerShip','$vehicleId')"; 
+                   $conn->multi_query($insertval);
+                   $conn->close();
+                }
+				
+				
+				
 				}
 				else if($ownerShip=='OWN')
 				{
@@ -1214,7 +1316,7 @@ if($type=='Sale' )
         	    $error3=implode(",", $KeyVehicles);
             }
 		
-			$error='These names are already exist  '.$error.' '.$error2.' '.$error3;
+			$error='These names already exists '.$error.' '.$error2.' '.$error3;
 		}
 		else
 		{

@@ -133,7 +133,27 @@
 											});
 											//alert("The text has been changeded.");
 											});
+											
+											$("#hide").click(function(){
+											$('#deviceid1{{$i}}').on('change', function() {
+											console.log('ahan1');
+											var data = {
+											'id': $(this).val()
 
+											};
+											console.log('ahan'+data);
+											$.post('{{ route("ajax.checkDevice") }}', data, function(data, textStatus, xhr) {
+											/*optional stuff to do after success */
+											// console.log('ahan ram'+data.rfidlist);
+											$('#error').text(data.error);
+											if(data.error!=' ')
+											{
+												alert(data.error);
+											}
+											});
+											//alert("The text has been changeded.");
+											});
+											});
 
 
 											$('#userIdtemp1').on('change', function() {
@@ -215,9 +235,30 @@
 											$("#td{{$i}}").toggle(500);
 											});
 
+											$('#vehicleId1{{$i}}').on('change', function() {
+											$('#error').text('');
+											var data = {
+											'id': $(this).val()
 
+											};
+											console.log('ahan'+data);
+											$.post('{{ route("ajax.checkvehicle") }}', data, function(data, textStatus, xhr) {
+											/*optional stuff to do after success */
+											// console.log('ahan ram'+data.rfidlist);
+											$('#error').text(data.error);
+											if(data.error!=' ')
+											{
+												// alert(data.error);
+											}
 
-													
+											});
+											//alert("The text has been changeded.");
+											});
+
+											$("#refData{{$i}}").click(function(){
+											$("#td{{$i}}").toggle(500);
+											});
+												
 
 											}
 
@@ -230,9 +271,11 @@
 											</script>	
 										<tr style="text-align: center;">
 											<td>{{ $i }}</td>
-											<td >{{ Form::text('deviceid'.$i, Input::old('deviceid'), array('id' => 'deviceid'.$i,'required', 'class' => 'form-control')) }}</td>
+											<td class="batchSale">{{ Form::text('deviceid'.$i, Input::old('deviceid'), array('id' => 'deviceid'.$i, 'class' => 'form-control')) }}</td>
+											<td class="batchMove">{{ Form::text('deviceid1'.$i, $devices[$i], array('id' => 'deviceid1'.$i, 'class' => 'form-control')) }}</td>
 											<td>{{ Form::select('deviceidtype' .$i, $protocol, Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
-											<td>{{ Form::text('vehicleId'.$i, Input::old('vehicleId'), array('id' => 'vehicleId'.$i, 'class' => 'form-control','onkeyup' => 'caps(this)')) }}</td>
+											<td  class="batchSale">{{ Form::text('vehicleId'.$i, Input::old('vehicleId'), array('id' => 'vehicleId'.$i, 'class' => 'form-control','onkeyup' => 'caps(this)')) }}</td>
+											<td  class="batchMove">{{ Form::text('vehicleId1'.$i, $vehicles[$i], array('id' => 'vehicleId1'.$i, 'class' => 'form-control','onkeyup' => 'caps(this)')) }}</td>
 											<td><a id="refData{{$i}}" class="btn btn-sm btn-success" >Details</a></td>
 										</tr>
 										<tr>
@@ -300,16 +343,25 @@ $("#hide").click(function(){
 	$("#t").hide();
 	$("#t1").hide();
 	$('#hide').attr('disabled', true);
+  $('#batchSale').hide();
+  //$('#batchSale').attr('disabled', true);
+  //$('#batchMove').show();
+  $('.batchSale').hide();
+  $('.batchMove').show();
 });
 $("#show").click(function(){
 	$("#p").show();
 	$("#p1").hide();
 	$('#show').attr('disabled', true);
+ $('#batchSale').show();
+  $('#batchMove').hide(); 
+  $('.batchSale').show();
+  $('.batchMove').hide();
 });
 $("#hide1").click(function(){
 	$("#t").hide();
 	$("#t1").show();
-	$('#hide1').attr('disabled', true);
+//	$('#hide1').attr('disabled', true);
 });
 $("#show1").click(function(){
 	$("#t").show();
@@ -321,5 +373,6 @@ $("#show1").click(function(){
     		$("#p1").hide();
     		$("#t").hide();
     		$("#t1").hide();
-
+       $('.batchMove').hide();
+        
 </script>

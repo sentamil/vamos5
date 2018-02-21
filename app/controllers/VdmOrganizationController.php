@@ -833,7 +833,7 @@ public function siteUpdate()
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		Log::info('fcode=' . $fcode);
         $orgListId = 'S_Organisations_' . $fcode;
-		$text_word = Input::get('text_word');
+		$text_word = strtoupper(Input::get('text_word'));
         if(Session::get('cur')=='dealer')
         {
             $orgListId = 'S_Organisations_Dealer_'.$username.'_'.$fcode;
@@ -1608,7 +1608,7 @@ public function ScanNew($id) {
         $fcode = $redis->hget ( 'H_UserId_Cust_Map', $username . ':fcode' );
 		Log::info('fcode=' . $fcode);
         $orgListId = 'S_Organisations_' . $fcode;
-		$text_word = $id;
+		$text_word = strtoupper($id);
 		//$text_word = Input::get('val2');
 		log::info($text_word);
         if(Session::get('cur')=='dealer')
