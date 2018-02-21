@@ -169,10 +169,10 @@ font-family: 'Source Sans Pro', sans-serif;
             <div class="box box-primary" style="min-height:570px;">
                 <div>
                     <div class="pull-right" style="margin-top: 10px;margin-right: 5px;margin-bottom:10px;">
-                        <img style="cursor: pointer;" ng-click="exportData('acReportNew')"  src="../app/views/reports/image/xls.png" />
-                        <img style="cursor: pointer;" ng-click="exportDataCSV('acReportNew')"  src="../app/views/reports/image/csv.jpeg" />
+                        <img style="cursor: pointer;" ng-click="exportData(dowloadId)"  src="../app/views/reports/image/xls.png" />
+                        <img style="cursor: pointer;" ng-click="exportDataCSV(dowloadId)"  src="../app/views/reports/image/csv.jpeg" />
                     </div>
-            <div class="box-body" id="acReportNew">
+            <div class="box-body" id="{{dowloadId}}">
                 <table class="table table-bordered table-striped table-condensed table-hover" >
                   <thead>
                     <tr style="text-align:center;">

@@ -6,11 +6,13 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
     	$scope.reportNam = "AC Report";
     	$scope.reportTdNam = "AC";
+    	$scope.dowloadId = "acReport";
 
     } else if(tab=="engine"){
        
         $scope.reportNam = "Engine ON Report";
         $scope.reportTdNam = "Engine";
+        $scope.dowloadId = "engineOnReport";
     }
 
   //global declaration
