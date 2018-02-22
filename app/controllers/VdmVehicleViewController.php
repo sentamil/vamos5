@@ -228,6 +228,20 @@ class VdmVehicleViewController extends \BaseController {
    // }
     if($dealerIdOld!='OWN')
     {
+        $redis->hdel('H_Pre_Onboard_Dealer_'.$dealerIdOld.'_'.$fcode,$deviceIdOld);
+   	}
+  	else
+	{
+		$deviceDataArr = array (
+                    'deviceid' => $deviceIdOld,
+                    'deviceidtype' => isset($refDataJson1['deviceModel'])?$refDataJson1['deviceModel']:'GT06N',
+                );
+        $deviceDataJson = json_encode ( $deviceDataArr );
+		$redis->hset('H_Pre_Onboard_Dealer_'.$dealerId.'_'.$fcode,$deviceIdOld,$deviceDataJson);
+	}
+   
+    if($dealerIdOld!='OWN')
+    {
       $error='Vehicle moved successfully ';
     }
     else {

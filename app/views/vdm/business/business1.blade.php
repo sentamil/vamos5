@@ -61,7 +61,7 @@
 								<div class="col-md-2">{{ Form::text('userId', Input::old('userId'),array('id'=>'userIdtempNew','placeholder'=>'User Name','class' => 'form-control')) }}</div>
 								<div class="col-md-2">{{ Form::number('mobileNo', Input::old('mobileNo'), array('placeholder'=>'Mobile No','class' => 'form-control')) }}</div>
 								<div class="col-md-2">{{ Form::email('email', Input::old('email'), array('placeholder'=>'Email','class' => 'form-control')) }}</div>
-								<div class="col-md-2">{{ Form::text('password', Input::old('password'), array('placeholder'=>'Password','class' => 'form-control')) }}</div>
+								<div class="col-md-2">{{ Form::text('password', Input::old('password'), array('placeholder'=>'Password','class' => 'form-control','onkeyup' => 'caps(this)')) }}</div>
 							</div>
 							<span id="error" style="color:red;font-weight:bold"></span>
 							<div class="row">
@@ -113,6 +113,9 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script>
+function caps(element){
+    element.value = element.value.toUpperCase();
+  }
 $(document).ready(function(){
 
 	$("#hide").click(function(){
