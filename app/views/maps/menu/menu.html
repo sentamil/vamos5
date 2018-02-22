@@ -111,6 +111,7 @@
                     <li class="removeli" id="fuelNewRl"><a id="fuelNew" href="">Fuel New</a></li>
                     <li class="removeli" id="fuelFillRl"><a href="../public/fuel?tab=fuelfill">Fuel Fill</a></li>
                     <li class="removeli" id="rfidRl"><a id="rfid" href="">Rfid</a></li>
+                    <li class="removeli" id="rfidNewRl"><a id="rfidNew" href="">Rfid New</a></li>
                     <li class="removeli" id="cameraRl"><a id="camera" href="">Camera</a></li> 
             </ul>
         </li>
@@ -371,7 +372,9 @@
                                   if( menuObj[i].Sensor_IndivdiualReportsList[0].FUEL_FILL==false){  document.getElementById('fuelFillRl').innerHTML = '';}
                                 break;
                                 case 'RFID':
-                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].RFID==false){  document.getElementById('rfidRl').innerHTML = '';}
+                                  if( menuObj[i].Sensor_IndivdiualReportsList[0].RFID==false){  
+                                    document.getElementById('rfidRl').innerHTML = ''; 
+                                    document.getElementById('rfidNewRl').innerHTML = '';}
                                 break;
                                 case 'CAMERA':
                                   if( menuObj[i].Sensor_IndivdiualReportsList[0].CAMERA==false){  document.getElementById('cameraRl').innerHTML = '';}
@@ -565,6 +568,10 @@
 
             $('#rfid').click(function(){
                 $(this).attr("href", 'rfidTag?vid='+vid+'&vg='+gname+'&tn=rfid')
+            })
+
+            $('#rfidNew').click(function(){
+                $(this).attr("href", 'rfidTagNew?vid='+vid+'&vg='+gname+'&tn=rfidNew')
             })
 
             $('#ac').click(function(){
@@ -764,4 +771,3 @@
      }); */
 
 </script>
-

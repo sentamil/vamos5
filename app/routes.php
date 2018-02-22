@@ -203,6 +203,13 @@ Route::get('/rfidTag', function() {
     return View::make('reports.rfidReport');
 });
 
+Route::get('/rfidTagNew', function() {
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    return View::make('reports.rfidReportNew');
+});
+
 Route::get('/camera', function() {
     if (!Auth::check()) {
         return Redirect::to('login');
@@ -569,7 +576,13 @@ Route::get('getRfidReport', function(){
     return View::make('vls.getRfidReport');
 });
 
- 
+Route::get('getRfidReportNew', function(){
+    if (!Auth::check()) {
+        return Redirect::to('login');
+    }
+    Log::info('getRfidReportNew');
+    return View::make('vls.getRfidReportNew');
+}); 
  
 Route::get('/liveTrack', function() {
         Log::info('get publicTracking Vehicle Locations');
@@ -1314,5 +1327,4 @@ Route::get('/Test',array('uses'=>'TestController@postAuth'));
 Route::get('/Example',array('uses'=>'ExampleController@testExample'));
 Route::get('/Hello',array('uses'=>'HelloController@testHello'));
 Route::post('/meenatest',array('uses'=>'HelloController@meenatest'));
-
 

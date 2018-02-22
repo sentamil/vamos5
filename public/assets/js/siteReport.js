@@ -154,12 +154,18 @@ function plottinGraphs(valueGraph, timeData){
 	$scope.caption 		= 'Multiple Site Report';
 	$scope.hideShow 	= false;
 
-    if(tab == 'tripkms' || tab == 'site' || tab == 'multiSite')
+    if(tab == 'tripkms' || tab == 'site' || tab == 'multiSite'){
     	$scope.sort 	= 	sortByDate('startTime')        						
-	else if (tab == 'rfid')
+    }
+	else if (tab == 'rfid'){
 		$scope.sort 	= 	sortByDate('fromTime')
-    else if(tab == 'alarm')
+	}
+	else if (tab == 'rfidNew'){
+		$scope.sort 	= 	sortByDate('dateTime')
+	}
+    else if(tab == 'alarm'){
     	$scope.sort 	= 	sortByDate('alarmTime')
+    }
     else if(tab == 'tripSite'){
     	$scope.caption 	= 'Site Trip';
     	$scope.hideShow = true;	
@@ -277,6 +283,9 @@ function plottinGraphs(valueGraph, timeData){
 			case 'rfid' :
 				urlWebservice   =  $scope.g_Url+"/getRfidReport?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
 				break;
+			case 'rfidNew' :
+				urlWebservice   =  $scope.g_Url+"/getRfidReportNew?vehicleId="+$scope.vehiname+"&fromDate="+$scope.uiDate.fromdate+"&fromTime="+convert_to_24h($scope.uiDate.fromtime)+"&toDate="+$scope.uiDate.todate+"&toTime="+convert_to_24h($scope.uiDate.totime);
+				break;	
 			case 'multiSite' :
 				try{
 					//startLoading();
@@ -355,6 +364,28 @@ function plottinGraphs(valueGraph, timeData){
 		return (index == 'one') ? _tageValue[0] :  _tageValue[1];
 	}
 
+	//get the value
+	$scope.rfidSplitNew 	= 	function(value){
+		var spValue = value.split(';');
+	  return spValue;
+	}
+
+	function rfidNewFunc(data){
+		
+		$scope.rfiData=[];
+        var dataVar=[];
+        //console.log(data);
+
+        for(var i=0;i<data.gd.length;i++) {
+           //console.log(data.gd[i]);
+            var tagVal=$scope.rfidSplitNew(data.gd[i].tagDetail);
+            dataVar.push({tagNo:tagVal[0],tagNam:tagVal[1],dateTime:tagVal[2],address:data.gd[i].address,lat:data.gd[i].lat,lng:data.gd[i].lng});
+        }
+
+        $scope.rfiData=dataVar;
+          //console.log($scope.rfiData);
+	}
+
 
 	$scope.histRedirect 	=	function(obj, ind){
 		var url_Hist 		= '../public/track?maps=replay&vehicleId='+$scope.vehiname+'&gid='+$scope.gName;
@@ -376,9 +407,14 @@ function plottinGraphs(valueGraph, timeData){
 		if ((url != undefined) && (checkXssProtection($scope.uiDate.fromdate) == true) && (checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true)){
 			vamoservice.getDataCall(urlUTC).then(function(responseVal){
 
-              console.log(responseVal);
+              //console.log(responseVal);
 
-				try{
+				try {
+
+                    if(tab == 'rfidNew'){
+                    	rfidNewFunc(responseVal);
+                    }  
+
 					if(tab == 'alarm')
 						try{
 							$scope.recursive(responseVal.alarmList,0);
@@ -412,14 +448,10 @@ function plottinGraphs(valueGraph, timeData){
 	                    {
 
 	                    }
-
-
 	                }
 
-					// if(tab == 'rfid')
-					// 	forRfitOnly(responseVal);
-
-					var entry=0,exit=0; 
+				
+				var entry=0,exit=0; 
 					if (tab == 'site')
 						angular.forEach(responseVal, function(val, key){
 							if(tab == 'site'){
