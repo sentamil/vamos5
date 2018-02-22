@@ -71,7 +71,7 @@
 							<hr>
 							<div class="col-md-2"></div>
 							<div class="col-md-2">{{ Form::label('ExistingUser', 'Existing User') }}{{ Form::select('userIdtemp', array($userList),'select', array('id'=>'userIdtemp1','class' => 'selectpicker show-menu-arrow form-control', 'data-live-search '=> 'true')) }}</div>
-							<div class="col-md-2">{{ Form::label('Group', 'Group name') }}{{ Form::select('groupname', array(null),Input::old('groupname'), array('id'=>'groupname','class' => 'selectpicker show-menu-arrow form-control', 'data-live-search '=> 'true')) }}</div>
+							<div class="col-md-2">{{ Form::label('Group', 'Group name') }}{{ Form::select('groupname', array(null),Input::old('groupname'), array('id'=>'groupname','class' => 'form-control selectpicker show-menu-arrow', 'data-live-search '=> 'true')) }}</div>
 							<div class="col-md-2">{{ Form::label('orgId', 'org/College Name') }}{{ Form::select('orgId',  array($orgList), Input::old('orgId'), array('class' => 'selectpicker show-menu-arrow form-control', 'data-live-search '=> 'true')) }} </div>
 							
 						</div>
@@ -114,7 +114,8 @@
 
 
 											$(document).ready(function() {
-											$("#td{{$i}}").hide();
+                      $("#td{{$i}}").hide();
+                      $("#show").click(function(){
 											$('#deviceid{{$i}}').on('change', function() {
 											console.log('ahan1');
 											var data = {
@@ -133,8 +134,8 @@
 											});
 											//alert("The text has been changeded.");
 											});
-											
-											$("#hide").click(function(){
+                      });
+                      $("#hide").click(function(){
 											$('#deviceid1{{$i}}').on('change', function() {
 											console.log('ahan1');
 											var data = {
@@ -153,7 +154,8 @@
 											});
 											//alert("The text has been changeded.");
 											});
-											});
+                      });
+
 
 
 											$('#userIdtemp1').on('change', function() {
@@ -178,7 +180,9 @@
 														         .attr("value",key)
 														         .text(value)); 
 														});
-													$('#groupname').selectpicker('refresh');
+												 $('#groupname').selectpicker('refresh');
+
+
 											});
 											//alert("The text has been changeded.");
 											});
@@ -230,11 +234,8 @@
 											});
 											//alert("The text has been changeded.");
 											});
-
-											$("#refData{{$i}}").click(function(){
-											$("#td{{$i}}").toggle(500);
-											});
-
+             
+                       
 											$('#vehicleId1{{$i}}').on('change', function() {
 											$('#error').text('');
 											var data = {
@@ -258,7 +259,6 @@
 											$("#refData{{$i}}").click(function(){
 											$("#td{{$i}}").toggle(500);
 											});
-												
 
 											}
 
@@ -272,12 +272,15 @@
 										<tr style="text-align: center;">
 											<td>{{ $i }}</td>
 											<td class="batchSale">{{ Form::text('deviceid'.$i, Input::old('deviceid'), array('id' => 'deviceid'.$i, 'class' => 'form-control')) }}</td>
-											<td class="batchMove">{{ Form::text('deviceid1'.$i, $devices[$i], array('id' => 'deviceid1'.$i, 'class' => 'form-control')) }}</td>
-											<td>{{ Form::select('deviceidtype' .$i, $protocol, Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
-											<td  class="batchSale">{{ Form::text('vehicleId'.$i, Input::old('vehicleId'), array('id' => 'vehicleId'.$i, 'class' => 'form-control','onkeyup' => 'caps(this)')) }}</td>
-											<td  class="batchMove">{{ Form::text('vehicleId1'.$i, $vehicles[$i], array('id' => 'vehicleId1'.$i, 'class' => 'form-control','onkeyup' => 'caps(this)')) }}</td>
-											<td><a id="refData{{$i}}" class="btn btn-sm btn-success" >Details</a></td>
+                       <td class="batchMove">{{ Form::text('deviceid1'.$i, $devices[$i], array('id' => 'deviceid1'.$i, 'class' => 'form-control')) }}</td>
+                     
+                      <td>{{ Form::select('deviceidtype' .$i, $protocol, Input::old('deviceidtype'), array('class' => 'form-control')) }}</td>
+                      <td  class="batchSale">{{ Form::text('vehicleId'.$i, Input::old('vehicleId'), array('id' => 'vehicleId'.$i, 'class' => 'form-control','onkeyup' => 'caps(this)')) }}</td>
+                      <td  class="batchMove">{{ Form::text('vehicleId1'.$i, $vehicles[$i], array('id' => 'vehicleId1'.$i, 'class' => 'form-control','onkeyup' => 'caps(this)')) }}</td>
+                      
+                      <td><a id="refData{{$i}}" class="btn btn-sm btn-success" >Details</a></td>
 										</tr>
+                
 										<tr>
 											<td id="td{{$i}}" colspan="6">
 												<table>
