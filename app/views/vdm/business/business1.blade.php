@@ -58,10 +58,10 @@
 								<br>
 								<hr>
 								<div class="col-md-2"></div>
-								<div class="col-md-2">{{ Form::text('userId', Input::old('userId'),array('id'=>'userIdtempNew','placeholder'=>'User Name','class' => 'form-control')) }}</div>
+								<div class="col-md-2">{{ Form::text('userId', Input::old('userId'),array('id'=>'userIdtempNew','placeholder'=>'User Name','class' => 'form-control','onkeyup' => 'caps(this)')) }}</div>
 								<div class="col-md-2">{{ Form::number('mobileNo', Input::old('mobileNo'), array('placeholder'=>'Mobile No','class' => 'form-control')) }}</div>
 								<div class="col-md-2">{{ Form::email('email', Input::old('email'), array('placeholder'=>'Email','class' => 'form-control')) }}</div>
-								<div class="col-md-2">{{ Form::text('password', Input::old('password'), array('placeholder'=>'Password','class' => 'form-control','onkeyup' => 'caps(this)')) }}</div>
+								<div class="col-md-2">{{ Form::text('password', Input::old('password'), array('placeholder'=>'Password','class' => 'form-control')) }}</div>
 							</div>
 							<span id="error" style="color:red;font-weight:bold"></span>
 							<div class="row">
