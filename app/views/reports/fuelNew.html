@@ -48,6 +48,7 @@ font-family: 'Source Sans Pro', sans-serif;
     padding-left: 20px !important;
 }
 
+/*
 .chart {
     min-width: 320px;
     max-width: 800px;
@@ -63,7 +64,7 @@ font-family: 'Source Sans Pro', sans-serif;
     min-height: 500px !important;
     margin-top: 10px !important;
 }
-
+*/
 </style>
 
 </head>
@@ -205,27 +206,28 @@ font-family: 'Source Sans Pro', sans-serif;
                         <img style="cursor: pointer;" ng-click="exportDataCSV('fuelReportNew')"  src="../app/views/reports/image/csv.jpeg" />
                     </div>
            
-            <div class="box-body" id="fuelReportNew">
+            <div class="box-body">
               
-              <div id="container" ></div>
+            <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-              <div style="margin-top: 20px;">
+              <div style="margin-top: 20px;" id="fuelReportNew">
                 <table class="table table-bordered table-striped table-condensed table-hover" >
                   <thead>
                     <tr style="text-align:center;">
                       <th colspan="2" style="font-weight:unset;font-size:12px;background-color:#ecf7fb;">Vehicle Group</th>
                       <th colspan="2" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{trimColon(gName)}}</th>
                       <th colspan="2" style="font-weight:unset;font-size:12px;background-color:#ecf7fb;">Vehicle Id</th>
-                      <th colspan="2" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{fuelData.vehicleId}}</th>   
+                      <th ng-if="fuelData.vehicleId!=null" colspan="2" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{fuelData.vehicleId}}</th>   
+                      <th ng-if="fuelData.vehicleId==null" colspan="2" style="background-color:#f9f9f9;font-weight: unset;font-size:12px;">{{vehIds}}</th>   
                     </tr>
 
                 <tr style="text-align:center;">
                   <th colspan="2" style="font-weight:unset;font-size:12px;background-color:#f9f9f9;">From Date & Time</th>
                   <th ng-if="fuelData.fromDateTimeUTC!==0" colspan="2" style="background-color:#ecf7fb;font-weight:unset;font-size:12px;">{{fuelData.fromDateTimeUTC | date:'yyyy-MM-dd'}}&nbsp;&nbsp;&nbsp;{{ fuelData.fromDateTimeUTC | date:'HH:mm:ss'}}</th>
-                  <th ng-if="fuelData.fromDateTimeUTC==0" colspan="2" style="background-color:#ecf7fb;font-weight:unset;font-size:12px;">-</th>
+                  <th ng-if="fuelData.fromDateTimeUTC==0" colspan="2" style="background-color:#ecf7fb;font-weight:unset;font-size:12px;">{{uiDate.fromdate}}&nbsp;&nbsp;{{uiDate.fromtimes}}</th>
                   <th colspan="2" style="font-weight:unset;font-size:12px;background-color:#f9f9f9;">To Date & Time</th>
                   <th ng-if="fuelData.fromDateTimeUTC!==0" colspan="2" style="background-color:#ecf7fb;font-weight: unset;font-size:12px;">{{fuelData.toDateTimeUTC | date:'yyyy-MM-dd'}}&nbsp;&nbsp;&nbsp;{{fuelData.toDateTimeUTC | date:'HH:mm:ss'}}</th>
-                  <th ng-if="fuelData.fromDateTimeUTC==0" colspan="2" style="background-color:#ecf7fb;font-weight: unset;font-size:12px;">-</th>
+                  <th ng-if="fuelData.fromDateTimeUTC==0" colspan="2" style="background-color:#ecf7fb;font-weight: unset;font-size:12px;">{{uiDate.todate}}&nbsp;&nbsp;{{uiDate.totimes}}</th>
                 </tr>
 
                    <tr style="text-align:center;">
@@ -256,12 +258,12 @@ font-family: 'Source Sans Pro', sans-serif;
                     <td><p ng-if="fuel.address!='P'">{{fuel.address}}</p><p ng-if="fuel.address=='P'" style="font-weight: bold;font-size: 16px;font-family: 'Ubuntu', sans-serif; ">"</p></td>
                     <td>{{fuel.odoMeterReading}}</td>
                   </tr> 
+                </tbody>
                   <tr align="center">
-                      <td ng-if="fuelData.history4Mobile == null || fuelData.history4Mobile == undefined || fuelData.history4Mobile.length==0" colspan="8" class="err">
+                      <td colspan="5" ng-if="fuelDataMsg == null"  class="err" style="text-align: center;">
                            <h5>Got zero records. Please change the dates and try.</h5>
                       </td>
                   </tr>
-                </tbody>
               </table>   
             </div>
 
@@ -276,8 +278,8 @@ font-family: 'Source Sans Pro', sans-serif;
 
     <script src="assets/js/static.js"></script>
 <!--<script src="assets/js/jquery-1.11.0.js"></script>-->
-<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <!--  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
 <!--<script src="assets/js/bootstrap.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
@@ -289,8 +291,12 @@ font-family: 'Source Sans Pro', sans-serif;
     <script src="../app/views/reports/datepicker/bootstrap-datetimepicker.js"></script>
     <script src="../app/views/reports/datatable/jquery.dataTables.js"></script>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
+
+     <script src="https://code.highcharts.com/highcharts.js"></script>
+     <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+   <!-- <script src="https://code.highcharts.com/highcharts.js"></script>
+   <script src="https://code.highcharts.com/modules/exporting.js"></script>-->
 
     <script src="assets/js/naturalSortVersionDatesCaching.js"></script>
 <!--<script src="assets/js/naturalSortVersionDates.js"></script>-->

@@ -4,9 +4,10 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
   $scope.uiValue     = {};
   $scope.sort        = sortByDate('alarmTime');
   $scope.interval    = "";
+  $scope.fuelDataMsg = "";
 
   var tab = getParameterByName('tn');
-  var retsData;
+  var fuelDataVals;
        
   function getParameterByName(name) {
       name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -138,39 +139,82 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
     //get the value from the ui
   function getUiValue(){
-    $scope.uiDate.fromdate    = $('#dateFrom').val();
-      $scope.uiDate.fromtime    = $('#timeFrom').val();
+      $scope.uiDate.fromdate   = $('#dateFrom').val();
+      $scope.uiDate.fromtime   = $('#timeFrom').val();
       $scope.uiDate.todate    = $('#dateTo').val();
       $scope.uiDate.totime    = $('#timeTo').val();
+
+      $scope.uiDate.fromtimes  = convert_to_24h($scope.uiDate.fromtime);
+      $scope.uiDate.totimes    = convert_to_24h($scope.uiDate.totime);
   }
 
   function webCall(){
 
       if((checkXssProtection($scope.uiDate.fromdate) == true) && ((checkXssProtection($scope.uiDate.fromtime) == true) && (checkXssProtection($scope.uiDate.todate) == true) && (checkXssProtection($scope.uiDate.totime) == true))) {
          $scope.fuelUrl = GLOBAL.DOMAIN_NAME+'/getVehicleFuelHistory4Mobile?vehicleId='+$scope.vehIds+'&fromDateUTC='+utcFormat($scope.uiDate.fromdate,convert_to_24h($scope.uiDate.fromtime))+'&toDateUTC='+utcFormat($scope.uiDate.todate,convert_to_24h($scope.uiDate.totime))+'&fuelInterval='+$scope.interval;
-       //var fuelUrl2='http://188.166.244.126:9000/getVehicleFuelHistory4Mobile?userId=ULTRA&vehicleId=ULTRA-TN66M0417&fromDateUTC=1511721000000&toDateUTC=1511807399000&fuelInterval=1';
-       //console.log($scope.fuelUrl);
+        //var fuelUrl2='http://188.166.244.126:9000/getVehicleFuelHistory4Mobile?userId=ULTRA&vehicleId=ULTRA-TN66M0417&fromDateUTC=1511721000000&toDateUTC=1511807399000&fuelInterval=1';
+        //console.log($scope.fuelUrl);
       }
         
         $http.get($scope.fuelUrl).success(function(data){
-          $scope.fuelData=[];
-          $scope.fuelData = data;
-          //console.log(data);
+
+          $scope.fuelData2 = [];
+          $scope.fuelData2 = data;
+        
+            //console.log(data);
           if(data.history4Mobile!=null) {
-               if(retsData!=null){
+               if(fuelDataVals!=null){
                   document.getElementById("container").innerHTML = '';
-                  retsData=null;
+                  fuelDataVals=null;
                }
-            fuelFillData(data.history4Mobile);
+          
+            lengthCheck(data, data.history4Mobile)
 
           } else if(data.history4Mobile==null) {
-               if(retsData!=null){
+               if(fuelDataVals!=null){
                   document.getElementById("container").innerHTML = '';
-                  retsData=null;
+                  fuelDataVals=null;
                }
+
+                 $scope.fuelData = [];
+                 $scope.fuelData = data;
+
+                 $scope.fuelDataMsg = null;
+
+               stopLoading();  
           }
-        stopLoading();
+        
       }); 
+  }
+
+
+  function lengthCheck(data, dataVal){
+
+    
+
+    if(dataVal.length>=1000) {
+
+      if($scope.interval=="") {
+         $scope.interval=1;
+         webCall();
+      } else if($scope.interval<5) {
+         $scope.interval=5;
+         webCall();
+      } else if($scope.interval<15) {
+         $scope.interval=10;
+         webCall();
+      } else if($scope.interval<30) {
+         $scope.interval=15;
+         webCall();
+      } else {
+         $scope.interval=30;
+         webCall();
+      }
+    } else {
+
+        fuelFillData(dataVal);
+
+     }
   }
 
   // initial method
@@ -206,12 +250,14 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
         sessionValue($scope.vehiname, $scope.gName)
       }
       
-      var dateObj         =  new Date();
-      $scope.fromNowTS      =  new Date(dateObj.setDate(dateObj.getDate()));
-      $scope.uiDate.fromdate    =  getTodayDate($scope.fromNowTS);
-      $scope.uiDate.fromtime    =  '12:00 AM';
+      var dateObj             =  new Date();
+      $scope.fromNowTS        =  new Date(dateObj.setDate(dateObj.getDate()));
+      $scope.uiDate.fromdate  =  getTodayDate($scope.fromNowTS);
+      $scope.uiDate.fromtime  =  '12:00 AM';
       $scope.uiDate.todate    =  getTodayDate($scope.fromNowTS);
       $scope.uiDate.totime    =  formatAMPM($scope.fromNowTS.getTime());
+      $scope.uiDate.fromtimes  = convert_to_24h($scope.uiDate.fromtime);
+      $scope.uiDate.totimes    = convert_to_24h($scope.uiDate.totime);
     //$scope.uiDate.totime    =  '11:59 PM';
     
       startLoading();
@@ -274,6 +320,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
 
   $scope.submitFunction   = function(){
     startLoading();
+  //$scope.interval="";
     getUiValue();
     webCall();
   //webServiceCall();
@@ -286,19 +333,43 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
         saveAs(blob, data+".xls");
-    };
+  };
 
-    $scope.exportDataCSV = function (data) {
+  $scope.exportDataCSV = function (data) {
     //console.log(data);
       CSV.begin('#'+data).download(data+'.csv').go();
-    };
+  };
 
   $('#minus').click(function(){
     $('#menu').toggle(1000);
   });
 
 
-  function dataRet(datVal, spdVal, fuelVal){
+  function dataAlign(datVal, spdVal, fuelVal, odoVal, ignVal){
+
+       //console.log(datVal);
+         //console.log(spdVal);
+           //console.log(fuelVal);
+               //console.log(odoVal);
+                 //console.log(ignVal);
+
+      var fulValus  = fuelVal;
+      var spdValus  = spdVal;
+      var odoValus  = odoVal;
+      var ignValus  = ignVal;
+
+      var fuelDataVar = [];
+               
+      for(var i=0; i<fulValus.length; i++){
+        fuelDataVar.push({ y:fulValus[i], fuelValue:fulValus[i], spdValue:spdValus[i], odoValue:odoValus[i], ignValue:ignValus[i]});
+      } 
+
+    //console.log(fuelDataVar);
+    return fuelDataVar;
+  }
+
+
+/* function dataRet(datVal, spdVal, fuelVal){
   // var fulDatVars = [];
      var fulVars    = [];
      var spdVars    = [];
@@ -310,7 +381,7 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
         fulVars[i] = [ dattVars[i],fuelValss[i] ]; 
       } */
       
-    var dataSetVars=[];
+ /*   var dataSetVars=[];
  
     dataSetVars.push( { data:fuelVal, name:"Fuel", type:"area", unit:"ltrs", valueDecimals:2 } );
       dataSetVars.push( { data:spdVal, name:"Speed", type:"line", unit:"km/h", valueDecimals:0 } );
@@ -319,9 +390,156 @@ app.controller('mainCtrl',['$scope','$http','vamoservice','$filter', '_global', 
          var newRetVars = { xData:datVal, dataSets:dataSetVars };
       // console.log(newRetVars);
    return newRetVars;     
-  }
+  }*/
 
 function fuelFillData(data){
+
+  if(data.length){
+
+    var fueLtrs=[], fuelDates=[], speedVal=[], speedVal2=[], odoVal=[], ignVal=[];
+   
+    for (var i = 0; i < data.length; i++) {
+          if(data[i].fuelLitr !='0' && data[i].fuelLitr !='0.0') {
+              fueLtrs.push(parseFloat(data[i].fuelLitr));
+              var dat = $filter('date')(data[i].dt, "HH:mm:ss  dd/MM/yyyy");
+              fuelDates.push(dat);
+              speedVal.push(parseInt(data[i].newSpeed));
+              speedVal2.push(parseInt(data[i].sp));
+              odoVal.push(data[i].odoMeterReading);
+              ignVal.push(data[i].ignitionStatus);
+          }
+    };
+
+
+ if(fueLtrs.length){
+
+    $scope.fuelData    = [];
+    $scope.fuelData    = $scope.fuelData2;
+    $scope.fuelDataMsg = " ";   
+    
+    fuelDataVals = dataAlign(fuelDates,speedVal2,fueLtrs,odoVal,ignVal);
+
+    stopLoading();   
+
+  //console.log(fuelDataVals);
+
+  Highcharts.chart('container', {
+    chart: {
+        zoomType: 'xy'
+    },
+    title: {
+        text: 'Fuel and Speed'
+    },
+    subtitle: {
+        //text: 'Source: WorldClimate.com'
+    },
+    credits: {
+      enabled: false
+    },
+    xAxis: [{
+        categories:fuelDates,
+        labels: {
+          style: {
+            fontSize: '11px',
+              fontFamily: 'proxima-nova,helvetica,arial,sans-seri',
+            }
+        },
+        crosshair: true
+    }],
+    yAxis: [{ // Primary yAxis
+        labels: {
+            format: '{value} Kmph',
+            style: {
+                color: Highcharts.getOptions().colors[3]
+            }
+        },
+        title: {
+            text: 'Speed',
+            style: {
+                color: Highcharts.getOptions().colors[3]
+            }
+        },
+    }, { // Secondary yAxis
+        title: {
+            text: 'Fuel',
+            style: {
+                color: Highcharts.getOptions().colors[0]
+            }
+        },
+        labels: {
+            format: '{value} Ltrs',
+            style: {
+                color: Highcharts.getOptions().colors[0]
+            }
+        },
+        opposite: true
+    }],
+    tooltip: {
+        formatter: function () {
+            var s,a=0;
+            //console.log(this.points);
+
+            $.each(this.points, function () {
+
+                        a+=1;   
+
+                        if(a==2){ 
+                            s =  '<b>'+this.x+'</b>'+'</b>'+'<br>'+' '+'</br>'+
+                                 '--------------------'+'<br>'+' '+'</br>'+
+                                 'Fuel     : ' +'  '+'<b>' + this.point.fuelValue + '</b>'+' Ltrs'+'<br>'+' '+'</br>'+
+                                 'Speed    : ' +'  '+'<b>' + this.point.spdValue + '</b>'+' Kmph'+'<br>'+' '+'</br>'+
+                                 'Ignition : ' +'  '+'<b>' + this.point.ignValue + '</b>'+'<br>'+' '+'</br>'+
+                                 'Odo      : ' +'  '+'<b>' + this.point.odoValue + '</b>';
+                         }       
+              });
+         return s;
+        },
+        shared: true
+    },
+    legend: {
+    
+        floating: false,
+        
+    },
+     plotOptions: {
+        areaspline: {
+            fillOpacity: 0.3
+        }
+    },
+    series: [ {
+        name: 'Speed',
+        type: 'spline',
+        color: Highcharts.getOptions().colors[3],
+        data: speedVal,
+       /* tooltip: {
+            valueSuffix: '°C'
+        }*/
+    },
+    {
+        name: 'Fuel',
+        type: 'areaspline',
+        yAxis: 1,
+        data: fuelDataVals, 
+        /*tooltip: {
+            valueSuffix: ' mm'
+        }*/
+
+    }]
+});
+
+} else {
+
+  $scope.fuelData = [];
+  $scope.fuelData = $scope.fuelData2;
+  $scope.fuelDataMsg = null;
+
+  stopLoading();
+}
+
+ }
+}
+
+/*function fuelFillData(data){
   //console.log(data);
     var fueltrs     = [];
     var fuelDates   = [];
@@ -384,23 +602,23 @@ $(function() {
 /**
  * Override the reset function, we don't need to hide the tooltips and crosshairs.
  */
-Highcharts.Pointer.prototype.reset = function () {
+/*Highcharts.Pointer.prototype.reset = function () {
     return undefined;
 };
-
+*/
 /**
  * Highlight a point by showing tooltip, setting hover state and draw crosshair
  */
-Highcharts.Point.prototype.highlight = function (event) {
+/*Highcharts.Point.prototype.highlight = function (event) {
     this.onMouseOver(); // Show the hover marker
     //this.series.chart.tooltip.refresh(this); // Show the tooltip
     this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
 };
-
+*/
 /**
  * Synchronize zooming through the setExtremes event handler.
  */
-function syncExtremes(e) {
+/*function syncExtremes(e) {
     var thisChart = this.chart;
 
     if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
@@ -413,20 +631,20 @@ function syncExtremes(e) {
         });
     }
 }
-
+*/
 // Get the data. The contents of the data file can be viewed at
 // https://github.com/highcharts/highcharts/blob/master/samples/data/activity.json
 // $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=activity.json&callback=?', function (activity) {
 
   //console.log(retsData.dataSets);
-    $.each(retsData.dataSets, function (i, dataset) {
+/*    $.each(retsData.dataSets, function (i, dataset) {
 
       /*  if(i==1){
           fuelDates = [];
         } */
 
      // Add X values
-        dataset.data = Highcharts.map(dataset.data, function (val, j) {
+/*        dataset.data = Highcharts.map(dataset.data, function (val, j) {
             return [retsData.xData[j], val];
         });
 
@@ -489,7 +707,7 @@ function syncExtremes(e) {
                       paddingBottom: '20px',
                      }
                    }
-                },
+                }, */
               /*  tooltip: {
                     positioner: function () {
                         return {
@@ -507,7 +725,7 @@ function syncExtremes(e) {
                     },
                     valueDecimals: dataset.valueDecimals
                 },*/
-                tooltip: {
+/*                tooltip: {
                     formatter: function () {
                          var s='';
                         $.each(this.points, function () {
@@ -538,6 +756,8 @@ function syncExtremes(e) {
 // });
  });
 
-}
+}*/
+
+
 
 }]);
